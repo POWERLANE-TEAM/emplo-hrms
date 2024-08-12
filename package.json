@@ -12,6 +12,7 @@
     "@semantic-release/release-notes-generator": "^14.0.1",
     "autoprefixer": "^10.4.20",
     "axios": "^1.6.4",
+    "bootstrap": "^5.3.3",
     "laravel-vite-plugin": "^1.0",
     "postcss": "^8.4.41",
     "semantic-release": "^24.0.0",
