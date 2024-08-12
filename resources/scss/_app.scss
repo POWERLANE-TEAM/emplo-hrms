@@ -1,3 +1,19 @@
+// custom style variables LIGHT
+$primary: #61b000;
+$secondary: #d9d9d9;
+$success: #61b000;
+$info: #199fdd;
+// $warning:       $yellow ;
+$danger: #f50000;
+// $light:         $gray-100 ;
+// $dark:          $gray-900 ;
+
+
+// custom style variables DARK todo
+// dark variable location is in ../../node_modules/bootstrap/scss/_variables-dark.scss
+
+@import '../../node_modules/bootstrap/scss/bootstrap';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
