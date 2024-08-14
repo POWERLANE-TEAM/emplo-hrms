@@ -10,4 +10,10 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+    server: {
+        host: process.env.APP_URL,
+        hmr: {
+            host: 'localhost',
+        },
+    },
 });
