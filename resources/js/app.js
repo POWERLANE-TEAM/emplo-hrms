@@ -1,4 +1,6 @@
 import './bootstrap'; // Laravel axios
 import 'bootstrap'; // Bootstrap Framework
 
-import "../css/app.css";
+import "../css/style.css"
+
+
