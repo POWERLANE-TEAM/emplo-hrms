@@ -9,6 +9,7 @@
 !/vendor/package-lock.json
 !/vendor/postcss.config.js
 !/vendor/tailwind.config.js
+!/vendor/eslint.config.mjs
 .env
 .env.backup
 .env.production
