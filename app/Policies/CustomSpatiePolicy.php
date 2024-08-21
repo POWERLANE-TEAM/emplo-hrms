@@ -20,8 +20,7 @@ class CustomSpatiePolicy extends Policy
             ->addDirective(Directive::OBJECT, Keyword::NONE)
             ->addDirective(Directive::SCRIPT, Keyword::SELF)
             ->addDirective(Directive::STYLE, Keyword::SELF)
-            ->addNonceForDirective(Directive::SCRIPT)
-            ->addNonceForDirective(Directive::STYLE);
+            ->addNonceForDirective(Directive::SCRIPT);
     }
 
     public function removeDirective(string $directive, string|array|bool $values, string $mode = 'exact'): self

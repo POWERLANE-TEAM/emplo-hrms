@@ -42,7 +42,6 @@ class CspPolicy extends CustomSpatiePolicy
         //     ->addDirective(Directive::IMG, Scheme::DATA);
 
         $this->addDirective(Directive::STYLE, 'unsafe-inline');
-        $this->removeDirective(Directive::STYLE, 'nonce-', 'starts_with');
         $this->addDirective(Directive::DEFAULT, 'fonts.bunny.net');
         $this->addDirective(Directive::STYLE, 'fonts.bunny.net');
         $this->addDirective(Directive::SCRIPT, 'https://unpkg.com/lucide@latest');
