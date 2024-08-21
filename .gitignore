@@ -5,6 +5,7 @@
 /public/storage
 /storage/*.key
 /vendor/*
+!/vendor
 !/vendor/package.json
 !/vendor/package-lock.json
 !/vendor/postcss.config.js
