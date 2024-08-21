@@ -8,10 +8,16 @@ export default defineConfig({
                 'resources/js/app.js',
                 'resources/js/index.js',
                 'resources/js/employee/dashboard.js',
-                'vendor/node_modules/bootstrap/dist/js/bootstrap.min.js',
-
+                'node_modules/bootstrap/dist/js/bootstrap.min.js',
             ],
             refresh: true,
         }),
     ],
+    server: {
+        host: process.env.APP_URL,
+        hmr: {
+            host: 'localhost',
+        },
+    },
+
 });
