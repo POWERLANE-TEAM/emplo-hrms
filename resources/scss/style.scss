@@ -1,0 +1,39 @@
+@import 'font/fonts';
+
+picture {
+    &.pri-sm-logo img {
+        width: clamp(3px, 0.875rem + 1vw + 1.75vh, 750px);
+    }
+}
+
+header,
+sidebar {
+
+    &:has(nav) {
+        z-index: 10;
+    }
+
+    .site-name {
+        gap: 0 1rem;
+
+        :has(>*>[class$="logo"]) {
+            :has(>[class$="logo"]) {
+                padding: clamp(.25rem, .1rem + .15vw + .2vh, 2rem);
+                transform: translateY(-5%);
+                background-color: var(--main-white);
+                border-radius: 0.8cqw;
+            }
+        }
+    }
+
+
+}
+
+header {
+    --v-offset: clamp(1rem, 0.5rem + 0.5vw + 0.75vh, 5rem);
+
+    nav {
+        padding: var(--v-offset) clamp(2rem, 1rem + 6vw, 10rem);
+        color: var(--main-white);
+    }
+}
