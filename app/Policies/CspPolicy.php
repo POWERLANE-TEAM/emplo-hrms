@@ -3,9 +3,9 @@
 namespace App\Policies;
 
 use Spatie\Csp\Directive;
-use Spatie\Csp\Policies\Basic;
 
-class CspPolicy extends Basic
+
+class CspPolicy extends CustomSpatiePolicy
 {
     public function configure()
     {
