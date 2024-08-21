@@ -3,9 +3,9 @@
 namespace App\Policies;
 
 use Spatie\Csp\Directive;
-use Spatie\Csp\Policies\Basic;
 
-class CspPolicy extends Basic
+
+class CspPolicy extends CustomSpatiePolicy
 {
     public function configure()
     {
@@ -42,7 +42,6 @@ class CspPolicy extends Basic
         //     ->addDirective(Directive::IMG, Scheme::DATA);
 
         $this->addDirective(Directive::STYLE, 'unsafe-inline');
-        $this->removeDirective(Directive::STYLE, 'nonce-', 'starts_with');
         $this->addDirective(Directive::DEFAULT, 'fonts.bunny.net');
         $this->addDirective(Directive::STYLE, 'fonts.bunny.net');
         $this->addDirective(Directive::SCRIPT, 'https://unpkg.com/lucide@latest');
