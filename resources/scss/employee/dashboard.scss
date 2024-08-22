@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import '../core';
+@import '../style';
+@import '../icon/lucide';
+@import '../input/search';
+@import 'side-top-bar';

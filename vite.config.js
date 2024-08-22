@@ -8,7 +8,7 @@ export default defineConfig({
                 'resources/js/app.js',
                 'resources/js/index.js',
                 'resources/js/employee/dashboard.js',
-                'node_modules/bootstrap/dist/js/bootstrap.min.js',
+                'vendor/node_modules/bootstrap/dist/js/bootstrap.min.js',
             ],
             refresh: true,
         }),
