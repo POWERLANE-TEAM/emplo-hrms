@@ -1,4 +1,4 @@
-@props(['sidebar_expanded' => true, 'icon_size' => '31px', 'icon_ratio' => '1/1'])
+@props(['sidebar_expanded' => true, 'icon_size' => '31px', 'icon_ratio' => '1/1', 'user' => ''])
 
 
 <sidebar
@@ -15,7 +15,8 @@
             </div>
             <h1 class="fs-2 company-name mb-0 me-3 me-md-0 me-xl-4 text-white">Powerlane</h1>
 
-            <div class="bg-white rounded-circle d-inline-block align-content-center"><i data-lucide="chevron-right"></i>
+            <div class="bg-white rounded-circle d-inline-block align-content-center text-primary">
+                <i data-lucide="chevron-right"></i>
             </div>
         </button>
     </div>
@@ -28,24 +29,33 @@
 
     </section>
 
-    <div class="position-absolute bottom-0 bg-primary d-flex ">
-        <div>
+    <div class="user-bar bg-primary d-flex align-content-center py-4">
+        <div class="px-4">
             <picture>
                 {{-- <source media="(min-width:2560px)" class=""
                     srcset="{{ Vite::asset('resources/images/icons/notif-bell-69x69.webp') }}">
                 <source media="(min-width:768px)" class=""
                     srcset="{{ Vite::asset('resources/images/icons/notif-bell-69x69.webp') }}"> --}}
 
-                <img class="rounded-circle overflow-hidden" width="45px" aspect-ratio="{{ $icon_ratio }}"
+                <img class="rounded-circle overflow-hidden user-img" width="45px" aspect-ratio="{{ $icon_ratio }}"
                     src="http://placehold.it/45/45" alt="">
             </picture>
         </div>
-        <div class="d-flex flex-column">
-            <div>Maria Kilnsey</div>
-            <div>kny.maria@gmail.com</div>
+        <div class="flex-column w-auto me-auto user-info">
+            <div>{{ trim($user['name'] ?? 'Unknown User') }}</div>
+            <div>{{ trim($user['email'] ?? 'No email.') }}</div>
         </div>
-        <div>
-            <i data-lucide="more-vertical"></i>
+        <div class="dropdown user-menu px-2">
+            <button class="bg-transparent border-0 dropdown-toggle d-flex align-content-center" type="button"
+                data-bs-toggle="dropdown">
+                <i class="icon ellipsis" data-lucide="more-vertical"></i>
+            </button>
+            <ul class="dropdown-menu">
+                <li class="dropdown-item">Notif 1</li>
+                <li class="dropdown-item">Notif 1</li>
+                <li class="dropdown-item">Notif 1</li>
+            </ul>
         </div>
+
     </div>
 </sidebar>

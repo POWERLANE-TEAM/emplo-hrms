@@ -1,3 +1,5 @@
+@import '../input/search';
+
 :root {
     --main-menu-padding-top: clamp(1rem, 0.5rem + 1dvh, 4rem);
     --sidebar-width: clamp(48px, 16px + 1.5rem + 5vw, 200px);
@@ -33,6 +35,18 @@ img.icon {
     width: calc(1rem + 0.5vw + 0.6vh);
 }
 
+.icon.ellipsis {
+
+    width: calc(0.75rem + 0.5vw + 0.5vh);
+    height: calc(0.75rem + 0.5vw + 0.5vh);
+    aspect-ratio: 1/1;
+
+    circle {
+        stroke-width: calc(0.063rem + 0.05vw + 0.05vh);
+    }
+
+}
+
 sidebar.main-menu,
 main,
 div:has(>.topnav) {
@@ -44,6 +58,12 @@ div:has(>.topnav) {
 
 %main-menu-padding-top {
     padding-top: var(--main-menu-padding-top);
+}
+
+%rm-dropdown-triangle {
+    button::after {
+        content: none;
+    }
 }
 
 sidebar.main-menu {
@@ -169,6 +189,7 @@ sidebar.main-menu {
             }
 
         }
+
     }
 
     .site-name {
@@ -237,6 +258,45 @@ sidebar.main-menu {
         }
     }
 
+    .user-bar {
+        position: relative;
+        justify-content: center;
+
+        div:has(.user-img) {
+            display: grid;
+            place-content: center;
+            transform: translateX(8%);
+
+            img {
+                width: calc(2rem + 0.75vw);
+            }
+        }
+
+        .user-info {
+            display: none;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            min-width: fit-content;
+            max-width: clamp(100px, 80%, 200px);
+        }
+
+        .user-menu {
+            display: grid;
+            place-content: center;
+            position: absolute;
+            inset: 0;
+
+            button {
+                opacity: 0;
+            }
+
+            @extend %rm-dropdown-triangle;
+        }
+
+    }
+
+
+
 }
 
 div:has(>.topnav) {
@@ -275,12 +335,14 @@ div:has(>.topnav) {
         input[type="search"] {
             background-color: color-mix(in srgb, var(--bs-primary) 75%, white 25%);
         }
+
+        @extend %rm-dropdown-triangle;
     }
 
 }
 
 sidebar.main-menu.opening {
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 body {
@@ -316,7 +378,24 @@ body {
                 }
             }
 
+            .user-bar {
 
+                div:has(.user-img) {
+                    transform: none;
+                }
+
+                .user-info {
+                    display: flex;
+                }
+
+                .user-menu {
+                    position: static;
+
+                    button {
+                        opacity: 1;
+                    }
+                }
+            }
         }
 
         /* Style top bar left offset when side panel is expanded */

@@ -6,6 +6,8 @@
     'nav_txt' => '',
     'default_icon' => '',
     'active_icon' => '',
+    'src_path' => 'resources/images/icons/',
+    'src_extn' => '.webp',
 ])
 
 <li role="navigation" class="my-3 sidebar-item">
@@ -13,11 +15,13 @@
         <div class="nav-icon">
 
             @if (!empty($default_icon))
-                <img width="{{ $icon_size }}" src="{{ Vite::asset($default_icon['src']) }}"
+                <img width="{{ $icon_size }}"
+                    src="{{ Vite::asset($src_path . 'white-' . $default_icon['src'] . $src_extn) }}"
                     alt="{{ $default_icon['alt'] }}" aspect-ratio="{{ $icon_ratio }}" class="default">
             @endif
             @if (!empty($active_icon))
-                <img width="{{ $icon_size }}" src="{{ Vite::asset($active_icon['src']) }}"
+                <img width="{{ $icon_size }}"
+                    src="{{ Vite::asset($src_path . 'green-' . $default_icon['src'] . $src_extn) }}"
                     alt="{{ $active_icon['alt'] }}" aspect-ratio="{{ $icon_ratio }}" class="">
             @endif
         </div>
