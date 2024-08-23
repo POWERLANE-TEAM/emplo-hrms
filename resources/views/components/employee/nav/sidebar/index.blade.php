@@ -32,23 +32,18 @@
     <div class="user-bar bg-primary d-flex align-content-center py-4">
         <div class="px-4">
             <picture>
-                {{-- <source media="(min-width:2560px)" class=""
-                    srcset="{{ Vite::asset('resources/images/icons/notif-bell-69x69.webp') }}">
-                <source media="(min-width:768px)" class=""
-                    srcset="{{ Vite::asset('resources/images/icons/notif-bell-69x69.webp') }}"> --}}
-
-                <img class="rounded-circle overflow-hidden user-img" width="45px" aspect-ratio="{{ $icon_ratio }}"
-                    src="http://placehold.it/45/45" alt="">
+                <img class="rounded-circle overflow-hidden user-img" width="45px" height="45px"
+                    aspect-ratio="{{ $icon_ratio }}" src="http://placehold.it/45/45" alt="">
             </picture>
         </div>
-        <div class="flex-column w-auto me-auto user-info">
+        <div class="flex-column me-auto user-info">
             <div>{{ trim($user['name'] ?? 'Unknown User') }}</div>
             <div>{{ trim($user['email'] ?? 'No email.') }}</div>
         </div>
         <div class="dropdown user-menu px-2">
             <button class="bg-transparent border-0 dropdown-toggle d-flex align-content-center" type="button"
-                data-bs-toggle="dropdown">
-                <i class="icon ellipsis" data-lucide="more-vertical"></i>
+                aria-label="User Menu" data-bs-toggle="dropdown">
+                <i class="icon ellipsis text-white" data-lucide="more-vertical"></i>
             </button>
             <ul class="dropdown-menu">
                 <li class="dropdown-item">Notif 1</li>

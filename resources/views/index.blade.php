@@ -1,7 +1,8 @@
 <x-html title="Home">
 
-    <x-html.head>
+    <x-html.head description=" This is dashboard">
         <title>Home Page</title>
+
 
         @vite(['resources/js/index.js'])
 

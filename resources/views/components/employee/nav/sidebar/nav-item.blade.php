@@ -10,17 +10,18 @@
     'src_extn' => '.webp',
 ])
 
-<li role="navigation" class="my-3 sidebar-item">
-    <x-nav-link href="{{ $href }}" active="{{ $active }}" rel="" class="d-flex align-items-center ">
+<li role="none" class="my-3 sidebar-item">
+    <x-nav-link href="{{ $href }}" active="{{ $active }}" rel="" class="d-flex align-items-center "
+        role="menuitem">
         <div class="nav-icon">
 
             @if (!empty($default_icon))
-                <img width="{{ $icon_size }}"
+                <img width="{{ $icon_size }}" height="{{ $icon_size }}"
                     src="{{ Vite::asset($src_path . 'white-' . $default_icon['src'] . $src_extn) }}"
                     alt="{{ $default_icon['alt'] }}" aspect-ratio="{{ $icon_ratio }}" class="default">
             @endif
             @if (!empty($active_icon))
-                <img width="{{ $icon_size }}"
+                <img width="{{ $icon_size }}" height="{{ $icon_size }}"
                     src="{{ Vite::asset($src_path . 'green-' . $default_icon['src'] . $src_extn) }}"
                     alt="{{ $active_icon['alt'] }}" aspect-ratio="{{ $icon_ratio }}" class="">
             @endif

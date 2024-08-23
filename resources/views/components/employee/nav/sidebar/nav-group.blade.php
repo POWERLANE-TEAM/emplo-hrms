@@ -6,11 +6,11 @@
     'icon_ratio' => '1/1',
 ])
 
-<header class="small text-uppercase nav-group">
-    <span class="small ">{{ $txt_collapsed }} <span class=" small group-header">{{ $txt_expanded }}</span></span>
+<header class="small text-uppercase nav-head">
+    <span class="small ">{{ $txt_collapsed }} <span class=" small truncate">{{ $txt_expanded }}</span></span>
 </header>
 <nav class="ps-2">
-    <ul>
+    <ul role="menu">
 
         {{ $slot }}
 

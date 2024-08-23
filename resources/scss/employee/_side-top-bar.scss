@@ -28,11 +28,13 @@ main {
 
 img.icon {
     width: calc(0.75rem + 0.5vw);
+    height: auto;
     aspect-ratio: 1/1;
 }
 
 .nav-icon img {
     width: calc(1rem + 0.5vw + 0.6vh);
+    height: auto;
 }
 
 .icon.ellipsis {
@@ -177,7 +179,6 @@ sidebar.main-menu {
             color: var(--bs-white);
             font-weight: bold;
             text-decoration: none;
-            gap: 0 calc(0.5rem + 1vw);
             padding: var(--padding-y) var(--padding-x);
 
             .tooltip {
@@ -204,12 +205,12 @@ sidebar.main-menu {
 
         }
 
-        .nav-group {
+        .nav-head {
             text-align: center;
         }
     }
 
-    .nav-group {
+    .nav-head {
         padding-top: calc(0.25rem + 0.5vh);
         padding-left: calc(0.5rem + 0.5vw);
         padding-right: calc(0.5rem + 0.5vw);
@@ -217,11 +218,16 @@ sidebar.main-menu {
 
     .company-name,
     .nav-item,
-    .group-header {
-        transition: width ease-in-out 0.3s;
-        display: none;
+    .nav-head .truncate,
+    .user-info {
+        transition: width ease-in-out 0.5s;
         opacity: 0;
         width: 0;
+        margin-right: 0 !important;
+    }
+
+    .nav-head .truncate {
+        display: none;
     }
 
     .small {
@@ -231,7 +237,7 @@ sidebar.main-menu {
     button.main-menu {
         background-color: transparent;
         border: none;
-        gap: 0 calc(0.5rem + 1vw);
+
 
         div:has(svg) {
             padding: 0.15vw 0.3vh;
@@ -265,18 +271,18 @@ sidebar.main-menu {
         div:has(.user-img) {
             display: grid;
             place-content: center;
-            transform: translateX(8%);
+
 
             img {
                 width: calc(2rem + 0.75vw);
+                height: auto;
             }
         }
 
         .user-info {
-            display: none;
+            display: flex;
             overflow: hidden;
             text-overflow: ellipsis;
-            min-width: fit-content;
             max-width: clamp(100px, 80%, 200px);
         }
 
@@ -358,18 +364,13 @@ body {
 
             .company-name,
             .nav-item {
-                display: block;
                 opacity: 1;
-                min-width: fit-content;
-            }
-
-            .group-header {
-                display: inline;
-                opacity: 1;
+                width: 5vw;
             }
 
             button.main-menu {
                 min-width: fit-content;
+                gap: 0 calc(0.5rem + 1vw);
 
                 svg {
 
@@ -378,14 +379,29 @@ body {
                 }
             }
 
+            .nav-head .truncate {
+                opacity: 1;
+            }
+
+            li.sidebar-item {
+
+                a {
+
+                    gap: 0 calc(0.5rem + 1vw);
+                }
+
+            }
+
             .user-bar {
 
                 div:has(.user-img) {
-                    transform: none;
+                    // transform: none;
                 }
 
                 .user-info {
-                    display: flex;
+                    opacity: 1;
+                    width: 5vw;
+                    min-width: fit-content;
                 }
 
                 .user-menu {

@@ -1,4 +1,4 @@
-@props(['sidebar_expanded' => true, 'icon_size' => '25vw', 'icon_ratio' => '1/1'])
+@props(['sidebar_expanded' => true, 'icon_size' => '25px', 'icon_ratio' => '1/1'])
 
 <div {{ $attributes->merge(['class' => 'container-fluid text-white']) }}>
     <x-employee.nav.sidebar sidebar_expanded="{{ $sidebar_expanded }}" class="" icon_size="{{ $icon_size }}"
@@ -68,7 +68,7 @@
             <aside>
                 <div class="dropdown">
                     <button id="theme-toggle-btn" class="bg-transparent border-0 dropdown-toggle" type="button"
-                        data-bs-toggle="dropdown">
+                        aria-label="Toggle light/dark theme" data-bs-toggle="dropdown">
                         <picture class="">
                             <source media="(min-width:2560px)" class=""
                                 srcset="{{ Vite::asset('resources/images/icons/moon-and-stars-69x69.webp') }}">
@@ -81,15 +81,16 @@
                         </picture>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" data-isSystem="true">System</a></li>
-                        <li><a class="dropdown-item" data-isSystem="false">Light</a></li>
-                        <li><a class="dropdown-item" data-isSystem="false">Dark</a></li>
+                        <li><span class="dropdown-item" data-isSystem="true">System</span></li>
+                        <li><span class="dropdown-item" data-isSystem="false">Light</span></li>
+                        <li><span class="dropdown-item" data-isSystem="false">Dark</span></li>
                     </ul>
                 </div>
             </aside>
 
             <div class="dropdown">
-                <button class="bg-transparent border-0 dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                <button class="bg-transparent border-0 dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                    aria-label="Open Notifications">
                     <picture class="">
                         <source media="(min-width:2560px)" class=""
                             srcset="{{ Vite::asset('resources/images/icons/notif-bell-69x69.webp') }}">
@@ -114,7 +115,7 @@
                     <source media="(min-width:768px)" class=""
                         srcset="{{ Vite::asset('resources/images/icons/notif-bell-69x69.webp') }}"> --}}
 
-                    <img class="" width="35px" aspect-ratio="{{ $icon_ratio }}"
+                    <img class="" width="35px" height="35px" aspect-ratio="{{ $icon_ratio }}"
                         src="http://placehold.it/20/20" alt="">
                 </picture>
             </div>

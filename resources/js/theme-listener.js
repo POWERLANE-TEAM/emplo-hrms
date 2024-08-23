@@ -95,8 +95,8 @@ export function initPageTheme(themeManager, themeToggle = false) {
 export function handleThemeBtn(themeToggle, themeManager, handlerFunc) {
 
     try {
-        handlerFunc("click", themeToggle, "a", e => {
-            let themeOptions = themeToggle.querySelectorAll(`a`);
+        handlerFunc("click", themeToggle, ".dropdown-item", e => {
+            let themeOptions = themeToggle.querySelectorAll(`.dropdown-item`);
 
             themeOptions.forEach(option => {
                 option.classList.remove('active');
