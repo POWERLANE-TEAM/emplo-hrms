@@ -1,6 +1,6 @@
-<x-html title="Home">
+<x-html>
 
-    <x-html.head>
+    <x-html.head description=" Employee Dashboard">
         <title>Home Page</title>
 
         {{-- Critical Assets that will cause cumulative shift if late loaded --}}
@@ -16,7 +16,7 @@
 
     <body class=" ">
         <x-employee.nav.main-menu :sidebar_expanded="true" class="position-sticky top-0 start-0"></x-employee.nav.main-menu>
-        {{-- <main>
+        <main>
             <section class="job-listing  d-flex tw-px-[5rem] tw-gap-12 ">
                 <sidebar class="nav nav-tabs col-5 " role="tablist">
 
@@ -88,7 +88,7 @@
                 </article>
             </section>
             <x-html.test-elements></x-html.test-elements>
-        </main> --}}
+        </main>
 
         <x-employee.footer></x-employee.footer>
     </body>

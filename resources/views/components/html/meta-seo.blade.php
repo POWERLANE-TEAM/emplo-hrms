@@ -6,8 +6,8 @@
 <meta property="og:type" content="article">
 <meta property="og:url" content="{{ Vite::asset('resources/images/logo/pri-thumbnail.webp') }}">
 <meta property="og:image" content="{{ Vite::asset('resources/images/logo/pri-thumbnail.webp') }}">
-<meta property="og:description" content="Description Here">
-<meta name="description" content="Free Web tutorials">
+<meta property="og:description" content="{{ $description }}">
+<meta name="description" content="{{ $description }}">
 
 @if ($no_crawl)
     <meta name="robots" content="noindex" />
