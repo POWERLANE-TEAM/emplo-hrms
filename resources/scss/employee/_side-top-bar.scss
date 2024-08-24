@@ -1,5 +1,7 @@
 @import '../input/search';
 
+/* Adjusting transition duration may need to adjust delay of removing opeing class in sidebar on side-top-bar.js */
+
 :root {
     --main-menu-padding-top: clamp(1rem, 0.5rem + 1dvh, 4rem);
     --sidebar-width: clamp(48px, 16px + 1.5rem + 5vw, 200px);
@@ -24,7 +26,24 @@ main {
     }
 }
 
+.main-menu-container {
+    padding: 0;
 
+    &:has(sidebar.main-menu.active) {
+        @media screen and (max-width: 576px) {
+
+            &::before {
+                content: '';
+                left: 0;
+                transition: background-color ease-in-out 0.5s;
+                position: absolute;
+                height: 110vh;
+                width: 100vw;
+                background-color: color-mix(in srgb, var(--bs-black) 10%, transparent);
+            }
+        }
+    }
+}
 
 img.icon {
     width: calc(0.75rem + 0.5vw);
@@ -54,7 +73,7 @@ main,
 div:has(>.topnav) {
     --duration: 0.3s;
     --curve: ease-in-out;
-    transition: background-color 0.6s var(--curve), width var(--duration) var(--curve), left var(--duration) var(--curve), opacity var(--duration) var(--curve);
+    transition: width var(--duration) var(--curve), left var(--duration) var(--curve), opacity var(--duration) var(--curve);
 }
 
 
@@ -123,6 +142,10 @@ sidebar.main-menu {
 
             background-color: color-mix(in srgb, var(--bs-primary) 75%, var(--bs-white) 25%);
 
+        }
+
+        &:focus-within {
+            outline: 1px solid var(--bs-white);
         }
 
         border-radius: max(4cqw, 3rem) 0.5cqw 0.5cqw max(4cqw, 3rem);
@@ -362,12 +385,30 @@ div:has(>.topnav) {
 
 }
 
+
+body[data-bs-theme="dark"] {
+    div:has(>.topnav-mobile) {
+
+        background-color: color-mix(in srgb, var(--bs-black), var(--bs-white) 20%);
+    }
+}
+
+div:has(>.topnav-mobile) {
+    background-color: color-mix(in srgb, var(--bs-white) 10%, transparent);
+}
+
 .topnav-mobile {
     display: flex;
-    padding: var(--topnav-padding-y) var(--topnav-padding-x);
+    padding: calc(var(--topnav-padding-y) + var(--main-menu-padding-top)) var(--topnav-padding-x);
+    @extend %rm-dropdown-triangle;
 
     @media screen and (min-width: 576px) {
         display: none;
+    }
+
+    .overlap.right {
+        transition: transform ease-in-out 0.1s;
+        transform: translateX(0);
     }
 
     .search:not(:has(:focus-within)) {
@@ -384,10 +425,13 @@ div:has(>.topnav) {
             background-color: var(--bs-secondary) !important;
         }
 
+        .overlap.right {
+            transform: translateX(20%);
+        }
+
         .input-group {
             @extend %base-search-group-with-icon-style;
         }
-
 
     }
 }

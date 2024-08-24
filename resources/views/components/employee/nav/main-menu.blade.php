@@ -1,7 +1,7 @@
 @props(['sidebar_expanded' => true, 'icon_size' => '25px', 'icon_ratio' => '1/1'])
 
-<div {{ $attributes->merge(['class' => 'container-fluid text-white']) }}>
-    <x-employee.nav.sidebar sidebar_expanded="{{ $sidebar_expanded }}" class="" icon_size="{{ $icon_size }}"
+<div {{ $attributes->merge(['class' => 'container-fluid main-menu-container text-white']) }}>
+    <x-employee.nav.sidebar sidebar_expanded="{{ $sidebar_expanded }}" class="shadow" icon_size="{{ $icon_size }}"
         icon_ratio="{{ $icon_ratio }}">
 
         <x-employee.nav.sidebar.nav-group :sidebar_expanded="$sidebar_expanded" class="" txt_collapsed="Main" txt_expanded="Menu"

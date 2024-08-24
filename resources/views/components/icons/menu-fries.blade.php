@@ -1,11 +1,23 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="28" height="28"
-    viewBox="0 0 28 28" fill="none">
-    <rect width="28" height="28" fill="url(#pattern0_501_5039)" />
-    <defs>
-        <pattern id="pattern0_501_5039" patternContentUnits="objectBoundingBox" width="1" height="1">
-            <use xlink:href="#image0_501_5039" transform="scale(0.0104167)" />
-        </pattern>
-        <image id="image0_501_5039" width="96" height="96"
-            xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAACXBIWXMAAAsTAAALEwEAmpwYAAABK0lEQVR4nO3cQW7CMBBA0RyklZgBqWcHVeJiLaJcwFV23XQH9jh5T/IB7CFOFl8sCwAAAAAAAAD8cTwe3zPzMyIemdn2vCLiERHXw+Hw0fPwv0dvPOut23o2Lx/A+ssvsNlWdF1ePgDXTv47gIj4MYAc+gTcewzgWuBRb0XX+eUDWN/26wunwGZbpRURX6fT6W3p+CV0We+80RvP8Qe/nsG52+EDAAAAAAD7ULELit59zigTdEG3Ln3OKJN0QZdlqypdOzmyzxllhgFkjz5nlEm6oPOyVdW7oOjZ54xSsQsKfQ4AAAAAALAlFbug3EtfNEEX1DbdF03SBbXN9kVbvHZypr5oTwPIin3RJF1Q22xfVL0Lyj30RRW7oHzewfv/HwAAAAAAAACWZ/gFqfplvk2mx1YAAAAASUVORK5CYII=" />
-    </defs>
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="18" viewBox="0 0 22 18" fill="none">
+    <path d="M1 2H21" stroke="currentColor" stroke-width="2" />
+    <path d="M1 16H18" stroke="currentColor" stroke-width="2" />
+    <path d="M1 9H12" stroke="currentColor" stroke-width="2" />
+    <path d="M12 8V10" stroke="currentColor" stroke-opacity="0.24" />
+    <path d="M18 15V17" stroke="currentColor" stroke-opacity="0.24" />
+    <path d="M18 16H19" stroke="currentColor" stroke-opacity="0.24" />
+    <path d="M0 16H1" stroke="currentColor" stroke-opacity="0.24" />
+    <path d="M12 9H13" stroke="currentColor" stroke-opacity="0.24" />
+    <path d="M21 2H22" stroke="currentColor" stroke-opacity="0.24" />
+    <path d="M0 2H1" stroke="currentColor" stroke-opacity="0.24" />
+    <path d="M0 9H1" stroke="currentColor" stroke-opacity="0.24" />
+    <path d="M1 15H18" stroke="currentColor" stroke-opacity="0.12" />
+    <path d="M1 3H21" stroke="currentColor" stroke-opacity="0.12" />
+    <path d="M1 8H12" stroke="currentColor" stroke-opacity="0.12" />
+    <path d="M1 10H12" stroke="currentColor" stroke-opacity="0.12" />
+    <path d="M1 1H21" stroke="currentColor" stroke-opacity="0.12" />
+    <path d="M1 17H18" stroke="currentColor" stroke-opacity="0.12" />
+    <path d="M1 15V17" stroke="currentColor" stroke-opacity="0.24" />
+    <path d="M1 1V3" stroke="currentColor" stroke-opacity="0.24" />
+    <path d="M21 1V3" stroke="currentColor" stroke-opacity="0.24" />
+    <path d="M1 8V10" stroke="currentColor" stroke-opacity="0.24" />
 </svg>

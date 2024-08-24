@@ -1,5 +1,5 @@
 <div class="dropdown">
-    <button class="bg-transparent border-0 dropdown-toggle" type="button" data-bs-toggle="dropdown"
+    <button class="bg-transparent border-0 dropdown-toggle " type="button" data-bs-toggle="dropdown"
         aria-label="Open Notifications">
         {{ $slot }}
     </button>
