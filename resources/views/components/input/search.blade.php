@@ -3,7 +3,7 @@
 ])
 
 @if ($type == 'search')
-    <input {{ $attributes->merge(['class' => 'col-12 rounded-pill ']) }} type="search" {{ $attributes }}
+    <input {{ $attributes->merge(['class' => 'col-12 rounded-pill search']) }} type="search" {{ $attributes }}
         aria-placeholder="{{ $attributes->get('placeholder') }}">
 @elseif ($type == 'text')
     <input {{ $attributes->merge(['class' => 'col-12 rounded-pill search']) }} {{ $attributes }}>

@@ -1,20 +1,22 @@
 import addGlobalListener from '../global-event-listener.js';
 
 export default function initSidebar() {
-    const mainMenuBtn = document.querySelector(`button.main-menu`);
+    const mainMenuBtns = document.querySelectorAll(`button.main-menu`);
     const mainSideBar = document.querySelector(`sidebar.main-menu`);
 
-    mainMenuBtn.onclick = function () {
-        if (mainSideBar.classList.contains('active')) {
-            mainSideBar.classList.remove('active');
-        } else {
-            mainSideBar.classList.add('active', 'opening');
+    mainMenuBtns.forEach((btn) => {
+        btn.onclick = function () {
+            if (mainSideBar.classList.contains('active')) {
+                mainSideBar.classList.remove('active');
+            } else {
+                mainSideBar.classList.add('active', 'opening');
 
-            setTimeout(() => {
-                mainSideBar.classList.remove('opening');
-            }, 100);
-        }
-    };
+                setTimeout(() => {
+                    mainSideBar.classList.remove('opening');
+                }, 100);
+            }
+        };
+    });
 
     let sideBarMenu = document.querySelector(`sidebar.main-menu`);
 

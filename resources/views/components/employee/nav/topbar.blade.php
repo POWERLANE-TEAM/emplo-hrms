@@ -43,3 +43,7 @@
         </div>
     </nav>
 </div>
+
+<x-employee.nav.topbar-mobile class="" icon_size="{{ $icon_size }}" icon_ratio="{{ $icon_ratio }}">
+
+</x-employee.nav.topbar-mobile>

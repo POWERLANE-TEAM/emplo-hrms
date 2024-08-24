@@ -78,8 +78,19 @@ sidebar.main-menu {
     left: 0;
     @include min-height(100);
     @include max-height(100);
-    min-width: fit-content;
-    width: var(--sidebar-width);
+
+    @media screen and (max-width: 576px) {
+        &:not(.active) {
+            width: 0;
+            left: -1rem;
+            overflow: hidden;
+        }
+    }
+
+    @media screen and (min-width: 576px) {
+        min-width: fit-content;
+        width: var(--sidebar-width);
+    }
 
     @extend %main-menu-padding-top;
     padding-left: var(--sidebar-padding-x);
@@ -345,6 +356,40 @@ div:has(>.topnav) {
         @extend %rm-dropdown-triangle;
     }
 
+    @media screen and (max-width: 576px) {
+        display: none;
+    }
+
+}
+
+.topnav-mobile {
+    display: flex;
+    padding: var(--topnav-padding-y) var(--topnav-padding-x);
+
+    @media screen and (min-width: 576px) {
+        display: none;
+    }
+
+    .search:not(:has(:focus-within)) {
+        width: 0;
+        padding: 0;
+        background-color: transparent !important;
+    }
+
+    search:has(:focus-within) {
+
+        .search {
+            @extend %base-search-group-style;
+            width: 100%;
+            background-color: var(--bs-secondary) !important;
+        }
+
+        .input-group {
+            @extend %base-search-group-with-icon-style;
+        }
+
+
+    }
 }
 
 sidebar.main-menu.opening {

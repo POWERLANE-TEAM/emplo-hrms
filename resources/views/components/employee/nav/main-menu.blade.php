@@ -88,25 +88,17 @@
                 </div>
             </aside>
 
-            <div class="dropdown">
-                <button class="bg-transparent border-0 dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                    aria-label="Open Notifications">
-                    <picture class="">
-                        <source media="(min-width:2560px)" class=""
-                            srcset="{{ Vite::asset('resources/images/icons/notif-bell-69x69.webp') }}">
-                        <source media="(min-width:768px)" class=""
-                            srcset="{{ Vite::asset('resources/images/icons/notif-bell-69x69.webp') }}">
+            <x-notif-dropdown>
+                <picture class="">
+                    <source media="(min-width:2560px)" class=""
+                        srcset="{{ Vite::asset('resources/images/icons/notif-bell-69x69.webp') }}">
+                    <source media="(min-width:768px)" class=""
+                        srcset="{{ Vite::asset('resources/images/icons/notif-bell-69x69.webp') }}">
 
-                        <img class="icon" width="{{ $icon_size }}" aspect-ratio="{{ $icon_ratio }}"
-                            src="{{ Vite::asset('resources/images/icons/notif-bell-35x35.webp') }}" alt="">
-                    </picture>
-                </button>
-                <ul class="dropdown-menu">
-                    <li class="dropdown-item">Notif 1</li>
-                    <li class="dropdown-item">Notif 1</li>
-                    <li class="dropdown-item">Notif 1</li>
-                </ul>
-            </div>
+                    <img class="icon" width="{{ $icon_size }}" aspect-ratio="{{ $icon_ratio }}"
+                        src="{{ Vite::asset('resources/images/icons/notif-bell-35x35.webp') }}" alt="">
+                </picture>
+            </x-notif-dropdown>
 
             <div class="rounded-circle overflow-hidden">
                 <picture>
