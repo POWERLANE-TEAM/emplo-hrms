@@ -155,5 +155,6 @@ body {
     @include min-height(100);
     @include max-width(100);
     overflow-y: auto;
+    overflow-x: clip;
 
 }
