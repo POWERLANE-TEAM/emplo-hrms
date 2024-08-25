@@ -1,0 +1,22 @@
+body:has(footer) {
+
+    @include min-height(106);
+    height: max-content;
+
+    @media screen and (max-width: 576px) {
+        @include min-height(120);
+    }
+}
+
+footer {
+
+    position: relative;
+    margin-top: auto;
+    left: 0;
+    bottom: 0;
+    background-color: var(--main-green);
+    width: 100%;
+    @include max-width(100);
+    z-index: -1;
+    overflow: clip;
+}

@@ -1,8 +1,8 @@
-@import 'font/fonts';
+@import 'font/font-size';
 
 picture {
     &.pri-sm-logo img {
-        width: clamp(3px, 0.875rem + 1vw + 1.75vh, 750px);
+        width: clamp(3px, 0.875rem + 0.5vw + 0.75vh, 750px);
     }
 }
 

@@ -4,11 +4,11 @@
         {
             "format": "compressed",
             // "extensionName": ".css",
-            "savePath": "/resources/css/",
+            "savePath": "/resources/css",
             "savePathReplacementPairs": null
         }
     ],
     "liveSassCompile.settings.includeItems": [
-        "/resources/scss/**/*",
+        "/resources/scss/**/*.scss|.sass",
     ],
 }

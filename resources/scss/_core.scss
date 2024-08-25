@@ -145,7 +145,7 @@ $btn-font-weight: 700;
 html {
     @include min-height(100);
     @include max-width(100);
-    // overflow: auto;
+
 }
 
 body {
@@ -154,16 +154,7 @@ body {
     flex-direction: column;
     @include min-height(100);
     @include max-width(100);
-    scrollbar-gutter: stable both-edges;
-}
+    overflow-y: auto;
+    overflow-x: clip;
 
-footer {
-
-    position: relative;
-    margin-top: auto;
-    bottom: 0;
-    background-color: var(--main-green);
-    @include min-width(100);
-    @include max-width(100);
-    overflow: clip;
 }

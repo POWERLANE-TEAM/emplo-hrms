@@ -1,0 +1,150 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import 'core';
+@import 'style';
+@import 'icon/lucide';
+@import 'nav-link';
+@import 'nav-tabs';
+@import 'input/search';
+@import 'footer';
+
+
+
+section.top-vector {
+    position: static;
+
+    svg.wave {
+        max-width: 95vw;
+        z-index: -10;
+        // top: -68vh;
+        top: -700px;
+        left: 29%;
+        transform: scaleX(1.3) scaleY(1.1);
+
+        @media (min-width: 768px) {
+            transform: scaleX(1.12);
+            top: -660px;
+            left: 10%;
+        }
+
+        @media (min-width: 1024px) {
+            left: 12%;
+        }
+
+        @media only screen and (min-width: 1138px) and (max-width: 1139px) {
+            // top: -90vh;
+        }
+    }
+
+    svg.right-circle {}
+
+    svg.left-circle {}
+}
+
+header {
+    --v-offset: clamp(1rem, 0.5rem + 0.5vw + 0.75vh, 5rem);
+    transition: background-color 0.5s ease;
+    // animation: bgSwipeDown 0.75s ease forwards;
+
+    nav {
+        padding: var(--v-offset) clamp(2rem, 1rem + 6vw, 10rem);
+        color: var(--main-white);
+
+        div:has(.nav-link):not(.home) {
+            gap: 0 calc(1.5rem + 3.6vw);
+
+        }
+
+        .nav-link {
+            @extend %nav-link;
+        }
+    }
+}
+
+.first-section {
+    transform: translateY(-2%);
+
+    .right {
+        transform: translateX(-2.5%);
+    }
+
+    .box-icon {
+        width: fit-content;
+        color: var(--main-white);
+        border: none;
+        border-radius: 15px;
+        padding: clamp(1rem, 0.5rem + 0.5vw + 0.75vh, 5rem);
+        background-color: var(--main-lime);
+
+        &:has([class*="search"]) {
+            transform: translate(-75%, 115%);
+            // position: absolute;
+            // top: 5%;
+        }
+
+        &:has([class*="briefcase"]) {
+            float: right;
+            transform: translate(30%, -200%);
+            // position: absolute;
+            // top: 5%;
+        }
+    }
+
+    picture {
+        &.sapien img {
+            width: clamp(100px, 25px + 30vw + 5vh, 750px);
+            /* height: ; */
+
+
+        }
+    }
+}
+
+.second-section {
+    min-height: 90vh;
+
+
+    input[type="search"] {
+        background-color: var(--main-green);
+    }
+
+    .job-listing {
+        max-height: clamp(300px, 10vh, 100svh);
+
+        @media screen and (min-height: 300px) {
+            max-height: clamp(300px, 50vh, 100svh);
+        }
+
+        sidebar {
+
+            overflow-y: auto;
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: repeat(3, 1fr);
+            grid-row-gap: 16px;
+
+            button {
+                max-height: 100%;
+            }
+
+        }
+
+
+    }
+
+    .job-content {
+        padding: clamp(1.5rem, 1rem + 0.5vw + 0.75vh, 5rem);
+        padding-left: clamp(1rem, 2.25rem + 1vw, 10rem);
+    }
+
+    .job-descr {
+        /* Need javascript to make dynamic max line value based on device height */
+        @include line-clamp-y(4);
+    }
+}
+
+footer {
+    background-color: red;
+}
