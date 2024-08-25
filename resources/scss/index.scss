@@ -38,6 +38,13 @@ section.top-vector {
         }
     }
 
+    img.green-wave {
+        position: absolute;
+        min-width: 83svw;
+        left: 17%;
+        transform: scaleX(1.30) scaleY(1.1);
+    }
+
     svg.right-circle {}
 
     svg.left-circle {}
