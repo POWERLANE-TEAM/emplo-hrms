@@ -16,7 +16,7 @@ return new class extends Migration
             $table->increments('user_id');
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('google_id');
+            $table->string('google_id')->nullable();
             $table->enum('role', array('GUEST', 'USER', 'MANAGER', 'SYSADMIN'));
             $table->integer('applicant_id')->unsigned()->nullable();
             $table->integer('employee_id')->unsigned()->nullable();
