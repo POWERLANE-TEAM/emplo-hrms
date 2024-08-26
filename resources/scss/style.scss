@@ -1,10 +1,10 @@
 @import 'font/font-size';
 
-picture {
-    &.pri-sm-logo img {
-        width: clamp(3px, 0.875rem + 0.5vw + 0.75vh, 750px);
-    }
+img.pri-sm-logo {
+    width: clamp(3px, 0.875rem + 0.5vw + 0.75vh, 750px);
 }
+
+
 
 header,
 sidebar {
@@ -35,5 +35,15 @@ header {
     nav {
         padding: var(--v-offset) clamp(2rem, 1rem + 6vw, 10rem);
         color: var(--main-white);
+    }
+}
+
+html {
+    left: 0;
+
+
+    main.main {
+        padding-left: var(--main-container-px);
+        padding-right: var(--main-container-px);
     }
 }

@@ -11,8 +11,8 @@
 ])
 
 <li role="none" class="my-3 sidebar-item">
-    <x-nav-link href="{{ $href }}" active="{{ $active }}" rel="" class="d-flex align-items-center "
-        role="menuitem">
+    <x-nav-link href="{{ $href }}" active="{{ $active }}" rel=""
+        class="d-flex align-items-center nav-link " role="menuitem">
         <div class="nav-icon">
 
             @if (!empty($default_icon))

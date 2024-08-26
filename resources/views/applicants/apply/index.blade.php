@@ -59,12 +59,12 @@
                         <img src="http://placehold.it/16/16" alt="" srcset="">
                     </picture>
 
-                    <x-nav-link href="/" :active="request()->is('jobs')">Powerlane</x-nav-link>
+                    <x-nav-link href="/" class="nav-link" :active="request()->is('jobs')">Powerlane</x-nav-link>
                 </div>
                 <div class="d-flex">
-                    <x-nav-link href="/about-us" :active="request()->is('about-us')">About</x-nav-link>
-                    <x-nav-link href="/contact-us" :active="request()->is('contact-us')">Contact</x-nav-link>
-                    <x-nav-link href="/applicants/apply" :active="request()->is('applicants/apply')">Apply</x-nav-link>
+                    <x-nav-link href="/about-us" class="nav-link" :active="request()->is('about-us')">About</x-nav-link>
+                    <x-nav-link href="/contact-us" class="nav-link" :active="request()->is('contact-us')">Contact</x-nav-link>
+                    <x-nav-link href="/applicants/apply" class="nav-link" :active="request()->is('applicants/apply')">Apply</x-nav-link>
                 </div>
             </nav>
         </header>

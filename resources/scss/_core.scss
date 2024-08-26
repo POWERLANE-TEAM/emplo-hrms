@@ -2,19 +2,68 @@
     --main-green: #61b000;
     --main-lime: #EEEE13;
     --main-white: #fff;
+    --main-muted-gray: #f6f6f6;
+    --main-container-px: clamp(1.25rem, 5dvw, 30dvw);
 }
 
 // custom style variables LIGHT
 $primary: #61b000;
 $secondary: #d9d9d9;
 $success: #61b000;
-$info: #199fdd;
-// $warning:       $yellow ;
+$info: #006390;
+$warning: #f50000;
 $danger: #f50000;
 // $light:         $gray-100 ;
 // $dark:          $gray-900 ;
 
+$success-bg-subtle: #f0f8e6;
+$info-bg-subtle: #e8f6fc;
+$warning-bg-subtle: #fee6e6;
+$danger-bg-subtle: tint-color($danger, 80%) !default;
+
+$white: #fff !default;
+$gray-100: #f8f9fa !default;
+$gray-200: #e9ecef !default;
+$gray-300: #dee2e6 !default;
+$gray-400: #ced4da !default;
+$gray-500: #adb5bd !default;
+$gray-600: #6c757d !default;
+$gray-700: #495057 !default;
+$gray-800: #343a40 !default;
+$gray-900: #212529 !default;
+$black: #000 !default;
+
+$blue: #0d6efd !default;
+$indigo: #6610f2 !default;
+$purple: #6f42c1 !default;
+$pink: #d63384 !default;
+$red: #dc3545 !default;
+$orange: #fd7e14 !default;
+$yellow: #ffc107 !default;
+$green: #198754 !default;
+$teal: #20c997 !default;
+$cyan: #0dcaf0 !default;
+
+$colors: (
+    "blue": $blue,
+    "indigo": $indigo,
+    "purple": $purple,
+    "pink": $pink,
+    "red": $red,
+    "orange": $orange,
+    "yellow": $yellow,
+    "green": $green,
+    "teal": $teal,
+    "cyan": $cyan,
+    "black": $black,
+    "white": $white,
+    "gray": #939393,
+    "gray-dark": #404040
+);
+
 $border-width: calc(1px + 0.06dvw);
+
+$headings-color: #222222;
 
 $body-emphasis-color: #61b000;
 
@@ -157,4 +206,9 @@ body {
     overflow-y: auto;
     overflow-x: clip;
 
+}
+
+a {
+    color: var(--bs-black);
+    text-decoration: unset;
 }

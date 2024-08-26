@@ -16,7 +16,7 @@
 
     <body class=" ">
         <x-employee.nav.main-menu :sidebar_expanded="true" class="position-sticky top-0 start-0"></x-employee.nav.main-menu>
-        <main>
+        <main class="main">
             {{-- <section class="job-listing  d-flex tw-px-[5rem] tw-gap-12 ">
                 <sidebar class="nav nav-tabs col-5 " role="tablist">
 

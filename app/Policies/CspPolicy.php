@@ -47,5 +47,8 @@ class CspPolicy extends CustomSpatiePolicy
         $this->addDirective(Directive::SCRIPT, 'https://unpkg.com/lucide@latest');
         $this->addDirective(Directive::SCRIPT, 'https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js');
         $this->addDirective(Directive::IMG, 'data:');
+        $this->addDirective(Directive::STYLE, 'https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta2/dist/css/bootstrap-select.min.css');
+        $this->addDirective(Directive::SCRIPT, 'https://code.jquery.com/jquery-3.7.1.slim.min.js');
+        $this->addDirective(Directive::SCRIPT, 'https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta2/dist/js/bootstrap-select.min.js');
     }
 }

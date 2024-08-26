@@ -19,4 +19,23 @@ footer {
     @include max-width(100);
     z-index: -1;
     overflow: clip;
+
+    .footer-info {
+        padding-left: var(--main-container-px);
+        padding-right: var(--main-container-px);
+
+        .contact {
+            width: calc();
+        }
+
+        .phone-icon-container {
+            width: clamp(1.5rem, 0.75rem + 1vw + 1.5vh, 3rem);
+            height: auto;
+            aspect-ratio: 1/1;
+
+        }
+
+    }
 }
+
+footer.external {}
