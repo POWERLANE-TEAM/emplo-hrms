@@ -37,6 +37,7 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta property="csp-nonce" content="{{ csp_nonce() }}">
+    <?php Vite::useScriptTagAttributes(['onerror' => 'handleError(error)']); ?>
 
     <script nonce="{{ csp_nonce() }}">
         console.time("DOMContentLoaded");

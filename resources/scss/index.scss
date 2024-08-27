@@ -146,6 +146,12 @@ header {
                     grid-template-rows: repeat(3, 1fr);
                     grid-row-gap: 16px;
                 }
+
+                button * {
+                    /* to ignore click on child elements */
+                    pointer-events: none;
+                    /* To make it easier for script to capture click on button */
+                }
             }
 
 

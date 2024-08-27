@@ -2,7 +2,12 @@
 
     <x-html.head description=" This is dashboard">
         <title>Home Page</title>
-
+        @php
+            $nonce = csp_nonce();
+        @endphp
+        @livewireStyles(['nonce' => $nonce])
+        @livewireScripts(['nonce' => $nonce])
+        {{-- @livewireScriptConfig(['nonce' => $nonce]) --}}
 
         @vite(['resources/js/index.js'])
 
@@ -64,8 +69,7 @@
                     <section class="desktop-topnav d-none d-md-flex">
                         <x-nav-link href="/about-us" class="nav-link" :active="request()->is('about-us')">About</x-nav-link>
                         <x-nav-link href="/contact-us" class="nav-link" :active="request()->is('contact-us')">Contact</x-nav-link>
-                        <x-nav-link type="button" class="btn btn-secondary bg-white text-primary nav-link">Sign
-                            Up</x-nav-link>
+                        @livewire('applicant.buttons.sign-up')
                     </section>
 
                     <div class="dropdown mobile-topnav d-block d-md-none">
@@ -81,8 +85,7 @@
                                 <x-nav-link href="/contact-us" class="nav-link" :active="request()->is('contact-us')">Contact</x-nav-link>
                             </li>
                             <li class="dropdown-item">
-                                <x-nav-link type="button" class="btn btn-secondary bg-white text-primary nav-link">Sign
-                                    Up</x-nav-link>
+                                @livewire('applicant.buttons.sign-up')
                             </li>
                         </ul>
                     </div>
@@ -146,39 +149,13 @@
                     </em>
                 </div>
                 <section class="job-listing d-flex row tw-gap-12 ">
-                    <sidebar class="nav nav-tabs col-12 col-md-5 " role="tablist">
-
-                        <?php
-                    for ($i = 0; $i < 5; $i++) {
-                    ?>
-
-                        <li class="card nav-item ps-0 " role="presentation">
-                            <button class="nav-link d-flex flex-row tw-gap-x-6" id="{{ $i }}-tab"
-                                data-bs-toggle="tab" data-bs-target="#{{ $i }}-tab-pane" role="tab">
-                                <div class="col-4 pt-3 px-2 ">
-                                    <img src="http://placehold.it/74/74" alt="">
-                                </div>
-                                <div class="col-7 text-start">
-                                    <header>
-                                        <hgroup>
-                                            <h4 class="card-title text-black mb-0">Card title</h4>
-                                            <p class="fs-4 text-primary">Card title</p>
-                                        </hgroup>
-                                    </header>
-                                    <div class="">
-
-                                        <div class="card-text text-black">content.</div>
-                                        <div class="card-text text-black">content.</div>
-                                    </div>
-                                </div>
-                            </button>
 
 
-                        </li>
-                        <?php
-                        }
-                    ?>
-                    </sidebar>
+
+
+                    @livewire('applicant.jobs-list-card')
+
+
                     <article class="job-view tab-content col-12 col-md-6">
                         <div class="job-content tab-pane fade show active card border-0 bg-secondary w-100 "
                             id="#1-tab-pane" role="tabpanel" aria-labelledby="-tab">
@@ -223,7 +200,7 @@
 
         {{-- <x-html.test-elements></x-html.test-elements> --}}
 
-        <x-applicant.footer></x-applicant.footer>
+        <x-guest.footer></x-guest.footer>
 
     </body>
 
