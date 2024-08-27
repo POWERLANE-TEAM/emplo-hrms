@@ -4,10 +4,4 @@
     </x-slot:right_icon>
     <x-input.search type="search" x-on:input.debounce.300ms="$dispatch('job-searched', [$event.target.value])"
         placeholder="Search job titles or companies"></x-input.search>
-
-    {{-- <x-input.search type="search" wire:model.live.debounce.300ms="search" placeholder="Search job titles or companies"
-        ></x-input.search> --}}
-
-
-
 </x-input.search-group>

@@ -4,11 +4,6 @@
         No jobs Available
     @endif
 
-    {{-- {{ dump(print_r($positions)) }} --}}
-
-
-
-
     @foreach ($positions as $position)
         <li class="card nav-item ps-0 " role="presentation">
             <button wire:click="$set('showSignUp', {{ $position->position_id }})"

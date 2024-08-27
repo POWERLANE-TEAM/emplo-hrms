@@ -25,15 +25,6 @@ class JobsListCard extends Component
         $this->isFiltered = true;
     }
 
-    // #[On('job-searched')]
-    // public function updateOnSearch($positions = null)
-    // {
-    //     $this->positions = collect($positions)->map(function ($position) {
-    //         return new Position($position);
-    //     }); /* Convert back to collection cause wtf  livewire converts model instance to an array */
-    //     $this->isFiltered = true;
-    // }
-
     public function render()
     {
 
