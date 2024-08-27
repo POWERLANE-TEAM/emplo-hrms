@@ -69,7 +69,7 @@
                     <section class="desktop-topnav d-none d-md-flex">
                         <x-nav-link href="/about-us" class="nav-link" :active="request()->is('about-us')">About</x-nav-link>
                         <x-nav-link href="/contact-us" class="nav-link" :active="request()->is('contact-us')">Contact</x-nav-link>
-                        @livewire('applicant.buttons.sign-up')
+                        @livewire('guest.buttons.sign-up')
                     </section>
 
                     <div class="dropdown mobile-topnav d-block d-md-none">
@@ -85,7 +85,7 @@
                                 <x-nav-link href="/contact-us" class="nav-link" :active="request()->is('contact-us')">Contact</x-nav-link>
                             </li>
                             <li class="dropdown-item">
-                                @livewire('applicant.buttons.sign-up')
+                                @livewire('guest.buttons.sign-up')
                             </li>
                         </ul>
                     </div>
@@ -137,12 +137,7 @@
             </section>
 
             <section class="second-section">
-                <x-input.search-group container_class="col-8 col-md-4" class="justify-content-center w-100">
-                    <x-slot:right_icon>
-                        <i data-lucide="search"></i>
-                    </x-slot:right_icon>
-                    <x-input.search type="search" placeholder="Search job titles or companies"></x-input.search>
-                </x-input.search-group>
+                @livewire('guest.job-search-input')
                 <div class="tw-px-[5rem] tw-pt-[2.5rem] tw-pb-[1rem]">
                     <em>
                         Currently <span></span> <span>jobs</span> available
@@ -150,48 +145,10 @@
                 </div>
                 <section class="job-listing d-flex row tw-gap-12 ">
 
+                    @livewire('guest.jobs-list-card')
 
+                    @livewire('guest.job-view-pane')
 
-
-                    @livewire('applicant.jobs-list-card')
-
-
-                    <article class="job-view tab-content col-12 col-md-6">
-                        <div class="job-content tab-pane fade show active card border-0 bg-secondary w-100 "
-                            id="#1-tab-pane" role="tabpanel" aria-labelledby="-tab">
-                            <div class="d-flex">
-                                <header>
-                                    <hgroup>
-                                        <h4 class="card-title text-primary fw-bold mb-0">Job Position</h4>
-                                        <p class="fs-6 text-black ">Job Location</p>
-                                    </hgroup>
-                                    <a href="" hreflang="en-PH" class="btn btn-primary mt-1 mb-4"
-                                        role="navigation" aria-label="Apply">Apply <span><i
-                                                data-lucide="external-link"></i></span></a>
-
-                                    <p class="job-descr card-text">
-                                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Blanditiis
-                                        possimus expedita ipsum atque magni laboriosam vel veritatis, suscipit eum
-                                        quam quaerat cupiditate veniam voluptatem. Cum pariatur quisquam totam vero
-                                        natus?
-                                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Blanditiis
-                                        possimus expedita ipsum atque magni laboriosam vel veritatis, suscipit eum
-                                        quam quaerat cupiditate veniam voluptatem. Cum pariatur quisquam totam vero
-                                        natus?
-                                    </p>
-                                    <button href=""
-                                        class="bg-transparent border border-0 text-decoration-underline text-black ps-0">
-                                        Show More <span><i data-lucide="chevron-down"></i></span>
-                                    </button>
-                                </header>
-                                <div>
-                                    <button class="bg-transparent border border-0">
-                                        <i data-lucide="more-vertical"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </article>
                 </section>
 
             </section>

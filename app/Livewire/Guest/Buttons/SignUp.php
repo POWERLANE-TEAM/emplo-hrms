@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Applicant\Buttons;
+namespace App\Livewire\Guest\Buttons;
 
 use Livewire\Component;
 
@@ -16,6 +16,6 @@ class SignUp extends Component
     public function render()
     {
 
-        return view('livewire.applicant.buttons.sign-up');
+        return view('livewire.guest.buttons.sign-up');
     }
 }

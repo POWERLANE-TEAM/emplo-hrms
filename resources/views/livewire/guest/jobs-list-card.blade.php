@@ -1,8 +1,13 @@
 <sidebar class="nav nav-tabs col-12 col-md-5 " id="jobs-list" role="tablist">
 
-    @if ($positions->isEmpty())
+    @if (empty($positions))
         No jobs Available
     @endif
+
+    {{-- {{ dump(print_r($positions)) }} --}}
+
+
+
 
     @foreach ($positions as $position)
         <li class="card nav-item ps-0 " role="presentation">

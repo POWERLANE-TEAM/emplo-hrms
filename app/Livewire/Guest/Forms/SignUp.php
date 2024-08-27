@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Applicant\Forms;
+namespace App\Livewire\Guest\Forms;
 
 use Livewire\Component;
 
