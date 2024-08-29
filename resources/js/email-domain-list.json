@@ -1,0 +1,8 @@
+{
+    "valid_email": [
+        "gmail.com",
+        "yahoo.com",
+        "outlook.com"
+    ],
+    "invalid_email": []
+}

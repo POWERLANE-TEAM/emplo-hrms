@@ -8,6 +8,7 @@ export default defineConfig({
                 'resources/js/app.js',
                 'resources/js/index.js',
                 'resources/js/employee/dashboard.js',
+                'resources/js/email-domain-list.json',
                 'vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js',
             ],
             refresh: true,
