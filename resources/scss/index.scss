@@ -253,6 +253,10 @@ header {
     }
 }
 
+input[type="password"]:has(~.toggle-password) {
+    padding-right: calc(4.5rem + 0.1vw);
+}
+
 footer {
     background-color: #fafcf7;
 }

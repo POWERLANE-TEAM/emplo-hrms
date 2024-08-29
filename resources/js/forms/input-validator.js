@@ -332,3 +332,13 @@ export default class InputValidator {
     }
 
 }
+
+export function setInvalidMessage(element, feedbackMsg) {
+    let feedbackElement = document.querySelector(`[aria-owns="${element.id}"]`);
+    try {
+        feedbackElement.textContent = feedbackMsg;
+    } catch (error) {
+        console.error('Feedback message not set.');
+    }
+
+}
