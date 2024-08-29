@@ -1,0 +1,22 @@
+.toggle-password {
+    appearance: none;
+    position: relative;
+    letter-spacing: calc(0.15rem + 0.01vw);
+    padding: calc(0.5rem + 0.1vw);
+
+    &:not(:checked) {
+
+        &::before {
+            content: "Show";
+        }
+    }
+
+    &:checked {
+        padding: calc(0.5rem + 0.1vw) calc(0.71rem + 0.1vw);
+
+        &::before {
+            content: "Hide";
+        }
+
+    }
+}

@@ -2,19 +2,36 @@
 
 namespace App\Livewire\Guest;
 
+use App\Models\Position;
+use Livewire\Attributes\On;
 use Livewire\Component;
+
 
 class JobViewPane extends Component
 {
     private $position;
 
-    public function showPosition($position)
+    #[On('job-selected')]
+    public function showPosition($position_id)
     {
-        $this->position = $position;
+        $this->placeholder();
+        $this->position = Position::where('position_id', $position_id)->first();
+        // dd($this->position);
+    }
+
+    #[On('job-searched')]
+    public function resetView()
+    {
+        $this->position = null;
+    }
+
+    public function placeholder()
+    {
+        return view('livewire.placeholder.job-view-pane');
     }
 
     public function render()
     {
-        return view('livewire.guest.job-view-pane', ['position' => $this->position]);
+        return view('livewire.guest.job-view-pane', ['position' => $this->position, 'lazy' => true]);
     }
 }

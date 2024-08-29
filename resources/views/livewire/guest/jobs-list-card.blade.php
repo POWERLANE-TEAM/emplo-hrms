@@ -6,8 +6,9 @@
 
     @foreach ($positions as $position)
         <li class="card nav-item ps-0 " role="presentation">
-            <button wire:click="$set('showSignUp', {{ $position->position_id }})"
-                class="nav-link d-flex flex-row tw-gap-x-6" id="{{ $position->position_id }}-tab" data-bs-toggle="tab"
+            <button value="{{ $position->position_id }}"
+                x-on:click.debounce.10ms="$dispatch('job-selected', [$event.target.value])"
+                class="nav-link d-flex flex-row column-gap-4" id="{{ $position->position_id }}-tab" data-bs-toggle="tab"
                 data-bs-target="#{{ $position->position_id }}-tab-pane" role="tab">
                 <div class="col-4 pt-3 px-2 ">
                     <img src="http://placehold.it/74/74" alt="">

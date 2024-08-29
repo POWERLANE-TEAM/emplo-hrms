@@ -8,6 +8,6 @@ class SignUp extends Component
 {
     public function render()
     {
-        return view('livewire.applicant.forms.sign-up');
+        return view('livewire.guest.forms.sign-up');
     }
 }

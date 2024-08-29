@@ -69,7 +69,9 @@
                     <section class="desktop-topnav d-none d-md-flex">
                         <x-nav-link href="/about-us" class="nav-link" :active="request()->is('about-us')">About</x-nav-link>
                         <x-nav-link href="/contact-us" class="nav-link" :active="request()->is('contact-us')">Contact</x-nav-link>
-                        @livewire('guest.buttons.sign-up')
+                        <x-nav-link type="button" class="btn btn-secondary bg-white text-primary nav-link">Sign
+                            Up
+                        </x-nav-link>
                     </section>
 
                     <div class="dropdown mobile-topnav d-block d-md-none">
@@ -85,7 +87,9 @@
                                 <x-nav-link href="/contact-us" class="nav-link" :active="request()->is('contact-us')">Contact</x-nav-link>
                             </li>
                             <li class="dropdown-item">
-                                @livewire('guest.buttons.sign-up')
+                                <x-nav-link type="button" class="btn btn-secondary bg-white text-primary nav-link">Sign
+                                    Up
+                                </x-nav-link>
                             </li>
                         </ul>
                     </div>
@@ -143,15 +147,86 @@
                         Currently <span></span> <span>jobs</span> available
                     </em>
                 </div>
-                <section class="job-listing d-flex row tw-gap-12 ">
+                <section class="job-listing d-flex row gap-5 ">
 
                     @livewire('guest.jobs-list-card')
 
-                    @livewire('guest.job-view-pane')
+                    @livewire('guest.job-view-pane', ['lazy' => true])
 
                 </section>
 
             </section>
+
+            <div class="modal fade" id="signUp" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
+                tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
+                    <div class="modal-content">
+                        <div class="modal-header">
+
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+
+
+                        <div class="modal-body">
+
+                            <hgroup class="d-flex flex-column text-center">
+                                <header class="fs-3 text-primary">
+                                    Sign Up
+                                </header>
+                                Register to apply for HR
+                            </hgroup>
+
+                            <form action="applicant/sign-up">
+                                @csrf
+                                <label for="signUp-email">Email Address</label>
+                                <div class="input-group mb-3 position-relative">
+                                    <div class="px-2 d-flex align-items-center position-absolute "><i
+                                            data-lucide="mail"></i></div>
+                                    <input type="email" id="signUp-email" name="email" autocomplete="email"
+                                        class="form-control is-invalid border-bottom ps-5">
+                                    <div class="invalid-feedback" role="alert" aria-owns="signUp-email">Example
+                                        invalid form file feedback</div>
+                                </div>
+
+                                <label for="signUp-password">Password</label>
+                                <div class="input-group mb-3">
+                                    <div class="px-2 d-flex position-absolute "><i data-lucide="lock"></i></div>
+                                    <input type="password" id="signUp-password" name="password"
+                                        autocomplete="new-password"
+                                        class="form-control rm-bg-icon border-bottom ps-5 z-0">
+                                    <input type="checkbox"
+                                        class="text-primary toggle-password position-absolute end-0 z-3"
+                                        aria-label="Show/Hide Password">
+                                    <div class="invalid-feedback" role="alert" aria-owns="signUp-password">Example
+                                        invalid form file feedback</div>
+                                </div>
+
+                                <div class="input-group mb-3 terms-condition">
+                                    <input type="checkbox" id="terms-condition" class="checkbox checkbox-primary">
+                                    <label for="terms-condition" class="checkbox-label d-flex">I agree to
+                                        the&#8194;<wbr>
+                                        <span class="d-flex " role="list">
+                                            <a href="#" target="_blank" class="text-black"
+                                                rel="noopener noreferrer" role="listitem">Terms&nbsp;&&nbsp;Conditions
+                                            </a>
+                                            <span>&#8194;and&#8194;</span>
+                                            <a href="#" target="_blank" class="text-black"
+                                                rel="noopener noreferrer">Privacy&nbsp;Policy</a>
+                                        </span>
+                                    </label>
+                                    <div class="invalid-feedback">Example invalid form file feedback</div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+
 
         </main>
 

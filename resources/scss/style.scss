@@ -47,3 +47,19 @@ html {
         padding-right: var(--main-container-px);
     }
 }
+
+input.rm-bg-icon {
+    &.form-control {
+
+        &.is-invalid,
+        &.was-validated,
+        &:invalid {
+            background-image: none;
+        }
+    }
+}
+
+.invalid-feedback:empty {
+    display: block;
+    margin-bottom: 1.5em !important;
+}

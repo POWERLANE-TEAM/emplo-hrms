@@ -9,6 +9,8 @@
 @import 'nav-tabs';
 @import 'input/search';
 @import 'footer';
+@import 'btn-toggle-psw';
+@import 'input/checkbox';
 
 
 
@@ -112,6 +114,11 @@ header {
 .second-section {
     min-height: 90vh;
 
+    @media screen and (min-width: 768px) {
+        --job-info-min-h: clamp(300px, 50vh, 100svh);
+    }
+
+
 
     input[type="search"] {
         background-color: var(--main-green);
@@ -120,6 +127,8 @@ header {
     .job-listing {
 
         sidebar {
+
+            min-height: var(--job-info-min-h);
 
             @media screen and (max-width: 768px) {
                 max-width: calc(100cqw);
@@ -167,11 +176,80 @@ header {
     .job-content {
         padding: clamp(1.5rem, 1rem + 0.5vw + 0.75vh, 5rem);
         padding-left: clamp(1rem, 2.25rem + 1vw, 10rem);
+        min-height: var(--job-info-min-h);
     }
 
     .job-descr {
         /* Need javascript to make dynamic max line value based on device height */
-        @include line-clamp-y(4);
+        --max-lines: 9;
+        --line-height: 1.5;
+
+        max-height: calc(var(--max-lines) * 1em * var(--line-height));
+        line-height: var(--line-height);
+        overflow: hidden;
+        position: relative;
+
+        &:has(+ .showMoreToggle:not(:checked))::before {
+            content: "";
+            position: absolute;
+            height: calc(0.75rem * var(--line-height));
+            width: 100%;
+            bottom: 0;
+            pointer-events: none;
+            background: linear-gradient(to bottom, transparent, var(--bs-secondary-bg-subtle));
+        }
+
+        &:has(+ .showMoreToggle:checked) {
+            max-height: none;
+        }
+
+    }
+
+    .showMoreToggle {
+        appearance: none;
+        position: relative;
+        padding: 0.5em;
+        text-decoration: underline;
+
+        &:not(:checked) {
+            &::before {
+                content: "Show More";
+            }
+
+            &::after {
+                content: "\003c";
+                position: absolute;
+                font-size: xx-large;
+                font-weight: 100;
+                transform: rotate(-90deg) translate(11px, 0.25rem) scale(1.05);
+            }
+        }
+
+        &:checked {
+            &::before {
+                content: "Collapse";
+            }
+
+            &::after {
+                content: "\003c";
+                position: absolute;
+                font-size: xx-large;
+                transform: rotate(90deg) translate(-11px, -0.25rem) scale(1.05);
+            }
+        }
+    }
+
+
+
+}
+
+.terms-condition {
+    .checkbox-primary {
+        @include custom-checkbox(var(--bs-black), var(--bs-primary));
+    }
+
+    .checkbox-label {
+        padding-left: clamp(1.5rem, 0.75rem + 1vw, 5vw);
     }
 }
 

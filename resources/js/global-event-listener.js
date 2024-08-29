@@ -8,9 +8,13 @@
  */
 
 export default function addGlobalListener(type, ref = document, selector, callback) {
-    ref.addEventListener(type, e => {
-        if (e.target.matches(selector)) {
-            callback(e);
-        }
-    })
+    try {
+        ref.addEventListener(type, e => {
+            if (e.target.matches(selector)) {
+                callback(e);
+            }
+        })
+    } catch (error) {
+        console.trace(error);
+    }
 }

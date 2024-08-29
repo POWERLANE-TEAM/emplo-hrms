@@ -15,9 +15,9 @@
                 Company
             </header>
             <nav aria-labelledby="footer-company-links" class=" d-flex flex-column gap-0 row-gap-3">
-                <x-nav-link href="/about" class="small" d-block :active="request()->is('#')">About Us</x-nav-link>
-                <x-nav-link href="#" class="small d-block" :active="request()->is('#')">Careers</x-nav-link>
-                <x-nav-link href="#" class="small d-block" :active="request()->is('#')">Background</x-nav-link>
+                <x-nav-link href="/about" class="small unstyled" d-block :active="request()->is('#')">About Us</x-nav-link>
+                <x-nav-link href="#" class="small d-block unstyled" :active="request()->is('#')">Careers</x-nav-link>
+                <x-nav-link href="#" class="small d-block unstyled" :active="request()->is('#')">Background</x-nav-link>
             </nav>
         </section>
         <section class="col-6 col-md-2 order-3  px-3 py-3 ">
@@ -25,12 +25,12 @@
                 Legal Links
             </header>
             <nav aria-labelledby="footer-legal-links" class="d-flex flex-column gap-0 row-gap-3">
-                <x-nav-link href="#" class="small d-block" :active="request()->is('#')">Terms of Use</x-nav-link>
-                <x-nav-link href="#" class="small d-block" :active="request()->is('#')">Privacy Policy</x-nav-link>
+                <x-nav-link href="#" class="small d-block unstyled" :active="request()->is('#')">Terms of Use</x-nav-link>
+                <x-nav-link href="#" class="small d-block unstyled" :active="request()->is('#')">Privacy Policy</x-nav-link>
             </nav>
         </section>
         <section class=" d-grid flex-column col-12 col-md-4 order-1 order-md-4 px-3 py-3   gap-3">
-            <div class="contact d-flex gap-3  ">
+            <address class="contact d-flex gap-3  ">
                 <div
                     class="phone-icon-container d-flex rounded-circle bg-primary align-items-center justify-content-center   ">
                     <picture>
@@ -46,11 +46,12 @@
                     </picture>
                 </div>
                 <div class="">
-                    <x-mail-link class="d-block text-truncate" email="pri.recruitment@powerlane.net"></x-mail-link>
-                    <div class="text-truncate"><x-phone-link class="d-inline-block" :phone="['09173090481', '09987922305']"
+                    <x-mail-link class="d-block text-truncate unstyled"
+                        email="pri.recruitment@powerlane.net"></x-mail-link>
+                    <div class="text-truncate"><x-phone-link class="d-inline-block unstyled" :phone="['09173090481', '09987922305']"
                             separator=" / "></x-phone-link></div>
                 </div>
-            </div>
+            </address>
             <div>
                 <label for="language-selector" class="text-primary mb-1">Language</label>
                 <select id="language-selector" class="form-select w-auto">

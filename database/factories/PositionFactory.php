@@ -18,7 +18,7 @@ class PositionFactory extends Factory
     {
         return [
             'title' => fake()->jobTitle(),
-            'description' => fake()->paragraph(),
+            'description' => fake()->paragraph(1000),
         ];
     }
 }
