@@ -97,29 +97,33 @@ export default class InputValidator {
         if (this.#validations.attributes.pattern) {
             let trimmed_value = '';
             const regex = new RegExp(this.#validations.attributes.pattern);
-            if (input_element.validity.patternMismatch) {
+            try {
+                if (input_element.validity.patternMismatch) {
 
-                if (this.#isClearInvalidBool && this.#validations.clear_invalid) {
+                    if (this.#isClearInvalidBool && this.#validations.clear_invalid) {
 
-                    for (let i = 0; i < original_value.length; i++) {
-                        const char = original_value[i];
-                        if (regex.test(char)) {
-                            trimmed_value += char;
+                        for (let i = 0; i < original_value.length; i++) {
+                            const char = original_value[i];
+                            if (regex.test(char)) {
+                                trimmed_value += char;
+                            }
                         }
+                        input_element.value = trimmed_value;
                     }
-                    input_element.value = trimmed_value;
+
+                    if (typeof callback === 'function') {
+                        callback(input_element, this.#validations?.errorFeedback?.pattern);
+                    }
+
+                    if (this.#validations?.customMsg?.pattern) {
+                        input_element.setCustomValidity(this.#validations.customMsg.pattern);
+                    }
+
+
+                    return false;
                 }
-
-                if (typeof callback === 'function') {
-                    callback(input_element, this.#validations?.errorFeedback?.pattern);
-                }
-
-                if (this.#validations?.customMsg?.pattern) {
-                    input_element.setCustomValidity(this.#validations.customMsg.pattern);
-                }
-
-
-                return false;
+            } catch (error) {
+                console.warn(error);
             }
         }
 
@@ -334,7 +338,8 @@ export default class InputValidator {
 }
 
 export function setInvalidMessage(element, feedbackMsg) {
-    let feedbackElement = document.querySelector(`[aria-owns="${element.id}"]`);
+    let feedbackElementId = element.getAttribute("aria-owns");
+    let feedbackElement = document.getElementById(feedbackElementId);
     try {
         feedbackElement.textContent = feedbackMsg;
     } catch (error) {

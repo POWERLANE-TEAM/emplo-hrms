@@ -14,11 +14,7 @@ fetch(emailDomainResouurces)
     })
     .then(function (data) {
 
-        // JSON.stringify
-        console.log(data);
         EMAIL_VALIDATION.attributes.valid_emails = data.valid_email;
-        // console.log(validEmailDomains);
-        console.log(EMAIL_VALIDATION.attributes.valid_emails);
 
     })
     .catch(function (error) {
@@ -57,14 +53,28 @@ const EMAIL_VALIDATION = {
 
 let emailValidator = new InputValidator(EMAIL_VALIDATION);
 
-export default function initEmailValidation(inputSelector) {
+function validateEmailElement(emailElem) {
+    let isValid = emailValidator.validate(emailElem, setInvalidMessage);
+    if (!isValid) {
+        emailElem.classList.add('is-invalid');
+    } else {
+        emailElem.classList.remove('is-invalid');
+    }
+    return isValid;
+}
+
+export function validateEmail(inputSelector, parent = document) {
+    const emailElem = parent.querySelector(inputSelector);
+    return validateEmailElement(emailElem);
+}
+
+// Exported function for debounced validation
+export default function initEmailValidation(inputSelector, callback) {
     const debouncedValidation = debounce(function (event) {
-        if (!emailValidator.validate(event.target, setInvalidMessage)) {
-            event.target.classList.add('is-invalid');
-        } else {
-            event.target.classList.remove('is-invalid');
-        }
+        validateEmailElement(event.target);
+        callback();
     }, 500);
 
     addGlobalListener('input', document, inputSelector, debouncedValidation);
 }
+

@@ -23,14 +23,25 @@ const PASSWORD_VALIDATION = {
 
 let passwordValidator = new InputValidator(PASSWORD_VALIDATION);
 
-export default function initPasswordValidation(inputSelector) {
+function validatePasswordElement(passwordElement) {
+    let isValid = passwordValidator.validate(passwordElement, setInvalidMessage);
+    if (!isValid) {
+        passwordElement.classList.add('is-invalid');
+    } else {
+        passwordElement.classList.remove('is-invalid');
+    }
+    return isValid;
+}
+
+export function validatePassword(inputSelector, parent = document) {
+    const passwordElement = parent.querySelector(inputSelector);
+    return validatePasswordElement(passwordElement);
+}
+
+export default function initPasswordValidation(inputSelector, callback) {
     const debouncedValidation = debounce(function (event) {
-        console.log(event.target);
-        if (!passwordValidator.validate(event.target, setInvalidMessage)) {
-            event.target.classList.add('is-invalid');
-        } else {
-            event.target.classList.remove('is-invalid');
-        }
+        validatePasswordElement(event.target);
+        callback();
     }, 500);
 
     addGlobalListener('input', document, inputSelector, debouncedValidation);
