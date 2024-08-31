@@ -1,4 +1,4 @@
-<sidebar class="nav nav-tabs col-12 col-md-5 " id="jobs-list" role="tablist">
+<sidebar class="nav nav-tabs col-12 col-md-5 " id="jobs-list" role="tablist" nonce="csp_nonce()">
 
     @if (empty($positions))
         No jobs Available

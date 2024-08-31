@@ -4,6 +4,10 @@ import debounce from '../debounce-fn.js';
 
 const PASSWORD_VALIDATION = {
     clear_invalid: false,
+    clear_trailing: true,
+    trailing: {
+        ' ': '',    // Replace consecutive spaces with a single space
+    },
     attributes: {
         pattern: /^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[\W_])[^\s]{8,72}$/,
         required: true,

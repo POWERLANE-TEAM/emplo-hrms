@@ -1,14 +1,18 @@
 import addGlobalListener, { GlobalListener } from './global-event-listener.js';
 
 export default function togglePassword(parent, inputSelector, toggleSelector) {
-    const togglePassword = new GlobalListener('input', parent, toggleSelector, event => {
-        let passwordInput = parent.querySelector(inputSelector)
+    const togglePasswordVisibility = () => {
+        let passwordInput = document.querySelector(`${parent} ${inputSelector}`);
+        passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
+    };
 
-        if (passwordInput.type === 'password') {
-            passwordInput.type = 'text';
-        } else {
-            passwordInput.type = 'password';
+    const togglePassword = new GlobalListener('input', document, toggleSelector, togglePasswordVisibility);
+
+    document.addEventListener('keyup', function (event) {
+        let parentElement = document.querySelector(parent);
+        if (event.altKey && event.key === 'F8' && parentElement.contains(document.activeElement)) {
+            togglePasswordVisibility();
         }
-
     });
 }
+

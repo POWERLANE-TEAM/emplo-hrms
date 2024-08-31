@@ -205,60 +205,8 @@
                                 aria-label="Close"></button>
                         </div>
 
-
                         <div class="modal-body">
-
-                            <hgroup class="d-flex flex-column text-center">
-                                <header class="fs-3 text-primary">
-                                    Sign Up
-                                </header>
-                                Register to apply for HR
-                            </hgroup>
-
-                            <form action="applicant/sign-up">
-                                @csrf
-                                <label for="signUp-email">Email Address</label>
-                                <div class="input-group mb-3 position-relative">
-                                    <div class="px-2 d-flex align-items-center position-absolute "><i
-                                            data-lucide="mail"></i></div>
-                                    <input type="email" aria-owns="signUp-email-feedback" name="email"
-                                        autocomplete="email" class="form-control  border-bottom ps-5">
-                                    <div class="invalid-feedback" role="alert" id="signUp-email-feedback"></div>
-                                </div>
-
-                                <label for="signUp-password">Password</label>
-                                <div class="input-group mb-3">
-                                    <div class="px-2 d-flex position-absolute "><i data-lucide="lock"></i></div>
-                                    <input type="password" id="signUp-password" aria-owns="signUp-password-feedback"
-                                        name="password" autocomplete="new-password"
-                                        class="form-control rm-bg-icon border-bottom ps-5 z-0">
-                                    <input type="checkbox"
-                                        class="text-primary toggle-password position-absolute end-0 z-3"
-                                        aria-label="Show/Hide Password">
-                                    <div class="invalid-feedback" role="alert" id="signUp-password-feedback"></div>
-                                </div>
-
-                                <div class="input-group mb-3 terms-condition">
-                                    <input type="checkbox" id="terms-condition" name="consent"
-                                        class="checkbox checkbox-primary">
-                                    <label for="terms-condition" class="checkbox-label d-flex">I agree to
-                                        the&#8194;<wbr>
-                                        <span class="d-flex " role="list">
-                                            <a href="#" target="_blank" class="text-black"
-                                                rel="noopener noreferrer" role="listitem">Terms&nbsp;&&nbsp;Conditions
-                                            </a>
-                                            <span>&#8194;and&#8194;</span>
-                                            <a href="#" target="_blank" class="text-black"
-                                                rel="noopener noreferrer">Privacy&nbsp;Policy</a>
-                                        </span>
-                                    </label>
-                                    <div class="invalid-feedback"></div>
-                                </div>
-
-                                <button type="button" id="signUpBtn" class="btn btn-primary btn-lg" disabled>Sign
-                                    Up</button>
-
-                            </form>
+                            @livewire('guest.forms.sign-up', ['lazy' => true])
                         </div>
                     </div>
 

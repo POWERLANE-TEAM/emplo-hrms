@@ -7,6 +7,7 @@
 export default class InputValidator {
     #validations;
     #isClearInvalidBool;
+    #isClearTrailingBool;
 
     /**
      * @typedef {Object} ValidationCriteria
@@ -63,6 +64,10 @@ export default class InputValidator {
             this.#isClearInvalidBool = typeof this.#validations.clear_invalid === 'boolean';
         }
 
+        if (this.#validations.clear_trailing) {
+            this.#isClearTrailingBool = typeof this.#validations.clear_trailing === 'boolean';
+        }
+
         let input_element = input_obj;
         let original_value = input_element.value;
         let trimmed_value = original_value;
@@ -80,7 +85,6 @@ export default class InputValidator {
             return false;
         }
 
-
         if (this.#validations.attributes.required) {
             if (input_element.validity.valueMissing || original_value.trim() === '') {
                 input_element.value = original_value.trim();
@@ -92,6 +96,32 @@ export default class InputValidator {
                 }
                 return false;
             }
+        }
+
+        if (this.#validations.trailing && Object.keys(this.#validations.trailing).length > 0) {
+
+
+            Object.keys(this.#validations.trailing).forEach(pattern => {
+                let replacementValue = this.#validations.trailing[pattern];
+                try {
+                    const regex = new RegExp(pattern, 'g');
+                    trimmed_value = trimmed_value.replace(regex, replacementValue);
+                } catch (error) {
+                    console.error(`Invalid regex pattern '${pattern}' specified:`, error);
+
+                }
+            });
+
+
+            if (original_value !== trimmed_value) {
+                if ((this.#isClearTrailingBool && this.#validations.clear_trailing) || (this.#isClearInvalidBool && this.#validations.clear_invalid)) {
+                    callback(input_element, this.#validations?.errorFeedback?.trailing);
+                    input_element.value = trimmed_value;
+                }
+                return false;
+            }
+
+
         }
 
         if (this.#validations.attributes.pattern) {
@@ -166,33 +196,6 @@ export default class InputValidator {
                 input_element.setCustomValidity(this.#validations.customMsg.max);
             }
             return false;
-        }
-
-        if (this.#validations.trailing && Object.keys(this.#validations.trailing).length > 0) {
-
-
-            Object.keys(this.#validations.trailing).forEach(pattern => {
-                let replacementValue = this.#validations.trailing[pattern];
-                try {
-                    const regex = new RegExp(pattern, 'g');
-                    trimmed_value = trimmed_value.replace(regex, replacementValue);
-
-
-                } catch (error) {
-                    console.error(`Invalid regex pattern '${pattern}' specified:`, error);
-
-                }
-            });
-
-            if (original_value !== trimmed_value) {
-                if (this.#isClearInvalidBool && this.#validations.clear_invalid) {
-                    callback(input_element, this.#validations?.errorFeedback?.trailing);
-                    input_element.value = trimmed_value;
-                }
-                return false;
-            }
-
-
         }
 
         try {

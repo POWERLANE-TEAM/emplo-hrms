@@ -34,10 +34,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <x-html.meta-seo :no_crawl="$no_crawl" :description="$description"></x-html.meta-seo>
+    @php
+        $nonce = csp_nonce();
+    @endphp
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta property="csp-nonce" content="{{ csp_nonce() }}">
+    <meta property="csp-nonce" content="{{ $nonce }}">
     <?php Vite::useScriptTagAttributes(['onerror' => 'handleError(error)']); ?>
+    @php
+        Debugbar::getJavascriptRenderer()->setCspNonce($nonce);
+    @endphp
+
 
     <script nonce="{{ csp_nonce() }}">
         console.time("DOMContentLoaded");

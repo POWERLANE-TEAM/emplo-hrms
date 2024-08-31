@@ -59,7 +59,12 @@ input.rm-bg-icon {
     }
 }
 
-.invalid-feedback:empty {
-    display: block;
-    margin-bottom: 1.5em !important;
+body {
+
+    .invalid-feedback,
+    .invalid-feedback:empty {
+        display: block;
+        min-height: 1.5em;
+        margin-bottom: 0.5em;
+    }
 }

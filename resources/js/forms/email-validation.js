@@ -5,6 +5,7 @@ import debounce from '../debounce-fn.js';
 let validEmailDomains;
 let emailDomainResouurces = `api/json/email-domain-list`;
 
+
 fetch(emailDomainResouurces)
     .then(function (response) {
         if (!response.ok) {
@@ -18,8 +19,9 @@ fetch(emailDomainResouurces)
 
     })
     .catch(function (error) {
-        // console.error('GET request error:', error);
+        console.error('GET request error:', error);
     });
+
 
 
 const EMAIL_VALIDATION = {
@@ -47,7 +49,7 @@ const EMAIL_VALIDATION = {
         pattern: 'Invalid email.',
         typeMismatch: 'Invalid email.',
         trailing: 'Consecutive repeating characters not allowed.',
-        valid_emails: 'Email domain not allowed.',
+        valid_emails: 'Email service provider is not allowed.',
     }
 }
 

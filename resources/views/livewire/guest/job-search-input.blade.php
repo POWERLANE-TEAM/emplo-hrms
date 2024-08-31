@@ -1,4 +1,5 @@
-<x-input.search-group wire:ignore container_class="col-8 col-md-4" class="justify-content-center w-100">
+<x-input.search-group wire:ignore nonce="csp_nonce()" container_class="col-8 col-md-4"
+    class="justify-content-center w-100">
     <x-slot:right_icon>
         <i data-lucide="search"></i>
     </x-slot:right_icon>

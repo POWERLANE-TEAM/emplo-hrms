@@ -2,10 +2,22 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Validation\Rules\Password;
+use Illuminate\Support\Facades\Vite;
 
 class AppServiceProvider extends ServiceProvider
 {
+    protected $whitelist = array(
+        'red',
+        'yellow',
+        'green',
+        'blue',
+        'black'
+    );
+
+
     /**
      * Register any application services.
      */
@@ -19,6 +31,26 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Password::defaults(function () {
+            $rule = Password::min(8)->max(72);
+
+            return
+                $rule->letters()
+                ->mixedCase()
+                ->numbers()
+                ->symbols()
+                ->uncompromised()
+            ;
+        });
+
+        Validator::extend('valid_email_dns', function ($attributes, $value, $parameters, $validator) {
+            $data = file_get_contents(Vite::asset('resources/js/email-domain-list.json'));
+            $email_domains = json_decode($data, true);
+
+            // Extract the domain from the email
+            $email_domain = substr(strrchr($value, "@"), 1);
+
+            return in_array($email_domain, $email_domains['valid_email']);
+        }, 'Email service provider is not allowed.');
     }
 }

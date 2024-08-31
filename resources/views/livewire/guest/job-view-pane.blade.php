@@ -29,7 +29,7 @@
     ?>
 @endif
 
-<article class="job-view tab-content col-12 col-md-6">
+<article class="job-view tab-content col-12 col-md-6" nonce="csp_nonce()">
     <div class="job-content tab-pane fade show active card border-0 bg-secondary-subtle w-100 " id="#1-tab-pane"
         role="tabpanel" aria-labelledby="-tab">
         <div class="d-flex">
