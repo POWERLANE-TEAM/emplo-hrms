@@ -27,7 +27,8 @@ class JobsListCard extends Component
 
     public function placeholder()
     {
-        return view('livewire.placeholder.job-list-card');
+        $this->positions = Position::latest()->get();
+        return view('livewire.placeholder.job-list-card', ['positions' => $this->positions]);
     }
 
     public function render()

@@ -28,6 +28,8 @@
                 img.green-wave {
                     position: absolute;
                     min-width: 83svw;
+                    width: 83svw;
+                    height: auto;
                     left: 17%;
                     transform: scaleX(1.30) scaleY(1.1);
                 }
@@ -69,7 +71,7 @@
                     srcset="{{ Vite::asset('resources/images/illus/recruitment/green-curve-sm.png') }}">
 
                 <img class="green-wave" src="{{ Vite::asset('resources/images/illus/recruitment/green-curve-md.png') }}"
-                    alt="">
+                    width="600px" height="300px" alt="">
             </picture>
 
             <svg class="left-circle" width="171" height="251" viewBox="0 0 171 251" fill="none"
@@ -136,7 +138,6 @@
         </header>
 
 
-
         <main class="main container-fluid">
 
             <section class="first-section ">
@@ -160,15 +161,16 @@
                             </div>
                             <picture>
                                 <source media="(min-width:2560px)" class=""
-                                    srcset="{{ Vite::asset('resources/images/illus/sapiens-1-2044x1816.png') }}">
+                                    srcset="{{ Vite::asset('resources/images/illus/sapiens-1-xl.webp') }}">
                                 <source media="(min-width:1200px)" class=""
-                                    srcset="{{ Vite::asset('resources/images/illus/sapiens-1-1022x908.png') }}">
+                                    srcset="{{ Vite::asset('resources/images/illus/sapiens-1-lg.webp') }}">
                                 <source media="(min-width:768px)" class=""
-                                    srcset="{{ Vite::asset('resources/images/illus/sapiens-1-511x454.png') }}">
+                                    srcset="{{ Vite::asset('resources/images/illus/sapiens-1-md.webp') }}">
                                 <source media="(min-width:576px)" class=""
-                                    srcset="{{ Vite::asset('resources/images/illus/sapiens-1-384x341.png') }}">
-                                <img src="{{ Vite::asset('resources/images/illus/sapiens-1-1022x908.png') }}"
-                                    class="sapien" alt="">
+                                    srcset="{{ Vite::asset('resources/images/illus/sapiens-1-sm.webp') }}">
+
+                                <img src="{{ Vite::asset('resources/images/illus/sapiens-1-md.webp') }}" class="sapien"
+                                    width="300px" height="250px" alt="">
                             </picture>
                         </div>
                         <div class="box-icon">

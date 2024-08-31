@@ -1,5 +1,10 @@
 <sidebar class="nav nav-tabs col-12 col-md-5 " id="jobs-list" role="tablist" nonce="csp_nonce()">
 
+    @foreach ($positions as $position)
+        {{-- Insert Image of positions --}}
+        <link rel="preload" href="http://placehold.it/74/74" as="image">
+    @endforeach
+
     @for ($i = 0; $i < 3; $i++)
         <li class="card nav-item ps-0 " role="presentation">
             <button class="nav-link d-flex flex-row column-gap-4" role="tab">
