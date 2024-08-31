@@ -25,6 +25,11 @@ class JobsListCard extends Component
         $this->isFiltered = true;
     }
 
+    public function placeholder()
+    {
+        return view('livewire.placeholder.job-list-card');
+    }
+
     public function render()
     {
 

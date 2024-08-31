@@ -45,6 +45,7 @@ class SignUp extends Component
 
     public function placeholder()
     {
+        $this->dispatch('sign-up-loading');
         return view('livewire.placeholder.sign-up');
     }
 

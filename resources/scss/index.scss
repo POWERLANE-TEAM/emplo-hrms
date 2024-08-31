@@ -77,6 +77,11 @@ header {
 
     .right {
         transform: translateX(-2.5%);
+
+        .illus {
+            position: relative;
+            transform: translate(1.5rem, 2.5rem);
+        }
     }
 
     .box-icon {
@@ -86,18 +91,17 @@ header {
         border-radius: 15px;
         padding: clamp(1rem, 0.5rem + 0.5vw + 0.75vh, 5rem);
         background-color: var(--main-lime);
+        filter: drop-shadow(0 0.25rem 0.25rem var(--bs-gray));
 
-        &:has([class*="search"]) {
-            transform: translate(-75%, 115%);
-            // position: absolute;
-            // top: 5%;
+        &:first-child {
+            // transform: translate(-75%, 115%);
+            transform: translate(calc((2rem + 1vw)*-1), calc(3rem + 3vw + 0.25vh));
         }
 
-        &:has([class*="briefcase"]) {
+        &:last-child {
             float: right;
-            transform: translate(30%, -200%);
-            // position: absolute;
-            // top: 5%;
+            // transform: translate(30%, -200%);
+            transform: translate(calc((1.25rem + 1vw) * -1), calc((2rem + 8vw + 0.25vh) * -1));
         }
     }
 
@@ -244,12 +248,19 @@ header {
 }
 
 .terms-condition {
+    text-wrap: nowrap;
+    text-wrap-style: pretty;
+
     .checkbox-primary {
         @include custom-checkbox(var(--bs-black), var(--bs-primary));
     }
 
     .checkbox-label {
-        padding-left: clamp(1.5rem, 0.75rem + 1vw, 5vw);
+        padding-left: clamp(1.5rem, 1rem + 1.25vw, 5vw);
+    }
+
+    span a:last-child {
+        text-wrap: wrap;
     }
 }
 

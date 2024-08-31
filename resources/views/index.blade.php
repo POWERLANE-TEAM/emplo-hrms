@@ -11,7 +11,7 @@
 
         @vite(['resources/js/index.js'])
         <script src="build/assets/nbp.min.js" defer></script>
-        <script src="build/assets/eval-password.js" defer></script>
+        {{-- <script src="build/assets/eval-password.js" defer></script> --}}
 
         <script src="https://unpkg.com/lucide@latest"></script>
 
@@ -53,7 +53,7 @@
 
     </x-html.head>
 
-    <body class="max-w-[100%] tw-overflow-x-hidden">
+    <body class="">
 
         <section class="top-vector">
 
@@ -154,7 +154,7 @@
                     </div>
 
                     <div class="right col-12 col-md-6 ">
-                        <div class="tw-relative tw-translate-x-6 tw-translate-y-10">
+                        <div class="illus ">
                             <div class="box-icon">
                                 <i data-lucide="search"></i>
                             </div>
@@ -187,7 +187,7 @@
                 </div>
                 <section class="job-listing d-flex row gap-5 ">
 
-                    @livewire('guest.jobs-list-card')
+                    @livewire('guest.jobs-list-card', ['lazy' => true])
 
                     @livewire('guest.job-view-pane', ['lazy' => true])
 
@@ -197,15 +197,15 @@
 
             <div class="modal fade" id="signUp" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
                 tabindex="-1">
-                <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
-                    <div class="modal-content">
-                        <div class="modal-header">
+                <div class="modal-dialog modal-lg modal-dialog-centered modal-fullscreen-sm-down">
+                    <div class="modal-content p-md-4 ">
+                        <div class="modal-header border-0">
 
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
+                            <button type="button" class="btn-close p-1 p-md-3 mt-md-n4 me-md-n3"
+                                data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
 
-                        <div class="modal-body">
+                        <div class="modal-body px-md-5 py-md-4">
                             @livewire('guest.forms.sign-up', ['lazy' => true])
                         </div>
                     </div>

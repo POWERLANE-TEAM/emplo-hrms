@@ -4,6 +4,7 @@ import initLucideIcons from './icons/lucide.js';
 import addGlobalScrollListener, { documentScrollPosY } from './global-scroll-fn.js';
 import addGlobalListener, { GlobalListener } from './global-event-listener.js';
 import togglePassword from './toggle-password.js';
+import { initPasswordEvaluator, evalPassword } from './forms/eval-password.js';
 import InputValidator, { setInvalidMessage } from './forms/input-validator.js';
 import initEmailValidation, { validateEmail } from './forms/email-validation.js';
 import initPasswordValidation, { validatePassword } from './forms/password-validation.js';
@@ -17,7 +18,22 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
 document.addEventListener('livewire:initialized', () => {
     console.log('livewire');
+
+    // let cleanup = Livewire.on('sign-up-loading', (event) => {
+    //     console.log('sign-up-loading')
+    // });
+
+    // // Calling "cleanup()" will un-register the above event listener...
+    // cleanup();
 })
+
+document.addEventListener('livewire:init', () => {
+    Livewire.on('sign-up-loading', (event) => {
+        console.log('sign-up-loading')
+        initPasswordEvaluator();
+    });
+});
+
 
 /* ----------------------------------------------------
     START: CHECK SIGNUP FORM

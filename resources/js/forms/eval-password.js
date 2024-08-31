@@ -1,11 +1,11 @@
-/* The resource script does not comply to es6 standard */
-document.addEventListener("DOMContentLoaded", (event) => {
+export function initPasswordEvaluator() {
     try {
+        /* The resource script does not comply to es6 standard */
         NBP.init('mostcommon_1000000', 'build/assets/pasword-list/collections', true);
     } catch (error) {
         console.trace();
     }
-});
+}
 
 
 /**
@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
  * @param {string} passwordValue - The password to evaluate.
  * @returns {boolean} - `true` if the password is common, otherwise `false`.
  */
-function evalPassword(passwordValue) {
+export function evalPassword(passwordValue) {
     /* The password evaluator or the dictionary is last updated 7 yrs ago */
     let isCommonPassword;
     try {
@@ -25,5 +25,3 @@ function evalPassword(passwordValue) {
 
     return isCommonPassword;
 }
-
-
