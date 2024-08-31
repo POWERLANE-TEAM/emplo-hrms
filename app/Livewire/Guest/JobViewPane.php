@@ -34,4 +34,9 @@ class JobViewPane extends Component
     {
         return view('livewire.guest.job-view-pane', ['position' => $this->position, 'lazy' => true]);
     }
+
+    public function rendered()
+    {
+        $this->dispatch('guest-job-view-pane-rendered');
+    }
 }

@@ -28,10 +28,25 @@ document.addEventListener('livewire:initialized', () => {
 })
 
 document.addEventListener('livewire:init', () => {
-    Livewire.on('sign-up-loading', (event) => {
-        console.log('sign-up-loading')
+    let cleanup = Livewire.on('guest-sign-up-load', (event) => {
+        console.log('sign-up-load')
         initPasswordEvaluator();
+        cleanup();
     });
+
+
+    Livewire.on('guest-job-view-pane-rendered', (event) => {
+        setTimeout(() => {
+            initLucideIcons();
+        }, 0);
+    });
+    Livewire.on('guest-sign-up-rendered', (event) => {
+        setTimeout(() => {
+            initLucideIcons();
+        }, 0);
+    });
+
+
 });
 
 

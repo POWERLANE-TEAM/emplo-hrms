@@ -187,7 +187,7 @@
                         Currently <span></span> <span>jobs</span> available
                     </em>
                 </div>
-                <section class="job-listing d-flex row gap-5 ">
+                <section class="job-listing d-flex row gap-5 mb-5">
 
                     @livewire('guest.jobs-list-card', ['lazy' => true])
 

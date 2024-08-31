@@ -45,12 +45,17 @@ class SignUp extends Component
 
     public function placeholder()
     {
-        $this->dispatch('sign-up-loading');
+        $this->dispatch('guest-sign-up-load');
         return view('livewire.placeholder.sign-up');
     }
 
     public function render()
     {
         return view('livewire.guest.forms.sign-up', ['position' => $this->position]);
+    }
+
+    public function rendered()
+    {
+        $this->dispatch('guest-sign-up-rendered');
     }
 }

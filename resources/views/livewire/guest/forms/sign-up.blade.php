@@ -23,8 +23,9 @@
     <form wire:submit.prevent="create" action="applicant/sign-up" nonce="{{ $nonce }}">
         @csrf
         <label for="signUp-email" class="mb-1">Email Address</label>
-        <div class="input-group mb-3 position-relative">
-            <div class="px-2 d-flex align-items-center position-absolute"><i data-lucide="mail"></i></div>
+        <div class="input-group mb-3 position-relative mt-3">
+            <div class="px-2 d-flex align-items-center position-absolute icon" wire:ignore><i data-lucide="mail"></i>
+            </div>
             <input type="email" aria-owns="signUp-email-feedback" name="email"
                 pattern="/^[a-zA-Z0-9._\-]+@[a-z0-9.-]+\.[a-z]{2,4}$/" maxlength="255" required wire:model="email"
                 autocomplete="email"
@@ -42,7 +43,8 @@
 
         <label for="signUp-password" class="mb-1">Password</label>
         <div class="input-group mb-3">
-            <div class="px-2 d-flex position-absolute "><i data-lucide="lock"></i></div>
+            <div class="px-2 d-flex position-absolute mt-3 " wire:ignore nonce="{{ $nonce }}"><i
+                    data-lucide="lock"></i></div>
             <input type="password" id="signUp-password" aria-owns="signUp-password-feedback" name="password"
                 pattern="/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[\W_])[^\s]{8,72}$/" minlength="8" maxlength="72"
                 required wire:model="password" autocomplete="new-password"
