@@ -72,6 +72,8 @@ const signUpConsentEvent = new GlobalListener('input', document, `${sigUpFormStr
 });
 
 function validateSignUpForm(sigUpFormString = `form[action='applicant/sign-up']`) {
+    const stack = new Error().stack;
+
     let signUpBtn = document.querySelector(`${sigUpFormString} #signUpBtn`);
     let passwordInput = document.querySelector(`${sigUpFormString} input[name="password"]`);
 
@@ -87,9 +89,19 @@ function validateSignUpForm(sigUpFormString = `form[action='applicant/sign-up']`
         console.warn('Password evaluator not available.')
     }
 
-    let isValidEmail = validateEmail(`${sigUpFormString} input[name="email"]`);
-    let isValidPassword = validatePassword(`${sigUpFormString} input[name="password"]`);
-    let isPasswordMatch = validateConfirmPassword(`${sigUpFormString} input[name="password_confirmation"]`);
+    let isValidEmail;
+    let isValidPassword;
+    let isPasswordMatch;
+
+    if (!stack.includes('email-validation.js')) {
+        isValidEmail = validateEmail(`${sigUpFormString} input[name="email"]`);
+    }
+    if (!stack.includes('password-validation.js')) {
+        isValidPassword = validatePassword(`${sigUpFormString} input[name="password"]`);
+    }
+    if (!stack.includes('password-confirm-validation.js')) {
+        isPasswordMatch = validateConfirmPassword(`${sigUpFormString} input[name="password_confirmation"]`);
+    }
 
     // console.log(sigUpFormString)
     // console.log(isValidEmail)
@@ -107,7 +119,6 @@ function validateSignUpForm(sigUpFormString = `form[action='applicant/sign-up']`
         signUpBtn.disabled = false;
         return true;
     }
-
 
 }
 
