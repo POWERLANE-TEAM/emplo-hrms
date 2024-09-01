@@ -19,10 +19,10 @@ class SignUp extends Component
     // public $captcha;
 
     #[On('job-selected')]
-    public function showPosition($position_id)
+    public function showPosition($position)
     {
         $this->placeholder();
-        $this->position = Position::where('position_id', $position_id)->first();
+        $this->position = new Position($position);
         // dd($this->position);
     }
 

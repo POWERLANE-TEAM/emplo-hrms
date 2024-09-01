@@ -7,7 +7,7 @@
     @foreach ($positions as $position)
         <li class="card nav-item ps-0 " role="presentation">
             <button value="{{ $position->position_id }}"
-                x-on:click.debounce.10ms="$dispatch('job-selected', [$event.target.value])"
+                x-on:click.debounce.10ms="$dispatch('job-selected', {{ $positions }})"
                 class="nav-link d-flex flex-row column-gap-4" id="{{ $position->position_id }}-tab" data-bs-toggle="tab"
                 role="tab" aria-controls="job-view-pane" aria-label="{{ $position->title }}">
                 <div class="col-4 pt-3 px-2 ">
