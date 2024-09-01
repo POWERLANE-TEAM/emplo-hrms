@@ -247,6 +247,17 @@ header {
 
 }
 
+.signUp-form {
+
+    form {
+        .input-group {
+            .icon {
+                margin-top: calc(0.5rem + 0.5vw);
+            }
+        }
+    }
+}
+
 .terms-condition {
     text-wrap: nowrap;
     text-wrap-style: pretty;

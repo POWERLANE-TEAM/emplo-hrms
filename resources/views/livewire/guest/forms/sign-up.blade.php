@@ -7,7 +7,7 @@
 
 <section nonce="{{ $nonce }}" class=" px-md-4 py-md-3">
     <hgroup class="d-flex flex-column text-center mb-5 mt-md-n4">
-        <header class="display-4 fw-semibold text-primary mb-4">
+        <header class="display-5 fw-semibold text-primary mb-3">
             Sign Up
         </header>
         @if (!empty($position))
@@ -43,7 +43,7 @@
 
         <label for="signUp-password" class="mb-1">Password</label>
         <div class="input-group mb-3">
-            <div class="px-2 d-flex position-absolute mt-3 " wire:ignore nonce="{{ $nonce }}"><i
+            <div class="px-2 d-flex position-absolute icon" wire:ignore nonce="{{ $nonce }}"><i
                     data-lucide="lock"></i></div>
             <input type="password" id="signUp-password" aria-owns="signUp-password-feedback signUp-password-confirm"
                 name="password" pattern="/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[\W_])[^\s]{8,72}$/" minlength="8"
@@ -65,7 +65,7 @@
 
         <label for="signUp-password-confirm" class="mb-1">Confirm Password</label>
         <div class="input-group mb-3">
-            <div class="px-2 d-flex position-absolute mt-3 " wire:ignore nonce="{{ $nonce }}"><i
+            <div class="px-2 d-flex position-absolute icon " wire:ignore nonce="{{ $nonce }}"><i
                     data-lucide="lock"></i></div>
             <input type="password" id="signUp-password-confirm" aria-owns="signUp-password-confirm-feedback"
                 name="password_confirmation" minlength="8" maxlength="72" required wire:model="password_confirmation"

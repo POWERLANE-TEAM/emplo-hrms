@@ -196,8 +196,8 @@
 
             </section>
 
-            <div class="modal fade" id="signUp" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
-                tabindex="-1">
+            <div class="modal fade signUp-form" id="signUpForm" aria-hidden="true"
+                aria-labelledby="exampleModalToggleLabel" tabindex="-1">
                 <div class="modal-dialog modal-lg modal-dialog-centered modal-fullscreen-sm-down">
                     <div class="modal-content p-md-4 ">
                         <div class="modal-header border-0">

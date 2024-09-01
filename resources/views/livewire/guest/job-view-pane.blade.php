@@ -8,7 +8,7 @@
                 <h4 class="card-title text-primary fw-bold mb-0">$position->title</h4>
                 <p class="fs-6 text-black ">Job Location</p>
             </hgroup>
-            <a href="" hreflang="en-PH" class="btn btn-primary mt-1 mb-4" role="navigation" aria-label="Apply" aria-controls="signUp" data-bs-toggle="modal" data-bs-target="#signUp"  wire:ignore>Apply
+            <a href="" hreflang="en-PH" class="btn btn-primary mt-1 mb-4" role="navigation" aria-label="Apply" aria-controls="signUpForm" data-bs-toggle="modal" data-bs-target="#signUpForm"  wire:ignore>Apply
                 <span><i data-lucide="external-link"></i></span></a>
     
             <label for="job-descr-panel" class="job-descr card-text">
