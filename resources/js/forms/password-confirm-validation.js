@@ -50,9 +50,14 @@ export function validateConfirmPassword(inputSelector, parent = document) {
     return validatePasswordConfirmElement(passwordElement);
 }
 
-export default function initPasswordConfirmValidation(inputSelector, callback) {
+export default function initPasswordConfirmValidation(inputSelector, callback, result) {
     const debouncedValidation = debounce(function (event) {
-        validatePasswordConfirmElement(event.target);
+        let isValid = validatePasswordConfirmElement(event.target);
+        try {
+            result.isPasswordMatch = isValid;
+        } catch (error) {
+
+        }
         callback();
     }, 500);
 

@@ -71,9 +71,15 @@ export function validateEmail(inputSelector, parent = document) {
 }
 
 // Exported function for debounced validation
-export default function initEmailValidation(inputSelector, callback) {
+export default function initEmailValidation(inputSelector, callback, result) {
     const debouncedValidation = debounce(function (event) {
-        validateEmailElement(event.target);
+        let isValid = validateEmailElement(event.target);
+        try {
+            result.isValidEmail = isValid;
+        } catch (error) {
+
+        }
+
         callback();
     }, 500);
 

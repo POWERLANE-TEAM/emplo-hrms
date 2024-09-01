@@ -42,9 +42,14 @@ export function validatePassword(inputSelector, parent = document) {
     return validatePasswordElement(passwordElement);
 }
 
-export default function initPasswordValidation(inputSelector, callback) {
+export default function initPasswordValidation(inputSelector, callback, result) {
     const debouncedValidation = debounce(function (event) {
-        validatePasswordElement(event.target);
+        let isValid = validatePasswordElement(event.target);
+        try {
+            result.isValidPassword = isValid;
+        } catch (error) {
+
+        }
         callback();
     }, 500);
 

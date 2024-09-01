@@ -66,11 +66,19 @@ function checkCaptcha() {
     return true;
 }
 
+const signUpBool = {
+    isValidEmail: false,
+    isValidPassword: false,
+    isPasswordMatch: false,
+}
+
 const signUpConsentEvent = new GlobalListener('input', document, `${sigUpFormString} input[name="consent"]`, function (event) {
     validateSignUpForm(sigUpFormString);
 });
 
 function validateSignUpForm(sigUpFormString = `form[action='applicant/sign-up']`) {
+    const stack = new Error().stack;
+
 
     let signUpBtn = document.querySelector(`${sigUpFormString} #signUpBtn`);
     let passwordInput = document.querySelector(`${sigUpFormString} input[name="password"]`);
@@ -87,23 +95,30 @@ function validateSignUpForm(sigUpFormString = `form[action='applicant/sign-up']`
         console.warn('Password evaluator not available.')
     }
 
-    let isValidEmail = validateEmail(`${sigUpFormString} input[name="email"]`);
-    let isValidPassword = validatePassword(`${sigUpFormString} input[name="password"]`);
-    let isPasswordMatch = validateConfirmPassword(`${sigUpFormString} input[name="password_confirmation"]`);
+    if (!stack.includes('email-validation.js')) {
+        signUpBool.isValidEmail = validateEmail(`${sigUpFormString} input[name="email"]`);
+    }
+
+    if (!stack.includes('password-validation.js')) {
+        signUpBool.isValidPassword = validatePassword(`${sigUpFormString} input[name="password"]`);
+    }
+
+    if (!stack.includes('password-confirm-validation.js')) {
+        signUpBool.isPasswordMatch = validateConfirmPassword(`${sigUpFormString} input[name="password_confirmation"]`);
+    }
 
     // console.log(sigUpFormString)
-    // console.log(isValidEmail)
-    // console.log(isValidPassword)
+    console.log(signUpBool)
     // console.log(consentAgreed)
     // console.log(isWeakPassword)
-    if (!isValidEmail || !isValidPassword) {
+    if (!signUpBool.isValidEmail || !signUpBool.isValidPassword) {
         signUpBtn.disabled = true;
     } else
         if (isWeakPassword?.valueOf() == true) {
             signUpBtn.disabled = true;
             passwordInput.classList.add('is-invalid');
             setInvalidMessage(passwordInput, 'Password is weak.');
-        } else if (!isPasswordMatch || !consentAgreed || !isCaptchaValid) {
+        } else if (!signUpBool.isPasswordMatch || !consentAgreed || !isCaptchaValid) {
             signUpBtn.disabled = true;
         } else {
             passwordInput.classList.remove('is-invalid');
@@ -115,15 +130,15 @@ function validateSignUpForm(sigUpFormString = `form[action='applicant/sign-up']`
 
 initEmailValidation(`${sigUpFormString} input[name="email"]`, () => {
     validateSignUpForm(sigUpFormString);
-});
+}, signUpBool);
 
 initPasswordValidation(`${sigUpFormString} input[name="password"]`, () => {
     validateSignUpForm(sigUpFormString);
-});
+}, signUpBool);
 
 initPasswordConfirmValidation(`${sigUpFormString} input[name="password_confirmation"]`, () => {
     validateSignUpForm(sigUpFormString);
-});
+}, signUpBool);
 
 const passwordConfirmPaste = new GlobalListener('paste', document, `${sigUpFormString} input[name="password_confirmation"]`, e => e.preventDefault());
 const passwordConfirmDrop = new GlobalListener('drop', document, `${sigUpFormString} input[name="password_confirmation"]`, e => e.preventDefault());
