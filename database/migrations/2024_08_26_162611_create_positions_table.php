@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('positions', function (Blueprint $table) {
             $table->increments('position_id');
-            $table->string('title');
+            $table->string('title', 191);
             $table->text('description')->nullable();
             $table->timestamps();
         });

@@ -36,7 +36,7 @@ const EMAIL_VALIDATION = {
         type: 'email',
         pattern: /^[a-zA-Z0-9._\-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
         required: true,
-        max_length: 255,
+        max_length: 191,
         valid_emails: validEmailDomains,
     },
     // customMsg: {

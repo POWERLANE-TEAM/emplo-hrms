@@ -29,7 +29,7 @@ class SignUp extends Component
     public function create()
     {
         $this->validate([
-            'email' => 'required|email:rfc,dns,spoof|max:255|unique:users|valid_email_dns',
+            'email' => 'required|email:rfc,dns,spoof|max:191|unique:users|valid_email_dns',
             'password' => [
                 'required',
                 Password::defaults(),

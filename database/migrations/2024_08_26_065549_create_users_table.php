@@ -14,9 +14,9 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('user_id');
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->string('google_id')->nullable();
+            $table->string('email', 191)->unique();
+            $table->string('password', 191);
+            $table->string('google_id', 191)->nullable();
             $table->enum('role', array('GUEST', 'USER', 'MANAGER', 'SYSADMIN'));
             $table->integer('applicant_id')->unsigned()->nullable();
             $table->integer('employee_id')->unsigned()->nullable();
@@ -26,13 +26,13 @@ return new class extends Migration
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
-            $table->string('email')->primary();
-            $table->string('token');
+            $table->string('email', 191)->primary();
+            $table->string('token', 191);
             $table->timestamp('created_at')->nullable();
         });
 
         Schema::create('sessions', function (Blueprint $table) {
-            $table->string('id')->primary();
+            $table->string('id', 191)->primary();
             $table->foreignId('user_id')->nullable()->index();
             $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();
