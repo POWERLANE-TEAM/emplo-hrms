@@ -18,10 +18,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
 });
 
 document.addEventListener('livewire:init', () => {
-    let cleanup = Livewire.on('guest-sign-up-load', (event) => {
-        console.log('sign-up-load')
+    let loadSignUp = Livewire.on('guest-sign-up-load', (event) => {
         initPasswordEvaluator();
-        cleanup();
+        loadSignUp();
     });
 
 
@@ -72,7 +71,6 @@ const signUpConsentEvent = new GlobalListener('input', document, `${sigUpFormStr
 });
 
 function validateSignUpForm(sigUpFormString = `form[action='applicant/sign-up']`) {
-    const stack = new Error().stack;
 
     let signUpBtn = document.querySelector(`${sigUpFormString} #signUpBtn`);
     let passwordInput = document.querySelector(`${sigUpFormString} input[name="password"]`);
@@ -89,36 +87,29 @@ function validateSignUpForm(sigUpFormString = `form[action='applicant/sign-up']`
         console.warn('Password evaluator not available.')
     }
 
-    let isValidEmail;
-    let isValidPassword;
-    let isPasswordMatch;
-
-    if (!stack.includes('email-validation.js')) {
-        isValidEmail = validateEmail(`${sigUpFormString} input[name="email"]`);
-    }
-    if (!stack.includes('password-validation.js')) {
-        isValidPassword = validatePassword(`${sigUpFormString} input[name="password"]`);
-    }
-    if (!stack.includes('password-confirm-validation.js')) {
-        isPasswordMatch = validateConfirmPassword(`${sigUpFormString} input[name="password_confirmation"]`);
-    }
+    let isValidEmail = validateEmail(`${sigUpFormString} input[name="email"]`);
+    let isValidPassword = validatePassword(`${sigUpFormString} input[name="password"]`);
+    let isPasswordMatch = validateConfirmPassword(`${sigUpFormString} input[name="password_confirmation"]`);
 
     // console.log(sigUpFormString)
     // console.log(isValidEmail)
     // console.log(isValidPassword)
     // console.log(consentAgreed)
     // console.log(isWeakPassword)
-    if (!isValidEmail || !isValidPassword || !isPasswordMatch || !consentAgreed || !isCaptchaValid) {
+    if (!isValidEmail || !isValidPassword) {
         signUpBtn.disabled = true;
-    } else if (isWeakPassword?.valueOf() == true) {
-        signUpBtn.disabled = true;
-        passwordInput.classList.add('is-invalid');
-        setInvalidMessage(passwordInput, 'Password is weak.');
-    } else {
-        passwordInput.classList.remove('is-invalid');
-        signUpBtn.disabled = false;
-        return true;
-    }
+    } else
+        if (isWeakPassword?.valueOf() == true) {
+            signUpBtn.disabled = true;
+            passwordInput.classList.add('is-invalid');
+            setInvalidMessage(passwordInput, 'Password is weak.');
+        } else if (!isPasswordMatch || !consentAgreed || !isCaptchaValid) {
+            signUpBtn.disabled = true;
+        } else {
+            passwordInput.classList.remove('is-invalid');
+            signUpBtn.disabled = false;
+            return true;
+        }
 
 }
 

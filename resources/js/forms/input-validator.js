@@ -214,7 +214,7 @@ export default class InputValidator {
 
             }
         } catch (error) {
-            console.error(error);
+            console.warn('Email validation not available.');
         }
 
         if (this.#isConfirmationBool && this.#validations.isConfirmation) {

@@ -19,7 +19,7 @@ fetch(emailDomainResouurces)
 
     })
     .catch(function (error) {
-        console.error('GET request error:', error);
+        console.warn('Failed to fetch email dictionary.');
     });
 
 

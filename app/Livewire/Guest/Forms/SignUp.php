@@ -26,7 +26,7 @@ class SignUp extends Component
         // dd($this->position);
     }
 
-    public function create()
+    public function store()
     {
         $this->validate([
             'email' => 'required|email:rfc,dns,spoof|max:191|unique:users|valid_email_dns',

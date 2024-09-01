@@ -20,7 +20,7 @@
         @endif
     </hgroup>
 
-    <form wire:submit.prevent="create" action="applicant/sign-up" nonce="{{ $nonce }}">
+    <form wire:submit.prevent="store" action="applicant/sign-up" nonce="{{ $nonce }}">
         @csrf
         <label for="signUp-email" class="mb-1">Email Address</label>
         <div class="input-group mb-3 position-relative mt-3">
