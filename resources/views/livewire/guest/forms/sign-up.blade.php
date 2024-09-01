@@ -45,19 +45,41 @@
         <div class="input-group mb-3">
             <div class="px-2 d-flex position-absolute mt-3 " wire:ignore nonce="{{ $nonce }}"><i
                     data-lucide="lock"></i></div>
-            <input type="password" id="signUp-password" aria-owns="signUp-password-feedback" name="password"
-                pattern="/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[\W_])[^\s]{8,72}$/" minlength="8" maxlength="72"
-                required wire:model="password" autocomplete="new-password"
-                class="form-control rm-bg-icon border-bottom ps-5 z-0">
-            <input type="checkbox"
-                class="text-primary toggle-password position-absolute mt-2 end-0 z-3
+            <input type="password" id="signUp-password" aria-owns="signUp-password-feedback signUp-password-confirm"
+                name="password" pattern="/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[\W_])[^\s]{8,72}$/" minlength="8"
+                maxlength="72" required wire:model="password" autocomplete="new-password"
+                class="form-control rm-bg-icon border-bottom ps-5 z-0
                 @error('password')
                     is-invalid
                 @enderror
-            "
+
+                ">
+            <input type="checkbox" id="toggle-psw" class="text-primary toggle-password position-absolute mt-2 end-0 z-3"
                 aria-label="Show/Hide Password" aria-keyshortcuts="alt+f8">
             <div class="invalid-feedback" role="alert" id="signUp-password-feedback">
                 @error('password')
+                    {{ $message }}
+                @enderror
+            </div>
+        </div>
+
+        <label for="signUp-password-confirm" class="mb-1">Confirm Password</label>
+        <div class="input-group mb-3">
+            <div class="px-2 d-flex position-absolute mt-3 " wire:ignore nonce="{{ $nonce }}"><i
+                    data-lucide="lock"></i></div>
+            <input type="password" id="signUp-password-confirm" aria-owns="signUp-password-confirm-feedback"
+                name="password_confirmation" pattern="/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[\W_])[^\s]{8,72}$/"
+                minlength="8" maxlength="72" required wire:model="password_confirmation" autocomplete="off"
+                class="form-control rm-bg-icon border-bottom ps-5 z-0
+                                @error('password_confirmation')
+                    is-invalid
+                @enderror
+                ">
+            <input type="checkbox" id="toggle-psw-confirm"
+                class="text-primary toggle-password position-absolute mt-2 end-0 z-3"
+                aria-label="Show/Hide Password Confirmation" aria-keyshortcuts="alt+f8">
+            <div class="invalid-feedback" role="alert" id="signUp-password-confirm-feedback">
+                @error('password_confirmation')
                     {{ $message }}
                 @enderror
             </div>

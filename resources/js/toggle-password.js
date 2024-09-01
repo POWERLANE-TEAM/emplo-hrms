@@ -9,8 +9,8 @@ export default function togglePassword(parent, inputSelector, toggleSelector) {
     const togglePassword = new GlobalListener('input', document, toggleSelector, togglePasswordVisibility);
 
     document.addEventListener('keyup', function (event) {
-        let parentElement = document.querySelector(parent);
-        if (event.altKey && event.key === 'F8' && parentElement.contains(document.activeElement)) {
+        let passwordInput = document.querySelector(inputSelector);
+        if (event.altKey && event.key === 'F8' && document.activeElement === passwordInput) {
             togglePasswordVisibility();
         }
     });

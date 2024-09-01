@@ -8,6 +8,7 @@ import { initPasswordEvaluator, evalPassword } from './forms/eval-password.js';
 import InputValidator, { setInvalidMessage } from './forms/input-validator.js';
 import initEmailValidation, { validateEmail } from './forms/email-validation.js';
 import initPasswordValidation, { validatePassword } from './forms/password-validation.js';
+import initPasswordConfirmValidation, { validateConfirmPassword } from './forms/password-confirm-validation.js';
 import debounce from './debounce-fn.js';
 import './applicant/top-bar.js'
 // import './livewire.js'
@@ -15,17 +16,6 @@ import './applicant/top-bar.js'
 document.addEventListener("DOMContentLoaded", (event) => {
     initLucideIcons();
 });
-
-document.addEventListener('livewire:initialized', () => {
-    console.log('livewire');
-
-    // let cleanup = Livewire.on('sign-up-loading', (event) => {
-    //     console.log('sign-up-loading')
-    // });
-
-    // // Calling "cleanup()" will un-register the above event listener...
-    // cleanup();
-})
 
 document.addEventListener('livewire:init', () => {
     let cleanup = Livewire.on('guest-sign-up-load', (event) => {
@@ -62,7 +52,8 @@ document.addEventListener('livewire:init', () => {
   4. Reset form on confirmed discard signup (on modal dismiss)
 ------------------------------------------------------- */
 
-togglePassword(`form[action='applicant/sign-up']`, `#signUp-password`, `input.toggle-password`);
+togglePassword(`form[action='applicant/sign-up']`, `#signUp-password`, `#toggle-psw`);
+togglePassword(`form[action='applicant/sign-up']`, `#signUp-password-confirm`, `#toggle-psw-confirm`);
 
 let sigUpFormString = `form[action='applicant/sign-up']`;
 
@@ -96,13 +87,14 @@ function validateSignUpForm(sigUpFormString = `form[action='applicant/sign-up']`
 
     let isValidEmail = validateEmail(`${sigUpFormString} input[name="email"]`);
     let isValidPassword = validatePassword(`${sigUpFormString} input[name="password"]`);
+    let isPasswordMatch = validateConfirmPassword(`${sigUpFormString} input[name="password_confirmation"]`);
 
     // console.log(sigUpFormString)
     // console.log(isValidEmail)
     // console.log(isValidPassword)
     // console.log(consentAgreed)
     // console.log(isWeakPassword)
-    if (!isValidEmail || !isValidPassword || !consentAgreed || !isCaptchaValid) {
+    if (!isValidEmail || !isValidPassword || !isPasswordMatch || !consentAgreed || !isCaptchaValid) {
         signUpBtn.disabled = true;
     } else if (isWeakPassword?.valueOf() == true) {
         signUpBtn.disabled = true;
@@ -121,6 +113,10 @@ initEmailValidation(`${sigUpFormString} input[name="email"]`, () => {
 });
 
 initPasswordValidation(`${sigUpFormString} input[name="password"]`, () => {
+    validateSignUpForm(sigUpFormString);
+});
+
+initPasswordConfirmValidation(`${sigUpFormString} input[name="password_confirmation"]`, () => {
     validateSignUpForm(sigUpFormString);
 });
 

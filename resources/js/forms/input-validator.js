@@ -8,6 +8,7 @@ export default class InputValidator {
     #validations;
     #isClearInvalidBool;
     #isClearTrailingBool;
+    #isConfirmationBool;
 
     /**
      * @typedef {Object} ValidationCriteria
@@ -66,6 +67,10 @@ export default class InputValidator {
 
         if (this.#validations.clear_trailing) {
             this.#isClearTrailingBool = typeof this.#validations.clear_trailing === 'boolean';
+        }
+
+        if (this.#validations.isConfirmation) {
+            this.#isConfirmationBool = typeof this.#validations.isConfirmation === 'boolean';
         }
 
         let input_element = input_obj;
@@ -212,10 +217,11 @@ export default class InputValidator {
             console.error(error);
         }
 
-        if (typeof callback === 'function') {
-            callback(input_element, "");
+        if (this.#isConfirmationBool && this.#validations.isConfirmation) {
+            return callback(input_element);
         }
 
+        callback(input_element, "");
         return true;
 
     }
@@ -341,12 +347,16 @@ export default class InputValidator {
 }
 
 export function setInvalidMessage(element, feedbackMsg) {
-    let feedbackElementId = element.getAttribute("aria-owns");
-    let feedbackElement = document.getElementById(feedbackElementId);
     try {
+        let relativeElements = element.getAttribute("aria-owns");
+        let firstPart = relativeElements.split(' ')[0];
+
+        let feedbackElementId = firstPart;
+        let feedbackElement = document.getElementById(feedbackElementId);
+
         feedbackElement.textContent = feedbackMsg;
     } catch (error) {
-        console.error('Feedback message not set.');
+        console.error('Feedback message not set. ' + error);
     }
 
 }
