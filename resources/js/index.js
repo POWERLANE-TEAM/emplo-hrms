@@ -75,6 +75,8 @@ function validateSignUpForm(sigUpFormString = `form[action='applicant/sign-up']`
     let signUpBtn = document.querySelector(`${sigUpFormString} #signUpBtn`);
     let passwordInput = document.querySelector(`${sigUpFormString} input[name="password"]`);
 
+    signUpBtn.disabled = true;
+
     let consentAgreed = checkConsent(document.querySelector(`${sigUpFormString} input[name="consent"]`));
     let isCaptchaValid = checkCaptcha();
 
@@ -103,6 +105,7 @@ function validateSignUpForm(sigUpFormString = `form[action='applicant/sign-up']`
     } else {
         passwordInput.classList.remove('is-invalid');
         signUpBtn.disabled = false;
+        return true;
     }
 
 

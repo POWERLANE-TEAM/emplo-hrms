@@ -14,6 +14,7 @@ class SignUp extends Component
     private $position;
     public $email;
     public $password;
+    public $password_confirmation;
     public $consent;
     // public $captcha;
 
@@ -31,7 +32,8 @@ class SignUp extends Component
             'email' => 'required|email:rfc,dns,spoof|max:255|unique:users|valid_email_dns',
             'password' => [
                 'required',
-                Password::defaults()
+                Password::defaults(),
+                'confirmed'
             ],
             'consent' => 'accepted',
         ]);

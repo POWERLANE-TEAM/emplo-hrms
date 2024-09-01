@@ -19,10 +19,7 @@ const PASSWORD_CONFIRM_VALIDATION = {
 let passwordConfirmValidator = new InputValidator(PASSWORD_CONFIRM_VALIDATION);
 
 function setConfirmPassword(element) {
-    console.log(element)
     let passwordElement = document.querySelector(`[aria-owns~="${element.id}"]`);
-    console.log(passwordElement)
-
     let passwordVal = passwordElement.value;
     let passwordConfirmVal = element.value;
 
