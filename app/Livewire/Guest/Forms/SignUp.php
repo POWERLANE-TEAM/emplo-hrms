@@ -22,8 +22,8 @@ class SignUp extends Component
     public function showPosition($position)
     {
         $this->placeholder();
-        $this->position = new Position($position);
-        // dd($this->position);
+        $this->position = new Position($position[0]);
+        // dd($position);
     }
 
     public function store()
