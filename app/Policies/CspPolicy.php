@@ -32,6 +32,9 @@ class CspPolicy extends CustomSpatiePolicy
 
             $this
                 ->addDirective(Directive::SCRIPT, 'localhost:*')
+                ->addDirective(Directive::SCRIPT, 'unsafe-inline');
+
+            $this
                 ->addDirective(Directive::STYLE, 'localhost:*');
 
             $this
