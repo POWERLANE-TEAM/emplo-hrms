@@ -134,6 +134,9 @@ initPasswordConfirmValidation(`${sigUpFormString} input[name="password_confirmat
     validateSignUpForm(sigUpFormString);
 });
 
+const passwordConfirmPaste = new GlobalListener('paste', document, `${sigUpFormString} input[name="password_confirmation"]`, e => e.preventDefault());
+const passwordConfirmDrop = new GlobalListener('drop', document, `${sigUpFormString} input[name="password_confirmation"]`, e => e.preventDefault());
+
 function validateOnSignUp(event) {
     validateSignUpForm();
 }
