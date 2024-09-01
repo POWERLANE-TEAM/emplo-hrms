@@ -9,9 +9,8 @@
         @livewireScripts(['nonce' => $nonce])
         {{-- @livewireScriptConfig(['nonce' => $nonce]) --}}
 
-        @vite(['resources/js/index.js'])
         <script src="build/assets/nbp.min.js" defer></script>
-        {{-- <script src="build/assets/eval-password.js" defer></script> --}}
+        @vite(['resources/js/index.js'])
 
         <script src="https://unpkg.com/lucide@latest"></script>
 
