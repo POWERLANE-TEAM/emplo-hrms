@@ -55,7 +55,7 @@
                     is-invalid
                 @enderror
             "
-                aria-label="Show/Hide Password">
+                aria-label="Show/Hide Password" aria-keyshortcuts="alt+f8">
             <div class="invalid-feedback" role="alert" id="signUp-password-feedback">
                 @error('password')
                     {{ $message }}

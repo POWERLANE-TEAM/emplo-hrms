@@ -28,6 +28,6 @@
             <span class="placeholder py-5  col-8"></span>
         </div>
 
-        <a class="btn btn-lg btn-primary disabled placeholder col-12 mt-5" aria-disabled="true"></a>
+        <button class="btn btn-lg btn-primary disabled placeholder col-12 mt-5" aria-disabled="true"></button>
     </form>
 </section>

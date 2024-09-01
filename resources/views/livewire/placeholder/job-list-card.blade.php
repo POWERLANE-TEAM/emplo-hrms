@@ -1,4 +1,4 @@
-<sidebar class="nav nav-tabs col-12 col-md-5 " id="jobs-list" role="tablist" nonce="csp_nonce()">
+<sidebar class="nav nav-tabs col-12 col-md-5 " id="jobs-list" role="tablist" aria-busy="true" nonce="csp_nonce()">
 
     @foreach ($positions as $position)
         {{-- Insert Image of positions --}}
@@ -7,16 +7,17 @@
 
     @for ($i = 0; $i < 3; $i++)
         <li class="card nav-item ps-0 " role="presentation">
-            <button class="nav-link d-flex flex-row column-gap-4" role="tab">
+            <button class="nav-link d-flex flex-row column-gap-4" role="tab" aria-busy="true"
+                aria-label="Loading job list" aria>
                 <div class="placeholder-glow col-4 pt-3 px-2 ">
                     <span class="placeholder" style="width: calc(4.5rem + 2vw); height: calc(4.5rem + 2vw);"></span>
                 </div>
                 <div class="col-7 text-start">
                     <header>
                         <hgroup class="placeholder-glow d-flex flex-column mb-3">
-                            <h4 class=" text-black placeholder-glow">
+                            <div class=" text-black placeholder-glow">
                                 <span class="placeholder py-3  col-8"></span>
-                            </h4>
+                            </div>
                             <p class="text-primary placeholder-glow">
                                 <span class="placeholder py-2  col-12"></span>
                             </p>

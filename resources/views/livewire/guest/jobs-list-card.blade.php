@@ -9,14 +9,14 @@
             <button value="{{ $position->position_id }}"
                 x-on:click.debounce.10ms="$dispatch('job-selected', [$event.target.value])"
                 class="nav-link d-flex flex-row column-gap-4" id="{{ $position->position_id }}-tab" data-bs-toggle="tab"
-                role="tab" aria-controls="job-view-pane">
+                role="tab" aria-controls="job-view-pane" aria-label="{{ $position->title }}">
                 <div class="col-4 pt-3 px-2 ">
                     <img src="http://placehold.it/74/74" alt="" loading="lazy">
                 </div>
                 <div class="col-7 text-start">
                     <header>
                         <hgroup>
-                            <h4 class="card-title text-black mb-0">{{ $position->title }}</h4>
+                            <div class="card-title fs-3 fw-bold text-black mb-0">{{ $position->title }}</div>
                             <p class="fs-4 text-primary">Card title</p>
                         </hgroup>
                     </header>

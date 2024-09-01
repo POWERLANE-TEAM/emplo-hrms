@@ -143,9 +143,9 @@
             <section class="first-section ">
                 <div class="row">
                     <div class="left col-12 col-md-6 align-content-center">
-                        <h3 class="text-primary fs-1 fw-bold tw-tracking-wide">
+                        <div class="text-primary fs-1 fw-bold tw-tracking-wide" aria-label="We are hiring!">
                             We are hiring!
-                        </h3>
+                        </div>
                         <p class="fs-4 fw-medium">
                             Exciting career opportunities available.
                             <br>
