@@ -23,18 +23,31 @@ class CspPolicy extends CustomSpatiePolicy
             */
 
             $this
-                ->addDirective(Directive::BASE, 'localhost:*')
-                ->addDirective(Directive::CONNECT, 'localhost:*')
-                ->addDirective(Directive::CONNECT, 'ws://localhost:*') /* websocket */
                 ->addDirective(Directive::DEFAULT, 'localhost:*')
-                ->addDirective(Directive::IMG, 'localhost:*')
-                ->addDirective(Directive::MEDIA, 'localhost:*')
-                ->addDirective(Directive::OBJECT, 'localhost:*')
+                ->addDirective(Directive::BASE, 'localhost:*');
+
+            $this
+                ->addDirective(Directive::CONNECT, 'localhost:*')
+                ->addDirective(Directive::CONNECT, 'ws://localhost:*'); /* websocket */
+
+            $this
                 ->addDirective(Directive::SCRIPT, 'localhost:*')
-                ->addDirective(Directive::STYLE, 'localhost:*')
+                ->addDirective(Directive::SCRIPT, 'unsafe-inline');
+
+            $this
+                ->addDirective(Directive::STYLE, 'localhost:*');
+
+            $this
+                ->addDirective(Directive::IMG, 'localhost:*')
                 ->addDirective(Directive::IMG, 'www.placeholder.com')
                 ->addDirective(Directive::IMG, 'via.placeholder.com')
-                ->addDirective(Directive::IMG, 'placehold.it');
+                ->addDirective(Directive::IMG, 'https://dummyimage.com')
+                ->addDirective(Directive::IMG, 'placehold.it')
+                ->addDirective(Directive::MEDIA, 'localhost:*')
+                ->addDirective(Directive::OBJECT, 'localhost:*');
+
+            $this
+                ->addDirective(Directive::FONT, 'data:');
         }
 
         // $this
@@ -42,10 +55,22 @@ class CspPolicy extends CustomSpatiePolicy
         //     ->addDirective(Directive::IMG, Scheme::DATA);
 
         $this->addDirective(Directive::STYLE, 'unsafe-inline');
-        $this->addDirective(Directive::DEFAULT, 'fonts.bunny.net');
+        $this->addDirective(Directive::STYLE, 'https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta2/dist/css/bootstrap-select.min.css');
+        $this->addDirective(Directive::STYLE, 'https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css');
         $this->addDirective(Directive::STYLE, 'fonts.bunny.net');
+
+        $this->addDirective(Directive::FONT, 'data:');
+        $this->addDirective(Directive::FONT, 'fonts.bunny.net');
+
+        $this->addDirective(Directive::IMG, 'data:');
+
+        $this->addDirective(Directive::SCRIPT, 'unsafe-eval'); /* Di ko talaga mapagana livewire without this */
+        // $this->addDirective(Directive::SCRIPT, 'strict-dynamic');
         $this->addDirective(Directive::SCRIPT, 'https://unpkg.com/lucide@latest');
         $this->addDirective(Directive::SCRIPT, 'https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js');
-        $this->addDirective(Directive::IMG, 'data:');
+        $this->addDirective(Directive::SCRIPT, 'https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta2/dist/js/bootstrap-select.min.js');
+        $this->addDirective(Directive::SCRIPT, 'https://kit.fontawesome.com/your-fontawesome-kit-id.js');
+        // $this->addDirective(Directive::SCRIPT, 'unsafe-inline'); /* Di ko talaga mapagana without this */
+        // $this->addDirective(Directive::SCRIPT, 'http://localhost:5173/resources/js/livewire.js');
     }
 }

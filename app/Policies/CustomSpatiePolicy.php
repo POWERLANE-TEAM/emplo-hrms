@@ -19,8 +19,9 @@ class CustomSpatiePolicy extends Policy
             ->addDirective(Directive::MEDIA, Keyword::SELF)
             ->addDirective(Directive::OBJECT, Keyword::NONE)
             ->addDirective(Directive::SCRIPT, Keyword::SELF)
-            ->addDirective(Directive::STYLE, Keyword::SELF)
-            ->addNonceForDirective(Directive::SCRIPT);
+            ->addDirective(Directive::STYLE, Keyword::SELF);
+        // ->addNonceForDirective(Directive::SCRIPT); /* Disabling kc ayaw magwork ng livewire wtf*/
+        // ->addNonceForDirective(Directive::STYLE);
     }
 
     public function removeDirective(string $directive, string|array|bool $values, string $mode = 'exact'): self
