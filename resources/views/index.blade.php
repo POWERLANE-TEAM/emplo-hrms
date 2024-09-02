@@ -9,7 +9,7 @@
         @livewireScripts(['nonce' => $nonce])
         {{-- @livewireScriptConfig(['nonce' => $nonce]) --}}
 
-        <script src="build/assets/nbp.min.js" defer></script>
+        <script src="build/assets/nbp.min.js"></script>
         @vite(['resources/js/index.js'])
 
         <script src="https://unpkg.com/lucide@latest"></script>
@@ -51,6 +51,8 @@
         </style>
 
         {{-- END: Critical Styles --}}
+
+        {!! RecaptchaV3::initJs() !!}
 
     </x-html.head>
 
@@ -106,11 +108,15 @@
                 </div>
                 <div class="d-flex align-items-center fw-bold">
                     <section class="desktop-topnav d-none d-md-flex">
-                        <x-nav-link href="/about-us" class="nav-link" :active="request()->is('about-us')">About</x-nav-link>
-                        <x-nav-link href="/contact-us" class="nav-link" :active="request()->is('contact-us')">Contact</x-nav-link>
-                        <x-nav-link type="button" class="btn btn-secondary bg-white text-primary nav-link">Sign
-                            Up
-                        </x-nav-link>
+                        <x-nav-link href="/about-us" wire:navigate class="nav-link" :active="request()->is('about-us')">About</x-nav-link>
+                        <x-nav-link href="/contact-us" wire:navigate class="nav-link" :active="request()->is('contact-us')">Contact</x-nav-link>
+
+                        @guest
+                            <x-nav-link type="button" hreflang="en-PH" role="navigation" aria-label="Apply" aria-controls="signUpForm" data-bs-toggle="modal" data-bs-target="#signUpForm" wire:ignore class="btn btn-secondary bg-white text-primary nav-link">Sign
+                                Up
+                            </x-nav-link>
+                        @endguest
+
                     </section>
 
                     <div class="dropdown mobile-topnav d-block d-md-none">

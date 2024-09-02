@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->increments('user_id');
             $table->string('email', 191)->unique();
-            $table->string('password', 191);
+            $table->string('password', 191)->nullable();
             $table->string('google_id', 191)->nullable();
             $table->enum('role', array('GUEST', 'USER', 'MANAGER', 'SYSADMIN'));
             $table->integer('applicant_id')->unsigned()->nullable();

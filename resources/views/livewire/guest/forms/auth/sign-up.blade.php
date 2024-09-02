@@ -106,5 +106,9 @@
             disabled>Sign
             Up</button>
 
+        <div class="mt-4">
+            <a href="/auth/google/redirect">Sign up using Google</a>
+        </div>
+        
     </form>
 </section>

@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('p@ssw0rd'),
         ]);
 
-        User::factory(50)->create();
+        User::factory(10)->create();
         $this->call(PositionSeeder::class);
     }
 }

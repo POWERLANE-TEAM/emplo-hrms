@@ -6,7 +6,9 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "josiasmontag/laravel-recaptchav3": "^1.0",
         "laravel/framework": "^11.9",
+        "laravel/socialite": "^5.15",
         "laravel/tinker": "^2.9",
         "livewire/livewire": "^3.5",
         "spatie/laravel-csp": "^2.10"

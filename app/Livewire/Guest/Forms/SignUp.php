@@ -2,11 +2,13 @@
 
 namespace App\Livewire\Guest\Forms;
 
-use App\Models\Position;
 use App\Models\User;
-use Illuminate\Validation\Rules\Password;
-use Livewire\Attributes\On;
 use Livewire\Component;
+use App\Models\Position;
+use Livewire\Attributes\On;
+use Illuminate\Support\Facades\Auth;
+use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Validation\Rules\Password;
 
 class SignUp extends Component
 {
@@ -53,7 +55,7 @@ class SignUp extends Component
 
     public function render()
     {
-        return view('livewire.guest.forms.sign-up', ['position' => $this->position]);
+        return view('livewire.guest.forms.auth.sign-up', ['position' => $this->position]);
     }
 
     public function rendered()
