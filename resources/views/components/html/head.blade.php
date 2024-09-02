@@ -48,6 +48,7 @@
         Debugbar::getJavascriptRenderer()->setCspNonce($nonce);
     @endphp
 
+    {!! RecaptchaV3::initJs() !!}
 
     <script nonce="{{ csp_nonce() }}">
         console.time("DOMContentLoaded");

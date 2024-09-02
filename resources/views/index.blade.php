@@ -52,8 +52,6 @@
 
         {{-- END: Critical Styles --}}
 
-        {!! RecaptchaV3::initJs() !!}
-
     </x-html.head>
 
     <body class="">
@@ -108,8 +106,8 @@
                 </div>
                 <div class="d-flex align-items-center fw-bold">
                     <section class="desktop-topnav d-none d-md-flex">
-                        <x-nav-link href="/about-us" wire:navigate class="nav-link" :active="request()->is('about-us')">About</x-nav-link>
-                        <x-nav-link href="/contact-us" wire:navigate class="nav-link" :active="request()->is('contact-us')">Contact</x-nav-link>
+                        <x-nav-link href="/about" wire:navigate class="nav-link" :active="request()->is('about-us')">About</x-nav-link>
+                        <x-nav-link href="/contact" wire:navigate class="nav-link" :active="request()->is('contact-us')">Contact</x-nav-link>
 
                         @guest
                             <x-nav-link type="button" hreflang="en-PH" role="navigation" aria-label="Apply" aria-controls="signUpForm" data-bs-toggle="modal" data-bs-target="#signUpForm" wire:ignore class="btn btn-secondary bg-white text-primary nav-link">Sign
