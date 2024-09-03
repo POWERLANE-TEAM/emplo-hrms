@@ -9,7 +9,7 @@
         @livewireScripts(['nonce' => $nonce])
         {{-- @livewireScriptConfig(['nonce' => $nonce]) --}}
 
-        <script src="build/assets/nbp.min.js"></script>
+        {{-- <script src="build/assets/nbp.min.js"></script> --}}
         @vite(['resources/js/index.js'])
 
         <script src="https://unpkg.com/lucide@latest"></script>

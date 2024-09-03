@@ -2,19 +2,19 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Position extends Model
+class LeaveCategory extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'position_id';
+    protected $primaryKey = 'leave_id';
 
-    protected $fillable = [
-        'title',
-        'description'
+    protected $guarded = [
+        'leave_id',
     ];
 
     /*
@@ -23,8 +23,8 @@ class Position extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function employees(): HasMany
+    public function employees(): BelongsToMany
     {
-        return $this->hasMany(Employee::class, 'position_id', 'position_id');
+        return $this->belongsToMany(Employee::class, 'employee_leaves', 'employee_id', 'leave_id');
     }
 }

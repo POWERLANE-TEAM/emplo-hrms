@@ -6,15 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Position extends Model
+class Department extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'position_id';
+    protected $primaryKey = 'department_id';
 
     protected $fillable = [
-        'title',
-        'description'
+        'department_function',
     ];
 
     /*
@@ -25,6 +24,6 @@ class Position extends Model
 
     public function employees(): HasMany
     {
-        return $this->hasMany(Employee::class, 'position_id', 'position_id');
+        return $this->hasMany(Employee::class, 'department_id', 'department_id');
     }
 }
