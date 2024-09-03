@@ -4,17 +4,16 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('positions', function (Blueprint $table) {
-            $table->id('position_id');
-            $table->string('title', 191);
-            $table->text('description')->nullable();
+        Schema::create('leave_categories', function (Blueprint $table) {
+            $table->id('leave_id');
+            $table->string('leave_name', 255);
+            $table->tinyInteger('leave_balance');
             $table->timestamps();
         });
     }
@@ -24,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('positions');
+        Schema::dropIfExists('leave_categories');
     }
 };
