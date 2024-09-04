@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Guest\Forms;
+namespace App\Livewire\Auth;
 
 use App\Models\User;
 use Livewire\Component;
@@ -55,7 +55,7 @@ class SignUp extends Component
 
     public function render()
     {
-        return view('livewire.guest.forms.auth.sign-up', ['position' => $this->position]);
+        return view('livewire.auth.sign-up', ['position' => $this->position]);
     }
 
     public function rendered()

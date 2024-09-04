@@ -11,6 +11,10 @@ Route::get('/', function () {
     return view('index');
 }); // this should be change into a controller when about and contact components are created
 
+Route::get('/login', function () {
+    return view('login');
+});
+
 Route::get('/applicants/apply/{applyPage}', [ApplicantController::class, 'apply']);
 Route::get('/applicants/apply', [ApplicantController::class, 'apply']);
 

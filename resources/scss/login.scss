@@ -1,0 +1,253 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import 'core';
+@import 'style';
+@import 'icon/lucide';
+@import 'nav-link';
+@import 'nav-tabs';
+@import 'input/search';
+@import 'footer';
+@import 'btn-toggle-psw';
+@import 'input/checkbox';
+
+header {
+    --v-offset: clamp(1rem, 0.5rem + 0.5vw + 0.75vh, 5rem);
+    transition: background-color 0.5s ease;
+    // animation: bgSwipeDown 0.75s ease forwards;
+
+    nav {
+        padding: var(--v-offset) clamp(2rem, 1rem + 6vw, 10rem);
+        color: var(--main-white);
+
+        div,
+        section {
+            &:has(.nav-link):not(.home) {
+                gap: 0 calc(1.5rem + 3.6vw);
+
+            }
+        }
+
+        .nav-link,
+        button {
+            @extend %nav-link;
+        }
+    }
+}
+
+.first-section {
+
+    @media (min-width: 768px) {
+        min-height: 90vh;
+    }
+
+    transform: translateY(-2%);
+
+    .right {
+        transform: translateX(-2.5%);
+
+        .illus {
+            position: relative;
+            transform: translate(1.5rem, 2.5rem);
+        }
+    }
+
+    .box-icon {
+        width: fit-content;
+        color: var(--main-white);
+        border: none;
+        border-radius: 15px;
+        padding: clamp(1rem, 0.5rem + 0.5vw + 0.75vh, 5rem);
+        background-color: var(--main-lime);
+        filter: drop-shadow(0 0.25rem 0.25rem var(--bs-gray));
+
+        &:first-child {
+            // transform: translate(-75%, 115%);
+            transform: translate(calc((2rem + 1vw)*-1), calc(3rem + 3vw + 0.25vh));
+        }
+
+        &:last-child {
+            float: right;
+            // transform: translate(30%, -200%);
+            transform: translate(calc((1.25rem + 1vw) * -1), calc((2rem + 8vw + 0.25vh) * -1));
+        }
+    }
+
+
+    img.sapien {
+        width: clamp(100px, 25px + 30vw + 5vh, 2500px);
+        height: auto;
+
+
+    }
+
+}
+
+.second-section {
+    min-height: 90vh;
+
+    @media screen and (min-width: 768px) {
+        --job-info-min-h: clamp(300px, 50vh, 100svh);
+    }
+
+
+
+    input[type="search"] {
+        background-color: var(--main-green);
+    }
+
+    .job-listing {
+
+        sidebar {
+
+            min-height: var(--job-info-min-h);
+
+            @media screen and (max-width: 768px) {
+                max-width: calc(100cqw);
+                max-height: calc(128px + 10vw);
+            }
+
+            @media screen and (min-width: 768px) {
+                max-height: clamp(300px, 50vh, 100svh);
+            }
+
+
+
+            &.nav-tabs {
+                @media screen and (max-width: 768px) {
+                    overflow-x: auto;
+                    display: flex;
+                    flex-direction: column;
+                }
+
+                @media screen and (min-width: 768px) {
+                    overflow-y: auto;
+                    display: grid;
+                    grid-template-columns: 1fr;
+                    grid-template-rows: repeat(3, 1fr);
+                    grid-row-gap: 16px;
+                }
+
+                button * {
+                    /* to ignore click on child elements */
+                    pointer-events: none;
+                    /* To make it easier for script to capture click on button */
+                }
+            }
+
+
+            button {
+                max-height: 100%;
+            }
+
+        }
+
+
+    }
+
+    .job-content {
+        padding: clamp(1.5rem, 1rem + 0.5vw + 0.75vh, 5rem);
+        padding-left: clamp(1rem, 2.25rem + 1vw, 10rem);
+        min-height: var(--job-info-min-h);
+    }
+
+    .job-descr {
+        /* Need javascript to make dynamic max line value based on device height */
+        --max-lines: 9;
+        --line-height: 1.5;
+
+        max-height: calc(var(--max-lines) * 1em * var(--line-height));
+        line-height: var(--line-height);
+        overflow: hidden;
+        position: relative;
+
+        &:has(+ .showMoreToggle:not(:checked))::before {
+            content: "";
+            position: absolute;
+            height: calc(0.75rem * var(--line-height));
+            width: 100%;
+            bottom: 0;
+            pointer-events: none;
+            background: linear-gradient(to bottom, transparent, var(--bs-secondary-bg-subtle));
+        }
+
+        &:has(+ .showMoreToggle:checked) {
+            max-height: none;
+        }
+
+    }
+
+    .showMoreToggle {
+        appearance: none;
+        position: relative;
+        padding: 0.5em;
+        text-decoration: underline;
+
+        &:not(:checked) {
+            &::before {
+                content: "Show More";
+            }
+
+            &::after {
+                content: "\003c";
+                position: absolute;
+                font-size: xx-large;
+                font-weight: 100;
+                transform: rotate(-90deg) translate(11px, 0.25rem) scale(1.05);
+            }
+        }
+
+        &:checked {
+            &::before {
+                content: "Collapse";
+            }
+
+            &::after {
+                content: "\003c";
+                position: absolute;
+                font-size: xx-large;
+                transform: rotate(90deg) translate(-11px, -0.25rem) scale(1.05);
+            }
+        }
+    }
+
+
+
+}
+
+.signUp-form {
+
+    form {
+        .input-group {
+            .icon {
+                margin-top: calc(0.5rem + 0.5vw);
+            }
+        }
+    }
+}
+
+.terms-condition {
+    text-wrap: nowrap;
+    text-wrap-style: pretty;
+
+    .checkbox-primary {
+        @include custom-checkbox(var(--bs-black), var(--bs-primary));
+    }
+
+    .checkbox-label {
+        padding-left: clamp(1.5rem, 1rem + 1.25vw, 5vw);
+    }
+
+    span a:last-child {
+        text-wrap: wrap;
+    }
+}
+
+input[type="password"]:has(~.toggle-password) {
+    padding-right: calc(4.5rem + 0.1vw);
+}
+
+footer {
+    background-color: #fafcf7;
+}

@@ -19,14 +19,15 @@
                     min-width: 83svw;
                     width: 83svw;
                     height: auto;
-                    left: 17%;
-                    transform: scaleX(1.30) scaleY(1.1);
+                    top: -300px;
+                    left: 30%;
+                    transform: rotate(355deg);
                 }
 
                 svg.right-circle {
                     position: absolute;
                     right: calc(-96px + 1vw);
-                    top: 87vh;
+                    top: 60vh;
                     z-index: -10;
                 }
 
@@ -34,7 +35,7 @@
                     position: absolute;
                     // left: -3%;
                     left: calc(-32px + 1vw);
-                    top: 47vh;
+                    top: 22vh;
                     z-index: -10;
                 }
             }
@@ -48,7 +49,7 @@
 
     <body class="">
 
-        <section class="top-vector">
+        <section class="top-vector z-n1" draggable="false" ondragstart="return;">
 
             {{-- <div> --}}
             <picture>
@@ -84,7 +85,7 @@
 
         </section>
 
-        <header class="top-nav sticky-md-top">
+        <header class="top-nav sticky-md-top no-drag" draggable="false" ondragstart="return;">
             <nav class="d-flex justify-content-between align-items-center">
                 <div class="d-flex site-name home ms-md-5">
                     <div class="align-content-center">
@@ -94,51 +95,11 @@
                     </div>
 
                     <x-nav-link href="/" :active="request()->is('/')" class="no-hover ps-0  nav-link">
-                        <h1 class="fs-2 text-white">Powerlane</h1>
+                        <h1 class="fs-2 text-primary">Powerlane</h1>
                     </x-nav-link>
                 </div>
                 <div class="d-flex align-items-center fw-bold">
-                    <section class="desktop-topnav d-none d-md-flex">
-                        <x-nav-link href="/about-us" class="nav-link" :active="request()->is('about-us')">About</x-nav-link>
-                        <x-nav-link href="/contact-us" class="nav-link" :active="request()->is('contact-us')">Contact</x-nav-link>
-                        @guest
-                            <x-nav-link type="button" class="btn btn-secondary bg-white text-primary nav-link">Sign
-                                Up
-                            </x-nav-link>
-                        @endguest
-                        @auth
-                            <x-nav-link type="button" class="btn btn-secondary bg-white text-primary nav-link">Logout
-                            </x-nav-link>
-                        @endauth
 
-                    </section>
-
-                    <div class="dropdown mobile-topnav d-block d-md-none">
-                        <button class="bg-transparent border-0 dropdown-toggle " type="button"
-                            data-bs-toggle="dropdown" aria-label="Open Notifications">
-                            <x-icons.menu-fries></x-icons.menu-fries>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li class="dropdown-item">
-                                <x-nav-link href="/about-us" class="nav-link" :active="request()->is('about-us')">About</x-nav-link>
-                            </li>
-                            <li class="dropdown-item">
-                                <x-nav-link href="/contact-us" class="nav-link" :active="request()->is('contact-us')">Contact</x-nav-link>
-                            </li>
-                            @guest
-                                <li class="dropdown-item">
-                                    <x-nav-link type="button" class="btn btn-secondary bg-white text-primary nav-link">Sign
-                                        Up
-                                    </x-nav-link>
-                                </li>
-                            @endguest
-
-                            @auth
-                                <x-nav-link type="button" class="btn btn-secondary bg-white text-primary nav-link">Logout
-                                </x-nav-link>
-                            @endauth
-                        </ul>
-                    </div>
                 </div>
             </nav>
         </header>
