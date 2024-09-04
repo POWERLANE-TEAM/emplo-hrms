@@ -1,25 +1,38 @@
 <?php
 
+use App\Models\Applicant;
+use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->increments('user_id');
+            $table->id('user_id');
             $table->string('email', 191)->unique();
-            $table->string('password', 191);
+            $table->string('password', 191)->nullable();
             $table->string('google_id', 191)->nullable();
-            $table->enum('role', array('GUEST', 'USER', 'MANAGER', 'SYSADMIN'));
-            $table->integer('applicant_id')->unsigned()->nullable();
-            $table->integer('employee_id')->unsigned()->nullable();
+            $table->enum('role', ['GUEST', 'USER', 'MANAGER', 'SYSADMIN']);
+
+            $table->foreignIdFor(Applicant::class, 'applicant_id')
+                ->nullable()
+                ->constrained('applicants', 'applicant_id')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+
+            $table->foreignIdFor(Employee::class, 'employee_id')
+                ->nullable()
+                ->constrained('employees', 'employee_id')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+
+            $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

@@ -4,17 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Position extends Model
+class ApplicantDoc extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'position_id';
+    protected $primaryKey = 'applicant_doc_id';
 
     protected $fillable = [
-        'title',
-        'description'
+        'checked_by',
     ];
 
     /*
@@ -23,8 +22,8 @@ class Position extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function employees(): HasMany
+    public function checkedBy(): BelongsTo
     {
-        return $this->hasMany(Employee::class, 'position_id', 'position_id');
+        return $this->belongsTo(Employee::class, 'checked_by', 'applicant_doc_id');
     }
 }

@@ -33,6 +33,9 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <!-- CRSF Token -->
+    <meta name="csrf-token" content="{{{ csrf_token() }}}">
+
     <x-html.meta-seo :no_crawl="$no_crawl" :description="$description"></x-html.meta-seo>
     @php
         $nonce = csp_nonce();
@@ -45,6 +48,7 @@
         Debugbar::getJavascriptRenderer()->setCspNonce($nonce);
     @endphp
 
+    {!! RecaptchaV3::initJs() !!}
 
     <script nonce="{{ csp_nonce() }}">
         console.time("DOMContentLoaded");
