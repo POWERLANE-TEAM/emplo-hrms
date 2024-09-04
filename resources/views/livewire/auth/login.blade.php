@@ -14,7 +14,7 @@
         @endif
     </hgroup>
 
-    <form wire:submit.prevent="store" action="applicant/sign-up" nonce="{{ $nonce }}">
+    <form wire:submit.prevent="store" action="/login" nonce="{{ $nonce }}">
         @csrf
 
         <x-form.email input_id="signUp-email" label="Email Address" input_name="email" auto_complete="email"

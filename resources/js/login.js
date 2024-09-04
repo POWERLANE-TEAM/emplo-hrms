@@ -52,10 +52,10 @@ document.addEventListener('livewire:init', () => {
   4. Reset form on confirmed discard signup (on modal dismiss)
 ------------------------------------------------------- */
 
-togglePassword(`form[action='applicant/sign-up']`, `#signUp-password`, `#toggle-psw`);
-togglePassword(`form[action='applicant/sign-up']`, `#signUp-password-confirm`, `#toggle-psw-confirm`);
+togglePassword(`form[action='/login']`, `#signUp-password`, `#toggle-psw`);
+togglePassword(`form[action='/login']`, `#signUp-password-confirm`, `#toggle-psw-confirm`);
 
-let sigUpFormString = `form[action='applicant/sign-up']`;
+let sigUpFormString = `form[action='/login']`;
 
 let signUpBtn = `#signUpBtn`;
 
@@ -77,7 +77,7 @@ const signUpConsentEvent = new GlobalListener('input', document, `${sigUpFormStr
     validateSignUpForm(sigUpFormString);
 });
 
-function validateSignUpForm(sigUpFormString = `form[action='applicant/sign-up']`) {
+function validateSignUpForm(sigUpFormString = `form[action='/login']`) {
     const stack = new Error().stack;
 
     let signUpBtn = document.querySelector(`${sigUpFormString} #signUpBtn`);
@@ -143,7 +143,7 @@ const signUpEvent = new GlobalListener('click', document, `${sigUpFormString} ${
     END: CHECK SIGNUP FORM
 ------------------------------------------------------- */
 
-// console.log(document.querySelector(`form[action='applicant/sign-up'] #signUpBtn`))
+// console.log(document.querySelector(`form[action='/login'] #signUpBtn`))
 
 
 // $("#form_id").trigger("reset");
