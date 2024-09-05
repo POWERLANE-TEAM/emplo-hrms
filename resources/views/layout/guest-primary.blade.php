@@ -7,6 +7,8 @@
 
         {{-- START: Critical Styles --}}
         {{-- Need to reduce Cumulative Layout Shift --}}
+
+        {{-- @assets --}}
         <style nonce="{{ $nonce }}">
             section.top-vector {
                 position: absolute;
@@ -39,15 +41,15 @@
                 }
             }
         </style>
+        {{-- @endassets --}}
+
 
         {{-- END: Critical Styles --}}
 
         @yield('head')
-
     </x-html.head>
 
     <body class="">
-
         <section class="top-vector">
 
             {{-- <div> --}}
@@ -102,13 +104,12 @@
                         <x-nav-link href="/about-us" class="nav-link" :active="request()->is('about-us')">About</x-nav-link>
                         <x-nav-link href="/contact-us" class="nav-link" :active="request()->is('contact-us')">Contact</x-nav-link>
                         @guest
-                            <x-nav-link type="button" class="btn btn-secondary bg-white text-primary nav-link">Sign
-                                Up
+                            <x-nav-link href="/login" wire:navigate.hover
+                                class="btn btn-secondary bg-white text-primary nav-link">Login
                             </x-nav-link>
                         @endguest
                         @auth
-                            <x-nav-link type="button" class="btn btn-secondary bg-white text-primary nav-link">Logout
-                            </x-nav-link>
+                            @livewire('auth.logout', ['class' => 'btn btn-lg text-primary bg-white'])
                         @endauth
 
                     </section>
@@ -127,15 +128,14 @@
                             </li>
                             @guest
                                 <li class="dropdown-item">
-                                    <x-nav-link type="button" class="btn btn-secondary bg-white text-primary nav-link">Sign
-                                        Up
+                                    <x-nav-link href="/login" wire.navigate.hover
+                                        class="btn btn-secondary bg-white text-primary nav-link">Login
                                     </x-nav-link>
                                 </li>
                             @endguest
 
                             @auth
-                                <x-nav-link type="button" class="btn btn-secondary bg-white text-primary nav-link">Logout
-                                </x-nav-link>
+                                @livewire('auth.logout')
                             @endauth
                         </ul>
                     </div>

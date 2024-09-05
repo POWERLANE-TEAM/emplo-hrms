@@ -2,7 +2,7 @@
     $nonce = csp_nonce();
 @endphp
 
-@extends('layout.guest', ['description' => 'Guest Layout', 'nonce' => $nonce])
+@extends('layout.guest-primary', ['description' => 'Guest Layout', 'nonce' => $nonce])
 
 @section('head')
     <title>Home Page</title>

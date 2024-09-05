@@ -8,7 +8,7 @@ import togglePassword from './toggle-password.js';
 import { initPasswordEvaluator, evalPassword } from './forms/eval-password.js';
 import InputValidator, { setInvalidMessage } from './forms/input-validator.js';
 import initEmailValidation, { validateEmail } from './forms/email-validation.js';
-import initPasswordValidation, { validatePassword } from './forms/password-validation.js';
+import PasswordValidator, { DEFAULT_PASSWORD_VALIDATION } from './forms/password-validation.js';
 import initPasswordConfirmValidation, { validateConfirmPassword } from './forms/password-confirm-validation.js';
 import debounce from './debounce-fn.js';
 import './applicant/top-bar.js'
@@ -34,6 +34,14 @@ document.addEventListener('livewire:init', () => {
         setTimeout(() => {
             initLucideIcons();
         }, 0);
+
+        let formCheckbox = document.querySelectorAll('form input[type="checkbox"]');
+
+        for (let i = 0; i < formCheckbox.length; i++) {
+            if (formCheckbox[i].type == 'checkbox') {
+                formCheckbox[i].checked = false;
+            }
+        }
     });
 
 
@@ -46,10 +54,9 @@ document.addEventListener('livewire:init', () => {
 
 /* ----------------------------------------------------
   TODO:
-  1. Add Captcha
-  2. Validate other form fields only if is touched
-  3. Track for unsaved or unfinished form
-  4. Reset form on confirmed discard signup (on modal dismiss)
+  1. Validate other form fields only if is touched
+  2. Track for unsaved or unfinished form
+  3. Reset form on confirmed discard signup (on modal dismiss)
 ------------------------------------------------------- */
 
 togglePassword(`form[action='applicant/sign-up']`, `#signUp-password`, `#toggle-psw`);
@@ -72,6 +79,8 @@ const signUpBool = {
     isValidPassword: false,
     isPasswordMatch: false,
 }
+
+const passwordValidator = new PasswordValidator(DEFAULT_PASSWORD_VALIDATION);
 
 const signUpConsentEvent = new GlobalListener('input', document, `${sigUpFormString} input[name="consent"]`, function (event) {
     validateSignUpForm(sigUpFormString);
@@ -101,7 +110,7 @@ function validateSignUpForm(sigUpFormString = `form[action='applicant/sign-up']`
     }
 
     if (!stack.includes('password-validation.js')) {
-        signUpBool.isValidPassword = validatePassword(`${sigUpFormString} input[name="password"]`);
+        signUpBool.isValidPassword = passwordValidator.validatePassword(`${sigUpFormString} input[name="password"]`);
     }
 
     if (!stack.includes('password-confirm-validation.js')) {
@@ -109,7 +118,7 @@ function validateSignUpForm(sigUpFormString = `form[action='applicant/sign-up']`
     }
 
     // console.log(sigUpFormString)
-    console.log(signUpBool)
+    // console.log(signUpBool)
     // console.log(consentAgreed)
     // console.log(isWeakPassword)
     if (!signUpBool.isValidEmail || !signUpBool.isValidPassword) {
@@ -133,7 +142,7 @@ initEmailValidation(`${sigUpFormString} input[name="email"]`, () => {
     validateSignUpForm(sigUpFormString);
 }, signUpBool);
 
-initPasswordValidation(`${sigUpFormString} input[name="password"]`, () => {
+passwordValidator.init(`${sigUpFormString} input[name="password"]`, () => {
     validateSignUpForm(sigUpFormString);
 }, signUpBool);
 

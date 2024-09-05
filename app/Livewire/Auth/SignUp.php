@@ -7,6 +7,7 @@ use Livewire\Component;
 use App\Models\Position;
 use Illuminate\Auth\Events\Registered;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Session;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Validation\Rules\Password;
@@ -14,12 +15,11 @@ use Laravel\Fortify\Contracts\CreatesNewUsers;
 
 class SignUp extends Component
 {
-
     private $position;
-    public $email;
-    public $password;
-    public $password_confirmation;
-    public $consent;
+    public $email = '';
+    public $password = '';
+    public $password_confirmation = '';
+    public $consent = false;
     // public $captcha;
 
     #[On('job-selected')]
@@ -60,6 +60,11 @@ class SignUp extends Component
         $new_user_created = $userCreate->create($new_user);
 
         event(new Registered($new_user_created));
+
+        $this->email = '';
+        $this->password = '';
+        $this->password_confirmation = '';
+        $this->consent = false;
     }
 
     public function placeholder()

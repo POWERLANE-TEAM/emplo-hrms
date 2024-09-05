@@ -2,7 +2,8 @@
 
 <label for="{{ $input_id }}" class="mb-1">{{ $label }}</label>
 <div class="input-group mb-3">
-    <div class="px-2 d-flex position-absolute icon" wire:ignore nonce="{{ $nonce }}"><i data-lucide="lock"></i>
+    <div class="px-2 d-flex position-absolute icon  text-primary" wire:ignore nonce="{{ $nonce }}"><i
+            data-lucide="lock"></i>
     </div>
     <input type="password" id="{{ $input_id }}"
         aria-owns="{{ $input_id }}-feedback {{ $has_confirm ? $input_id . '-confirm' : '' }}"

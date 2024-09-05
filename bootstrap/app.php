@@ -13,12 +13,6 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         //
         $middleware->append(\Spatie\Csp\AddCspHeaders::class);
-
-        if (app()->environment() === 'local') {
-            $middleware->trustProxies(at: [
-                'http://127.0.0.1:8000/',
-            ]);
-        }
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

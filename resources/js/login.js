@@ -8,10 +8,9 @@ import togglePassword from './toggle-password.js';
 import { initPasswordEvaluator, evalPassword } from './forms/eval-password.js';
 import InputValidator, { setInvalidMessage } from './forms/input-validator.js';
 import initEmailValidation, { validateEmail } from './forms/email-validation.js';
-import initPasswordValidation, { validatePassword } from './forms/password-validation.js';
+import PasswordValidator from './forms/password-validation.js';
 import initPasswordConfirmValidation, { validateConfirmPassword } from './forms/password-confirm-validation.js';
 import debounce from './debounce-fn.js';
-import './applicant/top-bar.js'
 // import './livewire.js'
 
 document.addEventListener("DOMContentLoaded", (event) => {
@@ -19,25 +18,16 @@ document.addEventListener("DOMContentLoaded", (event) => {
 });
 
 document.addEventListener('livewire:init', () => {
-    let loadSignUp = Livewire.on('guest-sign-up-load', (event) => {
-        initPasswordEvaluator();
-        loadSignUp();
-    });
-
-
-    Livewire.on('guest-job-view-pane-rendered', (event) => {
-        setTimeout(() => {
-            initLucideIcons();
-        }, 0);
-    });
-    Livewire.on('guest-sign-up-rendered', (event) => {
-        setTimeout(() => {
-            initLucideIcons();
-        }, 0);
-    });
-
+    initPasswordEvaluator();
+    setTimeout(() => {
+        initLucideIcons();
+    }, 0);
 
 });
+
+document.addEventListener('livewire:navigate', (event) => {
+    initLucideIcons();
+})
 
 
 /* ----------------------------------------------------
@@ -73,6 +63,25 @@ const signUpBool = {
     isPasswordMatch: false,
 }
 
+let PASSWORD_VALIDATION = {
+    clear_invalid: false,
+    clear_trailing: true,
+    trailing: {
+        ' ': '',
+    },
+    attributes: {
+        required: true,
+        max_length: 72,
+    },
+    errorFeedback: {
+        required: 'Password is required.',
+        max_length: 'Maximum password length is 72 characters.',
+    }
+}
+
+const passwordValidator = new PasswordValidator(PASSWORD_VALIDATION);
+
+
 const signUpConsentEvent = new GlobalListener('input', document, `${sigUpFormString} input[name="consent"]`, function (event) {
     validateSignUpForm(sigUpFormString);
 });
@@ -100,7 +109,7 @@ function validateSignUpForm(sigUpFormString = `form[action='/login']`) {
     }
 
     if (!stack.includes('password-validation.js')) {
-        signUpBool.isValidPassword = validatePassword(`${sigUpFormString} input[name="password"]`);
+        signUpBool.isValidPassword = passwordValidator.validatePassword(`${sigUpFormString} input[name="password"]`);
     }
 
     // console.log(sigUpFormString)
@@ -126,7 +135,7 @@ initEmailValidation(`${sigUpFormString} input[name="email"]`, () => {
     validateSignUpForm(sigUpFormString);
 }, signUpBool);
 
-initPasswordValidation(`${sigUpFormString} input[name="password"]`, () => {
+passwordValidator.init(`${sigUpFormString} input[name="password"]`, () => {
     validateSignUpForm(sigUpFormString);
 }, signUpBool);
 

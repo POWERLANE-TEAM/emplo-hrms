@@ -2,37 +2,63 @@
 
 namespace App\Livewire\Auth;
 
+use App\Http\Controllers\SessionController;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
+use Laravel\Fortify\Http\Requests\LoginRequest;
+use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 use Livewire\Component;
 use Livewire\Attributes\On;
-use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
-use Illuminate\Validation\Rules\Password;
 
 class Login extends Component
 {
 
-    public $email;
-    public $password;
+    public $email = '';
+    public $password = '';
+    public $remember = false;
     // public $captcha;
 
-    public function store()
+    // public function store(SessionController $session_controller)
+    // {
+    //     $login_credentials = $this->validate([
+    //         'email' => 'required|email',
+    //         'password' => [
+    //             'required',
+    //             // Password::defaults(),
+    //         ],
+    //     ]);
+
+    //     $session_controller->store($login_credentials);
+    // }
+    public function store(AuthenticatedSessionController $session_controller)
     {
+
         $login_credentials = $this->validate([
             'email' => 'required|email',
             'password' => [
                 'required',
-                // Password::defaults(),
             ],
         ]);
 
-        Auth::attempt($login_credentials);
+        if (!Auth::validate($login_credentials)) {
 
-        request()->session()->regenerate();
+            $this->password = '';
+            throw ValidationException::withMessages([
+                'credentials' => 'Incorrect credentials or user does not exist.'
+            ]);
+        }
 
-        return redirect('/');
+        $login_request = new LoginRequest();
 
-        // Login controller
+        $login_request->merge([
+            'email' => $this->email,
+            'password' => $this->password,
+            'remember' => $this->remember,
+        ]);
+
+        $session_controller->store($login_request);
     }
 
     // public function placeholder()

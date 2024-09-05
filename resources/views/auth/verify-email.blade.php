@@ -2,7 +2,7 @@
     $nonce = csp_nonce();
 @endphp
 
-@extends('layout.guest-01', ['description' => 'Veryfting email', 'nonce' => $nonce])
+@extends('layout.guest-secondary', ['description' => 'Veryfting email', 'nonce' => $nonce])
 
 @section('head')
     <title>Verify Email Notice</title>

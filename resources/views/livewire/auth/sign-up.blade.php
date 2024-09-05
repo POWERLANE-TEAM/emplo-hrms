@@ -3,15 +3,13 @@
 @endphp
 
 
-
-
 <section nonce="{{ $nonce }}" class=" px-md-4 py-md-3">
     <hgroup class="d-flex flex-column text-center mb-5 mt-md-n4">
         <header class="display-5 fw-semibold text-primary mb-3">
             Sign Up
         </header>
         @if (!empty($position))
-            <span class="fs-5">
+            <span class="fs-5" wire:ignore>
                 Register to apply for <span class="fs-5 fw-semibold">
                     {{ $position->title }}
 

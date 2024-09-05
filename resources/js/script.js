@@ -21,3 +21,22 @@ try {
 }
 
 
+try {
+    document.addEventListener('livewire:navigate', () => {
+        // Remove any existing internal styles in the head
+        document.querySelectorAll('style[data-livewire]').forEach(el => el.remove());
+
+        // Add new styles from the currently loaded page
+        const styles = document.querySelectorAll('style');
+        styles.forEach(style => {
+            const newStyle = document.createElement('style');
+            newStyle.setAttribute('data-livewire', 'true');
+            newStyle.innerHTML = style.innerHTML;
+            document.head.appendChild(newStyle);
+        });
+    });
+} catch (error) {
+    console.error(error)
+}
+
+
