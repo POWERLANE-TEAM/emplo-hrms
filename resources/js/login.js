@@ -36,18 +36,16 @@ document.addEventListener('livewire:navigate', (event) => {
 
 /* ----------------------------------------------------
   TODO:
-  1. Add Captcha
-  2. Validate other form fields only if is touched
-  3. Track for unsaved or unfinished form
-  4. Reset form on confirmed discard signup (on modal dismiss)
+  1. Validate other form fields only if is touched
+  2. Track for unsaved or unfinished form
+  3. Reset form on confirmed discard signup (on modal dismiss)
 ------------------------------------------------------- */
 
-togglePassword(`form[action='/login']`, `#signUp-password`, `#toggle-psw`);
-togglePassword(`form[action='/login']`, `#signUp-password-confirm`, `#toggle-psw-confirm`);
+togglePassword(`form[action='/login']`, `#userLogin-password`, `#toggle-psw`);
 
-let sigUpFormString = `form[action='/login']`;
+let userLoginFormString = `form[action='/login']`;
 
-let signUpBtn = `#signUpBtn`;
+let userLoginBtn = `#userLoginBtn`;
 
 function checkConsent(consentForm) {
     return consentForm.checked;
@@ -57,7 +55,7 @@ function checkCaptcha() {
     return true;
 }
 
-const signUpBool = {
+const userLoginBool = {
     isValidEmail: false,
     isValidPassword: false,
     isPasswordMatch: false,
@@ -82,19 +80,14 @@ let PASSWORD_VALIDATION = {
 const passwordValidator = new PasswordValidator(PASSWORD_VALIDATION);
 
 
-const signUpConsentEvent = new GlobalListener('input', document, `${sigUpFormString} input[name="consent"]`, function (event) {
-    validateSignUpForm(sigUpFormString);
-});
-
-function validateSignUpForm(sigUpFormString = `form[action='/login']`) {
+function validateUserLoginForm(userLoginFormString = `form[action='/login']`) {
     const stack = new Error().stack;
 
-    let signUpBtn = document.querySelector(`${sigUpFormString} #signUpBtn`);
-    let passwordInput = document.querySelector(`${sigUpFormString} input[name="password"]`);
+    let userLoginBtn = document.querySelector(`${userLoginFormString} #userLoginBtn`);
+    let passwordInput = document.querySelector(`${userLoginFormString} input[name="password"]`);
 
-    signUpBtn.disabled = true;
+    userLoginBtn.disabled = true;
 
-    // let consentAgreed = checkConsent(document.querySelector(`${sigUpFormString} input[name="consent"]`));
     let isCaptchaValid = checkCaptcha();
 
     let isWeakPassword;
@@ -105,19 +98,19 @@ function validateSignUpForm(sigUpFormString = `form[action='/login']`) {
     }
 
     if (!stack.includes('email-validation.js')) {
-        signUpBool.isValidEmail = validateEmail(`${sigUpFormString} input[name="email"]`);
+        userLoginBool.isValidEmail = validateEmail(`${userLoginFormString} input[name="email"]`);
     }
 
     if (!stack.includes('password-validation.js')) {
-        signUpBool.isValidPassword = passwordValidator.validatePassword(`${sigUpFormString} input[name="password"]`);
+        userLoginBool.isValidPassword = passwordValidator.validatePassword(`${userLoginFormString} input[name="password"]`);
     }
 
-    // console.log(sigUpFormString)
-    console.log(signUpBool)
+    // console.log(userLoginFormString)
+    console.log(userLoginBool)
     // console.log(consentAgreed)
     // console.log(isWeakPassword)
-    if (!signUpBool.isValidEmail) {
-        signUpBtn.disabled = true;
+    if (!userLoginBool.isValidEmail) {
+        userLoginBtn.disabled = true;
     } else
 
         if (isWeakPassword?.valueOf() == true) {
@@ -125,35 +118,30 @@ function validateSignUpForm(sigUpFormString = `form[action='/login']`) {
             setInvalidMessage(passwordInput, 'Password is weak.');
         } else {
             passwordInput.classList.remove('is-invalid');
-            signUpBtn.disabled = false;
+            userLoginBtn.disabled = false;
             return true;
         }
 
 }
 
-initEmailValidation(`${sigUpFormString} input[name="email"]`, () => {
-    validateSignUpForm(sigUpFormString);
-}, signUpBool);
+initEmailValidation(`${userLoginFormString} input[name="email"]`, () => {
+    validateUserLoginForm();
+}, userLoginBool);
 
-passwordValidator.init(`${sigUpFormString} input[name="password"]`, () => {
-    validateSignUpForm(sigUpFormString);
-}, signUpBool);
-
-
+passwordValidator.init(`${userLoginFormString} input[name="password"]`, () => {
+    validateUserLoginForm();
+}, userLoginBool);
 
 function validateOnSignUp(event) {
-    validateSignUpForm();
+    validateUserLoginForm();
 }
 
-const signUpEvent = new GlobalListener('click', document, `${sigUpFormString} ${signUpBtn}`, validateOnSignUp);
+const signUpEvent = new GlobalListener('click', document, `${userLoginFormString} ${userLoginBtn}`, validateOnSignUp);
 
 
 /* ----------------------------------------------------
     END: CHECK SIGNUP FORM
 ------------------------------------------------------- */
-
-// console.log(document.querySelector(`form[action='/login'] #signUpBtn`))
-
 
 // $("#form_id").trigger("reset");
 

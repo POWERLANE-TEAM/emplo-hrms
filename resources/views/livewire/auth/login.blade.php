@@ -28,32 +28,32 @@
             </div>
         @endif
 
-        <x-form.email input_id="signUp-email" label="Email Address" input_name="email" auto_complete="email"
-            :nonce="$nonce" aria-owns="signUp-email-feedback"
+        <x-form.email input_id="userLogin-email" label="Email Address" input_name="email" auto_complete="email"
+            :nonce="$nonce" aria-owns="userLogin-email-feedback"
             class=" {{ $errors->has('email') ? 'is-invalid' : '' }}">
 
             <x-slot:feedback>
                 @include('components.form.input-feedback', [
-                    'feedback_id' => 'signUp-email-feedback',
+                    'feedback_id' => 'userLogin-email-feedback',
                     'message' => $errors->first('email'),
                 ])
             </x-slot:feedback>
         </x-form.email>
 
-        <x-form.password input_id="signUp-password" label="Password" :has_confirm="true" input_name="password"
-            minlength="8" auto_complete="current-password" :nonce="$nonce" aria-owns="signUp-password-feedback"
+        <x-form.password input_id="userLogin-password" label="Password" :has_confirm="true" input_name="password"
+            minlength="8" auto_complete="current-password" :nonce="$nonce" aria-owns="userLogin-password-feedback"
             class=" {{ $errors->has('password') ? 'is-invalid' : '' }}">
 
             <x-slot:toggle_password>
                 @include('components.form.toggle-password', [
                     'toggler_id' => 'toggle-psw',
-                    'controls' => 'signUp-password',
+                    'controls' => 'userLogin-password',
                 ])
             </x-slot:toggle_password>
 
             <x-slot:feedback>
                 @include('components.form.input-feedback', [
-                    'feedback_id' => 'signUp-password-feedback',
+                    'feedback_id' => 'userLogin-password-feedback',
                     'message' => $errors->first('password'),
                 ])
             </x-slot:feedback>
@@ -74,7 +74,7 @@
                 </button>
             </div>
 
-            <button type="submit" nonce="{{ $nonce }}" id="signUpBtn"
+            <button type="submit" nonce="{{ $nonce }}" id="userLoginBtn"
                 class="btn btn-primary btn-lg col-12 order-1 order-md-2" disabled>
                 Sign In
             </button>
