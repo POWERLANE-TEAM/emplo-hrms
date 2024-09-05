@@ -7,7 +7,10 @@
     "require": {
         "php": "^8.2",
         "josiasmontag/laravel-recaptchav3": "^1.0",
+<<<<<<< HEAD
         "laravel/fortify": "^1.24",
+=======
+>>>>>>> b6962b43d277664217b684740e48393be15fe1c8
         "laravel/framework": "^11.9",
         "laravel/socialite": "^5.15",
         "laravel/tinker": "^2.9",
