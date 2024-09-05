@@ -1,0 +1,76 @@
+name: Fix Code Style
+
+on:
+  push: 
+    branches:
+      - master
+      - staging
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        php: [8.2, 8.3, 8.4]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with: 
+          php-version: ${{ matrix.php }}
+          extensions: json, dom, curl, libxml, mbstring
+          coverage: none
+
+      - name: Install Pint
+        run: composer global require laravel/pint
+
+      - name: Run Pint and Capture Output
+        id: run_pint
+        run: |
+          PINT_OUTPUT=$(pint)
+          echo "$PINT_OUTPUT"
+
+          SUMMARY=$(echo "$PINT_OUTPUT" | grep -A 1 "Laravel" | tail -n 1 | xargs)
+          echo "PINT_COMMIT_MESSAGE=$SUMMARY" >> $GITHUB_ENV
+
+      - name: Get Commit Details
+        id: commit_details
+        run: |
+          COMMIT_HASH=$(git rev-parse --short HEAD)
+          COMMIT_MESSAGE=$(git log -1 --pretty=format:'%s')
+          echo "COMMIT_HASH=${COMMIT_HASH}" >> $GITHUB_ENV
+          echo "COMMIT_MESSAGE=${COMMIT_MESSAGE}" >> $GITHUB_ENV
+          echo "Commit hash: ${COMMIT_HASH}"
+          echo "Commit message: ${COMMIT_MESSAGE}"
+
+      - name: Create Pull Request
+        id: pr
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: github-actions/lint-fixes
+          title: "style(laravel-pint): Fix Code Style Issues"
+          labels: code-style
+          base: staging
+          delete-branch: true
+          commit-message: "style: ${{ env.PINT_COMMIT_MESSAGE }}"
+          body: |
+            ### About
+            - This PR is auto-generated to fix code style issues identified by Laravel Pint. For more information on PHP code style fixer, do visit the official documentation of [Laravel Pint](https://laravel.com/docs/11.x/pint).
+
+            ### Commit details:
+            - ${{ env.COMMIT_HASH }} ${{ env.COMMIT_MESSAGE }}
+
+            <hr/>
+
+            > [!NOTE]
+            > If you need to configure this workflow file, go to [`.github/workflows/lint.yml`](https://github.com/POWERLANE-TEAM/emplo-hrms/edit/staging/.github/workflows/lint.yml) <br/> `- ${{ github.repository_owner }}`
+
+      - name: Check output of PR
+        if: ${{ always() }}
+        run: | 
+          echo "Pull Request Number - ${{ steps.pr.outputs.pull-request-number }}"
+          echo "Pull Request URL - ${{ steps.pr.outputs.pull-request-url }}"
