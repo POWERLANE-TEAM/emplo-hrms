@@ -63,6 +63,43 @@ class Employee extends Model
         return $this->hasOne(User::class, 'user_id', 'employee_id');
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Returns the records of employee's overtime requests
+    |--------------------------------------------------------------------------
+    */
+    public function overtimes(): HasMany
+    {
+        return $this->hasMany(Overtime::class, 'ot_requestor', 'employee_id');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Returns the records of employee intial approvals to other employee's 
+    | overtime requests.
+    | 
+    | Example of these are immediate supervisors/dept heads, they have authority
+    | to initially approved their subordinate's overtime requests.
+    | 
+    | This will precede the final approval.
+    |--------------------------------------------------------------------------
+     */
+    public function initialApprovals(): HasMany
+    {
+        return $this->hasMany(Overtime::class, 'init_approved_by', 'employee_id');
+    }
+
+    /* 
+    |--------------------------------------------------------------------------
+    | Returns the records of the final authority's(perhaps the HR manager) approvals
+    | to other employee's overtime requests.
+    |--------------------------------------------------------------------------
+    */
+    public function finalApprovals(): HasMany
+    {
+        return $this->hasMany(Overtime::class, 'final_approved_by', 'employee_id');
+    }
+
     public function position(): BelongsTo
     {
         return $this->belongsTo(Position::class, 'position_id', 'position_id');
@@ -76,6 +113,11 @@ class Employee extends Model
     public function status(): BelongsTo
     {
         return $this->belongsTo(EmploymentStatus::class, 'emp_status_id', 'emp_status_id');
+    }
+
+    public function shift(): BelongsTo
+    {
+        return $this->belongsTo(Shift::class, 'shift_id', 'shift_id');
     }
 
     public function leaves(): BelongsToMany
