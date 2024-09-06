@@ -1,3 +1,5 @@
+import './websocket.js';
+
 
 try {
     const currentWebpage = window.location.href;
