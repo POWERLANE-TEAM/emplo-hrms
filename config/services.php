@@ -39,6 +39,7 @@ return [
         'client_id' => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_SECRET_ID'),
         'redirect' => env('GOOGLE_REDIRECT'),
+        'one_tap_redirect' => env('GOOGLE_ONE_TAP_URI'),
     ],
 
 ];

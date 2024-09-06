@@ -1,12 +1,11 @@
 <?php
 
-use App\Http\Controllers\ApplicantController;
-use App\Http\Controllers\EmployeeController;
-use App\Http\Controllers\GoogleOneTapController;
-use App\Http\Controllers\JsonController;
-use App\Livewire\GoogleOAuth;
-use App\Livewire\Guest\Forms\SignUp;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\JsonController;
+use App\Livewire\Guest\Auth\GoogleOAuth;
+use App\Livewire\Guest\Auth\GoogleOneTap;
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\ApplicantController;
 
 Route::get('/', function () {
     return view('index');
@@ -33,5 +32,20 @@ Route::get('/auth/google/redirect', [GoogleOAuth::class, 'googleOauth'])
 Route::get('/auth/google/callback', [GoogleOAuth::class, 'googleCallback'])
     ->name('auth.google.callback');
 
-Route::get('auth/googleonetap/callback', [GoogleOneTapController::class, 'handleCallback'])
-    ->name('auth/googleonetap/callback');
+// Route::post('/auth/googleonetap/callback', [GoogleOneTap::class, 'handle'])
+//     ->name('auth/googleonetap/callback');
+
+Route::post('/auth/googleonetap/callback', function() {
+    $client = new \Google_Client(['client_id' => config('services.google.client_id')]);
+    $payload = $client->verifyIdToken($_POST['credential']);
+
+    if ($payload) {
+        $findUser = \App\Models\User::where('email', $payload['email'])->first();
+
+        if ($findUser) {
+            dd($payload);
+        } else {
+            dd($payload);
+        }
+    }  
+});

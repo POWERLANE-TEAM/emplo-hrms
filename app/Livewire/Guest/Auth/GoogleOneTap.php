@@ -1,30 +1,36 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Livewire\Guest\Auth;
 
-use Google\Client;
 use App\Models\User;
+use Livewire\Component;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class GoogleOneTapController extends Controller
+class GoogleOneTap extends Component
 {
+    // public function render()
+    // {
+    //     return view('livewire.guest.auth.google-one-tap');
+    // }
 
-    public function handleCallback(Request $request) {
+    public function handle(Request $request)
+    {
         return $this->oneTapLogin();
     }
 
-    public function oneTapLogin() {
+    public function oneTapLogin()
+    {
         $client = new \Google_Client(['client_id' => config('services.google.client_id')]);
         $payload = $client->verifyIdToken($_POST['credential']);
 
-        if($payload) {
+        if ($payload) {
             $findUser = User::where('email', $payload['email'])->first();
-            
-            if($findUser) {
-                return Auth::loginUsingId($findUser->id);
+
+            if ($findUser) {
+                dd($payload);
             } else {
-                return $payload;
+                dd($payload);
             }
         } else {
             return false;
