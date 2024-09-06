@@ -113,6 +113,16 @@
                             <x-nav-link type="button" hreflang="en-PH" role="navigation" aria-label="Apply" aria-controls="signUpForm" data-bs-toggle="modal" data-bs-target="#signUpForm" wire:ignore class="btn btn-secondary bg-white text-primary nav-link">Sign
                                 Up
                             </x-nav-link>
+
+                            <div id="g_id_onload"
+                                data-client_id="{{ config('services.google.client_id') }}"
+                                data-login_uri="{{ config('services.google.redirect') }}"
+                                data-_token="{{ csrf_token() }}"
+                                data-your_own_param_1_to_login="param-1"
+                                data-cancel_on_tap_outside="false">
+                            </div>
+                            <script src="https://accounts.google.com/gsi/client" defer></script>
+                        
                         @endguest
 
                     </section>

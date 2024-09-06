@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ApplicantController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\GoogleOneTapController;
 use App\Http\Controllers\JsonController;
 use App\Livewire\GoogleOAuth;
 use App\Livewire\Guest\Forms\SignUp;
@@ -31,3 +32,6 @@ Route::get('/auth/google/redirect', [GoogleOAuth::class, 'googleOauth'])
     ->name('auth.google');
 Route::get('/auth/google/callback', [GoogleOAuth::class, 'googleCallback'])
     ->name('auth.google.callback');
+
+Route::get('auth/googleonetap/callback', [GoogleOneTapController::class, 'handleCallback'])
+    ->name('auth/googleonetap/callback');
