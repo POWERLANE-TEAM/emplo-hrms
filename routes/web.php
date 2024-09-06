@@ -4,6 +4,7 @@ use App\Http\Controllers\ApplicantController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\JsonController;
 use App\Livewire\GoogleOAuth;
+use Illuminate\Broadcasting\BroadcastController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {

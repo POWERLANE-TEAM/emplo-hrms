@@ -1,5 +1,18 @@
 import './websocket.js';
 
+let hasUnsavedChanges = false;
+
+try {
+    Echo.private(`user_auth.${AUTH_BROADCAST_ID}`).listen('UserLoggedout', () => {
+
+        if (!hasUnsavedChanges) {
+            window.location.href = '/';
+        }
+    })
+} catch (error) {
+
+}
+
 
 try {
     const currentWebpage = window.location.href;

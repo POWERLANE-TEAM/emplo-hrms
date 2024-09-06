@@ -71,6 +71,15 @@
                 console.timeEnd("complete");
             }
         });
+
+        @php
+            if (Auth::check()) {
+                $user_session = session()->getId();
+                $auth_broadcast_id =   hash('sha512', $user_session . Auth::user()->email . $user_session);
+
+                echo "const AUTH_BROADCAST_ID = `" . $auth_broadcast_id . "`;";
+            }
+        @endphp
     </script>
 
     <!-- Fonts -->
