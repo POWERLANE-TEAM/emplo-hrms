@@ -2,23 +2,24 @@
 
 namespace App\Livewire\Auth;
 
-use App\Models\User;
-use Livewire\Component;
 use App\Models\Position;
+use App\Models\User;
 use Illuminate\Auth\Events\Registered;
-use Livewire\Attributes\On;
-use Livewire\Attributes\Session;
-use Illuminate\Support\Facades\Auth;
-use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Validation\Rules\Password;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
+use Livewire\Attributes\On;
+use Livewire\Component;
 
 class SignUp extends Component
 {
     private $position;
+
     public $email = '';
+
     public $password = '';
+
     public $password_confirmation = '';
+
     public $consent = false;
     // public $captcha;
 
@@ -54,7 +55,7 @@ class SignUp extends Component
             'email' => $this->email,
             'password' => $this->password,
             'password_confirmation' => $this->password_confirmation,
-            'consent' => $this->consent
+            'consent' => $this->consent,
         ];
 
         $new_user_created = $userCreate->create($new_user);
@@ -70,6 +71,7 @@ class SignUp extends Component
     public function placeholder()
     {
         $this->dispatch('guest-sign-up-load');
+
         return view('livewire.placeholder.sign-up');
     }
 
