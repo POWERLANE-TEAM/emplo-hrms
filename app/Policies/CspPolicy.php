@@ -71,8 +71,10 @@ class CspPolicy extends CustomSpatiePolicy
         $this->addDirective(Directive::SCRIPT, 'https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta2/dist/js/bootstrap-select.min.js');
         $this->addDirective(Directive::SCRIPT, 'https://kit.fontawesome.com/your-fontawesome-kit-id.js');
         $this->addDirective(Directive::SCRIPT, 'https://accounts.google.com/gsi/client');
-        $this->addDirective(Directive::SCRIPT, 'https://www.google.com/recaptcha/api.js');
-        // $this->addDirective(Directive::SCRIPT, 'unsafe-inline'); /* Di ko talaga mapagana without this */
+        $this->addDirective(Directive::SCRIPT, 'https://www.google.com');
+        $this->addDirective(Directive::SCRIPT, 'https://www.gstatic.com');
         // $this->addDirective(Directive::SCRIPT, 'http://localhost:5173/resources/js/livewire.js');
+
+        $this->addDirective(Directive::FRAME, 'https://www.google.com');
     }
 }

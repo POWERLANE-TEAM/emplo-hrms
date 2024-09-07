@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use Illuminate\Auth\Notifications\VerifyEmail;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
@@ -52,5 +54,12 @@ class AppServiceProvider extends ServiceProvider
 
             return in_array($email_domain, $email_domains['valid_email']);
         }, 'Email service provider is not allowed.');
+
+        VerifyEmail::toMailUsing(function (object $notifiable, string $url) {
+            return (new MailMessage)
+                ->subject('Verify Powerlane Account')
+                ->line('Click the button below to verify your email address.')
+                ->action('Verify Email Address', $url);
+        });
     }
 }
