@@ -1,7 +1,7 @@
 <?php
 
+use App\Models\Branch;
 use App\Models\Department;
-use App\Models\EmploymentStatus;
 use App\Models\Position;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -24,6 +24,11 @@ return new class extends Migration {
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
+            $table->foreignIdFor(Branch::class, 'branch_id')
+                ->constrained('branches', 'branch_id')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+
             $table->foreignIdFor(Department::class, 'department_id')
                 ->constrained('departments', 'department_id')
                 ->cascadeOnUpdate()
@@ -31,10 +36,8 @@ return new class extends Migration {
 
             $table->timestamp('hired_at');
 
-            $table->foreignIdFor(EmploymentStatus::class, 'emp_status_id')
-                ->constrained('employment_statuses', 'emp_status_id')
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
+            // ain't sure about resigned and terminated
+            $table->enum('emp_status', ['PROBATION, REGULAR', 'RESIGNED', 'TERMINATED']);
 
             $table->longText('present_address');
             $table->longText('permanent_address');
