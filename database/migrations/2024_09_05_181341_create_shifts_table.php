@@ -15,8 +15,6 @@ return new class extends Migration {
             $table->string('shift_name', 100);
             $table->time('start_time');
             $table->time('end_time');
-            $table->time('night_diff_start')->nullable();
-            $table->time('night_diff_end')->nullable();
             $table->timestamps();
         });
     }
