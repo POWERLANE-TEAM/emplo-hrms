@@ -1,4 +1,4 @@
-import Echo from '../../vendor/node_modules/laravel-echo/dist/echo.js';
+import Echo from 'laravel-echo';
 
 
 /* Reference  https://chatgpt.com/share/7ba56859-28d6-408c-8b59-32a2f0b37533 */
