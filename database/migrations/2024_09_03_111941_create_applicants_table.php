@@ -15,9 +15,9 @@ return new class extends Migration {
             $table->string('first_name', 100);
             $table->string('middle_name', 100);
             $table->string('last_name', 100);
-            $table->timestamp('applied_at');
-            $table->timestamp('exam_date');
-            $table->timestamp('interview_date');
+            $table->timestamps('applied_at');
+            $table->dateTime('exam_date');
+            $table->dateTime('interview_date');
             $table->timestamps();
         });
     }
