@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use Spatie\Csp\Directive;
 
-
 class CspPolicy extends CustomSpatiePolicy
 {
     public function configure()

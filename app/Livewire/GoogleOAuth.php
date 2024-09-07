@@ -3,9 +3,9 @@
 namespace App\Livewire;
 
 use App\Models\User;
-use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
+use Livewire\Component;
 
 class GoogleOAuth extends Component
 {
@@ -23,11 +23,12 @@ class GoogleOAuth extends Component
 
         if ($user) {
             Auth::login($user);
+
             return redirect('/');
         } else {
             User::create([
                 'email' => $google_user->email,
-                'password' => NULL,
+                'password' => null,
                 'google_id' => $google_user->id,
                 'role' => 'USER',
             ]);
