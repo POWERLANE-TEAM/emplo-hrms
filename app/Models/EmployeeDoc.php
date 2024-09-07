@@ -11,7 +11,16 @@ class EmployeeDoc extends Model
 
     protected $primaryKey = 'emp_doc_id';
 
-    protected $guarded = [
-        'deleted_at',
+    protected $fillable = [
+        'employee_id',
+        'document_id',
+        'submitted_at',
     ];
+
+    /*
+    |--------------------------------------------------------------------------
+    | Define model relationships below
+    |--------------------------------------------------------------------------
+    */
+
 }

@@ -13,8 +13,9 @@ class LeaveCategory extends Model
 
     protected $primaryKey = 'leave_id';
 
-    protected $guarded = [
-        'leave_id',
+    protected $fillable = [
+        'leave_name',
+        'leave_balance',
     ];
 
     /*

@@ -14,8 +14,6 @@ class Overtime extends Model
 
     protected $guarded = [
         'overtime_id',
-        'init_approved_at',
-        'final_approved_at',
         'created_at',
         'updated_at'
     ];

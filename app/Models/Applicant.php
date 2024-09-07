@@ -17,7 +17,8 @@ class Applicant extends Model
 
     protected $guarded = [
         'applicant_id',
-        'applied_at',
+        'created_at',
+        'updated_at',
     ];
 
     protected function casts(): array

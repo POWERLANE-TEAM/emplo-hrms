@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Applicant;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -19,7 +18,8 @@ class Employee extends Model
 
     protected $guarded = [
         'employee_id',
-        'hired_at',
+        'created_at',
+        'updated_at',
     ];
 
     /*
@@ -60,7 +60,7 @@ class Employee extends Model
 
     public function user(): HasOne
     {
-        return $this->hasOne(User::class, 'user_id', 'employee_id');
+        return $this->hasOne(User::class, 'employee_id', 'employee_id');
     }
 
     /*
@@ -75,15 +75,14 @@ class Employee extends Model
 
     /*
     |--------------------------------------------------------------------------
-    | Returns the records of employee intial approvals to other employee's 
-    | overtime requests.
+    | Returns records of intial approvals to ot requestors.
+    |--------------------------------------------------------------------------
     | 
     | Example of these are immediate supervisors/dept heads, they have authority
-    | to initially approved their subordinate's overtime requests.
-    | 
-    | This will precede the final approval.
-    |--------------------------------------------------------------------------
-     */
+    | to initially approved their subordinate's overtime requests. This will 
+    | also precede the final approval.
+    |
+    */
     public function initialApprovals(): HasMany
     {
         return $this->hasMany(Overtime::class, 'init_approved_by', 'employee_id');
@@ -91,8 +90,7 @@ class Employee extends Model
 
     /* 
     |--------------------------------------------------------------------------
-    | Returns the records of the final authority's(perhaps the HR manager) approvals
-    | to other employee's overtime requests.
+    | Returns records of final approvals to ot requestors.
     |--------------------------------------------------------------------------
     */
     public function finalApprovals(): HasMany
@@ -100,19 +98,24 @@ class Employee extends Model
         return $this->hasMany(Overtime::class, 'final_approved_by', 'employee_id');
     }
 
+    public function attendances(): HasMany
+    {
+        return $this->hasMany(Attendance::class, 'employee_id', 'employee_id');
+    }
+
     public function position(): BelongsTo
     {
         return $this->belongsTo(Position::class, 'position_id', 'position_id');
     }
 
+    public function branch(): BelongsTo
+    {
+        return $this->belongsTo(Branch::class, 'branch_id', 'branch_id');
+    }
+
     public function department(): BelongsTo
     {
         return $this->belongsTo(Department::class, 'department_id', 'department_id');
-    }
-
-    public function status(): BelongsTo
-    {
-        return $this->belongsTo(EmploymentStatus::class, 'emp_status_id', 'emp_status_id');
     }
 
     public function shift(): BelongsTo

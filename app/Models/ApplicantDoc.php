@@ -12,8 +12,10 @@ class ApplicantDoc extends Model
 
     protected $primaryKey = 'applicant_doc_id';
 
-    protected $fillable = [
-        'checked_by',
+    protected $guarded = [
+        'applicant_doc_id',
+        'created_at',
+        'updated_at',
     ];
 
     /*

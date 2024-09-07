@@ -2,18 +2,19 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Employee;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class EmploymentStatus extends Model
+class Branch extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'emp_status_id';
+    protected $primaryKey = 'branch_id';
 
     protected $fillable = [
-        'emp_status_desc',
+        'branch_location',
     ];
 
     /*
@@ -24,6 +25,6 @@ class EmploymentStatus extends Model
 
     public function employees(): HasMany
     {
-        return $this->hasMany(Employee::class, 'emp_status_id', 'emp_status_id');
+        return $this->hasMany(Employee::class, 'branch_id', 'branch_id');
     }
 }

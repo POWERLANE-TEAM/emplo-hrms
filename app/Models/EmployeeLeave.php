@@ -14,7 +14,6 @@ class EmployeeLeave extends Model
 
     protected $guarded = [
         'emp_leave_id',
-        'approved_at',
         'created_at',
         'updated_at',
     ];
