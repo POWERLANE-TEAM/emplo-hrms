@@ -19,6 +19,7 @@ return new class extends Migration {
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
+            $table->longText('work_performed');
             $table->dateTime('start_time');
             $table->dateTime('end_time');
             $table->decimal('hours_requested');
