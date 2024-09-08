@@ -1,6 +1,6 @@
 // '/vendor/node_modules/bootstrap'; // Bootstrap Framework
 
-import "../../css/dashboard.css";
+import "../../css/employee/dashboard.css";
 import '../script.js';
 import GLOBAL_CONST from '../global-constant.js';
 import initSidebar from './side-top-bar.js';

@@ -73,3 +73,9 @@ body {
 main {
     margin-bottom: calc(2rem + 1vh);
 }
+
+%rm-dropdown-triangle {
+    button::after {
+        content: none;
+    }
+}

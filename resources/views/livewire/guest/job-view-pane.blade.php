@@ -30,7 +30,7 @@
 @endif
 
 <article class="job-view tab-content col-12 col-md-6" id="job-view-pane" nonce="csp_nonce()">
-    <div class="job-content tab-pane fade show active card border-0 bg-secondary-subtle w-100 " id="#1-tab-pane"
+    <div class="job-content tab-pane fade show active card border-0 bg-body-secondary w-100 " id="#1-tab-pane"
         role="tabpanel" aria-labelledby="-tab">
         <div class="d-flex">
             <?php echo $content; ?>

@@ -33,7 +33,6 @@
 
                 svg.left-circle {
                     position: absolute;
-                    // left: -3%;
                     left: calc(-32px + 1vw);
                     top: 22vh;
                     z-index: -10;

@@ -7,11 +7,11 @@ use Illuminate\Http\Request;
 class ApplicantController extends Controller
 {
 
-    public function apply($page = null)
+    public function index($page = null)
     {
 
-        if (empty($page)) {
-            return view('applicants/apply/index');
+        if (empty($page) || $page == 'index') {
+            return view('applicant/index');
         } else {
             dd($page);
         }

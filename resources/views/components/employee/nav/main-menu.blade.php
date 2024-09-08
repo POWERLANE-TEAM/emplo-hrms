@@ -1,4 +1,4 @@
-@props(['sidebar_expanded' => true, 'icon_size' => '25px', 'icon_ratio' => '1/1'])
+@props(['sidebar_expanded' => true, 'icon_size' => '25', 'icon_ratio' => '1/1'])
 
 <div {{ $attributes->merge(['class' => 'container-fluid main-menu-container text-white']) }}>
     <x-employee.nav.sidebar sidebar_expanded="{{ $sidebar_expanded }}" class="shadow" icon_size="{{ $icon_size }}"
@@ -89,15 +89,9 @@
             </aside>
 
             <x-notif-dropdown>
-                <picture class="">
-                    <source media="(min-width:2560px)" class=""
-                        srcset="{{ Vite::asset('resources/images/icons/notif-bell-69x69.webp') }}">
-                    <source media="(min-width:768px)" class=""
-                        srcset="{{ Vite::asset('resources/images/icons/notif-bell-69x69.webp') }}">
-
-                    <img class="icon" width="{{ $icon_size }}" aspect-ratio="{{ $icon_ratio }}"
-                        src="{{ Vite::asset('resources/images/icons/notif-bell-35x35.webp') }}" alt="">
-                </picture>
+                <li class="dropdown-item">Notif 1</li>
+                <li class="dropdown-item">Notif 1</li>
+                <li class="dropdown-item">Notif 1</li>
             </x-notif-dropdown>
 
             <div class="rounded-circle overflow-hidden">
@@ -107,8 +101,8 @@
                     <source media="(min-width:768px)" class=""
                         srcset="{{ Vite::asset('resources/images/icons/notif-bell-69x69.webp') }}"> --}}
 
-                    <img class="" width="35px" height="35px" aspect-ratio="{{ $icon_ratio }}"
-                        src="http://placehold.it/20/20" alt="">
+                    <img class="" width="{{ $icon_size * 1.25 }}" height="{{ $icon_size * 1.25 }}"
+                        aspect-ratio="{{ $icon_ratio }}" src="http://placehold.it/20/20" alt="">
                 </picture>
             </div>
 
