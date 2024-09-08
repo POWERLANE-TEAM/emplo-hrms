@@ -33,6 +33,11 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <link href="{{ Vite::asset('resources/images/logo/powerlane-md.webp') }}" rel="icon" media="(prefers-color-scheme: light)">
+    <link href="{{ Vite::asset('resources/images/logo/powerlane-md.webp') }}" rel="icon" media="(prefers-color-scheme: dark)">
+    {{-- Fallback --}}
+    <link href="{{ Vite::asset('resources/images/logo/powerlane-md.webp') }}" rel="icon" media="(prefers-color-scheme: light)">
+
     <!-- CRSF Token -->
     <meta name="csrf-token" content="{{{ csrf_token() }}}">
 

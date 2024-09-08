@@ -79,3 +79,20 @@ main {
         content: none;
     }
 }
+
+.icon {
+    width: calc(0.5rem + 1.5vw);
+    height: auto;
+    aspect-ratio: 1/1;
+}
+
+header {
+    nav {
+        .icon {
+            width: calc(0.5rem + 1vw);
+            height: auto;
+            aspect-ratio: 1/1;
+        }
+    }
+
+}

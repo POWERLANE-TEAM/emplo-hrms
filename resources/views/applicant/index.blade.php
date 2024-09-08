@@ -30,6 +30,20 @@
             <div class="col-md-6 card border-0 bg-body-secondary text-center p-5">
                 <label for="applicant-status" class="text-uppercase text-primary">Current Status</label>
                 <strong id="applicant-status" class="applicant-status fs-3 fw-bold">
+                    {{-- <picture>
+                        <source media="(min-width:2560px)" class=""
+                            srcset="{{ Vite::asset('resources/images/icons/green-checked-badge-xxl.webp') }}">
+                        <source media="(min-width:768px)" class=""
+                            srcset="{{ Vite::asset('resources/images/icons/green-checked-badge-md.webp') }}">
+                        <source media="(min-width:576px)" class=""
+                            srcset="{{ Vite::asset('resources/images/icons/green-checked-badge-sm.webp') }}">
+                        <source media="(max-width:320px)" class=""
+                            srcset="{{ Vite::asset('resources/images/icons/green-checked-badge-xs.webp') }}">
+
+                        <img width="28" height="28" aspect-ratio="1/1" class="icon" loading="lazy"
+                            src="{{ Vite::asset('resources/images/icons/green-checked-badge-md.webp') }}" alt="">
+                    </picture> --}}
+
                     Assessment Scheduled
                 </strong>
             </div>
@@ -55,7 +69,21 @@
 
     <section class="mb-5">
         <header class="fs-4 fw-bold mb-4" role="heading" aria-level="2">
-            <span></span>
+            <span>
+                <picture>
+                    <source media="(min-width:2560px)" class=""
+                        srcset="{{ Vite::asset('resources/images/icons/green-calendar-xxl.webp') }}">
+                    <source media="(min-width:768px)" class=""
+                        srcset="{{ Vite::asset('resources/images/icons/green-calendar-md.webp') }}">
+                    <source media="(min-width:576px)" class=""
+                        srcset="{{ Vite::asset('resources/images/icons/green-calendar-sm.webp') }}">
+                    <source media="(max-width:320px)" class=""
+                        srcset="{{ Vite::asset('resources/images/icons/green-calendar-xs.webp') }}">
+
+                    <img width="28" height="28" aspect-ratio="1/1" class="icon" loading="lazy"
+                        src="{{ Vite::asset('resources/images/icons/green-calendar-md.webp') }}" alt="">
+                </picture>
+            </span>
             Schedule of Assessment
         </header>
 
@@ -78,7 +106,23 @@
             </section>
             <div class="bg-primary text-white card border-0 col-md-6 p-5 gap-3">
                 <header class="fs-4 fw-bold">
-                    <span></span>
+                    <span>
+                        <picture>
+                            <source media="(min-width:2560px)" class=""
+                                srcset="{{ Vite::asset('resources/images/icons/white-push-pin-xxl.webp') }}">
+                            <source media="(min-width:1200px)" class=""
+                                srcset="{{ Vite::asset('resources/images/icons/white-push-pin-xl.webp') }}">
+                            <source media="(min-width:992px)" class=""
+                                srcset="{{ Vite::asset('resources/images/icons/white-push-pin-lg.webp') }}">
+                            <source media="(min-width:768px)" class=""
+                                srcset="{{ Vite::asset('resources/images/icons/white-push-pin-md.webp') }}">
+                            <source media="(min-width:576px)" class=""
+                                srcset="{{ Vite::asset('resources/images/icons/white-push-pin-sm.webp') }}">
+
+                            <img width="28" height="28" aspect-ratio="1/1" class="" loading="lazy"
+                                src="{{ Vite::asset('resources/images/icons/white-push-pin-md.webp') }}" alt="">
+                        </picture>
+                    </span>
                     Notice
                 </header>
                 <p>
