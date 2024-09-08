@@ -12,10 +12,10 @@
                 <img class="icon" width="{{ $icon_size }}" aspect-ratio="{{ $icon_ratio }}"
                     src="{{ Vite::asset('resources/images/icons/search-27x26.webp') }}" alt="">
             </picture>
-            <x-input.search-group class="col-11 px-3" container_class="col-12">
+            <x-form.search-group class="col-11 px-3" container_class="col-12">
 
-                <x-input.search type="search" class=""
-                    placeholder="Search job titles or companies"></x-input.search>
+                <x-form.search type="search" class=""
+                    placeholder="Search job titles or companies"></x-form.search>
 
                 <x-slot:right_icon>
                     <picture class="">
@@ -30,7 +30,7 @@
 
                 </x-slot:right_icon>
 
-            </x-input.search-group>
+            </x-form.search-group>
 
         </div>
 

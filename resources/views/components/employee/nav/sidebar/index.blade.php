@@ -48,7 +48,8 @@
             <ul class="dropdown-menu">
                 <li class="dropdown-item">Notif 1</li>
                 <li class="dropdown-item">Notif 1</li>
-                <li class="dropdown-item">Notif 1</li>
+                <li class="dropdown-item"> @livewire('auth.logout')</li>
+
             </ul>
         </div>
 

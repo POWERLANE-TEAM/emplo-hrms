@@ -7,6 +7,7 @@ export default defineConfig({
             input: [
                 'resources/js/app.js',
                 'resources/js/index.js',
+                'resources/js/login.js',
                 'resources/js/employee/dashboard.js',
                 'resources/js/email-domain-list.json',
                 'vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js',

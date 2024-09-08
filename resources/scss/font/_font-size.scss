@@ -31,6 +31,10 @@ body {
         .fs-#{$size} {
             font-size: $value !important;
         }
+
+        .h#{$size} {
+            text-wrap: balance;
+        }
     }
 
     @each $size, $value in $font-display-sizes {

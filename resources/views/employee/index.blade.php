@@ -1,23 +1,24 @@
-<x-html>
+@php
+    $nonce = csp_nonce();
+@endphp
 
-    <x-html.head description=" Employee Dashboard">
-        <title>Home Page</title>
+@extends('layout.employee', ['description' => 'Employee Dashboard', 'nonce' => $nonce])
 
-        {{-- Critical Assets that will cause cumulative shift if late loaded --}}
-        <script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
-        <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
-        <script nonce="{{ csp_nonce() }}">
-            lucide.createIcons();
-        </script>
+@section('head')
+    <title>Home Page</title>
 
-        @vite(['resources/js/employee/dashboard.js'])
+    {{-- Critical Assets that will cause cumulative shift if late loaded --}}
+    <script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
+    <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
+    <script nonce="{{ $nonce }}">
+        lucide.createIcons();
+    </script>
 
-    </x-html.head>
+    @vite(['resources/js/employee/dashboard.js'])
+@endsection
 
-    <body class=" ">
-        <x-employee.nav.main-menu :sidebar_expanded="true" class="position-sticky top-0 start-0"></x-employee.nav.main-menu>
-        <main class="main">
-            {{-- <section class="job-listing  d-flex tw-px-[5rem] tw-gap-12 ">
+@section('content')
+    {{-- <section class="job-listing  d-flex tw-px-[5rem] tw-gap-12 ">
                 <sidebar class="nav nav-tabs col-5 " role="tablist">
 
                     <?php
@@ -86,10 +87,5 @@
                         </div>
                     </div>
                 </article>
-            </section>
-            <x-html.test-elements></x-html.test-elements> --}}
-        </main>
-
-        <x-employee.footer></x-employee.footer>
-    </body>
-</x-html>
+            </section> --}}
+@endsection
