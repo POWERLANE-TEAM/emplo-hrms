@@ -6,7 +6,6 @@ use App\Models\Position;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
-
 class JobViewPane extends Component
 {
     private $position;
