@@ -21,8 +21,7 @@
     <hgroup>
         <div class="fs-1 fw-bold">Hello, Jermiah!</div>
 
-        <div class="fs-5 fw-normal" role="heading" aria-level="3">Applicant ID: <strong
-                class="fs-5 text-primary">PWRLN-212-SR</strong></div>
+        <h2 class="fs-5 fw-normal">Applicant ID: <strong class="fs-5 text-primary">PWRLN-212-SR</strong></h2>
     </hgroup>
 
     <section class="mb-5">
