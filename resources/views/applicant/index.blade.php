@@ -30,7 +30,7 @@
             <div class="col-md-6 card border-0 bg-body-secondary text-center p-5">
                 <label for="applicant-status" class="text-uppercase text-primary">Current Status</label>
                 <strong id="applicant-status" class="applicant-status fs-3 fw-bold">
-                    Assess,emt Scheduled
+                    Assessment Scheduled
                 </strong>
             </div>
             <div class="col-md-6 card border-0 bg-body-secondary text-center p-5 ">
@@ -141,7 +141,8 @@
     </section>
 
     <nav class="w-100 d-flex mb-5">
-        <span><i class="icon p-1 mx-2 text-success  d-inline" data-lucide="badge-check"></i></span><a href="#"
-            class="btn btn-primary btn-lg mx-auto px-5 text-capitalize"> Go to submission page</a>
+        <a href="#" class="btn btn-primary btn-lg mx-auto px-5 text-capitalize"> <span><i
+                    class="icon p-1 mx-2 d-inline" data-lucide="plus-circle"></i></span>Go to submission
+            page</a>
     </nav>
 @endsection
