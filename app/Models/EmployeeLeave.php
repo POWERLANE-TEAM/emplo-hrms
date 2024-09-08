@@ -24,8 +24,29 @@ class EmployeeLeave extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function approvedBy(): BelongsTo
+    public function leaveCategory(): BelongsTo
     {
-        return $this->belongsTo(Employee::class, 'approved_by', 'employee_id');
+        return $this->belongsTo(LeaveCategory::class, 'leave_id', 'leave_id');
     }
+
+    public function employee(): BelongsTo
+    {
+        return $this->belongsTo(Employee::class, 'employee_id', 'employee_id');
+    }
+
+    public function supervisor(): BelongsTo
+    {
+        return $this->belongsTo(Employee::class, 'supervisor', 'employee_id');
+    }
+
+    public function deptHead(): BelongsTo
+    {
+        return $this->belongsTo(Employee::class, 'dept_head', 'employee_id');
+    }
+
+    public function hrManager(): BelongsTo
+    {
+        return $this->belongsTo(Employee::class, 'hr_manager', 'employee_id');
+    }
+
 }

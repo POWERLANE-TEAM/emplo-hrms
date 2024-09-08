@@ -3,17 +3,19 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\PerformanceEvaluationDetails;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class LeaveCategory extends Model
+class PerformanceCategory extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'leave_id';
+    protected $primaryKey = 'performance_id';
 
     protected $fillable = [
-        'leave_name',
+        'performance_name',
+        'performance_desc',
     ];
 
     /*
@@ -22,8 +24,8 @@ class LeaveCategory extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function leaves(): HasMany
+    public function performanceEvaluationDetails(): HasMany
     {
-        return $this->hasMany(EmployeeLeave::class, 'leave_id', 'leave_id');
+        return $this->hasMany(PerformanceEvaluationDetails::class, 'performance_id', 'performance_id');
     }
 }

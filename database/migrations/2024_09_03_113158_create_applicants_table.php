@@ -1,11 +1,11 @@
 <?php
 
-use App\Models\Applicant;
-use App\Models\Employee;
 use App\Models\Document;
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use App\Models\Employee;
+use App\Models\Applicant;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration {
     /**
@@ -13,6 +13,17 @@ return new class extends Migration {
      */
     public function up(): void
     {
+        Schema::create('applicants', function (Blueprint $table) {
+            $table->id('applicant_id');
+            $table->string('first_name', 100);
+            $table->string('middle_name', 100)->nullable();
+            $table->string('last_name', 100);
+            $table->timestamp('applied_at');
+            $table->dateTime('exam_date')->nullable();
+            $table->dateTime('interview_date')->nullable();
+            $table->timestamps();
+        });
+
         Schema::create('applicant_docs', function (Blueprint $table) {
             $table->id('applicant_doc_id');
 
@@ -29,13 +40,14 @@ return new class extends Migration {
             $table->boolean('is_submitted')->default(false);
             $table->timestamp('submitted_at')->nullable();
 
-            $table->foreignIdFor(Employee::class, 'checked_by')
+            $table->foreignIdFor(Employee::class, 'received_by')
                 ->nullable()
                 ->constrained('employees', 'employee_id')
                 ->cascadeOnUpdate()
                 ->nullOnDelete();
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -44,6 +56,7 @@ return new class extends Migration {
      */
     public function down(): void
     {
+        Schema::dropIfExists('applicants');
         Schema::dropIfExists('applicant_docs');
     }
 };

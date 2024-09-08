@@ -9,18 +9,13 @@ class EmployeeDoc extends Model
 {
     use HasFactory;
 
+    protected $table = 'employee_docs';
+
     protected $primaryKey = 'emp_doc_id';
 
     protected $fillable = [
-        'employee_id',
-        'document_id',
-        'submitted_at',
+        'emp_doc_id',
+        'deleted_at',
     ];
-
-    /*
-    |--------------------------------------------------------------------------
-    | Define model relationships below
-    |--------------------------------------------------------------------------
-    */
 
 }

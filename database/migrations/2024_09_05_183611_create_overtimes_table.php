@@ -14,7 +14,7 @@ return new class extends Migration {
         Schema::create('overtimes', function (Blueprint $table) {
             $table->id('overtime_id');
 
-            $table->foreignIdFor(Employee::class, 'ot_requestor')
+            $table->foreignIdFor(Employee::class, 'employee_id')
                 ->constrained('employees', 'employee_id')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
@@ -23,23 +23,31 @@ return new class extends Migration {
             $table->dateTime('start_time');
             $table->dateTime('end_time');
             $table->decimal('hours_requested');
-            $table->boolean('is_init_approved')->default(false);
-            $table->timestamp('init_approved_at')->nullable();
+            $table->timestamp('filed_at');
 
-            $table->foreignIdFor(Employee::class, 'init_approved_by')
-                ->nullable()
+            $table->boolean('is_supervisor_approved')->default(false);
+            $table->timestamp('supervisor_approved_at')->nullable();
+
+            $table->foreignIdFor(Employee::class, 'supervisor')
                 ->constrained('employees', 'employee_id')
                 ->cascadeOnUpdate()
-                ->nullOnDelete();
+                ->cascadeOnDelete();
 
-            $table->boolean('is_final_approved')->default(false);
-            $table->timestamp('final_approved_at')->nullable();
+            $table->boolean('is_dept_head_approved')->default(false);
+            $table->timestamp('dept_head_approved_at')->nullable();
 
-            $table->foreignIdFor(Employee::class, 'final_approved_by')
-                ->nullable()
+            $table->foreignIdFor(Employee::class, 'dept_head')
                 ->constrained('employees', 'employee_id')
                 ->cascadeOnUpdate()
-                ->nullOnDelete();
+                ->cascadeOnDelete();
+
+            $table->boolean('is_hr_manager_approved')->default(false);
+            $table->timestamp('hr_manager_approved_at')->nullable();
+
+            $table->foreignIdFor(Employee::class, 'hr_manager')
+                ->constrained('employees', 'employee_id')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
 
             $table->timestamps();
         });

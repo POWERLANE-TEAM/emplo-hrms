@@ -58,78 +58,139 @@ class Employee extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function user(): HasOne
+    // returns the account of this employee
+    public function account(): HasOne
     {
         return $this->hasOne(User::class, 'employee_id', 'employee_id');
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Returns the records of employee's overtime requests
-    |--------------------------------------------------------------------------
-    */
-    public function overtimes(): HasMany
-    {
-        return $this->hasMany(Overtime::class, 'ot_requestor', 'employee_id');
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Returns records of intial approvals to ot requestors.
-    |--------------------------------------------------------------------------
-    | 
-    | Example of these are immediate supervisors/dept heads, they have authority
-    | to initially approved their subordinate's overtime requests. This will 
-    | also precede the final approval.
-    |
-    */
-    public function initialApprovals(): HasMany
-    {
-        return $this->hasMany(Overtime::class, 'init_approved_by', 'employee_id');
-    }
-
-    /* 
-    |--------------------------------------------------------------------------
-    | Returns records of final approvals to ot requestors.
-    |--------------------------------------------------------------------------
-    */
-    public function finalApprovals(): HasMany
-    {
-        return $this->hasMany(Overtime::class, 'final_approved_by', 'employee_id');
-    }
-
+    // returns attendance records of employee
     public function attendances(): HasMany
     {
         return $this->hasMany(Attendance::class, 'employee_id', 'employee_id');
     }
 
+    // returns the position of employee
     public function position(): BelongsTo
     {
         return $this->belongsTo(Position::class, 'position_id', 'position_id');
     }
 
+    // returns the branch of employee
     public function branch(): BelongsTo
     {
         return $this->belongsTo(Branch::class, 'branch_id', 'branch_id');
     }
 
+    // returns the department of employee
     public function department(): BelongsTo
     {
         return $this->belongsTo(Department::class, 'department_id', 'department_id');
     }
 
+    // returns the shift schedule of employee
     public function shift(): BelongsTo
     {
         return $this->belongsTo(Shift::class, 'shift_id', 'shift_id');
     }
 
-    public function leaves(): BelongsToMany
+
+    /*
+    |--------------------------------------------------------------------------
+    | Overtime Management
+    |--------------------------------------------------------------------------
+    */
+
+    // returns the records of employee's overtime requests
+    public function overtimes(): HasMany
     {
-        return $this->belongsToMany(LeaveCategory::class, 'employee_leaves', 'leave_id', 'employee_id');
+        return $this->hasMany(Overtime::class, 'employee_id', 'employee_id');
     }
 
+    // returns approved overtimes by supervisor
+    public function supervisorApprovedOvertimes(): HasMany
+    {
+        return $this->hasMany(Overtime::class, 'supervisor', 'employee_id');
+    }
+
+    // returns approved overtimes by department head
+    public function deptHeadApprovedOvertimes(): HasMany
+    {
+        return $this->hasMany(Overtime::class, 'dept_head', 'employee_id');
+    }
+
+    // returns approved overtimes by hr manager
+    public function hrManagerApprovedOvertimes(): HasMany
+    {
+        return $this->hasMany(Overtime::class, 'hr_manager', 'employee_id');
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Leave Management
+    |--------------------------------------------------------------------------
+    */
+
+    // returns the leave records of employee
+    public function leavesRequested(): HasMany
+    {
+        return $this->hasMany(EmployeeLeave::class, 'employee_id', 'employee_id');
+    }
+
+    // returns approved leave records by supervisor
+    public function supervisorApprovedLeaves(): HasMany
+    {
+        return $this->hasMany(EmployeeLeave::class, 'supervisor', 'employee_id');
+    }
+
+    // returns approved leave records by department head
+    public function deptHeadApprovedLeaves(): HasMany
+    {
+        return $this->hasMany(EmployeeLeave::class, 'dept_head', 'employee_id');
+    }
+
+    // returns approved leave records by hr manager
+    public function hrManagerApprovedLeaves(): HasMany
+    {
+        return $this->hasMany(EmployeeLeave::class, 'hr_manager', 'employee_id');
+    }
+
+    // returns the documents of employee
     public function documents(): BelongsToMany
     {
         return $this->belongsToMany(Document::class, 'employee_docs', 'document_id', 'employee_id');
     }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Performance Management
+    |--------------------------------------------------------------------------
+    */
+
+    // returns the employee's performance records
+    public function performances(): HasMany
+    {
+        return $this->hasMany(PerformanceEvaluation::class, 'evaluatee', 'employee_id');
+    }
+
+    // returns performance records where employee is supervisor
+    public function supervisorSignedPerfEval(): HasMany
+    {
+        return $this->hasMany(PerformanceEvaluation::class, 'supervisor', 'employee_id');
+    }
+
+    // returns performance records where employee is department head
+    public function deptHeadSignedPerfEval(): HasMany
+    {
+        return $this->hasMany(PerformanceEvaluation::class, 'dept_head', 'employee_id');
+    }
+
+    // returns performance records where employee is hr manager
+    public function hrManagerSignedPerfEval(): HasMany
+    {
+        return $this->hasMany(PerformanceEvaluation::class, 'hr_manager', 'employee_id');
+    }
+
 }

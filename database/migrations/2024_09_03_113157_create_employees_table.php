@@ -1,11 +1,14 @@
 <?php
 
 use App\Models\Branch;
-use App\Models\Department;
+use App\Models\Document;
+use App\Models\Employee;
 use App\Models\Position;
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use App\Models\Department;
+use App\Models\LeaveCategory;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration {
     /**
@@ -37,7 +40,7 @@ return new class extends Migration {
             $table->timestamp('hired_at');
 
             // ain't sure about resigned and terminated
-            $table->enum('emp_status', ['PROBATION, REGULAR', 'RESIGNED', 'TERMINATED']);
+            $table->enum('emp_status', ['PROBATIONARY, REGULAR', 'RESIGNED', 'TERMINATED']);
 
             $table->longText('present_address');
             $table->longText('permanent_address');
@@ -53,6 +56,72 @@ return new class extends Migration {
             $table->string('education', 100);
             $table->timestamps();
         });
+
+
+        Schema::create('employee_docs', function (Blueprint $table) {
+            $table->id('emp_doc_id');
+
+            $table->foreignIdFor(Employee::class, 'employee_id')
+                ->constrained('employees', 'employee_id')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+
+            $table->foreignIdFor(Document::class, 'document_id')
+                ->constrained('documents', 'document_id')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+
+            $table->timestamp('submitted_at');
+            $table->softDeletes();
+        });
+
+
+        Schema::create('employee_leaves', function (Blueprint $table) {
+            $table->id('emp_leave_id');
+
+            $table->foreignIdFor(Employee::class, 'employee_id')
+                ->constrained('employees', 'employee_id')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+
+            $table->foreignIdFor(LeaveCategory::class, 'leave_id')
+                ->nullable()
+                ->constrained('leave_categories', 'leave_id')
+                ->cascadeOnUpdate()
+                ->nullOnDelete();
+
+            $table->longText('reason');
+            $table->timestamp('start_date');
+            $table->timestamp('end_date');
+            $table->boolean('is_supervisor_approved')->default(false);
+            $table->timestamp('supervisor_approved_at')->nullable();
+
+            $table->foreignIdFor(Employee::class, 'supervisor')
+                ->constrained('employees', 'employee_id')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+
+            $table->boolean('is_dept_head_approved')->default(false);
+            $table->timestamp('dept_head_approved_at')->nullable();
+
+            $table->foreignIdFor(Employee::class, 'dept_head')
+                ->constrained('employees', 'employee_id')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+
+            $table->integer('leave_balance');
+            $table->timestamp('leave_balance_updated_at')->nullable();
+
+            $table->boolean('is_hr_manager_approved')->default(false);
+            $table->timestamp('hr_manager_approved_at')->nullable();
+
+            $table->foreignIdFor(Employee::class, 'hr_manager')
+                ->constrained('employees', 'employee_id')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+
+            $table->timestamps();
+        });
     }
 
     /**
@@ -61,5 +130,7 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::dropIfExists('employees');
+        Schema::dropIfExists('employee_docs');
+        Schema::dropIfExists('employee_leaves');
     }
 };

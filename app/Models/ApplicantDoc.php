@@ -10,12 +10,15 @@ class ApplicantDoc extends Model
 {
     use HasFactory;
 
+    protected $table = 'applicant_docs';
+
     protected $primaryKey = 'applicant_doc_id';
 
     protected $guarded = [
         'applicant_doc_id',
         'created_at',
         'updated_at',
+        'deleted_at',
     ];
 
     /*
@@ -24,8 +27,8 @@ class ApplicantDoc extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function checkedBy(): BelongsTo
+    public function receivedBy(): BelongsTo
     {
-        return $this->belongsTo(Employee::class, 'checked_by', 'applicant_doc_id');
+        return $this->belongsTo(Employee::class, 'received_by', 'employee_id');
     }
 }
