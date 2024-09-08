@@ -6,20 +6,19 @@ use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Broadcasting\BroadcastServiceProvider;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
-use Illuminate\Support\Facades\Vite;
 
 class AppServiceProvider extends ServiceProvider
 {
-    protected $whitelist = array(
+    protected $whitelist = [
         'red',
         'yellow',
         'green',
         'blue',
-        'black'
-    );
-
+        'black',
+    ];
 
     /**
      * Register any application services.
@@ -39,11 +38,10 @@ class AppServiceProvider extends ServiceProvider
 
             return
                 $rule->letters()
-                ->mixedCase()
-                ->numbers()
-                ->symbols()
-                ->uncompromised()
-            ;
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols()
+                    ->uncompromised();
         });
 
         Validator::extend('valid_email_dns', function ($attributes, $value, $parameters, $validator) {
@@ -51,7 +49,7 @@ class AppServiceProvider extends ServiceProvider
             $email_domains = json_decode($data, true);
 
             // Extract the domain from the email
-            $email_domain = substr(strrchr($value, "@"), 1);
+            $email_domain = substr(strrchr($value, '@'), 1);
 
             return in_array($email_domain, $email_domains['valid_email']);
         }, 'Email service provider is not allowed.');

@@ -9,14 +9,15 @@ use Livewire\Component;
 class JobsListCard extends Component
 {
     private $positions;
+
     private $isFiltered = false;
 
     #[On('job-searched')]
     public function updateOnSearch($search = null)
     {
         if (strlen(trim($search)) >= '1') {
-            $result = Position::where('title', 'ilike', '%' . $search . '%')
-                ->orWhere('description', 'ilike', '%' . $search . '%')
+            $result = Position::where('title', 'ilike', '%'.$search.'%')
+                ->orWhere('description', 'ilike', '%'.$search.'%')
                 ->get();
         } else {
             $result = Position::latest()->get();
@@ -28,13 +29,14 @@ class JobsListCard extends Component
     public function placeholder()
     {
         $this->positions = Position::latest()->offset(0)->limit(4)->get();
+
         return view('livewire.placeholder.job-list-card', ['positions' => $this->positions]);
     }
 
     public function render()
     {
 
-        if (!$this->isFiltered) {
+        if (! $this->isFiltered) {
             $this->positions = Position::latest()->get();
         }
 

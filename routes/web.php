@@ -16,8 +16,7 @@ Route::get('/applicant/{page?}', [ApplicantController::class, 'index'])->middlew
 
 Route::get('/employee/{page?}', [EmployeeController::class, 'employee'])->middleware(['auth', 'verified']);
 
-
-Route::get('api/json/{requestedData}',  [JsonController::class, 'index']);
+Route::get('api/json/{requestedData}', [JsonController::class, 'index']);
 
 /*
 |--------------------------------------------------------------------------

@@ -3,20 +3,18 @@
 namespace App\Livewire\Auth;
 
 use App\Http\Controllers\SessionController;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
-use Laravel\Fortify\Http\Requests\LoginRequest;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
+use Laravel\Fortify\Http\Requests\LoginRequest;
 use Livewire\Component;
-use Livewire\Attributes\On;
-use Laravel\Socialite\Facades\Socialite;
 
 class Login extends Component
 {
-
     public $email = '';
+
     public $password = '';
+
     public $remember = false;
     // public $captcha;
 
@@ -42,15 +40,15 @@ class Login extends Component
             ],
         ]);
 
-        if (!Auth::validate($login_credentials)) {
+        if (! Auth::validate($login_credentials)) {
 
             $this->password = '';
             throw ValidationException::withMessages([
-                'credentials' => 'Incorrect credentials or user does not exist.'
+                'credentials' => 'Incorrect credentials or user does not exist.',
             ]);
         }
 
-        $login_request = new LoginRequest();
+        $login_request = new LoginRequest;
 
         $login_request->merge([
             'email' => $this->email,
