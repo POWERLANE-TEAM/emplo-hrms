@@ -2,18 +2,20 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\PerformanceEvaluationDetails;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class EmploymentStatus extends Model
+class PerformanceCategory extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'emp_status_id';
+    protected $primaryKey = 'performance_id';
 
     protected $fillable = [
-        'emp_status_desc',
+        'performance_name',
+        'performance_desc',
     ];
 
     /*
@@ -22,8 +24,8 @@ class EmploymentStatus extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function employees(): HasMany
+    public function performanceEvaluationDetails(): HasMany
     {
-        return $this->hasMany(Employee::class, 'emp_status_id', 'emp_status_id');
+        return $this->hasMany(PerformanceEvaluationDetails::class, 'performance_id', 'performance_id');
     }
 }

@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('employment_statuses', function (Blueprint $table) {
-            $table->id('emp_status_id');
-            $table->string('emp_status_name', 255);
-            $table->longText('emp_status_desc')->nullable();
+        Schema::create('branches', function (Blueprint $table) {
+            $table->id('branch_id');
+            $table->longText('branch_location');
             $table->timestamps();
         });
     }
@@ -24,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('employment_statuses');
+        Schema::dropIfExists('branches');
     }
 };

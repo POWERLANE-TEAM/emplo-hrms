@@ -6,16 +6,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class EmployeeLeave extends Model
+class Overtime extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'emp_leave_id';
+    protected $primaryKey = 'overtime_id';
 
     protected $guarded = [
-        'emp_leave_id',
+        'overtime_id',
         'created_at',
-        'updated_at',
+        'updated_at'
     ];
 
     /*
@@ -23,11 +23,6 @@ class EmployeeLeave extends Model
     | Define model relationships below
     |--------------------------------------------------------------------------
     */
-
-    public function leaveCategory(): BelongsTo
-    {
-        return $this->belongsTo(LeaveCategory::class, 'leave_id', 'leave_id');
-    }
 
     public function employee(): BelongsTo
     {
@@ -48,5 +43,4 @@ class EmployeeLeave extends Model
     {
         return $this->belongsTo(Employee::class, 'hr_manager', 'employee_id');
     }
-
 }

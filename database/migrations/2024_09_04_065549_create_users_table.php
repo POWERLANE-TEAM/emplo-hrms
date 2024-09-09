@@ -15,16 +15,6 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id('user_id');
-            $table->string('email', 191)->unique();
-            $table->string('password', 191)->nullable();
-            $table->string('google_id', 191)->nullable();
-            $table->enum('role', ['GUEST', 'USER', 'MANAGER', 'SYSADMIN']);
-
-            $table->foreignIdFor(Applicant::class, 'applicant_id')
-                ->nullable()
-                ->constrained('applicants', 'applicant_id')
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
 
             $table->foreignIdFor(Employee::class, 'employee_id')
                 ->nullable()
@@ -32,6 +22,17 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
+            $table->foreignIdFor(Applicant::class, 'applicant_id')
+                ->nullable()
+                ->constrained('applicants', 'applicant_id')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+
+            $table->string('email', 320)->unique();
+            $table->string('password');
+            $table->string('google_id')->nullable();
+            $table->enum('role', ['GUEST', 'USER', 'MANAGER', 'SYSADMIN']);
+            $table->enum('status', ['ACTIVE', 'INACTIVE', 'BLOCKED']);
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
@@ -39,7 +40,7 @@ return new class extends Migration
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
-            $table->string('email', 191)->primary();
+            $table->string('email', 320)->primary();
             $table->string('token', 191);
             $table->timestamp('created_at')->nullable();
         });
