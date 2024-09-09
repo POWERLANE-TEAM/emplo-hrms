@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class LeaveCategory extends Model
 {
@@ -12,8 +12,8 @@ class LeaveCategory extends Model
 
     protected $primaryKey = 'leave_id';
 
-    protected $guarded = [
-        'leave_id',
+    protected $fillable = [
+        'leave_name',
     ];
 
     /*
@@ -22,8 +22,8 @@ class LeaveCategory extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function employees(): BelongsToMany
+    public function leaves(): HasMany
     {
-        return $this->belongsToMany(Employee::class, 'employee_leaves', 'employee_id', 'leave_id');
+        return $this->hasMany(EmployeeLeave::class, 'leave_id', 'leave_id');
     }
 }

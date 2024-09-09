@@ -9,9 +9,12 @@ class EmployeeDoc extends Model
 {
     use HasFactory;
 
+    protected $table = 'employee_docs';
+
     protected $primaryKey = 'emp_doc_id';
 
-    protected $guarded = [
+    protected $fillable = [
+        'emp_doc_id',
         'deleted_at',
     ];
 }

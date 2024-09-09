@@ -6,15 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Department extends Model
+class Branch extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'department_id';
+    protected $primaryKey = 'branch_id';
 
     protected $fillable = [
-        'department_name',
-        'department_function',
+        'branch_location',
     ];
 
     /*
@@ -25,6 +24,6 @@ class Department extends Model
 
     public function employees(): HasMany
     {
-        return $this->hasMany(Employee::class, 'department_id', 'department_id');
+        return $this->hasMany(Employee::class, 'branch_id', 'branch_id');
     }
 }
