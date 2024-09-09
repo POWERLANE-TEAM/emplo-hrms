@@ -17,5 +17,4 @@ class EmployeeDoc extends Model
         'emp_doc_id',
         'deleted_at',
     ];
-
 }

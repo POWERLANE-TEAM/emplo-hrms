@@ -5,7 +5,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      */
@@ -23,7 +24,6 @@ return new class extends Migration {
             $table->timestamp('time_out')->nullable();
         });
 
-
         Schema::create('attendance_summaries', function (Blueprint $table) {
             $table->id('summary_id');
 
@@ -34,7 +34,7 @@ return new class extends Migration {
 
             // cut-offs
             $table->integer('beg_date');    // beginning date
-            $table->integer('end_date');    // end date    
+            $table->integer('end_date');    // end date
 
             // worked hours will be stored into minutes instead
             $table->integer('reg_hours')->nullable();               // regular hours

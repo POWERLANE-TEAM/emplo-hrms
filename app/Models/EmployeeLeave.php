@@ -48,5 +48,4 @@ class EmployeeLeave extends Model
     {
         return $this->belongsTo(Employee::class, 'hr_manager', 'employee_id');
     }
-
 }

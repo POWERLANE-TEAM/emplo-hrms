@@ -2,10 +2,9 @@
 
 namespace App\Models;
 
-use App\Models\PerformanceCategory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class PerformanceEvaluationDetails extends Model
 {
@@ -34,5 +33,4 @@ class PerformanceEvaluationDetails extends Model
     {
         return $this->belongsTo(PerformanceCategory::class, 'performance_id', 'performance_id');
     }
-
 }
