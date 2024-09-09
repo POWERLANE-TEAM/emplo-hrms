@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Employee extends Model
 {
@@ -31,24 +31,24 @@ class Employee extends Model
     protected function firstName(): Attribute
     {
         return Attribute::make(
-            get: fn(string $value) => ucfirst($value),
-            set: fn(string $value) => strtolower($value),
+            get: fn (string $value) => ucfirst($value),
+            set: fn (string $value) => strtolower($value),
         );
     }
 
     protected function middleName(): Attribute
     {
         return Attribute::make(
-            get: fn(string $value) => ucfirst($value),
-            set: fn(string $value) => strtolower($value),
+            get: fn (string $value) => ucfirst($value),
+            set: fn (string $value) => strtolower($value),
         );
     }
 
     protected function lastName(): Attribute
     {
         return Attribute::make(
-            get: fn(string $value) => ucfirst($value),
-            set: fn(string $value) => strtolower($value),
+            get: fn (string $value) => ucfirst($value),
+            set: fn (string $value) => strtolower($value),
         );
     }
 
@@ -94,7 +94,6 @@ class Employee extends Model
         return $this->belongsTo(Shift::class, 'shift_id', 'shift_id');
     }
 
-
     /*
     |--------------------------------------------------------------------------
     | Overtime Management
@@ -124,7 +123,6 @@ class Employee extends Model
     {
         return $this->hasMany(Overtime::class, 'hr_manager', 'employee_id');
     }
-
 
     /*
     |--------------------------------------------------------------------------
@@ -162,7 +160,6 @@ class Employee extends Model
         return $this->belongsToMany(Document::class, 'employee_docs', 'document_id', 'employee_id');
     }
 
-
     /*
     |--------------------------------------------------------------------------
     | Performance Management
@@ -192,5 +189,4 @@ class Employee extends Model
     {
         return $this->hasMany(PerformanceEvaluation::class, 'hr_manager', 'employee_id');
     }
-
 }
