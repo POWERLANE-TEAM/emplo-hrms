@@ -9,6 +9,7 @@ use Illuminate\Validation\Rules\Password;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Broadcasting\BroadcastServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -38,10 +39,10 @@ class AppServiceProvider extends ServiceProvider
 
             return
                 $rule->letters()
-                    ->mixedCase()
-                    ->numbers()
-                    ->symbols()
-                    ->uncompromised();
+                ->mixedCase()
+                ->numbers()
+                ->symbols()
+                ->uncompromised();
         });
 
         Validator::extend('valid_email_dns', function ($attributes, $value, $parameters, $validator) {
@@ -52,7 +53,7 @@ class AppServiceProvider extends ServiceProvider
             $email_domain = substr(strrchr($value, '@'), 1);
 
             return in_array($email_domain, $email_domains['valid_email']);
-        }, 'Email service provider is not allowed.');
+        });
 
         VerifyEmail::toMailUsing(function (object $notifiable, string $url) {
             return (new MailMessage)
@@ -69,5 +70,7 @@ class AppServiceProvider extends ServiceProvider
             'employee' => 'App\Models\Employee',
             'applicant' => 'App\Models\Applicant',
         ]);
+
+        BroadcastServiceProvider::class;
     }
 }

@@ -15,7 +15,7 @@
 
             @yield('content')
 
-            {{-- <x-html.test-elements></x-html.test-elements>  --}}
+            <x-html.test-elements></x-html.test-elements>
         </main>
 
         <x-employee.footer></x-employee.footer>

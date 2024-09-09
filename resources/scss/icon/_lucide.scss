@@ -1,3 +1,5 @@
 .lucide {
     width: clamp(1.5rem, 0.5rem + 0.5vw + 0.75vh, 3rem);
+    height: auto;
+    aspect-ratio: 1/1;
 }

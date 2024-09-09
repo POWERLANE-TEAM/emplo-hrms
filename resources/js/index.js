@@ -10,9 +10,14 @@ import InputValidator, { setInvalidMessage } from './forms/input-validator.js';
 import initEmailValidation, { validateEmail } from './forms/email-validation.js';
 import PasswordValidator, { DEFAULT_PASSWORD_VALIDATION } from './forms/password-validation.js';
 import initPasswordConfirmValidation, { validateConfirmPassword } from './forms/password-confirm-validation.js';
+import ThemeManager, { initPageTheme } from './theme-listener.js';
 import debounce from './debounce-fn.js';
 import './applicant/top-bar.js'
 // import './livewire.js'
+
+const themeManager = new ThemeManager();
+
+initPageTheme(themeManager);
 
 document.addEventListener("DOMContentLoaded", (event) => {
     initLucideIcons();
