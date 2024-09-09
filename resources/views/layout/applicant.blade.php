@@ -1,7 +1,17 @@
 @props(['icon_size' => '25', 'icon_ratio' => '1/1'])
 <x-html>
 
-    <x-html.head description=" {{ $description ?? app()->name() }}">
+    @php
+        $font_array = ['800'];
+    @endphp
+
+    @isset($font_weights)
+        @php
+            $font_array = array_merge($font_weights, $font_array);
+        @endphp
+    @endisset
+
+    <x-html.head description=" {{ $description ?? app()->name() }}" :font_weights="$font_array">
         @livewireStyles(['nonce' => $nonce])
         @livewireScripts(['nonce' => $nonce])
         {{-- @livewireScriptConfig(['nonce' => $nonce]) --}}
@@ -31,8 +41,8 @@
                         </div>
                     </div>
 
-                    <x-nav-link href="/" :active="request()->is('/')" class="no-hover ps-0  nav-link">
-                        <h1 class="fs-2 text-white">Powerlane</h1>
+                    <x-nav-link href="/" :active="request()->is('/')" class="no-hover ps-0 fw-semibold nav-link">
+                        <h1 class="fs-2 fw-bolder text-white">Powerlane</h1>
                     </x-nav-link>
                 </div>
                 <div class="d-flex align-items-center fw-bold ">
@@ -101,7 +111,7 @@
         </header>
 
 
-        <main class="container mt-4 mt-md-5">
+        <main class=" mt-4 mt-md-5 {{ $main_content_class ?? '' }}">
 
             @yield('content')
             {{-- <x-html.test-elements></x-html.test-elements> --}}

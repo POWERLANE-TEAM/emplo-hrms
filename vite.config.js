@@ -17,6 +17,7 @@ export default defineConfig({
                 'resources/js/email-domain-list.json',
                 'resources/js/applicant/dashboard.js',
                 'resources/js/employee/dashboard.js',
+                'resources/js/employee/pre-employment.js',
                 // 'resources/js/forms/nbp.min.js',
                 // 'resources/js/forms/eval-password.js',
                 // 'resources/js/pasword-listcollections/mostcommon_1000000',
