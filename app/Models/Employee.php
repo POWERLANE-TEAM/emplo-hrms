@@ -60,9 +60,9 @@ class Employee extends Model
     */
 
     // returns the account of this employee
-    public function user(): MorphOne
+    public function account(): MorphOne
     {
-        return $this->morphOne(User::class, 'userable');
+        return $this->morphOne(User::class, 'account');
     }
 
     // returns employment status of employee
