@@ -28,9 +28,6 @@ jobs:
       - name: Clear Composer Cache
         run: composer clear-cache
 
-      - name: Install Dependencies
-        run: composer install
-
       - name: Install Pint
         run: composer global require laravel/pint:^1.13
 
