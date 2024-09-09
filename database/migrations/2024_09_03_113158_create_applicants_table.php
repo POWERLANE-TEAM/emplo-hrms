@@ -25,6 +25,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        
         Schema::create('applicant_docs', function (Blueprint $table) {
             $table->id('applicant_doc_id');
 

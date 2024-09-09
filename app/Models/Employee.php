@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Employee extends Model
 {
@@ -31,24 +32,24 @@ class Employee extends Model
     protected function firstName(): Attribute
     {
         return Attribute::make(
-            get: fn (string $value) => ucfirst($value),
-            set: fn (string $value) => strtolower($value),
+            get: fn(string $value) => ucfirst($value),
+            set: fn(string $value) => strtolower($value),
         );
     }
 
     protected function middleName(): Attribute
     {
         return Attribute::make(
-            get: fn (string $value) => ucfirst($value),
-            set: fn (string $value) => strtolower($value),
+            get: fn(string $value) => ucfirst($value),
+            set: fn(string $value) => strtolower($value),
         );
     }
 
     protected function lastName(): Attribute
     {
         return Attribute::make(
-            get: fn (string $value) => ucfirst($value),
-            set: fn (string $value) => strtolower($value),
+            get: fn(string $value) => ucfirst($value),
+            set: fn(string $value) => strtolower($value),
         );
     }
 
@@ -59,9 +60,15 @@ class Employee extends Model
     */
 
     // returns the account of this employee
-    public function account(): HasOne
+    public function user(): MorphOne
     {
-        return $this->hasOne(User::class, 'employee_id', 'employee_id');
+        return $this->morphOne(User::class, 'userable');
+    }
+
+    // returns employment status of employee
+    public function employmentStatus(): BelongsTo
+    {
+        return $this->belongsTo(EmploymentStatus::class, 'emp_status_id', 'emp_status_id');
     }
 
     // returns attendance records of employee
@@ -94,9 +101,52 @@ class Employee extends Model
         return $this->belongsTo(Shift::class, 'shift_id', 'shift_id');
     }
 
+    // returns the documents of employee
+    public function documents(): BelongsToMany
+    {
+        return $this->belongsToMany(Document::class, 'employee_docs', 'document_id', 'employee_id');
+    }
+
     /*
     |--------------------------------------------------------------------------
-    | Overtime Management
+    | Training Records Management
+    |--------------------------------------------------------------------------
+    */
+
+    // returns training records of employee
+    public function trainings(): HasMany
+    {
+        return $this->hasMany(Training::class, 'trainee', 'employee_id');
+    }
+
+    // returns training records where employee is trainer
+    public function trainingsAsTrainer(): MorphMany
+    {
+        return $this->morphMany(Training::class, 'trainer');
+    }
+
+    // returns training comments where employee is trainer
+    public function commentsAsTrainer(): MorphMany
+    {
+        return $this->morphMany(Training::class, 'comment');
+    }
+
+    // returns prepared training records where employee is hr personnel
+    public function preparedTrainings(): HasMany
+    {
+        return $this->hasMany(Training::class, 'prepared_by', 'employee_id');
+    }
+
+    // returns reviewed/approved training records where employee is hr manager
+    public function reviewedTrainings(): HasMany
+    {
+        return $this->hasMany(Training::class, 'reviewed_by', 'employee_id');
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Overtime Records Management
     |--------------------------------------------------------------------------
     */
 
@@ -107,62 +157,56 @@ class Employee extends Model
     }
 
     // returns approved overtimes by supervisor
-    public function supervisorApprovedOvertimes(): HasMany
+    public function approvedOvertimesAsSupervisor(): HasMany
     {
         return $this->hasMany(Overtime::class, 'supervisor', 'employee_id');
     }
 
     // returns approved overtimes by department head
-    public function deptHeadApprovedOvertimes(): HasMany
+    public function approvedOvertimesAsDeptHead(): HasMany
     {
         return $this->hasMany(Overtime::class, 'dept_head', 'employee_id');
     }
 
     // returns approved overtimes by hr manager
-    public function hrManagerApprovedOvertimes(): HasMany
+    public function approvedOvertimesAsHrManager(): HasMany
     {
         return $this->hasMany(Overtime::class, 'hr_manager', 'employee_id');
     }
 
     /*
     |--------------------------------------------------------------------------
-    | Leave Management
+    | Leave Records Management
     |--------------------------------------------------------------------------
     */
 
     // returns the leave records of employee
-    public function leavesRequested(): HasMany
+    public function leaves(): HasMany
     {
         return $this->hasMany(EmployeeLeave::class, 'employee_id', 'employee_id');
     }
 
     // returns approved leave records by supervisor
-    public function supervisorApprovedLeaves(): HasMany
+    public function approvedLeavesAsSupervisor(): HasMany
     {
         return $this->hasMany(EmployeeLeave::class, 'supervisor', 'employee_id');
     }
 
     // returns approved leave records by department head
-    public function deptHeadApprovedLeaves(): HasMany
+    public function approvedLeavesAsDeptHead(): HasMany
     {
         return $this->hasMany(EmployeeLeave::class, 'dept_head', 'employee_id');
     }
 
     // returns approved leave records by hr manager
-    public function hrManagerApprovedLeaves(): HasMany
+    public function approvedLeavesAsHrManager(): HasMany
     {
         return $this->hasMany(EmployeeLeave::class, 'hr_manager', 'employee_id');
     }
 
-    // returns the documents of employee
-    public function documents(): BelongsToMany
-    {
-        return $this->belongsToMany(Document::class, 'employee_docs', 'document_id', 'employee_id');
-    }
-
     /*
     |--------------------------------------------------------------------------
-    | Performance Management
+    | Performance Evaluation Records Management
     |--------------------------------------------------------------------------
     */
 
@@ -172,20 +216,20 @@ class Employee extends Model
         return $this->hasMany(PerformanceEvaluation::class, 'evaluatee', 'employee_id');
     }
 
-    // returns performance records where employee is supervisor
-    public function supervisorSignedPerfEval(): HasMany
+    // returns signed performance records where employee is supervisor
+    public function signedPerfEvalAsSupervisor(): HasMany
     {
         return $this->hasMany(PerformanceEvaluation::class, 'supervisor', 'employee_id');
     }
 
-    // returns performance records where employee is department head
-    public function deptHeadSignedPerfEval(): HasMany
+    // returns signed performance records where employee is department head
+    public function signedPerfEvalAsDeptHead(): HasMany
     {
         return $this->hasMany(PerformanceEvaluation::class, 'dept_head', 'employee_id');
     }
 
-    // returns performance records where employee is hr manager
-    public function hrManagerSignedPerfEval(): HasMany
+    // returns signed performance records where employee is hr manager
+    public function signedPerfEvalAsHrManager(): HasMany
     {
         return $this->hasMany(PerformanceEvaluation::class, 'hr_manager', 'employee_id');
     }

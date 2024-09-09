@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -57,13 +58,18 @@ class User extends Authenticatable implements MustVerifyEmail
     |--------------------------------------------------------------------------
     */
 
-    public function applicant(): BelongsTo
+    public function user(): MorphTo
     {
-        return $this->belongsTo(Applicant::class, 'applicant_id', 'applicant_id');
+        return $this->morphTo();
     }
 
-    public function employee(): BelongsTo
+    public function role(): BelongsTo
     {
-        return $this->belongsTo(Employee::class, 'employee_id', 'employee_id');
+        return $this->belongsTo(UserRole::class, 'user_role_id', 'user_role_id');
+    }
+
+    public function status(): BelongsTo
+    {
+        return $this->belongsTo(UserStatus::class, 'user_status_id', 'user_status_id');
     }
 }

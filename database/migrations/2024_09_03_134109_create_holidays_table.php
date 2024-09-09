@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('holidays', function (Blueprint $table) {
             $table->id('holiday_id');
             $table->dateTime('date');
+            $table->string('holiday_type'); // regular and special, etc.
             $table->string('holiday_name', 100);
-            $table->enum('holiday_type', ['REGULAR', 'SPECIAL']);
+            $table->longText('holiday_desc');
             $table->timestamps();
         });
     }

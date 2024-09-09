@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Applicant extends Model
 {
@@ -63,9 +63,9 @@ class Applicant extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function user(): HasOne
+    public function user(): MorphOne
     {
-        return $this->hasOne(User::class, 'applicant_id', 'applicant_id');
+        return $this->morphOne(User::class, 'userable');
     }
 
     public function documents(): BelongsToMany

@@ -4,19 +4,27 @@ use App\Models\Branch;
 use App\Models\Department;
 use App\Models\Document;
 use App\Models\Employee;
-use App\Models\LeaveCategory;
+use App\Models\EmploymentStatus;
 use App\Models\Position;
+use App\Models\LeaveCategory;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
+        Schema::create('employment_statuses', function (Blueprint $table) {
+            $table->id('emp_status_id');
+            $table->string('emp_status_name', 100);
+            $table->longText('emp_status_desc');
+            $table->timestamps();
+        });
+
+
         Schema::create('employees', function (Blueprint $table) {
             $table->id('employee_id');
             $table->string('first_name', 100);
@@ -40,8 +48,10 @@ return new class extends Migration
 
             $table->timestamp('hired_at');
 
-            // ain't sure about resigned and terminated
-            $table->enum('emp_status', ['PROBATIONARY, REGULAR', 'RESIGNED', 'TERMINATED']);
+            $table->foreignIdFor(EmploymentStatus::class, 'emp_status_id')
+                ->constrained('employment_statuses', 'emp_status_id')
+                ->cascadeOnUpdate()
+                ->restrictOnDelete();
 
             $table->longText('present_address');
             $table->longText('permanent_address');
@@ -128,6 +138,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('employment_statuses');
         Schema::dropIfExists('employees');
         Schema::dropIfExists('employee_docs');
         Schema::dropIfExists('employee_leaves');
