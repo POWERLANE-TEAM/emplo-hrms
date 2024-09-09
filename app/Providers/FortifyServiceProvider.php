@@ -29,7 +29,12 @@ class FortifyServiceProvider extends ServiceProvider
         {
             public function toResponse($request)
             {
-                broadcast(new UserLoggedout($request->auth_broadcast_id))->toOthers();
+                try {
+                    broadcast(new UserLoggedout($request->auth_broadcast_id))->toOthers();
+                } catch (\Throwable $th) {
+                    // avoid Pusher error: cURL error 7: Failed to connect to localhost port 8080 after 2209 ms: Couldn't connect to server
+                    /* when websocket server is not started */
+                }
                 return redirect('/');
             }
         });
@@ -39,6 +44,10 @@ class FortifyServiceProvider extends ServiceProvider
             public function toResponse($request)
             {
                 $authenticated_role = Auth::user()->role;
+
+                if (session()->has('url.intended')) {
+                    return redirect()->intended();
+                }
 
                 switch ($authenticated_role) {
                     case 'GUEST':
@@ -78,7 +87,7 @@ class FortifyServiceProvider extends ServiceProvider
         });
 
         RateLimiter::for('login', function (Request $request) {
-            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
+            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())) . '|' . $request->ip());
 
             return Limit::perMinute(5)->by($throttleKey);
         });
