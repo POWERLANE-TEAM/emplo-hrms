@@ -6,6 +6,33 @@ body:has(footer) {
     @media screen and (max-width: 576px) {
         @include min-height(120);
     }
+
+    %dark-footer-scheme {
+        background-color: var(--bs-body-bg-secondary);
+
+        *>*,
+        a.unstyled {
+            color: whitesmoke;
+        }
+    }
+
+    &:not([data-bs-theme]) {
+        @media screen and (prefers-color-scheme: dark) {
+            footer {
+                background-color: var(--bs-body-bg-secondary);
+
+                *>*,
+                a.unstyled {
+                    color: whitesmoke;
+                }
+            }
+
+        }
+    }
+
+    &[data-bs-theme="dark"] footer {
+        @extend %dark-footer-scheme;
+    }
 }
 
 footer {
