@@ -58,7 +58,7 @@ class User extends Authenticatable implements MustVerifyEmail
     |--------------------------------------------------------------------------
     */
 
-    public function user(): MorphTo
+    public function account(): MorphTo
     {
         return $this->morphTo();
     }
