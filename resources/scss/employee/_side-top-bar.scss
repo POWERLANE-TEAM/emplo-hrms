@@ -79,12 +79,6 @@ div:has(>.topnav) {
     padding-top: var(--main-menu-padding-top);
 }
 
-%rm-dropdown-triangle {
-    button::after {
-        content: none;
-    }
-}
-
 sidebar.main-menu {
     /* Base style for sidebar when collpased */
 

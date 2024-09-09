@@ -1,0 +1,49 @@
+@import '../core';
+@import '../style';
+@import '../icon/lucide';
+@import '../nav-link';
+@import '../nav-tabs';
+@import '../input/search';
+@import '../footer';
+@import '../btn-toggle-psw';
+@import '../input/checkbox';
+
+
+header {
+    --v-offset: clamp(1rem, 0.5rem + 0.5vw + 0.75vh, 5rem);
+    transition: background-color 0.5s ease;
+    // animation: bgSwipeDown 0.75s ease forwards;
+
+    nav {
+        padding: var(--v-offset) clamp(2rem, 1rem + 6vw, 10rem);
+        color: var(--main-white);
+
+        div,
+        section {
+            &:has(.nav-link):not(.home) {
+                gap: 0 calc(1.5rem + 3.6vw);
+
+            }
+        }
+
+        .nav-link,
+        button {
+            @extend %nav-link;
+        }
+    }
+}
+
+.user-menu,
+.dropdown {
+    @extend %rm-dropdown-triangle;
+}
+
+div:has(>#chartProgress) {
+    width: 20vw;
+    height: 20vw;
+    min-width: 200px;
+    min-height: 250px;
+    max-height: 100%;
+    max-width: 100%;
+    aspect-ratio: 3/2;
+}

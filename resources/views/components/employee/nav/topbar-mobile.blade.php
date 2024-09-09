@@ -1,4 +1,4 @@
-@props(['icon_size' => '25vw', 'icon_ratio' => '1/1'])
+@props(['icon_size' => '25', 'icon_ratio' => '1/1'])
 
 <div>
     <div {{ $attributes->merge(['class' => ' topnav-mobile']) }}>
@@ -21,7 +21,9 @@
             </x-form.search-group>
 
             <x-notif-dropdown>
-                <i class="" data-lucide="bell"></i>
+                <li class="dropdown-item">Notif 1</li>
+                <li class="dropdown-item">Notif 1</li>
+                <li class="dropdown-item">Notif 1</li>
             </x-notif-dropdown>
 
         </div>

@@ -50,7 +50,7 @@ class CspPolicy extends CustomSpatiePolicy
         }
 
         // $this
-        //     ->addDirective(Directive::CONNECT, Scheme::WSS)
+        //     ->addDirective(Directive::CONNECT, Scheme::WSS);
         //     ->addDirective(Directive::IMG, Scheme::DATA);
 
         $this->addDirective(Directive::STYLE, 'unsafe-inline');

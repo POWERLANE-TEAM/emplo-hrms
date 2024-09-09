@@ -4,8 +4,12 @@
         {
             "format": "compressed",
             // "extensionName": ".css",
-            "savePath": "/resources/css",
-            "savePathReplacementPairs": null
+            // "savePath": "/resources/css",
+            "savePathReplacementPairs": {
+                "/resources/scss/applicant/": "/resources/css/applicant/",
+                "/resources/scss/employee/": "/resources/css/employee/",
+                "/resources/scss/": "/resources/css/"
+            }
         }
     ],
     "liveSassCompile.settings.includeItems": [
