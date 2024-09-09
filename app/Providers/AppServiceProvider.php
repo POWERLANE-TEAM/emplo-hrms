@@ -13,13 +13,6 @@ use Illuminate\Broadcasting\BroadcastServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-    protected $whitelist = [
-        'red',
-        'yellow',
-        'green',
-        'blue',
-        'black',
-    ];
 
     /**
      * Register any application services.
