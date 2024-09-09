@@ -13,14 +13,9 @@ class EmploymentStatus extends Model
     protected $primaryKey = 'emp_status_id';
 
     protected $fillable = [
+        'emp_status_name',
         'emp_status_desc',
     ];
-
-    /*
-    |--------------------------------------------------------------------------
-    | Define model relationships below
-    |--------------------------------------------------------------------------
-    */
 
     public function employees(): HasMany
     {

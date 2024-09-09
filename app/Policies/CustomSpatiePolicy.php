@@ -42,8 +42,9 @@ class CustomSpatiePolicy extends Policy
                         if ($mode === 'exact') {
                             return $existingValue !== $sanitizedValue;
                         } elseif ($mode === 'starts_with') {
-                            return !str_starts_with($existingValue, $sanitizedValue);
+                            return ! str_starts_with($existingValue, $sanitizedValue);
                         }
+
                         return true; // In case of an unsupported mode, do nothing
                     }
                 );

@@ -2,12 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Applicant extends Model
 {
@@ -17,7 +16,8 @@ class Applicant extends Model
 
     protected $guarded = [
         'applicant_id',
-        'applied_at',
+        'created_at',
+        'updated_at',
     ];
 
     protected function casts(): array
@@ -36,24 +36,24 @@ class Applicant extends Model
     protected function firstName(): Attribute
     {
         return Attribute::make(
-            get: fn(string $value) => ucfirst($value),
-            set: fn(string $value) => strtolower($value),
+            get: fn (string $value) => ucfirst($value),
+            set: fn (string $value) => strtolower($value),
         );
     }
 
     protected function middleName(): Attribute
     {
         return Attribute::make(
-            get: fn(string $value) => ucfirst($value),
-            set: fn(string $value) => strtolower($value),
+            get: fn (string $value) => ucfirst($value),
+            set: fn (string $value) => strtolower($value),
         );
     }
 
     protected function lastName(): Attribute
     {
         return Attribute::make(
-            get: fn(string $value) => ucfirst($value),
-            set: fn(string $value) => strtolower($value),
+            get: fn (string $value) => ucfirst($value),
+            set: fn (string $value) => strtolower($value),
         );
     }
 
@@ -63,9 +63,9 @@ class Applicant extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function user(): HasOne
+    public function user(): MorphOne
     {
-        return $this->hasOne(User::class, 'applicant_id', 'applicant_id');
+        return $this->morphOne(User::class, 'userable');
     }
 
     public function documents(): BelongsToMany

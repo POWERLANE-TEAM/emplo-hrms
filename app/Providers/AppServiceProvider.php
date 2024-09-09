@@ -2,23 +2,23 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Vite;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules\Password;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Validation\Rules\Password;
-use Illuminate\Support\Facades\Vite;
+use Illuminate\Database\Eloquent\Relations\Relation;
 
 class AppServiceProvider extends ServiceProvider
 {
-    protected $whitelist = array(
+    protected $whitelist = [
         'red',
         'yellow',
         'green',
         'blue',
-        'black'
-    );
-
+        'black',
+    ];
 
     /**
      * Register any application services.
@@ -38,11 +38,10 @@ class AppServiceProvider extends ServiceProvider
 
             return
                 $rule->letters()
-                ->mixedCase()
-                ->numbers()
-                ->symbols()
-                ->uncompromised()
-            ;
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols()
+                    ->uncompromised();
         });
 
         Validator::extend('valid_email_dns', function ($attributes, $value, $parameters, $validator) {
@@ -50,7 +49,7 @@ class AppServiceProvider extends ServiceProvider
             $email_domains = json_decode($data, true);
 
             // Extract the domain from the email
-            $email_domain = substr(strrchr($value, "@"), 1);
+            $email_domain = substr(strrchr($value, '@'), 1);
 
             return in_array($email_domain, $email_domains['valid_email']);
         }, 'Email service provider is not allowed.');
@@ -61,5 +60,14 @@ class AppServiceProvider extends ServiceProvider
                 ->line('Click the button below to verify your email address.')
                 ->action('Verify Email Address', $url);
         });
+
+        // stores strings representing the models in the tables
+        // e.g: from column_type = App\Models\OutsourcedTrainer to column_type = outsourced_trainer
+        // ref: https://laravel.com/docs/11.x/eloquent-relationships#custom-polymorphic-types
+        Relation::enforceMorphMap([
+            'outsourced_trainer' => 'App\Models\OutsourcedTrainer',
+            'employee' => 'App\Models\Employee',
+            'applicant' => 'App\Models\Applicant',
+        ]);
     }
 }

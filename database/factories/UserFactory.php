@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -29,6 +28,7 @@ class UserFactory extends Factory
                 fake()->freeEmail(),
             ]),
             'role' => $this->faker->randomElement(['GUEST', 'USER', 'MANAGER', 'SYSADMIN']),
+            'status' => $this->faker->randomElement(['ACTIVE', 'INACTIVE', 'BLOCKED']),
             'password' => static::$password ??= Hash::make('p@ssw0rd'),
         ];
     }

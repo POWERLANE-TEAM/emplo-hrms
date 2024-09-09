@@ -2,35 +2,51 @@
 
 use App\Models\Applicant;
 use App\Models\Employee;
-use App\Models\User;
+use App\Models\UserRole;
+use App\Models\UserStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      */
     public function up(): void
     {
+        Schema::create('user_roles', function (Blueprint $table) {
+            $table->id('user_role_id');
+            $table->string('user_role_name', 100);
+            $table->longText('user_role_desc');
+            $table->timestamps();
+        });
+
+
+        Schema::create('user_statuses', function (Blueprint $table) {
+            $table->id('user_status_id');
+            $table->string('user_status_name', 100);
+            $table->longText('user_status_desc');
+            $table->timestamps();
+        });
+
+
         Schema::create('users', function (Blueprint $table) {
             $table->id('user_id');
-            $table->string('email', 191)->unique();
-            $table->string('password', 191)->nullable();
-            $table->string('google_id', 191)->nullable();
-            $table->enum('role', ['GUEST', 'USER', 'MANAGER', 'SYSADMIN']);
+            $table->morphs('userable');
+            $table->string('email', 320)->unique();
+            $table->string('password');
+            $table->string('google_id')->nullable();
 
-            $table->foreignIdFor(Applicant::class, 'applicant_id')
-                ->nullable()
-                ->constrained('applicants', 'applicant_id')
+            $table->foreignIdFor(UserRole::class, 'user_role_id')
+                ->constrained('user_roles', 'user_role_id')
                 ->cascadeOnUpdate()
-                ->cascadeOnDelete();
+                ->restrictOnDelete();
 
-            $table->foreignIdFor(Employee::class, 'employee_id')
-                ->nullable()
-                ->constrained('employees', 'employee_id')
+            $table->foreignIdFor(UserStatus::class, 'user_status_id')
+                ->constrained('user_statuses', 'user_status_id')
                 ->cascadeOnUpdate()
-                ->cascadeOnDelete();
+                ->restrictOnDelete();
 
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
@@ -38,11 +54,13 @@ return new class extends Migration {
             $table->softDeletes();
         });
 
+
         Schema::create('password_reset_tokens', function (Blueprint $table) {
-            $table->string('email', 191)->primary();
+            $table->string('email', 320)->primary();
             $table->string('token', 191);
             $table->timestamp('created_at')->nullable();
         });
+
 
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id', 191)->primary();
@@ -59,6 +77,8 @@ return new class extends Migration {
      */
     public function down(): void
     {
+        Schema::dropIfExists('user_roles');
+        Schema::dropIfExists('user_statuses');
         Schema::dropIfExists('users');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
