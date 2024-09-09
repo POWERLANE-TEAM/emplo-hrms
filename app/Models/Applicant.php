@@ -63,9 +63,10 @@ class Applicant extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function user(): MorphOne
+    // returns the account of applicant
+    public function account(): MorphOne
     {
-        return $this->morphOne(User::class, 'userable');
+        return $this->morphOne(User::class, 'account');
     }
 
     public function documents(): BelongsToMany
