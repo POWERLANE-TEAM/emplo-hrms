@@ -2,13 +2,14 @@
 
 namespace App\Providers;
 
-use Illuminate\Auth\Notifications\VerifyEmail;
-use Illuminate\Broadcasting\BroadcastServiceProvider;
-use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Auth\Notifications\VerifyEmail;
+use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Broadcasting\BroadcastServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -60,6 +61,15 @@ class AppServiceProvider extends ServiceProvider
                 ->line('Click the button below to verify your email address.')
                 ->action('Verify Email Address', $url);
         });
+
+        // stores strings representing the models in the tables
+        // e.g: from column_type = App\Models\OutsourcedTrainer to column_type = outsourced_trainer
+        // ref: https://laravel.com/docs/11.x/eloquent-relationships#custom-polymorphic-types
+        Relation::enforceMorphMap([
+            'outsourced_trainer' => 'App\Models\OutsourcedTrainer',
+            'employee' => 'App\Models\Employee',
+            'applicant' => 'App\Models\Applicant',
+        ]);
 
         BroadcastServiceProvider::class;
     }

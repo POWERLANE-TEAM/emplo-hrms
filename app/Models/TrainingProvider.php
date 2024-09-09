@@ -2,19 +2,19 @@
 
 namespace App\Models;
 
+use App\Models\OutsourcedTrainer;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Department extends Model
+class TrainingProvider extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'department_id';
+    protected $primaryKey = 'training_provider_id';
 
     protected $fillable = [
-        'department_name',
-        'department_function',
+        'training_provider_name',
     ];
 
     /*
@@ -23,8 +23,8 @@ class Department extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function employees(): HasMany
+    public function outsourcedTrainers(): HasMany
     {
-        return $this->hasMany(Employee::class, 'department_id', 'department_id');
+        return $this->hasMany(OutsourcedTrainer::class, 'training_provider', 'training_provider_id');
     }
 }

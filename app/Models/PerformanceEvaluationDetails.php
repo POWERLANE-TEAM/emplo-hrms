@@ -6,19 +6,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class ApplicantDoc extends Model
+class PerformanceEvaluationDetails extends Model
 {
     use HasFactory;
 
-    protected $table = 'applicant_docs';
-
-    protected $primaryKey = 'applicant_doc_id';
+    protected $primaryKey = 'perf_eval_detail_id';
 
     protected $guarded = [
-        'applicant_doc_id',
+        'perf_eval_detail_id',
         'created_at',
         'updated_at',
-        'deleted_at',
     ];
 
     /*
@@ -27,8 +24,13 @@ class ApplicantDoc extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function receivedBy(): BelongsTo
+    public function performanceEvaluation(): BelongsTo
     {
-        return $this->belongsTo(Employee::class, 'received_by', 'employee_id');
+        return $this->belongsTo(PerformanceEvaluation::class, 'perf_eval_id', 'perf_eval_id');
+    }
+
+    public function performanceCategory(): BelongsTo
+    {
+        return $this->belongsTo(PerformanceCategory::class, 'performance_id', 'performance_id');
     }
 }

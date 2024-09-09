@@ -6,16 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class EmployeeLeave extends Model
+class PerformanceEvaluation extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'emp_leave_id';
+    protected $primaryKey = 'perf_eval_id';
 
     protected $guarded = [
-        'emp_leave_id',
-        'created_at',
-        'updated_at',
+        'perf_eval_id',
     ];
 
     /*
@@ -24,26 +22,25 @@ class EmployeeLeave extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function leaveCategory(): BelongsTo
-    {
-        return $this->belongsTo(LeaveCategory::class, 'leave_id', 'leave_id');
-    }
-
+    // returns the employee being evaluated
     public function employee(): BelongsTo
     {
-        return $this->belongsTo(Employee::class, 'employee_id', 'employee_id');
+        return $this->belongsTo(Employee::class, 'evaluatee', 'employee_id');
     }
 
+    // returns the supervisor of the performance evaluation
     public function supervisor(): BelongsTo
     {
         return $this->belongsTo(Employee::class, 'supervisor', 'employee_id');
     }
 
-    public function deptHead(): BelongsTo
+    // returns the department head of the performance evaluation
+    public function departmentHead(): BelongsTo
     {
         return $this->belongsTo(Employee::class, 'dept_head', 'employee_id');
     }
 
+    // returns the hr manager of the performance evaluation
     public function hrManager(): BelongsTo
     {
         return $this->belongsTo(Employee::class, 'hr_manager', 'employee_id');

@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('leave_categories', function (Blueprint $table) {
             $table->id('leave_id');
             $table->string('leave_name', 255);
-            $table->tinyInteger('leave_balance');
             $table->timestamps();
         });
     }

@@ -6,15 +6,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Department extends Model
+class PerformanceCategory extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'department_id';
+    protected $primaryKey = 'performance_id';
 
     protected $fillable = [
-        'department_name',
-        'department_function',
+        'performance_name',
+        'performance_desc',
     ];
 
     /*
@@ -23,8 +23,8 @@ class Department extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function employees(): HasMany
+    public function performanceEvaluationDetails(): HasMany
     {
-        return $this->hasMany(Employee::class, 'department_id', 'department_id');
+        return $this->hasMany(PerformanceEvaluationDetails::class, 'performance_id', 'performance_id');
     }
 }
