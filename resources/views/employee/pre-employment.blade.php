@@ -32,7 +32,7 @@
             </div>
         </hgroup>
 
-        <div class="bg-body-secondary d-flex flex-md-nowrap border-0 rounded-3 px-5 py-4">
+        {{-- <div class="bg-body-secondary d-flex flex-md-nowrap border-0 rounded-3 px-5 py-4">
             <span class="fw-bold fs-5">
                 <span class=" text-primary">
                     11
@@ -164,11 +164,10 @@
                 </tr>
             </tbody>
 
-        </table>
+        </table> --}}
 
-        <table>
+        @livewire('employee.pre-employment')
 
-        </table>
     </div>
 @endsection
 
