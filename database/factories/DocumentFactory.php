@@ -33,7 +33,7 @@ class DocumentFactory extends Factory
             ['document_name' => "JR./SR./HS Diploma and TOR/Col Cert/Class cards (Col Undergrad )", 'document_desc' => ''],
             ['document_name' => "JR./SR./HS Diploma and Vocational Cert/Diploma/TOR (Voc Grad )", 'document_desc' => ''],
             ['document_name' => "College Diploma/TOR (College Graduate )", 'document_desc' => ''],
-            ['document_name' => "Certificate of Employment (s)-if previously employed", 'document_desc' => ''],
+            ['document_name' => "Certificate of Employment&#40;s&#41;-if previously employed", 'document_desc' => ''],
             ['document_name' => "ID Picture (recent-4 copies 2x2&1x1-white T-shirt & white background)", 'document_desc' => ''],
             ['document_name' => "Child's Birth certificate (if applicable )", 'document_desc' => ''],
             ['document_name' => "Marriage Contract (if applicable)", 'document_desc' => ''],
