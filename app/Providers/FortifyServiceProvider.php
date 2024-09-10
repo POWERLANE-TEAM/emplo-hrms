@@ -45,14 +45,15 @@ class FortifyServiceProvider extends ServiceProvider
             {
                 $authenticated_role = Auth::user()->role;
 
+                // Redirect to previously visited page before being prompt to login
                 if (session()->has('url.intended')) {
                     return redirect()->intended();
                 }
 
                 switch ($authenticated_role) {
-                    case 'GUEST':
+                    case 'GUEST': /* Deprecated */
                         return redirect()->to('/');
-                    case 'USER':
+                    case 'USER': /* Deprecated */
                         return redirect()->to('/employee');
                     case 'MANAGER':
                         // Add your logic here
@@ -62,7 +63,7 @@ class FortifyServiceProvider extends ServiceProvider
                         break;
                     default:
                         // Handle unexpected roles
-                        return redirect()->to('auth.login');
+                        return redirect()->to('/login');
                 }
             }
         });
