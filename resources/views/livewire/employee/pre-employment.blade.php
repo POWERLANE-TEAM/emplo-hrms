@@ -14,13 +14,13 @@
             </span>
         </span>
 
-        <div class="ms-md-auto">
+        <div class="ms-md-auto" wire:ignore>
             <button class=" bg-transparent border-0"><i class="icon p-1 d-inline text-info"
                     data-lucide="arrow-down-wide-narrow"></i>Sort By</button>
             <button class="bg-transparent border-0"><i class="icon p-1 d-inline text-info"
                     data-lucide="list-filter"></i>Filters</button>
         </div>
-        <div class="dropdown px-2 d-inline-block">
+        <div class="dropdown px-2 d-inline-block" wire:ignore>
             <button class=" bg-transparent border-0 dropdown-toggle d-flex align-content-center"
                 data-bs-toggle="dropdown">
                 <i class="icon p-1 d-inline text-info" data-lucide="download"></i>
@@ -33,9 +33,9 @@
         </div>
     </div>
 
-    <table class="table table-hover table-borderless text-center" aria-label="Pre-employment documents"
-        aria-description="List of Pre-employment documents to be submitted.">
-        <thead>
+    <table class="table table-hover table-borderless text-center position-relative"
+        aria-label="Pre-employment documents" aria-description="List of Pre-employment documents to be submitted.">
+        <thead wire:ignore>
             <tr>
                 <th class="col-5"><i class="icon p-1 d-inline text-primary" data-lucide="file-text"></i>Requirement
                 </th>
@@ -47,55 +47,14 @@
         <tbody>
 
             @foreach ($pre_employment_docs as $pre_employment_doc)
-                @php
-                    $doc_parts = explode('(', $pre_employment_doc->document_name, 2);
-                    $doc_name = trim($doc_parts[0]);
-                    $doc_hint = isset($doc_parts[1]) ? '(' . rtrim($doc_parts[1], ')') . ')' : null;
-                @endphp
-
-                <tr class="border-2 rounded-2 outline" style="height: 100px; vertical-align: middle;">
-                    <form action="" wire:model="document_id" name="{{ $pre_employment_doc->document_id }}">
-                        <td class="">
-                            <div class="fw-bold">{{ $doc_name }}
-
-                                @isset($doc_hint)
-                                    <div class="small">
-                                        {{ $doc_hint }}
-                                    </div>
-                                @endisset
-                            </div>
-                        </td>
-                        <td>
-                            <x-status-badge color="danger">Invalid</x-status-badge>
-                        </td>
-                        <td><button
-                                class="btn bg-transparent text-decoration-underline text-capitalize text-nowrap">View
-                                Attachment</button></td>
-                        <td><button class="btn btn-primary"> <i class="icon p-1  d-inline"
-                                    data-lucide="plus-circle"></i>
-                                Upload</button></td>
-                    </form>
-                </tr>
+                @livewire('employee.pre-employment-doc', ['pre_employment_doc' => $pre_employment_doc], key($pre_employment_doc->id))
             @endforeach
 
-            <tr class="" x-intersect="$wire.loadMore()">
+            <tr class="opacity-0" x-intersect.full="$wire.loadMore()">
                 <td colspan="4">
-                    load more
                 </td>
             </tr>
 
-            <tr class="border-2 rounded-2 outline" style="height: 100px; vertical-align: middle;">
-                <td class="">
-                    <div class="fw-bold">Document</div>
-                </td>
-                <td>
-                    <x-status-badge color="danger">Invalid</x-status-badge>
-                </td>
-                <td><button class="btn bg-transparent text-decoration-underline text-capitalize text-nowrap">View
-                        Attachment</button></td>
-                <td><button class="btn btn-primary"> <i class="icon p-1  d-inline" data-lucide="plus-circle"></i>
-                        Upload</button></td>
-            </tr>
         </tbody>
 
         <tbody class="text-start">

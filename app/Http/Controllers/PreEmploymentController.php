@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PreEmploymentController extends Controller
 {
@@ -19,9 +20,18 @@ class PreEmploymentController extends Controller
     }
 
     /* store a new resource */
-    public function store()
+    public function store(Request $request)
     {
         //
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $path = $file->store('uploads', 'public'); // Store in 'storage/app/public/uploads'
+
+            // Optionally, save the path in the database
+            // File::create(['path' => $path]);
+
+            return back()->with('success', 'File uploaded successfully!');
+        }
     }
 
     /* Get single resource */

@@ -8,9 +8,20 @@ class PreEmploymentDoc extends Component
 {
     public $pre_employment_doc;
 
-    public function mount($pre_employment_doc)
+    // public function mount($pre_employment_doc)
+    // {
+    //     $this->pre_employment_doc = $pre_employment_doc;
+    // }
+
+    public function placeholder()
     {
-        $this->pre_employment_doc = $pre_employment_doc;
+        return <<<'HTML'
+        <tr class="opacity-0" aria-live="polite" aria-label="Loading more documents">
+            <td colspan="4" class="text-center">
+                Loading more items
+            </td>
+        </tr>
+        HTML;
     }
 
     public function render()
