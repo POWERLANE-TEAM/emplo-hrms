@@ -21,6 +21,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/preemploy',  [PreEmploymentController::class, 'create']);
+    Route::post('/preemploy', [PreEmploymentController::class, 'store']);
 });
 
 Route::get('/employee/{page?}', [EmployeeController::class, 'employee'])->middleware(['auth', 'verified']);

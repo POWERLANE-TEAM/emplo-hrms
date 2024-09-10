@@ -4,9 +4,11 @@
     $doc_hint = isset($doc_parts[1]) ? '(' . rtrim($doc_parts[1], ')') . ')' : null;
 @endphp
 
-<tr class="border-2 rounded-2 outline" style="height: 100px; vertical-align: middle;">
+<tr class="rounded-2 outline dropzone position-relative" style="height: 100px; vertical-align: middle;"
+    wire:key="{{ $pre_employment_doc->id }}" id="preemp-doc-{{ $pre_employment_doc->document_id }}" wire:ignore>
     <form action="" wire:model="document_id" name="{{ $pre_employment_doc->document_id }}">
-        <td class="">
+        <td class="dz-message">
+            @csrf
             <div class="fw-bold">{{ $doc_name }}
 
                 @isset($doc_hint)
@@ -16,12 +18,82 @@
                 @endisset
             </div>
         </td>
-        <td>
+        <td class="dz-message">
             <x-status-badge color="danger">Invalid</x-status-badge>
         </td>
-        <td><button class="btn bg-transparent text-decoration-underline text-capitalize text-nowrap">View
+        <td class="dz-message"><button type="button" data-bs-toggle="modal"
+                data-bs-target="#preemp-doc-{{ $pre_employment_doc->document_id }}-attachment"
+                class="btn bg-transparent text-decoration-underline text-capitalize text-nowrap">View
                 Attachment</button></td>
-        <td><button class="btn btn-primary"> <i class="icon p-1  d-inline" data-lucide="plus-circle"></i>
-                Upload</button></td>
+        <td class="dz-message">
+            <button type="button" class="btn btn-primary"> <i class="icon p-1  d-inline" data-lucide="plus-circle"></i>
+                Upload</button>
+        </td>
     </form>
+
+    <div class="modal fade" id="preemp-doc-{{ $pre_employment_doc->document_id }}-attachment" tabindex="-1"
+        aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore>
+        <div class="modal-dialog modal-fullscreen-sm-down modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class=" dropzone-previews dropzone"
+                        id="preemp-doc-{{ $pre_employment_doc->document_id }}-preview">
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </tr>
+
+@script
+    <script>
+        let preEmpDoc{{ $pre_employment_doc->document_id }} = new Dropzone(
+            "#preemp-doc-{{ $pre_employment_doc->document_id }}", {
+                url: "/preemploy",
+                withCredentials: true,
+                // paramName: "file", // The name that will be used to transfer the file
+                maxFilesize: 2, // MB
+                // createImageThumbnails: false,
+                clickable: '#preemp-doc-{{ $pre_employment_doc->document_id }} .btn.btn-primary',
+                // acceptedFiles: 'application/pdf',
+                // disablePreviews: true,
+                parallelUploads: 1,
+                maxFiles: 1,
+                thumbnailWidth: null,
+                thumbnailHeight: null,
+                thumbnailMethod: 'contain',
+                previewsContainer: '#preemp-doc-{{ $pre_employment_doc->document_id }}-preview',
+                addRemoveLinks: true,
+                maxfilesexceeded: function(file) {
+                    console.log(file);
+                    // this.removeFile(file);
+                    while (this.files.length > this.options.maxFiles) this.removeFile(this.files[0])
+                },
+                // addedfile: function(file) {
+                //     while (this.files.length > this.options.maxFiles) this.removeFile(this.files[0])
+                //     console.log(file)
+                // },
+                uploadprogress: function(file, progress, bytesSent) {
+                    this.element.style.setProperty('--data-upload-progress', `${progress}%`);
+                    this.element.setAttribute('data-upload-progress', `${progress}`);
+
+                    console.log(this.element)
+                    console.log(file)
+                    console.log(progress)
+                },
+
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+            });
+    </script>
+@endscript
