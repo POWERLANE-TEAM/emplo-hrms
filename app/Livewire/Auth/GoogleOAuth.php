@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Auth;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -11,12 +11,12 @@ class GoogleOAuth extends Component
 {
     public function googleOauth()
     {
-        return Socialite::driver('google')->redirect();
+        return Socialite::driver('google')->stateless()->redirect();
     }
 
     public function googleCallback()
     {
-        $google_user = Socialite::driver('google')->user();
+        $google_user = Socialite::driver('google')->stateless()->user();
 
         // authenticate if user exists, else create the user
         $user = User::where('google_id', $google_user->id)->first();
