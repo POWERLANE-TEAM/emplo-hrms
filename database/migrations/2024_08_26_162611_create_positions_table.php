@@ -16,17 +16,6 @@ return new class extends Migration
             $table->id('position_id');
             $table->string('title', 191);
             $table->text('description')->nullable();
-            $table->timestamps();
-        });
-
-        Schema::create('position_vacancies', function (Blueprint $table) {
-            $table->id('position_vacancy_id');
-
-            $table->foreignIdFor(Position::class, 'position_id')
-                ->constrained('positions', 'position_id')
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
-
             $table->integer('open_position')->default(0);
             $table->timestamps();
         });
@@ -38,6 +27,5 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('positions');
-        Schema::dropIfExists('position_vacancies');
     }
 };

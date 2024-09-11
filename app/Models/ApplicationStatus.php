@@ -5,7 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PositionVacancy extends Model
+class ApplicationStatus extends Model
 {
     use HasFactory;
+
+    protected $primaryKey = 'application_status_id';
 }
