@@ -5,7 +5,7 @@ use App\Models\Department;
 use App\Models\Document;
 use App\Models\Employee;
 use App\Models\EmploymentStatus;
-use App\Models\Position;
+use App\Models\JobTitle;
 use App\Models\LeaveCategory;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -31,8 +31,8 @@ return new class extends Migration {
             $table->string('middle_name', 100)->nullable();
             $table->string('last_name', 100);
 
-            $table->foreignIdFor(Position::class, 'position_id')
-                ->constrained('positions', 'position_id')
+            $table->foreignIdFor(JobTitle::class, 'job_title_id')
+                ->constrained('job_titles', 'job_title_id')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
