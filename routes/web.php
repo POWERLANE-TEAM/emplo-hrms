@@ -9,6 +9,10 @@ use App\Livewire\Auth\GoogleOneTap;
 use Illuminate\Broadcasting\BroadcastController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/apply', function () {
+    return view('apply');
+});
+
 
 Route::get('/', function () {
     return view('index');
@@ -44,7 +48,3 @@ Route::middleware('guest')->group(function () {
 
 
 Route::post('auth/googleonetap/callback', [GoogleOneTap::class, 'handleCallback']);
-
-Route::get('/apply', function () {
-    return view('apply');
-});
