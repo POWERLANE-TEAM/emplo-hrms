@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id('department_id');
             $table->string('department_name', 255);
             $table->longText('department_function');
-            $table->timestamps();
         });
     }
 
