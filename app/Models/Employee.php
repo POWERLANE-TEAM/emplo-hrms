@@ -78,22 +78,16 @@ class Employee extends Model
         return $this->hasMany(Attendance::class, 'employee_id', 'employee_id');
     }
 
-    // returns the position of employee
-    public function position(): BelongsTo
+    // returns the job title of employee
+    public function jobTitle(): BelongsTo
     {
-        return $this->belongsTo(Position::class, 'position_id', 'position_id');
+        return $this->belongsTo(JobTitle::class, 'job_title_id', 'job_title_id');
     }
 
     // returns the branch of employee
     public function branch(): BelongsTo
     {
         return $this->belongsTo(Branch::class, 'branch_id', 'branch_id');
-    }
-
-    // returns the department of employee
-    public function department(): BelongsTo
-    {
-        return $this->belongsTo(Department::class, 'department_id', 'department_id');
     }
 
     // returns the department where employee is department head
