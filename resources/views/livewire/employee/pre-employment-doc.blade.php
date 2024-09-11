@@ -36,7 +36,7 @@
         <div class="modal-dialog modal-fullscreen-sm-down modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -47,7 +47,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-primary submit">Submit</button>
                 </div>
             </div>
         </div>
@@ -60,8 +60,10 @@
             "#preemp-doc-{{ $pre_employment_doc->document_id }}", {
                 url: "/preemploy",
                 withCredentials: true,
-                // paramName: "file", // The name that will be used to transfer the file
+                paramName: "pre_emp_doc",
                 maxFilesize: 2, // MB
+                // autoQueue: false,
+                autoProcessQueue: false,
                 // createImageThumbnails: false,
                 clickable: '#preemp-doc-{{ $pre_employment_doc->document_id }} .btn.btn-primary',
                 // acceptedFiles: 'application/pdf',
@@ -71,29 +73,68 @@
                 thumbnailWidth: null,
                 thumbnailHeight: null,
                 thumbnailMethod: 'contain',
+                // previewTemplate: , /* Customize preview element look */
                 previewsContainer: '#preemp-doc-{{ $pre_employment_doc->document_id }}-preview',
                 addRemoveLinks: true,
                 maxfilesexceeded: function(file) {
+                    this.removeFile(this.files[0])
                     console.log(file);
-                    // this.removeFile(file);
-                    while (this.files.length > this.options.maxFiles) this.removeFile(this.files[0])
                 },
-                // addedfile: function(file) {
-                //     while (this.files.length > this.options.maxFiles) this.removeFile(this.files[0])
-                //     console.log(file)
-                // },
-                uploadprogress: function(file, progress, bytesSent) {
-                    this.element.style.setProperty('--data-upload-progress', `${progress}%`);
-                    this.element.setAttribute('data-upload-progress', `${progress}`);
+                maxfilesreached: function(file) {
+                    // this.removeFile(this.files[0])
+                    console.log(file);
+                },
+                addedfiles: function(file) {
+                    let modalSelector = `#preemp-doc-{{ $pre_employment_doc->document_id }}-attachment`;
 
-                    console.log(this.element)
                     console.log(file)
-                    console.log(progress)
-                },
+                    $(`${modalSelector} button.submit`).off('click');
+                    $(`${modalSelector} button.submit`).on('click', () => {
+                        this.processQueue(file);
+                    });
 
+                    const previewModal = bootstrap.Modal.getOrCreateInstance(modalSelector);
+                    previewModal.show();
+                    // alert(file)
+                },
+                sending: function(file, xhr, formData) {
+
+                    formData.append("doc_id", {{ $pre_employment_doc->document_id }});
+                },
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 },
+                // uploadprogress: function(file, progress, bytesSent) { /* Ovverrides default handler  https://github.com/dropzone/dropzone/blob/main/src/options.js#L574 */
+                //     this.element.style.setProperty('--data-upload-progress', `${progress}%`);
+                //     this.element.setAttribute('data-upload-progress', `${progress}`);
+
+                //     console.log(this.element)
+                //     console.log(file)
+                //     console.log(progress)
+                // },
+                totaluploadprogress: function(progress, totalBytesSent) {
+                    this.element.style.setProperty('--data-upload-progress', `${progress}%`);
+                    this.element.setAttribute('data-upload-progress', `${progress}`);
+                    console.log('totaluploadprogress')
+                    console.log(progress)
+                    console.log(totalBytesSent)
+
+                },
+                queuecomplete: function() {
+                    console.log('complete')
+
+                },
+                errormultiple: function() {
+
+                    console.log('error')
+
+                },
+                successmultiple: function() {
+
+                    console.log('success')
+                },
+
+
             });
     </script>
 @endscript

@@ -68,6 +68,15 @@ table.table {
 .dropzone {
     &.dropzone-previews {
         border: none;
+        position: relative;
+
+        &:empty::before {
+            /* Not working */
+            position: absolute;
+            content: "No File Uploaded";
+            inset: 0;
+            background-color: red;
+        }
 
         .dz-preview {
 

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Employee;
 use App\Models\UserRole;
 use App\Models\UserStatus;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -26,7 +27,13 @@ class UserFactory extends Factory
     {
         return [
             'account_type' => $this->faker->randomElement(['APPLICANT', 'EMPLOYEE']),
-            'account_id' => fake()->randomDigitNotNull(),
+            'account_id' => function (array $attributes) {
+                if ($attributes['account_type'] === 'EMPLOYEE') {
+                    $employee = Employee::factory()->create();
+                    return $employee->employee_id;
+                }
+                return fake()->randomDigitNotNull();
+            },
             'email' => fake()->unique()->randomElement([
                 fake()->safeEmail(),
                 fake()->freeEmail(),
