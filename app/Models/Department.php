@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Employee;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Department extends Model
 {
@@ -26,5 +28,10 @@ class Department extends Model
     public function employees(): HasMany
     {
         return $this->hasMany(Employee::class, 'department_id', 'department_id');
+    }
+
+    public function deptHead(): BelongsTo 
+    {
+        return $this->belongsTo(Employee::class, 'dept_head', 'employee_id');
     }
 }

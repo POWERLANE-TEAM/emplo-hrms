@@ -64,7 +64,8 @@ return new class extends Migration {
             $table->string('tin_no', 12);
             $table->string('pag_ibig_no', 12);
             $table->binary('signature');
-            $table->string('education', 100);
+            $table->string('education');
+            $table->integer('leave_balance')->default(0);
             $table->timestamps();
         });
 
@@ -117,9 +118,6 @@ return new class extends Migration {
                 ->constrained('employees', 'employee_id')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-
-            $table->integer('leave_balance');
-            $table->timestamp('leave_balance_updated_at')->nullable();
 
             $table->boolean('is_hr_manager_approved')->default(false);
             $table->timestamp('hr_manager_approved_at')->nullable();

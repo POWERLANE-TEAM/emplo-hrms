@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Applicant;
+use App\Models\ApplicantStatus;
 use App\Models\Document;
 use App\Models\Employee;
 use Illuminate\Database\Migrations\Migration;
@@ -19,9 +20,6 @@ return new class extends Migration
             $table->string('first_name', 100);
             $table->string('middle_name', 100)->nullable();
             $table->string('last_name', 100);
-            $table->timestamp('applied_at');
-            $table->dateTime('exam_date')->nullable();
-            $table->dateTime('interview_date')->nullable();
             $table->timestamps();
         });
 
