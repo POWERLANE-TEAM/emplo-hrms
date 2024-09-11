@@ -19,6 +19,11 @@
             <div class="left col-12 col-md-6 align-content-center">
                 <div class="text-primary fs-1 fw-bold tw-tracking-wide" aria-label="We are hiring!">
                     We are hiring!
+                    <form action="/apply" method="get">
+    <button type="submit" class="btn btn-primary">
+        Sign Up
+    </button>
+</form>
                 </div>
                 <p class="fs-4 fw-medium">
                     Exciting career opportunities available.

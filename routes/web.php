@@ -8,10 +8,14 @@ use App\Livewire\Auth\GoogleOneTap;
 use Illuminate\Broadcasting\BroadcastController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/apply', function () {
+    return view('apply');
+});
+
 
 Route::get('/', function () {
     return view('index');
-}); // this should be change into a component when about and contact components are created
+}); // this should be change into a controller when about and contact components are created
 
 
 Route::middleware(['auth', 'verified'])->group(function () {
