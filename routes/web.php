@@ -3,6 +3,7 @@
 use App\Http\Controllers\ApplicantDocController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\JsonController;
+use App\Http\Controllers\PreEmploymentController;
 use App\Livewire\Auth\GoogleOAuth;
 use App\Livewire\Auth\GoogleOneTap;
 use Illuminate\Broadcasting\BroadcastController;
@@ -18,7 +19,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/applicant', [ApplicantDocController::class, 'index']);
 });
 
-
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/preemploy',  [PreEmploymentController::class, 'create']);
+    Route::post('/preemploy', [PreEmploymentController::class, 'store']);
+});
 
 Route::get('/employee/{page?}', [EmployeeController::class, 'employee'])->middleware(['auth', 'verified']);
 

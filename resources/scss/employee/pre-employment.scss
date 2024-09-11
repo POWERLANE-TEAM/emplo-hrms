@@ -1,0 +1,117 @@
+@import '../core';
+@import '../style';
+@import '../guest/header-nav';
+@import '../icon/lucide';
+@import '../nav-link';
+@import '../nav-tabs';
+@import '../footer';
+@import '../input/checkbox';
+
+
+
+
+.user-menu,
+.dropdown {
+    @extend %rm-dropdown-triangle;
+}
+
+main.container {
+    // margin-left: calc(4rem + 12vw);
+    // margin-right: calc(3rem + 4vw);
+}
+
+:has(.checkbox-label) {
+
+
+    .checkbox-primary {
+        @include custom-checkbox(var(--bs-black), var(--bs-primary));
+    }
+
+    .checkbox-label {
+        padding-left: clamp(1.5rem, 1rem + 1vw, 5vw);
+    }
+
+}
+
+@media screen and (min-width:1400px) {
+    .margin-right-n-book {
+        margin-right: calc((1rem + 7vw) * -1);
+    }
+}
+
+table.table {
+    border-collapse: separate;
+    border-spacing: 0 50px;
+
+    tr.outline {
+        outline: 2px solid var(--bs-table-border-color);
+    }
+
+    &.table-hover {
+        tbody {
+            tr.no-hover:hover {
+                // pointer-events: none;
+                background-color: var(--bs-body-bg);
+                --bs-table-bg-state: var(--bs-body-bg);
+
+                &>* {
+                    background-color: var(--bs-body-bg);
+                    --bs-table-bg-state: var(--bs-body-bg);
+                }
+
+            }
+        }
+    }
+
+}
+
+.dropzone {
+    &.dropzone-previews {
+        border: none;
+        position: relative;
+
+        &:empty::before {
+            /* Not working */
+            position: absolute;
+            content: "No File Uploaded";
+            inset: 0;
+            background-color: red;
+        }
+
+        .dz-preview {
+
+            .dz-image {
+                width: 100%;
+                height: 100%;
+            }
+
+            a {
+                position: relative;
+                z-index: 21;
+            }
+        }
+    }
+
+
+}
+
+
+
+tr::before {
+    content: '';
+    width: var(--data-upload-progress);
+    background-color: var(--bs-primary);
+    border-radius: 1cqw;
+    height: 0.5rem;
+    bottom: 0;
+    position: absolute;
+    transition: width 0.3s ease-in opacity 1s ease-in;
+    transition-delay: 0.1s;
+}
+
+tr[data-upload-progress='100'] {
+
+    &::before {
+        opacity: 0;
+    }
+}
