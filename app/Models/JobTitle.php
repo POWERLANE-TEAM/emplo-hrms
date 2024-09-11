@@ -2,21 +2,22 @@
 
 namespace App\Models;
 
-use App\Models\Employee;
+use App\Models\Department;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Department extends Model
+class JobTitle extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'department_id';
+    protected $primaryKey = 'job_title_id';
 
     protected $fillable = [
-        'department_name',
-        'department_function',
+        'job_title',
+        'job_desc',
+        'vacancy',
     ];
 
     /*
@@ -27,16 +28,11 @@ class Department extends Model
 
     public function employees(): HasMany
     {
-        return $this->hasMany(Employee::class, 'department_id', 'department_id')->chaperone('department_id');
+        return $this->hasMany(Employee::class, 'job_title_id', 'job_title_id');
     }
 
-    public function deptHead(): BelongsTo 
+    public function department(): BelongsTo
     {
-        return $this->belongsTo(Employee::class, 'dept_head', 'employee_id');
-    }
-
-    public function jobTitles(): HasMany
-    {
-        return $this->hasMany(JobTitle::class, 'department_id', 'department_id');
+        return $this->belongsTo(Department::class, 'department_id', 'department_id');
     }
 }

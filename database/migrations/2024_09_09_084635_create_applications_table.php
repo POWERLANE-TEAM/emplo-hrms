@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\Employee;
-use App\Models\Position;
+use App\Models\JobTitle;
 use App\Models\Applicant;
 use App\Models\ApplicationStatus;
 use Illuminate\Support\Facades\Schema;
@@ -30,8 +30,8 @@ return new class extends Migration {
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
-            $table->foreignIdFor(Position::class, 'position_id')
-                ->constrained('positions', 'position_id')
+            $table->foreignIdFor(JobTitle::class, 'job_title_id')
+                ->constrained('job_titles', 'job_title_id')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
