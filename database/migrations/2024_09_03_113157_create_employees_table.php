@@ -65,12 +65,9 @@ return new class extends Migration {
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
-            $table->foreignIdFor(Document::class, 'document_id')
-                ->constrained('documents', 'document_id')
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
+            // link to new table, storing employee documents during tenure
 
-            $table->string('file', 255);
+            $table->string('file_path');
             $table->timestamp('submitted_at');
             $table->timestamp('updated_at');
             $table->softDeletes();

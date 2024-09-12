@@ -72,7 +72,7 @@ class Applicant extends Model
 
     public function documents(): BelongsToMany
     {
-        return $this->belongsToMany(Document::class, 'applicant_docs', 'document_id', 'applicant_id');
+        return $this->belongsToMany(PreEmploymentRequirements::class, 'applicant_docs', 'document_id', 'applicant_id');
     }
 
     public function application(): HasOne

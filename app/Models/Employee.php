@@ -97,10 +97,10 @@ class Employee extends Model
     }
 
     // returns the documents of employee
-    public function documents(): BelongsToMany
-    {
-        return $this->belongsToMany(Document::class, 'employee_docs', 'document_id', 'employee_id');
-    }
+    // public function documents(): BelongsToMany
+    // {
+    //     return $this->belongsToMany(Document::class, 'employee_docs', 'document_id', 'employee_id');
+    // }
 
     /*
     |--------------------------------------------------------------------------
