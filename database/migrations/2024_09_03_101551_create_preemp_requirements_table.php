@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('company_doc', function (Blueprint $table) {
-            $table->id('document_control_id');
-            $table->string('document_name', 100);
-            $table->longText('document_desc');
+        Schema::create('preemp_requirements', function (Blueprint $table) {
+            $table->id('preemp_req_id');
+            $table->string('preemp_req_name', 100);
+            $table->longText('preemp_req_desc');
             $table->timestamps();
         });
     }
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('company_documents');
+        Schema::dropIfExists('preemp_requirements');
     }
 };

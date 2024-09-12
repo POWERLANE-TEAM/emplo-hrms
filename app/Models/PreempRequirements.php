@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class PreEmploymentRequirements extends Model
+class PreempRequirements extends Model
 {
     use HasFactory;
 
@@ -17,8 +17,8 @@ class PreEmploymentRequirements extends Model
         'preemp_req_desc',
     ];
 
-    public function applicants(): BelongsToMany
+    public function applicantDocs(): HasMany
     {
-        return $this->belongsToMany(Applicant::class, 'applicant_docs', 'applicant_id', 'preemp_req_id');
+        return $this->hasMany(ApplicantDoc::class, 'preemp_req_id', 'preemp_req_id');
     }
 }

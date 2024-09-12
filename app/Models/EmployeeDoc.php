@@ -2,20 +2,23 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class EmployeeDoc extends Model
 {
     use HasFactory;
 
-    // pivot table - sort of
-    protected $table = 'employee_docs';
-
     protected $primaryKey = 'emp_doc_id';
 
-    protected $fillable = [
+    protected $guarded = [
         'emp_doc_id',
         'deleted_at',
     ];
+
+    public function employee(): BelongsTo
+    {
+        return $this->belongsTo(Employee::class, 'employee_id', 'employee_id');
+    }
 }
