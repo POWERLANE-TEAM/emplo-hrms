@@ -1,11 +1,9 @@
 <?php
 
-use App\Models\Branch;
-use App\Models\Department;
 use App\Models\Document;
 use App\Models\Employee;
 use App\Models\EmploymentStatus;
-use App\Models\JobTitle;
+use App\Models\JobDetail;
 use App\Models\LeaveCategory;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -31,18 +29,8 @@ return new class extends Migration {
             $table->string('middle_name', 100)->nullable();
             $table->string('last_name', 100);
 
-            $table->foreignIdFor(JobTitle::class, 'job_title_id')
-                ->constrained('job_titles', 'job_title_id')
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
-
-            $table->foreignIdFor(Branch::class, 'branch_id')
-                ->constrained('branches', 'branch_id')
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
-
-            $table->foreignIdFor(Department::class, 'department_id')
-                ->constrained('departments', 'department_id')
+            $table->foreignIdFor(JobDetail::class, 'job_detail_id')
+                ->constrained('job_details', 'job_detail_id')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
@@ -95,10 +83,9 @@ return new class extends Migration {
                 ->cascadeOnDelete();
 
             $table->foreignIdFor(LeaveCategory::class, 'leave_id')
-                ->nullable()
                 ->constrained('leave_categories', 'leave_id')
                 ->cascadeOnUpdate()
-                ->nullOnDelete();
+                ->cascadeOnDelete();
 
             $table->longText('reason');
             $table->timestamp('start_date');
@@ -111,10 +98,10 @@ return new class extends Migration {
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
-            $table->boolean('is_dept_head_approved')->default(false);
-            $table->timestamp('dept_head_approved_at')->nullable();
+            $table->boolean('is_area_man_approved')->default(false);
+            $table->timestamp('area_man_approved_at')->nullable();
 
-            $table->foreignIdFor(Employee::class, 'dept_head')
+            $table->foreignIdFor(Employee::class, 'area_manager')
                 ->constrained('employees', 'employee_id')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();

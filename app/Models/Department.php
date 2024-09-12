@@ -2,10 +2,8 @@
 
 namespace App\Models;
 
-use App\Models\Employee;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Department extends Model
@@ -25,16 +23,7 @@ class Department extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function employees(): HasMany
-    {
-        return $this->hasMany(Employee::class, 'department_id', 'department_id')->chaperone('department_id');
-    }
-
-    public function deptHead(): BelongsTo 
-    {
-        return $this->belongsTo(Employee::class, 'dept_head', 'employee_id');
-    }
-
+    // returns existing job titles to a specific deparment
     public function jobTitles(): HasMany
     {
         return $this->hasMany(JobTitle::class, 'department_id', 'department_id');

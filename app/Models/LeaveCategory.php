@@ -14,6 +14,7 @@ class LeaveCategory extends Model
 
     protected $fillable = [
         'leave_name',
+        'leave_desc',
     ];
 
     /*

@@ -1,12 +1,13 @@
 <?php
 
 use App\Models\Employee;
-use App\Models\JobTitle;
 use App\Models\Applicant;
+use App\Models\JobVacancy;
 use App\Models\ApplicationStatus;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 return new class extends Migration {
     /**
@@ -30,12 +31,12 @@ return new class extends Migration {
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
-            $table->foreignIdFor(JobTitle::class, 'job_title_id')
-                ->constrained('job_titles', 'job_title_id')
+            $table->foreignIdFor(JobVacancy::class, 'job_vacancy_id')
+                ->constrained('job_vacancies', 'job_vacancy_id')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
-                $table->foreignIdFor(ApplicationStatus::class, 'application_status_id')
+            $table->foreignIdFor(ApplicationStatus::class, 'application_status_id')
                 ->constrained('application_statuses', 'application_status_id')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();

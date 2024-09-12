@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Applicant extends Model
 {
@@ -72,5 +73,10 @@ class Applicant extends Model
     public function documents(): BelongsToMany
     {
         return $this->belongsToMany(Document::class, 'applicant_docs', 'document_id', 'applicant_id');
+    }
+
+    public function application(): HasOne
+    {
+        return $this->hasOne(Application::class, 'applicant_id', 'applicant_id');
     }
 }

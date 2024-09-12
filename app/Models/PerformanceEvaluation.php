@@ -34,10 +34,10 @@ class PerformanceEvaluation extends Model
         return $this->belongsTo(Employee::class, 'supervisor', 'employee_id');
     }
 
-    // returns the department head of the performance evaluation
-    public function departmentHead(): BelongsTo
+    // returns the area manager of the performance evaluation
+    public function areaManager(): BelongsTo
     {
-        return $this->belongsTo(Employee::class, 'dept_head', 'employee_id');
+        return $this->belongsTo(Employee::class, 'area_manager', 'employee_id');
     }
 
     // returns the hr manager of the performance evaluation
