@@ -34,9 +34,9 @@ class Overtime extends Model
         return $this->belongsTo(Employee::class, 'supervisor', 'employee_id');
     }
 
-    public function deptHead(): BelongsTo
+    public function areaManager(): BelongsTo
     {
-        return $this->belongsTo(Employee::class, 'dept_head', 'employee_id');
+        return $this->belongsTo(Employee::class, 'area_manager', 'employee_id');
     }
 
     public function hrManager(): BelongsTo

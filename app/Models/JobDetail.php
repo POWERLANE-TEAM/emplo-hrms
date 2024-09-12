@@ -2,19 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Branch extends Model
+class JobDetail extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'branch_id';
+    protected $primaryKey = 'job_detail_id';
 
-    protected $fillable = [
-        'branch_location',
-    ];
+    protected $fillable = [];
 
     /*
     |--------------------------------------------------------------------------
@@ -22,8 +20,9 @@ class Branch extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function employees(): HasMany
+    // returns job vacancies of the job detail
+    public function jobVacancies(): HasMany
     {
-        return $this->hasMany(Employee::class, 'branch_id', 'branch_id');
+        return $this->hasMany(JobVacancy::class, 'job_detail_id', 'job_detail_id');
     }
 }
