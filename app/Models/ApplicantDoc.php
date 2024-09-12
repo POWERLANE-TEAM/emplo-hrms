@@ -27,13 +27,18 @@ class ApplicantDoc extends Model
     |--------------------------------------------------------------------------
     */
 
+    public function preempRequirements(): BelongsTo
+    {
+        return $this->belongsTo(PreempRequirements::class, 'preemp_req_id', 'preemp_req_id');
+    }
+
     public function applicant(): BelongsTo
     {
         return $this->belongsTo(Applicant::class, 'applicant_id', 'applicant_id');
     }
 
-    public function receivedBy(): BelongsTo
+    public function evaluatedBy(): BelongsTo
     {
-        return $this->belongsTo(Employee::class, 'received_by', 'employee_id');
+        return $this->belongsTo(Employee::class, 'evaluated_by', 'employee_id');
     }
 }

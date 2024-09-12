@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Document;
 use App\Models\Employee;
 use App\Models\EmploymentStatus;
 use App\Models\JobDetail;
@@ -43,14 +42,14 @@ return new class extends Migration {
 
             $table->longText('present_address');
             $table->longText('permanent_address');
-            $table->string('contact_number', 11);
+            $table->string('contact_number', 11)->unique();
             $table->string('photo')->nullable(); // emp photo file path
             $table->enum('sex', ['MALE', 'FEMALE']);
             $table->enum('civil_status', ['SINGLE', 'MARRIED', 'WIDOWED', 'LEGALLY SEPARATED']);
-            $table->string('sss_no', 10);
-            $table->string('philhealth_no', 12);
-            $table->string('tin_no', 12);
-            $table->string('pag_ibig_no', 12);
+            $table->string('sss_no', 10)->unique();
+            $table->string('philhealth_no', 12)->unique();
+            $table->string('tin_no', 12)->unique();
+            $table->string('pag_ibig_no', 12)->unique();
             $table->binary('signature');
             $table->string('education');
             $table->integer('leave_balance')->default(0);
@@ -65,11 +64,7 @@ return new class extends Migration {
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
-            // link to new table, storing employee documents during tenure
-
             $table->string('file_path');
-            $table->timestamp('submitted_at');
-            $table->timestamp('updated_at');
             $table->softDeletes();
         });
 

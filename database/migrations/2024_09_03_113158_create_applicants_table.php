@@ -2,7 +2,7 @@
 
 use App\Models\Applicant;
 use App\Models\Employee;
-use App\Models\PreEmploymentRequirements;
+use App\Models\PreempRequirements;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -26,8 +26,8 @@ return new class extends Migration
         Schema::create('applicant_docs', function (Blueprint $table) {
             $table->id('applicant_doc_id');
 
-            $table->foreignIdFor(PreEmploymentRequirements::class, 'document_id')
-                ->constrained('documents', 'document_id')
+            $table->foreignIdFor(PreempRequirements::class, 'preemp_req_id')
+                ->constrained('preemp_requirements', 'preemp_req_id')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
@@ -40,7 +40,7 @@ return new class extends Migration
             $table->boolean('is_submitted')->default(false);
             $table->timestamp('submitted_at')->nullable();
 
-            $table->foreignIdFor(Employee::class, 'received_by')
+            $table->foreignIdFor(Employee::class, 'evaluated_by')
                 ->nullable()
                 ->constrained('employees', 'employee_id')
                 ->cascadeOnUpdate()

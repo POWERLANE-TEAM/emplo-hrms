@@ -18,7 +18,7 @@ return new class extends Migration
         Schema::create('user_roles', function (Blueprint $table) {
             $table->id('user_role_id');
             $table->string('user_role_name', 100);
-            $table->longText('user_role_desc');
+            $table->longText('user_role_desc')->nullable();
             $table->timestamps();
         });
 
@@ -26,7 +26,7 @@ return new class extends Migration
         Schema::create('user_statuses', function (Blueprint $table) {
             $table->id('user_status_id');
             $table->string('user_status_name', 100);
-            $table->longText('user_status_desc');
+            $table->longText('user_status_desc')->nullable();
             $table->timestamps();
         });
 

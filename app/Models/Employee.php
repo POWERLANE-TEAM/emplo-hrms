@@ -97,10 +97,10 @@ class Employee extends Model
     }
 
     // returns the documents of employee
-    // public function documents(): BelongsToMany
-    // {
-    //     return $this->belongsToMany(Document::class, 'employee_docs', 'document_id', 'employee_id');
-    // }
+    public function documents(): HasMany
+    {
+        return $this->hasMany(EmployeeDoc::class, 'employee_id', 'employee_id');
+    }
 
     /*
     |--------------------------------------------------------------------------
@@ -118,6 +118,12 @@ class Employee extends Model
     public function asFinalInterviewer(): HasMany
     {
         return $this->hasMany(Application::class, 'final_interviewer', 'employee_id');
+    }
+
+    // returns pre employment documents where employee is evaluator
+    public function asApplicantDocsEvaluator(): HasMany
+    {
+        return $this->hasMany(ApplicantDoc::class, 'evaluated_by', 'employee_id');
     }
 
     /*
@@ -244,5 +250,22 @@ class Employee extends Model
     public function signedPerfEvalAsHrManager(): HasMany
     {
         return $this->hasMany(PerformanceEvaluation::class, 'hr_manager', 'employee_id');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Complaints Records Management
+    |--------------------------------------------------------------------------
+    */
+
+    public function complaintsAsComplainant(): HasMany
+    {
+        return $this->hasMany(EmployeeComplaint::class, 'complainant', 'employee_id');
+    }
+
+    public function complaintsAsComplainee(): BelongsToMany
+    {
+        return $this->belongsToMany(EmployeeComplaint::class, 'complaint_complainees', 'complainee', 'emp_complaint_id')
+            ->withTimestamps();
     }
 }
