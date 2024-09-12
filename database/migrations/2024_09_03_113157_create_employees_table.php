@@ -70,7 +70,9 @@ return new class extends Migration {
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
+            $table->string('file', 255);
             $table->timestamp('submitted_at');
+            $table->timestamp('updated_at');
             $table->softDeletes();
         });
 

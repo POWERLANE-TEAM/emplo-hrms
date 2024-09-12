@@ -14,6 +14,20 @@ class EmployeeDoc extends Model
 
     protected $primaryKey = 'emp_doc_id';
 
+    /**
+     * The name of the "created at" column.
+     *
+     * @var string
+     */
+    const CREATED_AT = 'submitted_at';
+
+    // /**
+    //  * The name of the "updated at" column.
+    //  *
+    //  * @var string
+    //  */
+    // const UPDATED_AT = 'datetime_updated';
+
     protected $fillable = [
         'emp_doc_id',
         'deleted_at',
