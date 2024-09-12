@@ -37,8 +37,8 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->nullOnDelete();
 
-            $table->boolean('is_dept_head_signed')->default(false);
-            $table->foreignIdFor(Employee::class, 'dept_head')
+            $table->boolean('is_area_man_signed')->default(false);
+            $table->foreignIdFor(Employee::class, 'area_manager')
                 ->nullable()
                 ->constrained('employees', 'employee_id')
                 ->cascadeOnUpdate()

@@ -2,11 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\Department;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class JobTitle extends Model
 {
@@ -26,13 +25,26 @@ class JobTitle extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function employees(): HasMany
-    {
-        return $this->hasMany(Employee::class, 'job_title_id', 'job_title_id');
-    }
-
-    public function department(): BelongsTo
+    public function departments(): BelongsTo
     {
         return $this->belongsTo(Department::class, 'department_id', 'department_id');
+    }
+
+    // returns job levels associated with a specific job title
+    public function jobLevels(): BelongsToMany
+    {
+        return $this->belongsToMany(JobLevel::class, 'job_details', 'job_title_id', 'job_level_id');
+    }
+
+    // returns job families associated with a specific job title
+    public function jobFamilies(): BelongsToMany
+    {
+        return $this->belongsToMany(JobFamily::class, 'job_details', 'job_title_id', 'job_family_id');
+    }
+
+    // returns available areas associated with a specific job title
+    public function specificAreas(): BelongsToMany
+    {
+        return $this->belongsToMany(SpecificArea::class, 'job_details', 'job_title_id', 'area_id');
     }
 }

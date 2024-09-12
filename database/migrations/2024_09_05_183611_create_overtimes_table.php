@@ -34,10 +34,10 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
-            $table->boolean('is_dept_head_approved')->default(false);
-            $table->timestamp('dept_head_approved_at')->nullable();
+            $table->boolean('is_area_man_approved')->default(false);
+            $table->timestamp('area_man_approved_at')->nullable();
 
-            $table->foreignIdFor(Employee::class, 'dept_head')
+            $table->foreignIdFor(Employee::class, 'area_manager')
                 ->constrained('employees', 'employee_id')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();

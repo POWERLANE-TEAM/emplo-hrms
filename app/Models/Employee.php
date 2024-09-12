@@ -79,21 +79,15 @@ class Employee extends Model
     }
 
     // returns the job title of employee
-    public function jobTitle(): BelongsTo
+    public function jobDetail(): BelongsTo
     {
-        return $this->belongsTo(JobTitle::class, 'job_title_id', 'job_title_id');
+        return $this->belongsTo(JobDetail::class, 'job_detail_id', 'job_detail_id');
     }
 
-    // returns the branch of employee
-    public function branch(): BelongsTo
+    // returns the specific area where employee is area manager
+    public function areaManagerOf(): HasOne
     {
-        return $this->belongsTo(Branch::class, 'branch_id', 'branch_id');
-    }
-
-    // returns the department where employee is department head
-    public function deptHeadOf(): HasOne
-    {
-        return $this->hasOne(Department::class, 'dept_head', 'employee_id');
+        return $this->hasOne(SpecificArea::class, 'area_manager', 'employee_id');
     }
 
     // returns the shift schedule of employee
@@ -106,6 +100,24 @@ class Employee extends Model
     public function documents(): BelongsToMany
     {
         return $this->belongsToMany(Document::class, 'employee_docs', 'document_id', 'employee_id');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Recruitment Records Management
+    |--------------------------------------------------------------------------
+    */
+
+    // returns application records where employee is initial interviewer
+    public function asInitInterviewer(): HasMany
+    {
+        return $this->hasMany(Application::class, 'init_interviewer', 'employee_id');
+    }
+
+    // returns application records where employee is final interviewer
+    public function asFinalInterviewer(): HasMany
+    {
+        return $this->hasMany(Application::class, 'final_interviewer', 'employee_id');
     }
 
     /*
@@ -144,7 +156,6 @@ class Employee extends Model
         return $this->hasMany(Training::class, 'reviewed_by', 'employee_id');
     }
 
-
     /*
     |--------------------------------------------------------------------------
     | Overtime Records Management
@@ -158,19 +169,19 @@ class Employee extends Model
     }
 
     // returns approved overtimes by supervisor
-    public function approvedOvertimesAsSupervisor(): HasMany
+    public function approvedOtAsSupervisor(): HasMany
     {
         return $this->hasMany(Overtime::class, 'supervisor', 'employee_id');
     }
 
     // returns approved overtimes by department head
-    public function approvedOvertimesAsDeptHead(): HasMany
+    public function approvedOtAsAreaManager(): HasMany
     {
-        return $this->hasMany(Overtime::class, 'dept_head', 'employee_id');
+        return $this->hasMany(Overtime::class, 'area_manager', 'employee_id');
     }
 
     // returns approved overtimes by hr manager
-    public function approvedOvertimesAsHrManager(): HasMany
+    public function approvedOtAsHrManager(): HasMany
     {
         return $this->hasMany(Overtime::class, 'hr_manager', 'employee_id');
     }
@@ -194,9 +205,9 @@ class Employee extends Model
     }
 
     // returns approved leave records by department head
-    public function approvedLeavesAsDeptHead(): HasMany
+    public function approvedLeavesAsAreaManager(): HasMany
     {
-        return $this->hasMany(EmployeeLeave::class, 'dept_head', 'employee_id');
+        return $this->hasMany(EmployeeLeave::class, 'area_manager', 'employee_id');
     }
 
     // returns approved leave records by hr manager
@@ -224,9 +235,9 @@ class Employee extends Model
     }
 
     // returns signed performance records where employee is department head
-    public function signedPerfEvalAsDeptHead(): HasMany
+    public function signedPerfEvalAsAreaManager(): HasMany
     {
-        return $this->hasMany(PerformanceEvaluation::class, 'dept_head', 'employee_id');
+        return $this->hasMany(PerformanceEvaluation::class, 'area_manager', 'employee_id');
     }
 
     // returns signed performance records where employee is hr manager

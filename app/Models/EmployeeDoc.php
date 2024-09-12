@@ -9,6 +9,7 @@ class EmployeeDoc extends Model
 {
     use HasFactory;
 
+    // pivot table - sort of
     protected $table = 'employee_docs';
 
     protected $primaryKey = 'emp_doc_id';
