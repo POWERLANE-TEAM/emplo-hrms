@@ -18,11 +18,13 @@
         "laravel/socialite": "^5.15",
         "laravel/tinker": "^2.9",
         "livewire/livewire": "^3.5",
+        "spatie/laravel-activitylog": "^4.8",
         "spatie/laravel-csp": "^2.10"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.13",
         "fakerphp/faker": "^1.23",
+        "kevincobain2000/laravel-erd": "^1.7",
         "laravel/pint": "^1.13",
         "laravel/sail": "^1.26",
         "mockery/mockery": "^1.6",
