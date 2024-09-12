@@ -7,6 +7,7 @@ use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
 use App\Events\UserLoggedout;
+use App\Models\UserRole;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -43,28 +44,13 @@ class FortifyServiceProvider extends ServiceProvider
         {
             public function toResponse($request)
             {
-                $authenticated_role = Auth::user()->role;
 
                 // Redirect to previously visited page before being prompt to login
                 if (session()->has('url.intended')) {
                     return redirect()->intended();
                 }
 
-                switch ($authenticated_role) {
-                    case 'GUEST': /* Deprecated */
-                        return redirect()->to('/');
-                    case 'USER': /* Deprecated */
-                        return redirect()->to('/employee');
-                    case 'MANAGER':
-                        // Add your logic here
-                        break;
-                    case 'SYSADMIN':
-                        // Add your logic here
-                        break;
-                    default:
-                        // Handle unexpected roles
-                        return redirect()->to('/login');
-                }
+                return redirect()->to('/dashboard');
             }
         });
     }
