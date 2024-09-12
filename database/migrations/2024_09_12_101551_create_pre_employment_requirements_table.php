@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('documents', function (Blueprint $table) {
-            $table->id('document_id');
-            $table->string('document_name', 100);
-            $table->longText('document_desc');
+        Schema::create('pre_employment_requirements', function (Blueprint $table) {
+            $table->id('preemp_req_id');
+            $table->string('preemp_req_name', 100);
+            $table->longText('preemp_req_desc');
             $table->timestamps();
         });
     }
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('documents');
+        Schema::dropIfExists('pre_employment_requirements');
     }
 };

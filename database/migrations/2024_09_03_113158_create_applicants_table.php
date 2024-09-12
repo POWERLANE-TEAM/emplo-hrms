@@ -1,9 +1,8 @@
 <?php
 
 use App\Models\Applicant;
-use App\Models\ApplicantStatus;
-use App\Models\Document;
 use App\Models\Employee;
+use App\Models\PreEmploymentRequirements;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -27,7 +26,7 @@ return new class extends Migration
         Schema::create('applicant_docs', function (Blueprint $table) {
             $table->id('applicant_doc_id');
 
-            $table->foreignIdFor(Document::class, 'document_id')
+            $table->foreignIdFor(PreEmploymentRequirements::class, 'document_id')
                 ->constrained('documents', 'document_id')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
@@ -37,6 +36,7 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
+            $table->string('file_path');
             $table->boolean('is_submitted')->default(false);
             $table->timestamp('submitted_at')->nullable();
 

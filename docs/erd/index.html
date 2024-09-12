@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8"/>
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover"/>
+      <meta name="description" content="Interactive entity-relationship diagram or data model diagram implemented by GoJS in JavaScript for HTML."/>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.6/tailwind.min.css"/>
+
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/gojs/2.1.46/go.js"></script>
+      <script src="https://unpkg.com/gojs@2.1.47/extensions/Figures.js"></script>
+      <title>ERD</title>
+   </head>
+   <body class="bg-gray-100 tracking-wide bg-gray-200">
+        <nav class="bg-white py-2 ">
+            <div class="container px-4 mx-auto md:flex md:items-center">
+
+            <div class="flex justify-between items-center">
+                <a href="erd" class="font-bold text-xl text-indigo-600">ERD</a>
+            </div>
+
+                <div class="hidden md:flex flex-col md:flex-row md:ml-auto mt-3 md:mt-0" id="navbar-collapse">
+
+                    <a href="https://github.com/kevincobain2000/laravel-erd" class="p-2 lg:px-4 md:mx-2 text-indigo-600 text-center border border-solid border-indigo-600 rounded hover:bg-indigo-600 hover:text-white transition-colors duration-300 mt-1 md:mt-0 md:ml-1">Request Feature</a>
+                </div>
+            </div>
+        </nav>
+        <div id="app" v-cloak class="w-full flex lg:pt-10">
+            <aside class="text-xl text-grey-darkest break-all bg-gray-200 pl-2 h-screen sticky top-1 overflow-auto">
+                <b class="text-sm">Filter by Relation Type</b>
+                <div class="text-sm">
+                    <input type="checkbox" class="text-sm" id="input-relation-type-checkbox-check-all"> check all
+                </div>
+
+                <div id="filter-by-relation-type"></div>
+                <b class="text-sm">Filter by Table Name</b>
+                <div class="text-sm">
+                    <input type="checkbox" id="input-table-names-checkbox-check-all"> check all
+                </div>
+                <div id="filter-by-table-name"></div>
+            </aside>
+            <div class="ml-6 mr-6 pl-2 w-10/12 bg-gray-300 p-2">
+                <div id="myDiagramDiv" style="background-color: white; width: 100%; height: 95vh"></div>
+            </div>
+      </div>
+      <script>
+
+var nodeDataArray = [];
+var linkDataArray = [];
+var nodeDataArray = [];
+var linkDataArray = [];
+function init() {
+  var $ = go.GraphObject.make; // for conciseness in defining templates
+
+  myDiagram =
+      $(go.Diagram, "myDiagramDiv", // must name or refer to the DIV HTML element
+          {
+              allowDelete: false,
+              allowCopy: false,
+              layout: $(go.ForceDirectedLayout),
+              "undoManager.isEnabled": true
+          });
+
+  var itemTempl =
+      $(go.Panel, "Horizontal", // this Panel is a row in the containing Table
+          new go.Binding("portId", "name"), // this Panel is a "port"
+          {
+              background: "transparent", // so this port's background can be picked by the mouse
+              fromSpot: go.Spot.Right, // links only go from the right side to the left side
+              toSpot: go.Spot.Left,
+              // allow drawing links from or to this port:
+              fromLinkable: false,
+              toLinkable: false
+          },
+          $(go.Shape, {
+                  desiredSize: new go.Size(15, 15),
+                  strokeJoin: "round",
+                  strokeWidth: 3,
+                  stroke: null,
+                  margin: 2,
+                  // but disallow drawing links from or to this shape:
+                  fromLinkable: false,
+                  toLinkable: false
+              },
+              new go.Binding("figure", "figure"),
+              new go.Binding("stroke", "color"),
+              new go.Binding("fill", "color")),
+          $(go.TextBlock, {
+                  margin: new go.Margin(0, 5),
+                  column: 1,
+                  font: "13px sans-serif",
+                  alignment: go.Spot.Left,
+                  // and disallow drawing links from or to this text:
+                  fromLinkable: false,
+                  toLinkable: false
+              },
+              new go.Binding("text", "name")),
+          $(go.TextBlock, {
+                  margin: new go.Margin(0, 5),
+                  column: 2,
+                  font: "11px courier",
+                  alignment: go.Spot.Left
+              },
+              new go.Binding("text", "info"))
+      );
+
+  // define the Node template, representing an entity
+  myDiagram.nodeTemplate =
+      $(go.Node, "Auto", // the whole node panel
+          {
+              selectionAdorned: true,
+              resizable: true,
+              layoutConditions: go.Part.LayoutStandard & ~go.Part.LayoutNodeSized,
+              fromSpot: go.Spot.AllSides,
+              toSpot: go.Spot.AllSides,
+              isShadowed: true,
+              shadowOffset: new go.Point(3, 3),
+              shadowColor: "#C5C1AA"
+          },
+          new go.Binding("location", "location").makeTwoWay(),
+          // whenever the PanelExpanderButton changes the visible property of the "LIST" panel,
+          // clear out any desiredSize set by the ResizingTool.
+          new go.Binding("desiredSize", "visible", function(v) {
+              return new go.Size(NaN, NaN);
+          }).ofObject("LIST"),
+          // define the node's outer shape, which will surround the Table
+          $(go.Shape, "RoundedRectangle", {
+              fill: 'white',
+              stroke: "#eeeeee",
+              strokeWidth: 6
+          }),
+          $(go.Panel, "Table", {
+                  margin: 8,
+                  stretch: go.GraphObject.Fill
+              },
+              $(go.RowColumnDefinition, {
+                  row: 0,
+                  sizing: go.RowColumnDefinition.None
+              }),
+
+              // the table header
+              $(go.TextBlock, {
+                      row: 0,
+                      alignment: go.Spot.Left,
+                      margin: new go.Margin(0, 24, 0, 2), // leave room for Button
+                      font: "bold 16px sans-serif"
+                  },
+                  new go.Binding("text", "key")),
+              // the collapse/expand button
+              $("PanelExpanderButton", "LIST", // the name of the element whose visibility this button toggles
+                  {
+                      row: 0,
+                      alignment: go.Spot.TopRight
+                  }),
+              // the list of Panels, each showing an attribute
+              $(go.Panel, "Vertical", {
+                      name: "LIST",
+                      row: 1,
+                      padding: 3,
+                      alignment: go.Spot.TopLeft,
+                      defaultAlignment: go.Spot.Left,
+                      stretch: go.GraphObject.Horizontal,
+                      itemTemplate: itemTempl,
+                  },
+                  new go.Binding("itemArray", "schema"))
+          ) // end Table Panel
+      ); // end Node
+  // define the Link template, representing a relationship
+  myDiagram.linkTemplate =
+      $(go.Link, // the whole link panel
+          {
+              selectionAdorned: true,
+              layerName: "Foreground",
+              reshapable: true,
+              routing: go.Link.AvoidsNodes,
+              corner: 5,
+              curve: go.Link.Orthogonal,
+              curviness: 0,
+          },
+          $(go.Shape, // the link shape
+              {
+                  stroke: "#303B45",
+                  strokeWidth: 1.5,
+              }),
+          $(go.Shape, // the arrowhead
+              {
+                  toArrow: "Triangle",
+                  fill: "#1967B3"
+              }),
+          $(go.TextBlock, // the "from" label
+              {
+                  textAlign: "center",
+                  font: "bold 12px sans-serif",
+                  stroke: "#1967B3",
+                  segmentIndex: 1.5,
+                  segmentOffset: new go.Point(NaN, NaN),
+                  segmentOrientation: go.Link.Horizontal,
+                  fromLinkable: true,
+                  toLinkable: true
+              },
+              new go.Binding("text", "fromText")),
+
+          $(go.TextBlock, // the "to" label
+              {
+                  textAlign: "center",
+                  font: "bold 12px sans-serif",
+                  stroke: "#1967B3",
+                  segmentIndex: -10,
+                  segmentOffset: new go.Point(NaN, NaN),
+                  segmentOrientation: go.Link.OrientUpright,
+                  fromLinkable: true,
+                  toLinkable: true
+              },
+              new go.Binding("text", "toText"))
+      );
+
+  myDiagram.model = $(go.GraphLinksModel, {
+      copiesArrays: true,
+      copiesArrayObjects: true,
+      linkFromPortIdProperty: "fromPort",
+      linkToPortIdProperty: "toPort",
+      nodeDataArray: nodeDataArray,
+      linkDataArray: linkDataArray
+  });
+  loadFilterByTableNames()
+  loadFilterByRelationType()
+  setCheckboxesForTableNames();
+  setCheckboxesForRelationTypes();
+}
+
+
+function loadFilterByRelationType() {
+  var json = linkDataArray;
+  var appended = [];
+  $.each(json, function(i, v) {
+      // check if doesn't exist in the array
+      if ($.inArray(this.type, appended) == -1) {
+          // append
+          appended.push(this.type)
+          $("#filter-by-relation-type").append($("<div class='text-sm'>").text(this.type).prepend(
+              $("<input>").attr({
+                  'type': 'checkbox',
+                  'checked': true,
+                  'class': 'input-relation-type-checkbox',
+                  'name': 'subscribe-relation-type',
+                  "data-feed": this.type
+              }).val(this.type)
+              .prop('checked', this.checked)
+          ));
+      }
+  });
+  $(".input-relation-type-checkbox").on('change', function() {
+      setCheckboxesForTableNames()
+      setCheckboxesForRelationTypes()
+  });
+}
+
+function setCheckboxesForRelationTypes() {
+  newLinkDataArray = []
+
+  $(".input-relation-type-checkbox").each(function() {
+      if ($(this).prop('checked')) {
+          console.log($(this).val())
+          for (let i = 0; i < linkDataArray.length; i++) {
+              const element = linkDataArray[i];
+              if (element.type == $(this).val()) {
+                  newLinkDataArray.push(element)
+              }
+          }
+      }
+  });
+  myDiagram.model.linkDataArray = newLinkDataArray
+}
+
+function loadFilterByTableNames() {
+  var json = nodeDataArray;
+  var appended = [];
+  $.each(json, function(i, v) {
+      // check if doesn't exist in the array
+      if ($.inArray(this.key, appended) == -1) {
+          // append
+          appended.push(this.key)
+          $("#filter-by-table-name").append($("<div class='text-sm'>").text(this.key).prepend(
+              $("<input>").attr({
+                  'type': 'checkbox',
+                  'checked': true,
+                  'class': 'input-table-name-checkbox',
+                  'name': 'subscribe-table-name',
+                  "data-feed": this.key
+              }).val(this.key)
+              .prop('checked', this.checked)
+          ));
+      }
+  });
+
+  $(".input-table-name-checkbox").on('change', function() {
+      setCheckboxesForTableNames();
+      setCheckboxesForRelationTypes();
+  });
+}
+
+
+$("#input-relation-type-checkbox-check-all").on('change', function() {
+  $(".input-relation-type-checkbox").prop('checked', this.checked);
+  setCheckboxesForTableNames();
+  setCheckboxesForRelationTypes();
+});
+
+$("#input-table-names-checkbox-check-all").on('change', function() {
+  $(".input-table-name-checkbox").prop('checked', this.checked);
+  setCheckboxesForTableNames();
+  setCheckboxesForRelationTypes();
+});
+
+function setCheckboxesForTableNames() {
+  newNodeDataArray = []
+  newLinkDataArray = []
+
+  $(".input-table-name-checkbox").each(function() {
+      if ($(this).prop('checked')) {
+
+          for (let i = 0; i < nodeDataArray.length; i++) {
+              const element = nodeDataArray[i];
+              if (element.key == $(this).val()) {
+                  newNodeDataArray.push(element)
+              }
+          }
+          for (let i = 0; i < linkDataArray.length; i++) {
+              const element = linkDataArray[i];
+              if (element.from == $(this).val() || element.to == $(this).val()) {
+                  newLinkDataArray.push(element)
+              }
+          }
+      }
+  });
+  myDiagram.model.nodeDataArray = newNodeDataArray
+  myDiagram.model.linkDataArray = newLinkDataArray
+}
+
+var docs = "{\"link_data\":[{\"from\":\"applicants\",\"to\":\"users\",\"fromText\":null,\"toText\":null,\"fromPort\":\"applicant_id\",\"toPort\":\"account_id\",\"type\":\"MorphOne\"},{\"from\":\"applicants\",\"to\":\"applications\",\"fromText\":\"1..1\\nHas One\",\"toText\":\"\",\"fromPort\":\"applicant_id\",\"toPort\":\"applicant_id\",\"type\":\"HasOne\"},{\"from\":\"applicant_docs\",\"to\":\"employees\",\"fromText\":\"1..1\\nBelongs To\",\"toText\":\"\",\"fromPort\":\"received_by\",\"toPort\":\"applicant_doc_id\",\"type\":\"BelongsTo\"},{\"from\":\"applications\",\"to\":\"applicants\",\"fromText\":\"1..1\\nBelongs To\",\"toText\":\"\",\"fromPort\":\"applicant_id\",\"toPort\":\"application_id\",\"type\":\"BelongsTo\"},{\"from\":\"applications\",\"to\":\"job_vacancies\",\"fromText\":\"1..1\\nBelongs To\",\"toText\":\"\",\"fromPort\":\"job_vacancy_id\",\"toPort\":\"application_id\",\"type\":\"BelongsTo\"},{\"from\":\"applications\",\"to\":\"application_statuses\",\"fromText\":\"1..1\\nBelongs To\",\"toText\":\"\",\"fromPort\":\"application_status_id\",\"toPort\":\"application_id\",\"type\":\"BelongsTo\"},{\"from\":\"applications\",\"to\":\"employees\",\"fromText\":\"1..1\\nBelongs To\",\"toText\":\"\",\"fromPort\":\"init_interviewer\",\"toPort\":\"application_id\",\"type\":\"BelongsTo\"},{\"from\":\"applications\",\"to\":\"employees\",\"fromText\":\"1..1\\nBelongs To\",\"toText\":\"\",\"fromPort\":\"final_interviewer\",\"toPort\":\"application_id\",\"type\":\"BelongsTo\"},{\"from\":\"application_statuses\",\"to\":\"applications\",\"fromText\":\"1..*\\nHas Many\",\"toText\":\"\",\"fromPort\":\"application_status_id\",\"toPort\":\"application_status_id\",\"type\":\"HasMany\"},{\"from\":\"attendances\",\"to\":\"employees\",\"fromText\":\"1..1\\nBelongs To\",\"toText\":\"\",\"fromPort\":\"employee_id\",\"toPort\":\"attendance_id\",\"type\":\"BelongsTo\"},{\"from\":\"departments\",\"to\":\"job_titles\",\"fromText\":\"1..*\\nHas Many\",\"toText\":\"\",\"fromPort\":\"department_id\",\"toPort\":\"department_id\",\"type\":\"HasMany\"},{\"from\":\"employees\",\"to\":\"users\",\"fromText\":null,\"toText\":null,\"fromPort\":\"employee_id\",\"toPort\":\"account_id\",\"type\":\"MorphOne\"},{\"from\":\"employees\",\"to\":\"employment_statuses\",\"fromText\":\"1..1\\nBelongs To\",\"toText\":\"\",\"fromPort\":\"emp_status_id\",\"toPort\":\"employee_id\",\"type\":\"BelongsTo\"},{\"from\":\"employees\",\"to\":\"attendances\",\"fromText\":\"1..*\\nHas Many\",\"toText\":\"\",\"fromPort\":\"employee_id\",\"toPort\":\"employee_id\",\"type\":\"HasMany\"},{\"from\":\"employees\",\"to\":\"job_details\",\"fromText\":\"1..1\\nBelongs To\",\"toText\":\"\",\"fromPort\":\"job_detail_id\",\"toPort\":\"employee_id\",\"type\":\"BelongsTo\"},{\"from\":\"employees\",\"to\":\"specific_areas\",\"fromText\":\"1..1\\nHas One\",\"toText\":\"\",\"fromPort\":\"employee_id\",\"toPort\":\"area_manager\",\"type\":\"HasOne\"},{\"from\":\"employees\",\"to\":\"shifts\",\"fromText\":\"1..1\\nBelongs To\",\"toText\":\"\",\"fromPort\":\"shift_id\",\"toPort\":\"employee_id\",\"type\":\"BelongsTo\"},{\"from\":\"employees\",\"to\":\"applications\",\"fromText\":\"1..*\\nHas Many\",\"toText\":\"\",\"fromPort\":\"employee_id\",\"toPort\":\"init_interviewer\",\"type\":\"HasMany\"},{\"from\":\"employees\",\"to\":\"applications\",\"fromText\":\"1..*\\nHas Many\",\"toText\":\"\",\"fromPort\":\"employee_id\",\"toPort\":\"final_interviewer\",\"type\":\"HasMany\"},{\"from\":\"employees\",\"to\":\"trainings\",\"fromText\":\"1..*\\nHas Many\",\"toText\":\"\",\"fromPort\":\"employee_id\",\"toPort\":\"trainee\",\"type\":\"HasMany\"},{\"from\":\"employees\",\"to\":\"trainings\",\"fromText\":null,\"toText\":null,\"fromPort\":\"employee_id\",\"toPort\":\"trainer_id\",\"type\":\"MorphMany\"},{\"from\":\"employees\",\"to\":\"trainings\",\"fromText\":null,\"toText\":null,\"fromPort\":\"employee_id\",\"toPort\":\"comment_id\",\"type\":\"MorphMany\"},{\"from\":\"employees\",\"to\":\"trainings\",\"fromText\":\"1..*\\nHas Many\",\"toText\":\"\",\"fromPort\":\"employee_id\",\"toPort\":\"prepared_by\",\"type\":\"HasMany\"},{\"from\":\"employees\",\"to\":\"trainings\",\"fromText\":\"1..*\\nHas Many\",\"toText\":\"\",\"fromPort\":\"employee_id\",\"toPort\":\"reviewed_by\",\"type\":\"HasMany\"},{\"from\":\"employees\",\"to\":\"overtimes\",\"fromText\":\"1..*\\nHas Many\",\"toText\":\"\",\"fromPort\":\"employee_id\",\"toPort\":\"employee_id\",\"type\":\"HasMany\"},{\"from\":\"employees\",\"to\":\"overtimes\",\"fromText\":\"1..*\\nHas Many\",\"toText\":\"\",\"fromPort\":\"employee_id\",\"toPort\":\"supervisor\",\"type\":\"HasMany\"},{\"from\":\"employees\",\"to\":\"overtimes\",\"fromText\":\"1..*\\nHas Many\",\"toText\":\"\",\"fromPort\":\"employee_id\",\"toPort\":\"area_manager\",\"type\":\"HasMany\"},{\"from\":\"employees\",\"to\":\"overtimes\",\"fromText\":\"1..*\\nHas Many\",\"toText\":\"\",\"fromPort\":\"employee_id\",\"toPort\":\"hr_manager\",\"type\":\"HasMany\"},{\"from\":\"employees\",\"to\":\"employee_leaves\",\"fromText\":\"1..*\\nHas Many\",\"toText\":\"\",\"fromPort\":\"employee_id\",\"toPort\":\"employee_id\",\"type\":\"HasMany\"},{\"from\":\"employees\",\"to\":\"employee_leaves\",\"fromText\":\"1..*\\nHas Many\",\"toText\":\"\",\"fromPort\":\"employee_id\",\"toPort\":\"supervisor\",\"type\":\"HasMany\"},{\"from\":\"employees\",\"to\":\"employee_leaves\",\"fromText\":\"1..*\\nHas Many\",\"toText\":\"\",\"fromPort\":\"employee_id\",\"toPort\":\"area_manager\",\"type\":\"HasMany\"},{\"from\":\"employees\",\"to\":\"employee_leaves\",\"fromText\":\"1..*\\nHas Many\",\"toText\":\"\",\"fromPort\":\"employee_id\",\"toPort\":\"hr_manager\",\"type\":\"HasMany\"},{\"from\":\"employees\",\"to\":\"performance_evaluations\",\"fromText\":\"1..*\\nHas Many\",\"toText\":\"\",\"fromPort\":\"employee_id\",\"toPort\":\"evaluatee\",\"type\":\"HasMany\"},{\"from\":\"employees\",\"to\":\"performance_evaluations\",\"fromText\":\"1..*\\nHas Many\",\"toText\":\"\",\"fromPort\":\"employee_id\",\"toPort\":\"supervisor\",\"type\":\"HasMany\"},{\"from\":\"employees\",\"to\":\"performance_evaluations\",\"fromText\":\"1..*\\nHas Many\",\"toText\":\"\",\"fromPort\":\"employee_id\",\"toPort\":\"area_manager\",\"type\":\"HasMany\"},{\"from\":\"employees\",\"to\":\"performance_evaluations\",\"fromText\":\"1..*\\nHas Many\",\"toText\":\"\",\"fromPort\":\"employee_id\",\"toPort\":\"hr_manager\",\"type\":\"HasMany\"},{\"from\":\"employee_leaves\",\"to\":\"leave_categories\",\"fromText\":\"1..1\\nBelongs To\",\"toText\":\"\",\"fromPort\":\"leave_id\",\"toPort\":\"emp_leave_id\",\"type\":\"BelongsTo\"},{\"from\":\"employee_leaves\",\"to\":\"employees\",\"fromText\":\"1..1\\nBelongs To\",\"toText\":\"\",\"fromPort\":\"employee_id\",\"toPort\":\"emp_leave_id\",\"type\":\"BelongsTo\"},{\"from\":\"employee_leaves\",\"to\":\"employees\",\"fromText\":\"1..1\\nBelongs To\",\"toText\":\"\",\"fromPort\":\"area_manager\",\"toPort\":\"emp_leave_id\",\"type\":\"BelongsTo\"},{\"from\":\"employee_leaves\",\"to\":\"employees\",\"fromText\":\"1..1\\nBelongs To\",\"toText\":\"\",\"fromPort\":\"hr_manager\",\"toPort\":\"emp_leave_id\",\"type\":\"BelongsTo\"},{\"from\":\"employment_statuses\",\"to\":\"employees\",\"fromText\":\"1..*\\nHas Many\",\"toText\":\"\",\"fromPort\":\"emp_status_id\",\"toPort\":\"emp_status_id\",\"type\":\"HasMany\"},{\"from\":\"job_details\",\"to\":\"job_vacancies\",\"fromText\":\"1..*\\nHas Many\",\"toText\":\"\",\"fromPort\":\"job_detail_id\",\"toPort\":\"job_detail_id\",\"type\":\"HasMany\"},{\"from\":\"job_titles\",\"to\":\"departments\",\"fromText\":\"1..1\\nBelongs To\",\"toText\":\"\",\"fromPort\":\"department_id\",\"toPort\":\"job_title_id\",\"type\":\"BelongsTo\"},{\"from\":\"job_vacancies\",\"to\":\"job_details\",\"fromText\":\"1..1\\nBelongs To\",\"toText\":\"\",\"fromPort\":\"job_detail_id\",\"toPort\":\"job_vacancy_id\",\"type\":\"BelongsTo\"},{\"from\":\"job_vacancies\",\"to\":\"applications\",\"fromText\":\"1..*\\nHas Many\",\"toText\":\"\",\"fromPort\":\"job_vacancy_id\",\"toPort\":\"job_vacancy_id\",\"type\":\"HasMany\"},{\"from\":\"leave_categories\",\"to\":\"employee_leaves\",\"fromText\":\"1..*\\nHas Many\",\"toText\":\"\",\"fromPort\":\"leave_id\",\"toPort\":\"leave_id\",\"type\":\"HasMany\"},{\"from\":\"outsourced_trainers\",\"to\":\"trainings\",\"fromText\":null,\"toText\":null,\"fromPort\":\"training_provider_id\",\"toPort\":\"trainer_id\",\"type\":\"MorphMany\"},{\"from\":\"outsourced_trainers\",\"to\":\"trainings\",\"fromText\":null,\"toText\":null,\"fromPort\":\"training_provider_id\",\"toPort\":\"comment_id\",\"type\":\"MorphMany\"},{\"from\":\"outsourced_trainers\",\"to\":\"training_providers\",\"fromText\":\"1..1\\nBelongs To\",\"toText\":\"\",\"fromPort\":\"training_provider\",\"toPort\":\"training_provider_id\",\"type\":\"BelongsTo\"},{\"from\":\"overtimes\",\"to\":\"employees\",\"fromText\":\"1..1\\nBelongs To\",\"toText\":\"\",\"fromPort\":\"employee_id\",\"toPort\":\"overtime_id\",\"type\":\"BelongsTo\"},{\"from\":\"overtimes\",\"to\":\"employees\",\"fromText\":\"1..1\\nBelongs To\",\"toText\":\"\",\"fromPort\":\"area_manager\",\"toPort\":\"overtime_id\",\"type\":\"BelongsTo\"},{\"from\":\"overtimes\",\"to\":\"employees\",\"fromText\":\"1..1\\nBelongs To\",\"toText\":\"\",\"fromPort\":\"hr_manager\",\"toPort\":\"overtime_id\",\"type\":\"BelongsTo\"},{\"from\":\"performance_categories\",\"to\":\"performance_evaluation_details\",\"fromText\":\"1..*\\nHas Many\",\"toText\":\"\",\"fromPort\":\"performance_id\",\"toPort\":\"performance_id\",\"type\":\"HasMany\"},{\"from\":\"performance_evaluations\",\"to\":\"employees\",\"fromText\":\"1..1\\nBelongs To\",\"toText\":\"\",\"fromPort\":\"evaluatee\",\"toPort\":\"perf_eval_id\",\"type\":\"BelongsTo\"},{\"from\":\"performance_evaluations\",\"to\":\"employees\",\"fromText\":\"1..1\\nBelongs To\",\"toText\":\"\",\"fromPort\":\"area_manager\",\"toPort\":\"perf_eval_id\",\"type\":\"BelongsTo\"},{\"from\":\"performance_evaluations\",\"to\":\"employees\",\"fromText\":\"1..1\\nBelongs To\",\"toText\":\"\",\"fromPort\":\"hr_manager\",\"toPort\":\"perf_eval_id\",\"type\":\"BelongsTo\"},{\"from\":\"performance_evaluation_details\",\"to\":\"performance_evaluations\",\"fromText\":\"1..1\\nBelongs To\",\"toText\":\"\",\"fromPort\":\"perf_eval_id\",\"toPort\":\"perf_eval_detail_id\",\"type\":\"BelongsTo\"},{\"from\":\"performance_evaluation_details\",\"to\":\"performance_categories\",\"fromText\":\"1..1\\nBelongs To\",\"toText\":\"\",\"fromPort\":\"performance_id\",\"toPort\":\"perf_eval_detail_id\",\"type\":\"BelongsTo\"},{\"from\":\"shifts\",\"to\":\"employees\",\"fromText\":\"1..*\\nHas Many\",\"toText\":\"\",\"fromPort\":\"shift_id\",\"toPort\":\"shift_id\",\"type\":\"HasMany\"},{\"from\":\"specific_areas\",\"to\":\"employees\",\"fromText\":\"1..1\\nBelongs To\",\"toText\":\"\",\"fromPort\":\"area_manager\",\"toPort\":\"area_id\",\"type\":\"BelongsTo\"},{\"from\":\"trainings\",\"to\":\"trainings\",\"fromText\":\"1..1\\n\",\"toText\":\"\",\"fromPort\":\"training_id\",\"toPort\":\"trainer_id\",\"type\":\"MorphTo\"},{\"from\":\"trainings\",\"to\":\"trainings\",\"fromText\":\"1..1\\n\",\"toText\":\"\",\"fromPort\":\"training_id\",\"toPort\":\"comment_id\",\"type\":\"MorphTo\"},{\"from\":\"trainings\",\"to\":\"employees\",\"fromText\":\"1..1\\nBelongs To\",\"toText\":\"\",\"fromPort\":\"prepared_by\",\"toPort\":\"training_id\",\"type\":\"BelongsTo\"},{\"from\":\"trainings\",\"to\":\"employees\",\"fromText\":\"1..1\\nBelongs To\",\"toText\":\"\",\"fromPort\":\"reviewed_by\",\"toPort\":\"training_id\",\"type\":\"BelongsTo\"},{\"from\":\"training_providers\",\"to\":\"outsourced_trainers\",\"fromText\":\"1..*\\nHas Many\",\"toText\":\"\",\"fromPort\":\"training_provider_id\",\"toPort\":\"training_provider\",\"type\":\"HasMany\"},{\"from\":\"users\",\"to\":\"users\",\"fromText\":\"1..1\\n\",\"toText\":\"\",\"fromPort\":\"user_id\",\"toPort\":\"account_id\",\"type\":\"MorphTo\"},{\"from\":\"users\",\"to\":\"user_roles\",\"fromText\":\"1..1\\nBelongs To\",\"toText\":\"\",\"fromPort\":\"user_role_id\",\"toPort\":\"user_id\",\"type\":\"BelongsTo\"},{\"from\":\"users\",\"to\":\"user_statuses\",\"fromText\":\"1..1\\nBelongs To\",\"toText\":\"\",\"fromPort\":\"user_status_id\",\"toPort\":\"user_id\",\"type\":\"BelongsTo\"},{\"from\":\"user_roles\",\"to\":\"users\",\"fromText\":\"1..*\\nHas Many\",\"toText\":\"\",\"fromPort\":\"user_role_id\",\"toPort\":\"user_role_id\",\"type\":\"HasMany\"},{\"from\":\"user_statuses\",\"to\":\"users\",\"fromText\":\"1..*\\nHas Many\",\"toText\":\"\",\"fromPort\":\"user_status_id\",\"toPort\":\"user_status_id\",\"type\":\"HasMany\"}],\"node_data\":[{\"key\":\"applicants\",\"schema\":[{\"name\":\"applicant_id\",\"isKey\":true,\"figure\":\"Hexagon\",\"color\":\"#be4b15\",\"info\":\"\"},{\"name\":\"first_name\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"middle_name\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"last_name\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"created_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"updated_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"}]},{\"key\":\"applicant_docs\",\"schema\":[{\"name\":\"applicant_doc_id\",\"isKey\":true,\"figure\":\"Hexagon\",\"color\":\"#be4b15\",\"info\":\"\"},{\"name\":\"document_id\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"applicant_id\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"is_submitted\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"submitted_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"received_by\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"created_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"updated_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"deleted_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"}]},{\"key\":\"applications\",\"schema\":[{\"name\":\"application_id\",\"isKey\":true,\"figure\":\"Hexagon\",\"color\":\"#be4b15\",\"info\":\"\"},{\"name\":\"applicant_id\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"job_vacancy_id\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"application_status_id\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"exam_date\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"init_interview_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"init_interviewer\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"is_init_interview_passed\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"final_interview_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"final_interviewer\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"is_final_interview_passed\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"is_job_offer_accepted\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"created_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"updated_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"}]},{\"key\":\"application_statuses\",\"schema\":[{\"name\":\"application_status_id\",\"isKey\":true,\"figure\":\"Hexagon\",\"color\":\"#be4b15\",\"info\":\"\"},{\"name\":\"application_status_name\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"application_status_desc\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"created_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"updated_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"}]},{\"key\":\"attendances\",\"schema\":[{\"name\":\"attendance_id\",\"isKey\":true,\"figure\":\"Hexagon\",\"color\":\"#be4b15\",\"info\":\"\"},{\"name\":\"employee_id\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"time_in\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"time_out\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"}]},{\"key\":\"departments\",\"schema\":[{\"name\":\"department_id\",\"isKey\":true,\"figure\":\"Hexagon\",\"color\":\"#be4b15\",\"info\":\"\"},{\"name\":\"department_name\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"department_function\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"created_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"updated_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"}]},{\"key\":\"documents\",\"schema\":[{\"name\":\"document_id\",\"isKey\":true,\"figure\":\"Hexagon\",\"color\":\"#be4b15\",\"info\":\"\"},{\"name\":\"document_name\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"document_desc\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"created_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"updated_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"}]},{\"key\":\"employees\",\"schema\":[{\"name\":\"employee_id\",\"isKey\":true,\"figure\":\"Hexagon\",\"color\":\"#be4b15\",\"info\":\"\"},{\"name\":\"first_name\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"middle_name\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"last_name\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"job_detail_id\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"hired_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"emp_status_id\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"present_address\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"permanent_address\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"contact_number\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"photo\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"sex\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"civil_status\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"sss_no\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"philhealth_no\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"tin_no\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"pag_ibig_no\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"signature\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"education\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"leave_balance\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"created_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"updated_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"}]},{\"key\":\"employee_docs\",\"schema\":[{\"name\":\"emp_doc_id\",\"isKey\":true,\"figure\":\"Hexagon\",\"color\":\"#be4b15\",\"info\":\"\"},{\"name\":\"employee_id\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"document_id\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"submitted_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"deleted_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"}]},{\"key\":\"employee_leaves\",\"schema\":[{\"name\":\"emp_leave_id\",\"isKey\":true,\"figure\":\"Hexagon\",\"color\":\"#be4b15\",\"info\":\"\"},{\"name\":\"employee_id\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"leave_id\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"reason\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"start_date\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"end_date\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"is_supervisor_approved\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"supervisor_approved_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"supervisor\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"is_area_man_approved\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"area_man_approved_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"area_manager\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"is_hr_manager_approved\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"hr_manager_approved_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"hr_manager\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"created_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"updated_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"}]},{\"key\":\"employment_statuses\",\"schema\":[{\"name\":\"emp_status_id\",\"isKey\":true,\"figure\":\"Hexagon\",\"color\":\"#be4b15\",\"info\":\"\"},{\"name\":\"emp_status_name\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"emp_status_desc\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"created_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"updated_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"}]},{\"key\":\"holidays\",\"schema\":[{\"name\":\"holiday_id\",\"isKey\":true,\"figure\":\"Hexagon\",\"color\":\"#be4b15\",\"info\":\"\"},{\"name\":\"date\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"holiday_type\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"holiday_name\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"holiday_desc\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"created_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"updated_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"}]},{\"key\":\"j_s_o_n_s\",\"schema\":[]},{\"key\":\"job_details\",\"schema\":[{\"name\":\"job_detail_id\",\"isKey\":true,\"figure\":\"Hexagon\",\"color\":\"#be4b15\",\"info\":\"\"},{\"name\":\"job_title_id\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"job_level_id\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"job_family_id\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"area_id\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"created_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"updated_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"}]},{\"key\":\"job_families\",\"schema\":[{\"name\":\"job_family_id\",\"isKey\":true,\"figure\":\"Hexagon\",\"color\":\"#be4b15\",\"info\":\"\"},{\"name\":\"job_family_name\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"job_family_desc\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"created_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"updated_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"}]},{\"key\":\"job_levels\",\"schema\":[{\"name\":\"job_level_id\",\"isKey\":true,\"figure\":\"Hexagon\",\"color\":\"#be4b15\",\"info\":\"\"},{\"name\":\"job_level\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"job_level_name\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"job_level_desc\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"created_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"updated_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"}]},{\"key\":\"job_titles\",\"schema\":[{\"name\":\"job_title_id\",\"isKey\":true,\"figure\":\"Hexagon\",\"color\":\"#be4b15\",\"info\":\"\"},{\"name\":\"job_title\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"job_desc\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"department_id\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"created_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"updated_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"}]},{\"key\":\"job_vacancies\",\"schema\":[{\"name\":\"job_vacancy_id\",\"isKey\":true,\"figure\":\"Hexagon\",\"color\":\"#be4b15\",\"info\":\"\"},{\"name\":\"job_detail_id\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"vacancy_count\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"application_deadline_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"created_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"updated_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"}]},{\"key\":\"leave_categories\",\"schema\":[{\"name\":\"leave_id\",\"isKey\":true,\"figure\":\"Hexagon\",\"color\":\"#be4b15\",\"info\":\"\"},{\"name\":\"leave_name\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"leave_desc\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"created_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"updated_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"}]},{\"key\":\"outsourced_trainers\",\"schema\":[{\"name\":\"trainer_id\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"first_name\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"middle_name\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"last_name\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"training_provider\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"created_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"updated_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"}]},{\"key\":\"overtimes\",\"schema\":[{\"name\":\"overtime_id\",\"isKey\":true,\"figure\":\"Hexagon\",\"color\":\"#be4b15\",\"info\":\"\"},{\"name\":\"employee_id\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"work_performed\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"start_time\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"end_time\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"hours_requested\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"filed_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"is_supervisor_approved\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"supervisor_approved_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"supervisor\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"is_area_man_approved\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"area_man_approved_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"area_manager\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"is_hr_manager_approved\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"hr_manager_approved_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"hr_manager\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"created_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"updated_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"}]},{\"key\":\"performance_categories\",\"schema\":[{\"name\":\"performance_id\",\"isKey\":true,\"figure\":\"Hexagon\",\"color\":\"#be4b15\",\"info\":\"\"},{\"name\":\"performance_name\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"performance_desc\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"created_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"updated_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"}]},{\"key\":\"performance_evaluations\",\"schema\":[{\"name\":\"perf_eval_id\",\"isKey\":true,\"figure\":\"Hexagon\",\"color\":\"#be4b15\",\"info\":\"\"},{\"name\":\"evaluatee\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"is_supervisor_signed\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"supervisor\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"is_area_man_signed\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"area_manager\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"is_hr_manager_signed\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"hr_manager\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"perf_eval_date\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"perf_eval_type\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"is_final_recommend\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"emp_acknowledgment\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"employee_comments\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"supervisor_comments\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"created_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"updated_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"}]},{\"key\":\"performance_evaluation_details\",\"schema\":[{\"name\":\"perf_eval_detail_id\",\"isKey\":true,\"figure\":\"Hexagon\",\"color\":\"#be4b15\",\"info\":\"\"},{\"name\":\"perf_eval_id\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"performance_id\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"rating\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"created_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"updated_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"}]},{\"key\":\"shifts\",\"schema\":[{\"name\":\"shift_id\",\"isKey\":true,\"figure\":\"Hexagon\",\"color\":\"#be4b15\",\"info\":\"\"},{\"name\":\"shift_name\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"start_time\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"end_time\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"created_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"updated_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"}]},{\"key\":\"specific_areas\",\"schema\":[{\"name\":\"area_id\",\"isKey\":true,\"figure\":\"Hexagon\",\"color\":\"#be4b15\",\"info\":\"\"},{\"name\":\"area_name\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"area_manager\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"created_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"updated_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"}]},{\"key\":\"trainings\",\"schema\":[{\"name\":\"training_id\",\"isKey\":true,\"figure\":\"Hexagon\",\"color\":\"#be4b15\",\"info\":\"\"},{\"name\":\"trainee\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"training_date\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"training_title\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"trainer_type\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"trainer_id\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"description\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"completion_status\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"start_date\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"end_date\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"expiry_date\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"comment_type\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"comment_id\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"prepared_by\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"reviewed_by\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"created_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"updated_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"}]},{\"key\":\"training_providers\",\"schema\":[{\"name\":\"training_provider_id\",\"isKey\":true,\"figure\":\"Hexagon\",\"color\":\"#be4b15\",\"info\":\"\"},{\"name\":\"training_provider_name\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"training_provider_desc\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"created_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"updated_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"}]},{\"key\":\"users\",\"schema\":[{\"name\":\"user_id\",\"isKey\":true,\"figure\":\"Hexagon\",\"color\":\"#be4b15\",\"info\":\"\"},{\"name\":\"account_type\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"account_id\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"email\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"password\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"google_id\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"user_role_id\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"user_status_id\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"email_verified_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"remember_token\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"created_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"updated_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"deleted_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"two_factor_secret\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"two_factor_recovery_codes\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"two_factor_confirmed_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"}]},{\"key\":\"user_roles\",\"schema\":[{\"name\":\"user_role_id\",\"isKey\":true,\"figure\":\"Hexagon\",\"color\":\"#be4b15\",\"info\":\"\"},{\"name\":\"user_role_name\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"user_role_desc\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"created_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"updated_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"}]},{\"key\":\"user_statuses\",\"schema\":[{\"name\":\"user_status_id\",\"isKey\":true,\"figure\":\"Hexagon\",\"color\":\"#be4b15\",\"info\":\"\"},{\"name\":\"user_status_name\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"user_status_desc\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"created_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"},{\"name\":\"updated_at\",\"isKey\":false,\"figure\":\"Decision\",\"color\":\"#6ea5f8\",\"info\":\"\"}]}]}"
+docs = JSON.parse(docs)
+nodeDataArray = docs.node_data
+linkDataArray = docs.link_data
+
+
+window.addEventListener('DOMContentLoaded', init);
+
+      </script>
+   </body>
+</html>
