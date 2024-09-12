@@ -106,4 +106,11 @@
     <!-- Scripts -->
     @vite(['vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js'])
 
+
+{{--  Waiting for this fix in livewire https://github.com/livewire/livewire/pull/8793  --}}
+{{-- livewire.js?id=cc800bf4:9932 Detected multiple instances of Livewire running --}}
+{{-- livewire.js?id=cc800bf4:9932 Detected multiple instances of Alpine running --}}
+@livewireStyles(['nonce' => $nonce])
+@livewireScripts(['nonce' => $nonce])
+
 </head>

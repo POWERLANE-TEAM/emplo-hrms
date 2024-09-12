@@ -1,7 +1,7 @@
 <x-html>
 
     @php
-        $font_array = [''];
+        $font_array = ['900', '600'];
     @endphp
 
     @isset($font_weights)
@@ -11,9 +11,6 @@
     @endisset
 
     <x-html.head description=" {{ $description ?? app()->name() }}" :font_weights="$font_array">
-        @livewireStyles(['nonce' => $nonce])
-        @livewireScripts(['nonce' => $nonce])
-        {{-- @livewireScriptConfig(['nonce' => $nonce]) --}}
 
         {{-- START: Critical Styles --}}
         {{-- Need to reduce Cumulative Layout Shift --}}
@@ -110,13 +107,18 @@
                 </div>
                 <div class="d-flex align-items-center fw-bold">
                     <section class="desktop-topnav d-none d-md-flex">
-                        <x-nav-link href="/about-us" wire:navigate.hover class="nav-link" :active="request()->is('about-us')">About</x-nav-link>
-                        <x-nav-link href="/contact-us" wire:navigate.hover class="nav-link" :active="request()->is('contact-us')">Contact</x-nav-link>
+                        <x-nav-link href="/" class="nav-link" :active="request()->is('/')">Home</x-nav-link>
+
+                        <x-nav-link href="/hiring" class="nav-link" :active="request()->is('hiring')">Job
+                            Listings</x-nav-link>
+
+                        <x-nav-link href="/contact-us" class="nav-link" :active="request()->is('contact-us')">Contact</x-nav-link>
+
                         @guest
-                            <x-nav-link href="/login" wire:navigate.hover class="nav-link" :active="request()->is('login')">Log In</x-nav-link>
-                            <x-nav-link type="button" hreflang="en-PH" role="navigation" aria-label="Apply" aria-controls="signUpForm" data-bs-toggle="modal" data-bs-target="#signUpForm" wire:ignore class="btn btn-secondary bg-white text-primary nav-link">Sign Up
-                            </x-nav-link>
+                            <x-nav-link href="/login" class="nav-link bg-white text-primary" :active="request()->is('login')">Sign
+                                In</x-nav-link>
                         @endguest
+
                         @auth
                             @livewire('auth.logout', ['class' => 'btn btn-lg text-primary bg-white'])
                         @endauth
@@ -130,15 +132,19 @@
                         </button>
                         <ul class="dropdown-menu">
                             <li class="dropdown-item">
-                                <x-nav-link href="/about-us" class="nav-link" :active="request()->is('about-us')">About</x-nav-link>
+                                <x-nav-link href="/" class="nav-link" :active="request()->is('/')">Home</x-nav-link>
+                            </li>
+                            <li class="dropdown-item">
+                                <x-nav-link href="/hiring" class="nav-link" :active="request()->is('hiring')">Job
+                                    Listings</x-nav-link>
                             </li>
                             <li class="dropdown-item">
                                 <x-nav-link href="/contact-us" class="nav-link" :active="request()->is('contact-us')">Contact</x-nav-link>
                             </li>
                             @guest
                                 <li class="dropdown-item">
-                                    <x-nav-link href="/login" wire:navigate.hover
-                                        class="btn btn-secondary bg-white text-primary nav-link">Login
+                                    <x-nav-link href="/login" class="btn btn-secondary bg-white text-primary nav-link">Sign
+                                        In
                                     </x-nav-link>
                                 </li>
                             @endguest
@@ -154,7 +160,7 @@
             @guest
                 @livewire('auth.google-one-tap')
             @endguest
-            
+
         </header>
 
 
