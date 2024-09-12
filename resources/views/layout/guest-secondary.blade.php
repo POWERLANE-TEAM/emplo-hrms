@@ -1,6 +1,16 @@
 <x-html>
 
-    <x-html.head description=" {{ $description ?? app()->name() }}">
+    @php
+        $font_array = [''];
+    @endphp
+
+    @isset($font_weights)
+        @php
+            $font_array = array_merge($font_weights, $font_array);
+        @endphp
+    @endisset
+
+    <x-html.head description=" {{ $description ?? app()->name() }}" :font_weights="$font_array">
         @livewireStyles(['nonce' => $nonce])
         @livewireScripts(['nonce' => $nonce])
         {{-- @livewireScriptConfig(['nonce' => $nonce]) --}}
@@ -94,9 +104,11 @@
                         </div>
                     </div>
 
-                    <x-nav-link href="/" :active="request()->is('/')" class="no-hover ps-0  nav-link">
-                        <h1 class="fs-2 text-primary">Powerlane</h1>
+                    <x-nav-link href="/" wire:navigate :active="request()->is('/')" class="no-hover ps-0  nav-link">
+                        <h1 class="fs-2  fw-bold text-primary">Powerlane</h1>
                     </x-nav-link>
+
+                    @livewire('auth.google-one-tap')
                 </div>
                 <div class="d-flex align-items-center fw-bold">
 

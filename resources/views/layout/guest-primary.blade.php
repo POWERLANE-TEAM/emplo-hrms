@@ -1,6 +1,16 @@
 <x-html>
 
-    <x-html.head description=" {{ $description ?? app()->name() }}">
+    @php
+        $font_array = [''];
+    @endphp
+
+    @isset($font_weights)
+        @php
+            $font_array = array_merge($font_weights, $font_array);
+        @endphp
+    @endisset
+
+    <x-html.head description=" {{ $description ?? app()->name() }}" :font_weights="$font_array">
         @livewireStyles(['nonce' => $nonce])
         @livewireScripts(['nonce' => $nonce])
         {{-- @livewireScriptConfig(['nonce' => $nonce]) --}}
@@ -95,16 +105,16 @@
                     </div>
 
                     <x-nav-link href="/" :active="request()->is('/')" class="no-hover ps-0  nav-link">
-                        <h1 class="fs-2 text-white">Powerlane</h1>
+                        <h1 class="fs-2  fw-bold text-white">Powerlane</h1>
                     </x-nav-link>
                 </div>
                 <div class="d-flex align-items-center fw-bold">
                     <section class="desktop-topnav d-none d-md-flex">
-                        <x-nav-link href="/about-us" class="nav-link" :active="request()->is('about-us')">About</x-nav-link>
-                        <x-nav-link href="/contact-us" class="nav-link" :active="request()->is('contact-us')">Contact</x-nav-link>
+                        <x-nav-link href="/about-us" wire:navigate.hover class="nav-link" :active="request()->is('about-us')">About</x-nav-link>
+                        <x-nav-link href="/contact-us" wire:navigate.hover class="nav-link" :active="request()->is('contact-us')">Contact</x-nav-link>
                         @guest
-                            <x-nav-link href="/login" wire:navigate.hover
-                                class="btn btn-secondary bg-white text-primary nav-link">Login
+                            <x-nav-link href="/login" wire:navigate.hover class="nav-link" :active="request()->is('login')">Log In</x-nav-link>
+                            <x-nav-link type="button" hreflang="en-PH" role="navigation" aria-label="Apply" aria-controls="signUpForm" data-bs-toggle="modal" data-bs-target="#signUpForm" wire:ignore class="btn btn-secondary bg-white text-primary nav-link">Sign Up
                             </x-nav-link>
                         @endguest
                         @auth
@@ -127,7 +137,7 @@
                             </li>
                             @guest
                                 <li class="dropdown-item">
-                                    <x-nav-link href="/login" wire.navigate.hover
+                                    <x-nav-link href="/login" wire:navigate.hover
                                         class="btn btn-secondary bg-white text-primary nav-link">Login
                                     </x-nav-link>
                                 </li>
@@ -140,6 +150,11 @@
                     </div>
                 </div>
             </nav>
+
+            @guest
+                @livewire('auth.google-one-tap')
+            @endguest
+            
         </header>
 
 

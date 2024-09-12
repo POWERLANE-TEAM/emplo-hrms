@@ -1,6 +1,15 @@
 <x-html>
+    @php
+        $font_array = [''];
+    @endphp
 
-    <x-html.head description=" {{ $description ?? app()->name() }}">
+    @isset($font_weights)
+        @php
+            $font_array = array_merge($font_weights, $font_array);
+        @endphp
+    @endisset
+
+    <x-html.head description=" {{ $description ?? app()->name() }}" :font_weights="$font_array">
         @livewireStyles(['nonce' => $nonce])
         @livewireScripts(['nonce' => $nonce])
         {{-- @livewireScriptConfig(['nonce' => $nonce]) --}}
