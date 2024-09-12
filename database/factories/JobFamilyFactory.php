@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Position>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\JobFamily>
  */
-class PositionFactory extends Factory
+class JobFamilyFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,8 +17,8 @@ class PositionFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => fake()->jobTitle(),
-            'description' => fake()->paragraph(1000),
+            'job_family_name' => fake()->company,
+            'job_family_desc' => fake()->optional()->paragraph,
         ];
     }
 }

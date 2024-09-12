@@ -2,16 +2,16 @@
 
 namespace Database\Seeders;
 
-use App\Models\Position;
+use App\Models\JobTitle;
 use Illuminate\Database\Seeder;
 
-class PositionSeeder extends Seeder
+class JobTitleSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Position::factory(25)->create();
+        JobTitle::factory(25)->create();
     }
 }

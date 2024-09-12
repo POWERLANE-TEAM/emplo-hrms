@@ -2,13 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\Position;
+use App\Models\JobDetail;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\PositionVacancy>
  */
-class PositionVacancyFactory extends Factory
+class JobVacancyFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,8 +18,9 @@ class PositionVacancyFactory extends Factory
     public function definition(): array
     {
         return [
-            'position_id' => Position::inRandomOrder()->first()->position_id ?? 1,
-            'open_position' => fake()->randomDigitNotNull(),
+            'job_detail_id' => JobDetail::inRandomOrder()->first()->job_detail_id ?? 1,
+            'vacancy_count' => fake()->numberBetween(1, 10),
+            'application_deadline_at' => fake()->optional()->dateTimeBetween('now', '+1 year'),
         ];
     }
 }

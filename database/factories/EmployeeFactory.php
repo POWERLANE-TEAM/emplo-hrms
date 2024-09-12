@@ -2,10 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\Branch;
-use App\Models\Department;
 use App\Models\EmploymentStatus;
-use App\Models\Position;
+use App\Models\JobDetail;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -24,9 +22,7 @@ class EmployeeFactory extends Factory
             'first_name' => fake()->firstName,
             'middle_name' => fake()->firstName,
             'last_name' => fake()->lastName,
-            'position_id' => Position::inRandomOrder()->first()->position_id ?? 1,
-            'branch_id' => Branch::inRandomOrder()->first()->branch_id ?? 1,
-            'department_id' => Department::inRandomOrder()->first()->department_id ?? 1,
+            'job_detail_id' => JobDetail::inRandomOrder()->first()->job_detail_id ?? 1,
             'hired_at' => fake()->dateTimeThisDecade,
             'emp_status_id' => EmploymentStatus::inRandomOrder()->first()->emp_status_id ?? 1,
             'present_address' => fake()->address,

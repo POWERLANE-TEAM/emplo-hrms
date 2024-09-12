@@ -2,11 +2,14 @@
 
 namespace Database\Seeders;
 
-use App\Models\Branch;
 use App\Models\Department;
 use App\Models\Document;
 use App\Models\EmploymentStatus;
-use App\Models\PositionVacancy;
+use App\Models\JobDetail;
+use App\Models\JobFamily;
+use App\Models\JobLevel;
+use App\Models\JobVacancy;
+use App\Models\SpecificArea;
 use App\Models\User;
 use App\Models\UserRole;
 use App\Models\UserStatus;
@@ -33,20 +36,18 @@ class DatabaseSeeder extends Seeder
             UserStatus::create($user_status);
         }
 
-        // User::factory()->create([
-        //     'email' => 'test@example.com',
-        //     'password' => Hash::make('P@ssw0rd'),
-        // ]);
-
-        Branch::factory(10)->create();
-        Department::factory(10)->create();
         EmploymentStatus::factory(10)->create();
-        $this->call(PositionSeeder::class);
 
+        Department::factory(rand(5, 15))->create();
+
+        $this->call(JobTitleSeeder::class);
+        JobLevel::factory(rand(5, 15))->create();
+        JobFamily::factory(rand(5, 20))->create();
+        SpecificArea::factory(rand(10, 25))->create();
+        JobDetail::factory(rand(5, 20))->create();
         User::factory(10)->create();
 
-
-        PositionVacancy::factory(25)->create();
+        JobVacancy::factory(25)->create();
 
         $documents = Document::factory()->predefinedDocuments();
 
