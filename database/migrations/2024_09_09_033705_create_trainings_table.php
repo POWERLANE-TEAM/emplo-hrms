@@ -36,7 +36,7 @@ return new class extends Migration {
             $table->dateTime('start_date');
             $table->dateTime('end_date');
             $table->dateTime('expiry_date')->nullable();
-            $table->nullableMorphs('comment')->nullable();
+            $table->nullableMorphs('comment');
 
             $table->foreignIdFor(Employee::class, 'prepared_by')
                 ->constrained('employees', 'employee_id')
