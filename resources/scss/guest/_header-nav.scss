@@ -18,6 +18,12 @@ header {
         .nav-link,
         button {
             @extend %nav-link;
+
+            &.active {
+                font-weight: 900;
+                -webkit-text-stroke: 0.1px var(--bs-white);
+                text-stroke: 0.1px var(--bs-white);
+            }
         }
     }
 }

@@ -1,5 +1,4 @@
 
-import "../css/login.css";
 import './script.js';
 import initLucideIcons from './icons/lucide.js';
 import addGlobalScrollListener, { documentScrollPosY } from './global-scroll-fn.js';

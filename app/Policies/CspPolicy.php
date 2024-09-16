@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use Illuminate\Support\Facades\Hash;
 use Spatie\Csp\Directive;
 
 class CspPolicy extends CustomSpatiePolicy
@@ -47,16 +48,24 @@ class CspPolicy extends CustomSpatiePolicy
 
             $this
                 ->addDirective(Directive::FONT, 'data:');
+
+            $this->reportOnly();
         }
 
         // $this
         //     ->addDirective(Directive::CONNECT, Scheme::WSS);
         //     ->addDirective(Directive::IMG, Scheme::DATA);
 
+
+        $this
+            ->addDirective(Directive::CONNECT, 'https://accounts.google.com');
+
         $this->addDirective(Directive::STYLE, 'unsafe-inline');
         $this->addDirective(Directive::STYLE, 'https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta2/dist/css/bootstrap-select.min.css');
         $this->addDirective(Directive::STYLE, 'https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css');
         $this->addDirective(Directive::STYLE, 'fonts.bunny.net');
+        $this->addDirective(Directive::STYLE, 'https://accounts.google.com');
+
 
         $this->addDirective(Directive::FONT, 'data:');
         $this->addDirective(Directive::FONT, 'fonts.bunny.net');

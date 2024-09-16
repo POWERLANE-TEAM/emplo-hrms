@@ -1,4 +1,5 @@
-@props(['sidebar_expanded' => true, 'icon_size' => '31px', 'icon_ratio' => '1/1', 'user' => ''])
+@props(['sidebar_expanded' => true, 'user' => ''])
+@aware(['icon_size' => '31px', 'icon_ratio' => '1/1'])
 
 
 <sidebar

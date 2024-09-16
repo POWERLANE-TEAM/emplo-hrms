@@ -26,9 +26,9 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'account_type' => $this->faker->randomElement(['APPLICANT', 'EMPLOYEE']),
+            'account_type' => $this->faker->randomElement(['applicant', 'employee']),
             'account_id' => function (array $attributes) {
-                if ($attributes['account_type'] === 'EMPLOYEE') {
+                if ($attributes['account_type'] === 'employee') {
                     $employee = Employee::factory()->create();
                     return $employee->employee_id;
                 }
@@ -38,7 +38,7 @@ class UserFactory extends Factory
                 fake()->safeEmail(),
                 fake()->freeEmail(),
             ]),
-            'password' => static::$password ??= Hash::make('P@ssw0rd'),
+            'password' => static::$password ??= Hash::make('UniqP@ssw0rd'),
             'user_role_id' => UserRole::inRandomOrder()->first()->user_role_id ?? 1,
             'user_status_id' => UserStatus::inRandomOrder()->first()->user_status_id ?? 1,
             'email_verified_at' => fake()->unique()->randomElement([

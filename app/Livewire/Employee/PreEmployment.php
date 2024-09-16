@@ -2,8 +2,8 @@
 
 namespace App\Livewire\Employee;
 
+use App\Models\CompanyDoc;
 use Livewire\Component;
-use App\Models\Document;
 
 class PreEmployment extends Component
 {
@@ -19,10 +19,13 @@ class PreEmployment extends Component
 
     public function render()
     {
-        $docs = Document::offset($this->chunk * $this->loads)->limit($this->chunk)->get();
+        $docs = CompanyDoc::offset($this->chunk * $this->loads)->limit($this->chunk)->get();
         $this->pre_employment_docs = ($this->loads == 0) ? $docs : $this->pre_employment_docs->merge($docs);
 
-        // dump($this->pre_employment_docs);
+        // if (empty($this->pre_employment_docs)) {
+        //     return;
+        // }
+
         return view('livewire.employee.pre-employment', ['pre_employment_docs' => $this->pre_employment_docs]);
     }
 

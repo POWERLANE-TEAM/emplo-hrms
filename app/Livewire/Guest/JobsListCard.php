@@ -2,13 +2,13 @@
 
 namespace App\Livewire\Guest;
 
-use App\Models\Position;
+use App\Models\JobVacancy;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
 class JobsListCard extends Component
 {
-    private $positions;
+    private $job_vacancies;
 
     private $isFiltered = false;
 
@@ -16,30 +16,34 @@ class JobsListCard extends Component
     public function updateOnSearch($search = null)
     {
         if (strlen(trim($search)) >= '1') {
-            $result = Position::where('title', 'ilike', '%'.$search.'%')
-                ->orWhere('description', 'ilike', '%'.$search.'%')
+            $result = JobVacancy::where('job_vacancy_id', 'ilike', '%' . $search . '%')
+                ->orWhereHas('jobDetails.jobTitle', function ($query) use ($search) {
+                    $query->where('job_title', 'ilike', '%' . $search . '%')
+                        ->orWhere('job_desc', 'ilike', '%' . $search . '%');
+                })
                 ->get();
         } else {
-            $result = Position::latest()->get();
+            $result = JobVacancy::latest()->get();
         }
-        $this->positions = $result;
+        $this->job_vacancies = $result;
         $this->isFiltered = true;
     }
 
     public function placeholder()
     {
-        $this->positions = Position::latest()->offset(0)->limit(4)->get();
-
-        return view('livewire.placeholder.job-list-card', ['positions' => $this->positions]);
+        $this->job_vacancies = JobVacancy::with('jobDetails.jobTitle')->latest()->get();
+        return view('livewire.placeholder.job-list-card', ['job_vacancies' => $this->job_vacancies]);
     }
 
     public function render()
     {
 
         if (! $this->isFiltered) {
-            $this->positions = Position::latest()->get();
+            $this->job_vacancies = JobVacancy::with('jobDetails.jobTitle')->get();
+
+            // dd($this->job_vacancies);
         }
 
-        return view('livewire.guest.jobs-list-card', ['positions' => $this->positions]);
+        return view('livewire.guest.jobs-list-card', ['job_vacancies' => $this->job_vacancies]);
     }
 }

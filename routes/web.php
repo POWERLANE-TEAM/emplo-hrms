@@ -1,19 +1,27 @@
 <?php
 
 use App\Http\Controllers\ApplicantDocController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\JsonController;
 use App\Http\Controllers\PreEmploymentController;
+use App\Http\Middleware\Localization;
 use App\Livewire\Auth\GoogleOAuth;
 use App\Livewire\Auth\GoogleOneTap;
-use Illuminate\Broadcasting\BroadcastController;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/apply', function () {
+    return view('apply');
+});
 
-Route::get('/', function () {
-    return view('index');
-}); // this should be change into a component when about and contact components are created
+Route::/* prefix('hr')-> *//* middleware('auth:hr')-> */group([], function () {
+    //
+});
 
+Route::get('/hiring', function () {
+    return view('hiring');
+});
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/applicant', [ApplicantDocController::class, 'index']);
@@ -22,6 +30,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/preemploy',  [PreEmploymentController::class, 'create']);
     Route::post('/preemploy', [PreEmploymentController::class, 'store']);
+});
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    // MANAGES WICH VIEW OF DASHBOARD
+    Route::get('/dashboard',  [DashboardController::class, 'index']);
 });
 
 Route::get('/employee/{page?}', [EmployeeController::class, 'employee'])->middleware(['auth', 'verified']);
