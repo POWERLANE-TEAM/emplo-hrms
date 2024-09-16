@@ -58,7 +58,31 @@ export default defineConfig({
                 {
                     src: 'resources/js/email-domain-list.json',
                     dest: 'assets/'
-                }
+                },
+                {
+                    src: 'resources/images/icons/*.*',
+                    dest: 'assets/images/icons/'
+                },
+                {
+                    src: 'resources/images/icons/app/*',
+                    dest: 'assets/images/icons/'
+                },
+                {
+                    src: 'resources/images/splash',
+                    dest: 'assets/images/splash/'
+                },
+                {
+                    src: 'resources/images/screenshots/*',
+                    dest: 'assets/images/screenshots/'
+                },
+                {
+                    src: 'resources/js/serviceworker.js',
+                    dest: '../'
+                },
+                {
+                    src: 'resources/js/manifest.json',
+                    dest: '../'
+                },
             ]
         })
     ],

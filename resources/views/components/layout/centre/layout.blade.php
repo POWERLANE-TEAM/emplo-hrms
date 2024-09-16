@@ -20,6 +20,7 @@
     @yield('head')
 
     <x-fav-icon />
+    @laravelPWA
 
     {{ Vite::useScriptTagAttributes(['onerror' => 'handleError(error)']) }}
     @php
