@@ -111,19 +111,25 @@ class Employee extends Model
     // returns application records where employee is initial interviewer
     public function asInitInterviewer(): HasMany
     {
-        return $this->hasMany(Application::class, 'init_interviewer', 'employee_id');
+        return $this->hasMany(InitialInterview::class, 'init_interviewer', 'employee_id');
     }
 
     // returns application records where employee is final interviewer
     public function asFinalInterviewer(): HasMany
     {
-        return $this->hasMany(Application::class, 'final_interviewer', 'employee_id');
+        return $this->hasMany(FinalInterview::class, 'final_interviewer', 'employee_id');
     }
 
     // returns pre employment documents where employee is evaluator
-    public function asApplicantDocsEvaluator(): HasMany
+    public function asApplicationDocsEvaluator(): HasMany
     {
-        return $this->hasMany(ApplicantDoc::class, 'evaluated_by', 'employee_id');
+        return $this->hasMany(ApplicationDoc::class, 'evaluated_by', 'employee_id');
+    }
+
+    // returns exam results where employee is grader
+    public function asExamGrader(): HasMany
+    {
+        return $this->hasMany(ApplicationExamResult::class, 'graded_by', 'employee_id');
     }
 
     /*
