@@ -2,7 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\Branch;
+use App\Models\Department;
 use App\Models\Document;
+use App\Models\EmploymentStatus;
 use App\Models\PositionVacancy;
 use App\Models\User;
 use App\Models\UserRole;
@@ -35,9 +38,13 @@ class DatabaseSeeder extends Seeder
         //     'password' => Hash::make('P@ssw0rd'),
         // ]);
 
+        Branch::factory(10)->create();
+        Department::factory(10)->create();
+        EmploymentStatus::factory(10)->create();
+        $this->call(PositionSeeder::class);
+
         User::factory(10)->create();
 
-        $this->call(PositionSeeder::class);
 
         PositionVacancy::factory(25)->create();
 

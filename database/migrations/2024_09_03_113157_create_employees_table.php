@@ -65,7 +65,6 @@ return new class extends Migration {
                 ->cascadeOnDelete();
 
             $table->string('file_path');
-            $table->timestamps();
             $table->softDeletes();
         });
 
