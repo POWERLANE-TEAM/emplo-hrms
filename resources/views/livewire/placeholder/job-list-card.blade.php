@@ -1,6 +1,6 @@
 <sidebar class="nav nav-tabs col-12 col-md-5 " id="jobs-list" role="tablist" aria-busy="true" nonce="csp_nonce()">
 
-    @foreach ($positions as $position)
+    @foreach ($job_vacancies as $job_vacancy)
         {{-- Insert Image of positions --}}
         <link rel="preload" href="http://placehold.it/74/74" as="image">
     @endforeach

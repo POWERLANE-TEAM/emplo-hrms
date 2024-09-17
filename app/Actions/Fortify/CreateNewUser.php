@@ -2,7 +2,10 @@
 
 namespace App\Actions\Fortify;
 
+use App\Models\Employee;
 use App\Models\User;
+use App\Models\UserRole;
+use App\Models\UserStatus;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
@@ -32,7 +35,10 @@ class CreateNewUser implements CreatesNewUsers
         return User::create([
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
-            'role' => 'GUEST',
+            'account_type' => 'applicant',
+            'account_id' => Employee::inRandomOrder()->first()->employee_id ?? 1,
+            'user_role_id' => UserRole::inRandomOrder()->first()->user_role_id ?? 1,
+            'user_status_id' => UserStatus::inRandomOrder()->first()->user_status_id ?? 1,
         ]);
     }
 }

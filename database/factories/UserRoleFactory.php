@@ -19,7 +19,7 @@ class UserRoleFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_role_name' => $this->faker->randomElement(['GUEST', 'USER', 'MANAGER', 'SYSADMIN']),
+            'user_role_name' => $this->faker->randomElement(['APPLICANT', 'IMM SUPERVISOR', 'HR EMP', 'HR MANAGER', 'SYSADMIN']),
             'user_role_desc' => fake()->paragraph(255),
         ];
     }
@@ -27,9 +27,10 @@ class UserRoleFactory extends Factory
     public function predefinedUserRoles()
     {
         return [
-            ['user_role_name' => 'GUEST', 'user_role_desc' => fake()->paragraph(255)],
-            ['user_role_name' => 'USER', 'user_role_desc' => fake()->paragraph(255)],
-            ['user_role_name' => 'MANAGER', 'user_role_desc' => fake()->paragraph(255)],
+            ['user_role_name' => 'APPLICANT', 'user_role_desc' => fake()->paragraph(255)],
+            ['user_role_name' => 'IMM SUPERVISOR', 'user_role_desc' => fake()->paragraph(255)],
+            ['user_role_name' => 'HR EMP', 'user_role_desc' => fake()->paragraph(255)],
+            ['user_role_name' => 'HR MANAGER', 'user_role_desc' => fake()->paragraph(255)],
             ['user_role_name' => 'SYSADMIN', 'user_role_desc' => fake()->paragraph(255)],
         ];
     }

@@ -57,31 +57,29 @@ input.search {
 
     @extend %base-search-group-style;
 
-    &::-ms-input-placeholder,
-    &::-moz-placeholder,
-    &::-moz-placeholder,
-    &::placeholder,
-    &::placeholder-show,
-    &::-webkit-input-placeholder {
-        color: var(--bs-white) !important;
-    }
 }
 
-html body input[type="search"].col-12.rounded-pill,
-html body input.search.col-12.rounded-pill {
-
-    // bat ayaw gumana pota
-    &::-ms-input-placeholder,
-    &::-moz-placeholder,
-    &::-moz-placeholder,
-    &::placeholder,
-    &::placeholder-show,
-    &::-webkit-input-placeholder {
-        color: var(--bs-white) !important;
-    }
-
-}
 
 .input-group {
     @extend %base-search-group-with-icon-style;
+}
+
+input[type="search"]::-ms-input-placeholder {
+    color: var(--bs-white);
+}
+
+input[type="search"]::-moz-placeholder {
+    color: var(--bs-white);
+}
+
+input[type="search"]::placeholder {
+    color: var(--bs-white);
+}
+
+input[type="search"]::placeholder-show {
+    color: var(--bs-white);
+}
+
+input[type="search"]::-webkit-input-placeholder {
+    color: var(--bs-white);
 }

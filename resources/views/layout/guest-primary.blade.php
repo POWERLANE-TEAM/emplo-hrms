@@ -11,12 +11,20 @@
     @endisset
 
     <x-html.head description=" {{ $description ?? app()->name() }}" :font_weights="$font_array">
+        @yield('head')
+    </x-html.head>
+
+    @stack('lib-styles')
+    @stack('lib-scripts')
+
+    <body class="">
+
+        @stack('styles')
+        @stack('scripts')
 
         {{-- START: Critical Styles --}}
         {{-- Need to reduce Cumulative Layout Shift --}}
-
-        {{-- @assets --}}
-        <style nonce="{{ $nonce }}">
+        <style nonce="{{ $nonce }}" wire:key="guest-primary-internal-style-1">
             section.top-vector {
                 position: absolute;
                 width: 100vw;
@@ -47,15 +55,8 @@
                 }
             }
         </style>
-        {{-- @endassets --}}
-
-
         {{-- END: Critical Styles --}}
 
-        @yield('head')
-    </x-html.head>
-
-    <body class="">
         <section class="top-vector">
 
             {{-- <div> --}}
@@ -102,7 +103,6 @@
                     </div>
 
                     <x-nav-link href="/" :active="request()->is('/')" class="no-hover ps-0  nav-link">
-                        <h1 class="fs-2  fw-bold text-white">Powerlane</h1>
                         <h1 class="fs-2  fw-bold text-white">Powerlane</h1>
                     </x-nav-link>
                 </div>
@@ -175,6 +175,7 @@
 
         <x-guest.footer></x-guest.footer>
 
+        @livewireScripts()
     </body>
 
 </x-html>

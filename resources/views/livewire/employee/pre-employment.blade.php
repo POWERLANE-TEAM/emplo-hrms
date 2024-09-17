@@ -47,7 +47,7 @@
         <tbody>
 
             @foreach ($pre_employment_docs as $pre_employment_doc)
-                @livewire('employee.pre-employment-doc', ['pre_employment_doc' => $pre_employment_doc], key($pre_employment_doc->id))
+                @livewire('employee.pre-employment-doc', ['pre_employment_doc' => $pre_employment_doc], key($pre_employment_doc->document_control_id))
             @endforeach
 
             <tr class="opacity-0" x-intersect.full="$wire.loadMore()">

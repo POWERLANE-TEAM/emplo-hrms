@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Middleware\Localization;
 use App\Http\Middleware\SaveVisitedPage;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Support\Facades\Route;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -20,7 +22,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->append(\Spatie\Csp\AddCspHeaders::class);
 
         $middleware->alias([
-            'save.page' => SaveVisitedPage::class
+            'save.page' => SaveVisitedPage::class,
+            'localization' => Localization::class
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
