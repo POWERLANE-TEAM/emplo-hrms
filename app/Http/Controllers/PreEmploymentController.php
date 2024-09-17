@@ -16,7 +16,7 @@ class PreEmploymentController extends Controller
     /* Show form page for creating resource */
     public function create()
     {
-        return view('/employee/pre-employment');
+        return view('.employee.pre-employment');
     }
 
     /* store a new resource */
