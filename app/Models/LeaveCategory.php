@@ -23,6 +23,7 @@ class LeaveCategory extends Model
     |--------------------------------------------------------------------------
     */
 
+    // returns employee leaves under which category
     public function leaves(): HasMany
     {
         return $this->hasMany(EmployeeLeave::class, 'leave_id', 'leave_id');
