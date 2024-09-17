@@ -14,6 +14,8 @@ use App\Models\SpecificArea;
 use App\Models\User;
 use App\Models\UserRole;
 use App\Models\UserStatus;
+use App\Models\UserRole;
+use App\Models\UserStatus;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;

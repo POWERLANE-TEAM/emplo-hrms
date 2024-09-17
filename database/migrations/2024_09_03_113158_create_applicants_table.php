@@ -2,7 +2,7 @@
 
 use App\Models\Applicant;
 use App\Models\Employee;
-use App\Models\PreempRequirements;
+use App\Models\PreempRequirement;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -22,11 +22,11 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        
+
         Schema::create('applicant_docs', function (Blueprint $table) {
             $table->id('applicant_doc_id');
 
-            $table->foreignIdFor(PreempRequirements::class, 'preemp_req_id')
+            $table->foreignIdFor(PreempRequirement::class, 'preemp_req_id')
                 ->constrained('preemp_requirements', 'preemp_req_id')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();

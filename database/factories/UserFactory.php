@@ -5,6 +5,9 @@ namespace Database\Factories;
 use App\Models\Employee;
 use App\Models\UserRole;
 use App\Models\UserStatus;
+use App\Models\Employee;
+use App\Models\UserRole;
+use App\Models\UserStatus;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 

@@ -103,6 +103,7 @@
 
                     <x-nav-link href="/" :active="request()->is('/')" class="no-hover ps-0  nav-link">
                         <h1 class="fs-2  fw-bold text-white">Powerlane</h1>
+                        <h1 class="fs-2  fw-bold text-white">Powerlane</h1>
                     </x-nav-link>
                 </div>
                 <div class="d-flex align-items-center fw-bold">

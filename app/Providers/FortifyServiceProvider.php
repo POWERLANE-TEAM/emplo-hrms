@@ -44,13 +44,28 @@ class FortifyServiceProvider extends ServiceProvider
         {
             public function toResponse($request)
             {
+                $authenticated_role = Auth::user()->role;
 
                 // Redirect to previously visited page before being prompt to login
                 if (session()->has('url.intended')) {
                     return redirect()->intended();
                 }
 
-                return redirect()->to('/dashboard');
+                switch ($authenticated_role) {
+                    case 'GUEST': /* Deprecated */
+                        return redirect()->to('/');
+                    case 'USER': /* Deprecated */
+                        return redirect()->to('/employee');
+                    case 'MANAGER':
+                        // Add your logic here
+                        break;
+                    case 'SYSADMIN':
+                        // Add your logic here
+                        break;
+                    default:
+                        // Handle unexpected roles
+                        return redirect()->to('/login');
+                }
             }
         });
     }

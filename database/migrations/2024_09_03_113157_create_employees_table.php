@@ -3,6 +3,7 @@
 use App\Models\Employee;
 use App\Models\EmploymentStatus;
 use App\Models\JobDetail;
+use App\Models\JobDetail;
 use App\Models\LeaveCategory;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -30,6 +31,8 @@ return new class extends Migration {
 
             $table->foreignIdFor(JobDetail::class, 'job_detail_id')
                 ->constrained('job_details', 'job_detail_id')
+            $table->foreignIdFor(JobDetail::class, 'job_detail_id')
+                ->constrained('job_details', 'job_detail_id')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
@@ -43,6 +46,7 @@ return new class extends Migration {
             $table->longText('present_address');
             $table->longText('permanent_address');
             $table->string('contact_number', 11)->unique();
+            $table->string('contact_number', 11)->unique();
             $table->string('photo')->nullable(); // emp photo file path
             $table->enum('sex', ['MALE', 'FEMALE']);
             $table->enum('civil_status', ['SINGLE', 'MARRIED', 'WIDOWED', 'LEGALLY SEPARATED']);
@@ -50,7 +54,13 @@ return new class extends Migration {
             $table->string('philhealth_no', 12)->unique();
             $table->string('tin_no', 12)->unique();
             $table->string('pag_ibig_no', 12)->unique();
+            $table->string('sss_no', 10)->unique();
+            $table->string('philhealth_no', 12)->unique();
+            $table->string('tin_no', 12)->unique();
+            $table->string('pag_ibig_no', 12)->unique();
             $table->binary('signature');
+            $table->string('education');
+            $table->integer('leave_balance')->default(0);
             $table->string('education');
             $table->integer('leave_balance')->default(0);
             $table->timestamps();
@@ -81,6 +91,7 @@ return new class extends Migration {
                 ->constrained('leave_categories', 'leave_id')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
+                ->cascadeOnDelete();
 
             $table->longText('reason');
             $table->timestamp('start_date');
@@ -95,7 +106,10 @@ return new class extends Migration {
 
             $table->boolean('is_area_man_approved')->default(false);
             $table->timestamp('area_man_approved_at')->nullable();
+            $table->boolean('is_area_man_approved')->default(false);
+            $table->timestamp('area_man_approved_at')->nullable();
 
+            $table->foreignIdFor(Employee::class, 'area_manager')
             $table->foreignIdFor(Employee::class, 'area_manager')
                 ->constrained('employees', 'employee_id')
                 ->cascadeOnUpdate()
