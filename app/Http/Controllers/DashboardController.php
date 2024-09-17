@@ -24,13 +24,10 @@ class DashboardController extends Controller
         switch ($user_with_role_and_account->role->user_role_name) {
             case 'MANAGER':
                 return view('employee.hr.index', ['user' => $user_with_role_and_account]);
-                break;
             case 'SYSADMIN':
                 return view('employee.head-admin.index', ['user' => $user_with_role_and_account]);
-                break;
             case 'USER':
                 return redirect()->to('/');
-                break;
             default:
                 return view('employee.standard.index', ['user' => $user_with_role_and_account]);
         }
