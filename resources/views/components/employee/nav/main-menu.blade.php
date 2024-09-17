@@ -3,25 +3,24 @@
 <div {{ $attributes->merge(['class' => 'container-fluid main-menu-container text-white']) }}>
     <x-employee.nav.sidebar sidebar_expanded="{{ $sidebar_expanded }}" class="shadow" icon_size="{{ $icon_size }}"
         icon_ratio="{{ $icon_ratio }}">
-
         @php
 
-            $user = \App\Models\User::with('role')
-                ->where('user_role_id', Auth::user()->user_role_id)
-                ->first();
+            $user = Auth::user()->load('role');
+
             // dd($user);
+
         @endphp
 
-        @includeWhen($user->role->user_role_name == 'USER', 'components.employee.nav.sidebar.employee-navs')
+        {{-- @includeWhen($user->role->user_role_name == 'USER', 'components.employee.nav.sidebar.employee-navs') --}}
 
-        @includeWhen($user->role->user_role_name == 'MANAGER', 'components.employee.nav.sidebar.hr-navs')
+        @includeWhen($user->role->user_role_name == 'HR MANAGER', 'components.employee.nav.sidebar.hr-navs')
 
         @includeWhen(
             $user->role->user_role_name == 'SYSADMIN',
             'components.employee.nav.sidebar.head-admin-navs')
 
     </x-employee.nav.sidebar>
-    <x-employee.nav.topbar class="" icon_size="{{ $icon_size }}" icon_ratio="{{ $icon_ratio }}">
+    <x-employee.nav.topbar class="">
 
         <x-slot:topbar_right>
             <aside>

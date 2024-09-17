@@ -62,7 +62,7 @@ class AppServiceProvider extends ServiceProvider
             'outsourced_trainer' => 'App\Models\OutsourcedTrainer',
             'employee' => 'App\Models\Employee',
             'applicant' => 'App\Models\Applicant',
-            'document' => 'App\Models\Document',
+            'company_doc' => 'App\Models\CompanyDoc',
         ]);
 
         BroadcastServiceProvider::class;

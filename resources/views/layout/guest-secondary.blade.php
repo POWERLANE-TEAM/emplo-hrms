@@ -14,7 +14,7 @@
 
         {{-- START: Critical Styles --}}
         {{-- Need to reduce Cumulative Layout Shift --}}
-        <style nonce="{{ $nonce }}">
+        <style nonce="{{ $nonce }}" id="abcd">
             section.top-vector {
                 position: absolute;
                 width: 100vw;
@@ -101,7 +101,7 @@
                         </div>
                     </div>
 
-                    <x-nav-link href="/" :active="request()->is('/')" class="no-hover ps-0  nav-link">
+                    <x-nav-link href="/" wire:navigate :active="request()->is('/')" class="no-hover ps-0  nav-link">
                         <h1 class="fs-2  fw-bold text-primary">Powerlane</h1>
                     </x-nav-link>
 

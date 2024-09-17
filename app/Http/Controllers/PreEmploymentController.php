@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CompanyDoc;
 use App\Models\Document;
 use App\Models\EmployeeDoc;
 use Illuminate\Http\Request;
@@ -52,13 +53,13 @@ class PreEmploymentController extends Controller
             $path = $file->storeAs('uploads', $hashedName, 'public'); /* Store in file://storage/app/public/uploads/ */
 
             $employeeDoc = new EmployeeDoc();
-            $employeeDoc->document_id = $doc_id;
+            $employeeDoc->emp_doc_id = $doc_id;
             $employeeDoc->employee_id = $account_id;
-            $employeeDoc->file = $path;
+            $employeeDoc->file_path = $path;
             $employeeDoc->save();
 
             //Retrieve the document name from the documents table
-            $document = Document::find($doc_id);
+            $document = CompanyDoc::find($doc_id);
             $document_name = $document->name;
             echo $document_name;
 

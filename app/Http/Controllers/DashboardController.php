@@ -22,7 +22,7 @@ class DashboardController extends Controller
         // dd($user_with_role_and_account);
 
         switch ($user_with_role_and_account->role->user_role_name) {
-            case 'MANAGER':
+            case 'HR MANAGER':
                 return view('employee.hr.index', ['user' => $user_with_role_and_account]);
             case 'SYSADMIN':
                 return view('employee.head-admin.index', ['user' => $user_with_role_and_account]);

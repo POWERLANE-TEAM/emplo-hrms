@@ -1,5 +1,4 @@
 
-import "../css/index.css";
 import './script.js';
 import initLucideIcons from './icons/lucide.js';
 import addGlobalScrollListener, { documentScrollPosY } from './global-scroll-fn.js';
@@ -71,6 +70,103 @@ let sigUpFormString = `form[action='applicant/sign-up']`;
 
 let signUpBtn = `#signUpBtn`;
 
+const FIRST_NAME_VALIDATION = {
+    clear_invalid: true,
+    trailing: {
+        '-+': '-',    // Replace consecutive dashes with a single dash
+        '\\.+': '.',  // Replace consecutive periods with a single period
+        ' +': ' ',    // Replace consecutive spaces with a single space
+        '\\\'+': '\'',    // Replace consecutive aposthrophe with a single aposthrophe
+    },
+    attributes: {
+        type: 'text',
+        // pattern: /^[\p{L} \'-]+$/u,
+        pattern: /^[A-Za-zÑñ '\-]+$/,
+        required: true,
+        max_length: 191,
+    },
+    // customMsg: {
+    //     required: true,
+    //     max_length: '',
+    // },
+    errorFeedback: {
+        required: 'First name is required.',
+        max_length: 'First name cannot be more than 255 characters.',
+        pattern: 'Invalid first name.',
+        typeMismatch: 'Invalid first name.',
+        trailing: 'Consecutive repeating characters not allowed.',
+    }
+}
+
+const MIDDLE_NAME_VALIDATION = { ...FIRST_NAME_VALIDATION };
+const LAST_NAME_VALIDATION = { ...FIRST_NAME_VALIDATION };
+
+MIDDLE_NAME_VALIDATION.attributes = {
+    type: 'text',
+    // pattern: /^[\p{L} \'-]+$/u,
+    pattern: /^[A-Za-zÑñ '\-]+$/,
+    max_length: 191,
+};
+
+MIDDLE_NAME_VALIDATION.errorFeedback = {
+    max_length: 'Middle name cannot be more than 255 characters.',
+    pattern: 'Invalid middle name.',
+    typeMismatch: 'Invalid middle name.',
+    trailing: 'Consecutive repeating characters not allowed.',
+};
+
+LAST_NAME_VALIDATION.errorFeedback = {
+    required: 'Last name is required.',
+    max_length: 'Last name cannot be more than 255 characters.',
+    pattern: 'Invalid last name.',
+    typeMismatch: 'Invalid last name.',
+    trailing: 'Consecutive repeating characters not allowed.',
+};
+
+class NameValidator {
+    constructor(inputSelector, validator, parent = document) {
+        this.inputSelector = inputSelector;
+        this.validator = validator;
+        this.parent = parent;
+    }
+
+    // Validate individual input element
+    validateElement(element) {
+        const isValid = this.validator.validate(element, setInvalidMessage);
+        if (!isValid) {
+            element.classList.add('is-invalid');
+        } else {
+            element.classList.remove('is-invalid');
+        }
+        return isValid;
+    }
+
+    validateName(inputSelector, parent = document) {
+        const element = parent.querySelector(this.inputSelector);
+        return this.validateElement(element);
+    }
+
+    // Initialize debounced validation on input
+    initValidation(callback, resultRef) {
+        const debouncedValidation = debounce((event) => {
+            const isValid = this.validateElement(event.target);
+            try {
+                resultRef = isValid;
+            } catch (error) {
+
+            }
+            callback();
+        }, 500);
+
+        addGlobalListener('input', this.parent, this.inputSelector, debouncedValidation);
+    }
+
+}
+
+const firstNameValidator = new NameValidator(`${sigUpFormString} input[name="first_name"]`, new InputValidator(FIRST_NAME_VALIDATION));
+const middleNameValidator = new NameValidator(`${sigUpFormString} input[name="middle_name"]`, new InputValidator(MIDDLE_NAME_VALIDATION));
+const lastNameValidator = new NameValidator(`${sigUpFormString} input[name="last_name"]`, new InputValidator(LAST_NAME_VALIDATION));
+
 function checkConsent(consentForm) {
     return consentForm.checked;
 }
@@ -80,10 +176,18 @@ function checkCaptcha() {
 }
 
 const signUpBool = {
+    isValidFirstName: false,
+    isValidMiddleName: false,
+    isValidLastName: false,
     isValidEmail: false,
     isValidPassword: false,
     isPasswordMatch: false,
 }
+
+// Initialize validation with callback and result object
+firstNameValidator.initValidation(() => validateSignUpForm(sigUpFormString), signUpBool.isValidFirstName);
+middleNameValidator.initValidation(() => validateSignUpForm(sigUpFormString), signUpBool.isValidMiddleName);
+lastNameValidator.initValidation(() => validateSignUpForm(sigUpFormString), signUpBool.isValidLastName);
 
 const passwordValidator = new PasswordValidator(DEFAULT_PASSWORD_VALIDATION);
 
@@ -110,6 +214,10 @@ function validateSignUpForm(sigUpFormString = `form[action='applicant/sign-up']`
         console.warn('Password evaluator not available.')
     }
 
+    signUpBool.isValidFirstName = firstNameValidator.validateName(`${sigUpFormString} input[name="first_name"]`);
+    signUpBool.isValidMiddleName = middleNameValidator.validateName(`${sigUpFormString} input[name="middle_name"]`);
+    signUpBool.isValidLastName = lastNameValidator.validateName(`${sigUpFormString} input[name="last_name"]`);
+
     if (!stack.includes('email-validation.js')) {
         signUpBool.isValidEmail = validateEmail(`${sigUpFormString} input[name="email"]`);
     }
@@ -126,7 +234,7 @@ function validateSignUpForm(sigUpFormString = `form[action='applicant/sign-up']`
     // console.log(signUpBool)
     // console.log(consentAgreed)
     // console.log(isWeakPassword)
-    if (!signUpBool.isValidEmail || !signUpBool.isValidPassword) {
+    if (!signUpBool.isValidEmail || !signUpBool.isValidPassword || !signUpBool.isValidFirstName || !signUpBool.isValidMiddleName || !signUpBool.isValidLastName) {
         signUpBtn.disabled = true;
     } else
         if (isWeakPassword?.valueOf() == true) {

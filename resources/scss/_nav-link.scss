@@ -1,12 +1,9 @@
 %nav-link {
-    &.active {
-        background-color: white;
-    }
+    font-weight: 600;
 
     &:hover:not(.no-hover) {
         background-color: color-mix(in srgb, var(--bs-white) 75%, transparent);
         color: var(--bs-primary);
-        font-weight: bolder;
         font-size: 0.995em;
     }
 

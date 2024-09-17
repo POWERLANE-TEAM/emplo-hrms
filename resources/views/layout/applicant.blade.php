@@ -40,9 +40,7 @@
 
                     <x-nav-link href="/" :active="request()->is('/')" class="no-hover ps-0 fw-semibold nav-link">
                         <h1 class="fs-2 fw-bolder text-white">Powerlane</h1>
-                        <x-nav-link href="/" :active="request()->is('/')" class="no-hover ps-0 fw-semibold nav-link">
-                            <h1 class="fs-2 fw-bolder text-white">Powerlane</h1>
-                        </x-nav-link>
+                    </x-nav-link>
                 </div>
                 <div class="d-flex align-items-center fw-bold ">
                     <section class="desktop-topnav d-none d-md-flex">
@@ -111,15 +109,14 @@
 
 
         <main class=" mt-4 mt-md-5 {{ $main_content_class ?? '' }}">
-            <main class=" mt-4 mt-md-5 {{ $main_content_class ?? '' }}">
 
-                @yield('content')
-                {{-- <x-html.test-elements></x-html.test-elements> --}}
-            </main>
-
+            @yield('content')
+            {{-- <x-html.test-elements></x-html.test-elements> --}}
+        </main>
 
 
-            <x-applicant.footer></x-applicant.footer>
+
+        <x-applicant.footer></x-applicant.footer>
 
     </body>
 

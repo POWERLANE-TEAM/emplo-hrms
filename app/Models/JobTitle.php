@@ -47,4 +47,9 @@ class JobTitle extends Model
     {
         return $this->belongsToMany(SpecificArea::class, 'job_details', 'job_title_id', 'area_id');
     }
+
+    public function jobTitle(): BelongsTo
+    {
+        return $this->belongsTo(JobTitle::class, 'job_title_id', 'job_title_id');
+    }
 }

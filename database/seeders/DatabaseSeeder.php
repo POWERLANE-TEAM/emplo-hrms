@@ -2,9 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\CompanyDoc;
 use App\Models\Department;
-use App\Models\Document;
 use App\Models\Employee;
+use App\Models\EmployeeDoc;
 use App\Models\EmploymentStatus;
 use App\Models\JobDetail;
 use App\Models\JobFamily;
@@ -12,8 +13,6 @@ use App\Models\JobLevel;
 use App\Models\JobVacancy;
 use App\Models\SpecificArea;
 use App\Models\User;
-use App\Models\UserRole;
-use App\Models\UserStatus;
 use App\Models\UserRole;
 use App\Models\UserStatus;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -50,33 +49,39 @@ class DatabaseSeeder extends Seeder
         JobDetail::factory(rand(5, 20))->create();
         User::factory(8)->create();
 
-        $employees = Employee::factory(2)->create([
-            'first_name' => fake()->firstName,
-            'middle_name' => fake()->firstName,
-            'last_name' => fake()->lastName,
-            'job_detail_id' => JobDetail::inRandomOrder()->first()->job_detail_id ?? 1,
-            'hired_at' => fake()->dateTimeThisDecade,
-            'emp_status_id' => EmploymentStatus::inRandomOrder()->first()->emp_status_id ?? 1,
-            'present_address' => fake()->address,
-            'permanent_address' => fake()->address,
-            'contact_number' => fake()->numerify('###########'),
-            'photo' => fake()->optional()->imageUrl(),
-            'sex' => fake()->randomElement(['MALE', 'FEMALE']),
-            'civil_status' => fake()->randomElement(['SINGLE', 'MARRIED', 'WIDOWED', 'LEGALLY SEPARATED']),
-            'sss_no' => fake()->numerify('##########'),
-            'philhealth_no' => fake()->numerify('############'),
-            'tin_no' => fake()->numerify('############'),
-            'pag_ibig_no' => fake()->numerify('############'),
-            'signature' => fake()->sha256,
-            'education' => fake()->word,
-        ]);
+        $employees = collect();
+
+        for ($i = 0; $i < 2; $i++) {
+            $employee = Employee::factory()->create([
+                'first_name' => fake()->firstName,
+                'middle_name' => fake()->firstName,
+                'last_name' => fake()->lastName,
+                'job_detail_id' => JobDetail::inRandomOrder()->first()->job_detail_id ?? 1,
+                'hired_at' => fake()->dateTimeThisDecade,
+                'emp_status_id' => EmploymentStatus::inRandomOrder()->first()->emp_status_id ?? 1,
+                'present_address' => fake()->address,
+                'permanent_address' => fake()->address,
+                'contact_number' => fake()->unique()->numerify('###########'),
+                'photo' => fake()->optional()->imageUrl(),
+                'sex' => fake()->randomElement(['MALE', 'FEMALE']),
+                'civil_status' => fake()->randomElement(['SINGLE', 'MARRIED', 'WIDOWED', 'LEGALLY SEPARATED']),
+                'sss_no' => fake()->numerify('##########'),
+                'philhealth_no' => fake()->numerify('############'),
+                'tin_no' => fake()->numerify('############'),
+                'pag_ibig_no' => fake()->numerify('############'),
+                'signature' => fake()->sha256,
+                'education' => fake()->word,
+            ]);
+
+            $employees->push($employee);
+        }
 
         User::factory()->create([
             'account_type' => 'employee',
             'account_id' => $employees[0]->employee_id,
             'email' => 'hr.001@gmail.com',
             'password' =>  Hash::make('UniqP@ssw0rd'),
-            'user_role_id' => 3,
+            'user_role_id' => 4,
             'user_status_id' => 1,
             'email_verified_at' => fake()->dateTimeBetween('-10days', 'now'),
         ]);
@@ -86,17 +91,17 @@ class DatabaseSeeder extends Seeder
             'account_id' => $employees[1]->employee_id,
             'email' => 'admin.001@gmail.com',
             'password' =>  Hash::make('UniqP@ssw0rd'),
-            'user_role_id' => 4,
+            'user_role_id' => 5,
             'user_status_id' => 1,
             'email_verified_at' => fake()->dateTimeBetween('-10days', 'now'),
         ]);
 
         JobVacancy::factory(25)->create();
 
-        $documents = Document::factory()->predefinedDocuments();
+        $documents = CompanyDoc::factory()->predefinedDocuments();
 
         foreach ($documents as $document) {
-            Document::create($document);
+            CompanyDoc::create($document);
         }
     }
 }

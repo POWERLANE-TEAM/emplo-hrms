@@ -1,14 +1,14 @@
 @props([
-    'icon_size' => '31px',
     'href' => '',
     'active' => false,
-    'icon_ratio' => '1/1',
     'nav_txt' => '',
     'default_icon' => '',
     'active_icon' => '',
     'src_path' => 'resources/images/icons/',
     'src_extn' => '.webp',
 ])
+
+@aware(['icon_size' => '31px', 'icon_ratio' => '1/1'])
 
 <li role="none" class="my-3 sidebar-item">
     <x-nav-link href="{{ $href }}" active="{{ $active }}" rel=""

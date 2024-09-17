@@ -38,15 +38,14 @@
     {{-- Fallback --}}
     <link href="{{ Vite::asset('resources/images/logo/powerlane-md.webp') }}" rel="icon" media="(prefers-color-scheme: light)">
 
-    <!-- CRSF Token -->
+     {{-- CRSF Token --}}
     <meta name="csrf-token" content="{{{ csrf_token() }}}">
 
-    <x-html.meta-seo :no_crawl="$no_crawl" :description="$description"></x-html.meta-seo>
+    <x-html.meta-seo/>
     @php
         $nonce = csp_nonce();
     @endphp
 
-    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta property="csp-nonce" content="{{ $nonce }}">
     <?php Vite::useScriptTagAttributes(['onerror' => 'handleError(error)']); ?>
     @php
@@ -55,36 +54,58 @@
 
     {!! RecaptchaV3::initJs() !!}
 
-    <script nonce="{{ csp_nonce() }}">
-        console.time("DOMContentLoaded");
-        console.time("loading");
-        console.time("interactive");
-        console.time("complete");
-        document.addEventListener("DOMContentLoaded", () => {
-            console.timeEnd("DOMContentLoaded");
-        });
+    <script nonce="{{ $nonce }}">
+        @env('local')
+             console.time("DOMContentLoaded");
+            console.time("loading");
+            console.time("interactive");
+            console.time("complete");
+            document.addEventListener("DOMContentLoaded", () => {
+                console.timeEnd("DOMContentLoaded");
+            });
 
-        document.addEventListener("readystatechange", (event) => {
-            if (event.target.readyState === "loading") {
+            document.addEventListener("readystatechange", (event) => {
+                if (event.target.readyState === "loading") {
 
-                console.timeEnd("loading");
-            } else if (event.target.readyState === "interactive") {
+                    console.timeEnd("loading");
+                } else if (event.target.readyState === "interactive") {
 
-                console.timeEnd("interactive");
-            } else if (event.target.readyState === "complete") {
+                    console.timeEnd("interactive");
+                } else if (event.target.readyState === "complete") {
 
-                console.timeEnd("complete");
-            }
-        });
+                    console.timeEnd("complete");
+                }
+            });
+     @endenv
 
         @php
             if (Auth::check()) {
                 $user_session = session()->getId();
-                $auth_broadcast_id =   hash('sha512', $user_session . Auth::user()->email . $user_session);
+                $auth_broadcast_id = hash('sha512', $user_session . Auth::user()->email . $user_session);
+        @endphp
 
-                echo "const AUTH_BROADCAST_ID = `" . $auth_broadcast_id . "`;";
+                @once
+                    var AUTH_BROADCAST_ID = "{{ $auth_broadcast_id }}";
+                @endonce
+
+        @php
             }
         @endphp
+
+
+    document.addEventListener('livewire:init', () => {
+        Livewire.hook('request', ({ fail }) => {
+            fail(({ status, preventDefault }) => {
+                if (status === 419) {
+                    preventDefault();
+                    /* Inert custom page expired propmt */
+                    Livewire.navigate('/419')
+                }
+            })
+        })
+    });
+
+
     </script>
 
     <!-- Fonts -->
@@ -97,20 +118,22 @@
     <link href="https://fonts.bunny.net/css?family=figtree:{{ $fonts }}&display=swap" rel="stylesheet" />
 
     <!-- Styles -->
-    {{-- <style nonce="{{ csp_nonce() }}">
-        @import url(https://fonts.bunny.net/css?family=figtree:{{$fonts}});
-    </style> --}}
+    @stack('lib-styles')
 
     {{ $slot }}
 
     <!-- Scripts -->
     @vite(['vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js'])
+    @stack('lib-scripts')
 
 
-{{--  Waiting for this fix in livewire https://github.com/livewire/livewire/pull/8793  --}}
+    {{--  Waiting for this fix in livewire https://github.com/livewire/livewire/pull/8793  --}}
 {{-- livewire.js?id=cc800bf4:9932 Detected multiple instances of Livewire running --}}
 {{-- livewire.js?id=cc800bf4:9932 Detected multiple instances of Alpine running --}}
-@livewireStyles(['nonce' => $nonce])
-@livewireScripts(['nonce' => $nonce])
+{{-- @livewireStyles(['nonce' => $nonce])
+@livewireScripts(['nonce' => $nonce]) --}}
+@once
+@livewireStyles()
+@endonce
 
 </head>

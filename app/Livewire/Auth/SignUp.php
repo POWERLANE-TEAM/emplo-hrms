@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Auth;
 
-use App\Models\Position;
+use App\Models\JobVacancy;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Validation\Rules\Password;
@@ -12,7 +12,7 @@ use Livewire\Component;
 
 class SignUp extends Component
 {
-    private $position;
+    private $job_vacancy;
 
     public $email = '';
 
@@ -24,11 +24,20 @@ class SignUp extends Component
     // public $captcha;
 
     #[On('job-selected')]
-    public function showPosition($position)
+    public function showJobVacancy($job_vacancy)
     {
-        $this->placeholder();
-        $this->position = new Position($position[0]);
-        // dd($position);
+
+        $this->job_vacancy = collect($job_vacancy[0]);
+        $this->job_vacancy = $this->job_vacancy->map(function ($item) {
+            if (is_array($item)) {
+                return collect($item)->map(function ($nestedItem) {
+                    return is_array($nestedItem) ? collect($nestedItem) : $nestedItem;
+                });
+            }
+            return $item;
+        });
+
+        // dd($this->job_vacancy['job_details']['job_title']['job_title']);
     }
 
     public function store(CreatesNewUsers $userCreate)
@@ -77,7 +86,7 @@ class SignUp extends Component
 
     public function render()
     {
-        return view('livewire.auth.sign-up', ['position' => $this->position]);
+        return view('livewire.auth.sign-up', ['job_vacancy' => $this->job_vacancy]);
     }
 
     public function rendered()

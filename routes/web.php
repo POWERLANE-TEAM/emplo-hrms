@@ -5,20 +5,35 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\JsonController;
 use App\Http\Controllers\PreEmploymentController;
+use App\Http\Middleware\Localization;
 use App\Livewire\Auth\GoogleOAuth;
 use App\Livewire\Auth\GoogleOneTap;
-use Illuminate\Broadcasting\BroadcastController;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/apply', function () {
     return view('apply');
 });
 
+// Temporary Routes START
+Route::get('/hr', function () {
+    return view('employee/dashboard');
+});
 
-Route::get('/', function () {
-    return view('index');
-}); // this should be change into a controller when about and contact components are created
+Route::get('/admin', function () {
+    return view('employee/dashboard');
+});
 
+// Temporary Routes END
+// Route::middleware(['localization'])->group(function () {
+//     Route::get('{locale?}/hiring', function () {
+//         return view('hiring');
+//     });
+// });
+
+Route::get('/hiring', function () {
+    return view('hiring');
+});
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/applicant', [ApplicantDocController::class, 'index']);
@@ -30,6 +45,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
+    // MANAGES WICH VIEW OF DASHBOARD
     Route::get('/dashboard',  [DashboardController::class, 'index']);
 });
 
@@ -53,3 +69,11 @@ Route::middleware('guest')->group(function () {
 
 
 Route::post('auth/googleonetap/callback', [GoogleOneTap::class, 'handleCallback']);
+
+/* Currently buggy */
+// Route::fallback(function () {
+//     if (request()->query('redirected')) {
+//         return response()->view('errors.404', [], 404);
+//     }
+//     return redirect('/en/' . request()->path() . '?redirected=true');
+// });

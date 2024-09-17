@@ -27,7 +27,7 @@ class EmployeeFactory extends Factory
             'emp_status_id' => EmploymentStatus::inRandomOrder()->first()->emp_status_id ?? 1,
             'present_address' => fake()->address,
             'permanent_address' => fake()->address,
-            'contact_number' => fake()->numerify('###########'),
+            'contact_number' => fake()->unique()->numerify('###########'),
             'photo' => fake()->optional()->imageUrl(),
             'sex' => fake()->randomElement(['MALE', 'FEMALE']),
             'civil_status' => fake()->randomElement(['SINGLE', 'MARRIED', 'WIDOWED', 'LEGALLY SEPARATED']),

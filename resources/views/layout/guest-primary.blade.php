@@ -16,7 +16,7 @@
         {{-- Need to reduce Cumulative Layout Shift --}}
 
         {{-- @assets --}}
-        <style nonce="{{ $nonce }}">
+        <style nonce="{{ $nonce }}" id="abc">
             section.top-vector {
                 position: absolute;
                 width: 100vw;
@@ -102,7 +102,6 @@
                     </div>
 
                     <x-nav-link href="/" :active="request()->is('/')" class="no-hover ps-0  nav-link">
-                        <h1 class="fs-2  fw-bold text-white">Powerlane</h1>
                         <h1 class="fs-2  fw-bold text-white">Powerlane</h1>
                     </x-nav-link>
                 </div>
