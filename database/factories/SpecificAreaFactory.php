@@ -2,12 +2,13 @@
 
 namespace Database\Factories;
 
+use App\Models\Employee;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Position>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\SpecificArea>
  */
-class PositionFactory extends Factory
+class SpecificAreaFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,8 +18,8 @@ class PositionFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => fake()->jobTitle(),
-            'description' => fake()->paragraph(1000),
+            'area_name' => fake()->city,
+            // 'area_manager' => Employee::inRandomOrder()->first()->employee_id ?? 1,
         ];
     }
 }
