@@ -2,20 +2,18 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class ApplicantDoc extends Model
+class ApplicationDoc extends Model
 {
     use HasFactory;
 
-    protected $table = 'applicant_docs';
-
-    protected $primaryKey = 'applicant_doc_id';
+    protected $primaryKey = 'application_doc_id';
 
     protected $guarded = [
-        'applicant_doc_id',
+        'application_doc_id',
         'created_at',
         'updated_at',
         'deleted_at',
@@ -27,16 +25,19 @@ class ApplicantDoc extends Model
     |--------------------------------------------------------------------------
     */
 
+    // returns which pre-employment requirements the document belongs to
     public function preempRequirement(): BelongsTo
     {
         return $this->belongsTo(PreempRequirement::class, 'preemp_req_id', 'preemp_req_id');
     }
 
-    public function applicant(): BelongsTo
+    // returns for which application the document is submitted to
+    public function application(): BelongsTo
     {
-        return $this->belongsTo(Applicant::class, 'applicant_id', 'applicant_id');
+        return $this->belongsTo(Application::class, 'application_id', 'application_id');
     }
 
+    // returns evaluator of the document
     public function evaluatedBy(): BelongsTo
     {
         return $this->belongsTo(Employee::class, 'evaluated_by', 'employee_id');
