@@ -25,12 +25,13 @@ class JobVacancy extends Model
     |--------------------------------------------------------------------------
     */
 
-    // returns job details of a particular job vacancy
+    // returns job details of the job vacancy
     public function jobDetails(): BelongsTo
     {
         return $this->belongsTo(JobDetail::class, 'job_detail_id', 'job_detail_id');
     }
 
+    // returns applications for the job vacancy
     public function applications(): HasMany
     {
         return $this->hasMany(Application::class, 'job_vacancy_id', 'job_vacancy_id');
