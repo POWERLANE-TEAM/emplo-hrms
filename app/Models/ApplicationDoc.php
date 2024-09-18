@@ -14,8 +14,6 @@ class ApplicationDoc extends Model
 
     protected $guarded = [
         'application_doc_id',
-        'created_at',
-        'updated_at',
         'deleted_at',
     ];
 

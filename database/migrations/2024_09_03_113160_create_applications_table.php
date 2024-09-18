@@ -61,17 +61,15 @@ return new class extends Migration {
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
-            $table->string('file_path');
-            $table->boolean('is_submitted')->default(false);
-            $table->timestamp('submitted_at')->nullable();
-
             $table->foreignIdFor(Employee::class, 'evaluated_by')
                 ->nullable()
                 ->constrained('employees', 'employee_id')
                 ->cascadeOnUpdate()
                 ->nullOnDelete();
 
-            $table->timestamps();
+            $table->string('file_path');
+            $table->timestamp('submitted_at')->nullable();
+            $table->timestamp('updated_at')->nullable();
             $table->softDeletes();
         });
 
