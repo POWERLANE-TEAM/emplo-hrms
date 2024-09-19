@@ -10,10 +10,15 @@ class ApplicationDoc extends Model
 {
     use HasFactory;
 
+    const CREATED_AT = 'submitted_at';
+    const UPDATED_AT = 'updated_at';
+
     protected $primaryKey = 'application_doc_id';
 
     protected $guarded = [
         'application_doc_id',
+        'submitted_at',
+        'updated_at',
         'deleted_at',
     ];
 
