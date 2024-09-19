@@ -20,13 +20,6 @@ class Applicant extends Model
         'updated_at',
     ];
 
-    protected function casts(): array
-    {
-        return [
-            'applied_at' => 'timestamp',
-        ];
-    }
-
     /*
     |--------------------------------------------------------------------------
     | Define model accessors(get) and mutators(set) below
