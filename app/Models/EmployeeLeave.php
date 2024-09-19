@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class EmployeeLeave extends Model
 {
@@ -36,21 +37,8 @@ class EmployeeLeave extends Model
         return $this->belongsTo(Employee::class, 'employee_id', 'employee_id');
     }
 
-    // returns the supervisor that approves the leave
-    public function supervisor(): BelongsTo
+    public function processes(): MorphMany
     {
-        return $this->belongsTo(Employee::class, 'supervisor', 'employee_id');
-    }
-
-    // returns the area manager that approves the leave
-    public function areaManager(): BelongsTo
-    {
-        return $this->belongsTo(Employee::class, 'area_manager', 'employee_id');
-    }
-
-    // returns the hr manager that approves the leave
-    public function hrManager(): BelongsTo
-    {
-        return $this->belongsTo(Employee::class, 'hr_manager', 'employee_id');
+        return $this->morphMany(Process::class, 'processable');
     }
 }

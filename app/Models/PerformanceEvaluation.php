@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class PerformanceEvaluation extends Model
 {
@@ -23,26 +24,13 @@ class PerformanceEvaluation extends Model
     */
 
     // returns the employee being evaluated
-    public function employee(): BelongsTo
+    public function evaluatee(): BelongsTo
     {
         return $this->belongsTo(Employee::class, 'evaluatee', 'employee_id');
     }
 
-    // returns the supervisor of the performance evaluation
-    public function supervisor(): BelongsTo
+    public function processes(): MorphMany
     {
-        return $this->belongsTo(Employee::class, 'supervisor', 'employee_id');
-    }
-
-    // returns the area manager of the performance evaluation
-    public function areaManager(): BelongsTo
-    {
-        return $this->belongsTo(Employee::class, 'area_manager', 'employee_id');
-    }
-
-    // returns the hr manager of the performance evaluation
-    public function hrManager(): BelongsTo
-    {
-        return $this->belongsTo(Employee::class, 'hr_manager', 'employee_id');
+        return $this->morphMany(Process::class, 'processable');
     }
 }

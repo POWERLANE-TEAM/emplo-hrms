@@ -30,27 +30,6 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->nullOnDelete();
 
-            $table->boolean('is_supervisor_signed')->default(false);
-            $table->foreignIdFor(Employee::class, 'supervisor')
-                ->nullable()
-                ->constrained('employees', 'employee_id')
-                ->cascadeOnUpdate()
-                ->nullOnDelete();
-
-            $table->boolean('is_area_man_signed')->default(false);
-            $table->foreignIdFor(Employee::class, 'area_manager')
-                ->nullable()
-                ->constrained('employees', 'employee_id')
-                ->cascadeOnUpdate()
-                ->nullOnDelete();
-
-            $table->boolean('is_hr_manager_signed')->default(false);
-            $table->foreignIdFor(Employee::class, 'hr_manager')
-                ->nullable()
-                ->constrained('employees', 'employee_id')
-                ->cascadeOnUpdate()
-                ->nullOnDelete();
-
             $table->timestamp('perf_eval_date');
             $table->enum('perf_eval_type', ['THIRD MONTH', 'FIFTH MONTH', 'FINAL']);
             $table->boolean('is_final_recommend')->default(false)->nullable(); // recommendation to make probationary become regular

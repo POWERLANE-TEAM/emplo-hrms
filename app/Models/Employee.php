@@ -102,6 +102,24 @@ class Employee extends Model
         return $this->hasMany(EmployeeDoc::class, 'employee_id', 'employee_id');
     }
 
+    // returns the records of employee's overtime requests
+    public function overtimes(): HasMany
+    {
+        return $this->hasMany(Overtime::class, 'employee_id', 'employee_id');
+    }
+
+    // returns the leave records of employee
+    public function leaves(): HasMany
+    {
+        return $this->hasMany(EmployeeLeave::class, 'employee_id', 'employee_id');
+    }
+
+    // returns the employee's performance records
+    public function performances(): HasMany
+    {
+        return $this->hasMany(PerformanceEvaluation::class, 'evaluatee', 'employee_id');
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Recruitment Records Management
@@ -170,96 +188,6 @@ class Employee extends Model
 
     /*
     |--------------------------------------------------------------------------
-    | Overtime Records Management
-    |--------------------------------------------------------------------------
-    */
-
-    // returns the records of employee's overtime requests
-    public function overtimes(): HasMany
-    {
-        return $this->hasMany(Overtime::class, 'employee_id', 'employee_id');
-    }
-
-    // returns approved overtimes by supervisor
-    public function approvedOtAsSupervisor(): HasMany
-    {
-        return $this->hasMany(Overtime::class, 'supervisor', 'employee_id');
-    }
-
-    // returns approved overtimes by department head
-    public function approvedOtAsAreaManager(): HasMany
-    {
-        return $this->hasMany(Overtime::class, 'area_manager', 'employee_id');
-    }
-
-    // returns approved overtimes by hr manager
-    public function approvedOtAsHrManager(): HasMany
-    {
-        return $this->hasMany(Overtime::class, 'hr_manager', 'employee_id');
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Leave Records Management
-    |--------------------------------------------------------------------------
-    */
-
-    // returns the leave records of employee
-    public function leaves(): HasMany
-    {
-        return $this->hasMany(EmployeeLeave::class, 'employee_id', 'employee_id');
-    }
-
-    // returns approved leave records by supervisor
-    public function approvedLeavesAsSupervisor(): HasMany
-    {
-        return $this->hasMany(EmployeeLeave::class, 'supervisor', 'employee_id');
-    }
-
-    // returns approved leave records by department head
-    public function approvedLeavesAsAreaManager(): HasMany
-    {
-        return $this->hasMany(EmployeeLeave::class, 'area_manager', 'employee_id');
-    }
-
-    // returns approved leave records by hr manager
-    public function approvedLeavesAsHrManager(): HasMany
-    {
-        return $this->hasMany(EmployeeLeave::class, 'hr_manager', 'employee_id');
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Performance Evaluation Records Management
-    |--------------------------------------------------------------------------
-    */
-
-    // returns the employee's performance records
-    public function performances(): HasMany
-    {
-        return $this->hasMany(PerformanceEvaluation::class, 'evaluatee', 'employee_id');
-    }
-
-    // returns signed performance records where employee is supervisor
-    public function signedPerfEvalAsSupervisor(): HasMany
-    {
-        return $this->hasMany(PerformanceEvaluation::class, 'supervisor', 'employee_id');
-    }
-
-    // returns signed performance records where employee is department head
-    public function signedPerfEvalAsAreaManager(): HasMany
-    {
-        return $this->hasMany(PerformanceEvaluation::class, 'area_manager', 'employee_id');
-    }
-
-    // returns signed performance records where employee is hr manager
-    public function signedPerfEvalAsHrManager(): HasMany
-    {
-        return $this->hasMany(PerformanceEvaluation::class, 'hr_manager', 'employee_id');
-    }
-
-    /*
-    |--------------------------------------------------------------------------
     | Complaints Records Management
     |--------------------------------------------------------------------------
     */
@@ -273,5 +201,26 @@ class Employee extends Model
     {
         return $this->belongsToMany(EmployeeComplaint::class, 'complaint_complainees', 'complainee', 'emp_complaint_id')
             ->withTimestamps();
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Process management in overtimes, leaves, and performance evaluations
+    |--------------------------------------------------------------------------
+    */
+
+    public function supervisedProcesses(): HasMany
+    {
+        return $this->hasMany(Process::class, 'supervisor', 'employee_id');
+    }
+
+    public function areaManagedProcesses(): HasMany
+    {
+        return $this->hasMany(Process::class, 'area_manager', 'employee_id');
+    }
+
+    public function hrManagedProcesses(): HasMany
+    {
+        return $this->hasMany(Process::class, 'hr_manager', 'employee_id');
     }
 }
