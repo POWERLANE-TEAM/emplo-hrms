@@ -16,6 +16,7 @@ class SpecificArea extends Model
     protected $fillable = [
         'area_name',
         'area_manager',
+        'area_desc',
     ];
 
     /*
@@ -33,18 +34,21 @@ class SpecificArea extends Model
     // returns job titles existing to a specific area
     public function jobTitles(): BelongsToMany
     {
-        return $this->belongsToMany(JobTitle::class, 'job_details', 'area_id', 'job_title_id');
+        return $this->belongsToMany(JobTitle::class, 'job_details', 'area_id', 'job_title_id')
+            ->withTimestamps();
     }
 
     // returns job levels existing to a specific area
     public function jobLevels(): BelongsToMany
     {
-        return $this->belongsToMany(JobLevel::class, 'job_details', 'area_id', 'job_level_id');
+        return $this->belongsToMany(JobLevel::class, 'job_details', 'area_id', 'job_level_id')
+            ->withTimestamps();
     }
 
     // returns job familes existing to a specific area
     public function jobFamilies(): BelongsToMany
     {
-        return $this->belongsToMany(JobFamily::class, 'job_details', 'area_id', 'job_family_id');
+        return $this->belongsToMany(JobFamily::class, 'job_details', 'area_id', 'job_family_id')
+            ->withTimestamps();
     }
 }

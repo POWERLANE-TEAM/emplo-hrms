@@ -15,10 +15,11 @@ class PreempRequirement extends Model
     protected $fillable = [
         'preemp_req_name',
         'preemp_req_desc',
+        'sample_file',
     ];
 
-    public function applicantDocs(): HasMany
+    public function applicationDocs(): HasMany
     {
-        return $this->hasMany(ApplicantDoc::class, 'preemp_req_id', 'preemp_req_id');
+        return $this->hasMany(ApplicationDoc::class, 'preemp_req_id', 'preemp_req_id');
     }
 }

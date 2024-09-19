@@ -84,30 +84,6 @@ return new class extends Migration {
             $table->longText('reason');
             $table->timestamp('start_date');
             $table->timestamp('end_date');
-            $table->boolean('is_supervisor_approved')->default(false);
-            $table->timestamp('supervisor_approved_at')->nullable();
-
-            $table->foreignIdFor(Employee::class, 'supervisor')
-                ->constrained('employees', 'employee_id')
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
-
-            $table->boolean('is_area_man_approved')->default(false);
-            $table->timestamp('area_man_approved_at')->nullable();
-
-            $table->foreignIdFor(Employee::class, 'area_manager')
-                ->constrained('employees', 'employee_id')
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
-
-            $table->boolean('is_hr_manager_approved')->default(false);
-            $table->timestamp('hr_manager_approved_at')->nullable();
-
-            $table->foreignIdFor(Employee::class, 'hr_manager')
-                ->constrained('employees', 'employee_id')
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
-
             $table->timestamps();
         });
     }

@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('preemp_requirements', function (Blueprint $table) {
-            $table->id('preemp_req_id');
-            $table->string('preemp_req_name', 100);
-            $table->longText('preemp_req_desc')->nullable();
-            $table->string('sample_file')->nullable(); // file path
+        Schema::create('exams', function (Blueprint $table) {
+            $table->id('exam_id');
+            $table->string('exam_name');
+            $table->time('duration')->nullable();
+            $table->integer('max_score');
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('preemp_requirements');
+        Schema::dropIfExists('exams');
     }
 };

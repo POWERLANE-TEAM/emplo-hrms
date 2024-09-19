@@ -27,18 +27,21 @@ class JobLevel extends Model
     // returns job titles associated with a specific job level
     public function jobTitles(): BelongsToMany
     {
-        return $this->belongsToMany(JobTitle::class, 'job_details', 'job_level_id', 'job_title_id');
+        return $this->belongsToMany(JobTitle::class, 'job_details', 'job_level_id', 'job_title_id')
+            ->withTimestamps();
     }
 
     // returns job families associated with a specific job level
     public function jobFamilies(): BelongsToMany
     {
-        return $this->belongsToMany(JobFamily::class, 'job_details', 'job_level_id', 'job_family_id');
+        return $this->belongsToMany(JobFamily::class, 'job_details', 'job_level_id', 'job_family_id')
+            ->withTimestamps();
     }
 
     // returns available specific areas associated with a specific job level
     public function specificAreas(): BelongsToMany
     {
-        return $this->belongsToMany(SpecificArea::class, 'job_details', 'job_level_id', 'area_id');
+        return $this->belongsToMany(SpecificArea::class, 'job_details', 'job_level_id', 'area_id')
+            ->withTimestamps();
     }
 }

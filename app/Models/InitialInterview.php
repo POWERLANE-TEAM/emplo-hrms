@@ -4,17 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class JobVacancy extends Model
+class InitialInterview extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'job_vacancy_id';
+    protected $primaryKey = 'init_interview_id';
 
     protected $guarded = [
-        'job_vacancy_id',
+        'init_interview_id',
         'created_at',
         'updated_at',
     ];
@@ -25,15 +24,15 @@ class JobVacancy extends Model
     |--------------------------------------------------------------------------
     */
 
-    // returns job details of the job vacancy
-    public function jobDetails(): BelongsTo
+    // returns application for the initial interview
+    public function application(): BelongsTo
     {
-        return $this->belongsTo(JobDetail::class, 'job_detail_id', 'job_detail_id');
+        return $this->belongsTo(Application::class, 'application_id', 'application_id');
     }
 
-    // returns applications for the job vacancy
-    public function applications(): HasMany
+    // returns the employee/initial interviewer for the initial interview
+    public function initialInterviewer(): BelongsTo
     {
-        return $this->hasMany(Application::class, 'job_vacancy_id', 'job_vacancy_id');
+        return $this->belongsTo(Employee::class, 'init_interviewer', 'employee_id');
     }
 }

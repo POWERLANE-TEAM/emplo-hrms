@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Overtime extends Model
 {
@@ -29,18 +30,8 @@ class Overtime extends Model
         return $this->belongsTo(Employee::class, 'employee_id', 'employee_id');
     }
 
-    public function supervisor(): BelongsTo
+    public function processes(): MorphMany
     {
-        return $this->belongsTo(Employee::class, 'supervisor', 'employee_id');
-    }
-
-    public function areaManager(): BelongsTo
-    {
-        return $this->belongsTo(Employee::class, 'area_manager', 'employee_id');
-    }
-
-    public function hrManager(): BelongsTo
-    {
-        return $this->belongsTo(Employee::class, 'hr_manager', 'employee_id');
+        return $this->morphMany(Process::class, 'processable');
     }
 }
