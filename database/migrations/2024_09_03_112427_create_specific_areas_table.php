@@ -13,6 +13,7 @@ return new class extends Migration {
         Schema::create('specific_areas', function (Blueprint $table) {
             $table->id('area_id');
             $table->string('area_name', 100);
+            $table->longText('area_desc')->nullable();
         });
     }
 
