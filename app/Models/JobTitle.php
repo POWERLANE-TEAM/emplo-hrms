@@ -33,19 +33,22 @@ class JobTitle extends Model
     // returns job levels associated with a specific job title
     public function jobLevels(): BelongsToMany
     {
-        return $this->belongsToMany(JobLevel::class, 'job_details', 'job_title_id', 'job_level_id');
+        return $this->belongsToMany(JobLevel::class, 'job_details', 'job_title_id', 'job_level_id')
+            ->withTimestamps();
     }
 
     // returns job families associated with a specific job title
     public function jobFamilies(): BelongsToMany
     {
-        return $this->belongsToMany(JobFamily::class, 'job_details', 'job_title_id', 'job_family_id');
+        return $this->belongsToMany(JobFamily::class, 'job_details', 'job_title_id', 'job_family_id')
+            ->withTimestamps();
     }
 
     // returns available areas associated with a specific job title
     public function specificAreas(): BelongsToMany
     {
-        return $this->belongsToMany(SpecificArea::class, 'job_details', 'job_title_id', 'area_id');
+        return $this->belongsToMany(SpecificArea::class, 'job_details', 'job_title_id', 'area_id')
+            ->withTimestamps();
     }
 
     // returns soft skills associated with a specific job title
