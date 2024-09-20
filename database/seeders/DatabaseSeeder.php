@@ -65,6 +65,8 @@ class DatabaseSeeder extends Seeder
                 'user_status_id' => 1,
                 'email_verified_at' => fake()->dateTimeBetween('-10 days', 'now'),
             ];
+
+            User::factory()->create($usersData[$i]);
         }
 
         JobVacancy::factory(25)->create();
