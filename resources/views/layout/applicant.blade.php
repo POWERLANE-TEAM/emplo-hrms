@@ -116,7 +116,7 @@
 
 
 
-        <x-applicant.footer></x-applicant.footer>
+        <x-layout.applicant.footer />
 
     </body>
 

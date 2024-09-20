@@ -33,9 +33,14 @@ class CspPolicy extends CustomSpatiePolicy
             $this
                 ->addDirective(Directive::SCRIPT, 'localhost:*')
                 ->addDirective(Directive::SCRIPT, 'unsafe-inline');
+            $this->addDirective(Directive::SCRIPT, 'https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js');
+            $this->addDirective(Directive::SCRIPT, 'https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone-min.js');
+
 
             $this
                 ->addDirective(Directive::STYLE, 'localhost:*');
+            $this->addDirective(Directive::STYLE, 'https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.css');
+            $this->addDirective(Directive::STYLE, 'https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone.css');
 
             $this
                 ->addDirective(Directive::IMG, 'localhost:*')
@@ -78,10 +83,11 @@ class CspPolicy extends CustomSpatiePolicy
         $this->addDirective(Directive::SCRIPT, 'https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js');
         $this->addDirective(Directive::SCRIPT, 'https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta2/dist/js/bootstrap-select.min.js');
         $this->addDirective(Directive::SCRIPT, 'https://kit.fontawesome.com/your-fontawesome-kit-id.js');
+        $this->addDirective(Directive::SCRIPT, 'https://kit.fontawesome.com/a076d05399.js');
         $this->addDirective(Directive::SCRIPT, 'https://accounts.google.com/gsi/client');
         $this->addDirective(Directive::SCRIPT, 'https://www.google.com');
         $this->addDirective(Directive::SCRIPT, 'https://www.gstatic.com');
-        // $this->addDirective(Directive::SCRIPT, 'http://localhost:5173/resources/js/livewire.js');
+
 
         $this->addDirective(Directive::FRAME, 'https://www.google.com');
     }

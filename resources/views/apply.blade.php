@@ -11,7 +11,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js"></script>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.css">
-    <style>
+    <style nonce="{{ $nonce }}">
         /* General Styles */
         .dropzone-container {
             position: relative;
@@ -378,7 +378,7 @@
         </div>
     </section>
 
-    <script>
+    <script nonce="{{ $nonce }}">
         document.addEventListener('DOMContentLoaded', function() {
             let currentStep = 1;
             const totalSteps = 3;

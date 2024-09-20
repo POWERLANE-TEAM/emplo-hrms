@@ -20,7 +20,7 @@ class PreEmploymentController extends Controller
     /* Show form page for creating resource */
     public function create()
     {
-        return view('.employee.pre-employment');
+        return view('employee.pre-employment');
     }
 
     /* store a new resource */
@@ -34,23 +34,28 @@ class PreEmploymentController extends Controller
 
             // Validate
 
+            // Get user account
+
+            // Make Folder for user
+
             $file = $request->file('pre_emp_doc');
             $file_name = $file->getClientOriginalName();
             echo $file_name;
             $hashedName =  $prefix . '_' . $file->hashName();
             echo $hashedName;
 
-            $doc_id = $request->input('doc_id');
-            echo $doc_id;
+            // Get application id
 
-            // Create a new EmployeeDoc record
             $doc_id = $request->input('doc_id');
             echo $doc_id;
 
             $user = Auth::user();
             $account_id = $user->account_id;
 
+            /* Need to save on folder of user*/
             $path = $file->storeAs('uploads', $hashedName, 'public'); /* Store in file://storage/app/public/uploads/ */
+
+            /* Needs to be updated to store in application docs instead */
 
             $employeeDoc = new EmployeeDoc();
             $employeeDoc->emp_doc_id = $doc_id;
@@ -58,17 +63,12 @@ class PreEmploymentController extends Controller
             $employeeDoc->file_path = $path;
             $employeeDoc->save();
 
-            //Retrieve the document name from the documents table
+            /* Should be preemp_requirements name instead */
             $document = CompanyDoc::find($doc_id);
             $document_name = $document->name;
             echo $document_name;
 
-            // Return response
-
-            // Optionally, save the path in the database
-            // File::create(['path' => $path]);
-
-            // return back()->with('success', 'File uploaded successfully!');
+            // return back()->with('success', '$document_name uploaded successfully!');
         }
     }
 
