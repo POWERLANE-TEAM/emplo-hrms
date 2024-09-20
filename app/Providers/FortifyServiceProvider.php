@@ -69,7 +69,7 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::verifyEmailView(fn() => app(UnverifiedEmail::class)->render());
 
         Fortify::loginView(function () {
-            return view('livewire.auth.applicants.login');
+            return view('livewire.auth.applicants.login-view');
         });
 
         RateLimiter::for('login', function (Request $request) {

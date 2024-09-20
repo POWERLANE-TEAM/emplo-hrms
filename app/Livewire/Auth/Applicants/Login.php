@@ -26,7 +26,6 @@ class Login extends Component
         $login_attempt = [
             'email' => $this->email,
             'password' => $this->password,
-            'remember' => $this->remember,
         ];
 
         if (! Auth::validate($login_attempt)) {
@@ -41,7 +40,7 @@ class Login extends Component
 
         $login_request->merge($login_attempt);
 
-        $session_controller->store($login_request);
+        $session_controller->store($login_request, $this->remember);
     }
 
     // public function placeholder()
@@ -52,10 +51,7 @@ class Login extends Component
 
     public function render()
     {
-        return view('livewire.auth.applicants.login')
-            ->extends('components.layout.app')
-            ->section('content')
-            ->title('Applicant Login');
+        return view('livewire.auth.applicants.login');
     }
 
     public function rendered()
