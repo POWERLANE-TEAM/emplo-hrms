@@ -7,8 +7,6 @@ export default defineConfig({
         laravel({
             input: [
                 'vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js',
-                'vendor/node_modules/jquery/dist/jquery.min.js',
-                'vendor/node_modules/jquery/dist/jquery.slim.min.js',
                 'vendor/node_modules/chartjs-plugin-annotation/dist/chartjs-plugin-annotation.min.js',
                 // 'resources/js/app.js',
                 'resources/js/hiring.js',

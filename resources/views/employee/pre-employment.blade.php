@@ -13,8 +13,6 @@
 
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    @vite(['vendor/node_modules/jquery/dist/jquery.slim.min.js'])
-
     <script src="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone-min.js"></script>
     <link href="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone.css" rel="stylesheet" type="text/css" />
 @endsection

@@ -13,7 +13,6 @@
 @pushOnce('lib-scripts')
     <script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
     <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
-    @vite(['vendor/node_modules/jquery/dist/jquery.slim.min.js'])
 @endPushOnce
 
 @pushOnce('scripts')
