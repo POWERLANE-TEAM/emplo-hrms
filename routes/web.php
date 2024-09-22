@@ -36,8 +36,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard',  [DashboardController::class, 'index']);
 });
 
-Route::get('/employee/{page?}', [EmployeeController::class, 'employee'])->middleware(['auth', 'verified']);
-
 Route::get('api/json/{requestedData}', [JsonController::class, 'index']);
 
 /*

@@ -2,6 +2,8 @@
     $nonce = csp_nonce();
 @endphp
 
+{{-- {{ dd(request()) }}e --}}
+
 @extends('layout.applicant', ['description' => 'Guest Layout', 'nonce' => $nonce, 'main_content_class' => 'container'])
 
 @section('head')

@@ -118,6 +118,8 @@
 
         <x-layout.applicant.footer />
 
+        @livewireScripts()
+
     </body>
 
 </x-html>
