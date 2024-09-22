@@ -5,6 +5,7 @@ use App\Http\Middleware\SaveVisitedPage;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Support\Facades\Route;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -12,6 +13,17 @@ return Application::configure(basePath: dirname(__DIR__))
         api: __DIR__ . '/../routes/api.php',
         commands: __DIR__ . '/../routes/console.php',
         health: '/up',
+        then: function () {
+            Route::middleware('web')
+                ->prefix('employee')
+                ->name('employee.')
+                ->group(base_path('routes/employee.php'));
+
+            Route::middleware('web')
+                ->prefix('admin')
+                ->name('admin.')
+                ->group(base_path('routes/admin.php'));
+        },
     )
     ->withBroadcasting(
         __DIR__ . '/../routes/channels.php',
@@ -22,7 +34,9 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->alias([
             'save.page' => SaveVisitedPage::class,
-            'localization' => Localization::class
+            'localization' => Localization::class,
+            'auth.employee' => \App\Http\Middleware\Employee\RedirectIfNotAuthenticated::class,
+            'auth.admin' => \App\Http\Middleware\Admin\RedirectIfNotAuthenticated::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

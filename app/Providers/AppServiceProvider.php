@@ -65,6 +65,7 @@ class AppServiceProvider extends ServiceProvider
             'performance_evaluation' => 'App\Models\PerformanceEvaluation',
             'overtime' => 'App\Models\Overtime',
             'employee_leave' => 'App\Models\EmployeeLeave',
+            'company_doc' => 'App\Models\CompanyDoc',
         ]);
 
         BroadcastServiceProvider::class;
