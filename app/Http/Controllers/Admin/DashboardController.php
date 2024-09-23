@@ -9,8 +9,14 @@ use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
-    public function __invoke($user_with_role_and_account)
+    public function __invoke()
     {
-        return view('employee.hr.index', ['user' => $user_with_role_and_account]);
+        $authenticated_user = Auth::guard('admin')->user();
+        // dump($authenticated_user);
+        $user_with_role_and_account = User::with(['role', 'account'])
+            ->where('user_id', $authenticated_user->user_id)
+            ->first();
+
+        return view('employee.admin.index', ['user' => $user_with_role_and_account]);
     }
 }

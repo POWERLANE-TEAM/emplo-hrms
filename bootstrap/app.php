@@ -36,9 +36,16 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'save.page' => SaveVisitedPage::class,
             'localization' => Localization::class,
-            'auth.employee' => \App\Http\Middleware\Employee\RedirectIfNotAuthenticated::class,
-            'auth.admin' => \App\Http\Middleware\Admin\RedirectIfNotAuthenticated::class,
         ]);
+
+        $middleware->redirectGuestsTo(function (Request $request) {
+            if ($request->is('employee/*')) {
+                return 'employee/login';
+            }
+            if ($request->is('admin/*')) {
+                return 'admin/login';
+            }
+        });
 
         $middleware->redirectUsersTo(function (Request $request) {
             if ($request->is('employee/*')) {

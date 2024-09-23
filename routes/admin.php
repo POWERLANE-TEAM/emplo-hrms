@@ -11,7 +11,7 @@ Route::middleware('guest:admin')->group(function () {
         ->name('login');
 });
 
-Route::middleware('auth.admin', 'auth', 'verified')->group(function () {
+Route::middleware('auth:admin', 'verified')->group(function () {
     Route::get('/dashboard', DashboardController::class)
         ->name('dashboard');
     Route::get('/sample',  function () {

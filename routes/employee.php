@@ -33,7 +33,7 @@ Route::middleware('guest:employee')->group(function () {
         ->name('login');
 });
 
-Route::middleware('auth.employee'/*, 'auth:employee' *//* , 'verified' */)->group(function () {
+Route::middleware('auth:employee'/* , 'verified' */)->group(function () {
     Route::get('/dashboard', DashboardController::class)
         ->name('dashboard');
     Route::get('/sample',  function () {
