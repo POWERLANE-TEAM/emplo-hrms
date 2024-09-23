@@ -40,13 +40,6 @@ Route::get('/employee/{page?}', [EmployeeController::class, 'employee'])->middle
 
 Route::get('api/json/{requestedData}', [JsonController::class, 'index']);
 
-/*
-|--------------------------------------------------------------------------
-| carl routes
-|--------------------------------------------------------------------------
-|
-*/
-
 Route::middleware('guest')->group(function () {
     Route::get('/auth/google/redirect', [GoogleOAuth::class, 'googleOauth'])
         ->name('auth.google');
