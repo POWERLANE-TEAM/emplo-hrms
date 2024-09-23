@@ -9,13 +9,10 @@
     'font_weights' => [' 400 ', '500', '700'],
 ])
 
-{{-- {{ dd($font_weights) }} --}}
-
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-
     <x-html.meta />
     <x-html.meta-seo />
 
@@ -36,10 +33,8 @@
     <x-fonts :font_weights="$font_weights" />
 
     <!-- Scripts -->
-    <x-no-script-head />
     <x-authenticated-broadcast-id />
     <x-livewire-listener />
-
 
     {{--  Waiting for this fix in livewire https://github.com/livewire/livewire/pull/8793  --}}
     {{-- livewire.js?id=cc800bf4:9932 Detected multiple instances of Livewire running --}}
@@ -71,7 +66,12 @@
 
     @yield('before-nav')
 
-    @yield('header-nav')
+    @if (!View::hasSection('header-nav'))
+        <x-layout.employee.nav.main-menu :sidebar_expanded="true"
+            class="position-sticky top-0 start-0"></x-layout.employee.nav.main-menu>
+    @else
+        @yield('header-nav')
+    @endif
 
     @yield('before-main')
 

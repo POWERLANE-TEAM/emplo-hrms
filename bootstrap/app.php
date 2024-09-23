@@ -5,6 +5,7 @@ use App\Http\Middleware\SaveVisitedPage;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -38,6 +39,15 @@ return Application::configure(basePath: dirname(__DIR__))
             'auth.employee' => \App\Http\Middleware\Employee\RedirectIfNotAuthenticated::class,
             'auth.admin' => \App\Http\Middleware\Admin\RedirectIfNotAuthenticated::class,
         ]);
+
+        $middleware->redirectUsersTo(function (Request $request) {
+            if ($request->is('employee/*')) {
+                return 'employee/dashboard';
+            }
+            if ($request->is('admin/*')) {
+                return 'admin/dashboard';
+            }
+        });
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

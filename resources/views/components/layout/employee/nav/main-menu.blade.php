@@ -1,11 +1,13 @@
 @props(['sidebar_expanded' => true, 'icon_size' => '25', 'icon_ratio' => '1/1'])
 
 <div {{ $attributes->merge(['class' => 'container-fluid main-menu-container text-white']) }}>
-    <x-employee.nav.sidebar sidebar_expanded="{{ $sidebar_expanded }}" class="shadow" icon_size="{{ $icon_size }}"
-        icon_ratio="{{ $icon_ratio }}">
+    <x-layout.employee.nav.sidebar sidebar_expanded="{{ $sidebar_expanded }}" class="shadow"
+        icon_size="{{ $icon_size }}" icon_ratio="{{ $icon_ratio }}">
         @php
 
-            $user = Auth::user()->load('role');
+            $user = Auth::guard(\App\Http\Helpers\ChooseGuard::getByRequest())->user()->load('role');
+
+            // dd($user);
 
         @endphp
 
@@ -17,7 +19,7 @@
             $user->role->user_role_name == 'SYSADMIN',
             'components.employee.nav.sidebar.head-admin-navs')
 
-    </x-employee.nav.sidebar>
+    </x-layout.employee.nav.sidebar>
     <x-employee.nav.topbar class="">
 
         <x-slot:topbar_right>

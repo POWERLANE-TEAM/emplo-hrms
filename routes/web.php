@@ -31,10 +31,6 @@ Route::/* middleware(['auth', 'verified'])-> */group([], function () {
     Route::post('/preemploy', [PreEmploymentController::class, 'store']);
 });
 
-Route::middleware(['auth', 'verified'])->group(function () {
-    // MANAGES WICH VIEW OF DASHBOARD
-    Route::get('/dashboard',  [DashboardController::class, 'index']);
-});
 
 Route::get('api/json/{requestedData}', [JsonController::class, 'index']);
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\DashboardController;
 use App\Livewire\Auth\Employees\Login;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
@@ -10,7 +11,9 @@ Route::middleware('guest:admin')->group(function () {
         ->name('login');
 });
 
-Route::middleware('auth.admin')->group(function () {
+Route::middleware('auth.admin', 'auth', 'verified')->group(function () {
+    Route::get('/dashboard', DashboardController::class)
+        ->name('dashboard');
     Route::get('/sample',  function () {
         dd(request());
         echo 'sample';

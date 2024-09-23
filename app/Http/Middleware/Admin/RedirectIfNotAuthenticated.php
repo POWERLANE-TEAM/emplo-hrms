@@ -14,7 +14,7 @@ class RedirectIfNotAuthenticated
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, $guard = 'admin'): Response
+    public function handle(Request $request, Closure $next, $guard = 'web'): Response
     {
         if (!Auth::guard($guard)->check()) {
             return redirect()->route('admin.login');

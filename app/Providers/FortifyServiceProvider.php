@@ -7,9 +7,9 @@ use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
 use App\Events\UserLoggedout;
-// use App\Http\Controllers\Admin\Auth\AuthenticatedSessionController;
+use App\Http\Helpers\ChooseGuard;
 use App\Livewire\Auth\UnverifiedEmail;
-use App\Models\UserRole;
+use App\Models\User;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Http\Request;
@@ -22,6 +22,7 @@ use Laravel\Fortify\Contracts\LoginResponse;
 use Laravel\Fortify\Contracts\LogoutResponse;
 use Laravel\Fortify\Fortify;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
+use Laravel\Fortify\Actions\AttemptToAuthenticate;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -31,12 +32,27 @@ class FortifyServiceProvider extends ServiceProvider
     public function register(): void
     {
         if (request()->is('employee/*')) {
-            // dd(request());
-            config(['fortify.guard' => 'employee']);
+            config(
+                [
+                    'fortify.guard' => 'employee',
+                    'fortify.home'  => '/employee/dashboard'
+                ]
+            );
         }
         if (request()->is('admin/*')) {
-            config(['fortify.guard' => 'admin']);
+            config(
+                [
+                    'fortify.guard' => 'admin',
+                    'fortify.home'  => '/admin/dashboard'
+                ]
+            );
         }
+
+        $this->app->when([AuthenticatedSessionController::class, AttemptToAuthenticate::class])
+            ->needs(StatefulGuard::class)
+            ->give(function () {
+                return Auth::guard(ChooseGuard::getByReferrer());
+            });
 
         $this->app->instance(LogoutResponse::class, new class implements LogoutResponse
         {
@@ -56,13 +72,33 @@ class FortifyServiceProvider extends ServiceProvider
         {
             public function toResponse($request)
             {
-
                 // Redirect to previously visited page before being prompt to login
                 if (session()->has('url.intended')) {
-                    return redirect()->intended();
+                    // Add Check if has permission to access then
+                    if (true) {
+                        return redirect()->intended();
+                    }
                 }
 
-                return redirect()->to('/dashboard');
+                $authenticated_user = Auth::guard(ChooseGuard::getByReferrer())->user();
+
+                $user_with_role_and_account = User::with(['role', 'account'])
+                    ->where('user_id', $authenticated_user->user_id)
+                    ->first();
+
+                if ($authenticated_user->account_type == 'employee') {
+                    if ($user_with_role_and_account->role->user_role_name == 'HR MANAGER') {
+                        return redirect('/employee/dashboard');
+                    }
+
+                    if ($user_with_role_and_account->role->user_role_name == 'SYSADMIN') {
+                        return redirect('/admin/dashboard');
+                    }
+                }
+
+                if ($authenticated_user->account_type == 'applicant') {
+                    //
+                }
             }
         });
     }
@@ -83,7 +119,6 @@ class FortifyServiceProvider extends ServiceProvider
 
         Fortify::loginView(function () {
             if (request()->is('employee/*')) {
-                // dd(request());
                 return view('livewire.auth.employees.login-view');
             }
             if (request()->is('admin/*')) {
