@@ -90,10 +90,10 @@ class Employee extends Model
         return $this->hasOne(SpecificArea::class, 'area_manager', 'employee_id');
     }
 
-    // returns the office where employee is office head
-    public function officeHeadOf(): HasOne
+    // returns the office/jobfamily where employee is office head
+    public function headOf(): HasOne
     {
-        return $this->hasOne(Office::class, 'office_head', 'employee_id');
+        return $this->hasOne(JobFamily::class, 'office_head', 'employee_id');
     }
 
     // returns the shift schedule of employee

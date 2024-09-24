@@ -1,8 +1,5 @@
 <?php
 
-use App\Models\Applicant;
-use App\Models\Employee;
-use App\Models\UserRole;
 use App\Models\UserStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -15,14 +12,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_roles', function (Blueprint $table) {
-            $table->id('user_role_id');
-            $table->string('user_role_name', 100);
-            $table->longText('user_role_desc')->nullable();
-            $table->timestamps();
-        });
-
-
         Schema::create('user_statuses', function (Blueprint $table) {
             $table->id('user_status_id');
             $table->string('user_status_name', 100);
@@ -37,11 +26,6 @@ return new class extends Migration
             $table->string('email', 320)->unique();
             $table->string('password');
             $table->string('google_id')->nullable();
-
-            $table->foreignIdFor(UserRole::class, 'user_role_id')
-                ->constrained('user_roles', 'user_role_id')
-                ->cascadeOnUpdate()
-                ->restrictOnDelete();
 
             $table->foreignIdFor(UserStatus::class, 'user_status_id')
                 ->constrained('user_statuses', 'user_status_id')
@@ -75,7 +59,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_roles');
         Schema::dropIfExists('user_statuses');
         Schema::dropIfExists('users');
         Schema::dropIfExists('password_reset_tokens');
