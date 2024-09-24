@@ -16,6 +16,7 @@ class JobFamily extends Model
     protected $fillable = [
         'job_family_name',
         'job_family_desc',
+        'office_head',
     ];
 
     /*
