@@ -20,7 +20,10 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->append(\Spatie\Csp\AddCspHeaders::class);
 
         $middleware->alias([
-            'save.page' => SaveVisitedPage::class
+            'save.page' => SaveVisitedPage::class,
+            'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
+            'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
+            'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
