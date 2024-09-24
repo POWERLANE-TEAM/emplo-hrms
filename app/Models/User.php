@@ -9,10 +9,11 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, HasRoles,Notifiable;
 
     protected $primaryKey = 'user_id';
 
@@ -62,11 +63,6 @@ class User extends Authenticatable implements MustVerifyEmail
     public function account(): MorphTo
     {
         return $this->morphTo();
-    }
-
-    public function role(): BelongsTo
-    {
-        return $this->belongsTo(UserRole::class, 'user_role_id', 'user_role_id');
     }
 
     public function status(): BelongsTo
