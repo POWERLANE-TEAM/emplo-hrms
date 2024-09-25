@@ -35,7 +35,8 @@ class AppServiceProvider extends ServiceProvider
                 ->mixedCase()
                 ->numbers()
                 ->symbols()
-                ->uncompromised();
+                ->uncompromised()
+                ->rules(['not_regex:/\s/']); // No spaces allowed
         });
 
         Validator::extend('valid_email_dns', function ($attributes, $value, $parameters, $validator) {

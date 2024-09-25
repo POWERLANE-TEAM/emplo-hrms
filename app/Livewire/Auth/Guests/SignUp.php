@@ -2,26 +2,66 @@
 
 namespace App\Livewire\Auth\Guests;
 
+use App\Models\Applicant;
 use App\Models\JobVacancy;
 use App\Models\User;
+use App\Models\UserRole;
+use App\Models\UserStatus;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rules\Password;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
+use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 class SignUp extends Component
 {
     private $job_vacancy;
 
+    #[Locked]
+    #[Validate('required|in:applicant')]
+    const ACCOUNT_TYPE = 'applicant';
+
+    #[Locked]
+    #[Validate('required')]
+    const ACCOUNT_STATUS = 'ACTIVE';
+
+    #[Validate('required|email:rfc,dns,spoof|max:320|unique:users|valid_email_dns')]
     public $email = '';
 
+    #[Validate]
     public $password = '';
-
     public $password_confirmation = '';
 
+    #[Validate(['consent' => 'accepted'])]
     public $consent = false;
-    // public $captcha;
+
+    #[Validate('required|min:2|max:191|regex:/^(?!\s)(?!.*\s{2,})(?!.*\s$)[A-Za-zÑñ\' ]+$/')]
+    public $first_name = '';
+
+    #[Validate('nullable|min:2|max:191|regex:/^(?!\s)(?!.*\s{2,})(?!.*\s$)[A-Za-zÑñ \']+$/')]
+    public $middle_name = '';
+
+    #[Validate('required|min:2|max:191|regex:/^(?!\s)(?!.*\s{2,})(?!.*\s$)[A-Za-zÑñ \'\\-]+$/')]
+    public $last_name = '';
+
+    // #[Validate('required|digits_between:7,11')]
+    #[Validate('required|digits:11')]
+    public $contact_number = '';
+
+    public function rules()
+    {
+        return [
+            'password' => [
+                'required',
+                Password::defaults(),
+                'confirmed',
+            ],
+        ];
+    }
+
 
     #[On('job-selected')]
     public function showJobVacancy($job_vacancy)
@@ -40,45 +80,49 @@ class SignUp extends Component
         // dd($this->job_vacancy['job_details']['job_title']['job_title']);
     }
 
+    // protected function prepareForValidation($attributes = null): void
+    // {
+
+    //     $this->email = trim($this->email);
+    //     $this->first_name = trim($this->first_name);
+    //     $this->middle_name = trim($this->middle_name);
+    //     $this->last_name = trim($this->last_name);
+    //     $this->contact_number = trim($this->contact_number);
+    // }
+
     public function store(CreatesNewUsers $userCreate)
     {
-        // $this->validate([
-        //     'email' => 'required|email:rfc,dns,spoof|max:191|unique:users|valid_email_dns',
-        //     'password' => [
-        //         'required',
-        //         Password::defaults(),
-        //         'confirmed'
-        //     ],
-        //     'consent' => 'accepted',
-        // ]);
-
-        // $new_user = User::create([
-        //     'email' => $this->email,
-        //     'password' => $this->password,
-        //     'role' => 'USER',
-        // ]);
-
         /* Reference https://www.youtube.com/watch?v=EuqyYQdyBU8 */
+
+        if (empty($this->contact_number)) {
+            $this->contact_number = fake()->unique()->numerify('###########');
+        }
+
+        $this->validate();
 
         $new_user = [
             'email' => $this->email,
             'password' => $this->password,
             'password_confirmation' => $this->password_confirmation,
             'consent' => $this->consent,
+            'first_name' => $this->first_name,
+            'middle_name' => $this->middle_name == '' ? null : $this->middle_name,
+            'last_name' => $this->last_name,
+            'contact_number' => $this->contact_number,
+            'account_type' => self::ACCOUNT_TYPE,
+            'user_status' => self::ACCOUNT_STATUS,
         ];
 
-        /* Update the Fortify action app\Actions\Fortify\CreateNewUser.php */
-        $new_user_created = $userCreate->create($new_user);
-
-        event(new Registered($new_user_created));
+        $new_user_created = $userCreate->create($new_user, true);
 
         /* Listen for this livewire event to show email sent modal */
         $this->dispatch('guest-new-user-registered');
 
-        $this->email = '';
-        $this->password = '';
-        $this->password_confirmation = '';
-        $this->consent = false;
+        // $this->email = '';
+        // $this->password = '';
+        // $this->password_confirmation = '';
+        // $this->consent = false;
+        $this->reset();
     }
 
     public function placeholder()

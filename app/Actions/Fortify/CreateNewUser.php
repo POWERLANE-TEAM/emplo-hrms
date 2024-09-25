@@ -2,10 +2,13 @@
 
 namespace App\Actions\Fortify;
 
+use App\Models\Applicant;
 use App\Models\Employee;
 use App\Models\User;
-use App\Models\UserRole;
+// use App\Models\UserRole;
 use App\Models\UserStatus;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
@@ -20,25 +23,73 @@ class CreateNewUser implements CreatesNewUsers
      *
      * @param  array<string, string>  $input
      */
-    public function create(array $input): User
+    public function create(array $input, bool $wasValidated = false): User
     {
-        Validator::make($input, [
-            'email' => 'required|email:rfc,dns,spoof|max:191|unique:users|valid_email_dns',
-            'password' => [
-                'required',
-                Password::defaults(),
-                'confirmed',
-            ],
-            'consent' => 'accepted',
-        ])->validate();
 
-        return User::create([
-            'email' => $input['email'],
-            'password' => Hash::make($input['password']),
-            'account_type' => 'applicant',
-            'account_id' => Employee::inRandomOrder()->first()->employee_id ?? 1,
-            'user_role_id' => UserRole::inRandomOrder()->first()->user_role_id ?? 1,
-            'user_status_id' => UserStatus::inRandomOrder()->first()->user_status_id ?? 1,
+
+        if (!$wasValidated) {
+            if (!$this->validate($input)) {
+                // throw exception
+            }
+        }
+
+        DB::beginTransaction();
+
+        try {
+
+            if ($input['account_type'] == 'applicant') {
+                $new_account_created = $this->applicant($input);
+            } else if ($input['account_type'] == 'employee') {
+                $new_account_created = $this->employee($input);
+            }
+
+            // account_id from applicant or employee
+            $account_id = $new_account_created->applicant_id ?? $new_account_created->employee_id;
+
+            // $user_role = UserRole::where('user_role_name', strtoupper($input['account_type']))->first();
+            $user_status =  UserStatus::where('user_status_name', $input['user_status'])->first();
+
+            $new_user_created = User::create([
+                'account_type' => $input['account_type'],
+                'account_id' => $account_id,
+                'email' => $input['email'],
+                'password' => $input['password'],
+                // 'user_role_id' =>  $user_role->user_role_id,
+                'user_status_id' => $user_status->user_status_id,
+            ]);
+
+            DB::commit();
+
+            event(new Registered($new_user_created));
+            return $new_user_created;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
+    }
+
+    private function applicant(array $input): Applicant
+    {
+        return Applicant::create([
+            'first_name' => $input['first_name'],
+            'middle_name' => trim($input['middle_name']) === '' ? null : $input['middle_name'],
+            'last_name' => $input['last_name'],
+            'contact_number' => $input['contact_number'],
         ]);
+    }
+
+    private function employee(array $input): Employee
+    {
+        return Employee::create([
+            'first_name' => $input['first_name'],
+            'middle_name' => trim($input['middle_name']) === '' ? null : $input['middle_name'],
+            'last_name' => $input['last_name'],
+            'contact_number' => $input['contact_number'],
+        ]);
+    }
+
+    private function validate(array $input): bool
+    {
+        return true;
     }
 }
