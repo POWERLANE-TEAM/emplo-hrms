@@ -41,7 +41,7 @@ class PreEmploymentController extends Controller
             $file = $request->file('pre_emp_doc');
             $file_name = $file->getClientOriginalName();
             echo $file_name;
-            $hashedName =  $prefix . '_' . $file->hashName();
+            $hashedName = $prefix . '_' . $file->hashName();
             echo $hashedName;
 
             // Get application id

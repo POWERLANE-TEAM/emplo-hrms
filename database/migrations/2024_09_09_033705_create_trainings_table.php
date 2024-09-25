@@ -2,11 +2,12 @@
 
 use App\Models\Employee;
 use App\Models\TrainingProvider;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      */
@@ -18,7 +19,6 @@ return new class extends Migration {
             $table->longText('training_provider_desc');
             $table->timestamps();
         });
-
 
         Schema::create('trainings', function (Blueprint $table) {
             $table->id('training_id');
@@ -50,7 +50,6 @@ return new class extends Migration {
 
             $table->timestamps();
         });
-
 
         Schema::create('outsourced_trainers', function (Blueprint $table) {
             $table->id('trainer_id');

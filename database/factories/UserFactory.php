@@ -30,8 +30,10 @@ class UserFactory extends Factory
             'account_id' => function (array $attributes) {
                 if ($attributes['account_type'] === 'employee') {
                     $employee = Employee::factory()->create();
+
                     return $employee->employee_id;
                 }
+
                 return fake()->randomDigitNotNull();
             },
             'email' => fake()->unique()->randomElement([

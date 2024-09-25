@@ -47,5 +47,4 @@ Route::middleware('guest')->group(function () {
         ->name('auth.google.callback');
 });
 
-
 Route::post('auth/googleonetap/callback', [GoogleOneTap::class, 'handleCallback']);

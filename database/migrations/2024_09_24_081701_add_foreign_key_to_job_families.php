@@ -12,11 +12,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('specific_areas', function (Blueprint $table) {
-            $table->foreignIdFor(Employee::class, 'area_manager')
+        Schema::table('job_families', function (Blueprint $table) {
+            $table->foreignIdFor(Employee::class, 'office_head')
+                ->nullable()
                 ->constrained('employees', 'employee_id')
                 ->cascadeOnUpdate()
-                ->cascadeOnDelete();
+                ->nullOnDelete();
 
             $table->timestamps();
         });
@@ -27,8 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('specific_areas', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('job_families');
     }
 };

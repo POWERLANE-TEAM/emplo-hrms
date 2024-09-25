@@ -2,15 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Employee extends Model
 {
@@ -33,24 +33,24 @@ class Employee extends Model
     protected function firstName(): Attribute
     {
         return Attribute::make(
-            get: fn(string $value) => ucfirst($value),
-            set: fn(string $value) => strtolower($value),
+            get: fn (string $value) => ucfirst($value),
+            set: fn (string $value) => strtolower($value),
         );
     }
 
     protected function middleName(): Attribute
     {
         return Attribute::make(
-            get: fn(string $value) => ucfirst($value),
-            set: fn(string $value) => strtolower($value),
+            get: fn (string $value) => ucfirst($value),
+            set: fn (string $value) => strtolower($value),
         );
     }
 
     protected function lastName(): Attribute
     {
         return Attribute::make(
-            get: fn(string $value) => ucfirst($value),
-            set: fn(string $value) => strtolower($value),
+            get: fn (string $value) => ucfirst($value),
+            set: fn (string $value) => strtolower($value),
         );
     }
 
@@ -88,6 +88,12 @@ class Employee extends Model
     public function areaManagerOf(): HasOne
     {
         return $this->hasOne(SpecificArea::class, 'area_manager', 'employee_id');
+    }
+
+    // returns the office/jobfamily where employee is office head
+    public function headOf(): HasOne
+    {
+        return $this->hasOne(JobFamily::class, 'office_head', 'employee_id');
     }
 
     // returns the shift schedule of employee

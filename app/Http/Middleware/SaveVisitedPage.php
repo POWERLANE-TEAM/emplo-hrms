@@ -13,12 +13,11 @@ class SaveVisitedPage
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
      * @return mixed
      */
     public function handle($request, Closure $next)
     {
-        if (!Auth::check()) {
+        if (! Auth::check()) {
             // Save the current URL to the session
             session(['url.intended' => $request->url()]);
         }

@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class JobFamily extends Model
@@ -15,6 +16,7 @@ class JobFamily extends Model
     protected $fillable = [
         'job_family_name',
         'job_family_desc',
+        'office_head',
     ];
 
     /*
@@ -22,6 +24,12 @@ class JobFamily extends Model
     | Define model relationships below
     |--------------------------------------------------------------------------
     */
+
+    // returns employee whose the office head
+    public function head(): BelongsTo
+    {
+        return $this->belongsTo(Employee::class, 'office_head', 'employee_id');
+    }
 
     // returns job titles associated with a specific job family
     public function jobTitles(): BelongsToMany

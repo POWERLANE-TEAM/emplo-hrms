@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class EmployeeComplaint extends Model
@@ -47,7 +47,7 @@ class EmployeeComplaint extends Model
     // returns confidentiality preferences of the complaint
     public function confidentiality(): BelongsTo
     {
-        return $this->belongsTo(ComplaintConfidentiality::class, 'confidentiality_id' . 'confidentiality_id');
+        return $this->belongsTo(ComplaintConfidentiality::class, 'confidentiality_id'.'confidentiality_id');
     }
 
     // returns current status of the complaint

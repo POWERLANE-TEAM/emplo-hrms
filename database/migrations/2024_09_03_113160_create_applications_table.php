@@ -1,18 +1,19 @@
 <?php
 
-use App\Models\ApplicationExam;
-use App\Models\Exam;
-use App\Models\Employee;
 use App\Models\Applicant;
-use App\Models\JobVacancy;
 use App\Models\Application;
+use App\Models\ApplicationExam;
 use App\Models\ApplicationStatus;
+use App\Models\Employee;
+use App\Models\Exam;
+use App\Models\JobVacancy;
 use App\Models\PreempRequirement;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      */
@@ -24,7 +25,6 @@ return new class extends Migration {
             $table->longText('application_status_desc')->nullable();
             $table->timestamps();
         });
-
 
         Schema::create('applications', function (Blueprint $table) {
             $table->id('application_id');
@@ -46,7 +46,6 @@ return new class extends Migration {
 
             $table->timestamps();
         });
-
 
         Schema::create('application_docs', function (Blueprint $table) {
             $table->id('application_doc_id');
@@ -73,7 +72,6 @@ return new class extends Migration {
             $table->softDeletes();
         });
 
-
         Schema::create('application_exams', function (Blueprint $table) {
             $table->id('application_exam_id');
 
@@ -86,11 +84,10 @@ return new class extends Migration {
                 ->constrained('applications', 'application_id')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-            
+
             $table->timestamp('start_time')->nullable();
             $table->timestamp('end_time')->nullable();
         });
-
 
         Schema::create('application_exam_results', function (Blueprint $table) {
             $table->id('exam_result_id');
@@ -99,13 +96,13 @@ return new class extends Migration {
                 ->constrained('application_exams', 'application_exam_id')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-            
+
             $table->foreignIdFor(Employee::class, 'graded_by')
                 ->nullable()
                 ->constrained('employees', 'employee_id')
                 ->cascadeOnUpdate()
                 ->nullOnDelete();
-            
+
             $table->integer('total_grades'); // change accordingly if required decimal values
             $table->boolean('is_passed')->default(false);
             $table->timestamps();

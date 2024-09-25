@@ -12,6 +12,6 @@ class InterviewParameter extends Model
     protected $primaryKey = 'parameter_id';
 
     protected $fillable = [
-        'parameter_desc'
+        'parameter_desc',
     ];
 }

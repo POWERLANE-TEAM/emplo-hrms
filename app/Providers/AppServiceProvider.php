@@ -2,18 +2,17 @@
 
 namespace App\Providers;
 
+use Illuminate\Auth\Notifications\VerifyEmail;
+use Illuminate\Broadcasting\BroadcastServiceProvider;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
-use Illuminate\Auth\Notifications\VerifyEmail;
-use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Broadcasting\BroadcastServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-
     /**
      * Register any application services.
      */
