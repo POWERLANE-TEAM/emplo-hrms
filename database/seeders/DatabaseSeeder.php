@@ -11,6 +11,7 @@ use App\Models\JobDetail;
 use App\Models\JobFamily;
 use App\Models\JobLevel;
 use App\Models\JobVacancy;
+use App\Models\PreempRequirement;
 use App\Models\SpecificArea;
 use App\Models\User;
 use App\Models\UserRole;
@@ -50,13 +51,13 @@ class DatabaseSeeder extends Seeder
         User::factory(8)->create();
 
         $employees = collect();
-        $usersData = [];
+        $users_data = [];
 
         for ($i = 0; $i < 2; $i++) {
             $employee = Employee::factory()->create();
             $employees->push($employee);
 
-            $usersData[] = [
+            $users_data[] = [
                 'account_type' => 'employee',
                 'account_id' => $employees[$i]->employee_id,
                 'email' => $i === 0 ? 'hr.001@gmail.com' : 'admin.001@gmail.com',
@@ -66,15 +67,15 @@ class DatabaseSeeder extends Seeder
                 'email_verified_at' => fake()->dateTimeBetween('-10 days', 'now'),
             ];
 
-            User::factory()->create($usersData[$i]);
+            User::factory()->create($users_data[$i]);
         }
 
         JobVacancy::factory(25)->create();
 
-        $documents = CompanyDoc::factory()->predefinedDocuments();
+        $preemp_reqs = PreempRequirement::factory()->predefinedDocuments();
 
-        foreach ($documents as $document) {
-            CompanyDoc::create($document);
+        foreach ($preemp_reqs as $preemp_req) {
+            PreempRequirement::create($preemp_req);
         }
     }
 }
