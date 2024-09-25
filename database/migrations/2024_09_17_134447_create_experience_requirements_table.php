@@ -2,9 +2,9 @@
 
 use App\Models\ExperienceRequirement;
 use App\Models\JobTitle;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -21,7 +21,6 @@ return new class extends Migration
             $table->timestamps();
         });
 
-
         // pivot table
         Schema::create('job_experience_requirements', function (Blueprint $table) {
             $table->id('job_experience_req_id');
@@ -30,7 +29,7 @@ return new class extends Migration
                 ->constrained('job_titles', 'job_title_id')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-            
+
             $table->foreignIdFor(ExperienceRequirement::class, 'experience_req_id')
                 ->constrained('experience_requirements', 'experience_req_id')
                 ->cascadeOnUpdate()

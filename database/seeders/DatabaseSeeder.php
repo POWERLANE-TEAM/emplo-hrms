@@ -45,7 +45,6 @@ class DatabaseSeeder extends Seeder
 
         User::factory(10)->create();
 
-
         PositionVacancy::factory(25)->create();
 
         $documents = Document::factory()->predefinedDocuments();

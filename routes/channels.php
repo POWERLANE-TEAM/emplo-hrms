@@ -1,6 +1,5 @@
 <?php
 
-use App\Events\UserLoggedout;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Broadcast;
@@ -13,9 +12,9 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 Broadcast::channel('user_auth.{user_broadcast_id}', function ($user, string $user_broadcast_id) {
 
     $user_session = session()->getId();
-    $this_auth_broadcast_id =   hash('sha512', $user_session . $user->email . $user_session);
+    $this_auth_broadcast_id = hash('sha512', $user_session.$user->email.$user_session);
 
-    return $this_auth_broadcast_id ==   $user_broadcast_id;
+    return $this_auth_broadcast_id == $user_broadcast_id;
 
     // Log::info('Broadcast Channel Debugging: ', [
     //     'user_session' => $user_session,
@@ -27,5 +26,6 @@ Broadcast::channel('user_auth.{user_broadcast_id}', function ($user, string $use
 
     // Temporary exception to confirm execution
     throw new \Exception('Debugging: The channel closure is being executed.');
+
     return true;
 });

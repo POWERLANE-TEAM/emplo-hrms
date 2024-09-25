@@ -36,7 +36,7 @@ class PreEmploymentController extends Controller
             $file = $request->file('pre_emp_doc');
             $file_name = $file->getClientOriginalName();
             echo $file_name;
-            $hashedName =  $prefix . '_' . $file->hashName();
+            $hashedName = $prefix.'_'.$file->hashName();
             echo $hashedName;
 
             $doc_id = $request->input('doc_id');
@@ -51,7 +51,7 @@ class PreEmploymentController extends Controller
 
             $path = $file->storeAs('uploads', $hashedName, 'public'); /* Store in file://storage/app/public/uploads/ */
 
-            $employeeDoc = new EmployeeDoc();
+            $employeeDoc = new EmployeeDoc;
             $employeeDoc->document_id = $doc_id;
             $employeeDoc->employee_id = $account_id;
             $employeeDoc->file = $path;
