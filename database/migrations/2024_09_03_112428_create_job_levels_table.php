@@ -97,7 +97,6 @@ return new class extends Migration {
             $table->id('job_family_id');
             $table->string('job_family_name', 100);
             $table->longText('job_family_desc')->nullable();
-            $table->timestamps();
         });
 
 
