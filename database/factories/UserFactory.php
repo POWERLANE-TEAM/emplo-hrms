@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Applicant;
 use App\Models\Employee;
 use App\Models\UserRole;
 use App\Models\UserStatus;
@@ -32,6 +33,12 @@ class UserFactory extends Factory
                     $employee = Employee::factory()->create();
 
                     return $employee->employee_id;
+                }
+
+                if ($attributes['account_type'] === 'applicant') {
+                    $applicant = Applicant::factory()->create();
+
+                    return $applicant->applicant_id;
                 }
 
                 return fake()->randomDigitNotNull();
