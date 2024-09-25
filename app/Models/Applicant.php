@@ -62,6 +62,7 @@ class Applicant extends Model
         return $this->morphOne(User::class, 'account');
     }
 
+    // returns the job application of applicant
     public function application(): HasOne
     {
         return $this->hasOne(Application::class, 'applicant_id', 'applicant_id');
