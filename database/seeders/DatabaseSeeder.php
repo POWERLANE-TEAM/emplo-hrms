@@ -27,11 +27,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $user_roles = UserRole::factory()->predefinedUserRoles();
-
-        foreach ($user_roles as $user_role) {
-            UserRole::create($user_role);
-        }
 
         $user_statuses = UserStatus::factory()->predefinedUserStatuses();
 
@@ -62,7 +57,6 @@ class DatabaseSeeder extends Seeder
                 'account_id' => $employees[$i]->employee_id,
                 'email' => $i === 0 ? 'hr.001@gmail.com' : 'admin.001@gmail.com',
                 'password' => Hash::make('UniqP@ssw0rd'),
-                'user_role_id' => $i === 0 ? 4 : 5,
                 'user_status_id' => 1,
                 'email_verified_at' => fake()->dateTimeBetween('-10 days', 'now'),
             ];

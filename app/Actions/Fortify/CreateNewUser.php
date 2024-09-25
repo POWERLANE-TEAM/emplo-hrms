@@ -46,7 +46,6 @@ class CreateNewUser implements CreatesNewUsers
             // account_id from applicant or employee
             $account_id = $new_account_created->applicant_id ?? $new_account_created->employee_id;
 
-            // $user_role = UserRole::where('user_role_name', strtoupper($input['account_type']))->first();
             $user_status =  UserStatus::where('user_status_name', $input['user_status'])->first();
 
             $new_user_created = User::create([
@@ -54,7 +53,6 @@ class CreateNewUser implements CreatesNewUsers
                 'account_id' => $account_id,
                 'email' => $input['email'],
                 'password' => $input['password'],
-                // 'user_role_id' =>  $user_role->user_role_id,
                 'user_status_id' => $user_status->user_status_id,
             ]);
 

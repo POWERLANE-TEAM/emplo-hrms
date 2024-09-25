@@ -118,10 +118,6 @@ class SignUp extends Component
         /* Listen for this livewire event to show email sent modal */
         $this->dispatch('guest-new-user-registered');
 
-        // $this->email = '';
-        // $this->password = '';
-        // $this->password_confirmation = '';
-        // $this->consent = false;
         $this->reset();
     }
 
