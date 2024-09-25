@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 class ApplicantDocController extends Controller
 {
-
     /* Show all resource */
     public function index($page = null)
     {

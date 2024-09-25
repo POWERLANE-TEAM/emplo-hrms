@@ -1,13 +1,13 @@
 <?php
 
-use App\Models\Employee;
 use App\Models\Application;
+use App\Models\Employee;
 use App\Models\FinalInterview;
 use App\Models\InterviewParameter;
 use App\Models\InterviewRating;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -23,13 +23,11 @@ return new class extends Migration
             $table->timestamps();
         });
 
-
         Schema::create('interview_parameters', function (Blueprint $table) {
             $table->id('parameter_id');
             $table->longText('parameter_desc');
             $table->timestamps();
         });
-
 
         Schema::create('initial_interviews', function (Blueprint $table) {
             $table->id('init_interview_id');
@@ -49,7 +47,6 @@ return new class extends Migration
             $table->boolean('is_init_interview_passed')->default(false);
             $table->timestamps();
         });
-
 
         Schema::create('final_interviews', function (Blueprint $table) {
             $table->id('final_interview_id');
@@ -71,15 +68,14 @@ return new class extends Migration
             $table->timestamps();
         });
 
-
         Schema::create('final_interview_ratings', function (Blueprint $table) {
             $table->id('final_rating_id');
-            
+
             $table->foreignIdFor(FinalInterview::class, 'final_interview_id')
                 ->constrained('final_interviews', 'final_interview_id')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-            
+
             $table->foreignIdFor(InterviewParameter::class, 'parameter_id')
                 ->constrained('interview_parameters', 'parameter_id')
                 ->cascadeOnUpdate()

@@ -2,14 +2,17 @@
 
 namespace App\Livewire\Employee;
 
-use Livewire\Component;
 use App\Models\Document;
+use Livewire\Component;
 
 class PreEmployment extends Component
 {
     public $pre_employment_docs;
+
     public $loads = 0;
+
     public $chunk = 5;
+
     public $additional_docs;
 
     public function loadMore()

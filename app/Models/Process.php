@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Process extends Model
 {
@@ -23,7 +23,7 @@ class Process extends Model
     |--------------------------------------------------------------------------
     |
     | Processes: Overtime requests, performance evaluations, employee leaves
-    | 
+    |
     */
 
     // returns supervisor who approved/signed the process

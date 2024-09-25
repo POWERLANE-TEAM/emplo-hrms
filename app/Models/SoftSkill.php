@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class SoftSkill extends Model
 {
     use HasFactory;
-    
+
     protected $primaryKey = 'soft_skill_id';
 
     protected $fillable = [

@@ -3,10 +3,8 @@
 namespace App\Livewire\Auth;
 
 use App\Models\User;
-use Livewire\Component;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 
 class GoogleOneTap extends Component
 {
