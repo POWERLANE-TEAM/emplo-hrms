@@ -13,7 +13,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, HasRoles,Notifiable;
+    use HasApiTokens, HasFactory, HasRoles, Notifiable;
 
     protected $primaryKey = 'user_id';
 
