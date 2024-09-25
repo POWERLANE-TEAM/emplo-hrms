@@ -6,12 +6,7 @@ use Livewire\Component;
 
 class PreEmploymentDoc extends Component
 {
-    public $pre_employment_doc;
-
-    // public function mount($pre_employment_doc)
-    // {
-    //     $this->pre_employment_doc = $pre_employment_doc;
-    // }
+    public $pre_employment_req;
 
     public function placeholder()
     {

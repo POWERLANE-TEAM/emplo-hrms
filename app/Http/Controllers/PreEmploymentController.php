@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Application;
+use App\Models\ApplicationDoc;
 use App\Models\CompanyDoc;
 use App\Models\Document;
 use App\Models\EmployeeDoc;
+use App\Models\PreempRequirement;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -41,31 +45,44 @@ class PreEmploymentController extends Controller
             $file = $request->file('pre_emp_doc');
             $file_name = $file->getClientOriginalName();
             echo $file_name;
-            $hashedName = $prefix . '_' . $file->hashName();
-            echo $hashedName;
 
             // Get application id
 
             $doc_id = $request->input('doc_id');
             echo $doc_id;
 
-            $user = Auth::user();
-            $account_id = $user->account_id;
+            $hashed_name = $prefix . '_' . dechex($doc_id) . '_' .  $file->hashName();
+            echo $hashed_name;
 
-            /* Need to save on folder of user*/
-            $path = $file->storeAs('uploads', $hashedName, 'public'); /* Store in file://storage/app/public/uploads/ */
+            $user = Auth::user();
+
+            $user_id = $user->user_id;
+            // dump($user);
+
+            $preemployed_user = User::with('account.application')->find($user_id);
+
+            // dd($preemployed_user);
+
+            $first_name = $preemployed_user->account->first_name;
+            $last_name = $preemployed_user->account->last_name;
+
+            $user_folder = $first_name . '_' .  $last_name  . '_' . dechex($user_id);
+
+            $application_id = $preemployed_user->account->application->application_id;
+
+            $path = $file->storeAs("uploads/applicant/applications/pre-emp/$user_folder", $hashed_name, 'public');
 
             /* Needs to be updated to store in application docs instead */
 
-            $employeeDoc = new EmployeeDoc();
-            $employeeDoc->emp_doc_id = $doc_id;
-            $employeeDoc->employee_id = $account_id;
-            $employeeDoc->file_path = $path;
-            $employeeDoc->save();
+            $preemp_doc = new ApplicationDoc();
+            $preemp_doc->preemp_req_id = $doc_id;
+            $preemp_doc->application_id = $application_id;
+            $preemp_doc->file_path = $path;
+            $preemp_doc->save();
 
             /* Should be preemp_requirements name instead */
-            $document = CompanyDoc::find($doc_id);
-            $document_name = $document->name;
+            $document = PreempRequirement::find($doc_id);
+            $document_name = $document->preemp_req_name;
             echo $document_name;
 
             // return back()->with('success', '$document_name uploaded successfully!');

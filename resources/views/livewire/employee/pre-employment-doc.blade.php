@@ -1,12 +1,12 @@
 @php
-    $doc_parts = explode('(', $pre_employment_doc->document_name, 2);
+    $doc_parts = explode('(', $pre_employment_req->preemp_req_name, 2);
     $doc_name = trim($doc_parts[0]);
     $doc_hint = isset($doc_parts[1]) ? '(' . rtrim($doc_parts[1], ')') . ')' : null;
-    $doc_id = $pre_employment_doc->document_control_id;
+    $doc_id = $pre_employment_req->preemp_req_id;
 @endphp
 
 <tr class="rounded-2 outline dropzone position-relative" style="height: 100px; vertical-align: middle;"
-    {{--  wire:key="{{ $pre_employment_doc->document_control_id }}" --}} id="preemp-doc-{{ $doc_id }}" wire:ignore>
+    {{--  wire:key="{{ $pre_employment_req->document_control_id }}" --}} id="preemp-doc-{{ $doc_id }}" wire:ignore>
     <form action="" wire:model="document_id" name="{{ $doc_id }}">
         <td class="dz-message">
             @csrf
