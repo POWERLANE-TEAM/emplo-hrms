@@ -61,6 +61,10 @@ export default class InputValidator {
             throw new Error('Invalid input element provided.');
         }
 
+        if (!input_obj.classList.contains('is-dirty')) {
+            return true;
+        }
+
         if (this.#validations.clear_invalid) {
             this.#isClearInvalidBool = typeof this.#validations.clear_invalid === 'boolean';
         }
@@ -359,4 +363,14 @@ export function setInvalidMessage(element, feedbackMsg) {
         console.error('Feedback message not set. ' + error);
     }
 
+}
+
+export function setFormDirty(event) {
+    const parentForm = event.target.closest('form');
+
+    const inputElements = parentForm.querySelectorAll('input');
+
+    inputElements.forEach(input => {
+        input.classList.add('is-dirty');
+    });
 }

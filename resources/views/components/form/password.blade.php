@@ -1,9 +1,21 @@
-@props(['input_id', 'label', 'nonce', 'input_name', 'has_confirm' => false, 'auto_complete' => 'off'])
+@props([
+    'input_id',
+    'label',
+    'nonce',
+    'input_name',
+    'input_icon_left',
+    'has_confirm' => false,
+    'auto_complete' => 'off',
+])
 
-<label for="{{ $input_id }}" class="mb-1">{{ $label }}</label>
+@isset($label)
+    <label for="{{ $input_id }}" class="mb-1">{{ $label }}</label>
+@endisset
 <div class="input-group mb-3">
-    <div class="px-2 d-flex position-absolute icon  text-primary" wire:ignore nonce="{{ $nonce }}"><i
-            data-lucide="lock"></i>
+    <div class="px-2 d-flex position-absolute icon  text-primary" wire:ignore nonce="{{ $nonce }}">
+        @if (!empty($input_icon_left))
+            {{ $input_icon_left }}
+        @endif
     </div>
     <input type="password" id="{{ $input_id }}"
         aria-owns="{{ $input_id }}-feedback {{ $has_confirm ? $input_id . '-confirm' : '' }}"

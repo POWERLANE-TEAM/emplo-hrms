@@ -82,6 +82,8 @@
         @endenv
     </script>
 
+    <x-layout.livewire-global-listener/>
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net" crossorigin="anonymous">
     <link rel="preload" href="https://fonts.bunny.net/css?family=figtree:{{ $fonts }}&display=swap"
@@ -108,19 +110,7 @@
             }
         @endphp
 
-        document.addEventListener('livewire:init', () => {
-            Livewire.hook('request', ({ fail }) => {
-                fail(({ status, preventDefault }) => {
-                    if (status === 419) {
-                        // preventDefault();
-                        /* Inert custom page expired propmt */
 
-                    }
-
-                    @stack('livewire-failed-request-script')
-                })
-            })
-        });
     </script>
 
 

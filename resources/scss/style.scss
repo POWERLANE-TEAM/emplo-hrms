@@ -96,3 +96,12 @@ header {
     }
 
 }
+
+.modal {
+
+    &:has(.modal-dialog),
+    &>* {
+        scrollbar-gutter: stable both-edges;
+    }
+
+}

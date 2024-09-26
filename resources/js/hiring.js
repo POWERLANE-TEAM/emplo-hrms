@@ -5,9 +5,10 @@ import addGlobalScrollListener, { documentScrollPosY } from './global-scroll-fn.
 import addGlobalListener, { GlobalListener } from './global-event-listener.js';
 import togglePassword from './toggle-password.js';
 import { initPasswordEvaluator, evalPassword } from './forms/eval-password.js';
-import InputValidator, { setInvalidMessage } from './forms/input-validator.js';
+import InputValidator, { setInvalidMessage, setFormDirty } from './forms/input-validator.js';
 import initEmailValidation, { validateEmail } from './forms/email-validation.js';
 import PasswordValidator, { DEFAULT_PASSWORD_VALIDATION } from './forms/password-validation.js';
+import ConsentValidator from './forms/consent-validation.js';
 import initPasswordConfirmValidation, { validateConfirmPassword } from './forms/password-confirm-validation.js';
 import ThemeManager, { initPageTheme } from './theme-listener.js';
 import debounce from './debounce-fn.js';
@@ -30,15 +31,8 @@ document.addEventListener('livewire:init', () => {
 
 
     Livewire.on('guest-job-view-pane-rendered', (event) => {
-        setTimeout(() => {
-            initLucideIcons();
-        }, 0);
     });
     Livewire.on('guest-sign-up-rendered', (event) => {
-        setTimeout(() => {
-            initLucideIcons();
-        }, 0);
-
         let formCheckbox = document.querySelectorAll('form input[type="checkbox"]');
 
         for (let i = 0; i < formCheckbox.length; i++) {
@@ -149,6 +143,9 @@ class NameValidator {
     // Initialize debounced validation on input
     initValidation(callback, resultRef) {
         const debouncedValidation = debounce((event) => {
+
+            event.target.classList.add('is-dirty');
+
             const isValid = this.validateElement(event.target);
             try {
                 resultRef = isValid;
@@ -167,12 +164,22 @@ const firstNameValidator = new NameValidator(`${sigUpFormString} input[name="fir
 const middleNameValidator = new NameValidator(`${sigUpFormString} input[name="middle_name"]`, new InputValidator(MIDDLE_NAME_VALIDATION));
 const lastNameValidator = new NameValidator(`${sigUpFormString} input[name="last_name"]`, new InputValidator(LAST_NAME_VALIDATION));
 
-function checkConsent(consentForm) {
-    return consentForm.checked;
+
+const TERMS_AND_PRIVACY_VALIDATION = {
+    attributes: {
+        type: 'checkbox',
+        required: true,
+    },
+    customMsg: {
+        required: 'Consent to the terms and conditions and privacy policy is required.',
+    },
+    errorFeedback: {
+        required: 'Consent to the terms and conditions and privacy policy is required.',
+    }
 }
 
-function checkCaptcha() {
-    return true;
+function checkConsent(consentForm) {
+    return consentForm.checked;
 }
 
 const signUpBool = {
@@ -182,6 +189,7 @@ const signUpBool = {
     isValidEmail: false,
     isValidPassword: false,
     isPasswordMatch: false,
+    consentAgreed: false
 }
 
 // Initialize validation with callback and result object
@@ -191,21 +199,27 @@ lastNameValidator.initValidation(() => validateSignUpForm(sigUpFormString), sign
 
 const passwordValidator = new PasswordValidator(DEFAULT_PASSWORD_VALIDATION);
 
-const signUpConsentEvent = new GlobalListener('input', document, `${sigUpFormString} input[name="consent"]`, function (event) {
-    validateSignUpForm(sigUpFormString);
-});
+console.log(`${sigUpFormString} input[name="consent"]`)
+
+const termsPrivacyValidator = new ConsentValidator(`${sigUpFormString} input[name="consent"]`,
+    new InputValidator(TERMS_AND_PRIVACY_VALIDATION),
+    signUpBool.consentAgreed,
+    () => validateSignUpForm(sigUpFormString)
+);
+
+// const signUpConsentEvent = new GlobalListener('input', document, `${sigUpFormString} input[name="consent"]`, function (event) {
+//     validateSignUpForm(sigUpFormString);
+// });
 
 function validateSignUpForm(sigUpFormString = `form[action='applicant/sign-up']`) {
     const stack = new Error().stack;
-
 
     let signUpBtn = document.querySelector(`${sigUpFormString} #signUpBtn`);
     let passwordInput = document.querySelector(`${sigUpFormString} input[name="password"]`);
 
     signUpBtn.disabled = true;
 
-    let consentAgreed = checkConsent(document.querySelector(`${sigUpFormString} input[name="consent"]`));
-    let isCaptchaValid = checkCaptcha();
+    signUpBool.consentAgreed = checkConsent(document.querySelector(`${sigUpFormString} input[name="consent"]`));
 
     let isWeakPassword;
     try {
@@ -241,7 +255,7 @@ function validateSignUpForm(sigUpFormString = `form[action='applicant/sign-up']`
             signUpBtn.disabled = true;
             passwordInput.classList.add('is-invalid');
             setInvalidMessage(passwordInput, 'Password is weak.');
-        } else if (!signUpBool.isPasswordMatch || !consentAgreed || !isCaptchaValid) {
+        } else if (!signUpBool.isPasswordMatch || !signUpBool.consentAgreed) {
             signUpBtn.disabled = true;
         } else {
             passwordInput.classList.remove('is-invalid');
@@ -267,6 +281,8 @@ const passwordConfirmPaste = new GlobalListener('paste', document, `${sigUpFormS
 const passwordConfirmDrop = new GlobalListener('drop', document, `${sigUpFormString} input[name="password_confirmation"]`, e => e.preventDefault());
 
 function validateOnSignUp(event) {
+    setFormDirty(event);
+
     validateSignUpForm();
 }
 

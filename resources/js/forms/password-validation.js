@@ -80,6 +80,7 @@ export default class PasswordValidator {
 
     init(inputSelector, callback, result) {
         const debouncedValidation = debounce((event) => {
+            event.target.classList.add('is-dirty');
             let isValid = this.validatePasswordElement(event.target);
             try {
                 result.isValidPassword = isValid;

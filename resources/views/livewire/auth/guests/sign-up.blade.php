@@ -174,153 +174,129 @@
 
         <div class="d-flex gap-md-5">
             <div class="col-md-6">
-                <label for="signUp-first-name" class="mb-1">First Name</label>
-                <div class="input-group mb-3 position-relative">
-                    <div class="px-2 d-flex align-items-center position-absolute text-primary icon " wire:ignore><i
-                            data-lucide="user-check-2"></i>
-                    </div>
-                    <input type="text" aria-owns="signUp-first-name-feedback" name="first_name"
-                        pattern="/^[a-zA-Z\s]{1,255}$/" maxlength="255" required wire:model="first_name"
-                        autocomplete="given-name"
-                        class="form-control border-bottom ps-5
-                @error('first_name')
-                    is-invalid
-                @enderror
-                ">
-                    <div class="invalid-feedback" role="alert" id="signUp-first-name-feedback">
-                        @error('first_name')
-                            {{ $message }}
-                        @enderror
-                    </div>
-                </div>
+
+                <x-form.input-text id="signUp-first-name" label="First Name" name="first_name"
+                    pattern="/^[a-zA-Z\s]{1,255}$/" maxlength="191" autocomplete="given-name" :nonce="$nonce"
+                    aria-owns="signUp-first-name-feedback"
+                    class=" {{ $errors->has('first_name') ? 'is-invalid' : '' }}">
+
+                    <x-slot:input_icon_left>
+                        <i data-lucide="user-check-2"></i>
+                    </x-slot:input_icon_left>
+
+                    <x-slot:feedback>
+                        @include('components.form.input-feedback', [
+                            'feedback_id' => 'signUp-first-name-feedback',
+                            'message' => $errors->first('first_name'),
+                        ])
+                    </x-slot:feedback>
+                </x-form.input-text>
+
             </div>
+
 
             <div class="col-md-5">
-                <label for="signUp-last-name" class="mb-1">Last Name</label>
-                <div class="input-group mb-3 position-relative">
-                    <div class="px-2 d-flex align-items-center position-absolute text-primary icon" wire:ignore><i
-                            data-lucide="user"></i>
-                    </div>
-                    <input type="text" aria-owns="signUp-last-name-feedback" name="last_name"
-                        pattern="/^[a-zA-Z\s]{1,255}$/" maxlength="255" required wire:model="last_name"
-                        autocomplete="family-name"
-                        class="form-control border-bottom ps-5
-                @error('last_name')
-                    is-invalid
-                @enderror
-                ">
-                    <div class="invalid-feedback" role="alert" id="signUp-last-name-feedback">
-                        @error('last_name')
-                            {{ $message }}
-                        @enderror
-                    </div>
-                </div>
+                <x-form.input-text id="signUp-last-name" label="Last Name" name="last_name"
+                    pattern="/^[a-zA-Z\s]{1,255}$/" maxlength="191" autocomplete="family-name" :nonce="$nonce"
+                    aria-owns="signUp-last-name-feedback" class=" {{ $errors->has('last_name') ? 'is-invalid' : '' }}">
+
+                    <x-slot:input_icon_left>
+                        <i data-lucide="user"></i>
+                    </x-slot:input_icon_left>
+
+                    <x-slot:feedback>
+                        @include('components.form.input-feedback', [
+                            'feedback_id' => 'signUp-last-name-feedback',
+                            'message' => $errors->first('last_name'),
+                        ])
+                    </x-slot:feedback>
+                </x-form.input-text>
             </div>
         </div>
 
 
-        <label for="signUp-middle-name" class="mb-1">Middle Name</label>
-        <div class="input-group mb-3 position-relative">
-            <div class="px-2 d-flex align-items-center position-absolute text-primary icon" wire:ignore><i
-                    data-lucide="user"></i>
-            </div>
-            <input type="text" aria-owns="signUp-middle-name-feedback" name="middle_name"
-                pattern="/^[a-zA-Z\s]{1,255}$/" maxlength="255" wire:model="middle_name" autocomplete="given-name"
-                class="form-control border-bottom ps-5
-            @error('middle_name')
-                is-invalid
-            @enderror
-            ">
-            <div class="invalid-feedback" role="alert" id="signUp-middle-name-feedback">
-                @error('middle_name')
-                    {{ $message }}
-                @enderror
-            </div>
-        </div>
+        <x-form.input-text id="signUp-middle-name" label="Middle Name" name="middle_name"
+            pattern="/^[a-zA-Z\s]{1,255}$/" maxlength="191" autocomplete="additional-name" :nonce="$nonce"
+            aria-owns="signUp-middle-name-feedback" class=" {{ $errors->has('middle_name') ? 'is-invalid' : '' }}">
 
+            <x-slot:input_icon_left>
+                <i data-lucide="user"></i>
+            </x-slot:input_icon_left>
 
+            <x-slot:feedback>
+                @include('components.form.input-feedback', [
+                    'feedback_id' => 'signUp-middle-name-feedback',
+                    'message' => $errors->first('middle_name'),
+                ])
+            </x-slot:feedback>
+        </x-form.input-text>
 
-        <label for="signUp-email" class="mb-1">Email Address</label>
-        <div class="input-group mb-3 position-relative mt-3">
-            <div class="px-2 d-flex align-items-center position-absolute text-primary icon" wire:ignore><i
-                    data-lucide="mail"></i>
-            </div>
-            <input type="email" aria-owns="signUp-email-feedback" name="email"
-                pattern="/^[a-zA-Z0-9._\-]+@[a-z0-9.-]+\.[a-z]{2,4}$/" maxlength="255" required wire:model="email"
-                autocomplete="email"
-                class="form-control  border-bottom ps-5
-                @error('email')
-                    is-invalid
-                @enderror
-                ">
-            <div class="invalid-feedback" role="alert" id="signUp-email-feedback">
-                @error('email')
-                    {{ $message }}
-                @enderror
-            </div>
-        </div>
+        <x-form.email input_id="signUp-email" label="Email Address" input_name="email" auto_complete="email"
+            :nonce="$nonce" aria-owns="signUp-email-feedback"
+            class=" {{ $errors->has('email') ? 'is-invalid' : '' }}">
 
-        <label for="signUp-password" class="mb-1">Password</label>
-        <div class="input-group mb-3">
-            <div class="px-2 d-flex position-absolute text-primary icon" wire:ignore nonce="{{ $nonce }}"><i
-                    data-lucide="lock"></i></div>
-            <input type="password" id="signUp-password" aria-owns="signUp-password-feedback signUp-password-confirm"
-                name="password" pattern="/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[\W_])[^\s]{8,72}$/" minlength="8"
-                maxlength="72" required wire:model="password" autocomplete="new-password"
-                class="form-control rm-bg-icon border-bottom ps-5 z-0
-                @error('password')
-                    is-invalid
-                @enderror
+            <x-slot:feedback>
+                @include('components.form.input-feedback', [
+                    'feedback_id' => 'signUp-email-feedback',
+                    'message' => $errors->first('email'),
+                ])
+            </x-slot:feedback>
+        </x-form.email>
 
-                ">
-            <input type="checkbox" id="toggle-psw"
-                class="text-primary toggle-password position-absolute mt-2 end-0 z-3" aria-label="Show/Hide Password"
-                aria-keyshortcuts="alt+f8">
-            <div class="invalid-feedback" role="alert" id="signUp-password-feedback">
-                @error('password')
-                    {{ $message }}
-                @enderror
-            </div>
-        </div>
+        <x-form.password input_id="signUp-password" label="Password" :has_confirm="true" input_name="password"
+            auto_complete="new-password" :nonce="$nonce" class=" {{ $errors->has('password') ? 'is-invalid' : '' }}">
 
-        <label for="signUp-password-confirm" class="mb-1">Confirm Password</label>
-        <div class="input-group mb-3">
-            <div class="px-2 d-flex position-absolute text-primary icon " wire:ignore nonce="{{ $nonce }}"><i
-                    data-lucide="shield-check"></i></div>
-            <input type="password" id="signUp-password-confirm" aria-owns="signUp-password-confirm-feedback"
-                name="password_confirmation" minlength="8" maxlength="72" required
-                wire:model="password_confirmation" autocomplete="new-password"
-                class="form-control rm-bg-icon border-bottom ps-5 z-0
-                                @error('password')
-                    is-invalid
-                @enderror
-                ">
-            <input type="checkbox" id="toggle-psw-confirm"
-                class="text-primary toggle-password position-absolute mt-2 end-0 z-3"
-                aria-label="Show/Hide Password Confirmation" aria-keyshortcuts="alt+f8">
-            <div class="invalid-feedback" role="alert" id="signUp-password-confirm-feedback">
-                @error('password')
-                    {{ $message }}
-                @enderror
-            </div>
-        </div>
+            <x-slot:input_icon_left>
+                <i data-lucide="lock"></i>
+            </x-slot:input_icon_left>
 
-        <div class="input-group mb-3 terms-condition">
-            <input type="checkbox" id="terms-condition" name="consent" required wire:model="consent"
-                class="checkbox checkbox-primary">
-            <label for="terms-condition" class="checkbox-label d-flex flex-wrap"> {!! trans('consent.consent') !!}
-                &#8194;<wbr>
-                <span class="d-flex" role="list">
-                    <a href="#" target="_blank" class="text-black" rel="noopener noreferrer" role="listitem">
-                        {!! __('consent.term_condition') !!}
-                    </a>
-                    <span>&#8194;{{ __('common.and') }}&#8194;</span>
-                    <a href="#" target="_blank" class="text-black"
-                        rel="noopener noreferrer">{!! __('consent.privacy_policy') !!}</a>
-                </span>
-            </label>
-            <div class="invalid-feedback"></div>
-        </div>
+            <x-slot:toggle_password>
+                @include('components.form.toggle-password', [
+                    'toggler_id' => 'toggle-psw',
+                    'controls' => 'signUp-password',
+                ])
+            </x-slot:toggle_password>
+
+            <x-slot:feedback>
+                @include('components.form.input-feedback', [
+                    'feedback_id' => 'signUp-password-feedback',
+                    'message' => $errors->first('password'),
+                ])
+            </x-slot:feedback>
+        </x-form.password>
+
+        <x-form.password input_id="signUp-password-confirm" label="Confirm Password" input_name="password_confirmation"
+            auto_complete="new-password" :nonce="$nonce" class=" {{ $errors->has('password') ? 'is-invalid' : '' }}">
+
+            <x-slot:input_icon_left>
+                <i data-lucide="shield-check"></i>
+            </x-slot:input_icon_left>
+
+            <x-slot:toggle_password>
+                @include('components.form.toggle-password', [
+                    'toggler_id' => 'toggle-psw-confirm',
+                    'controls' => 'signUp-password-confirm',
+                    'label' => 'Show/Hide Password Confirmation',
+                ])
+            </x-slot:toggle_password>
+
+            <x-slot:feedback>
+                @include('components.form.input-feedback', [
+                    'feedback_id' => 'signUp-password-confirm-feedback',
+                    'message' => $errors->first('password'),
+                ])
+            </x-slot:feedback>
+        </x-form.password>
+
+        <x-form.terms-condition class=" {{ $errors->has('consent') ? 'is-invalid' : '' }}">
+
+            <x-slot:feedback>
+                @include('components.form.input-feedback', [
+                    'feedback_id' => 'terms-condition-feedback',
+                    'message' => $errors->first('consent'),
+                ])
+            </x-slot:feedback>
+        </x-form.terms-condition>
 
         <button type="submit" nonce="{{ $nonce }}" id="signUpBtn" class="btn btn-primary btn-lg w-100"
             disabled>{{ __('register.sign_up.sign_up') }}

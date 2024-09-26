@@ -52,6 +52,7 @@ export function validateConfirmPassword(inputSelector, parent = document) {
 
 export default function initPasswordConfirmValidation(inputSelector, callback, result) {
     const debouncedValidation = debounce(function (event) {
+        event.target.classList.add('is-dirty');
         let isValid = validatePasswordConfirmElement(event.target);
         try {
             result.isPasswordMatch = isValid;

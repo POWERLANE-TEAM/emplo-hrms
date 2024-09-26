@@ -35,7 +35,7 @@ class SignUp extends Component
     public $password = '';
     public $password_confirmation = '';
 
-    #[Validate(['consent' => 'accepted'])]
+    #[Validate(['accepted'])]
     public $consent = false;
 
     #[Validate('required|min:2|max:191|regex:/^(?!\s)(?!.*\s{2,})(?!.*\s$)[A-Za-zÑñ\' ]+$/')]
@@ -112,6 +112,8 @@ class SignUp extends Component
             'account_type' => self::ACCOUNT_TYPE,
             'user_status' => self::ACCOUNT_STATUS,
         ];
+
+        dd($new_user);
 
         $new_user_created = $userCreate->create($new_user, true);
 
