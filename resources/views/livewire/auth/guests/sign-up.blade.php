@@ -289,7 +289,7 @@
                     data-lucide="shield-check"></i></div>
             <input type="password" id="signUp-password-confirm" aria-owns="signUp-password-confirm-feedback"
                 name="password_confirmation" minlength="8" maxlength="72" required
-                wire:model="password_confirmation" autocomplete="off"
+                wire:model="password_confirmation" autocomplete="new-password"
                 class="form-control rm-bg-icon border-bottom ps-5 z-0
                                 @error('password')
                     is-invalid
@@ -323,7 +323,10 @@
         </div>
 
         <button type="submit" nonce="{{ $nonce }}" id="signUpBtn" class="btn btn-primary btn-lg w-100"
-            disabled>{{ __('register.sign_up.sign_up') }}</button>
+            disabled>{{ __('register.sign_up.sign_up') }}
+            <span class="spinner-border spinner-border-sm text-light" aria-hidden="true" wire:loading></span>
+            <span class="visually-hidden" role="status" wire:loading>Processing...</span>
+        </button>
 
 
     </form>

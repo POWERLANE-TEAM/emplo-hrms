@@ -112,9 +112,9 @@
             Livewire.hook('request', ({ fail }) => {
                 fail(({ status, preventDefault }) => {
                     if (status === 419) {
-                        preventDefault();
+                        // preventDefault();
                         /* Inert custom page expired propmt */
-                        Livewire.navigate('/419')
+
                     }
 
                     @stack('livewire-failed-request-script')

@@ -2,7 +2,7 @@
     font-weight: 600;
 
     &:hover:not(.no-hover) {
-        background-color: color-mix(in srgb, var(--bs-white) 75%, transparent);
+        background-color: color-mix(in srgb, var(--bs-white) 80%, transparent);
         color: var(--bs-primary);
         font-size: 0.995em;
     }

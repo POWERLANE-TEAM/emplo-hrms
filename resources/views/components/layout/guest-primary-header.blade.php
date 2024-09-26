@@ -21,8 +21,17 @@
                 <x-nav-link href="/contact-us" class="nav-link" :active="request()->is('contact-us')">Contact</x-nav-link>
 
                 @guest
-                    <x-nav-link href="/login" class="nav-link bg-white text-primary" :active="request()->is('login')">Sign
+                    <x-nav-link href="/login"
+                        class="nav-link btn btn-lg btn-outline-secondary border border-secondary-subtle"
+                        :active="request()->is('login')">Sign
                         In</x-nav-link>
+
+                    <a href="#" class="nav-link bg-white text-primary border border-secondary-subtle"
+                        aria-controls="signUpForm" data-bs-toggle="modal" data-bs-target="#signUpForm">
+                        Sign Up
+
+                    </a>
+
                 @endguest
 
                 @auth
@@ -50,6 +59,12 @@
                     @guest
                         <li class="dropdown-item">
                             <x-nav-link href="/login" class="btn btn-secondary bg-white text-primary nav-link">Sign
+                                In
+                            </x-nav-link>
+                        </li>
+
+                        <li class="dropdown-item">
+                            <x-nav-link href="" class="btn btn-secondary bg-white text-primary nav-link">Sign
                                 In
                             </x-nav-link>
                         </li>
