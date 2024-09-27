@@ -2,11 +2,12 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use App\Models\Employee;
 use App\Models\UserRole;
 use App\Models\UserStatus;
-use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -26,23 +27,20 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'account_type' => $this->faker->randomElement(['APPLICANT', 'EMPLOYEE']),
+            'account_type' => $this->faker->randomElement(['applicant', 'employee']),
             'account_id' => function (array $attributes) {
-                if ($attributes['account_type'] === 'EMPLOYEE') {
+                if ($attributes['account_type'] === 'employee') {
                     $employee = Employee::factory()->create();
-
                     return $employee->employee_id;
                 }
-
                 return fake()->randomDigitNotNull();
             },
             'email' => fake()->unique()->randomElement([
                 fake()->safeEmail(),
                 fake()->freeEmail(),
             ]),
-            'password' => static::$password ??= Hash::make('P@ssw0rd'),
-            'user_role_id' => UserRole::inRandomOrder()->first()->user_role_id ?? 1,
-            'user_status_id' => UserStatus::inRandomOrder()->first()->user_status_id ?? 1,
+            'password' => static::$password ??= Hash::make('UniqP@ssw0rd'),
+            'user_status_id' => UserStatus::factory(),
             'email_verified_at' => fake()->unique()->randomElement([
                 null,
                 fake()->dateTimeBetween('-10days', 'now'),
