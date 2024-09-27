@@ -9,7 +9,9 @@
         <h4 class="card-title text-primary fw-bold mb-0">' .
             e($job_vacancy->jobDetails->jobTitle->job_title) .
             '</h4>
-        <p class="fs-6 text-black ">Job Location</p>
+        <p class="fs-6 text-black ">' .
+            $job_vacancy->jobDetails->specificArea->area_name .
+            '</p>
     </hgroup>
     <a href="' .
             (auth()->check() ? url('/apply') : '') .
