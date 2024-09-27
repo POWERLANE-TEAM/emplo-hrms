@@ -287,15 +287,7 @@
             </x-slot:feedback>
         </x-form.password>
 
-        <x-form.terms-condition class=" {{ $errors->has('consent') ? 'is-invalid' : '' }}">
-
-            <x-slot:feedback>
-                @include('components.form.input-feedback', [
-                    'feedback_id' => 'terms-condition-feedback',
-                    'message' => $errors->first('consent'),
-                ])
-            </x-slot:feedback>
-        </x-form.terms-condition>
+        <x-form.checkbox-terms-condition :nonce="$nonce" />
 
         <button type="submit" nonce="{{ $nonce }}" id="signUpBtn" class="btn btn-primary btn-lg w-100"
             disabled>{{ __('register.sign_up.sign_up') }}
