@@ -126,6 +126,18 @@ class Employee extends Model
         return $this->hasMany(PerformanceEvaluation::class, 'evaluatee', 'employee_id');
     }
 
+    // returns employee's permanent barangay address
+    public function permanentBarangay(): BelongsTo
+    {
+        return $this->belongsTo(Barangay::class, 'permanent_barangay', 'barangay_code');
+    }
+
+    // returns employee's present barangay address
+    public function presentBarangay(): BelongsTo
+    {
+        return $this->belongsTo(Barangay::class, 'present_barangay', 'barangay_code');
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Recruitment Records Management
