@@ -231,8 +231,7 @@
             </x-slot:feedback>
         </x-form.input-text>
 
-        <x-form.email input_id="signUp-email" label="Email Address" input_name="email" auto_complete="email"
-            :nonce="$nonce" aria-owns="signUp-email-feedback"
+        <x-form.email id="signUp-email" label="Email Address" name="email" autocomplete="email" :nonce="$nonce"
             class=" {{ $errors->has('email') ? 'is-invalid' : '' }}">
 
             <x-slot:feedback>
