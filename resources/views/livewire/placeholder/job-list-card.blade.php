@@ -1,4 +1,4 @@
-<sidebar class="nav nav-tabs col-12 col-md-4 " id="jobs-list" role="tablist" aria-busy="true" nonce="csp_nonce()">
+<sidebar class="nav nav-tabs col-12 col-md-4 ms-auto" id="jobs-list" role="tablist" aria-busy="true" nonce="csp_nonce()">
 
     @for ($i = 0; $i < 3; $i++)
         <li class="card nav-item ps-0 " role="presentation">

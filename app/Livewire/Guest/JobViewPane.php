@@ -10,12 +10,12 @@ class JobViewPane extends Component
 {
     private $job_vacancy;
 
-    #[On('job-selected')]
+    #[On('job-hiring-selected')]
     public function showJobVacancy($job_vacancy)
     {
-        $this->placeholder();
-        $this->job_vacancy = new JobVacancy($job_vacancy[0]);
-        // dd($job_vacancy[0]);
+        $this->job_vacancy = $job_vacancy;
+
+        // dd($this->job_vacancy);
     }
 
     #[On('job-searched')]

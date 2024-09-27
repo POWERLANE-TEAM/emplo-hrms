@@ -65,7 +65,7 @@
     <section class="first-section ">
         <div class="row">
             <div class="left col-12 col-md-6 align-content-center">
-                <div class="text-primary fs-1 fw-bold tw-tracking-wide" aria-label="We are hiring!">
+                <div class="text-primary fs-1 fw-bold " aria-label="We are hiring!">
                     We are hiring!
                 </div>
                 <p class="fs-4 fw-medium">
@@ -104,12 +104,12 @@
 
     <section class="second-section">
         @livewire('guest.job-search-input')
-        <div class="tw-px-[5rem] tw-pt-[2.5rem] tw-pb-[1rem]">
-            <em>
+        <div class="px-md-5  pt-md-5 pb-md-3 ms-5">
+            <em class=" ms-5">
                 Currently <span></span> <span>jobs</span> available
             </em>
         </div>
-        <section class="job-listing d-flex row gap-5 mb-5">
+        <section class="job-listing d-flex  row gap-5 mb-5 ">
 
             @livewire('guest.jobs-list-card', ['lazy' => true])
 

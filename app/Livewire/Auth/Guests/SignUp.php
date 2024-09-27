@@ -63,19 +63,11 @@ class SignUp extends Component
     }
 
 
-    #[On('job-selected')]
+    // #[On('job-hiring-selected')]
     public function showJobVacancy($job_vacancy)
     {
 
-        $this->job_vacancy = collect($job_vacancy[0]);
-        $this->job_vacancy = $this->job_vacancy->map(function ($item) {
-            if (is_array($item)) {
-                return collect($item)->map(function ($nestedItem) {
-                    return is_array($nestedItem) ? collect($nestedItem) : $nestedItem;
-                });
-            }
-            return $item;
-        });
+        $this->job_vacancy = $job_vacancy;
 
         // dd($this->job_vacancy['job_details']['job_title']['job_title']);
     }

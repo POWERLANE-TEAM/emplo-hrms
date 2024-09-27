@@ -7,10 +7,10 @@
 <header>
     <hgroup>
         <h4 class="card-title text-primary fw-bold mb-0">' .
-            e($job_vacancy->jobDetails->jobTitle->job_title) .
+            $job_vacancy['jobDetails']['jobTitle'][0]['job_title'] .
             '</h4>
         <p class="fs-6 text-black ">' .
-            $job_vacancy->jobDetails->specificArea->area_name .
+            $job_vacancy['jobDetails']['specificArea'][0]['area_name'] .
             '</p>
     </hgroup>
     <a href="' .
@@ -27,7 +27,7 @@
 
     <label for="job-descr-panel" class="job-descr card-text">
         ' .
-            e($job_vacancy->jobDetails->jobTitle->job_desc) .
+            $job_vacancy['jobDetails']['jobTitle'][0]['job_desc'] .
             '
     </label>
     <input type="checkbox" class="showMoreToggle" name="" id="job-descr-panel">
@@ -40,7 +40,7 @@
     @endphp
 @endif
 
-<article class="job-view tab-content col-12 col-md-6" id="job-view-pane" nonce="{{ csp_nonce() }}">
+<article class="job-view tab-content col-12 col-md-6 me-auto" id="job-view-pane" nonce="{{ csp_nonce() }}">
     <div class="job-content tab-pane fade show active card border-0 bg-body-secondary w-100 " id="#1-tab-pane"
         role="tabpanel" aria-labelledby="tab">
         <div class="d-flex">

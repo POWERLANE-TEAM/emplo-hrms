@@ -1,4 +1,4 @@
-<article class="job-view tab-content col-12 col-md-6">
+<article class="job-view tab-content col-12 col-md-6 me-auto">
     <div class="job-content tab-pane fade show active card border-0 bg-secondary-subtle w-100 " role="tabpanel"
         aria-labelledby="-tab">
         <div class="d-flex">
