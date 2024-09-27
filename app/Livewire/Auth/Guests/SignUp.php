@@ -80,22 +80,20 @@ class SignUp extends Component
         // dd($this->job_vacancy['job_details']['job_title']['job_title']);
     }
 
-    // protected function prepareForValidation($attributes = null): void
-    // {
-
-    //     $this->email = trim($this->email);
-    //     $this->first_name = trim($this->first_name);
-    //     $this->middle_name = trim($this->middle_name);
-    //     $this->last_name = trim($this->last_name);
-    //     $this->contact_number = trim($this->contact_number);
-    // }
-
     public function store(CreatesNewUsers $userCreate)
     {
         /* Reference https://www.youtube.com/watch?v=EuqyYQdyBU8 */
 
         if (empty($this->contact_number)) {
             $this->contact_number = fake()->unique()->numerify('###########');
+        }
+
+        if ((!app()->runningInConsole() && !app()->environment('local')) || !app()->environment('testing')) {
+            $this->email = trim($this->email);
+            $this->first_name = trim($this->first_name);
+            $this->middle_name = trim($this->middle_name);
+            $this->last_name = trim($this->last_name);
+            $this->contact_number = trim($this->contact_number);
         }
 
         $this->validate();
@@ -112,8 +110,6 @@ class SignUp extends Component
             'account_type' => self::ACCOUNT_TYPE,
             'user_status' => self::ACCOUNT_STATUS,
         ];
-
-        dd($new_user);
 
         $new_user_created = $userCreate->create($new_user, true);
 
