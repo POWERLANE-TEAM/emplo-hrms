@@ -243,8 +243,8 @@
             </x-slot:feedback>
         </x-form.email>
 
-        <x-form.password input_id="signUp-password" label="Password" :has_confirm="true" input_name="password"
-            auto_complete="new-password" :nonce="$nonce" class=" {{ $errors->has('password') ? 'is-invalid' : '' }}">
+        <x-form.password id="signUp-password" label="Password" :has_confirm="true" name="password"
+            autocomplete="new-password" :nonce="$nonce" class=" {{ $errors->has('password') ? 'is-invalid' : '' }}">
 
             <x-slot:input_icon_left>
                 <i data-lucide="lock"></i>
@@ -265,8 +265,8 @@
             </x-slot:feedback>
         </x-form.password>
 
-        <x-form.password input_id="signUp-password-confirm" label="Confirm Password" input_name="password_confirmation"
-            auto_complete="new-password" :nonce="$nonce" class=" {{ $errors->has('password') ? 'is-invalid' : '' }}">
+        <x-form.password id="signUp-password-confirm" label="Confirm Password" name="password_confirmation"
+            autocomplete="new-password" :nonce="$nonce" class=" {{ $errors->has('password') ? 'is-invalid' : '' }}">
 
             <x-slot:input_icon_left>
                 <i data-lucide="shield-check"></i>
