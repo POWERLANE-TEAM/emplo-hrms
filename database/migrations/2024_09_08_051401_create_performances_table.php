@@ -42,9 +42,6 @@ return new class extends Migration
         Schema::create('performance_details', function (Blueprint $table) {
             $table->id('perf_detail_id');
 
-            // if need to determine which employment status (reg or prob)
-            // $table->morphs('evaluatee');
-
             $table->foreignIdFor(PerformancePeriod::class, 'perf_period_id')
                 ->constrained('performance_periods', 'perf_period_id')
                 ->cascadeOnUpdate()
@@ -58,9 +55,7 @@ return new class extends Migration
             $table->longText('evaluatee_comments')->nullable();
             $table->timestamp('evaluatee_signed_at')->nullable();
 
-            // allows for any types of employee to comments
-            $table->nullableMorphs('comments');
-
+            $table->longText('evaluator_comments')->nullable();
             $table->timestamp('evaluator_signed_at')->nullable();
             $table->foreignIdFor(Employee::class, 'evaluator')
                 ->nullable()
@@ -68,6 +63,7 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
+            $table->longText('supervisor_comments')->nullable();
             $table->timestamp('supervisor_signed_at')->nullable();
             $table->foreignIdFor(Employee::class, 'supervisor')
                 ->nullable()
