@@ -14,7 +14,7 @@
 
                 <x-slot:right_icon>
                     <button class="border-0 bg-transparent">
-                        <i data-lucide="search"></i>
+                        <x-icons.white-search-1 />
                     </button>
                 </x-slot:right_icon>
 
