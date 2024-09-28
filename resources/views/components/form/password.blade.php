@@ -11,12 +11,18 @@
     </div>
     <input type="password"
         {{ $attributes->merge([
-            'class' => 'form-control rm-bg-icon border-bottom ps-5 z-0',
-            'autocomplete' => $attributes->get('autocomplete', 'off'),
-            'pattern' => $attributes->get('pattern', '^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[\W_])[^\s]{8,72}$'),
-        ]) }}
-        aria-owns="{{ $attributes->get('id') }}-feedback {{ $has_confirm ? $attributes->get('id') . '-confirm' : '' }}"
-        minlength="8" maxlength="72" required wire:model="{{ $attributes->get('name') }}" nonce="{{ $nonce }}">
+                'class' => 'form-control rm-bg-icon border-bottom ps-5 z-0',
+                'autocomplete' => $attributes->get('autocomplete', 'off'),
+                'pattern' =>
+                    $attributes->has('pattern') && !empty($attributes->get('pattern'))
+                        ? $attributes->get('pattern')
+                        : '^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[\W_])[^\s]{8,72}$',
+            ])->except(['pattern']) }}
+        @if ($attributes->has('pattern')) @if (!empty($attributes->get('pattern')))
+            pattern="{{ $attributes->get('pattern') }}" @endif
+    @else pattern="^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[\W_])[^\s]{8,72}$" @endif
+    aria-owns="{{ $attributes->get('id') }}-feedback {{ $has_confirm ? $attributes->get('id') . '-confirm' : '' }}"
+    minlength="8" maxlength="72" required wire:model="{{ $attributes->get('name') }}" nonce="{{ $nonce }}">
 
     @if (!empty($toggle_password))
         {{ $toggle_password }}
