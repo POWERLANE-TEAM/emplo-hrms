@@ -105,3 +105,8 @@ header {
     }
 
 }
+
+.lg-illustration {
+    width: clamp(150px, 6rem + 10vw + 12vh, 750px);
+    height: auto;
+}

@@ -114,6 +114,9 @@
         </div>
 
     </div>
+
+    <x-modals.email-sent label="Registered email notification" id="register-email-alert"
+        message="Please check your inbox for the next steps." />
 @endsection
 
 @section('footer')

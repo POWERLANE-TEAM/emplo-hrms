@@ -42,6 +42,10 @@ document.addEventListener('livewire:init', () => {
         }
     });
 
+    Livewire.on('guest-new-user-registered', (event) => {
+        bootstrap.Modal.getOrCreateInstance('#signUpForm').hide();
+        bootstrap.Modal.getOrCreateInstance('#register-email-alert').show();
+    });
 
 });
 
