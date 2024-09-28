@@ -137,7 +137,7 @@ section.top-vector {
 
                 button {
                     place-items: center;
-                    min-height: 10vw;
+                    min-height: min(10vw, calc(300px + 3rem));
                 }
 
                 button * {
