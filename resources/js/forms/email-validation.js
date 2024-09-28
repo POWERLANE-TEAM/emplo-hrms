@@ -3,7 +3,7 @@ import InputValidator, { setInvalidMessage } from './input-validator.js';
 import debounce from '../debounce-fn.js';
 
 let validEmailDomains;
-let emailDomainResouurces = `api/json/email-domain-list`;
+let emailDomainResouurces = `build/assets/email-domain-list.json`;
 
 
 fetch(emailDomainResouurces)

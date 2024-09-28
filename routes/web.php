@@ -38,8 +38,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 Route::get('/employee/{page?}', [EmployeeController::class, 'employee'])->middleware(['auth', 'verified']);
 
-Route::get('api/json/{requestedData}', [JsonController::class, 'index']);
-
 Route::middleware('guest')->group(function () {
     Route::get('/auth/google/redirect', [GoogleOAuth::class, 'googleOauth'])
         ->name('auth.google');
