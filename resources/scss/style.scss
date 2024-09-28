@@ -27,6 +27,12 @@ sidebar {
         }
     }
 
+    &.bg-primary {
+        .text-primary {
+            color: var(--main-white) !important;
+        }
+    }
+
 
 }
 
