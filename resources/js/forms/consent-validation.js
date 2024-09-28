@@ -33,6 +33,7 @@ export default class ConsentValidator {
             setFormDirty(event);
 
             const isValid = this.validateElement(event.target);
+
             try {
                 resultRef = isValid;
             } catch (error) {

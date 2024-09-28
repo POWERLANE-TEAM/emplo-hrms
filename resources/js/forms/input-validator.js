@@ -226,6 +226,7 @@ export default class InputValidator {
         }
 
         callback(input_element, "");
+        input_element.setCustomValidity('');
         return true;
 
     }
@@ -371,6 +372,8 @@ export function setFormDirty(event) {
     const inputElements = parentForm.querySelectorAll('input');
 
     inputElements.forEach(input => {
-        input.classList.add('is-dirty');
+        if (input.hasAttribute('name')) {
+            input.classList.add('is-dirty');
+        }
     });
 }

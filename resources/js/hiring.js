@@ -249,7 +249,7 @@ function validateSignUpForm(sigUpFormString = `form[action='applicant/sign-up']`
     }
 
     // console.log(sigUpFormString)
-    // console.log(signUpBool)
+    console.log(signUpBool)
     // console.log(consentAgreed)
     // console.log(isWeakPassword)
     if (!signUpBool.isValidEmail || !signUpBool.isValidPassword || !signUpBool.isValidFirstName || !signUpBool.isValidMiddleName || !signUpBool.isValidLastName) {

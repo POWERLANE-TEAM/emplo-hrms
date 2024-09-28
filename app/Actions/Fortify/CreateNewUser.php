@@ -58,7 +58,10 @@ class CreateNewUser implements CreatesNewUsers
 
             DB::commit();
 
-            event(new Registered($new_user_created));
+            defer(function () use ($new_user_created) {
+                event(new Registered($new_user_created));
+            });
+
             return $new_user_created;
         } catch (\Exception $e) {
             DB::rollBack();
