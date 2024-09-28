@@ -29,7 +29,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('specific_areas', function (Blueprint $table) {
-            //
+            $table->dropForeignIdFor(Employee::class, 'area_manager');
+            $table->dropTimestamps();
         });
     }
 };

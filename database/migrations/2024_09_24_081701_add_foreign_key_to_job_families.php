@@ -28,6 +28,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('job_families');
+        Schema::table('job_families', function (Blueprint $table) {
+            $table->dropForeignIdFor(Employee::class, 'office_head');
+            $table->dropTimestamps();
+        });
     }
 };
