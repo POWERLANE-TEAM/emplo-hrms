@@ -28,8 +28,10 @@ sidebar {
     }
 
     &.bg-primary {
-        .text-primary {
-            color: var(--main-white) !important;
+        *:not(.bg-white) {
+            &.text-primary {
+                color: var(--main-white) !important;
+            }
         }
     }
 
@@ -115,4 +117,44 @@ header {
 .lg-illustration {
     width: clamp(150px, 6rem + 10vw + 12vh, 750px);
     height: auto;
+}
+
+mark {
+    -webkit-animation: 0.5s highlight 0.05s 1 normal forwards, 0.5s borderHighlight 0.05s 1 normal forwards;
+    animation: 0.5s highlight 0.05s 1 normal forwards, 0.5s borderHighlight 0.05s 1 normal forwards;
+
+    border-radius: 0.8em 0.3em;
+    border: 1px solid transparent;
+
+    margin-left: calc((0.125rem + 0.01vw)* -0.1);
+    padding-left: calc(0.125rem + 0.01vw);
+
+    background-color: none;
+    background: linear-gradient(90deg, var(--bs-highlight-bg) 50%, rgba(255, 255, 255, 0) 50%);
+    background-size: 200% 100%;
+    background-position: 100% 0;
+}
+
+@-webkit-keyframes highlight {
+    to {
+        background-position: 0 0;
+    }
+}
+
+@keyframes highlight {
+    to {
+        background-position: 0 0;
+    }
+}
+
+@-webkit-keyframes borderHighlight {
+    to {
+        border-color: color-mix(in srgb, var(--bs-highlight-bg) 50%, orange 50%);
+    }
+}
+
+@keyframes borderHighlight {
+    to {
+        border-color: color-mix(in srgb, var(--bs-highlight-bg) 50%, orange 50%);
+    }
 }
