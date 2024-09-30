@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Enums\UserPermission;
+use App\Enums\UserRole;
 use App\Models\User;
 use App\Models\Employee;
 use App\Models\JobLevel;
@@ -27,11 +29,7 @@ class DatabaseSeeder extends Seeder
         // Reset cached roles and permissions
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
-        $user_statuses = UserStatus::factory()->predefinedUserStatuses();
-
-        foreach ($user_statuses as $user_status) {
-            UserStatus::create($user_status);
-        }
+        UserStatus::factory(3)->create();
 
         $this->call(RolesAndPermissionsSeeder::class);
 
@@ -52,10 +50,14 @@ class DatabaseSeeder extends Seeder
         JobDetail::factory(rand(5, 20))->create();
         
         User::factory()
-            ->count(50)
+            ->count(10)
             ->create()
             ->each(function ($user) {
-                $user->assignRole('guest');
+                $user->assignRole(UserRole::BASIC);
+                $user->givePermissionTo([
+                    UserPermission::VIEW_APPICANT_INFORMATION,
+                    UserPermission::VIEW_EMPLOYEE_INFORMATION,
+                ]);
         });
 
         $employees = collect();

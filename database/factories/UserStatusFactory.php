@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\UserStatus;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,18 +18,13 @@ class UserStatusFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_status_name' => $this->faker->randomElement(['ACTIVE', 'INACTIVE', 'BLOCKED']),
-            'user_status_desc' => fake()->paragraph(255),
-        ];
-    }
+            'user_status_name' => $this->faker->randomElement([
+                UserStatus::ACTIVE,
+                UserStatus::INACTIVE,
+                UserStatus::SUSPENDED,
+            ]),
 
-    public function predefinedUserStatuses()
-    {
-        return [
-            ['user_status_name' => 'ACTIVE', 'user_status_desc' => fake()->paragraph(255)],
-            ['user_status_name' => 'INACTIVE', 'user_status_desc' => fake()->paragraph(255)],
-            ['user_status_name' => 'BLOCKED', 'user_status_desc' => fake()->paragraph(255)],
-            // Add more documents as needed
+            'user_status_desc' => fake()->paragraph(255),
         ];
     }
 }

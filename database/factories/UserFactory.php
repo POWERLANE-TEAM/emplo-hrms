@@ -40,7 +40,7 @@ class UserFactory extends Factory
                 fake()->freeEmail(),
             ]),
             'password' => static::$password ??= Hash::make('UniqP@ssw0rd'),
-            'user_status_id' => UserStatus::factory(),
+            'user_status_id' => $this->faker->randomElement([1, 2, 3]),
             'email_verified_at' => fake()->unique()->randomElement([
                 null,
                 fake()->dateTimeBetween('-10days', 'now'),

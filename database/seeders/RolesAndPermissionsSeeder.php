@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 // Refer to: https://spatie.be/docs/laravel-permission/v6/advanced-usage/seeding
 
+use App\Enums\UserPermission;
+use App\Enums\UserRole;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -13,35 +15,57 @@ class RolesAndPermissionsSeeder extends Seeder
 {
     public function run(): void
     {
-        // Reset cached roles and permissions
-        app()[PermissionRegistrar::class]->forgetCachedPermissions();
-
-        // create permissions
-        Permission::firstOrCreate(['name' => 'create announcement']);
-
-        Permission::firstOrCreate(['name' => 'view announcement']);
-
-        Permission::firstOrCreate(['name' => 'edit announcement']);
-
-        Permission::firstOrCreate(['name' => 'delete announcement']);
-
-        // update cache to know about the newly created permissions (required if using WithoutModelEvents in seeders)
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
 
-        // guest role and permissions
-        $guest = Role::create(['name' => 'guest']);
-        $guest->givePermissionTo('view announcement');
+        /*
+         * Define permissions here using backed enums in Permissions             
+         */
 
-        // user role and permissions
-        $user = Role::create(['name' => 'user']);
-        $user->givePermissionTo([
-            'view announcement',
-            'edit announcement'
+        // create permissions goes here
+        Permission::firstOrCreate(['name' => UserPermission::CREATE_JOB_LISTING]);
+        Permission::firstOrCreate(['name' => UserPermission::CREATE_ANNOUNCEMENT]);
+
+        // view permissions goes here
+        Permission::firstOrCreate(['name' => UserPermission::VIEW_APPICANT_INFORMATION]);
+        Permission::firstOrCreate(['name' => UserPermission::VIEW_EMPLOYEE_INFORMATION]);
+
+        
+        // update permissions goes here
+        Permission::firstOrCreate(['name' => UserPermission::UDPATE_JOB_LISTING]);
+        Permission::firstOrCreate(['name' => UserPermission::UPDATE_ANNOUNCEMENT]);
+
+
+        // delete permissions here
+        Permission::firstOrCreate(['name' => UserPermission::DELETE_JOB_LISTING]);
+        Permission::firstOrCreate(['name' => UserPermission::DELETE_ANNOUNCEMENT]);
+
+
+        app()[PermissionRegistrar::class]->forgetCachedPermissions();
+
+
+        /*
+         * Define user roles with default permissions here using backed enums in Roles                                                              
+         */
+
+        // basic level permissions goes here
+        $basic = Role::create(['name' => UserRole::BASIC]);
+        $basic->givePermissionTo([
+            UserPermission::VIEW_APPICANT_INFORMATION,
+            UserPermission::VIEW_EMPLOYEE_INFORMATION,
         ]);
 
-        // system administrator role and permissions
-        $sysadmin = Role::create(['name' => 'sysadmin']);
-        $sysadmin->givePermissionTo(Permission::all());
+        // intermediate level permissions goes here
+        $edit = Role::create(['name' => UserRole::INTERMEDIATE]);
+        $edit->givePermissionTo([
+            UserPermission::VIEW_APPICANT_INFORMATION,
+            UserPermission::VIEW_EMPLOYEE_INFORMATION,
+            UserPermission::CREATE_JOB_LISTING,
+            UserPermission::CREATE_ANNOUNCEMENT,
+        ]);
+
+        // advanced level permissions goes here
+        $manage = Role::create(['name' => UserRole::ADVANCED]);
+        $manage->givePermissionTo(Permission::all());
     }
 }
