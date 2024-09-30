@@ -23,13 +23,13 @@ class Barangay extends Model
     */
 
     // returns employees who are permanent barangay residents
-    public function permanentEmployeeResidents(): HasMany
+    public function permanentResidents(): HasMany
     {
         return $this->hasMany(Employee::class, 'permanent_barangay', 'barangay_code');
     }
 
     // returns employees who are present barangay residents
-    public function presentEmployeeResidents(): HasMany
+    public function presentResidents(): HasMany
     {
         return $this->hasMany(Employee::class, 'present_barangay', 'barangay_code');
     }
