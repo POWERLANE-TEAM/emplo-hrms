@@ -2,14 +2,16 @@
 
 namespace App\Providers;
 
-use Illuminate\Auth\Notifications\VerifyEmail;
-use Illuminate\Broadcasting\BroadcastServiceProvider;
-use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Support\Facades\Validator;
+use App\Enums\UserRole;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Auth\Notifications\VerifyEmail;
+use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Broadcasting\BroadcastServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -68,5 +70,10 @@ class AppServiceProvider extends ServiceProvider
         ]);
 
         BroadcastServiceProvider::class;
+
+        // if user role is advanced, bypass all permission checks
+        Gate::before(function ($user, $ability) {
+            return $user->hasRole(UserRole::ADVANCED) ? true : null;
+        });
     }
 }
