@@ -85,7 +85,11 @@ class JobsListCard extends Component
     public function updateOnSearch($search = null)
     {
         if (strlen(trim($search)) >= 1) {
-            $query = $this->baseJobVacancyQuery()->with(['jobDetails']);
+            $query = $this->baseJobVacancyQuery()->with([
+                'jobDetails',
+                'jobTitle.specificAreas',
+                'jobTitle.jobFamilies'
+            ]);
             $this->applySearchConditions($query, $search);
 
             $result = $query->latest()->get();
