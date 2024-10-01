@@ -30,11 +30,9 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::firstOrCreate(['name' => UserPermission::VIEW_APPICANT_INFORMATION]);
         Permission::firstOrCreate(['name' => UserPermission::VIEW_EMPLOYEE_INFORMATION]);
 
-        
         // update permissions goes here
         Permission::firstOrCreate(['name' => UserPermission::UDPATE_JOB_LISTING]);
         Permission::firstOrCreate(['name' => UserPermission::UPDATE_ANNOUNCEMENT]);
-
 
         // delete permissions here
         Permission::firstOrCreate(['name' => UserPermission::DELETE_JOB_LISTING]);

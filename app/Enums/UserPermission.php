@@ -19,11 +19,9 @@ enum UserPermission: string
     case VIEW_APPICANT_INFORMATION = 'view applicant information';
     case VIEW_EMPLOYEE_INFORMATION = 'view employee information';
 
-
     // Update cases goes here
     case UDPATE_JOB_LISTING = 'update job listing';
     case UPDATE_ANNOUNCEMENT = 'update announcement';
-
 
     // Delete cases goes here
     case DELETE_JOB_LISTING = 'delete job listing';
