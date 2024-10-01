@@ -18,7 +18,7 @@ class Exam extends Model
         'max_score',
     ];
 
-    public function applicationExams(): HasMany
+    public function applications(): HasMany
     {
         return $this->hasMany(ApplicationExam::class, 'exam_id', 'exam_id');
     }

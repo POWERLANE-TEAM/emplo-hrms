@@ -26,7 +26,7 @@ class EmployeeLeave extends Model
     */
 
     // returns the employee's leave category/type
-    public function leaveCategory(): BelongsTo
+    public function category(): BelongsTo
     {
         return $this->belongsTo(LeaveCategory::class, 'leave_id', 'leave_id');
     }
