@@ -6,31 +6,30 @@
 
     @foreach ($job_vacancies as $job_vacancy)
         <li class="card nav-item ps-0 " role="presentation">
-            <button value="{{ $job_vacancy->jobDetails->jobTitle->job_title_id }}"
+            <button value="{{ $job_vacancy->jobTitle->job_title_id }}"
                 x-on:click.debounce.10ms="$dispatch('job-hiring-selected', { job_vacancy: {
                 jobDetails: {
                     jobTitle: [
-                        {{ $job_vacancy->jobDetails->jobTitle }}
+                        {{ $job_vacancy->jobTitle }}
                     ],
-                    jobFamily: [
-                       {{ $job_vacancy->jobDetails->jobFamily }}
+                    jobFamilies: [
+                       {{ $job_vacancy->jobTitle->jobFamilies->first() }}
                     ],
-                    specificArea: [
-                        {{ $job_vacancy->jobDetails->specificArea }}
+                    specificAreas: [
+                        {{ $job_vacancy->jobTitle->specificAreas->first() }}
             ],
             }
             } })"
-                class="nav-link d-flex flex-row px-md-5 py-md-4"
-                id="{{ $job_vacancy->jobDetails->jobTitle->job_title_id }}-tab" data-bs-toggle="tab" role="tab"
-                aria-controls="job-view-pane"
-                aria-label="{{ strip_tags($job_vacancy->jobDetails->jobTitle->job_title) }}">
+                class="nav-link d-flex flex-row px-md-5 py-md-4" id="{{ $job_vacancy->jobTitle->job_title_id }}-tab"
+                data-bs-toggle="tab" role="tab" aria-controls="job-view-pane"
+                aria-label="{{ strip_tags($job_vacancy->jobTitle->job_title) }}">
                 <div class="col-12 text-start">
                     <header>
                         <hgroup>
                             <div class="card-title fs-3 fw-bold text-body mb-0">
-                                {!! $job_vacancy->jobDetails->jobTitle->job_title !!}</div>
+                                {!! $job_vacancy->jobTitle->job_title !!}</div>
                             <p class="fs-4 text-primary">
-                                {!! $job_vacancy->jobDetails->jobFamily->job_family_name !!}</p>
+                                {!! $job_vacancy->jobTitle->jobFamilies->first()->job_family_name !!}</p>
                         </hgroup>
                     </header>
                 </div>

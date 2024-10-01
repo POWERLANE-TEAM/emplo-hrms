@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class JobVacancy extends Model
 {
@@ -35,5 +36,10 @@ class JobVacancy extends Model
     public function applications(): HasMany
     {
         return $this->hasMany(Application::class, 'job_vacancy_id', 'job_vacancy_id');
+    }
+
+    public function jobTitle(): HasOneThrough
+    {
+        return $this->hasOneThrough(JobTitle::class, JobDetail::class, 'job_detail_id', 'job_title_id', 'job_detail_id', 'job_title_id');
     }
 }

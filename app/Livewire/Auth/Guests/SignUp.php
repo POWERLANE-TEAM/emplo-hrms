@@ -63,13 +63,13 @@ class SignUp extends Component
     }
 
 
-    // #[On('job-hiring-selected')]
+    #[On('job-hiring-selected')]
     public function showJobVacancy($job_vacancy)
     {
 
         $this->job_vacancy = $job_vacancy;
 
-        // dd($this->job_vacancy['job_details']['job_title']['job_title']);
+        // dd($this->job_vacancy);
     }
 
     public function store(CreatesNewUsers $userCreate)

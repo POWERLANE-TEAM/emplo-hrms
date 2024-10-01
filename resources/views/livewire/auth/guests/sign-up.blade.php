@@ -10,7 +10,7 @@
         @if (!empty($job_vacancy))
             <span class="fs-5">
                 {{ __('register.sign_up.for_application') }} <span class="fs-5 fw-semibold">
-                    {{ $job_vacancy['job_details']['job_title'][0]['job_title'] }}
+                    {{ strip_tags($job_vacancy['jobDetails']['jobTitle'][0]['job_title']) }}
 
                 </span>
             </span>

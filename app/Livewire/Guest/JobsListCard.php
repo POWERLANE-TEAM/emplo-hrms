@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Guest;
 
+use App\Models\JobDetail;
+use App\Models\JobTitle;
 use App\Models\JobVacancy;
 use Carbon\Carbon;
 use Livewire\Attributes\Computed;
@@ -12,99 +14,90 @@ class JobsListCard extends Component
 {
     public $job_vacancies;
 
-    private $isFiltered = false;
+    private $is_filtered = false;
 
-    private function getJobVacancies()
+    private function baseJobVacancyQuery()
     {
         return JobVacancy::where('vacancy_count', '>', 1)
             ->where(function ($query) {
                 $query->whereDate('application_deadline_at', '>=', Carbon::today())
                     ->orWhereNull('application_deadline_at');
-            })
-            ->with([
-                'jobDetails.jobTitle',
-                'jobDetails.specificArea',
-                'jobDetails.jobFamily'
-            ])
-            ->latest()
-            ->get();
+            });
     }
 
-    protected function highlightSearchResults($row, $search)
+    private function highlightText($text, $search)
     {
-        if (isset($row->jobDetails->jobTitle->job_title)) {
-            $row->jobDetails->jobTitle->job_title = $this->highlightSearchTerm($row->jobDetails->jobTitle->job_title, $search);
-        }
-
-        if (isset($row->jobDetails->jobTitle->job_desc)) {
-            $row->jobDetails->jobTitle->job_desc = $this->highlightSearchTerm($row->jobDetails->jobTitle->job_desc, $search);
-        }
-
-        if (isset($row->jobDetails->specificArea->area_name)) {
-            $row->jobDetails->specificArea->area_name = $this->highlightSearchTerm($row->jobDetails->specificArea->area_name, $search);
-        }
-
-        if (isset($row->jobDetails->jobFamily->job_family_name)) {
-            $row->jobDetails->jobFamily->job_family_name = $this->highlightSearchTerm($row->jobDetails->jobFamily->job_family_name, $search);
-        }
-
-        return $row;
-    }
-
-    function highlightSearchTerm($text, $search)
-    {
-        $escapedKeyword = preg_quote($search, '/');
-        return preg_replace_callback('/(' . $escapedKeyword . ')/i', function ($matches) {
+        return preg_replace_callback('/(' . preg_quote($search, '/') . ')/i', function ($matches) {
             return "<mark>{$matches[1]}</mark>";
         }, $text);
     }
 
-    protected function applyDeadlineFilter($query)
+    private function applySearchConditions($query, $search)
     {
-        $query->whereDate('application_deadline_at', '>=', Carbon::today())
-            ->orWhereNull('application_deadline_at');
+        $query->where(function ($query) use ($search) {
+            $query->WhereHas('jobTitle', function ($query) use ($search) {
+                $query->where('job_title', 'ilike', '%' . $search . '%')
+                    ->orWhere('job_desc', 'ilike', '%' . $search . '%');
+            })
+                ->orWhereHas('jobTitle.specificAreas', function ($query) use ($search) {
+                    $query->where('area_name', 'ilike', '%' . $search . '%');
+                })
+                ->orWhereHas('jobTitle.jobFamilies', function ($query) use ($search) {
+                    $query->where('job_family_name', 'ilike', '%' . $search . '%');
+                });
+        });
     }
 
-    protected function applySearchFilter($query, $search)
+    private function highlightJobVacancies($job_vacancies, $search)
     {
-        $query->where('job_vacancy_id', 'ilike', '%' . $search . '%')
-            ->orWhereHas('jobDetails.jobTitle', fn($query) => $this->filterJobTitle($query, $search))
-            ->orWhereHas('jobDetails.specificArea', fn($query) => $this->filterSpecificArea($query, $search))
-            ->orWhereHas('jobDetails.jobFamily', fn($query) => $this->filterJobFamily($query, $search));
+        return $job_vacancies->map(function ($job_vacancy) use ($search) {
+
+            if ($job_vacancy->jobTitle) {
+                $job_vacancy->jobTitle->job_title = $this->highlightText($job_vacancy->jobTitle->job_title, $search);
+                $job_vacancy->jobTitle->job_desc = $this->highlightText($job_vacancy->jobTitle->job_desc, $search);
+            }
+
+            if ($job_vacancy->jobTitle->specificAreas) {
+                foreach ($job_vacancy->jobTitle->specificAreas as $specific_area) {
+                    $specific_area->area_name = $this->highlightText($specific_area->area_name, $search);
+                }
+            }
+
+            if ($job_vacancy->jobTitle->jobFamilies) {
+                foreach ($job_vacancy->jobTitle->jobFamilies as $job_family) {
+                    $job_family->job_family_name = $this->highlightText($job_family->job_family_name, $search);
+                }
+            }
+
+            return $job_vacancy;
+        });
     }
 
-    protected function filterJobTitle($query, $search)
+    private function getJobVacancies()
     {
-        $query->where('job_title', 'ilike', '%' . $search . '%')
-            ->orWhere('job_desc', 'ilike', '%' . $search . '%');
-    }
-
-    protected function filterSpecificArea($query, $search)
-    {
-        $query->where('area_name', 'ilike', '%' . $search . '%');
-    }
-
-    protected function filterJobFamily($query, $search)
-    {
-        $query->where('job_family_name', 'ilike', '%' . $search . '%');
+        return $this->baseJobVacancyQuery()
+            ->with(['jobDetails', 'jobTitle.jobFamilies', 'jobTitle.specificAreas'])
+            ->latest()
+            ->get();
     }
 
     #[On('job-searched')]
     public function updateOnSearch($search = null)
     {
-        if (strlen(trim($search)) >= '1') {
-            $result = JobVacancy::where('vacancy_count', '>', 1)
-                ->where(fn($query) => $this->applyDeadlineFilter($query))
-                ->where(fn($query) => $this->applySearchFilter($query, $search))
-                ->latest()
-                ->get()
-                ->map(fn($row) => $this->highlightSearchResults($row, $search));
+        if (strlen(trim($search)) >= 1) {
+            $query = $this->baseJobVacancyQuery()->with(['jobDetails']);
+            $this->applySearchConditions($query, $search);
+
+            $result = $query->latest()->get();
+            $result = $this->highlightJobVacancies($result, $search);
         } else {
             $result = $this->getJobVacancies();
         }
+
         $this->job_vacancies = $result;
-        $this->isFiltered = true;
+        $this->is_filtered = true;
     }
+
 
     public function placeholder()
     {
@@ -116,16 +109,27 @@ class JobsListCard extends Component
     public function render()
     {
 
-        if (! $this->isFiltered) {
+        if (! $this->is_filtered) {
             $this->job_vacancies = $this->getJobVacancies();
 
             // dd($this->job_vacancies);
         }
 
-        foreach ($this->job_vacancies  as $jobVacancy) {
-            $jobVacancy->jobDetails->jobTitle->makeHidden(['job_title_id']);
-            $jobVacancy->jobDetails->specificArea->makeHidden(['area_id']);
-            $jobVacancy->jobDetails->jobFamily->makeHidden(['job_family_id', 'office_head']);
+        foreach ($this->job_vacancies as $job_vacancy) {
+            $job_details = $job_vacancy->jobDetails;
+            $job_title = $job_vacancy->jobTitle;
+
+            if ($job_title) {
+                $job_title->makeHidden(['job_title_id']);
+
+                foreach ($job_title->specificAreas as $specific_area) {
+                    $specific_area->makeHidden(['area_id']);
+                }
+
+                foreach ($job_title->jobFamilies as $job_family) {
+                    $job_family->makeHidden(['job_family_id', 'office_head']);
+                }
+            }
         }
 
 
