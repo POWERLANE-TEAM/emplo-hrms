@@ -18,6 +18,7 @@ enum UserPermission: string
     // View cases goes here
     case VIEW_APPICANT_INFORMATION = 'view applicant information';
     case VIEW_EMPLOYEE_INFORMATION = 'view employee information';
+    case VIEW_EMPLOYEE_DASHBOARD = 'view employee dashboard';
 
     // Update cases goes here
     case UDPATE_JOB_LISTING = 'update job listing';
@@ -40,6 +41,7 @@ enum UserPermission: string
             // View labels goes here
             self::VIEW_APPICANT_INFORMATION => 'View applicant/s information',
             self::VIEW_EMPLOYEE_INFORMATION => 'View employee/s information',
+            self::VIEW_EMPLOYEE_DASHBOARD => 'View employee dashboard',
 
             // Update labels goes here
             self::UDPATE_JOB_LISTING => 'Update job listing/s',

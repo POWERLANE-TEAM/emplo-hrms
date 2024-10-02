@@ -29,6 +29,7 @@ class RolesAndPermissionsSeeder extends Seeder
         // view permissions goes here
         Permission::firstOrCreate(['name' => UserPermission::VIEW_APPICANT_INFORMATION]);
         Permission::firstOrCreate(['name' => UserPermission::VIEW_EMPLOYEE_INFORMATION]);
+        Permission::firstOrCreate(['name' => UserPermission::VIEW_EMPLOYEE_DASHBOARD]);
 
         // update permissions goes here
         Permission::firstOrCreate(['name' => UserPermission::UDPATE_JOB_LISTING]);
@@ -54,16 +55,17 @@ class RolesAndPermissionsSeeder extends Seeder
         ]);
 
         // intermediate level permissions goes here
-        $edit = Role::create(['name' => UserRole::INTERMEDIATE]);
-        $edit->givePermissionTo([
+        $intermediate = Role::create(['name' => UserRole::INTERMEDIATE]);
+        $intermediate->givePermissionTo([
             UserPermission::VIEW_APPICANT_INFORMATION,
             UserPermission::VIEW_EMPLOYEE_INFORMATION,
+            UserPermission::VIEW_EMPLOYEE_DASHBOARD,
             UserPermission::CREATE_JOB_LISTING,
             UserPermission::CREATE_ANNOUNCEMENT,
         ]);
 
         // advanced level permissions goes here
-        $manage = Role::create(['name' => UserRole::ADVANCED]);
-        $manage->givePermissionTo(Permission::all());
+        $advanced = Role::create(['name' => UserRole::ADVANCED]);
+        $advanced->givePermissionTo(Permission::all());
     }
 }
