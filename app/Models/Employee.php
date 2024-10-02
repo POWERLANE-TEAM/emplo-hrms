@@ -120,10 +120,16 @@ class Employee extends Model
         return $this->hasMany(EmployeeLeave::class, 'employee_id', 'employee_id');
     }
 
-    // returns the employee's performance records
-    public function performances(): HasMany
+    // returns employee's permanent barangay address
+    public function permanentBarangay(): BelongsTo
     {
-        return $this->hasMany(PerformanceEvaluation::class, 'evaluatee', 'employee_id');
+        return $this->belongsTo(Barangay::class, 'permanent_barangay', 'barangay_code');
+    }
+
+    // returns employee's present barangay address
+    public function presentBarangay(): BelongsTo
+    {
+        return $this->belongsTo(Barangay::class, 'present_barangay', 'barangay_code');
     }
 
     /*
@@ -211,7 +217,7 @@ class Employee extends Model
 
     /*
     |--------------------------------------------------------------------------
-    | Process management in overtimes, leaves, and performance evaluations
+    | Process management in overtimes and leaves
     |--------------------------------------------------------------------------
     */
 
@@ -228,5 +234,42 @@ class Employee extends Model
     public function hrManagedProcesses(): HasMany
     {
         return $this->hasMany(Process::class, 'hr_manager', 'employee_id');
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Performance Evaluation Records Management
+    |--------------------------------------------------------------------------
+    */
+
+    // returns the employee's performance records
+    public function performances(): HasMany
+    {
+        return $this->hasMany(PerformanceDetail::class, 'evaluatee', 'employee_id');
+    }
+
+    // returns signed performances where employee is the evaluator
+    public function evaluatedPerformances(): HasMany
+    {
+        return $this->hasMany(PerformanceDetail::class, 'evaluator', 'employee_id');
+    }
+
+    // returns signed peformances where employee is the supervisor
+    public function supervisedPerformances(): HasMany
+    {
+        return $this->hasMany(PerformanceDetail::class, 'supervisor', 'employee_id');
+    }
+
+    // returns signed peformances where employee is the area manager
+    public function areaManagedPerformances(): HasMany
+    {
+        return $this->hasMany(PerformanceDetail::class, 'area_manager', 'employee_id');
+    }
+
+    // returns signed performances where employee is the hr manager
+    public function hrManagedPerformances(): HasMany
+    {
+        return $this->hasMany(PerformanceDetail::class, 'hr_manager', 'employee_id');
     }
 }

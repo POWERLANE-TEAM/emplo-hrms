@@ -26,7 +26,7 @@ class SignUp extends Component
 
     #[Locked]
     #[Validate('required')]
-    const ACCOUNT_STATUS = 'ACTIVE';
+    const ACCOUNT_STATUS = 'active';
 
     #[Validate('required|email:rfc,dns,spoof|max:320|unique:users|valid_email_dns')]
     public $email = '';

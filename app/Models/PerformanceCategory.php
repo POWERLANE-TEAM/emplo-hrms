@@ -4,27 +4,23 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class PerformanceCategory extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'performance_id';
+    protected $primaryKey = 'perf_category_id';
 
     protected $fillable = [
-        'performance_name',
-        'performance_desc',
+        'perf_category_name',
+        'perf_category_desc',
     ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | Define model relationships below
-    |--------------------------------------------------------------------------
-    */
 
-    public function performanceEvaluationDetails(): HasMany
+    public function ratings(): BelongsToMany
     {
-        return $this->hasMany(PerformanceEvaluationDetails::class, 'performance_id', 'performance_id');
+        return $this->belongsToMany(PerformanceRating::class, 'performance_category_ratings', 'perf_category_id', 'perf_rating_id')
+            ->withPivot('perf_detail_id');
     }
 }

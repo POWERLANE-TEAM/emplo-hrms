@@ -31,7 +31,7 @@ class InitialInterview extends Model
     }
 
     // returns the employee/initial interviewer for the initial interview
-    public function initialInterviewer(): BelongsTo
+    public function interviewer(): BelongsTo
     {
         return $this->belongsTo(Employee::class, 'init_interviewer', 'employee_id');
     }

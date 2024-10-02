@@ -21,10 +21,10 @@ class JobDetailFactory extends Factory
     public function definition(): array
     {
         return [
-            'job_title_id' => JobTitle::inRandomOrder()->first()->job_title_id ?? 1,
-            'job_level_id' => JobLevel::inRandomOrder()->first()->job_level_id ?? 1,
-            'job_family_id' => JobFamily::inRandomOrder()->first()->job_family_id ?? 1,
-            'area_id' => SpecificArea::inRandomOrder()->first()->area_id ?? 1,
+            'job_title_id' => JobTitle::factory(),
+            'job_level_id' => JobLevel::factory(),
+            'job_family_id' => JobFamily::factory(),
+            'area_id' => SpecificArea::factory(),
         ];
     }
 }

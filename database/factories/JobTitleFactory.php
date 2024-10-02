@@ -7,7 +7,7 @@ use App\Models\JobTitle;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Position>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\JobTitle>
  */
 class JobTitleFactory extends Factory
 {
@@ -21,7 +21,7 @@ class JobTitleFactory extends Factory
         return [
             'job_title' => fake()->jobTitle(),
             'job_desc' => fake()->paragraph(500),
-            'department_id' => Department::inRandomOrder()->first()->department_id ?? 1,
+            'department_id' => Department::factory(),
         ];
     }
 }

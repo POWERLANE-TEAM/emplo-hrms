@@ -6,20 +6,18 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Exam extends Model
+class PerformancePeriod extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'exam_id';
+    protected $primaryKey = 'perf_period_id';
 
     protected $fillable = [
-        'exam_name',
-        'duration',
-        'max_score',
+        'perf_period_name',
     ];
 
-    public function applications(): HasMany
+    public function details(): HasMany
     {
-        return $this->hasMany(ApplicationExam::class, 'exam_id', 'exam_id');
+        return $this->hasMany(PerformanceDetail::class, 'perf_period_id', 'perf_period_id');
     }
 }

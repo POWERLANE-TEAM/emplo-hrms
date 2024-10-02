@@ -21,7 +21,7 @@ class JobDetail extends Model
     */
 
     // returns job vacancies of the job detail
-    public function jobVacancies(): HasMany
+    public function vacancies(): HasMany
     {
         return $this->hasMany(JobVacancy::class, 'job_detail_id', 'job_detail_id');
     }

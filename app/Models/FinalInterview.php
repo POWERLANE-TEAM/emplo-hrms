@@ -32,12 +32,12 @@ class FinalInterview extends Model
     }
 
     // returns the employee/final interviewer of the final interview
-    public function finalInterviewer(): BelongsTo
+    public function interviewer(): BelongsTo
     {
         return $this->belongsTo(Employee::class, 'final_interviewer', 'employee_id');
     }
 
-    public function interviewRatings(): BelongsToMany
+    public function ratings(): BelongsToMany
     {
         return $this->belongsToMany(InterviewRating::class, 'final_interview_ratings', 'final_interview_id', 'rating_id')
             ->withPivot('parameter_id')

@@ -25,7 +25,7 @@ class ApplicationExamResult extends Model
     */
 
     // returns the result of the examination
-    public function applicationExam(): BelongsTo
+    public function application(): BelongsTo
     {
         return $this->belongsTo(ApplicationExam::class, 'application_exam_id', 'application_exam_id');
     }

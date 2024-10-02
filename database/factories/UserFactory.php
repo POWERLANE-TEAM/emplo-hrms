@@ -4,10 +4,8 @@ namespace Database\Factories;
 
 use App\Models\Applicant;
 use App\Models\Employee;
-use App\Models\UserRole;
-use App\Models\UserStatus;
-use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -31,7 +29,6 @@ class UserFactory extends Factory
             'account_id' => function (array $attributes) {
                 if ($attributes['account_type'] === 'employee') {
                     $employee = Employee::factory()->create();
-
                     return $employee->employee_id;
                 }
 
@@ -40,7 +37,6 @@ class UserFactory extends Factory
 
                     return $applicant->applicant_id;
                 }
-
                 return fake()->randomDigitNotNull();
             },
             'email' => fake()->unique()->randomElement([
@@ -48,7 +44,7 @@ class UserFactory extends Factory
                 fake()->freeEmail(),
             ]),
             'password' => static::$password ??= Hash::make('UniqP@ssw0rd'),
-            'user_status_id' => UserStatus::inRandomOrder()->first()->user_status_id ?? 1,
+            'user_status_id' => $this->faker->randomElement([1, 2, 3]),
             'email_verified_at' => fake()->unique()->randomElement([
                 null,
                 fake()->dateTimeBetween('-10days', 'now'),

@@ -17,7 +17,7 @@ class ComplaintType extends Model
         'complaint_type_name',
     ];
 
-    public function employeeComplaints(): HasMany
+    public function complaints(): HasMany
     {
         return $this->hasMany(EmployeeComplaint::class, 'complaint_type_id', 'complaint_type_id');
     }

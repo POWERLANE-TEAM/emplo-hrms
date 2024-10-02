@@ -19,7 +19,7 @@ class SpecificAreaFactory extends Factory
     {
         return [
             'area_name' => fake()->city,
-            // 'area_manager' => Employee::inRandomOrder()->first()->employee_id ?? 1,
+            'area_manager' => null
         ];
     }
 }

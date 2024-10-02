@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\EmploymentStatus;
 use App\Models\JobDetail;
+use App\Models\EmploymentStatus;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -22,9 +22,11 @@ class EmployeeFactory extends Factory
             'first_name' => fake()->firstName,
             'middle_name' => fake()->firstName,
             'last_name' => fake()->lastName,
-            'job_detail_id' => JobDetail::inRandomOrder()->first()->job_detail_id ?? 1,
+            'job_detail_id' => JobDetail::factory(),
             'hired_at' => fake()->dateTimeThisDecade,
-            'emp_status_id' => EmploymentStatus::inRandomOrder()->first()->emp_status_id ?? 1,
+            'emp_status_id' => EmploymentStatus::factory(),
+            'present_barangay' => fake()->randomElement(['0102801001', '0102802001']),
+            'permanent_barangay' => fake()->randomElement(['0102802002', '0102802003']),
             'present_address' => fake()->address,
             'permanent_address' => fake()->address,
             'contact_number' => fake()->unique()->numerify('###########'),
