@@ -232,7 +232,7 @@ section.top-vector {
     form {
         .input-group {
             .icon {
-                margin-top: calc(0.5rem + 0.5vw);
+                margin-top: clamp(0.5rem, 0.5rem + 0.1vw, 2rem);
             }
         }
     }
