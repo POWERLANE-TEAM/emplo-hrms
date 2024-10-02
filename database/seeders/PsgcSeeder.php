@@ -13,6 +13,7 @@ class PsgcSeeder extends Seeder
      */
     public function run(): void
     {
+        ini_set('memory_limit', '450M');
         Excel::import(new PsgcImport, storage_path('PSGC-2Q-2024-Publication-Datafile-rev.xlsx'));
     }
 }
