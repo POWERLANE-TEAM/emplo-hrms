@@ -14,6 +14,7 @@ return new class extends Migration
     {
         Schema::table('specific_areas', function (Blueprint $table) {
             $table->foreignIdFor(Employee::class, 'area_manager')
+                ->nullable()
                 ->constrained('employees', 'employee_id')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
@@ -28,7 +29,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('specific_areas', function (Blueprint $table) {
-            //
+            $table->dropForeignIdFor(Employee::class, 'area_manager');
+            $table->dropTimestamps();
         });
     }
 };

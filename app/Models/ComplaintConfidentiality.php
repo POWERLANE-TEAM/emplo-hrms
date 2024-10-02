@@ -17,7 +17,7 @@ class ComplaintConfidentiality extends Model
         'confidentiality_desc',
     ];
 
-    public function employeeComplaints(): HasMany
+    public function complaints(): HasMany
     {
         return $this->hasMany(EmployeeComplaint::class, 'confidentiality_id', 'confidentiality_id');
     }

@@ -39,7 +39,7 @@ class EmployeeComplaint extends Model
     }
 
     // returns type of the complaint
-    public function complaintType(): BelongsTo
+    public function type(): BelongsTo
     {
         return $this->belongsTo(ComplaintType::class, 'complaint_type_id', 'complaint_type_id');
     }
@@ -51,7 +51,7 @@ class EmployeeComplaint extends Model
     }
 
     // returns current status of the complaint
-    public function complaintStatus(): BelongsTo
+    public function status(): BelongsTo
     {
         return $this->belongsTo(ComplaintStatus::class, 'complaint_status_id', 'complaint_status_id');
     }

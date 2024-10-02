@@ -40,8 +40,21 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->restrictOnDelete();
 
+            $table->string('present_barangay', 10);
+
+            $table->foreign('present_barangay')
+                ->references('barangay_code')->on('barangays')
+                ->onDelete('cascade');
+
             $table->longText('present_address');
+            $table->string('permanent_barangay', 10);
+
+            $table->foreign('permanent_barangay')
+                ->references('barangay_code')->on('barangays')
+                ->onDelete('cascade');
+
             $table->longText('permanent_address');
+
             $table->string('contact_number', 11)->unique();
             $table->string('photo')->nullable(); // emp photo file path
             $table->enum('sex', ['MALE', 'FEMALE']);

@@ -33,25 +33,25 @@ class Application extends Model
     }
 
     // returns submitted documents of the application
-    public function applicationDocs(): HasMany
+    public function documents(): HasMany
     {
         return $this->hasMany(ApplicationDoc::class, 'application_id', 'application_id');
     }
 
     // returns the examination of the application
-    public function applicationExam(): HasOne
+    public function exam(): HasOne
     {
         return $this->hasOne(ApplicationExam::class, 'application_id', 'application_id');
     }
 
     // returns the vacancy of the application
-    public function jobVacancy(): BelongsTo
+    public function vacancy(): BelongsTo
     {
         return $this->belongsTo(JobVacancy::class, 'job_vacancy_id', 'job_vacancy_id');
     }
 
     // returns status of the application
-    public function applicationStatus(): BelongsTo
+    public function status(): BelongsTo
     {
         return $this->belongsTo(ApplicationStatus::class, 'application_status_id', 'application_status_id');
     }

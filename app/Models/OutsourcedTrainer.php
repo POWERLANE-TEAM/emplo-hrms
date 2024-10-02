@@ -35,7 +35,7 @@ class OutsourcedTrainer extends Model
         return $this->morphMany(Training::class, 'comment');
     }
 
-    public function trainingProviders(): BelongsTo
+    public function providers(): BelongsTo
     {
         return $this->belongsTo(TrainingProvider::class, 'training_provider', 'training_provider_id');
     }

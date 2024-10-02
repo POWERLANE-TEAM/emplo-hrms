@@ -2,12 +2,13 @@
 
 namespace Database\Factories;
 
+use App\Models\Employee;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Branch>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\SpecificArea>
  */
-class BranchFactory extends Factory
+class SpecificAreaFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,7 +18,8 @@ class BranchFactory extends Factory
     public function definition(): array
     {
         return [
-            'branch_location' => fake()->address,
+            'area_name' => fake()->city,
+            'area_manager' => null
         ];
     }
 }
