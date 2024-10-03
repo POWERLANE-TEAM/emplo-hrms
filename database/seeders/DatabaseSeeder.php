@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use App\Enums\UserPermission;
 use App\Enums\UserRole;
 use App\Models\Applicant;
+use App\Models\Application;
+use App\Models\ApplicationStatus;
 use App\Models\User;
 use App\Models\Employee;
 use App\Models\JobLevel;
@@ -101,6 +103,12 @@ class DatabaseSeeder extends Seeder
         $this->call(PreempRequirementSeeder::class);
 
         $this->call(ApplicationStatusSeeder::class);
+
+        Application::create([
+            'applicant_id' => $applicant->applicant_id,
+            'job_vacancy_id' => JobVacancy::inRandomOrder()->first()->job_vacancy_id,
+            'application_status_id' => ApplicationStatus::inRandomOrder()->first()->application_status_id,
+        ]);
 
         // update cache to know about the newly created permissions (required if using WithoutModelEvents in seeders)
         app()[PermissionRegistrar::class]->forgetCachedPermissions();

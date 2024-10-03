@@ -6,7 +6,7 @@
 @endphp
 
 <tr class="rounded-2 outline dropzone position-relative" style="height: 100px; vertical-align: middle;"
-    {{--  wire:key="{{ $pre_employment_req->document_control_id }}" --}} id="preemp-doc-{{ $doc_id }}" wire:ignore>
+ id="preemp-doc-{{ $doc_id }}" wire:ignore>
     <form action="" wire:model="document_id" name="{{ $doc_id }}">
         <td class="dz-message">
             @csrf
