@@ -38,6 +38,7 @@ class JobVacancy extends Model
         return $this->hasMany(Application::class, 'job_vacancy_id', 'job_vacancy_id');
     }
 
+    // returns the job title through JobDetail model
     public function jobTitle(): HasOneThrough
     {
         return $this->hasOneThrough(JobTitle::class, JobDetail::class, 'job_detail_id', 'job_title_id', 'job_detail_id', 'job_title_id');
