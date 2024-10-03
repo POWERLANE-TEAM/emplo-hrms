@@ -12,9 +12,6 @@
     @endisset
 
     <x-html.head description=" {{ $description ?? app()->name() }}" :font_weights="$font_array">
-        @livewireStyles(['nonce' => $nonce])
-        @livewireScripts(['nonce' => $nonce])
-        {{-- @livewireScriptConfig(['nonce' => $nonce]) --}}
 
         {{-- START: Critical Styles --}}
         {{-- Need to reduce Cumulative Layout Shift --}}
@@ -119,7 +116,11 @@
 
 
 
-        <x-applicant.footer></x-applicant.footer>
+        <x-layout.applicant.footer />
+
+        @once
+            @livewireScripts()
+        @endonce
 
     </body>
 

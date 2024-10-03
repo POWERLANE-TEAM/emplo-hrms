@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Application;
+use App\Models\ApplicationDoc;
+use App\Models\CompanyDoc;
 use App\Models\Document;
 use App\Models\EmployeeDoc;
+use App\Models\PreempRequirement;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -19,7 +24,7 @@ class PreEmploymentController extends Controller
     /* Show form page for creating resource */
     public function create()
     {
-        return view('/employee/pre-employment');
+        return view('employee.pre-employment');
     }
 
     /* store a new resource */
@@ -33,41 +38,54 @@ class PreEmploymentController extends Controller
 
             // Validate
 
+            // Get user account
+
+            // Make Folder for user
+
             $file = $request->file('pre_emp_doc');
             $file_name = $file->getClientOriginalName();
             echo $file_name;
-            $hashedName = $prefix.'_'.$file->hashName();
-            echo $hashedName;
+
+            // Get application id
 
             $doc_id = $request->input('doc_id');
             echo $doc_id;
 
-            // Create a new EmployeeDoc record
-            $doc_id = $request->input('doc_id');
-            echo $doc_id;
+            $hashed_name = $prefix . '_' . dechex($doc_id) . '_' .  $file->hashName();
+            echo $hashed_name;
 
             $user = Auth::user();
-            $account_id = $user->account_id;
 
-            $path = $file->storeAs('uploads', $hashedName, 'public'); /* Store in file://storage/app/public/uploads/ */
+            $user_id = $user->user_id;
+            // dump($user);
 
-            $employeeDoc = new EmployeeDoc;
-            $employeeDoc->document_id = $doc_id;
-            $employeeDoc->employee_id = $account_id;
-            $employeeDoc->file = $path;
-            $employeeDoc->save();
+            $preemployed_user = User::with('account.application')->find($user_id);
 
-            //Retrieve the document name from the documents table
-            $document = Document::find($doc_id);
-            $document_name = $document->name;
+            // dd($preemployed_user);
+
+            $first_name = $preemployed_user->account->first_name;
+            $last_name = $preemployed_user->account->last_name;
+
+            $user_folder = $first_name . '_' .  $last_name  . '_' . dechex($user_id);
+
+            $application_id = $preemployed_user->account->application->application_id;
+
+            $path = $file->storeAs("uploads/applicant/applications/pre-emp/$user_folder", $hashed_name, 'public');
+
+            /* Needs to be updated to store in application docs instead */
+
+            $preemp_doc = new ApplicationDoc();
+            $preemp_doc->preemp_req_id = $doc_id;
+            $preemp_doc->application_id = $application_id;
+            $preemp_doc->file_path = $path;
+            $preemp_doc->save();
+
+            /* Should be preemp_requirements name instead */
+            $document = PreempRequirement::find($doc_id);
+            $document_name = $document->preemp_req_name;
             echo $document_name;
 
-            // Return response
-
-            // Optionally, save the path in the database
-            // File::create(['path' => $path]);
-
-            // return back()->with('success', 'File uploaded successfully!');
+            // return back()->with('success', '$document_name uploaded successfully!');
         }
     }
 

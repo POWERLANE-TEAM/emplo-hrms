@@ -1,4 +1,5 @@
 @props([
+    'nonce' => '',
     'parent_class' => '',
     'container_class' => '',
 ])

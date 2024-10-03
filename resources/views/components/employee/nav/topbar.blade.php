@@ -1,4 +1,4 @@
-@props(['icon_size' => '25vw', 'icon_ratio' => '1/1'])
+@aware(['icon_size' => '25vw', 'icon_ratio' => '1/1'])
 
 <div {{ $attributes->merge(['class' => '']) }}>
     <nav class="topnav">
@@ -44,6 +44,6 @@
     </nav>
 </div>
 
-<x-employee.nav.topbar-mobile class="" icon_size="{{ $icon_size }}" icon_ratio="{{ $icon_ratio }}">
+<x-employee.nav.topbar-mobile class="">
 
 </x-employee.nav.topbar-mobile>

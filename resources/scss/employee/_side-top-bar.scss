@@ -14,18 +14,18 @@
 main {
     contain: paint;
     position: relative;
-    z-index: -1;
     /* Ofset of main content below of top bar */
     margin-top: calc(var(--main-menu-padding-top) + var(--topnav-padding-y) + var(--search-height) + var(--search-padding-y) + var(--main-menu-padding-top) + 1vh);
 
     @media screen and (min-width: 768px) {
         left: var(--sidebar-width);
-        max-width: calc(100% - var(--sidebar-width));
+        max-width: calc(95cqw - var(--sidebar-width));
     }
 }
 
 .main-menu-container {
     padding: 0;
+    z-index: 1000;
 
     &:has(sidebar.main-menu.active) {
         @media screen and (max-width: 576px) {
@@ -334,7 +334,7 @@ sidebar.main-menu {
 
 div:has(>.topnav) {
     /* Base style for top bar */
-    z-index: 995;
+    z-index: 1000;
     position: absolute;
     display: flex;
     top: 0;
@@ -509,7 +509,7 @@ body {
         main {
             @media screen and (min-width: 768px) {
                 left: var(--sidebar-width-active);
-                max-width: calc(100% - var(--sidebar-width-active));
+                max-width: calc(95cqw - var(--sidebar-width-active));
             }
         }
     }

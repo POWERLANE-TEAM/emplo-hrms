@@ -33,10 +33,11 @@ class AppServiceProvider extends ServiceProvider
 
             return
                 $rule->letters()
-                    ->mixedCase()
-                    ->numbers()
-                    ->symbols()
-                    ->uncompromised();
+                ->mixedCase()
+                ->numbers()
+                ->symbols()
+                ->uncompromised()
+                ->rules(['not_regex:/\s/']); // No spaces allowed
         });
 
         Validator::extend('valid_email_dns', function ($attributes, $value, $parameters, $validator) {
@@ -67,6 +68,8 @@ class AppServiceProvider extends ServiceProvider
             'performance_evaluation' => 'App\Models\PerformanceEvaluation',
             'overtime' => 'App\Models\Overtime',
             'employee_leave' => 'App\Models\EmployeeLeave',
+            'job_vacancy' => 'App\Models\JobVacancy',
+            'preemp_requirement' => 'App\Models\PreempRequirement',
         ]);
 
         BroadcastServiceProvider::class;

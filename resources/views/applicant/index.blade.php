@@ -6,7 +6,7 @@
 
 @section('head')
     <title>Applicant</title>
-    <script src="build/assets/nbp.min.js" defer></script>
+    <script src="{{ Vite::asset('resources/js/forms/nbp.min.js') }}" defer></script>
     @vite(['resources/js/applicant/dashboard.js'])
 
     <script src="https://unpkg.com/lucide@latest"></script>

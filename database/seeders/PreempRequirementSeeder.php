@@ -23,7 +23,7 @@ class PreempRequirementSeeder extends Seeder
             ['preemp_req_name' => "JR./SR./HS Diploma and TOR/Col Cert/Class cards (Col Undergrad )"],
             ['preemp_req_name' => "JR./SR./HS Diploma and Vocational Cert/Diploma/TOR (Voc Grad )"],
             ['preemp_req_name' => "College Diploma/TOR (College Graduate )"],
-            ['preemp_req_name' => "Certificate of Employment&#40;s&#41;-if previously employed"],
+            ['preemp_req_name' => "Certificate of Employment(s)-if previously employed"],
             ['preemp_req_name' => "ID Picture (recent-4 copies 2x2&1x1-white T-shirt & white background)"],
             ['preemp_req_name' => "Child's Birth certificate (if applicable )"],
             ['preemp_req_name' => "Marriage Contract (if applicable)"],
@@ -33,7 +33,7 @@ class PreempRequirementSeeder extends Seeder
 
         ];
 
-        foreach($preemp_reqs as $preemp_req) {
+        foreach ($preemp_reqs as $preemp_req) {
             PreempRequirement::create($preemp_req);
         }
     }

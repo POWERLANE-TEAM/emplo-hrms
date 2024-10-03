@@ -30,14 +30,6 @@ document.addEventListener('livewire:init', () => {
         console.log('rendered')
     });
 
-    Livewire.hook('morph.updating', ({ el, toEl, component }) => {
-        console.log(el)
-    })
-    // Livewire.hook('morph.init', ({ el, toEl, component }) => {
-    //     console.log(el)
-    // })
-
-
 });
 
 

@@ -1,4 +1,4 @@
-@props(['icon_size' => '25', 'icon_ratio' => '1/1'])
+@aware(['icon_size' => '25', 'icon_ratio' => '1/1'])
 
 <div>
     <div {{ $attributes->merge(['class' => ' topnav-mobile']) }}>
@@ -14,7 +14,7 @@
 
                 <x-slot:right_icon>
                     <button class="border-0 bg-transparent">
-                        <i data-lucide="search"></i>
+                        <x-icons.white-search-1 />
                     </button>
                 </x-slot:right_icon>
 

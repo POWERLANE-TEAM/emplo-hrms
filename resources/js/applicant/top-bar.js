@@ -5,6 +5,7 @@ function toggleHeaderNavBg() {
 
     const navbar = document.querySelector("header.top-nav");
     navbar.classList.toggle("bg-primary", scrollPosition > 50);
+    navbar.classList.toggle("shadow-sm", scrollPosition > 100);
 }
 
 toggleHeaderNavBg();

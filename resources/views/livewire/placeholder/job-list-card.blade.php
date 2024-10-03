@@ -1,20 +1,12 @@
-<sidebar class="nav nav-tabs col-12 col-md-5 " id="jobs-list" role="tablist" aria-busy="true" nonce="csp_nonce()">
-
-    @foreach ($positions as $position)
-        {{-- Insert Image of positions --}}
-        <link rel="preload" href="http://placehold.it/74/74" as="image">
-    @endforeach
+<sidebar class="nav nav-tabs col-12 col-md-4 ms-auto" id="jobs-list" role="tablist" aria-busy="true" nonce="csp_nonce()">
 
     @for ($i = 0; $i < 3; $i++)
         <li class="card nav-item ps-0 " role="presentation">
-            <button class="nav-link d-flex flex-row column-gap-4" role="tab" aria-busy="true"
+            <button class="nav-link d-flex flex-row px-md-5 py-md-4" role="tab" aria-busy="true"
                 aria-label="Loading job list" aria>
-                <div class="placeholder-glow col-4 pt-3 px-2 ">
-                    <span class="placeholder" style="width: calc(4.5rem + 2vw); height: calc(4.5rem + 2vw);"></span>
-                </div>
-                <div class="col-7 text-start">
+                <div class="col-10 text-start">
                     <header>
-                        <hgroup class="placeholder-glow d-flex flex-column mb-3">
+                        <hgroup class="placeholder-glow d-flex flex-column mb-1">
                             <div class=" text-black placeholder-glow">
                                 <span class="placeholder py-3  col-8"></span>
                             </div>
@@ -27,16 +19,16 @@
 
                     <div class="pe-5 overflow-hidden">
                         <p class="d-flex card-text placeholder-glow gap-1 mb-1">
-                            <span class="placeholder py-1 col-10"></span>
                             <span class="placeholder py-1 col-4"></span>
-                            <span class="placeholder py-1 col-7"></span>
-                            <span class="placeholder py-1 col-2"></span>
-                        </p>
+                            @php
+                                $randomNumber = rand(0, 1);
+                                $firstColClass = $randomNumber ? 'col-5' : 'col-3';
+                                $lastColClass = $randomNumber ? 'col-3' : 'col-4';
+                            @endphp
 
-                        <p class="d-flex card-text placeholder-glow gap-1 mb-1">
-                            <span class="placeholder py-1  col-11"></span>
-                            <span class="placeholder py-1  col-6"></span>
-                            <span class="placeholder py-1  col-3"></span>
+                            <span class="placeholder py-1 {{ $firstColClass }}"></span>
+                            <span class="placeholder py-1 {{ $lastColClass }}"></span>
+
                         </p>
                     </div>
                 </div>

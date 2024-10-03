@@ -3,7 +3,7 @@ import InputValidator, { setInvalidMessage } from './input-validator.js';
 import debounce from '../debounce-fn.js';
 
 let validEmailDomains;
-let emailDomainResouurces = `api/json/email-domain-list`;
+let emailDomainResouurces = `build/assets/email-domain-list.json`;
 
 
 fetch(emailDomainResouurces)
@@ -73,6 +73,7 @@ export function validateEmail(inputSelector, parent = document) {
 // Exported function for debounced validation
 export default function initEmailValidation(inputSelector, callback, result) {
     const debouncedValidation = debounce(function (event) {
+        event.target.classList.add('is-dirty');
         let isValid = validateEmailElement(event.target);
         try {
             result.isValidEmail = isValid;

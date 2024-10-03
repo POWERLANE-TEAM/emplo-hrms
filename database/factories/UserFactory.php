@@ -2,10 +2,9 @@
 
 namespace Database\Factories;
 
-use App\Models\User;
+use App\Enums\AccountType;
+use App\Models\Applicant;
 use App\Models\Employee;
-use App\Models\UserRole;
-use App\Models\UserStatus;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -27,12 +26,14 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'account_type' => $this->faker->randomElement(['applicant', 'employee']),
+            'account_type' => $this->faker->randomElement([AccountType::APPLICANT->value, AccountType::EMPLOYEE->value]),
             'account_id' => function (array $attributes) {
-                if ($attributes['account_type'] === 'employee') {
-                    $employee = Employee::factory()->create();
-                    return $employee->employee_id;
-                }
+                $accountType = AccountType::from($attributes['account_type']);
+
+                return match ($accountType) {
+                    AccountType::EMPLOYEE => Employee::factory()->create()->employee_id,
+                    AccountType::APPLICANT => Applicant::factory()->create()->applicant_id,
+                };
                 return fake()->randomDigitNotNull();
             },
             'email' => fake()->unique()->randomElement([
