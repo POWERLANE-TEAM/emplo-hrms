@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\AccountType;
 use App\Enums\UserPermission;
 use App\Enums\UserRole;
 use App\Models\Applicant;
@@ -66,7 +67,7 @@ class DatabaseSeeder extends Seeder
         $applicant = Applicant::factory()->create();
 
         $applicant_user =    User::factory()->create([
-            'account_type' => 'applicant',
+            'account_type' => AccountType::APPLICANT,
             'account_id' => $applicant->applicant_id,
             'email' => 'applicant.001@gmail.com',
             'password' => Hash::make('UniqP@ssw0rd'),
@@ -87,7 +88,7 @@ class DatabaseSeeder extends Seeder
             $employees->push($employee);
 
             $usersData[] = [
-                'account_type' => 'employee',
+                'account_type' => AccountType::EMPLOYEE,
                 'account_id' => $employees[$i]->employee_id,
                 'email' => $i === 0 ? 'hr.001@gmail.com' : 'admin.001@gmail.com',
                 'password' => Hash::make('UniqP@ssw0rd'),

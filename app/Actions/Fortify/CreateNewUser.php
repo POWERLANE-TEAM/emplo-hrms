@@ -2,6 +2,7 @@
 
 namespace App\Actions\Fortify;
 
+use App\Enums\AccountType;
 use App\Models\Applicant;
 use App\Models\Employee;
 use App\Models\User;
@@ -37,9 +38,9 @@ class CreateNewUser implements CreatesNewUsers
 
         try {
 
-            if ($input['account_type'] == 'applicant') {
+            if ($input['account_type'] == AccountType::APPLICANT->value) {
                 $new_account_created = $this->applicant($input);
-            } else if ($input['account_type'] == 'employee') {
+            } else if ($input['account_type'] == AccountType::EMPLOYEE->value) {
                 $new_account_created = $this->employee($input);
             }
 
