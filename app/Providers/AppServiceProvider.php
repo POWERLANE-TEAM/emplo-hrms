@@ -68,6 +68,8 @@ class AppServiceProvider extends ServiceProvider
             'performance_evaluation' => 'App\Models\PerformanceEvaluation',
             'overtime' => 'App\Models\Overtime',
             'employee_leave' => 'App\Models\EmployeeLeave',
+            'job_vacancy' => 'App\Models\JobVacancy',
+            'preemp_requirement' => 'App\Models\PreempRequirement',
         ]);
 
         BroadcastServiceProvider::class;
