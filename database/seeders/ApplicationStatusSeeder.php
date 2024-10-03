@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\ApplicationStatus as EnumsApplicationStatus;
 use App\Models\ApplicationStatus;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -14,9 +15,9 @@ class ApplicationStatusSeeder extends Seeder
     public function run(): void
     {
         $application_statuses = [
-            ['application_status_name' => 'PENDING', 'application_status_desc' => 'Pending approval'],
-            ['application_status_name' => 'APPROVED', 'application_status_desc' => 'Approved application'],
-            ['application_status_name' => 'REJECTED', 'application_status_desc' => 'Rejected application'],
+            ['application_status_name' => EnumsApplicationStatus::PENDING, 'application_status_desc' => EnumsApplicationStatus::PENDING->label()],
+            ['application_status_name' => EnumsApplicationStatus::APPROVED, 'application_status_desc' => EnumsApplicationStatus::APPROVED->label()],
+            ['application_status_name' => EnumsApplicationStatus::REJECTED, 'application_status_desc' => EnumsApplicationStatus::REJECTED->label()],
         ];
 
         foreach ($application_statuses as $application_status) {
