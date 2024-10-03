@@ -2,16 +2,11 @@
 
 namespace App\Livewire\Auth\Guests;
 
-use App\Models\Applicant;
-use App\Models\JobVacancy;
-use App\Models\User;
-use App\Models\UserRole;
-use App\Models\UserStatus;
+
 use App\Actions\Fortify\CreateNewUser;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Support\Facades\DB;
+use App\Enums\AccountType;
+use App\Enums\UserStatus as EnumsUserStatus;
 use Illuminate\Validation\Rules\Password;
-use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -19,14 +14,6 @@ use Livewire\Component;
 class SignUp extends Component
 {
     private $job_vacancy;
-
-    #[Locked]
-    #[Validate('required|in:applicant')]
-    const ACCOUNT_TYPE = 'applicant';
-
-    #[Locked]
-    #[Validate('required')]
-    const ACCOUNT_STATUS = 'active';
 
     #[Validate('required|email:rfc,dns,spoof|max:320|unique:users|valid_email_dns')]
     public $email = '';
@@ -99,8 +86,8 @@ class SignUp extends Component
             'middle_name' => $this->middle_name == '' ? null : $this->middle_name,
             'last_name' => $this->last_name,
             'contact_number' => $this->contact_number,
-            'account_type' => self::ACCOUNT_TYPE,
-            'user_status' => self::ACCOUNT_STATUS,
+            'account_type' => AccountType::APPLICANT->value,
+            'user_status' => EnumsUserStatus::ACTIVE->value,
         ];
 
         $new_user_created = $userCreate->create($new_user, true);
