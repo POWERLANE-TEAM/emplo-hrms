@@ -7,10 +7,10 @@ use App\Models\JobVacancy;
 use App\Models\User;
 use App\Models\UserRole;
 use App\Models\UserStatus;
+use App\Actions\Fortify\CreateNewUser;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rules\Password;
-use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
@@ -72,7 +72,7 @@ class SignUp extends Component
         // dd($this->job_vacancy);
     }
 
-    public function store(CreatesNewUsers $userCreate)
+    public function store(CreateNewUser $userCreate)
     {
         /* Reference https://www.youtube.com/watch?v=EuqyYQdyBU8 */
 
