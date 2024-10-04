@@ -67,11 +67,17 @@ img.icon {
 }
 
 sidebar.main-menu,
-main,
 div:has(>.topnav) {
     --duration: 0.3s;
     --curve: ease-in-out;
     transition: width var(--duration) var(--curve), left var(--duration) var(--curve), opacity var(--duration) var(--curve);
+}
+
+main.main {
+    --duration: 0.2s;
+    --curve: ease-in-out;
+    transition: width var(--duration) var(--curve), max-width var(--duration) var(--curve), left var(--duration) var(--curve), opacity var(--duration) var(--curve);
+
 }
 
 
@@ -228,8 +234,14 @@ sidebar.main-menu {
 
     &:not(.active) {
         .site-name {
-            justify-content: center;
+            // justify-content: center;
 
+        }
+
+        button.main-menu div:has(img) {
+            transition: transform ease-in-out 0.2s;
+            isolation: isolate;
+            transform: translate(50%, 10%);
         }
 
         .nav-head {
@@ -293,11 +305,14 @@ sidebar.main-menu {
 
     .user-bar {
         position: relative;
-        justify-content: center;
+        margin-left: auto;
+        margin-right: auto;
 
         div:has(.user-img) {
             display: grid;
             place-content: center;
+            transition: transform ease-in-out 0.2s;
+            transform: translateX(30%);
 
 
             img {
@@ -433,6 +448,14 @@ sidebar.main-menu.opening {
     overflow: hidden;
 }
 
+sidebar.main-menu.active:not(.opening) {
+
+    .user-info,
+    .company-name {
+        min-width: fit-content;
+    }
+}
+
 body {
     /* Style of side panel when expanded */
 
@@ -459,6 +482,12 @@ body {
                     transform: rotateY(180deg);
                     transition: transform 0.3s ease-in-out;
                 }
+
+                div:has(img) {
+                    transition: transform ease-in-out 0.2s;
+                    isolation: isolate;
+                    transform: translate(0, 10%);
+                }
             }
 
             .nav-head .truncate {
@@ -476,14 +505,16 @@ body {
 
             .user-bar {
 
+
                 div:has(.user-img) {
-                    // transform: none;
+                    transition: transform ease-in-out 0.2s;
+                    transform: unset;
                 }
 
                 .user-info {
                     opacity: 1;
                     width: 5vw;
-                    min-width: fit-content;
+                    // min-width: fit-content;
                 }
 
                 .user-menu {
