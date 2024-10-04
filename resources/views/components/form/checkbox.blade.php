@@ -1,13 +1,13 @@
-@props(['nonce', 'color_type' => 'primary'])
+@props(['nonce', 'color_type' => 'primary', 'container_class'])
 
-<div class="input-group mb-3 terms-condition">
+<div class="position-relative d-flex {{ $container_class ?? '' }}">
     <input type="checkbox"
         {{ $attributes->merge([
             'class' => "checkbox checkbox-$color_type",
             // 'autocomplete' => $attributes->get('autocomplete', 'off'),
         ]) }}
-        aria-owns="{{ $attributes->get('id') }}-feedback" wire:model="{{ $attributes->get('name') }}"
-        nonce="{{ $nonce }}">
+        @if (isset($feedback)) aria-owns="{{ $attributes->get('id') }}-feedback" @endif
+        wire:model="{{ $attributes->get('name') }}" nonce="{{ $nonce }}">
 
     @if (!empty($label))
         <label for="{{ $attributes->get('id') }}" class="checkbox-label d-flex flex-wrap">

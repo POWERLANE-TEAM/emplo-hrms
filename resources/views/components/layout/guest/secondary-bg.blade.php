@@ -3,16 +3,17 @@
     {{-- <div> --}}
     <picture>
         <source media="(min-width:2560px)"
-            srcset="{{ Vite::asset('resources/images/illus/recruitment/green-curve-xl.png') }}">
+            srcset="{{ Vite::asset('resources/images/illus/recruitment/green-curve-xl.webp') }}">
         <source media="(min-width:1200px)"
-            srcset="{{ Vite::asset('resources/images/illus/recruitment/green-curve-lg.png') }}">
+            srcset="{{ Vite::asset('resources/images/illus/recruitment/green-curve-lg.webp') }}">
         <source media="(min-width:768px)"
-            srcset="{{ Vite::asset('resources/images/illus/recruitment/green-curve-md.png') }}">
+            srcset="{{ Vite::asset('resources/images/illus/recruitment/green-curve-md.webp') }}">
         <source media="(min-width:576px)"
-            srcset="{{ Vite::asset('resources/images/illus/recruitment/green-curve-sm.png') }}">
+            srcset="{{ Vite::asset('resources/images/illus/recruitment/green-curve-sm.webp') }}">
 
-        <img class="green-wave no-drag" src="{{ Vite::asset('resources/images/illus/recruitment/green-curve-md.png') }}"
-            width="600px" height="300px" alt="">
+        <img class="green-wave no-drag"
+            src="{{ Vite::asset('resources/images/illus/recruitment/green-curve-md.webp') }}" width="600px"
+            height="300px" alt="">
     </picture>
 
     <svg class="left-circle" width="171" height="251" viewBox="0 0 171 251" fill="none"

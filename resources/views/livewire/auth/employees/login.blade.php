@@ -28,9 +28,8 @@
             </div>
         @endif
 
-        <x-form.email input_id="userLogin-email" label="Email Address" input_name="email" auto_complete="email"
-            :nonce="$nonce" aria-owns="userLogin-email-feedback"
-            class=" {{ $errors->has('email') ? 'is-invalid' : '' }}">
+        <x-form.email id="userLogin-email" label="Email Address" name="email" autocomplete="email" :nonce="$nonce"
+            aria-owns="userLogin-email-feedback" class=" {{ $errors->has('email') ? 'is-invalid' : '' }}">
 
             <x-slot:feedback>
                 @include('components.form.input-feedback', [
@@ -40,8 +39,8 @@
             </x-slot:feedback>
         </x-form.email>
 
-        <x-form.password input_id="userLogin-password" label="Password" :has_confirm="true" input_name="password"
-            minlength="8" auto_complete="current-password" :nonce="$nonce" aria-owns="userLogin-password-feedback"
+        <x-form.password id="userLogin-password" label="Password" name="password" autocomplete="current-password"
+            :nonce="$nonce" aria-owns="userLogin-password-feedback"
             class=" {{ $errors->has('password') ? 'is-invalid' : '' }}">
 
             <x-slot:toggle_password>
@@ -59,14 +58,17 @@
             </x-slot:feedback>
         </x-form.password>
 
+
+
         <div class="d-flex flex-wrap gap-4 gap-md-5">
-            <div class="position-relative d-flex col-12 col-md-5 order-0">
-                <input type="checkbox" id="remember-toggle" name="remember" wire:model="remember"
-                    class="checkbox checkbox-primary">
-                <label for="remember-toggle" class="checkbox-label d-flex flex-wrap">
+            <x-form.checkbox container_class="col-12 col-md-5 order-0" :nonce="$nonce" id="remember-toggle"
+                name="remember" wire:model="remember" class="checkbox checkbox-primary">
+
+                <x-slot:label>
                     Remember me
-                </label>
-            </div>
+                </x-slot:label>
+            </x-form.checkbox>
+
 
             <div class=" col-md-auto mx-auto me-md-0 ms-md-auto order-2 order-md-1">
                 <button class="border-0 bg-transparent text-decoration-underline ">

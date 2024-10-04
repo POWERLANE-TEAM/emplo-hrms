@@ -4,7 +4,7 @@
         'name' => $attributes->get('name', 'consent'),
         'class' => $errors->has($attributes->get('id', 'terms-condition')) ? 'is-invalid' : '',
     ]) }}
-    :nonce="$nonce">
+    container_class="terms-condition mb-3" :nonce="$nonce">
 
     <x-slot:label>
         {!! trans('consent.consent') !!}&#8194;<wbr>

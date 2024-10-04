@@ -22,7 +22,9 @@
 
 
 @section('critical-styles')
-    {!! Vite::content('resources/css/guest/primary-bg.css') !!}
+    <style nonce="{{ $nonce }}">
+        {!! Vite::content('resources/css/guest/primary-bg.css') !!}
+    </style>
 @endsection
 
 
