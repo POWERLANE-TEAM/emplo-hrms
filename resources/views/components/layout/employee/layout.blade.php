@@ -7,6 +7,7 @@
     'description' => '',
     'main_cont_class' => '',
     'font_weights' => [' 400 ', '500', '700'],
+    'user' => $user,
 ])
 
 <!DOCTYPE html>

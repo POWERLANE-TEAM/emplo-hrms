@@ -1,22 +1,16 @@
+@use('\App\Enums\UserRole', 'EnumsUserRole')
 @props(['sidebar_expanded' => true, 'icon_size' => '25', 'icon_ratio' => '1/1'])
 
 <div {{ $attributes->merge(['class' => 'container-fluid main-menu-container text-white']) }}>
     <x-layout.employee.nav.sidebar sidebar_expanded="{{ $sidebar_expanded }}" class="shadow"
         icon_size="{{ $icon_size }}" icon_ratio="{{ $icon_ratio }}">
-        @php
-
-            $user = Auth::guard(\App\Http\Helpers\ChooseGuard::getByRequest())->user()->load('role');
-
-            // dd($user);
-
-        @endphp
-
-        {{-- @includeWhen($user->role->user_role_name == 'USER', 'components.employee.nav.sidebar.employee-navs') --}}
-
-        @includeWhen($user->role->user_role_name == 'HR MANAGER', 'components.employee.nav.sidebar.hr-navs')
 
         @includeWhen(
-            $user->role->user_role_name == 'SYSADMIN',
+            $user->hasRole([EnumsUserRole::INTERMEDIATE->value]),
+            'components.employee.nav.sidebar.hr-navs')
+
+        @includeWhen(
+            $user->hasRole([EnumsUserRole::ADVANCED->value]),
             'components.employee.nav.sidebar.head-admin-navs')
 
     </x-layout.employee.nav.sidebar>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Employee;
 
+use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -13,14 +14,19 @@ class DashboardController extends Controller
     {
         $authenticated_user = Auth::guard('employee')->user();
         // dump($authenticated_user);
-        $user_with_role_and_account = User::with(['role', 'account'])
-            ->where('user_id', $authenticated_user->user_id)
+        $user = User::where('user_id', $authenticated_user->user_id)
+            ->with('roles')
             ->first();
 
-        // dd($user_with_role_and_account);
-        switch ($user_with_role_and_account->role->user_role_name) {
-            case 'HR MANAGER':
-                return view('employee.hr.index', ['user' => $user_with_role_and_account]);
+        $role_name = $user->roles->pluck('name')->first();
+
+        // dump($role_name);
+
+        switch ($role_name) {
+            case UserRole::INTERMEDIATE->value:
+                // dd($user);
+                return view('employee.hr.index');
+                break;
 
                 // HR
 

@@ -76,9 +76,6 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $applicant_user->assignRole(UserRole::BASIC);
-        $applicant_user->givePermissionTo([
-            UserPermission::VIEW_APPICANT_INFORMATION,
-        ]);
 
         $employees = collect();
         $usersData = [];
@@ -96,7 +93,9 @@ class DatabaseSeeder extends Seeder
                 'email_verified_at' => fake()->dateTimeBetween('-10 days', 'now'),
             ];
 
-            User::factory()->create($usersData[$i]);
+            $employee_user = User::factory()->create($usersData[$i]);
+
+            $employee_user->assignRole($i === 0 ? UserRole::INTERMEDIATE : UserRole::ADVANCED);
         }
 
         JobVacancy::factory(25)->create();

@@ -2,7 +2,7 @@
     $nonce = csp_nonce();
 @endphp
 
-@extends('components.layout.employee.layout', ['description' => 'Employee Dashboard', 'nonce' => $nonce, 'user' => $user])
+@extends('components.layout.employee.layout', ['description' => 'Employee Dashboard', 'nonce' => $nonce])
 
 @section('head')
     <title>Home Page</title>
