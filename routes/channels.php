@@ -28,4 +28,4 @@ Broadcast::channel('user_auth.{user_broadcast_id}', function ($user, string $use
     throw new \Exception('Debugging: The channel closure is being executed.');
 
     return true;
-});
+}, ['guards' => ['web', 'employee', 'admin']]);

@@ -7,9 +7,11 @@ use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
 use App\Events\UserLoggedout;
+use App\Http\Helpers\ChooseGuard;
 use App\Livewire\Auth\UnverifiedEmail;
-use App\Models\UserRole;
+use App\Models\User;
 use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
@@ -18,6 +20,8 @@ use Illuminate\Support\Str;
 use Laravel\Fortify\Contracts\LoginResponse;
 use Laravel\Fortify\Contracts\LogoutResponse;
 use Laravel\Fortify\Fortify;
+use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
+use Laravel\Fortify\Actions\AttemptToAuthenticate;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -26,6 +30,29 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        if (request()->is('employee/*')) {
+            config(
+                [
+                    'fortify.guard' => 'employee',
+                    'fortify.home'  => '/employee/dashboard'
+                ]
+            );
+        }
+        if (request()->is('admin/*')) {
+            config(
+                [
+                    'fortify.guard' => 'admin',
+                    'fortify.home'  => '/admin/dashboard'
+                ]
+            );
+        }
+
+        $this->app->when([AuthenticatedSessionController::class, AttemptToAuthenticate::class])
+            ->needs(StatefulGuard::class)
+            ->give(function () {
+                return Auth::guard(ChooseGuard::getByReferrer());
+            });
+
         $this->app->instance(LogoutResponse::class, new class implements LogoutResponse
         {
             public function toResponse($request)
@@ -45,13 +72,33 @@ class FortifyServiceProvider extends ServiceProvider
         {
             public function toResponse($request)
             {
-
                 // Redirect to previously visited page before being prompt to login
                 if (session()->has('url.intended')) {
-                    return redirect()->intended();
+                    // Add Check if has permission to access then
+                    if (true) {
+                        return redirect()->intended();
+                    }
                 }
 
-                return redirect()->to('/dashboard');
+                $authenticated_user = Auth::guard(ChooseGuard::getByReferrer())->user();
+
+                $user_with_role_and_account = User::with(['role', 'account'])
+                    ->where('user_id', $authenticated_user->user_id)
+                    ->first();
+
+                if ($authenticated_user->account_type == 'employee') {
+                    if ($user_with_role_and_account->role->user_role_name == 'HR MANAGER') {
+                        return redirect('/employee/dashboard');
+                    }
+
+                    if ($user_with_role_and_account->role->user_role_name == 'SYSADMIN') {
+                        return redirect('/admin/dashboard');
+                    }
+                }
+
+                if ($authenticated_user->account_type == 'applicant') {
+                    //
+                }
             }
         });
     }
@@ -61,6 +108,8 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+
+
         Fortify::createUsersUsing(CreateNewUser::class);
         Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
@@ -69,6 +118,13 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::verifyEmailView(fn() => app(UnverifiedEmail::class)->render());
 
         Fortify::loginView(function () {
+            if (request()->is('employee/*')) {
+                return view('livewire.auth.employees.login-view');
+            }
+            if (request()->is('admin/*')) {
+                return view('livewire.auth.admins.login-view');
+            }
+
             return view('livewire.auth.applicants.login-view');
         });
 

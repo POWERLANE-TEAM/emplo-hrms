@@ -6,7 +6,71 @@
 @endphp
 
 <tr class="rounded-2 outline dropzone position-relative" style="height: 100px; vertical-align: middle;"
- id="preemp-doc-{{ $doc_id }}" wire:ignore>
+    id="preemp-doc-{{ $doc_id }}" x-init="preEmpDoc{{ $doc_id }} = new Dropzone(
+        '#preemp-doc-{{ $doc_id }}', {
+            url: '/preemploy',
+            withCredentials: true,
+            paramName: 'pre_emp_doc',
+            autoProcessQueue: false,
+            maxFilesize: 2, // MB
+            clickable: '#preemp-doc-{{ $doc_id }} .btn.btn-primary',
+            parallelUploads: 1,
+            maxFiles: 1,
+            thumbnailWidth: null,
+            thumbnailHeight: null,
+            thumbnailMethod: 'contain',
+            previewsContainer: '#preemp-doc-{{ $doc_id }}-preview',
+            addRemoveLinks: true,
+            maxfilesexceeded: function(file) {
+                console.log(file);
+                this.removeFile(this.files[0]);
+            },
+            maxfilesreached: function(file) {
+                console.log(file);
+            },
+            addedfiles: function(file) {
+                let modalSelector = `#preemp-doc-{{ $doc_id }}-attachment`;
+    
+                console.log(file);
+    
+                $(`${modalSelector} button.submit`).off('click');
+                $(`${modalSelector} button.submit`).on('click', () => {
+                    this.processQueue(file);
+                });
+    
+                const previewModal = bootstrap.Modal.getOrCreateInstance(modalSelector);
+                previewModal.show();
+            },
+            sending: function(file, xhr, formData) {
+                formData.append('doc_id', {{ $doc_id }});
+            },
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name=\'csrf-token\']').getAttribute('content')
+            },
+            totaluploadprogress: function(progress, totalBytes, totalBytesSent) {
+                let percentProgress = Math.min(progress, 100);
+                this.element.style.setProperty('--data-upload-progress', `${percentProgress}%`);
+                this.element.setAttribute('data-upload-progress', `${percentProgress}`);
+            },
+            errormultiple: function() {
+                console.log('error');
+            },
+            processingmultiple: function() {
+                console.log('processing');
+            },
+            queuecomplete: function() {
+                console.log('queue complete');
+            },
+            sendingmultiple: function() {
+                console.log('sending');
+            },
+            completemultiple: function() {
+                console.log('complete');
+            },
+            successmultiple: function() {
+                console.log('success');
+            }
+        });">
     <form action="" wire:model="document_id" name="{{ $doc_id }}">
         <td class="dz-message">
             @csrf
@@ -33,7 +97,7 @@
     </form>
 
     <div class="modal fade" id="preemp-doc-{{ $doc_id }}-attachment" tabindex="-1"
-        aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore>
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-fullscreen-sm-down modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -47,98 +111,10 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary submit">Submit</button>
+                    <button type="button" class="btn btn-primary submit"
+                        @click="preEmpDoc{{ $doc_id }}.processQueue()">Submit</button>
                 </div>
             </div>
         </div>
     </div>
 </tr>
-
-<script>
-    let preEmpDoc{{ $doc_id }} = new Dropzone(
-        "#preemp-doc-{{ $doc_id }}", {
-            url: "/preemploy",
-            withCredentials: true,
-            paramName: "pre_emp_doc",
-            autoProcessQueue: false,
-            maxFilesize: 2, // MB
-            // createImageThumbnails: false,
-            clickable: '#preemp-doc-{{ $doc_id }} .btn.btn-primary',
-            // acceptedFiles: 'application/pdf',
-            // disablePreviews: true,
-            parallelUploads: 1,
-            maxFiles: 1,
-            thumbnailWidth: null,
-            thumbnailHeight: null,
-            thumbnailMethod: 'contain',
-            // previewTemplate: , /* Customize preview element look */
-            previewsContainer: '#preemp-doc-{{ $doc_id }}-preview',
-            addRemoveLinks: true,
-            maxfilesexceeded: function(file) {
-                console.log(file);
-                this.removeFile(this.files[0])
-
-            },
-            maxfilesreached: function(file) {
-                console.log(file);
-            },
-            addedfiles: function(file) {
-                let modalSelector = `#preemp-doc-{{ $doc_id }}-attachment`;
-
-                console.log(file)
-
-                $(`${modalSelector} button.submit`).off('click');
-                $(`${modalSelector} button.submit`).on('click', () => {
-                    this.processQueue(file);
-                });
-
-                const previewModal = bootstrap.Modal.getOrCreateInstance(modalSelector);
-                previewModal.show();
-                // alert(file)
-            },
-            sending: function(file, xhr, formData) {
-
-                formData.append("doc_id", {{ $doc_id }});
-            },
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            },
-            // uploadprogress: function(file, progress, bytesSent) { /* Ovverrides default handler  https://github.com/dropzone/dropzone/blob/main/src/options.js#L574 */
-            //     this.element.style.setProperty('--data-upload-progress', `${progress}%`);
-            //     this.element.setAttribute('data-upload-progress', `${progress}`);
-
-            //     console.log(this.element)
-            //     console.log(file)
-            // },
-            totaluploadprogress: function(progress, totalBytes, totalBytesSent) {
-                let percentProgress = Math.min(progress, 100);
-                this.element.style.setProperty('--data-upload-progress', `${percentProgress}%`);
-                this.element.setAttribute('data-upload-progress', `${percentProgress}`);
-
-                console.log(this.element)
-                console.log(totalBytes)
-                console.log(totalBytesSent)
-            },
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            },
-            errormultiple: function() {
-                console.log('error')
-            },
-            processingmultiple: function() {
-                console.log('process')
-            },
-            queuecomplete: function() {
-                console.log('queue')
-            },
-            sendingmultiple: function() {
-                console.log('sending')
-            },
-            completemultiple: function() {
-                console.log('complete')
-            },
-            successmultiple: function() {
-                console.log('success')
-            },
-        });
-</script>

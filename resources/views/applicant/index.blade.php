@@ -11,7 +11,6 @@
 
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    @vite(['vendor/node_modules/jquery/dist/jquery.slim.min.js'])
     <script src="https://cdn.jsdelivr.net/npm/chart.js" nonce="{{ $nonce }}"></script>
     @vite(['vendor/node_modules/chartjs-plugin-annotation/dist/chartjs-plugin-annotation.min.js'])
 @endsection

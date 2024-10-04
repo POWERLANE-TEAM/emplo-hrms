@@ -2,6 +2,8 @@
     $nonce = csp_nonce();
 @endphp
 
+{{-- {{ dd(request()) }}e --}}
+
 @extends('layout.applicant', ['description' => 'Guest Layout', 'nonce' => $nonce, 'main_content_class' => 'container'])
 
 @section('head')
@@ -10,8 +12,6 @@
     @vite(['resources/js/employee/pre-employment.js'])
 
     <script src="https://unpkg.com/lucide@latest"></script>
-
-    @vite(['vendor/node_modules/jquery/dist/jquery.slim.min.js'])
 
     <script src="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone-min.js"></script>
     <link href="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone.css" rel="stylesheet" type="text/css" />

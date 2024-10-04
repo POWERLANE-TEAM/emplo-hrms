@@ -20,9 +20,11 @@
     @vite(['resources/css/hiring.css'])
 @endPushOnce
 
+
 @section('critical-styles')
-    <x-layout.guest-primary-style />
+    {!! Vite::content('resources/css/guest/primary-bg.css') !!}
 @endsection
+
 
 @section('before-nav')
     <section class="top-vector">
@@ -47,7 +49,7 @@
 @endsection
 
 @section('header-nav')
-    <x-layout.guest-primary-header />
+    <x-layout.guest.primary-header />
 @endsection
 
 @section('content')

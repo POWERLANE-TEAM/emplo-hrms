@@ -2,28 +2,25 @@
     $nonce = csp_nonce();
 @endphp
 
-@extends('layout.employee', ['description' => 'Employee Dashboard', 'nonce' => $nonce, 'user' => $user])
+@extends('components.layout.employee.layout', ['description' => 'Employee Dashboard', 'nonce' => $nonce, 'user' => $user])
 
 @section('head')
     <title>Home Page</title>
-
-    {{-- Critical Assets that will cause cumulative shift if late loaded --}}
-@endsection
-
-@pushOnce('lib-scripts')
     <script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
     <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
-    @vite(['vendor/node_modules/jquery/dist/jquery.slim.min.js'])
+@endsection
+
+@pushOnce('pre-scripts')
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" nonce="{{ $nonce }}"></script>
 @endPushOnce
 
 @pushOnce('scripts')
     <script src="{{ Vite::asset('resources/js/forms/nbp.min.js') }}" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js" nonce="{{ $nonce }}"></script>
     @vite(['resources/js/employee/hr/dashboard.js'])
 @endPushOnce
 @pushOnce('styles')
+    @vite(['resources/css/employee/dashboard.css'])
 @endPushOnce
-
 @section('content')
     <hgroup class="mb-5 ms-n1">
         <div class="fs-2 fw-bold mb-2">Good afternoon, {{ $user->account->first_name }}!</div>
