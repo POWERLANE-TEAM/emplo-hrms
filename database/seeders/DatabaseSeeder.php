@@ -33,7 +33,7 @@ class DatabaseSeeder extends Seeder
         // Reset cached roles and permissions
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
-        UserStatus::factory(3)->create();
+        $this->call(UserStatusSeeder::class);
 
         $this->call(RolesAndPermissionsSeeder::class);
 
