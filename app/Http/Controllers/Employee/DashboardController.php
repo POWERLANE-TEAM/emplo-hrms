@@ -20,7 +20,8 @@ class DashboardController extends Controller
 
         $role_name = $user->roles->pluck('name')->first();
 
-        // dump($role_name);
+        // dump(UserRole::INTERMEDIATE->value);
+        // dd($role_name);
 
         switch ($role_name) {
             case UserRole::INTERMEDIATE->value:

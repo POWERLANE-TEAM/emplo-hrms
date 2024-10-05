@@ -6,6 +6,7 @@ use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
+use App\Enums\UserRole;
 use App\Events\UserLoggedout;
 use App\Http\Helpers\ChooseGuard;
 use App\Livewire\Auth\UnverifiedEmail;
@@ -82,16 +83,16 @@ class FortifyServiceProvider extends ServiceProvider
 
                 $authenticated_user = Auth::guard(ChooseGuard::getByReferrer())->user();
 
-                $user_with_role_and_account = User::with(['role', 'account'])
-                    ->where('user_id', $authenticated_user->user_id)
+                $user_with_role_and_account = User::where('user_id', $authenticated_user->user_id)
+                    ->with(['roles'])
                     ->first();
 
                 if ($authenticated_user->account_type == 'employee') {
-                    if ($user_with_role_and_account->role->user_role_name == 'HR MANAGER') {
+                    if ($user_with_role_and_account->hasRole([UserRole::BASIC->value, UserRole::INTERMEDIATE->value])) {
                         return redirect('/employee/dashboard');
                     }
 
-                    if ($user_with_role_and_account->role->user_role_name == 'SYSADMIN') {
+                    if ($user_with_role_and_account->hasRole(UserRole::ADVANCED->value)) {
                         return redirect('/admin/dashboard');
                     }
                 }
@@ -129,7 +130,7 @@ class FortifyServiceProvider extends ServiceProvider
         });
 
         RateLimiter::for('login', function (Request $request) {
-            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
+            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())) . '|' . $request->ip());
 
             return Limit::perMinute(5)->by($throttleKey);
         });
