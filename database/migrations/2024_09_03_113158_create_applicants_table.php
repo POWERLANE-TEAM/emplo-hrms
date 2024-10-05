@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('first_name', 100);
             $table->string('middle_name', 100)->nullable();
             $table->string('last_name', 100);
-            $table->string('contact_number', 11)->unique();
+            $table->string('contact_number', 11)->index();
             $table->jsonb('education')->nullable();
             $table->jsonb('experience')->nullable();
             $table->timestamps();

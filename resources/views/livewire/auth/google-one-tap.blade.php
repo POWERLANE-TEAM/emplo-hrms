@@ -7,8 +7,9 @@
     data-auto_prompt="true"
     data-auto_select="true"
     data-itp_support="true"
-    {{-- data-use_fedcm_for_prompt="true" --}}
     data-cancel_on_tap_outside="true"
+    {{-- data-login_hint="true" --}}
+    {{-- data-use_fedcm_for_prompt="true" --}}
 >
 </div>    
 
