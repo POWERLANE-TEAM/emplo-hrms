@@ -3,11 +3,14 @@
 namespace App\Livewire\Auth;
 
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use App\Traits\GoogleCallback;
+use Illuminate\Support\Facades\Auth;
 
 class GoogleOneTap extends Component
 {
+    use GoogleCallback;
+
     public function render()
     {
         return view('livewire.auth.google-one-tap');
@@ -16,22 +19,33 @@ class GoogleOneTap extends Component
     public function handleCallback()
     {
         $client = new \Google_Client(['client_id' => config('services.google.client_id')]);
+        
         $payload = $client->verifyIdToken($_POST['credential']);
 
         if ($payload) {
-            $findUser = User::where('google_id', $payload['sub'])->first();
 
-            if ($findUser) {
-                return Auth::login($findUser);
+            $user = User::where('google_id', $payload['sub'])->first();
+
+            if ($user) {
+
+                Auth::login($user);
+
+                return redirect('hiring');
+
             } else {
-                $newUser = User::updateOrCreate([
-                    'email' => $payload['email'],
-                    'password' => null,
-                    'google_id' => $payload['sub'],
-                    'role' => 'USER',
-                ]);
 
-                return Auth::login($newUser);
+                $new_user = $this->oneTapWithGoogle($payload);
+
+                if(! $new_user) {
+
+                    //
+
+                } else {
+
+                    Auth::login($new_user);
+
+                    return redirect('hiring');
+                }
             }
         }
     }
