@@ -15,7 +15,6 @@ use App\Models\JobDetail;
 use App\Models\JobFamily;
 use App\Models\Department;
 use App\Models\JobVacancy;
-use App\Models\UserStatus;
 use App\Models\SpecificArea;
 use Illuminate\Database\Seeder;
 use App\Models\EmploymentStatus;
@@ -33,7 +32,7 @@ class DatabaseSeeder extends Seeder
         // Reset cached roles and permissions
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
-        UserStatus::factory(3)->create();
+        $this->call(UserStatusSeeder::class);
 
         $this->call(RolesAndPermissionsSeeder::class);
 
