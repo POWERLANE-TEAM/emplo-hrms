@@ -19,7 +19,7 @@ class GoogleOAuth extends Component
 
     public function googleCallback()
     {
-        $google_user = Socialite::driver('google')->stateless()->user();;
+        $google_user = Socialite::driver('google')->stateless()->user();
 
         $user = User::where('google_id', $google_user->id)->first();
 
