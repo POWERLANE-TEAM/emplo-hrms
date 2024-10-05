@@ -2,20 +2,28 @@
     $nonce = csp_nonce();
 @endphp
 
-{{-- {{ dd(request()) }}e --}}
-
-@extends('layout.applicant', ['description' => 'Guest Layout', 'nonce' => $nonce, 'main_content_class' => 'container'])
+@extends('components.layout.applicant.layout', ['description' => 'Guest Layout', 'nonce' => $nonce, 'main_content_class' => 'container'])
 
 @section('head')
     <title>Applicant</title>
-    <script src="{{ Vite::asset('resources/js/forms/nbp.min.js') }}" defer></script>
-    @vite(['resources/js/employee/pre-employment.js'])
-
-    <script src="https://unpkg.com/lucide@latest"></script>
-
-    <script src="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone-min.js"></script>
-    <link href="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone.css" rel="stylesheet" type="text/css" />
 @endsection
+
+@pushOnce('pre-scripts')
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone-min.js"></script>
+@endPushOnce
+
+@pushOnce('scripts')
+    @vite(['resources/js/employee/pre-employment.js'])
+@endPushOnce
+
+@pushOnce('pre-styles')
+    <link href="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone.css" rel="stylesheet" type="text/css" />
+@endPushOnce
+
+@pushOnce('styles')
+    @vite(['resources/css/employee/pre-employment.css'])
+@endPushOnce
 
 
 @section('content')
@@ -40,6 +48,8 @@
     </div>
 @endsection
 
-<td colspan="4" class=" d-flex">
+@section('after-main')
+    <td colspan="4" class=" d-flex">
 
-</td>
+    </td>
+@endsection

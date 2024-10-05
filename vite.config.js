@@ -27,6 +27,7 @@ export default defineConfig({
                 'resources/css/guest/primary-bg.css',
                 'resources/css/guest/secondary-bg.css',
                 'resources/css/applicant/apply.css',
+                'resources/css/employee/pre-employment.css',
             ],
             refresh: true,
         }),
