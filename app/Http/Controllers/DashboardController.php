@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 class DashboardController extends Controller
 {
     /* Show all resource */
-    public function index()
+    public function index($prefix)
     {
 
         $authenticated_user = Auth::user();
@@ -19,15 +19,16 @@ class DashboardController extends Controller
             ->where('user_id', $authenticated_user->user_id)
             ->first();
 
-        // dd($user_with_role_and_account);
+        redirect()->to($prefix . '/');
 
         switch ($user_with_role_and_account->role->user_role_name) {
             case 'HR MANAGER':
                 return view('employee.hr.index', ['user' => $user_with_role_and_account]);
             case 'SYSADMIN':
+
                 return view('employee.head-admin.index', ['user' => $user_with_role_and_account]);
             case 'USER':
-                return redirect()->to('/');
+                return;
             default:
                 return view('employee.standard.index', ['user' => $user_with_role_and_account]);
         }

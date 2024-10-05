@@ -7,8 +7,6 @@
 
             $user = Auth::user()->load('role');
 
-            // dd($user);
-
         @endphp
 
         {{-- @includeWhen($user->role->user_role_name == 'USER', 'components.employee.nav.sidebar.employee-navs') --}}
