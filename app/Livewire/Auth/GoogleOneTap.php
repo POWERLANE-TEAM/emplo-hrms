@@ -4,6 +4,7 @@ namespace App\Livewire\Auth;
 
 use App\Models\User;
 use Livewire\Component;
+use Illuminate\Http\Request;
 use App\Traits\GoogleCallback;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,11 +17,13 @@ class GoogleOneTap extends Component
         return view('livewire.auth.google-one-tap');
     }
 
-    public function handleCallback()
+    public function handleCallback(Request $request)
     {
         $client = new \Google_Client(['client_id' => config('services.google.client_id')]);
+
+        $credential = $request->input('credential');
         
-        $payload = $client->verifyIdToken($_POST['credential']);
+        $payload = $client->verifyIdToken($credential);
 
         if ($payload) {
 
