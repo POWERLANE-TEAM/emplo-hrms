@@ -21,7 +21,7 @@ return new class extends Migration
 
         Schema::create('users', function (Blueprint $table) {
             $table->id('user_id');
-            $table->morphs('account');
+            $table->nullableMorphs('account');
             $table->string('email', 320)->unique();
             $table->string('password');
             $table->string('google_id')->nullable();
