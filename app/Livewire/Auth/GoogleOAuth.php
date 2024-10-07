@@ -21,7 +21,9 @@ class GoogleOAuth extends Component
     {
         $google_user = Socialite::driver('google')->stateless()->user();
 
-        $user = User::where('google_id', $google_user->id)->first();
+        $user = User::where('google_id', $google_user->id)
+            ->orWhere('email', $google_user->getEmail())
+            ->first();
 
         if ($user) {
 
@@ -31,7 +33,7 @@ class GoogleOAuth extends Component
 
         } else {
 
-            $new_user = $this->signInWithGoogle($google_user);
+            $new_user = $this->saveGooglePayload($google_user->user);
 
             if (! $new_user) {
 

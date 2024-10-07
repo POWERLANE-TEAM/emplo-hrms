@@ -27,7 +27,9 @@ class GoogleOneTap extends Component
 
         if ($payload) {
 
-            $user = User::where('google_id', $payload['sub'])->first();
+            $user = User::where('google_id', $payload['sub'])
+                ->orWhere('email', $payload['email'])
+                ->first();
 
             if ($user) {
 
@@ -37,7 +39,7 @@ class GoogleOneTap extends Component
 
             } else {
 
-                $new_user = $this->oneTapWithGoogle($payload);
+                $new_user = $this->saveGooglePayload($payload);
 
                 if(! $new_user) {
 
