@@ -121,14 +121,13 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::verifyEmailView(fn() => app(UnverifiedEmail::class)->render());
 
         Fortify::loginView(function () {
-            if (request()->is('employee/*')) {
-                return view('livewire.auth.employees.login-view');
-            }
-            if (request()->is('admin/*')) {
-                return view('livewire.auth.admins.login-view');
-            }
+            $view = match (true) {
+                request()->is('employee/*') => 'livewire.auth.employees.login-view',
+                request()->is('admin/*') => 'livewire.auth.admins.login-view',
+                default => 'livewire.auth.applicants.login-view',
+            };
 
-            return view('livewire.auth.applicants.login-view');
+            return view($view);
         });
 
         RateLimiter::for('login', function (Request $request) {
