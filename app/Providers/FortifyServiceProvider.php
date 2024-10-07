@@ -17,6 +17,8 @@ use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Contracts\LoginResponse;
@@ -74,19 +76,46 @@ class FortifyServiceProvider extends ServiceProvider
         {
             public function toResponse($request)
             {
-                // Redirect to previously visited page before being prompt to login
-                if (session()->has('url.intended')) {
-                    // Add Check if has permission to access then
-                    if (true) {
-                        return redirect()->intended();
-                    }
-                }
-
                 $authenticated_user = Auth::guard(ChooseGuard::getByReferrer())->user();
 
                 $user_with_role_and_account = User::where('user_id', $authenticated_user->user_id)
                     ->with(['roles'])
                     ->first();
+
+                // Redirection to previously visited page before being prompt to login
+                // For example you visit /employee/payslip and you are not logged in
+                // Instead of redirecting to dashboard after successful login you will be redirected to /employee/payslip
+                $intended_url = Session::get('url.intended');
+
+                if ($intended_url && $authenticated_user) {
+                    $route = Route::getRoutes()->match(Request::create($intended_url));
+                    $middleware = $route->gatherMiddleware();
+
+                    $has_access = true;
+
+                    foreach ($middleware as $middleware_item) {
+
+                        if (str_contains($middleware_item, 'role:')) {
+                            $role = explode(':', $middleware_item)[1];
+                            if (!$user_with_role_and_account->hasRole($role)) {
+                                $has_access = false;
+                                break;
+                            }
+                        }
+
+                        if (str_contains($middleware_item, 'permission:')) {
+                            $permission = explode(':', $middleware_item)[1];
+                            if (!$user_with_role_and_account->can($permission)) {
+                                $has_access = false;
+                                break;
+                            }
+                        }
+                    }
+
+                    if ($has_access) {
+                        return redirect()->intended();
+                    }
+                }
 
                 if ($authenticated_user->account_type == AccountType::EMPLOYEE->value) {
 
