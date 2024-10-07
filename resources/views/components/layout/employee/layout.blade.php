@@ -21,7 +21,7 @@
 
     <x-fav-icon />
 
-    <?php Vite::useScriptTagAttributes(['onerror' => 'handleError(error)']); ?>
+    {{ Vite::useScriptTagAttributes(['onerror' => 'handleError(error)']) }}
     @php
         Debugbar::getJavascriptRenderer()->setCspNonce($nonce);
     @endphp
