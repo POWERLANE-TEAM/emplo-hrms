@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\AccountType;
 use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
 use App\Models\User;
@@ -19,10 +20,10 @@ class DashboardController extends Controller
             ->with(['roles'])
             ->first();
 
-        $is_admin = $authenticated_user->account_type == 'employee' && $user_with_role_and_account->hasRole(UserRole::ADVANCED->value);
+        $is_admin = $authenticated_user->account_type == AccountType::EMPLOYEE->value && $user_with_role_and_account->hasRole(UserRole::ADVANCED->value);
 
         if (!$is_admin) {
-            return abort(403);
+            abort(403);
         }
 
         return view('employee.admin.index');

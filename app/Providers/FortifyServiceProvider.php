@@ -6,6 +6,7 @@ use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
+use App\Enums\AccountType;
 use App\Enums\UserRole;
 use App\Events\UserLoggedout;
 use App\Http\Helpers\ChooseGuard;
@@ -87,17 +88,18 @@ class FortifyServiceProvider extends ServiceProvider
                     ->with(['roles'])
                     ->first();
 
-                if ($authenticated_user->account_type == 'employee') {
-                    if ($user_with_role_and_account->hasRole([UserRole::BASIC->value, UserRole::INTERMEDIATE->value])) {
-                        return redirect('/employee/dashboard');
-                    }
+                if ($authenticated_user->account_type == AccountType::EMPLOYEE->value) {
 
                     if ($user_with_role_and_account->hasRole(UserRole::ADVANCED->value)) {
                         return redirect('/admin/dashboard');
                     }
+
+                    if ($user_with_role_and_account->hasRole([UserRole::BASIC->value, UserRole::INTERMEDIATE->value])) {
+                        return redirect('/employee/dashboard');
+                    }
                 }
 
-                if ($authenticated_user->account_type == 'applicant') {
+                if ($authenticated_user->account_type == AccountType::APPLICANT->value) {
                     //
                 }
             }
