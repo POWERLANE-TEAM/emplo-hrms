@@ -18,13 +18,8 @@ class DashboardController extends Controller
             ->with('roles')
             ->first();
 
-        $role_names = $user->roles->pluck('name');
-
-        // dump(UserRole::INTERMEDIATE->value);
-        // dd($role_name);
-
         $dashboard = match (true) {
-            $role_names->contains(UserRole::INTERMEDIATE->value) => 'employee.hr.index',
+            $user->hasRole(UserRole::INTERMEDIATE->value) => 'employee.hr.index',
                 // HR
 
                 // Superviser
