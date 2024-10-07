@@ -24,6 +24,7 @@ return new class extends Migration
             $table->nullableMorphs('account');
             $table->string('email', 320)->unique();
             $table->string('password');
+            $table->string('photo')->nullable();
             $table->string('google_id')->nullable();
 
             $table->foreignIdFor(UserStatus::class, 'user_status_id')

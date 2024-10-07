@@ -56,7 +56,6 @@ return new class extends Migration
             $table->longText('permanent_address');
 
             $table->string('contact_number', 11)->unique();
-            $table->string('photo')->nullable(); // emp photo file path
             $table->enum('sex', ['MALE', 'FEMALE']);
             $table->enum('civil_status', ['SINGLE', 'MARRIED', 'WIDOWED', 'LEGALLY SEPARATED']);
             $table->string('sss_no', 10)->unique();
