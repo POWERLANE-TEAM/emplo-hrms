@@ -87,8 +87,12 @@ class CspPolicy extends CustomSpatiePolicy
         $this->addDirective(Directive::SCRIPT, 'https://accounts.google.com/gsi/client');
         $this->addDirective(Directive::SCRIPT, 'https://www.google.com');
         $this->addDirective(Directive::SCRIPT, 'https://www.gstatic.com');
+        $this->addDirective(Directive::SCRIPT, 'https://cdn.jsdelivr.net/npm/chart.js');
 
 
+        $this->addDirective(Directive::FRAME, 'self');
+        $this->addDirective(Directive::FRAME_ANCESTORS, 'self');
         $this->addDirective(Directive::FRAME, 'https://www.google.com');
+        $this->addDirective(Directive::FRAME_ANCESTORS, 'https://www.google.com');
     }
 }

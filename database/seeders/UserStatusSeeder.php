@@ -15,17 +15,17 @@ class UserStatusSeeder extends Seeder
     {
         $user_statuses = [
             [
-                'user_status_id' => AccountStatus::ACTIVE, 
+                'user_status_id' => AccountStatus::ACTIVE,
                 'user_status_name' => AccountStatus::ACTIVE->label(),
                 'user_status_desc' => fake()->paragraph(),
             ],
             [
-                'user_status_id' => AccountStatus::INACTIVE, 
+                'user_status_id' => AccountStatus::INACTIVE,
                 'user_status_name' => AccountStatus::INACTIVE->label(),
                 'user_status_desc' => fake()->paragraph(),
             ],
             [
-                'user_status_id' => AccountStatus::SUSPENDED, 
+                'user_status_id' => AccountStatus::SUSPENDED,
                 'user_status_name' => AccountStatus::SUSPENDED->label(),
                 'user_status_desc' => fake()->paragraph(),
             ],

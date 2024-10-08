@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Enums\UserRole;
+use App\Http\Helpers\ChooseGuard;
+use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
@@ -12,6 +14,9 @@ use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Broadcasting\BroadcastServiceProvider;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\View;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -78,6 +83,23 @@ class AppServiceProvider extends ServiceProvider
         // if user role is advanced, bypass all permission checks
         Gate::before(function ($user, $ability) {
             return $user->hasRole(UserRole::ADVANCED) ? true : null;
+        });
+
+        View::composer('*', function ($view) {
+
+            if (Auth::guard(ChooseGuard::getByRequest())->check()) {
+                $authenticated_user = Auth::guard(ChooseGuard::getByRequest())->user();
+                $user = User::where('user_id', $authenticated_user->user_id)
+                    ->with('roles')
+                    ->first();
+
+                $role_name = $user->roles->pluck('name')->first();
+
+                $view->with([
+                    'role_name' => $role_name,
+                    'user' => $user,
+                ]);
+            }
         });
     }
 }
