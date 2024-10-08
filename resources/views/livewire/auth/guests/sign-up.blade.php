@@ -3,7 +3,7 @@
 @endphp
 
 <section nonce="{{ $nonce }}" class="signUp-form ps-md-4 pe-md-5  pt-md-3 ">
-    <hgroup class="d-flex flex-column text-center mb-5 mt-md-n4">
+    <hgroup class="d-flex flex-column text-center mb-3 mt-md-n4">
         <header class="display-5 fw-semibold text-primary mb-3">
             {{ __('register.sign_up.sign_up') }}
         </header>
@@ -31,6 +31,10 @@
     </style>
 
     @livewire('auth.google-o-auth')
+
+    <div class="my-3"></div>
+
+    @livewire('auth.facebook-o-auth')      
 
     <div class="my-5 d-flex align-items-center  border-bottom position-relative">
         <div class="position-absolute start-50 bg-body px-3 opacity-75 fw-medium text-uppercase translate-middle-x">or
