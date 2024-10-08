@@ -13,7 +13,6 @@
         box-sizing: border-box;
         color: #1f1f1f;
         cursor: pointer;
-        font-family: 'Roboto', arial, sans-serif;
         font-size: 14px;
         height: 40px;
         letter-spacing: 0.25px;
@@ -27,7 +26,7 @@
         vertical-align: middle;
         white-space: nowrap;
         width: auto;
-        max-width: 400px;
+        max-width: 500px;
         min-width: min-content;
     }
 
@@ -55,7 +54,6 @@
     .gsi-material-button .gsi-material-button-contents {
         -webkit-flex-grow: 0;
         flex-grow: 0;
-        font-family: 'Roboto', arial, sans-serif;
         font-weight: 500;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -108,7 +106,7 @@
 <div class="row justify-content-center align-items-center ">
     <a href="auth/google/redirect"
         class="gsi-material-button btn btn-lg w-100 link-offset-2 link-underline link-underline-opacity-0"
-        style="width:400px" role="button">
+        style="width:500px" role="button">
         <div class="gsi-material-button-state"></div>
         <div class="gsi-material-button-content-wrapper">
             <div class="gsi-material-button-icon">
