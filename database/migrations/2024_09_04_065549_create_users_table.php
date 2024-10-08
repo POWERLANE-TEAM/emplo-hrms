@@ -25,7 +25,8 @@ return new class extends Migration
             $table->string('email', 320)->unique();
             $table->string('password');
             $table->string('photo')->nullable();
-            $table->string('google_id')->nullable();
+            $table->string('google_id')->unique()->nullable();
+            $table->string('facebook_id')->unique()->nullable();
 
             $table->foreignIdFor(UserStatus::class, 'user_status_id')
                 ->constrained('user_statuses', 'user_status_id')
