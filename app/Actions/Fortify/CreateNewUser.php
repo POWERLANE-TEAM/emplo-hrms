@@ -47,14 +47,12 @@ class CreateNewUser implements CreatesNewUsers
             // account_id from applicant or employee
             $account_id = $new_account_created->applicant_id ?? $new_account_created->employee_id;
 
-            $user_status =  UserStatus::where('user_status_name', $input['user_status'])->first();
-
             $new_user_created = User::create([
                 'account_type' => $input['account_type'],
                 'account_id' => $account_id,
                 'email' => $input['email'],
                 'password' => $input['password'],
-                'user_status_id' => $user_status->user_status_id,
+                'user_status_id' => $input['user_status'],
             ]);
 
             DB::commit();

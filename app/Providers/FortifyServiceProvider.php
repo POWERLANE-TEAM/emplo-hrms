@@ -6,18 +6,26 @@ use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
+use App\Enums\AccountType;
+use App\Enums\UserRole;
 use App\Events\UserLoggedout;
+use App\Http\Helpers\ChooseGuard;
 use App\Livewire\Auth\UnverifiedEmail;
-use App\Models\UserRole;
+use App\Models\User;
 use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Contracts\LoginResponse;
 use Laravel\Fortify\Contracts\LogoutResponse;
 use Laravel\Fortify\Fortify;
+use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
+use Laravel\Fortify\Actions\AttemptToAuthenticate;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -26,6 +34,29 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        if (request()->is('employee/*')) {
+            config(
+                [
+                    'fortify.guard' => 'employee',
+                    'fortify.home'  => '/employee/dashboard'
+                ]
+            );
+        }
+        if (request()->is('admin/*')) {
+            config(
+                [
+                    'fortify.guard' => 'admin',
+                    'fortify.home'  => '/admin/dashboard'
+                ]
+            );
+        }
+
+        $this->app->when([AuthenticatedSessionController::class, AttemptToAuthenticate::class])
+            ->needs(StatefulGuard::class)
+            ->give(function () {
+                return Auth::guard(ChooseGuard::getByReferrer());
+            });
+
         $this->app->instance(LogoutResponse::class, new class implements LogoutResponse
         {
             public function toResponse($request)
@@ -45,13 +76,61 @@ class FortifyServiceProvider extends ServiceProvider
         {
             public function toResponse($request)
             {
+                $authenticated_user = Auth::guard(ChooseGuard::getByReferrer())->user();
 
-                // Redirect to previously visited page before being prompt to login
-                if (session()->has('url.intended')) {
-                    return redirect()->intended();
+                $user_with_role_and_account = User::where('user_id', $authenticated_user->user_id)
+                    ->with(['roles'])
+                    ->first();
+
+                // Redirection to previously visited page before being prompt to login
+                // For example you visit /employee/payslip and you are not logged in
+                // Instead of redirecting to dashboard after successful login you will be redirected to /employee/payslip
+                $intended_url = Session::get('url.intended');
+
+                if ($intended_url && $authenticated_user) {
+                    $route = Route::getRoutes()->match(Request::create($intended_url));
+                    $middleware = $route->gatherMiddleware();
+
+                    $has_access = true;
+
+                    foreach ($middleware as $middleware_item) {
+
+                        if (str_contains($middleware_item, 'role:')) {
+                            $role = explode(':', $middleware_item)[1];
+                            if (!$user_with_role_and_account->hasRole($role)) {
+                                $has_access = false;
+                                break;
+                            }
+                        }
+
+                        if (str_contains($middleware_item, 'permission:')) {
+                            $permission = explode(':', $middleware_item)[1];
+                            if (!$user_with_role_and_account->can($permission)) {
+                                $has_access = false;
+                                break;
+                            }
+                        }
+                    }
+
+                    if ($has_access) {
+                        return redirect()->intended();
+                    }
                 }
 
-                return redirect()->to('/dashboard');
+                if ($authenticated_user->account_type == AccountType::EMPLOYEE->value) {
+
+                    if ($user_with_role_and_account->hasRole(UserRole::ADVANCED->value)) {
+                        return redirect('/admin/dashboard');
+                    }
+
+                    if ($user_with_role_and_account->hasRole([UserRole::BASIC->value, UserRole::INTERMEDIATE->value])) {
+                        return redirect('/employee/dashboard');
+                    }
+                }
+
+                if ($authenticated_user->account_type == AccountType::APPLICANT->value) {
+                    //
+                }
             }
         });
     }
@@ -61,6 +140,8 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+
+
         Fortify::createUsersUsing(CreateNewUser::class);
         Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
@@ -69,11 +150,17 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::verifyEmailView(fn() => app(UnverifiedEmail::class)->render());
 
         Fortify::loginView(function () {
-            return view('livewire.auth.applicants.login-view');
+            $view = match (true) {
+                request()->is('employee/*') => 'livewire.auth.employees.login-view',
+                request()->is('admin/*') => 'livewire.auth.admins.login-view',
+                default => 'livewire.auth.applicants.login-view',
+            };
+
+            return view($view);
         });
 
         RateLimiter::for('login', function (Request $request) {
-            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
+            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())) . '|' . $request->ip());
 
             return Limit::perMinute(5)->by($throttleKey);
         });

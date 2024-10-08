@@ -27,8 +27,6 @@ Route::/* middleware(['auth', 'verified'])-> */group([], function () {
     Route::post('/preemploy', [PreEmploymentController::class, 'store']);
 });
 
-Route::get('/employee/{page?}', [EmployeeController::class, 'employee'])->middleware(['auth', 'verified']);
-
 Route::middleware('guest')->group(function () {
     Route::get('/auth/google/redirect', [GoogleOAuth::class, 'googleOauth'])
         ->name('auth.google');
