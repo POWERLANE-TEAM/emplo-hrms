@@ -11,14 +11,13 @@ use Illuminate\Support\Facades\Hash;
 
 trait GoogleCallback
 {
-    public function saveGooglePayload($payload)
+    public function saveGooglePayload(array $payload)
     {
-        // converts to object if payload is array
-        $payload = is_array($payload) ? (object) $payload : $payload;
+        $payload = collect($payload);
 
         $guest = $this->createGuest($payload);
 
-        $new_user = $this->createUserAccount($payload, $guest);
+        $new_user = $this->createUserAccount($guest, $payload);
 
         return $new_user;
     }
@@ -32,7 +31,7 @@ trait GoogleCallback
         ]);
     }
 
-    private function createUserAccount($payload, $guest)
+    private function createUserAccount(Guest $guest, $payload)
     {
         return $guest->account()->create([
             'email' => $payload->email,
