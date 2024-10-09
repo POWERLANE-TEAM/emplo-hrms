@@ -88,7 +88,7 @@
 </style>
 
 <div class="row justify-content-center align-items-center">
-    <a href="auth/facebook/redirect"
+    <a href= {{ route('auth.facebook.redirect') }}
         class="fb-material-button btn btn-lg w-100 link-offset-2 link-underline link-underline-opacity-0" role="button">
         <div class="fb-material-button-icon">
             <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" style="display: block;">

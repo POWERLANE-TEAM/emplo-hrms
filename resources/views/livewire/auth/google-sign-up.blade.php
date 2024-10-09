@@ -104,7 +104,7 @@
 
 
 <div class="row justify-content-center align-items-center ">
-    <a href="auth/google/redirect"
+    <a href= {{ route('auth.google.redirect') }}
         class="gsi-material-button btn btn-lg w-100 link-offset-2 link-underline link-underline-opacity-0"
         style="width:500px" role="button">
         <div class="gsi-material-button-state"></div>

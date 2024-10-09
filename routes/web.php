@@ -32,18 +32,22 @@ Route::/* middleware(['auth', 'verified'])-> */group([], function () {
 
 Route::middleware('guest')->group(function () {
 
-    Route::get('/auth/google/redirect', [GoogleOAuth::class, 'googleOauth']);
+    Route::get('/auth/google/redirect', [GoogleOAuth::class, 'googleOauth'])
+        ->name('auth.google.redirect');
 
     Route::get('/auth/google/callback', [GoogleOAuth::class, 'googleCallback']);
     
     Route::post('/auth/googleonetap/callback', [GoogleOneTap::class, 'handleCallback']);
     
-    Route::get('/auth/facebook/redirect', [FacebookOAuth::class, 'facebookOauth']);
+    Route::get('/auth/facebook/redirect', [FacebookOAuth::class, 'facebookOauth'])
+        ->name('auth.facebook.redirect');
 
     Route::get('/auth/facebook/callback', [FacebookOAuth::class, 'handleCallback']);
 });
 
-Route::post('/web/logout', [Logout::class, 'destroy'])->middleware('auth:web');
+Route::post('/web/logout', [Logout::class, 'destroy'])
+    ->middleware('auth:web')
+    ->name('web.logout');
 
 
 /*
