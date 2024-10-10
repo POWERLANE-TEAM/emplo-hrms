@@ -66,6 +66,7 @@ class AppServiceProvider extends ServiceProvider
         // e.g: from column_type = App\Models\OutsourcedTrainer to column_type = outsourced_trainer
         // ref: https://laravel.com/docs/11.x/eloquent-relationships#custom-polymorphic-types
         Relation::enforceMorphMap([
+            'guest' => 'App\Models\Guest',
             'user' => 'App\Models\User',
             'outsourced_trainer' => 'App\Models\OutsourcedTrainer',
             'employee' => 'App\Models\Employee',

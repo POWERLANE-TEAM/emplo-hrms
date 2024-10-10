@@ -30,7 +30,6 @@ class EmployeeFactory extends Factory
             'present_address' => fake()->address,
             'permanent_address' => fake()->address,
             'contact_number' => fake()->unique()->numerify('###########'),
-            'photo' => fake()->optional()->imageUrl(),
             'sex' => fake()->randomElement(['MALE', 'FEMALE']),
             'civil_status' => fake()->randomElement(['SINGLE', 'MARRIED', 'WIDOWED', 'LEGALLY SEPARATED']),
             'sss_no' => fake()->numerify('##########'),

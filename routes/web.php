@@ -1,7 +1,10 @@
 <?php
 
+use App\Enums\UserPermission;
+use App\Livewire\Auth\Logout;
 use App\Livewire\Auth\GoogleOAuth;
 use App\Livewire\Auth\GoogleOneTap;
+use App\Livewire\Auth\FacebookOAuth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ApplicantDocController;
@@ -28,13 +31,23 @@ Route::/* middleware(['auth', 'verified'])-> */group([], function () {
 });
 
 Route::middleware('guest')->group(function () {
+
     Route::get('/auth/google/redirect', [GoogleOAuth::class, 'googleOauth'])
-        ->name('auth.google');
-    Route::get('/auth/google/callback', [GoogleOAuth::class, 'googleCallback'])
-        ->name('auth.google.callback');
-    Route::post('/auth/googleonetap/callback', [GoogleOneTap::class, 'handleCallback'])
-        ->name('auth.googleonetap.callback');
+        ->name('auth.google.redirect');
+
+    Route::get('/auth/google/callback', [GoogleOAuth::class, 'googleCallback']);
+    
+    Route::post('/auth/googleonetap/callback', [GoogleOneTap::class, 'handleCallback']);
+    
+    Route::get('/auth/facebook/redirect', [FacebookOAuth::class, 'facebookOauth'])
+        ->name('auth.facebook.redirect');
+
+    Route::get('/auth/facebook/callback', [FacebookOAuth::class, 'handleCallback']);
 });
+
+Route::post('/web/logout', [Logout::class, 'destroy'])
+    ->middleware('auth:web')
+    ->name('web.logout');
 
 
 /*
@@ -43,12 +56,12 @@ Route::middleware('guest')->group(function () {
 
 Route::get('/fake-uri1', function () {
     return view('temp.route-middleware-auth');
-})->middleware('permission:' . App\Enums\UserPermission::VIEW_EMPLOYEE_DASHBOARD->value);
+})->middleware('permission:'.UserPermission::VIEW_EMPLOYEE_DASHBOARD->value);
 
 Route::get('/fake-uri2', function () {
     return view('temp.route-middleware-auth');
-})->middleware('permission:' . App\Enums\UserPermission::VIEW_EMPLOYEE_INFORMATION->value);
+})->middleware('permission:'.UserPermission::VIEW_EMPLOYEE_INFORMATION->value);
 
 Route::get('/fake-uri3', function () {
     return view('temp.route-middleware-auth');
-})->middleware('permission:' . App\Enums\UserPermission::DELETE_JOB_LISTING->value);
+})->middleware('permission:'.UserPermission::DELETE_JOB_LISTING->value);

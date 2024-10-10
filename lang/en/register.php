@@ -14,7 +14,7 @@ return [
     */
 
     'sign_up' => [
-        'sign_up' => 'Sign Up',
-        'for_application' => 'Register to apply for ',
+        'sign_up' => 'Sign up for an account',
+        'for_application' => 'Sign up to apply for ',
     ],
 ];

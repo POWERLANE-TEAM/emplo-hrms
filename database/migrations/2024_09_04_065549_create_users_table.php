@@ -14,17 +14,19 @@ return new class extends Migration
     {
         Schema::create('user_statuses', function (Blueprint $table) {
             $table->id('user_status_id');
-            $table->string('user_status_name', 100);
+            $table->string('user_status_name');
             $table->longText('user_status_desc')->nullable();
             $table->timestamps();
         });
 
         Schema::create('users', function (Blueprint $table) {
             $table->id('user_id');
-            $table->morphs('account');
-            $table->string('email', 320)->unique();
+            $table->nullableMorphs('account');
+            $table->string('email', 320)->unique()->nullable();
             $table->string('password');
-            $table->string('google_id')->nullable();
+            $table->string('photo')->nullable();
+            $table->string('google_id')->unique()->nullable();
+            $table->string('facebook_id')->unique()->nullable();
 
             $table->foreignIdFor(UserStatus::class, 'user_status_id')
                 ->constrained('user_statuses', 'user_status_id')
