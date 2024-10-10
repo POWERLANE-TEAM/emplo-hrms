@@ -4,14 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Application;
 use App\Models\ApplicationDoc;
-use App\Models\CompanyDoc;
-use App\Models\Document;
-use App\Models\EmployeeDoc;
 use App\Models\PreempRequirement;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 
 class PreEmploymentController extends Controller
 {
@@ -51,7 +47,7 @@ class PreEmploymentController extends Controller
             $doc_id = $request->input('doc_id');
             echo $doc_id;
 
-            $hashed_name = $prefix . '_' . dechex($doc_id) . '_' .  $file->hashName();
+            $hashed_name = $prefix.'_'.dechex($doc_id).'_'.$file->hashName();
             echo $hashed_name;
 
             $user = Auth::user();
@@ -66,7 +62,7 @@ class PreEmploymentController extends Controller
             $first_name = $preemployed_user->account->first_name;
             $last_name = $preemployed_user->account->last_name;
 
-            $user_folder = $first_name . '_' .  $last_name  . '_' . dechex($user_id);
+            $user_folder = $first_name.'_'.$last_name.'_'.dechex($user_id);
 
             $application_id = $preemployed_user->account->application->application_id;
 
@@ -74,7 +70,7 @@ class PreEmploymentController extends Controller
 
             /* Needs to be updated to store in application docs instead */
 
-            $preemp_doc = new ApplicationDoc();
+            $preemp_doc = new ApplicationDoc;
             $preemp_doc->preemp_req_id = $doc_id;
             $preemp_doc->application_id = $application_id;
             $preemp_doc->file_path = $path;

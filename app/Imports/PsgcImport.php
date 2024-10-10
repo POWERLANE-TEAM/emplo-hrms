@@ -2,19 +2,19 @@
 
 namespace App\Imports;
 
-use App\Models\City;
-use App\Models\Region;
 use App\Models\Barangay;
+use App\Models\City;
 use App\Models\Province;
+use App\Models\Region;
 use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Imports\HeadingRowFormatter;
 
 HeadingRowFormatter::default('none');
 
-class PsgcImport implements ToModel, WithHeadingRow, WithMultipleSheets, WithBatchInserts
+class PsgcImport implements ToModel, WithBatchInserts, WithHeadingRow, WithMultipleSheets
 {
     protected $regions = [];
 
@@ -29,15 +29,14 @@ class PsgcImport implements ToModel, WithHeadingRow, WithMultipleSheets, WithBat
         ];
     }
 
-    public function batchSize():int
+    public function batchSize(): int
     {
         return 1000;
     }
 
-
     public function model(array $row)
     {
-        
+
         // for mapping of sheet's heading names
         $psgc = $row['10-digit PSGC'];
 
@@ -45,18 +44,17 @@ class PsgcImport implements ToModel, WithHeadingRow, WithMultipleSheets, WithBat
 
         $geo_level = $row['Geographic Level'];
 
-
-        /* 
+        /*
          * The offset and length are based according to the PSGC Coding Structure.
-         * 
+         *
          * Reference: app\storage\PSGC-2Q-2024-Publication-Datafile-rev.xlsx
-         *  
+         *
          * We can then determine jurisdictional relationships of the ff:
-         * 
+         *
          * - Which region has jurisdiction to which provinces
          * - Which province has jurisdiction to which cities
          * - Which cities has jurisdiction to which barangays
-         * 
+         *
          * - Carl Tabuso
          */
         $region_code = substr($psgc, 0, 2);
@@ -64,7 +62,6 @@ class PsgcImport implements ToModel, WithHeadingRow, WithMultipleSheets, WithBat
         $province_code = substr($psgc, 0, 5);
 
         $city_code = substr($psgc, 0, 8);
-
 
         // checks for region level
         if ($geo_level === 'Reg') {
@@ -95,10 +92,9 @@ class PsgcImport implements ToModel, WithHeadingRow, WithMultipleSheets, WithBat
             return $province;
         }
 
-
         // checks for municipal, submunicipal, or city level
         if (in_array($geo_level, ['Mun', 'SubMun', 'City'])) {
-           
+
             $province = $this->provinces[$province_code] ?? null;
 
             $city = new City([
@@ -109,7 +105,7 @@ class PsgcImport implements ToModel, WithHeadingRow, WithMultipleSheets, WithBat
 
             $this->cities[$city_code] = $city;
 
-            return $city;                
+            return $city;
         }
 
         // checks for barangay level
@@ -121,7 +117,7 @@ class PsgcImport implements ToModel, WithHeadingRow, WithMultipleSheets, WithBat
                 'barangay_code' => $psgc,
                 'barangay_name' => $name,
                 'city_code' => $city->city_code ?? null,
-            ]);                
+            ]);
         }
 
         return null;

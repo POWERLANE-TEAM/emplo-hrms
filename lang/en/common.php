@@ -13,5 +13,5 @@ return [
     |
     */
 
-    'and' => 'and'
+    'and' => 'and',
 ];

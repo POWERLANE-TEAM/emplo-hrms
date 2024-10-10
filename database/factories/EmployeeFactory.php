@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\JobDetail;
 use App\Models\EmploymentStatus;
+use App\Models\JobDetail;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

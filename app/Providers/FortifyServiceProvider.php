@@ -21,11 +21,11 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use Laravel\Fortify\Actions\AttemptToAuthenticate;
 use Laravel\Fortify\Contracts\LoginResponse;
 use Laravel\Fortify\Contracts\LogoutResponse;
 use Laravel\Fortify\Fortify;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
-use Laravel\Fortify\Actions\AttemptToAuthenticate;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -38,7 +38,7 @@ class FortifyServiceProvider extends ServiceProvider
             config(
                 [
                     'fortify.guard' => 'employee',
-                    'fortify.home'  => '/employee/dashboard'
+                    'fortify.home' => '/employee/dashboard',
                 ]
             );
         }
@@ -46,7 +46,7 @@ class FortifyServiceProvider extends ServiceProvider
             config(
                 [
                     'fortify.guard' => 'admin',
-                    'fortify.home'  => '/admin/dashboard'
+                    'fortify.home' => '/admin/dashboard',
                 ]
             );
         }
@@ -97,7 +97,7 @@ class FortifyServiceProvider extends ServiceProvider
 
                         if (str_contains($middleware_item, 'role:')) {
                             $role = explode(':', $middleware_item)[1];
-                            if (!$user_with_role_and_account->hasRole($role)) {
+                            if (! $user_with_role_and_account->hasRole($role)) {
                                 $has_access = false;
                                 break;
                             }
@@ -105,7 +105,7 @@ class FortifyServiceProvider extends ServiceProvider
 
                         if (str_contains($middleware_item, 'permission:')) {
                             $permission = explode(':', $middleware_item)[1];
-                            if (!$user_with_role_and_account->can($permission)) {
+                            if (! $user_with_role_and_account->can($permission)) {
                                 $has_access = false;
                                 break;
                             }
@@ -141,13 +141,12 @@ class FortifyServiceProvider extends ServiceProvider
     public function boot(): void
     {
 
-
         Fortify::createUsersUsing(CreateNewUser::class);
         Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
 
-        Fortify::verifyEmailView(fn() => app(UnverifiedEmail::class)->render());
+        Fortify::verifyEmailView(fn () => app(UnverifiedEmail::class)->render());
 
         Fortify::loginView(function () {
             $view = match (true) {
@@ -160,7 +159,7 @@ class FortifyServiceProvider extends ServiceProvider
         });
 
         RateLimiter::for('login', function (Request $request) {
-            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())) . '|' . $request->ip());
+            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
 
             return Limit::perMinute(5)->by($throttleKey);
         });

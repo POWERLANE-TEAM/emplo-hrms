@@ -7,8 +7,8 @@ namespace Database\Seeders;
 use App\Enums\UserPermission;
 use App\Enums\UserRole;
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 use Spatie\Permission\PermissionRegistrar;
 
 class RolesAndPermissionsSeeder extends Seeder
@@ -17,9 +17,8 @@ class RolesAndPermissionsSeeder extends Seeder
     {
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
-
         /*
-         * Define permissions here using backed enums in Permissions             
+         * Define permissions here using backed enums in Permissions
          */
 
         // create permissions goes here
@@ -39,12 +38,10 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::firstOrCreate(['name' => UserPermission::DELETE_JOB_LISTING]);
         Permission::firstOrCreate(['name' => UserPermission::DELETE_ANNOUNCEMENT]);
 
-
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
-
         /*
-         * Define user roles with default permissions here using backed enums in Roles                                                              
+         * Define user roles with default permissions here using backed enums in Roles
          */
 
         // basic level permissions goes here

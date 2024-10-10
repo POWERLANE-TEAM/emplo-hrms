@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Employee;
 
-use App\Models\CompanyDoc;
 use App\Models\PreempRequirement;
 use Livewire\Component;
 

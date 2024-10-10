@@ -17,6 +17,5 @@ class PerformanceCategoryRating extends Model
         'perf_cat_rating_id',
     ];
 
-    
     //
 }

@@ -13,7 +13,6 @@ return [
     |
     */
 
-
     'consent' => 'I agree to the',
     'consents' => function () {
         return $this['consent'];
@@ -21,6 +20,6 @@ return [
     'term_condition' => 'Terms&nbsp;&&nbsp;Conditions',
     'privacy_policy' => 'Privacy&nbsp;Policy',
     'terms_privacy' => function () {
-        return $this['consents'] . ' ' . $this['term_condition'] . ' at ' . $this['privacy_policy'] . '.';
+        return $this['consents'].' '.$this['term_condition'].' at '.$this['privacy_policy'].'.';
     },
 ];

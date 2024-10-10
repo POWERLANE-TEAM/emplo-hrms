@@ -205,7 +205,6 @@ class Employee extends Model
         return $this->hasMany(Process::class, 'hr_manager', 'employee_id');
     }
 
-
     /*
     |--------------------------------------------------------------------------
     | Performance Evaluation Records Management

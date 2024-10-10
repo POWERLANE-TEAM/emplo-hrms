@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Guest;
 
-use App\Models\JobVacancy;
 use Livewire\Attributes\On;
 use Livewire\Component;
 

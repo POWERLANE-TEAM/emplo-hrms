@@ -8,7 +8,6 @@ enum AccountType: string
     case APPLICANT = 'applicant';
     case EMPLOYEE = 'employee';
 
-
     // displays user-friendly account types in blade templates
     public function label(): string
     {

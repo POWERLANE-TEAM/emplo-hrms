@@ -2,7 +2,6 @@
 
 namespace App\Policies;
 
-use Illuminate\Support\Facades\Hash;
 use Spatie\Csp\Directive;
 
 class CspPolicy extends CustomSpatiePolicy
@@ -36,7 +35,6 @@ class CspPolicy extends CustomSpatiePolicy
             $this->addDirective(Directive::SCRIPT, 'https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js');
             $this->addDirective(Directive::SCRIPT, 'https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone-min.js');
 
-
             $this
                 ->addDirective(Directive::STYLE, 'localhost:*');
             $this->addDirective(Directive::STYLE, 'https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.css');
@@ -61,7 +59,6 @@ class CspPolicy extends CustomSpatiePolicy
         //     ->addDirective(Directive::CONNECT, Scheme::WSS);
         //     ->addDirective(Directive::IMG, Scheme::DATA);
 
-
         $this
             ->addDirective(Directive::CONNECT, 'https://accounts.google.com');
 
@@ -70,7 +67,6 @@ class CspPolicy extends CustomSpatiePolicy
         $this->addDirective(Directive::STYLE, 'https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css');
         $this->addDirective(Directive::STYLE, 'fonts.bunny.net');
         $this->addDirective(Directive::STYLE, 'https://accounts.google.com');
-
 
         $this->addDirective(Directive::FONT, 'data:');
         $this->addDirective(Directive::FONT, 'fonts.bunny.net');
@@ -88,7 +84,6 @@ class CspPolicy extends CustomSpatiePolicy
         $this->addDirective(Directive::SCRIPT, 'https://www.google.com');
         $this->addDirective(Directive::SCRIPT, 'https://www.gstatic.com');
         $this->addDirective(Directive::SCRIPT, 'https://cdn.jsdelivr.net/npm/chart.js');
-
 
         $this->addDirective(Directive::FRAME, 'self');
         $this->addDirective(Directive::FRAME_ANCESTORS, 'self');

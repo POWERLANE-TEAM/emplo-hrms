@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Auth\Applicants;
 
-use App\Http\Controllers\SessionController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;

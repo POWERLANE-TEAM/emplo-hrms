@@ -1,13 +1,13 @@
 <?php
 
 use App\Models\Employee;
+use App\Models\PerformanceCategory;
 use App\Models\PerformanceDetail;
 use App\Models\PerformancePeriod;
 use App\Models\PerformanceRating;
-use App\Models\PerformanceCategory;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -23,7 +23,6 @@ return new class extends Migration
             $table->timestamps();
         });
 
-
         Schema::create('performance_ratings', function (Blueprint $table) {
             $table->id('perf_rating_id');
             $table->string('perf_rating_name');
@@ -31,13 +30,11 @@ return new class extends Migration
             $table->timestamps();
         });
 
-
         Schema::create('performance_periods', function (Blueprint $table) {
             $table->id('perf_period_id');
             $table->string('perf_period_name');
             $table->timestamps();
         });
-
 
         Schema::create('performance_details', function (Blueprint $table) {
             $table->id('perf_detail_id');
@@ -87,14 +84,13 @@ return new class extends Migration
 
             // recommendation to make probationary become regular
             $table->boolean('is_final_recommend')->default(false);
-            
-            $table->boolean('is_employee_acknowledged')->default(false);    
-        });
 
+            $table->boolean('is_employee_acknowledged')->default(false);
+        });
 
         Schema::create('performance_category_ratings', function (Blueprint $table) {
             $table->id('perf_cat_rating_id');
-        
+
             $table->foreignIdFor(PerformanceCategory::class, 'perf_category_id')
                 ->constrained('performance_categories', 'perf_category_id')
                 ->cascadeOnUpdate()
@@ -117,10 +113,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('performance_categories'); 
-        Schema::dropIfExists('performance_ratings'); 
-        Schema::dropIfExists('performance_periods'); 
+        Schema::dropIfExists('performance_categories');
+        Schema::dropIfExists('performance_ratings');
+        Schema::dropIfExists('performance_periods');
         Schema::dropIfExists('performance_details');
-        Schema::dropIfExists('performance_category_ratings');     
+        Schema::dropIfExists('performance_category_ratings');
     }
 };

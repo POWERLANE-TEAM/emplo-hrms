@@ -1,32 +1,30 @@
 <?php
 
 use App\Enums\UserPermission;
-use App\Livewire\Auth\Logout;
-use App\Livewire\Auth\GoogleOAuth;
-use App\Livewire\Auth\GoogleOneTap;
-use App\Livewire\Auth\FacebookOAuth;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ApplicantDocController;
 use App\Http\Controllers\PreEmploymentController;
+use App\Livewire\Auth\FacebookOAuth;
+use App\Livewire\Auth\GoogleOAuth;
+use App\Livewire\Auth\GoogleOneTap;
+use App\Livewire\Auth\Logout;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/apply', function () {
     return view('apply');
 });
 
-Route::/* prefix('hr')-> *//* middleware('auth:hr')-> */group([], function () {
+Route::/* prefix('hr')-> */ /* middleware('auth:hr')-> */ group([], function () {
     Route::get('/hiring', function () {
         return view('hiring');
     });
 });
 
-
-Route::/* middleware(['auth', 'verified'])-> */group([], function () {
+Route::/* middleware(['auth', 'verified'])-> */ group([], function () {
     Route::get('/applicant', [ApplicantDocController::class, 'index']);
 });
 
-Route::/* middleware(['auth', 'verified'])-> */group([], function () {
-    Route::get('/preemploy',  [PreEmploymentController::class, 'create']);
+Route::/* middleware(['auth', 'verified'])-> */ group([], function () {
+    Route::get('/preemploy', [PreEmploymentController::class, 'create']);
     Route::post('/preemploy', [PreEmploymentController::class, 'store']);
 });
 
@@ -36,9 +34,9 @@ Route::middleware('guest')->group(function () {
         ->name('auth.google.redirect');
 
     Route::get('/auth/google/callback', [GoogleOAuth::class, 'googleCallback']);
-    
+
     Route::post('/auth/googleonetap/callback', [GoogleOneTap::class, 'handleCallback']);
-    
+
     Route::get('/auth/facebook/redirect', [FacebookOAuth::class, 'facebookOauth'])
         ->name('auth.facebook.redirect');
 
@@ -48,7 +46,6 @@ Route::middleware('guest')->group(function () {
 Route::post('/web/logout', [Logout::class, 'destroy'])
     ->middleware('auth:web')
     ->name('web.logout');
-
 
 /*
  * use for testing authorization in RouteMiddlewareAuthorizationTest class
