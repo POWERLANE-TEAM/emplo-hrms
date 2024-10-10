@@ -2,18 +2,18 @@
 
 namespace App\Livewire\Auth;
 
-use Exception;
-use App\Models\User;
-use App\Models\Guest;
-use Livewire\Component;
-use App\Enums\UserStatus;
 use App\Enums\AccountType;
-use Illuminate\Support\Str;
 use App\Enums\PlaceholderString;
-use Illuminate\Support\Facades\DB;
+use App\Enums\UserStatus;
+use App\Models\Guest;
+use App\Models\User;
+use Exception;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
+use Livewire\Component;
 
 class FacebookOAuth extends Component
 {
@@ -30,7 +30,7 @@ class FacebookOAuth extends Component
     }
 
     public function handleCallback()
-    {   
+    {
         try {
 
             $this->payload = Socialite::driver('facebook')->stateless()->user();
@@ -43,7 +43,7 @@ class FacebookOAuth extends Component
 
                 return redirect('/hiring');
             }
-            
+
             if ($this->checkIfEmailExists()) {
 
                 session()->flash('error', 'Something went wrong.');
@@ -54,7 +54,7 @@ class FacebookOAuth extends Component
             DB::beginTransaction();
 
             $guest = $this->createGuest();
-            
+
             $new_user = $this->createUserAccount($guest);
 
             DB::commit();
@@ -62,13 +62,13 @@ class FacebookOAuth extends Component
             Auth::login($new_user);
 
             return redirect('/hiring');
-            
+
         } catch (Exception $e) {
 
             DB::rollBack();
 
             report($e);
-            
+
             session()->flash('error', 'Something went wrong.');
 
             return redirect()->intended('/hiring');

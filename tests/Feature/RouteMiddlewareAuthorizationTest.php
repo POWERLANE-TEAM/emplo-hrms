@@ -2,10 +2,10 @@
 
 namespace Tests\Feature;
 
+use App\Enums\UserRole;
+use App\Models\User;
 use Spatie\Permission\PermissionRegistrar;
 use Tests\TestCase;
-use App\Models\User;
-use App\Enums\UserRole;
 
 // make sure that your users table is seeded prior to running this test
 
@@ -13,13 +13,13 @@ class RouteMiddlewareAuthorizationTest extends TestCase
 {
     // negative testing
     public function test_basic_level_cannot_access_employee_dashboard(): void
-    {   
+    {
         // get the first user from users table
         $basic_user = User::findOrFail(1);
 
         // assign a basic level user role to the user
         $basic_user->assignRole(UserRole::BASIC);
-    
+
         // access the employee dashboard via get request to URI
         $response = $this->actingAs($basic_user)->get('/fake-uri1');
 

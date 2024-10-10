@@ -11,7 +11,7 @@ enum UserRole: string
     // displays user-friendly role names in blade templates
     public function label(): string
     {
-        return match($this) {
+        return match ($this) {
             self::BASIC => 'Basic Level',
             self::INTERMEDIATE => 'Intermediate Level',
             self::ADVANCED => 'Advanced Level',

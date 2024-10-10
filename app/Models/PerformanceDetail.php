@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class PerformanceDetail extends Model
 {
@@ -16,7 +16,6 @@ class PerformanceDetail extends Model
     protected $guarded = [
         'perf_detail_id',
     ];
-
 
     /*
     |--------------------------------------------------------------------------
@@ -51,13 +50,13 @@ class PerformanceDetail extends Model
     // returns area manager who approvally signed the performance evaluation
     public function signedAreaManager(): BelongsTo
     {
-        return $this->belongsTo(Employee::class, 'area_manager', 'employee_id');  
+        return $this->belongsTo(Employee::class, 'area_manager', 'employee_id');
     }
 
     // returns hr manager who approvally signed the performance evaluation
     public function signedHrManager(): BelongsTo
     {
-        return $this->belongsTo(Employee::class, 'hr_manager', 'employee_id');  
+        return $this->belongsTo(Employee::class, 'hr_manager', 'employee_id');
     }
 
     // returns the scored/rated categories of the performance evalution

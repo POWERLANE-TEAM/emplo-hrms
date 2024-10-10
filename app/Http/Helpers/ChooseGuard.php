@@ -19,7 +19,7 @@ class ChooseGuard
         };
     }
 
-    public static function getByRequest(Request $request = null): string
+    public static function getByRequest(?Request $request = null): string
     {
         $request = $request ?? request();
 

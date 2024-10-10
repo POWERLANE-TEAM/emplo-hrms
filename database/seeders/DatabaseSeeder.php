@@ -8,16 +8,16 @@ use App\Enums\UserRole;
 use App\Models\Applicant;
 use App\Models\Application;
 use App\Models\ApplicationStatus;
-use App\Models\User;
+use App\Models\Department;
 use App\Models\Employee;
-use App\Models\JobLevel;
+use App\Models\EmploymentStatus;
 use App\Models\JobDetail;
 use App\Models\JobFamily;
-use App\Models\Department;
+use App\Models\JobLevel;
 use App\Models\JobVacancy;
 use App\Models\SpecificArea;
+use App\Models\User;
 use Illuminate\Database\Seeder;
-use App\Models\EmploymentStatus;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\PermissionRegistrar;
@@ -65,7 +65,7 @@ class DatabaseSeeder extends Seeder
 
         $applicant = Applicant::factory()->create();
 
-        $applicant_user =    User::factory()->create([
+        $applicant_user = User::factory()->create([
             'account_type' => AccountType::APPLICANT,
             'account_id' => $applicant->applicant_id,
             'email' => 'applicant.001@gmail.com',

@@ -22,7 +22,6 @@ class Login extends Component
     public function store(AuthenticatedSessionController $session_controller)
     {
 
-
         // dd($session_controller->guard);
         $login_attempt = [
             'email' => $this->email,
@@ -39,12 +38,13 @@ class Login extends Component
             ]);
         }
 
-        $login_request = new LoginRequest();
+        $login_request = new LoginRequest;
 
         $login_request->merge($login_attempt);
 
         $session_controller->store($login_request, $this->remember);
     }
+
     public function render()
     {
         return view('livewire.auth.employees.login');

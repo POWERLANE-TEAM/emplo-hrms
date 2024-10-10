@@ -37,6 +37,7 @@ class ApplicantFactory extends Factory
                 'years' => fake()->numberBetween(1, 10),
             ];
         }
+
         return [
             'first_name' => fake()->firstName,
             'middle_name' => fake()->firstName,

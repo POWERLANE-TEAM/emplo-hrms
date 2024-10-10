@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Auth\Guests;
 
-
 use App\Actions\Fortify\CreateNewUser;
 use App\Enums\AccountType;
 use App\Enums\UserStatus as EnumsUserStatus;
@@ -20,6 +19,7 @@ class SignUp extends Component
 
     #[Validate]
     public $password = '';
+
     public $password_confirmation = '';
 
     #[Validate(['accepted'])]
@@ -49,7 +49,6 @@ class SignUp extends Component
         ];
     }
 
-
     #[On('job-hiring-selected')]
     public function showJobVacancy($job_vacancy)
     {
@@ -67,7 +66,7 @@ class SignUp extends Component
             $this->contact_number = fake()->unique()->numerify('###########');
         }
 
-        if ((!app()->runningInConsole() && !app()->environment('local')) || !app()->environment('testing')) {
+        if ((! app()->runningInConsole() && ! app()->environment('local')) || ! app()->environment('testing')) {
             $this->email = trim($this->email);
             $this->first_name = trim($this->first_name);
             $this->middle_name = trim($this->middle_name);

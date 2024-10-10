@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Employee;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,7 +18,7 @@ class SpecificAreaFactory extends Factory
     {
         return [
             'area_name' => fake()->city,
-            'area_manager' => null
+            'area_manager' => null,
         ];
     }
 }

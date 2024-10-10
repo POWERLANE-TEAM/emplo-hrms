@@ -17,7 +17,6 @@ class PerformanceRating extends Model
         'perf_rating_desc',
     ];
 
-    
     public function categories(): BelongsToMany
     {
         return $this->belongsToMany(PerformanceCategory::class, 'performance_category_ratings', 'perf_rating_id', 'perf_category_id')

@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -16,20 +16,17 @@ return new class extends Migration
             $table->string('region_name');
         });
 
-
         Schema::create('provinces', function (Blueprint $table) {
             $table->string('province_code', 10)->primary();
             $table->string('province_name');
             $table->string('region_code', 10)->index()->nullable();
         });
 
-
         Schema::create('cities', function (Blueprint $table) {
             $table->string('city_code', 10)->primary();
             $table->string('city_name');
             $table->string('province_code', 10)->index()->nullable();
         });
-
 
         Schema::create('barangays', function (Blueprint $table) {
             $table->string('barangay_code', 10)->primary();

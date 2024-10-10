@@ -2,11 +2,8 @@
 
 namespace App\Livewire\Guest;
 
-use App\Models\JobDetail;
-use App\Models\JobTitle;
 use App\Models\JobVacancy;
 use Carbon\Carbon;
-use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -27,7 +24,7 @@ class JobsListCard extends Component
 
     private function highlightText($text, $search)
     {
-        return preg_replace_callback('/(' . preg_quote($search, '/') . ')/i', function ($matches) {
+        return preg_replace_callback('/('.preg_quote($search, '/').')/i', function ($matches) {
             return "<mark>{$matches[1]}</mark>";
         }, $text);
     }
@@ -36,14 +33,14 @@ class JobsListCard extends Component
     {
         $query->where(function ($query) use ($search) {
             $query->WhereHas('jobTitle', function ($query) use ($search) {
-                $query->where('job_title', 'ilike', '%' . $search . '%')
-                    ->orWhere('job_desc', 'ilike', '%' . $search . '%');
+                $query->where('job_title', 'ilike', '%'.$search.'%')
+                    ->orWhere('job_desc', 'ilike', '%'.$search.'%');
             })
                 ->orWhereHas('jobTitle.specificAreas', function ($query) use ($search) {
-                    $query->where('area_name', 'ilike', '%' . $search . '%');
+                    $query->where('area_name', 'ilike', '%'.$search.'%');
                 })
                 ->orWhereHas('jobTitle.jobFamilies', function ($query) use ($search) {
-                    $query->where('job_family_name', 'ilike', '%' . $search . '%');
+                    $query->where('job_family_name', 'ilike', '%'.$search.'%');
                 });
         });
     }
@@ -88,7 +85,7 @@ class JobsListCard extends Component
             $query = $this->baseJobVacancyQuery()->with([
                 'jobDetails',
                 'jobTitle.specificAreas',
-                'jobTitle.jobFamilies'
+                'jobTitle.jobFamilies',
             ]);
             $this->applySearchConditions($query, $search);
 
@@ -101,7 +98,6 @@ class JobsListCard extends Component
         $this->job_vacancies = $result;
         $this->is_filtered = true;
     }
-
 
     public function placeholder()
     {
@@ -135,7 +131,6 @@ class JobsListCard extends Component
                 }
             }
         }
-
 
         return view('livewire.guest.jobs-list-card');
     }

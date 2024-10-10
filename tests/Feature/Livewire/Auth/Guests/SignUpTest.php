@@ -2,12 +2,9 @@
 
 namespace Tests\Feature\Livewire\Auth\Guests;
 
-use Illuminate\Auth\Events\Registered;
 use App\Livewire\Auth\Guests\SignUp;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Log;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Livewire\Livewire;
 use Tests\TestCase;
@@ -15,8 +12,11 @@ use Tests\TestCase;
 class SignUpTest extends TestCase
 {
     private $chunk_size;
+
     private $total_iterations;
+
     private $test_status = [];
+
     private $test_count = 0;
 
     protected function setUp(): void
@@ -40,9 +40,9 @@ class SignUpTest extends TestCase
         $this->test_status[] = true;
     }
 
-
     /**
      * @test
+     *
      * @depends it_validates_valid_contact_num_property
      */
     public function create_applicant_successfully()
@@ -76,9 +76,9 @@ class SignUpTest extends TestCase
             'username@domain,com',
             'username@domain@domain.com',
             'username@domain..com',
-            '   ' . fake()->unique()->freeEmailDomain,
-            fake()->unique()->freeEmail() . '   ',
-            '   ' . fake()->unique()->freeEmail() . '   ',
+            '   '.fake()->unique()->freeEmailDomain,
+            fake()->unique()->freeEmail().'   ',
+            '   '.fake()->unique()->freeEmail().'   ',
         ];
 
         foreach ($invalid_emails as $email) {
@@ -110,9 +110,7 @@ class SignUpTest extends TestCase
                     ->set('email', $valid_email)
                     ->call('store');
 
-
                 echo "check that \e[1;43m '$valid_email' \e[0m is valid.\n";
-
 
                 $component->assertHasNoErrors(['email']);
                 unset($valid_email, $component);
@@ -122,8 +120,6 @@ class SignUpTest extends TestCase
 
         $this->test_status[] = true;
     }
-
-
 
     protected function isValidPassword($password)
     {
@@ -142,7 +138,7 @@ class SignUpTest extends TestCase
                 $hasLowercase = true;
             } elseif (ctype_digit($char)) {
                 $hasDigit = true;
-            } elseif (!ctype_alnum($char)) {
+            } elseif (! ctype_alnum($char)) {
                 $hasSymbol = true;
             }
 
@@ -153,7 +149,7 @@ class SignUpTest extends TestCase
         }
 
         // Ensure there are no spaces and all conditions are met
-        return  $hasUppercase && $hasLowercase && $hasDigit && $hasSymbol && strpos($password, ' ') === false;
+        return $hasUppercase && $hasLowercase && $hasDigit && $hasSymbol && strpos($password, ' ') === false;
     }
 
     /** @test */
@@ -169,9 +165,9 @@ class SignUpTest extends TestCase
             'NOLOWERCASE1',
             'NoNumber',
             'NoSpecialChar1',
-            '   ' . fake()->password,
-            fake()->password . '   ',
-            '   ' . fake()->password . '   ',
+            '   '.fake()->password,
+            fake()->password.'   ',
+            '   '.fake()->password.'   ',
         ];
 
         foreach ($invalid_passwords as $password) {
@@ -284,9 +280,9 @@ class SignUpTest extends TestCase
             'John123',
             'John@Doe',
             'John_Doe',
-            '   ' . fake()->firstName,
-            fake()->firstName . '   ',
-            '   ' . fake()->firstName . '   ',
+            '   '.fake()->firstName,
+            fake()->firstName.'   ',
+            '   '.fake()->firstName.'   ',
         ];
 
         foreach ($invalid_first_names as $first_name) {
@@ -314,7 +310,7 @@ class SignUpTest extends TestCase
 
                 // Occasionally make two word name
                 if (rand(0, 1)) {
-                    $valid_first_name .= ' ' . fake()->firstName();
+                    $valid_first_name .= ' '.fake()->firstName();
                 }
 
                 // Occasionally add ñ in the name
@@ -329,7 +325,6 @@ class SignUpTest extends TestCase
                 $component = Livewire::test(SignUp::class)
                     ->set('first_name', $valid_first_name)
                     ->call('store');
-
 
                 $component->assertHasNoErrors(['first_name']);
 
@@ -355,9 +350,9 @@ class SignUpTest extends TestCase
             'John123',
             'John@Doe',
             'John_Doe',
-            '   ' . fake()->firstName,
-            fake()->firstName . '   ',
-            '   ' . fake()->firstName . '   ',
+            '   '.fake()->firstName,
+            fake()->firstName.'   ',
+            '   '.fake()->firstName.'   ',
         ];
 
         foreach ($invalid_middle_names as $middle_name) {
@@ -384,8 +379,8 @@ class SignUpTest extends TestCase
                 $middle_name = rand(0, 199) < 2 ? null : (rand(0, 149) < 1 ? '' : fake()->firstName());
 
                 // Occasionally make two word name
-                if (rand(0, 5) == 1 && !($middle_name == '' || $middle_name == null)) {
-                    $middle_name .= ' ' . fake()->firstName();
+                if (rand(0, 5) == 1 && ! ($middle_name == '' || $middle_name == null)) {
+                    $middle_name .= ' '.fake()->firstName();
                 }
 
                 // Occasionally add ñ in the name
@@ -429,9 +424,9 @@ class SignUpTest extends TestCase
             'John123',
             'John@Doe',
             'John_Doe',
-            '   ' . fake()->lastName,
-            fake()->lastName . '   ',
-            '   ' . fake()->lastName . '   ',
+            '   '.fake()->lastName,
+            fake()->lastName.'   ',
+            '   '.fake()->lastName.'   ',
         ];
 
         foreach ($invalid_last_names as $last_name) {
@@ -453,7 +448,6 @@ class SignUpTest extends TestCase
 
         $this->test_count++;
 
-
         for ($batch = 0; $batch < ($this->total_iterations / $this->chunk_size); $batch++) {
             for ($i = 0; $i < $this->chunk_size; $i++) {
                 $valid_last_name = fake()->lastName();
@@ -461,9 +455,9 @@ class SignUpTest extends TestCase
                 // Occasionally make two word name
                 if (rand(0, 1)) {
                     if (rand(0, 1)) {
-                        $valid_last_name .= '-' . fake()->lastName();
+                        $valid_last_name .= '-'.fake()->lastName();
                     } else {
-                        $valid_last_name .= ' ' . fake()->lastName();
+                        $valid_last_name .= ' '.fake()->lastName();
                     }
                 }
 
@@ -475,8 +469,6 @@ class SignUpTest extends TestCase
                 if (rand(0, 10) == 1) {
                     $valid_last_name = str_replace('ñ', 'Ñ', $valid_last_name);
                 }
-
-
 
                 $component = Livewire::test(SignUp::class)
                     ->set('last_name', $valid_last_name)
@@ -490,7 +482,6 @@ class SignUpTest extends TestCase
 
         $this->test_status[] = true;
     }
-
 
     public function it_validates_invalid_contact_num_property()
     {
@@ -527,30 +518,30 @@ class SignUpTest extends TestCase
             for ($i = 0; $i < $this->chunk_size; $i++) {
                 // Generate different types of invalid contact numbers
                 $invalid_contact_number = fake()->randomElement([
-                    fake()->numerify('09' . str_repeat('#', 2)),
-                    fake()->numerify('09' . str_repeat('#', 3)),
-                    fake()->numerify('09' . str_repeat('#', 4)),
-                    fake()->numerify('09' . str_repeat('#', 5)),
-                    fake()->numerify('09' . str_repeat('#', 6)),
-                    fake()->numerify('09' . str_repeat('#', 7)),
-                    fake()->numerify('09' . str_repeat('#', 8)),
-                    fake()->numerify('09' . str_repeat('#', 10)),
-                    fake()->numerify('09' . str_repeat('#', 11)),
-                    fake()->numerify('09' . str_repeat('#', 12)),
-                    fake()->numerify('09' . str_repeat('#', 13)),
-                    fake()->numerify('09' . str_repeat('#', 14)),
-                    fake()->numerify('09' . str_repeat('#', 15)),
-                    fake()->numerify('09' . str_repeat('#', 16)),
-                    fake()->numerify('09' . str_repeat('#', 255)),
-                    '09' . fake()->numerify('### ### ###'),
-                    '09' . fake()->numerify('###-###-###'),
-                    '09' . fake()->numerify('###.###.###'),
-                    '09' . fake()->numerify('###    ###  ### ') . fake()->numerify('#'),
-                    '  ' . fake()->numerify('09#########'),
-                    fake()->numerify('09#########') . '   ',
-                    '  ' . fake()->numerify('09#########') . '   ', // Leading space
-                    '  ' . fake()->numerify('09 ###    ###  ### ') . fake()->numerify('#')  . '   ',
-                    fake()->numerify('09###') . 'abc' . fake()->numerify('###'), // Invalid characters
+                    fake()->numerify('09'.str_repeat('#', 2)),
+                    fake()->numerify('09'.str_repeat('#', 3)),
+                    fake()->numerify('09'.str_repeat('#', 4)),
+                    fake()->numerify('09'.str_repeat('#', 5)),
+                    fake()->numerify('09'.str_repeat('#', 6)),
+                    fake()->numerify('09'.str_repeat('#', 7)),
+                    fake()->numerify('09'.str_repeat('#', 8)),
+                    fake()->numerify('09'.str_repeat('#', 10)),
+                    fake()->numerify('09'.str_repeat('#', 11)),
+                    fake()->numerify('09'.str_repeat('#', 12)),
+                    fake()->numerify('09'.str_repeat('#', 13)),
+                    fake()->numerify('09'.str_repeat('#', 14)),
+                    fake()->numerify('09'.str_repeat('#', 15)),
+                    fake()->numerify('09'.str_repeat('#', 16)),
+                    fake()->numerify('09'.str_repeat('#', 255)),
+                    '09'.fake()->numerify('### ### ###'),
+                    '09'.fake()->numerify('###-###-###'),
+                    '09'.fake()->numerify('###.###.###'),
+                    '09'.fake()->numerify('###    ###  ### ').fake()->numerify('#'),
+                    '  '.fake()->numerify('09#########'),
+                    fake()->numerify('09#########').'   ',
+                    '  '.fake()->numerify('09#########').'   ', // Leading space
+                    '  '.fake()->numerify('09 ###    ###  ### ').fake()->numerify('#').'   ',
+                    fake()->numerify('09###').'abc'.fake()->numerify('###'), // Invalid characters
                 ]);
 
                 $component = Livewire::test(SignUp::class)
@@ -568,8 +559,6 @@ class SignUpTest extends TestCase
 
         $this->test_status[] = true;
     }
-
-
 
     public function it_validates_valid_contact_num_property()
     {

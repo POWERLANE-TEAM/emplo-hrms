@@ -2,12 +2,12 @@
 
 namespace App\Traits;
 
-use App\Models\Guest;
-use App\Enums\UserStatus;
 use App\Enums\AccountType;
-use Illuminate\Support\Str;
 use App\Enums\PlaceholderString;
+use App\Enums\UserStatus;
+use App\Models\Guest;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 trait GoogleCallback
 {

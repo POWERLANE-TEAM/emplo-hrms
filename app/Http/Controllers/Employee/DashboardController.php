@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Employee;
 use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
@@ -20,12 +19,11 @@ class DashboardController extends Controller
 
         $dashboard = match (true) {
             $user->hasRole(UserRole::INTERMEDIATE->value) => 'employee.hr.index',
-                // HR
+            // HR
 
-                // Superviser
+            // Superviser
 
-                // Employee
-
+            // Employee
 
             default => '',
         };

@@ -2,13 +2,13 @@
 
 namespace App\Livewire\Auth;
 
-use Exception;
 use App\Models\User;
-use Livewire\Component;;
 use App\Traits\GoogleCallback;
-use Illuminate\Support\Facades\DB;
+use Exception;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Laravel\Socialite\Facades\Socialite;
+use Livewire\Component;
 
 class GoogleOAuth extends Component
 {
@@ -20,7 +20,7 @@ class GoogleOAuth extends Component
     }
 
     public function googleCallback()
-    {   
+    {
         try {
 
             $google_user = Socialite::driver('google')->stateless()->user();
@@ -28,11 +28,11 @@ class GoogleOAuth extends Component
             $user = User::where('google_id', $google_user->id)
                 ->orWhere('email', $google_user->getEmail())
                 ->first();
-    
+
             if ($user) {
-    
+
                 Auth::login($user);
-    
+
                 return redirect('/hiring');
             }
 
@@ -51,12 +51,12 @@ class GoogleOAuth extends Component
 
             Auth::login($new_user);
 
-            return redirect('/hiring');                    
+            return redirect('/hiring');
 
         } catch (Exception $e) {
 
             DB::rollBack();
-            
+
             report($e);
 
             return redirect()->intended('/');
