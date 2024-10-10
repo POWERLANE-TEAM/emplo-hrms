@@ -17,16 +17,16 @@ return new class extends Migration
     {
         Schema::create('employment_statuses', function (Blueprint $table) {
             $table->id('emp_status_id');
-            $table->string('emp_status_name', 100);
+            $table->string('emp_status_name');
             $table->longText('emp_status_desc');
             $table->timestamps();
         });
 
         Schema::create('employees', function (Blueprint $table) {
             $table->id('employee_id');
-            $table->string('first_name', 100);
-            $table->string('middle_name', 100)->nullable();
-            $table->string('last_name', 100);
+            $table->string('first_name');
+            $table->string('middle_name')->nullable();
+            $table->string('last_name');
 
             $table->foreignIdFor(JobDetail::class, 'job_detail_id')
                 ->constrained('job_details', 'job_detail_id')

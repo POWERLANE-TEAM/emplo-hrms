@@ -53,9 +53,9 @@ return new class extends Migration
 
         Schema::create('outsourced_trainers', function (Blueprint $table) {
             $table->id('trainer_id');
-            $table->string('first_name', 100);
-            $table->string('middle_name', 100)->nullable();
-            $table->string('last_name', 100);
+            $table->string('first_name');
+            $table->string('middle_name')->nullable();
+            $table->string('last_name');
 
             $table->foreignIdFor(TrainingProvider::class, 'training_provider')
                 ->nullable()

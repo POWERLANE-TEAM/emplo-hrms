@@ -22,14 +22,14 @@ return new class extends Migration
         Schema::create('job_levels', function (Blueprint $table) {
             $table->id('job_level_id');
             $table->integer('job_level');
-            $table->string('job_level_name', 100);
+            $table->string('job_level_name');
             $table->longText('job_level_desc')->nullable();
             $table->timestamps();
         });
 
         Schema::create('job_titles', function (Blueprint $table) {
             $table->id('job_title_id');
-            $table->string('job_title', 100);
+            $table->string('job_title');
             $table->text('job_desc')->nullable();
 
             $table->foreignIdFor(Department::class, 'department_id')
@@ -90,7 +90,7 @@ return new class extends Migration
 
         Schema::create('job_families', function (Blueprint $table) {
             $table->id('job_family_id');
-            $table->string('job_family_name', 100);
+            $table->string('job_family_name');
             $table->longText('job_family_desc')->nullable();
         });
 

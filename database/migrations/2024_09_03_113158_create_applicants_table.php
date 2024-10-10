@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('applicants', function (Blueprint $table) {
             $table->id('applicant_id');
-            $table->string('first_name', 100);
-            $table->string('middle_name', 100)->nullable();
-            $table->string('last_name', 100);
+            $table->string('first_name');
+            $table->string('middle_name')->nullable();
+            $table->string('last_name');
             $table->string('contact_number', 11)->index();
             $table->jsonb('education')->nullable();
             $table->jsonb('experience')->nullable();

@@ -13,21 +13,21 @@ return new class extends Migration
     {
         Schema::create('complaint_types', function (Blueprint $table) {
             $table->id('complaint_type_id');
-            $table->string('complaint_type_name', 100);
+            $table->string('complaint_type_name');
             $table->longText('complain_type_desc')->nullable();
             $table->timestamps();
         });
 
         Schema::create('complaint_confidentialities', function (Blueprint $table) {
             $table->id('confidentiality_id');
-            $table->string('confidentiality_pref', 100);
+            $table->string('confidentiality_pref');
             $table->longText('confidentiality_desc')->nullable();
             $table->timestamps();
         });
 
         Schema::create('complaint_statuses', function (Blueprint $table) {
             $table->id('complaint_status_id');
-            $table->string('complaint_status_name', 100);
+            $table->string('complaint_status_name');
             $table->longText('complaint_status_desc')->nullable();
             $table->timestamps();
         });

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('holiday_id');
             $table->dateTime('date');
             $table->string('holiday_type'); // regular and special, etc.
-            $table->string('holiday_name', 100);
+            $table->string('holiday_name');
             $table->longText('holiday_desc')->nullable();
             $table->timestamps();
         });
