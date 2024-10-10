@@ -97,6 +97,7 @@ class FacebookOAuth extends Component
             'account_type' => AccountType::APPLICANT,
             'account_id' => $guest->guest_id,
             'password' => Hash::make(Str::random()), // random placeholder shit
+            'photo' => $this->payload->getAvatar(),
             'facebook_id' => $this->payload->getId(),
             'user_status_id' => UserStatus::ACTIVE,
         ]);
