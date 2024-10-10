@@ -93,7 +93,7 @@ class FacebookOAuth extends Component
     private function createUserAccount(Guest $guest)
     {
         $new_user = $guest->account()->create([
-            'email' => $this->payload->getEmail(),
+            'email' => $this->payload->getEmail() ?? null,
             'account_type' => AccountType::APPLICANT,
             'account_id' => $guest->user_id,
             'password' => Hash::make(Str::random()), // random placeholder shit
