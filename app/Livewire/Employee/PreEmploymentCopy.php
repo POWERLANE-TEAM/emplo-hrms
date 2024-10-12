@@ -7,7 +7,7 @@ use App\Models\PreempRequirement;
 use Illuminate\Support\Collection;
 use Livewire\Component;
 
-class PreEmployment extends Component
+class PreEmploymentCopy extends Component
 {
     public Collection  $pre_employment_reqs;
 
@@ -32,7 +32,7 @@ class PreEmployment extends Component
 
         $this->pre_employment_reqs = ($this->loads == 0) ? $requirements : $this->pre_employment_reqs->merge($requirements);
 
-        return view('livewire.employee.pre-employment', ['pre_employment_reqs' => $this->pre_employment_reqs]);
+        return view('livewire.employee.pre-employment-copy', ['pre_employment_reqs' => $this->pre_employment_reqs]);
     }
 
     public function rendered()

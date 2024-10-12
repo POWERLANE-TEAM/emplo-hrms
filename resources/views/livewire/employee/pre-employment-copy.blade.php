@@ -11,7 +11,7 @@
                 <span>
                     18
                 </span>
-                submitted
+                submitted copy
             </span>
         </span>
 
@@ -50,8 +50,51 @@
         <tbody>
 
             @foreach ($pre_employment_reqs as $pre_employment_req)
-                @livewire('employee.pre-employment-doc', ['pre_employment_req' => $pre_employment_req], key("preemp_req-$pre_employment_req->preemp_req_id{$loads}"))
-                @livewire('employee.pre-employment-modal', ['pre_employment_req' => $pre_employment_req], key("preemp_req_modal-$pre_employment_req->preemp_req_id{$loads}"))
+                @livewire('employee.pre-employment-doc', ['pre_employment_req' => $pre_employment_req], key('preemp_req-' . $pre_employment_req->preemp_req_id))
+                {{-- @livewire('employee.pre-employment-modal', ['pre_employment_req' => $pre_employment_req], key('preemp_req_modal-' . $pre_employment_req->preemp_req_id)) --}}
+
+                @php
+                    $doc_id = $pre_employment_req->preemp_req_id;
+                    $doc_name = $pre_employment_req->preemp_req_name;
+                @endphp
+
+                <div x-data="modal_preemp_req('{{ $doc_id }}')" wire:ignore.self {{-- Pota wire:ignore lng pla fix sa bug --}} class="modal fade"
+                    id="preemp-doc-{{ $doc_id }}-attachment" tabindex="-1" aria-labelledby="modalLabel"
+                    aria-hidden="true">
+
+
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-6" id="modalLabel">File Preview for
+                                    <small>{{ $doc_name }}</small>
+                                </h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <template x-if="preemp_file">
+                                    <div>
+                                        <span x-text="'File name: ' +  preemp_file.name">File name</span>
+                                        <iframe id="pdfIframe-{{ $doc_id }}" width="100%" height="500px"
+                                            style="border: none;
+       "></iframe>
+                                    </div>
+                                </template>
+                                <template x-if="!preemp_file">
+                                    <div>No file selected.</div>
+                                </template>
+
+                                <span class="text-danger" x-text="errorFeedback">File name</span>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary submit"
+                                    @click="submitFile()">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             @endforeach
 
             <tr class="opacity-0" x-data="{ isVisible: true }" x-show="isVisible"
@@ -134,7 +177,7 @@
                                 });
                                 this.$refs.statusBadge.classList.add('bg-orange-subtle', 'text-orange');
                                 this.$refs.statusBadge.textContent =
-                                    "{{ EnumsPreEmploymentReqStatus::PENDING->label() }}";
+                                    {{ EnumsPreEmploymentReqStatus::PENDING->label() }};
                             });
                             console.log('Queued file:', this.preemp_file);
 
