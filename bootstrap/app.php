@@ -48,6 +48,8 @@ return Application::configure(basePath: dirname(__DIR__))
             if ($request->is('admin/*')) {
                 return 'admin/login';
             }
+
+            return '/login';
         });
 
         $middleware->redirectUsersTo(function (Request $request) {

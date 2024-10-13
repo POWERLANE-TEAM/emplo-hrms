@@ -16,11 +16,12 @@ class PreEmploymentDoc extends Component
 {
     use WithFileUploads;
 
-    #[Modelable]
     public PreempRequirement $pre_employment_req;
 
+    const MAX_FILE_SIZE = 5 * 1024;
+
     /*  When global validation of livewire is triggered the attribute specified in :as is not respected */
-    #[Validate('mimes:pdf|max:480', as: "Preemployment File")]
+    #[Validate("mimes:pdf|max:" . self::MAX_FILE_SIZE, as: "Preemployment File")]
     public $preemp_file;
 
     public function save()
