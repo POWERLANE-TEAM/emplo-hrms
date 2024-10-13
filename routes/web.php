@@ -13,7 +13,7 @@ Route::get('/apply', function () {
     return view('apply');
 });
 
-Route::middleware('')->group(function () {
+Route::group([], function () {
     Route::get('/hiring', function () {
         return view('hiring');
     });
