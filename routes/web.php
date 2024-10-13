@@ -11,21 +11,20 @@ Route::get('/apply', function () {
     return view('apply');
 });
 
-Route::/* prefix('hr')-> *//* middleware('auth:hr')-> */group([], function () {
+Route::middleware('')->group(function () {
     Route::get('/hiring', function () {
         return view('hiring');
     });
 });
 
 
-Route::/* middleware(['auth', 'verified'])-> */group([], function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/applicant', [ApplicantDocController::class, 'index']);
 });
 
-Route::/* middleware(['auth', 'verified'])-> */group([], function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/preemploy',  [PreEmploymentController::class, 'create']);
     Route::post('/preemploy', [PreEmploymentController::class, 'store']);
-    Route::get('/preemploy-copy/{isCopy?}', [PreEmploymentController::class, 'create']);
 });
 
 Route::middleware('guest')->group(function () {
