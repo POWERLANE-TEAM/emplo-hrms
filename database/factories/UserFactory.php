@@ -34,8 +34,6 @@ class UserFactory extends Factory
                     AccountType::EMPLOYEE => Employee::factory()->create()->employee_id,
                     AccountType::APPLICANT => Applicant::factory()->create()->applicant_id,
                 };
-
-                return fake()->randomDigitNotNull();
             },
             'email' => fake()->unique()->randomElement([
                 fake()->safeEmail(),

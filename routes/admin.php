@@ -9,7 +9,7 @@ Route::middleware('guest:admin')->group(function () {
         ->name('login');
 });
 
-Route::middleware('auth:admin', 'verified', 'role:'.App\Enums\UserRole::ADVANCED->value)->group(function () {
+Route::middleware('auth:admin')->group(function () {
     Route::get('/dashboard', DashboardController::class)
         ->name('dashboard');
     Route::get('/sample', function () {
