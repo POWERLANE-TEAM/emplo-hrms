@@ -12,7 +12,7 @@
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js" nonce="{{ $nonce }}"></script>
-    @vite(['vendor/node_modules/chartjs-plugin-annotation/dist/chartjs-plugin-annotation.min.js'])
+    @vite(['node_modules/chartjs-plugin-annotation/dist/chartjs-plugin-annotation.min.js'])
 @endsection
 
 

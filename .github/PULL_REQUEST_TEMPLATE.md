@@ -10,11 +10,17 @@ Why did you choose to make these changes? Were there any trade-offs you had to c
 ### 🧪 Test
 How are your changes tested? You can provide recordings here for feature/unit or manual testing.
 
+### 🦶 Steps
+You can provide a step-by-step procedure if you need to instruct the reviewer to reproduce something. Could be a bug, installation, etc.
+
 ### 📸 Screenshots (Optional)
 If you made UI changes, you can provide snippets/screenshots here.
+
+### 🎥 Demos (Optional)
+If you want to provide additional demo recordings, you may do so here.
 
 ### ✔️ Checklist
 This is a set of criteria to ensure the correctness of your PR. Check each that applied.
 - [ ] Is `staging` the base branch of this PR?
 - [ ] Do your changes not reveal sensitive information, such as secrets, API keys, etc?
-- [ ] Are there any erroneous console logs, debuggers, or leftover code in your changes?
+- [ ] Are there no erroneous console logs, debuggers, or leftover code in your changes?

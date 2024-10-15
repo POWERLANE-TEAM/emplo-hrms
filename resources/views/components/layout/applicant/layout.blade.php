@@ -52,7 +52,7 @@
     @stack('styles')
 
     @if (!View::hasSection('bootstrap-script'))
-        @vite(['vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js'])
+        @vite(['node_modules/bootstrap/dist/js/bootstrap.bundle.min.js'])
     @else
         @yield('bootstrap-script')
     @endif
