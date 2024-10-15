@@ -44,12 +44,6 @@ export default defineConfig({
             ]
         })
     ],
-    resolve: {
-        alias: {
-            'laravel-echo': '/node_modules/laravel-echo/dist/echo.js',
-            'pusher-js': '/node_modules/pusher-js/dist/web/pusher.js',
-        },
-    },
     server: {
         host: process.env.APP_URL,
         hmr: {
