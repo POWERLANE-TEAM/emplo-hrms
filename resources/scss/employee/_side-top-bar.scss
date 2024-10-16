@@ -446,6 +446,12 @@ div:has(>.topnav-mobile) {
 
 sidebar.main-menu.opening {
     overflow: hidden;
+
+    .user-info,
+    .company-name {
+        flex-wrap: nowrap;
+        text-wrap: nowrap;
+    }
 }
 
 sidebar.main-menu.active:not(.opening) {

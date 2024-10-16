@@ -44,6 +44,6 @@
     </nav>
 </div>
 
-<x-employee.nav.topbar-mobile class="">
+<x-layout.employee.nav.topbar-mobile class="">
 
-</x-employee.nav.topbar-mobile>
+</x-layout.employee.nav.topbar-mobile>
