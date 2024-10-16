@@ -8,10 +8,8 @@
 @import '../input/checkbox';
 
 
-.user-menu,
-.dropdown {
-    @extend %rm-dropdown-triangle;
-}
+
+
 
 div:has(>#chartProgress) {
     width: 20vw;

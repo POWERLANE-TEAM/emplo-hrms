@@ -10,11 +10,6 @@
 
 
 
-.user-menu,
-.dropdown {
-    @extend %rm-dropdown-triangle;
-}
-
 main.container {
     // margin-left: calc(4rem + 12vw);
     // margin-right: calc(3rem + 4vw);
@@ -37,32 +32,6 @@ main.container {
     .margin-right-n-book {
         margin-right: calc((1rem + 7vw) * -1);
     }
-}
-
-table.table {
-    border-collapse: separate;
-    border-spacing: 0 50px;
-
-    tr.outline {
-        outline: 2px solid var(--bs-table-border-color);
-    }
-
-    &.table-hover {
-        tbody {
-            tr.no-hover:hover {
-                // pointer-events: none;
-                background-color: var(--bs-body-bg);
-                --bs-table-bg-state: var(--bs-body-bg);
-
-                &>* {
-                    background-color: var(--bs-body-bg);
-                    --bs-table-bg-state: var(--bs-body-bg);
-                }
-
-            }
-        }
-    }
-
 }
 
 .dropzone {

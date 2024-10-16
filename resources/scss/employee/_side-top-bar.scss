@@ -338,7 +338,6 @@ sidebar.main-menu {
                 opacity: 0;
             }
 
-            @extend %rm-dropdown-triangle;
         }
 
     }
@@ -384,7 +383,6 @@ div:has(>.topnav) {
             background-color: color-mix(in srgb, var(--bs-primary) 75%, white 25%);
         }
 
-        @extend %rm-dropdown-triangle;
     }
 
     @media screen and (max-width: 576px) {
@@ -408,7 +406,6 @@ div:has(>.topnav-mobile) {
 .topnav-mobile {
     display: flex;
     padding: calc(var(--topnav-padding-y) + var(--main-menu-padding-top)) var(--topnav-padding-x);
-    @extend %rm-dropdown-triangle;
 
     @media screen and (min-width: 576px) {
         display: none;
