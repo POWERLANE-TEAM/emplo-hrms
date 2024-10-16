@@ -24,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(ComposerServiceProvider::class);
     }
 
     /**
@@ -37,11 +37,11 @@ class AppServiceProvider extends ServiceProvider
 
             return
                 $rule->letters()
-                    ->mixedCase()
-                    ->numbers()
-                    ->symbols()
-                    ->uncompromised()
-                    ->rules(['not_regex:/\s/']); // No spaces allowed
+                ->mixedCase()
+                ->numbers()
+                ->symbols()
+                ->uncompromised()
+                ->rules(['not_regex:/\s/']); // No spaces allowed
         });
 
         Validator::extend('valid_email_dns', function ($attributes, $value, $parameters, $validator) {
@@ -82,23 +82,6 @@ class AppServiceProvider extends ServiceProvider
         // if user role is advanced, bypass all permission checks
         Gate::before(function ($user, $ability) {
             return $user->hasRole(UserRole::ADVANCED) ? true : null;
-        });
-
-        View::composer('*', function ($view) {
-
-            if (Auth::guard(ChooseGuard::getByRequest())->check()) {
-                $authenticated_user = Auth::guard(ChooseGuard::getByRequest())->user();
-                $user = User::where('user_id', $authenticated_user->user_id)
-                    ->with('roles')
-                    ->first();
-
-                $role_name = $user->roles->pluck('name')->first();
-
-                $view->with([
-                    'role_name' => $role_name,
-                    'user' => $user,
-                ]);
-            }
         });
     }
 }
