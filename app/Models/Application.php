@@ -38,7 +38,7 @@ class Application extends Model
     public function employee(): BelongsTo
     {
         return $this->belongsTo(Employee::class, 'application_id', 'employee_id');
-    }    
+    }
 
     // returns submitted documents of the application
     public function documents(): HasMany
