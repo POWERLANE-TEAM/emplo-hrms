@@ -35,6 +35,12 @@ class Employee extends Model
         return $this->morphOne(User::class, 'account');
     }
 
+    // returns employee's application records
+    public function application(): HasOne
+    {
+        return $this->hasOne(Application::class, 'application_id', 'employee_id');
+    }
+
     // returns employment status of employee
     public function employmentStatus(): BelongsTo
     {

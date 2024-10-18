@@ -34,6 +34,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call(UserStatusSeeder::class);
 
+        $this->call(ApplicationStatusSeeder::class);
+
         $this->call(RolesAndPermissionsSeeder::class);
 
         $this->call(PsgcSeeder::class);
@@ -100,8 +102,6 @@ class DatabaseSeeder extends Seeder
         JobVacancy::factory(25)->create();
 
         $this->call(PreempRequirementSeeder::class);
-
-        $this->call(ApplicationStatusSeeder::class);
 
         Application::create([
             'applicant_id' => $applicant->applicant_id,

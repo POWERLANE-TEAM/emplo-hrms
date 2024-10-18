@@ -12,6 +12,8 @@ class Application extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     protected $primaryKey = 'application_id';
 
     protected $guarded = [
@@ -31,6 +33,12 @@ class Application extends Model
     {
         return $this->belongsTo(Applicant::class, 'applicant_id', 'applicant_id');
     }
+
+    // returns employee's application records
+    public function employee(): BelongsTo
+    {
+        return $this->belongsTo(Employee::class, 'application_id', 'employee_id');
+    }    
 
     // returns submitted documents of the application
     public function documents(): HasMany
