@@ -15,6 +15,7 @@ return new class extends Migration
         Schema::table('employees', function (Blueprint $table) {
             // will be used to retrieved the employee's hired date
             $table->foreignIdFor(Application::class, 'application_id')
+                ->nullable()
                 ->constrained('applications', 'application_id')
                 ->cascadeOnUpdate()
                 ->restrictOnDelete();
