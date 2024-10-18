@@ -44,7 +44,7 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
-            $table->timestamps();
+            $table->timestamp('hired_at')->nullable();
         });
 
         Schema::create('application_docs', function (Blueprint $table) {

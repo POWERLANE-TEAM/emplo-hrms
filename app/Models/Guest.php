@@ -13,6 +13,7 @@ class Guest extends Model
     protected $primaryKey = 'guest_id';
 
     protected $guarded = [
+        'guest_id',
         'created_at',
         'updated_at',
     ];
