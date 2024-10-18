@@ -18,12 +18,12 @@ class DashboardController extends Controller
             ->first();
 
         $dashboard = match (true) {
-            $user->hasRole(UserRole::INTERMEDIATE->value) => 'employee.hr.index',
-            // HR
+            $user->hasRole(UserRole::INTERMEDIATE->value) => 'employee.hr-manager.index',
+                // HR
 
-            // Superviser
+                // Superviser
 
-            // Employee
+                // Employee
 
             default => '',
         };
