@@ -7,14 +7,14 @@
 
         @includeWhen(
             $user->hasRole([EnumsUserRole::INTERMEDIATE->value]),
-            'components.employee.nav.sidebar.hr-navs')
+            'components.layout.employee.nav.sidebar.hr-navs')
 
         @includeWhen(
             $user->hasRole([EnumsUserRole::ADVANCED->value]),
-            'components.employee.nav.sidebar.head-admin-navs')
+            'components.layout.employee.nav.sidebar.head-admin-navs')
 
     </x-layout.employee.nav.sidebar>
-    <x-employee.nav.topbar class="">
+    <x-layout.employee.nav.topbar class="">
 
         <x-slot:topbar_right>
             <aside>
@@ -61,5 +61,5 @@
 
         </x-slot:topbar_right>
 
-    </x-employee.nav.topbar>
+    </x-layout.employee.nav.topbar>
 </div>
