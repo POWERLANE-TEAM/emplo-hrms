@@ -25,6 +25,7 @@ class DashboardController extends Controller
             abort(403);
         }
 
-        return view('employee.admin.index');
+        // file://./../../../../resources/views/employee/hr-manager/index.blade.php
+        return view('employee.head-admin.index');
     }
 }
