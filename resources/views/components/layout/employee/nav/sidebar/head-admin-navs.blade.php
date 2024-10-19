@@ -20,31 +20,31 @@
         {{-- insert submenu --}}
     @endcan
 
-    {{-- @can(UserPermission::VIEW_ALL_EMPLOYEES) --}}
+    {{-- @can(UserPermission::VIEW_EMPLOYEE_MANAGEMENT) --}}
     <x-layout.employee.nav.sidebar.nav-item href="#" :active="request()->is('employee')" class="" nav_txt="Employees"
         :default_icon="['src' => 'employee', 'alt' => '']" :active_icon="['src' => 'employee', 'alt' => '']">
     </x-layout.employee.nav.sidebar.nav-item>
     {{-- @endcan --}}
 
-    @can(UserPermission::VIEW_CALENDAR_MANAGER)
+    @can(UserPermission::VIEW_CALENDAR_MANAGEMENT)
         <x-layout.employee.nav.sidebar.nav-item href="#" :active="request()->is('#')" class="" nav_txt="Calendar Manager"
             :default_icon="['src' => 'skill-evaluator', 'alt' => '']" :active_icon="['src' => 'skill-evaluator', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan
 
-    @can(UserPermission::CREATE_JOB_LISTING)
-        <x-layout.employee.nav.sidebar.nav-item href="#" :active="request()->is('#')" class="" nav_txt="Job Board"
-            :default_icon="['src' => 'skill-evaluator', 'alt' => '']" :active_icon="['src' => 'skill-evaluator', 'alt' => '']">
-        </x-layout.employee.nav.sidebar.nav-item>
-    @endcan
+    {{-- @can(UserPermission::VIEW_JOB_MANAGEMENT) --}}
+    <x-layout.employee.nav.sidebar.nav-item href="#" :active="request()->is('#')" class="" nav_txt="Job Board"
+        :default_icon="['src' => 'skill-evaluator', 'alt' => '']" :active_icon="['src' => 'skill-evaluator', 'alt' => '']">
+    </x-layout.employee.nav.sidebar.nav-item>
+    {{-- @endcan --}}
 
-    {{-- @can(UserPermission::VIEW_ALL_POLICIES) --}}
+    {{-- @can(UserPermission::VIEW_POLICY_MANAGEMENT) --}}
     <x-layout.employee.nav.sidebar.nav-item href="#" :active="request()->is('#')" class="" nav_txt="Policies"
         :default_icon="['src' => 'skill-evaluator', 'alt' => '']" :active_icon="['src' => 'skill-evaluator', 'alt' => '']">
     </x-layout.employee.nav.sidebar.nav-item>
     {{-- @endcan --}}
 
-    {{-- @can(UserPermission::VIEW_ALL_ANNOUNCEMENTS) --}}
+    {{-- @can(UserPermission::VIEW_ANNOUNCEMENT_MANAGEMENT) --}}
     <x-layout.employee.nav.sidebar.nav-item href="#" :active="request()->is('#')" class="" nav_txt="Announcements"
         :default_icon="['src' => 'skill-evaluator', 'alt' => '']" :active_icon="['src' => 'skill-evaluator', 'alt' => '']">
     </x-layout.employee.nav.sidebar.nav-item>

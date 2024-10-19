@@ -41,7 +41,7 @@ enum UserPermission: string
     case VIEW_TALENT_EVALUATOR = 'view talent evaluator';
     case VIEW_PLAN_GENERATOR = 'view plan generator';
     case VIEW_ADMIN_DASHBOARD = 'view admin dashboard';
-    case VIEW_CALENDAR_MANAGER = 'view calendar manager';
+    case VIEW_CALENDAR_MANAGEMENT = 'view calendar management';
 
         // Update cases goes here
     case UDPATE_JOB_LISTING = 'update job listing';
@@ -86,7 +86,7 @@ enum UserPermission: string
             self::VIEW_TALENT_EVALUATOR => 'View talent evaluator',
             self::VIEW_PLAN_GENERATOR => 'View plan generator',
             self::VIEW_ADMIN_DASHBOARD => 'View admin dashboard',
-            self::VIEW_CALENDAR_MANAGER => 'View calendar manager',
+            self::VIEW_CALENDAR_MANAGEMENT => 'View calendar management',
 
             // Update labels goes here
             self::UDPATE_JOB_LISTING => 'Update job listing/s',

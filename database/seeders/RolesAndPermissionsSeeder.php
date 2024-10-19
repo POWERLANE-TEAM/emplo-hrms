@@ -23,8 +23,8 @@ class RolesAndPermissionsSeeder extends Seeder
          */
 
         /*
-            * Using default web guard
-            */
+        * Using default web guard
+        */
 
         // create permissions goes here
 
@@ -83,7 +83,7 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // view permissions goes here
         Permission::firstOrCreate(['guard_name' => GuardType::ADMIN->value, 'name' => UserPermission::VIEW_ADMIN_DASHBOARD]);
-        Permission::firstOrCreate(['guard_name' => GuardType::ADMIN->value, 'name' => UserPermission::VIEW_CALENDAR_MANAGER]);
+        Permission::firstOrCreate(['guard_name' => GuardType::ADMIN->value, 'name' => UserPermission::VIEW_CALENDAR_MANAGEMENT]);
 
         // update permissions goes here
         Permission::firstOrCreate(['guard_name' => GuardType::ADMIN->value, 'name' => UserPermission::UDPATE_JOB_LISTING]);
