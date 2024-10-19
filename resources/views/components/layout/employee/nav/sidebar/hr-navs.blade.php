@@ -16,13 +16,6 @@
 @use('App\Enums\UserPermission')
 
 
-{{-- {{ dump($user) }} --}}
-@php
-    $authenticated_user = Auth::user();
-    // dump($authenticated_user);
-@endphp
-
-
 @if ($include == 'main-menu')
     @can(UserPermission::VIEW_HR_MANAGER_DASHBOARD)
         <x-layout.employee.nav.sidebar.nav-item href="dashboard" :active="request()->is('employee/dashboard')" class="" nav_txt="Dashboard"
