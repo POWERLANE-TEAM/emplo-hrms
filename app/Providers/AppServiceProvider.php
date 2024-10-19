@@ -37,11 +37,11 @@ class AppServiceProvider extends ServiceProvider
 
             return
                 $rule->letters()
-                    ->mixedCase()
-                    ->numbers()
-                    ->symbols()
-                    ->uncompromised()
-                    ->rules(['not_regex:/\s/']); // No spaces allowed
+                ->mixedCase()
+                ->numbers()
+                ->symbols()
+                ->uncompromised()
+                ->rules(['not_regex:/\s/']); // No spaces allowed
         });
 
         Validator::extend('valid_email_dns', function ($attributes, $value, $parameters, $validator) {
@@ -80,9 +80,9 @@ class AppServiceProvider extends ServiceProvider
         BroadcastServiceProvider::class;
 
         // if user role is advanced, bypass all permission checks
-        Gate::before(function ($user, $ability) {
-            return $user->hasRole(UserRole::ADVANCED) ? true : null;
-        });
+        // Gate::before(function ($user, $ability) {
+        //     return $user->hasRole(UserRole::ADVANCED) ? true : null;
+        // });
 
         View::composer('*', function ($view) {
 
