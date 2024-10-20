@@ -17,49 +17,71 @@ class PerformanceDetail extends Model
         'perf_detail_id',
     ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | Define model relationships below
-    |--------------------------------------------------------------------------
-    */
-
-    // returns which period the performance evaluation occurred
+    /**
+     * Get the performance period whe the performance evaluation occured.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function period(): BelongsTo
     {
         return $this->belongsTo(PerformancePeriod::class, 'perf_period_id', 'perf_period_id');
     }
 
-    // returns the employee being evaluated
+    /**
+     * Get the employee who is being evaluated on the perfomance evaluation.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function evaluatee(): BelongsTo
     {
         return $this->belongsTo(Employee::class, 'evaluatee', 'employee_id');
     }
 
-    // returns evaluator who approvally signed the performance evaluation
+    /**
+     * Get the evaluator who approved/signed the performance evaluation.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function signedEvaluator(): BelongsTo
     {
         return $this->belongsTo(Employee::class, 'evaluator', 'employee_id');
     }
 
-    // returns supervisor who approvally signed the performance evaluation
+    /**
+     * Get the Supervisor who approved/signed the performance evaluation.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function signedSupervisor(): BelongsTo
     {
         return $this->belongsTo(Employee::class, 'supervisor', 'employee_id');
     }
 
-    // returns area manager who approvally signed the performance evaluation
+     /**
+     * Get the Area Manager who approved/signed the performance evaluation.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function signedAreaManager(): BelongsTo
     {
         return $this->belongsTo(Employee::class, 'area_manager', 'employee_id');
     }
 
-    // returns hr manager who approvally signed the performance evaluation
+    /**
+     * Get the HR Manager who approved/signed the performance evaluation.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function signedHrManager(): BelongsTo
     {
         return $this->belongsTo(Employee::class, 'hr_manager', 'employee_id');
     }
 
-    // returns the scored/rated categories of the performance evalution
+    /**
+     * Get the scored/rated categories of the performance evaluation.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function categoryRatings(): HasMany
     {
         return $this->hasMany(PerformanceCategoryRating::class, 'perf_detail_id', 'perf_detail_id');

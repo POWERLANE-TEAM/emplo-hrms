@@ -17,6 +17,11 @@ class EmploymentStatus extends Model
         'emp_status_desc',
     ];
 
+    /**
+     * Get the employees associated with the employment status.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function employees(): HasMany
     {
         return $this->hasMany(Employee::class, 'emp_status_id', 'emp_status_id');

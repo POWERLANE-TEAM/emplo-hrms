@@ -18,6 +18,11 @@ class PreempRequirement extends Model
         'sample_file',
     ];
 
+    /**
+     * Get the application documents associated with the pre-employment requirement.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function applicationDocs(): HasMany
     {
         return $this->hasMany(ApplicationDoc::class, 'preemp_req_id', 'preemp_req_id');

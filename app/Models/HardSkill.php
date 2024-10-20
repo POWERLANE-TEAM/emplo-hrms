@@ -17,7 +17,11 @@ class HardSkill extends Model
         'hard_skill_desc',
     ];
 
-    // returns job titles of a hard skill
+    /**
+     * The job titles that belong to the hard skill.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function jobTitles(): BelongsToMany
     {
         return $this->belongsToMany(JobTitle::class, 'job_hard_skills', 'job_title_id', 'hard_skill_id')
