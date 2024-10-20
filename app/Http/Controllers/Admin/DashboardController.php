@@ -7,19 +7,21 @@ use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class DashboardController extends Controller
 {
     public function __invoke()
     {
+        $guard = Auth::guard('admin');
 
-        $authenticated_user = Auth::guard('admin')->user();
+        $authenticated_user_with_role = Cache::remember('user_' . $guard->id(), 2, function () use ($guard) {
+            return User::where('user_id', $guard->id())
+                ->with('roles')
+                ->first();
+        });
 
-        $user_with_role_and_account = User::where('user_id', $authenticated_user->user_id)
-            ->with(['roles'])
-            ->first();
-
-        $is_admin = $authenticated_user->account_type == AccountType::EMPLOYEE->value && $user_with_role_and_account->hasRole(UserRole::ADVANCED->value);
+        $is_admin = $authenticated_user_with_role->account_type == AccountType::EMPLOYEE->value && $authenticated_user_with_role->hasRole(UserRole::ADVANCED->value);
 
         if (! $is_admin) {
             abort(403);

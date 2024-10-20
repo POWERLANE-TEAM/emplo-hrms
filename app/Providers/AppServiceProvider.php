@@ -3,16 +3,12 @@
 namespace App\Providers;
 
 use App\Enums\UserRole;
-use App\Http\Helpers\ChooseGuard;
-use App\Models\User;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Broadcasting\BroadcastServiceProvider;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
@@ -24,7 +20,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(ComposerServiceProvider::class);
+        //
     }
 
     /**
@@ -83,5 +79,8 @@ class AppServiceProvider extends ServiceProvider
         Gate::before(function ($user, $ability) {
             return $user->hasRole(UserRole::ADVANCED) ? true : null;
         });
+
+        // Includes similar data across views without repeating code
+        ComposerServiceProvider::class;
     }
 }
