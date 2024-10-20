@@ -1,7 +1,3 @@
-@php
-    $nonce = csp_nonce();
-@endphp
-
 @extends('components.layout.app', ['description' => 'Hiring Page', 'font_weights' => ['900', '600']])
 
 @section('head')
@@ -13,9 +9,9 @@
 
     <script>
         if (window.location.hash === '#_=_') {
-            history.replaceState
-                ? history.replaceState(null, null, window.location.href.split('#')[0])
-                : window.location.hash = '';
+            history.replaceState ?
+                history.replaceState(null, null, window.location.href.split('#')[0]) :
+                window.location.hash = '';
         }
     </script>
 @endPushOnce

@@ -1,7 +1,3 @@
-@php
-    $nonce = csp_nonce();
-@endphp
-
 <script nonce="{{ $nonce }}">
     document.addEventListener('livewire:init', () => {
         Livewire.hook('request', ({

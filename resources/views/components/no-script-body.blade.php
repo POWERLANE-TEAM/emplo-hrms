@@ -1,6 +1,3 @@
-@php
-    $nonce = csp_nonce();
-@endphp
 <noscript>
     <style nonce="{{ $nonce }}">
         .no-script {

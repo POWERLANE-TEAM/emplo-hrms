@@ -1,15 +1,9 @@
-@php
-    $nonce = csp_nonce();
-@endphp
-
 @props([
     'no_crawl' => false,
     'description' => '',
     'main_cont_class' => '',
     'font_weights' => [' 400 ', '500', '700'],
 ])
-
-{{-- {{ dd($font_weights) }} --}}
 
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">

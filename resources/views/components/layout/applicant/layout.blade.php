@@ -1,7 +1,4 @@
 @props(['icon_size' => '25', 'icon_ratio' => '1/1'])
-@php
-    $nonce = csp_nonce();
-@endphp
 
 @props([
     'no_crawl' => false,
