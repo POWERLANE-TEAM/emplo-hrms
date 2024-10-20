@@ -21,7 +21,7 @@ class AuthenticatedUserComposer
         $guard = Auth::guard(ChooseGuard::getByRequest());
 
         if ($guard->check()) {
-            $user = Cache::remember('user_' . $guard->id(), 2, function () use ($guard) {
+            $user = Cache::flexible('user_' . $guard->id(), [30, 60], function () use ($guard) {
                 return User::where('user_id', $guard->id())
                     ->with('roles')
                     ->first();
