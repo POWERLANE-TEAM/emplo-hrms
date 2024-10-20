@@ -76,9 +76,9 @@ class AppServiceProvider extends ServiceProvider
         BroadcastServiceProvider::class;
 
         // if user role is advanced, bypass all permission checks
-        Gate::before(function ($user, $ability) {
-            return $user->hasRole(UserRole::ADVANCED) ? true : null;
-        });
+        // Gate::before(function ($user, $ability) {
+        //     return $user->hasRole(UserRole::ADVANCED) ? true : null;
+        // });
 
         // Includes similar data across views without repeating code
         ComposerServiceProvider::class;
