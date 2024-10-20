@@ -3,7 +3,7 @@ export function initPasswordEvaluator() {
         /* The resource script does not comply to es6 standard */
         NBP.init('mostcommon_1000000', 'build/assets/pasword-list/collections', true);
     } catch (error) {
-        console.trace();
+
     }
 }
 

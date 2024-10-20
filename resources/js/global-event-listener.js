@@ -15,7 +15,7 @@ export default function addGlobalListener(type, ref = document, selector, callba
             }
         })
     } catch (error) {
-        console.trace();
+
     }
 }
 
@@ -36,7 +36,7 @@ export class GlobalListener {
                 }
             });
         } catch (error) {
-            console.trace();
+
         }
     }
 }
