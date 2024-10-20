@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\GuardType;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -16,6 +17,13 @@ class User extends Authenticatable implements MustVerifyEmail
     use HasApiTokens, HasFactory, HasRoles, Notifiable;
 
     protected $primaryKey = 'user_id';
+
+    /**
+     * The names of the guards used for authentication.
+     *
+     * @var array
+     */
+    protected $guard_name = [GuardType::DEFAULT->value, GuardType::EMPLOYEE->value, GuardType::ADMIN->value];
 
     /**
      * The attributes that are not mass assignable.

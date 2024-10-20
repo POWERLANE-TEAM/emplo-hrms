@@ -60,7 +60,7 @@ class DatabaseSeeder extends Seeder
             ->each(function ($user) {
                 $user->assignRole(UserRole::BASIC);
                 $user->givePermissionTo([
-                    UserPermission::VIEW_APPICANT_INFORMATION,
+                    UserPermission::VIEW_APPLICANT_INFORMATION,
                     UserPermission::VIEW_EMPLOYEE_INFORMATION,
                 ]);
             });
@@ -78,26 +78,9 @@ class DatabaseSeeder extends Seeder
 
         $applicant_user->assignRole(UserRole::BASIC);
 
-        $employees = collect();
-        $usersData = [];
+        $this->call(HRManagerSeeder::class);
 
-        for ($i = 0; $i < 2; $i++) {
-            $employee = Employee::factory()->create();
-            $employees->push($employee);
-
-            $usersData[] = [
-                'account_type' => AccountType::EMPLOYEE,
-                'account_id' => $employees[$i]->employee_id,
-                'email' => $i === 0 ? 'hr.001@gmail.com' : 'admin.001@gmail.com',
-                'password' => Hash::make('UniqP@ssw0rd'),
-                'user_status_id' => 1,
-                'email_verified_at' => fake()->dateTimeBetween('-10 days', 'now'),
-            ];
-
-            $employee_user = User::factory()->create($usersData[$i]);
-
-            $employee_user->assignRole($i === 0 ? UserRole::INTERMEDIATE : UserRole::ADVANCED);
-        }
+        $this->call(AdminSeeder::class);
 
         JobVacancy::factory(25)->create();
 
