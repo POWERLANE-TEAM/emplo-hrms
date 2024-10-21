@@ -16,7 +16,8 @@ class DashboardController extends Controller
 
         $authenticated_user = Cache::flexible('user_' . $guard->id(), [30, 60], function () use ($guard) {
             return User::where('user_id', $guard->id())
-                ->with('roles')
+                ->with(['roles', 'account'])
+                ->get()
                 ->first();
         });
 
