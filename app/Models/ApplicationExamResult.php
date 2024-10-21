@@ -18,19 +18,21 @@ class ApplicationExamResult extends Model
         'updated_at',
     ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | Define model relationships below
-    |--------------------------------------------------------------------------
-    */
-
-    // returns the result of the examination
+    /**
+     * Get the job application that owns the result of the examination.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function application(): BelongsTo
     {
         return $this->belongsTo(ApplicationExam::class, 'application_exam_id', 'application_exam_id');
     }
 
-    // returns the employee/grader of the exam
+    /**
+     * Get the employee who is the grader of the examination.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function grader(): BelongsTo
     {
         return $this->belongsTo(Employee::class, 'graded_by', 'employee_id');

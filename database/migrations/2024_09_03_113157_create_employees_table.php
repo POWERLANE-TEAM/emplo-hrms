@@ -1,12 +1,13 @@
 <?php
 
 use App\Models\Employee;
-use App\Models\EmploymentStatus;
 use App\Models\JobDetail;
+use App\Models\Application;
 use App\Models\LeaveCategory;
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use App\Models\EmploymentStatus;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -17,54 +18,50 @@ return new class extends Migration
     {
         Schema::create('employment_statuses', function (Blueprint $table) {
             $table->id('emp_status_id');
-            $table->string('emp_status_name', 100);
+            $table->string('emp_status_name');
             $table->longText('emp_status_desc');
             $table->timestamps();
         });
 
         Schema::create('employees', function (Blueprint $table) {
             $table->id('employee_id');
-            $table->string('first_name', 100);
-            $table->string('middle_name', 100)->nullable();
-            $table->string('last_name', 100);
+            $table->string('first_name');
+            $table->string('middle_name')->nullable();
+            $table->string('last_name');
 
             $table->foreignIdFor(JobDetail::class, 'job_detail_id')
                 ->constrained('job_details', 'job_detail_id')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
-            $table->timestamp('hired_at');
-
             $table->foreignIdFor(EmploymentStatus::class, 'emp_status_id')
                 ->constrained('employment_statuses', 'emp_status_id')
                 ->cascadeOnUpdate()
                 ->restrictOnDelete();
 
+            $table->longText('present_address');
             $table->string('present_barangay', 10);
-
             $table->foreign('present_barangay')
                 ->references('barangay_code')->on('barangays')
                 ->onDelete('cascade');
 
-            $table->longText('present_address');
+            $table->longText('permanent_address');         
             $table->string('permanent_barangay', 10);
-
             $table->foreign('permanent_barangay')
                 ->references('barangay_code')->on('barangays')
                 ->onDelete('cascade');
 
-            $table->longText('permanent_address');
-
             $table->string('contact_number', 11)->unique();
-            $table->string('photo')->nullable(); // emp photo file path
             $table->enum('sex', ['MALE', 'FEMALE']);
             $table->enum('civil_status', ['SINGLE', 'MARRIED', 'WIDOWED', 'LEGALLY SEPARATED']);
+            $table->date('date_of_birth')->nullable();
             $table->string('sss_no', 10)->unique();
             $table->string('philhealth_no', 12)->unique();
             $table->string('tin_no', 12)->unique();
             $table->string('pag_ibig_no', 12)->unique();
             $table->binary('signature');
-            $table->string('education');
+            $table->jsonb('education')->nullable();
+            $table->jsonb('experience')->nullable();
             $table->integer('leave_balance')->default(0);
             $table->timestamps();
         });

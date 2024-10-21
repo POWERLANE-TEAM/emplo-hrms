@@ -18,6 +18,6 @@ return [
     'term_condition' => 'Tuntunin&nbsp;at&nbsp;Kundisyon',
     'privacy_policy' => 'Patakaran&nbsp;sa&nbsp;Privacy',
     'terms_privacy' => function () {
-        return $this['consents'] . $this['term_condition'] . ' at ' . $this['privacy_policy'] . '.';
+        return $this['consents'].$this['term_condition'].' at '.$this['privacy_policy'].'.';
     },
 ];

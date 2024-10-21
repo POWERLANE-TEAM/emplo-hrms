@@ -1,4 +1,4 @@
-// '/vendor/node_modules/bootstrap'; // Bootstrap Framework
+// '/node_modules/bootstrap'; // Bootstrap Framework
 
 import "../../../css/employee/dashboard.css";
 import '../../script.js';

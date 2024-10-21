@@ -21,7 +21,7 @@ return new class extends Migration
     {
         Schema::create('application_statuses', function (Blueprint $table) {
             $table->id('application_status_id');
-            $table->string('application_status_name', 100);
+            $table->string('application_status_name');
             $table->longText('application_status_desc')->nullable();
             $table->timestamps();
         });
@@ -44,7 +44,7 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
-            $table->timestamps();
+            $table->timestamp('hired_at')->nullable();
         });
 
         Schema::create('application_docs', function (Blueprint $table) {

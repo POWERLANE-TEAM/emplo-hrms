@@ -40,8 +40,8 @@ export default defineConfig({
     plugins: [
         laravel({
             input: [
-                'vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js',
-                'vendor/node_modules/chartjs-plugin-annotation/dist/chartjs-plugin-annotation.min.js',
+                'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js',
+                'node_modules/chartjs-plugin-annotation/dist/chartjs-plugin-annotation.min.js',
                 // 'resources/js/app.js',
                 'resources/js/hiring.js',
                 'resources/js/applicant/login.js',
@@ -78,12 +78,6 @@ export default defineConfig({
             ]
         })
     ],
-    resolve: {
-        alias: {
-            'laravel-echo': '/vendor/node_modules/laravel-echo/dist/echo.js',
-            'pusher-js': '/vendor/node_modules/pusher-js/dist/web/pusher.js',
-        },
-    },
     server: {
         host: localIpAddress,
         hmr: {

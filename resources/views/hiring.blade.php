@@ -10,6 +10,14 @@
 
 @pushOnce('pre-scripts')
     <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        if (window.location.hash === '#_=_') {
+            history.replaceState
+                ? history.replaceState(null, null, window.location.href.split('#')[0])
+                : window.location.hash = '';
+        }
+    </script>
 @endPushOnce
 
 @pushOnce('scripts')

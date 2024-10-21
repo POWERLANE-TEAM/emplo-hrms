@@ -23,79 +23,131 @@ class Employee extends Model
         'updated_at',
     ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | Define model relationships below
-    |--------------------------------------------------------------------------
-    */
-
-    // returns the account of this employee
+    /**
+     * Get the account associated with the employee.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+     */
     public function account(): MorphOne
     {
         return $this->morphOne(User::class, 'account');
     }
 
-    // returns employment status of employee
+    /**
+     * Get the job application associated with the employee.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function application(): HasOne
+    {
+        return $this->hasOne(Application::class, 'application_id', 'employee_id');
+    }
+
+    /**
+     * Get the employment status of the employee.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function employmentStatus(): BelongsTo
     {
         return $this->belongsTo(EmploymentStatus::class, 'emp_status_id', 'emp_status_id');
     }
 
-    // returns attendance records of employee
+    /**
+     * Get the attendance records associated with the employee.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function attendances(): HasMany
     {
         return $this->hasMany(Attendance::class, 'employee_id', 'employee_id');
     }
 
-    // returns the job title of employee
+    /**
+     * Get the job detail of the employee.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function jobDetail(): BelongsTo
     {
         return $this->belongsTo(JobDetail::class, 'job_detail_id', 'job_detail_id');
     }
 
-    // returns the specific area where employee is area manager
+    /**
+     * Get the area name where employee is the Area Manager.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function areaManagerOf(): HasOne
     {
         return $this->hasOne(SpecificArea::class, 'area_manager', 'employee_id');
     }
 
-    // returns the office/jobfamily where employee is office head
+    /**
+     * Get the office name where employee is the office head.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function headOf(): HasOne
     {
         return $this->hasOne(JobFamily::class, 'office_head', 'employee_id');
     }
 
-    // returns the shift schedule of employee
+    /**
+     * Get the shift schedule of the employee.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function shift(): BelongsTo
     {
         return $this->belongsTo(Shift::class, 'shift_id', 'shift_id');
     }
 
-    // returns the documents of employee
+    /**
+     * Get the documents associated with the employee.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function documents(): HasMany
     {
         return $this->hasMany(EmployeeDoc::class, 'employee_id', 'employee_id');
     }
 
-    // returns the records of employee's overtime requests
+    /**
+     * Get the overtime records associated with the employee
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function overtimes(): HasMany
     {
         return $this->hasMany(Overtime::class, 'employee_id', 'employee_id');
     }
 
-    // returns the leave records of employee
+    /**
+     * Get the leave records associated with the employee.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function leaves(): HasMany
     {
         return $this->hasMany(EmployeeLeave::class, 'employee_id', 'employee_id');
     }
 
-    // returns employee's permanent barangay address
+    /**
+     * Get the permanent barangay of the employee.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function permanentBarangay(): BelongsTo
     {
         return $this->belongsTo(Barangay::class, 'permanent_barangay', 'barangay_code');
     }
 
-    // returns employee's present barangay address
+    /**
+     * Get the present barangay of the employee.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function presentBarangay(): BelongsTo
     {
         return $this->belongsTo(Barangay::class, 'present_barangay', 'barangay_code');
@@ -107,25 +159,41 @@ class Employee extends Model
     |--------------------------------------------------------------------------
     */
 
-    // returns application records where employee is initial interviewer
+    /**
+     * Get the initial interviews where employee is the initial interviewer.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function asInitInterviewer(): HasMany
     {
         return $this->hasMany(InitialInterview::class, 'init_interviewer', 'employee_id');
     }
 
-    // returns application records where employee is final interviewer
+    /**
+     * Get the final interviews where employee is the final interviewer.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function asFinalInterviewer(): HasMany
     {
         return $this->hasMany(FinalInterview::class, 'final_interviewer', 'employee_id');
     }
 
-    // returns pre employment documents where employee is evaluator
+    /**
+     * Get the application documents where employee is the evaluator.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function asApplicationDocsEvaluator(): HasMany
     {
         return $this->hasMany(ApplicationDoc::class, 'evaluated_by', 'employee_id');
     }
 
-    // returns exam results where employee is grader
+    /**
+     * Get the examination results where employee is the grader
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function asExamGrader(): HasMany
     {
         return $this->hasMany(ApplicationExamResult::class, 'graded_by', 'employee_id');
@@ -137,31 +205,51 @@ class Employee extends Model
     |--------------------------------------------------------------------------
     */
 
-    // returns training records of employee
+    /**
+     * Get the training records associated with the employee.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function trainings(): HasMany
     {
         return $this->hasMany(Training::class, 'trainee', 'employee_id');
     }
 
-    // returns training records where employee is trainer
+    /**
+     * Get the training records where employee is the trainer.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
     public function trainingsAsTrainer(): MorphMany
     {
         return $this->morphMany(Training::class, 'trainer');
     }
 
-    // returns training comments where employee is trainer
+    /**
+     * Get the training comments where employee is the trainer.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
     public function commentsAsTrainer(): MorphMany
     {
         return $this->morphMany(Training::class, 'comment');
     }
 
-    // returns prepared training records where employee is hr personnel
+    /**
+     * Get the prepared training records where employee is an HR Personnel.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function preparedTrainings(): HasMany
     {
         return $this->hasMany(Training::class, 'prepared_by', 'employee_id');
     }
 
-    // returns reviewed/approved training records where employee is hr manager
+    /**
+     * Get the reviewed/approved training records where employee is the HR Manager.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function reviewedTrainings(): HasMany
     {
         return $this->hasMany(Training::class, 'reviewed_by', 'employee_id');
@@ -169,15 +257,25 @@ class Employee extends Model
 
     /*
     |--------------------------------------------------------------------------
-    | Complaints Records Management
+    | Complaint Records Management
     |--------------------------------------------------------------------------
     */
 
+    /**
+     * Get the complaint records where employee is the complainant.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function complaintsAsComplainant(): HasMany
     {
         return $this->hasMany(EmployeeComplaint::class, 'complainant', 'employee_id');
     }
 
+    /**
+     * The complaint records that belong to the complainee(employee).
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function complaintsAsComplainee(): BelongsToMany
     {
         return $this->belongsToMany(EmployeeComplaint::class, 'complaint_complainees', 'complainee', 'emp_complaint_id')
@@ -190,21 +288,35 @@ class Employee extends Model
     |--------------------------------------------------------------------------
     */
 
+    /**
+     * Get the processes(e.g., overtimes, leaves) where employee is the supervisor.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function supervisedProcesses(): HasMany
     {
         return $this->hasMany(Process::class, 'supervisor', 'employee_id');
     }
 
+    /**
+     * Get the processes(e.g., overtimes, leaves) where employee is the Area Manager.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function areaManagedProcesses(): HasMany
     {
         return $this->hasMany(Process::class, 'area_manager', 'employee_id');
     }
 
+    /**
+     * Get the processes(e.g., overtimes, leaves) where employee is the HR Manager.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function hrManagedProcesses(): HasMany
     {
         return $this->hasMany(Process::class, 'hr_manager', 'employee_id');
     }
-
 
     /*
     |--------------------------------------------------------------------------
@@ -212,31 +324,51 @@ class Employee extends Model
     |--------------------------------------------------------------------------
     */
 
-    // returns the employee's performance records
+    /**
+     * Get the performance evaluation records associated with the employee.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function performances(): HasMany
     {
         return $this->hasMany(PerformanceDetail::class, 'evaluatee', 'employee_id');
     }
 
-    // returns signed performances where employee is the evaluator
+    /**
+     * Get the performance evalation records where employee is the evaluator.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function evaluatedPerformances(): HasMany
     {
         return $this->hasMany(PerformanceDetail::class, 'evaluator', 'employee_id');
     }
 
-    // returns signed peformances where employee is the supervisor
+    /**
+     * Get the performance evaluation records where employee is the Supervisor.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function supervisedPerformances(): HasMany
     {
         return $this->hasMany(PerformanceDetail::class, 'supervisor', 'employee_id');
     }
 
-    // returns signed peformances where employee is the area manager
+    /**
+     * Get the performance evaluation records where employee is the Area Manager.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function areaManagedPerformances(): HasMany
     {
         return $this->hasMany(PerformanceDetail::class, 'area_manager', 'employee_id');
     }
 
-    // returns signed performances where employee is the hr manager
+    /**
+     * Get the performance evaluation records where employee is the HR Manager.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function hrManagedPerformances(): HasMany
     {
         return $this->hasMany(PerformanceDetail::class, 'hr_manager', 'employee_id');

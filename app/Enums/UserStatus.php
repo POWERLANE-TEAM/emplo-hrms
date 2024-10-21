@@ -8,11 +8,14 @@ enum UserStatus: int
     case INACTIVE = 2;
     case SUSPENDED = 3;
 
-
-    // displays user-friendly account statuses in blade templates
+    /**
+     * Return user-friendly user status labels.
+     * 
+     * @return string
+     */
     public function label(): string
     {
-        return match($this) {
+        return match ($this) {
             self::ACTIVE => 'Active',
             self::INACTIVE => 'Inactive',
             self::SUSPENDED => 'Suspended',

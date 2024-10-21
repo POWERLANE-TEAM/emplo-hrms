@@ -3,10 +3,12 @@
 namespace App\Livewire\Auth;
 
 use App\Models\User;
-use Livewire\Component;
-use Illuminate\Http\Request;
 use App\Traits\GoogleCallback;
+use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Livewire\Component;
 
 class GoogleOneTap extends Component
 {
@@ -19,37 +21,52 @@ class GoogleOneTap extends Component
 
     public function handleCallback(Request $request)
     {
-        $client = new \Google_Client(['client_id' => config('services.google.client_id')]);
+        try {
 
-        $credential = $request->input('credential');
-        
-        $payload = $client->verifyIdToken($credential);
+            $client = new \Google_Client(['client_id' => config('services.google.client_id')]);
 
-        if ($payload) {
+            $credential = $request->input('credential');
 
-            $user = User::where('google_id', $payload['sub'])->first();
+            $payload = $client->verifyIdToken($credential);
 
-            if ($user) {
+            if ($payload) {
 
-                Auth::login($user);
+                $user = User::where('google_id', $payload['sub'])
+                    ->orWhere('email', $payload['email'])
+                    ->first();
 
-                return redirect('hiring');
+                if ($user) {
 
-            } else {
-
-                $new_user = $this->oneTapWithGoogle($payload);
-
-                if(! $new_user) {
-
-                    //
-
-                } else {
-
-                    Auth::login($new_user);
+                    Auth::login($user);
 
                     return redirect('hiring');
                 }
+
+                DB::beginTransaction();
+
+                $new_user = $this->saveGooglePayload($payload);
+
+                DB::commit();
+
+                if (! $new_user) {
+
+                    session()->flash('error', 'Something went wrong.');
+
+                    return redirect('/');
+                }
+
+                Auth::login($new_user);
+
+                return redirect('hiring');
             }
+
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            report($e);
+
+            return redirect()->intended('/hiring');
         }
     }
 }

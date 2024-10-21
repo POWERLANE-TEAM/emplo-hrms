@@ -178,7 +178,7 @@ $table-color: var(--bs-body-color);
 
 $enable-negative-margins: true;
 
-@import '../../vendor/node_modules/bootstrap/scss/bootstrap';
+@import '../../node_modules/bootstrap/scss/bootstrap';
 // @import 'button';
 
 @mixin max-width($value) {
@@ -292,7 +292,7 @@ body {
     }
 
     .breadcrumb-item::before {
-        margin-top: calc(0.25rem + 0.25vw);
+        // margin-top: calc(0.25rem + 0.25vw);
     }
 }
 

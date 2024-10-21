@@ -37,11 +37,19 @@ class ApplicantFactory extends Factory
                 'years' => fake()->numberBetween(1, 10),
             ];
         }
+
         return [
             'first_name' => fake()->firstName,
             'middle_name' => fake()->firstName,
             'last_name' => fake()->lastName,
             'contact_number' => fake()->unique()->numerify('###########'),
+            'sex' => fake()->randomElement(['MALE', 'FEMALE']),
+            'civil_status' => fake()->randomElement(['SINGLE', 'MARRIED', 'WIDOWED', 'LEGALLY SEPARATED']),
+            'present_barangay' => fake()->randomElement(['0102801001', '0102802001']),
+            'permanent_barangay' => fake()->randomElement(['0102802002', '0102802003']),
+            'present_address' => fake()->address,
+            'permanent_address' => fake()->address,
+            'date_of_birth' => fake()->date,
             'education' => json_encode($education),
             'experience' => json_encode($experience),
         ];

@@ -8,8 +8,11 @@ enum ApplicationStatus: string
     case APPROVED = 'approved';
     case REJECTED = 'rejected';
 
-
-    // displays user-friendly account statuses in blade templates
+    /**
+     * Return user-friendly application status labels.
+     * 
+     * @return string
+     */
     public function label(): string
     {
         return match ($this) {

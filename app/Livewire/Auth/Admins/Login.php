@@ -35,12 +35,13 @@ class Login extends Component
             ]);
         }
 
-        $login_request = new LoginRequest();
+        $login_request = new LoginRequest;
 
         $login_request->merge($login_attempt);
 
         $session_controller->store($login_request, $this->remember);
     }
+
     public function render()
     {
         return view('livewire.auth.admins.login');

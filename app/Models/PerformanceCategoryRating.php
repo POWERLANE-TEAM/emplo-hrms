@@ -16,7 +16,4 @@ class PerformanceCategoryRating extends Model
     protected $guarded = [
         'perf_cat_rating_id',
     ];
-
-    
-    //
 }

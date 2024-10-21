@@ -8,16 +8,16 @@ use App\Enums\UserRole;
 use App\Models\Applicant;
 use App\Models\Application;
 use App\Models\ApplicationStatus;
-use App\Models\User;
+use App\Models\Department;
 use App\Models\Employee;
-use App\Models\JobLevel;
+use App\Models\EmploymentStatus;
 use App\Models\JobDetail;
 use App\Models\JobFamily;
-use App\Models\Department;
+use App\Models\JobLevel;
 use App\Models\JobVacancy;
 use App\Models\SpecificArea;
+use App\Models\User;
 use Illuminate\Database\Seeder;
-use App\Models\EmploymentStatus;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\PermissionRegistrar;
@@ -33,6 +33,8 @@ class DatabaseSeeder extends Seeder
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
         $this->call(UserStatusSeeder::class);
+
+        $this->call(ApplicationStatusSeeder::class);
 
         $this->call(RolesAndPermissionsSeeder::class);
 
@@ -58,14 +60,14 @@ class DatabaseSeeder extends Seeder
             ->each(function ($user) {
                 $user->assignRole(UserRole::BASIC);
                 $user->givePermissionTo([
-                    UserPermission::VIEW_APPICANT_INFORMATION,
+                    UserPermission::VIEW_APPLICANT_INFORMATION,
                     UserPermission::VIEW_EMPLOYEE_INFORMATION,
                 ]);
             });
 
         $applicant = Applicant::factory()->create();
 
-        $applicant_user =    User::factory()->create([
+        $applicant_user = User::factory()->create([
             'account_type' => AccountType::APPLICANT,
             'account_id' => $applicant->applicant_id,
             'email' => 'applicant.001@gmail.com',
@@ -76,32 +78,13 @@ class DatabaseSeeder extends Seeder
 
         $applicant_user->assignRole(UserRole::BASIC);
 
-        $employees = collect();
-        $usersData = [];
+        $this->call(HRManagerSeeder::class);
 
-        for ($i = 0; $i < 2; $i++) {
-            $employee = Employee::factory()->create();
-            $employees->push($employee);
-
-            $usersData[] = [
-                'account_type' => AccountType::EMPLOYEE,
-                'account_id' => $employees[$i]->employee_id,
-                'email' => $i === 0 ? 'hr.001@gmail.com' : 'admin.001@gmail.com',
-                'password' => Hash::make('UniqP@ssw0rd'),
-                'user_status_id' => 1,
-                'email_verified_at' => fake()->dateTimeBetween('-10 days', 'now'),
-            ];
-
-            $employee_user = User::factory()->create($usersData[$i]);
-
-            $employee_user->assignRole($i === 0 ? UserRole::INTERMEDIATE : UserRole::ADVANCED);
-        }
+        $this->call(AdminSeeder::class);
 
         JobVacancy::factory(25)->create();
 
         $this->call(PreempRequirementSeeder::class);
-
-        $this->call(ApplicationStatusSeeder::class);
 
         Application::create([
             'applicant_id' => $applicant->applicant_id,

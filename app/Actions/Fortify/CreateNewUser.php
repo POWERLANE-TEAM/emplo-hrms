@@ -7,12 +7,8 @@ use App\Models\Applicant;
 use App\Models\Employee;
 use App\Models\User;
 // use App\Models\UserRole;
-use App\Models\UserStatus;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rules\Password;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 
 class CreateNewUser implements CreatesNewUsers
@@ -27,9 +23,8 @@ class CreateNewUser implements CreatesNewUsers
     public function create(array $input, bool $wasValidated = false): User
     {
 
-
-        if (!$wasValidated) {
-            if (!$this->validate($input)) {
+        if (! $wasValidated) {
+            if (! $this->validate($input)) {
                 // throw exception
             }
         }
@@ -40,7 +35,7 @@ class CreateNewUser implements CreatesNewUsers
 
             if ($input['account_type'] == AccountType::APPLICANT->value) {
                 $new_account_created = $this->applicant($input);
-            } else if ($input['account_type'] == AccountType::EMPLOYEE->value) {
+            } elseif ($input['account_type'] == AccountType::EMPLOYEE->value) {
                 $new_account_created = $this->employee($input);
             }
 

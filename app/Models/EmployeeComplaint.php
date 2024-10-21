@@ -19,38 +19,52 @@ class EmployeeComplaint extends Model
         'updated_at',
     ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | Define model relationships below
-    |--------------------------------------------------------------------------
-    */
-
-    // returns the complainant of the complaint
+    /**
+     * Get the complainant associated with the complaint record.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function complainant(): BelongsTo
     {
         return $this->belongsTo(Employee::class, 'complainant', 'employee_id');
     }
 
-    // returns complainee/s of the complaint
+    /**
+     * The complainees that belong to the complaint record.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function complainees(): BelongsToMany
     {
         return $this->belongsToMany(Employee::class, 'complaint_complainees', 'emp_complaint_id', 'complainee')
             ->withTimestamps();
     }
 
-    // returns type of the complaint
+    /**
+     * Get the complaint name/type of the complaint record.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function type(): BelongsTo
     {
         return $this->belongsTo(ComplaintType::class, 'complaint_type_id', 'complaint_type_id');
     }
 
-    // returns confidentiality preferences of the complaint
+    /**
+     * Get the confidentiality preference of the complaint record.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function confidentiality(): BelongsTo
     {
         return $this->belongsTo(ComplaintConfidentiality::class, 'confidentiality_id'.'confidentiality_id');
     }
 
-    // returns current status of the complaint
+    /**
+     * Get the current status of the complaint.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function status(): BelongsTo
     {
         return $this->belongsTo(ComplaintStatus::class, 'complaint_status_id', 'complaint_status_id');

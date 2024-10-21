@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('preemp_requirements', function (Blueprint $table) {
             $table->id('preemp_req_id');
-            $table->string('preemp_req_name', 100);
+            $table->string('preemp_req_name');
             $table->longText('preemp_req_desc')->nullable();
             $table->string('sample_file')->nullable(); // file path
             $table->timestamps();

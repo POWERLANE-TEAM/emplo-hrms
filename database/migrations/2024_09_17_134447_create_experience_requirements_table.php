@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('experience_requirements', function (Blueprint $table) {
             $table->id('experience_req_id');
-            $table->string('job_title', 100)->nullable();
+            $table->string('job_title')->nullable();
             $table->integer('years_of_exp')->nullable();
             $table->longText('exp_desc')->nullable();
             $table->timestamps();

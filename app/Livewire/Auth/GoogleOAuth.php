@@ -2,11 +2,13 @@
 
 namespace App\Livewire\Auth;
 
-use App\Traits\GoogleCallback;
 use App\Models\User;
-use Livewire\Component;;
+use App\Traits\GoogleCallback;
+use Exception;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Laravel\Socialite\Facades\Socialite;
+use Livewire\Component;
 
 class GoogleOAuth extends Component
 {
@@ -19,30 +21,45 @@ class GoogleOAuth extends Component
 
     public function googleCallback()
     {
-        $google_user = Socialite::driver('google')->stateless()->user();
+        try {
 
-        $user = User::where('google_id', $google_user->id)->first();
+            $google_user = Socialite::driver('google')->stateless()->user();
 
-        if ($user) {
+            $user = User::where('google_id', $google_user->id)
+                ->orWhere('email', $google_user->getEmail())
+                ->first();
 
-            Auth::login($user);
+            if ($user) {
 
-            return redirect('/hiring');
+                Auth::login($user);
 
-        } else {
+                return redirect('/hiring');
+            }
 
-            $new_user = $this->signInWithGoogle($google_user);
+            DB::beginTransaction();
+
+            $new_user = $this->saveGooglePayload($google_user->user);
+
+            DB::commit();
 
             if (! $new_user) {
 
-                //
+                session()->flash('error', 'Something went wrong.');
 
-            } else {
-
-                Auth::login($new_user);
-
-                return redirect('/hiring');                    
+                return redirect('/');
             }
+
+            Auth::login($new_user);
+
+            return redirect('/hiring');
+
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            report($e);
+
+            return redirect()->intended('/');
         }
     }
 

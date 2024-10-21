@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Employee;
 use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
@@ -18,23 +17,17 @@ class DashboardController extends Controller
             ->with('roles')
             ->first();
 
-        $role_name = $user->roles->pluck('name')->first();
-
-        // dump(UserRole::INTERMEDIATE->value);
-        // dd($role_name);
-
-        switch ($role_name) {
-            case UserRole::INTERMEDIATE->value:
-                // dd($user);
-                return view('employee.hr.index');
-                break;
-
+        $dashboard = match (true) {
+            $user->hasRole(UserRole::INTERMEDIATE->value) => 'employee.hr-manager.index',
                 // HR
 
                 // Superviser
 
                 // Employee
 
-        }
+            default => '',
+        };
+
+        return view($dashboard);
     }
 }

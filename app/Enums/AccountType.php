@@ -4,14 +4,19 @@ namespace App\Enums;
 
 enum AccountType: string
 {
+    case GUEST = 'guest';
     case APPLICANT = 'applicant';
     case EMPLOYEE = 'employee';
 
-
-    // displays user-friendly account statuses in blade templates
+    /**
+     * Return user-friendly account type labels.
+     * 
+     * @return string
+     */
     public function label(): string
     {
         return match ($this) {
+            self::GUEST => 'Guest',
             self::APPLICANT => 'Applicant',
             self::EMPLOYEE => 'Employee',
         };

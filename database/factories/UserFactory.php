@@ -5,8 +5,8 @@ namespace Database\Factories;
 use App\Enums\AccountType;
 use App\Models\Applicant;
 use App\Models\Employee;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -34,7 +34,6 @@ class UserFactory extends Factory
                     AccountType::EMPLOYEE => Employee::factory()->create()->employee_id,
                     AccountType::APPLICANT => Applicant::factory()->create()->applicant_id,
                 };
-                return fake()->randomDigitNotNull();
             },
             'email' => fake()->unique()->randomElement([
                 fake()->safeEmail(),

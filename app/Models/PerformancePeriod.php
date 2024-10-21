@@ -16,6 +16,11 @@ class PerformancePeriod extends Model
         'perf_period_name',
     ];
 
+    /**
+     * Get the performance evaluation records during the performance period.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function details(): HasMany
     {
         return $this->hasMany(PerformanceDetail::class, 'perf_period_id', 'perf_period_id');

@@ -5,16 +5,12 @@
     <x-layout.employee.nav.sidebar sidebar_expanded="{{ $sidebar_expanded }}" class="shadow"
         icon_size="{{ $icon_size }}" icon_ratio="{{ $icon_ratio }}">
 
-        @includeWhen(
-            $user->hasRole([EnumsUserRole::INTERMEDIATE->value]),
-            'components.employee.nav.sidebar.hr-navs')
+        @include('components.layout.employee.nav.sidebar.employee-navs')
 
-        @includeWhen(
-            $user->hasRole([EnumsUserRole::ADVANCED->value]),
-            'components.employee.nav.sidebar.head-admin-navs')
+        @include('components.layout.employee.nav.sidebar.head-admin-navs')
 
     </x-layout.employee.nav.sidebar>
-    <x-employee.nav.topbar class="">
+    <x-layout.employee.nav.topbar class="">
 
         <x-slot:topbar_right>
             <aside>
@@ -61,5 +57,5 @@
 
         </x-slot:topbar_right>
 
-    </x-employee.nav.topbar>
+    </x-layout.employee.nav.topbar>
 </div>

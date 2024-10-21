@@ -20,25 +20,31 @@ class JobVacancy extends Model
         'updated_at',
     ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | Define model relationships below
-    |--------------------------------------------------------------------------
-    */
-
-    // returns job details of the job vacancy
-    public function jobDetails(): BelongsTo
+    /**
+     * Get the job detail that owns the job vacancy.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function jobDetail(): BelongsTo
     {
         return $this->belongsTo(JobDetail::class, 'job_detail_id', 'job_detail_id');
     }
 
-    // returns applications for the job vacancy
+    /**
+     * Get the job applications associated with the job vacancy.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function applications(): HasMany
     {
         return $this->hasMany(Application::class, 'job_vacancy_id', 'job_vacancy_id');
     }
 
-    // returns the job title through JobDetail model
+    /**
+     * Get the job title through the job detail.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasOneThrough
+     */
     public function jobTitle(): HasOneThrough
     {
         return $this->hasOneThrough(JobTitle::class, JobDetail::class, 'job_detail_id', 'job_title_id', 'job_detail_id', 'job_title_id');

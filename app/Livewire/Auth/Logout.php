@@ -14,6 +14,7 @@ class Logout extends Component
     protected $auth_broadcast_id;
 
     protected $nonce;
+
     protected $use_guard;
 
     public function mount($class = 'border-0 bg-transparent')
@@ -25,7 +26,7 @@ class Logout extends Component
         $this->use_guard = ChooseGuard::getByRequest();
 
         $user_session = session()->getId();
-        $this->auth_broadcast_id =   hash('sha512', $user_session . Auth::guard($this->use_guard)->user()->email . $user_session);
+        $this->auth_broadcast_id = hash('sha512', $user_session.Auth::guard($this->use_guard)->user()->email.$user_session);
     }
 
     public function render()
@@ -43,11 +44,13 @@ class Logout extends Component
 
         HTML;
     }
+
     public function destroy(AuthenticatedSessionController $session_controller)
     {
         // dump(request());
         // dd($session_controller->guard);
-        $response =  $session_controller->destroy(request());
+        $response = $session_controller->destroy(request());
+
         return $response->toResponse(request());
     }
 }

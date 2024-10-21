@@ -17,13 +17,11 @@ class Department extends Model
         'department_function',
     ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | Define model relationships below
-    |--------------------------------------------------------------------------
-    */
-
-    // returns existing job titles to a specific deparment
+    /**
+     * Get the job titles associated with the department.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function jobTitles(): HasMany
     {
         return $this->hasMany(JobTitle::class, 'department_id', 'department_id');

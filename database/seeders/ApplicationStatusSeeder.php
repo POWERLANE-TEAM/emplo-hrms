@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Enums\ApplicationStatus as EnumsApplicationStatus;
 use App\Models\ApplicationStatus;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class ApplicationStatusSeeder extends Seeder

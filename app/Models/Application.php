@@ -12,6 +12,8 @@ class Application extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     protected $primaryKey = 'application_id';
 
     protected $guarded = [
@@ -20,61 +22,101 @@ class Application extends Model
         'updated_at',
     ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | Define model relationships below
-    |--------------------------------------------------------------------------
-    */
-
-    // returns the applicant of the application
+    /**
+     * Get the applicant that owns the job application.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function applicant(): BelongsTo
     {
         return $this->belongsTo(Applicant::class, 'applicant_id', 'applicant_id');
     }
 
-    // returns submitted documents of the application
+    /**
+     * Get the employee that owns the job application.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function employee(): BelongsTo
+    {
+        return $this->belongsTo(Employee::class, 'application_id', 'employee_id');
+    }    
+
+    /**
+     * Get the documents associated with the job application.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function documents(): HasMany
     {
         return $this->hasMany(ApplicationDoc::class, 'application_id', 'application_id');
     }
 
-    // returns the examination of the application
+    /**
+     * Get the examination associated with the job application.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function exam(): HasOne
     {
         return $this->hasOne(ApplicationExam::class, 'application_id', 'application_id');
     }
 
-    // returns the vacancy of the application
+    /**
+     * Get the vacancy of the job application.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function vacancy(): BelongsTo
     {
         return $this->belongsTo(JobVacancy::class, 'job_vacancy_id', 'job_vacancy_id');
     }
 
-    // returns status of the application
+    /**
+     * Get the current status of the job application.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function status(): BelongsTo
     {
         return $this->belongsTo(ApplicationStatus::class, 'application_status_id', 'application_status_id');
     }
 
-    // returns initial interview details of the application
+    /**
+     * Get the initial interview associated with the job application.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function initialInterview(): HasOne
     {
         return $this->hasOne(InitialInterview::class, 'application_id', 'application_id');
     }
 
-    // returns employee/initial interviewer of the application
+    /**
+     * Get the employee who is the initial interviewer of the job application.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function initialInterviewer(): BelongsTo
     {
         return $this->belongsTo(Employee::class, 'init_interviewer', 'employee_id');
     }
 
-    // returns final interview details of the application
+    /**
+     * Get the final interview associated with the job application.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function finalInterview(): HasOne
     {
         return $this->hasOne(FinalInterview::class, 'application_id', 'application_id');
     }
 
-    // returns employee/final interviewer of the final application
+    /**
+     * Get the employee who is the final interviewer of the job application.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function finalInterviewer(): BelongsTo
     {
         return $this->belongsTo(Employee::class, 'final_interviewer', 'employee_id');
