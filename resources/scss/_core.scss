@@ -320,6 +320,25 @@ body {
 
 }
 
+.text-orange {
+    color: $orange;
+}
+
+.bg-orange-subtle {
+    background-color: tint-color($orange, 80%);
+}
+
+[data-bs-theme="dark"] {
+    .bg-orange-subtle {
+        background-color: tint-color($orange, 40%);
+    }
+
+    .bg-orange-subtle {
+        background-color: shade-color($orange, 80%);
+    }
+}
+
+
 .callout {
     border-left-width: calc(1px + 0.25vw);
     border-left-style: solid;

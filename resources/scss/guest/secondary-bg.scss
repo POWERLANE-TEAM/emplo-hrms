@@ -16,6 +16,10 @@ section.top-vector {
         @media (min-width: 2560px) {
             max-height: 600px;
         }
+
+        @media (max-width: 576px) {
+            top: calc((10px + 10vw)*-1);
+        }
     }
 
     svg.right-circle {

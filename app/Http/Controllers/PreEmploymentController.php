@@ -18,8 +18,11 @@ class PreEmploymentController extends Controller
     }
 
     /* Show form page for creating resource */
-    public function create()
+    public function create($isCopy = false)
     {
+        if ($isCopy) {
+            return view('employee.pre-employment-copy');
+        }
         return view('employee.pre-employment');
     }
 
@@ -33,6 +36,9 @@ class PreEmploymentController extends Controller
             // Authenticate
 
             // Validate
+            // Validation should include malware scan found free here https://github.com/sunspikes/clamav-validator
+            // This need a third party clam anti virus (https://docs.clamav.net/) but I think this should be done in docker or other containerized environment
+            // As it may conflict with the default av on the dev machine
 
             // Get user account
 

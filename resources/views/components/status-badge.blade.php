@@ -1,3 +1,4 @@
 @props(['color'])
 
-<span class="badge bg-{{ $color }}-subtle text-{{ $color }} text-uppercase">{{ $slot }}</span>
+<span {{ $attributes->merge() }}
+    class="badge bg-{{ $color }}-subtle text-{{ $color }} text-uppercase">{{ $slot }}</span>
