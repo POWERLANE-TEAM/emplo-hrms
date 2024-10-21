@@ -20,8 +20,6 @@ class Exam extends Model
 
     /**
      * Get the job applications associated with the examination.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function applications(): HasMany
     {

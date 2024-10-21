@@ -8,8 +8,6 @@ use Illuminate\Support\ServiceProvider;
 
 class ComposerServiceProvider extends ServiceProvider
 {
-
-
     /**
      * Views that require user data.
      *
@@ -17,9 +15,8 @@ class ComposerServiceProvider extends ServiceProvider
      */
     private $views_needs_user_data = [
         'components.layout.employee.layout',
-        'employee.hr-manager/*'
+        'employee.hr-manager/*',
     ];
-
 
     /**
      * Register services.
@@ -42,8 +39,6 @@ class ComposerServiceProvider extends ServiceProvider
      * - `nonce`: A Content Security Policy nonce for security.
      *
      * Update the list as needed.
-     *
-     * @return void
      */
     public function boot(): void
     {

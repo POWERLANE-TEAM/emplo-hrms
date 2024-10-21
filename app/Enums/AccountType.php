@@ -10,8 +10,6 @@ enum AccountType: string
 
     /**
      * Return user-friendly account type labels.
-     * 
-     * @return string
      */
     public function label(): string
     {

@@ -19,8 +19,6 @@ class EducationRequirement extends Model
 
     /**
      * The job titles that belong to the education requirement.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function jobTitles(): BelongsToMany
     {

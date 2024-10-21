@@ -21,8 +21,6 @@ class EmployeeLeave extends Model
 
     /**
      * Get the leave name/category of the leave record.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function category(): BelongsTo
     {
@@ -31,8 +29,6 @@ class EmployeeLeave extends Model
 
     /**
      * Get the employee that owns the leave record.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function employee(): BelongsTo
     {
@@ -41,8 +37,6 @@ class EmployeeLeave extends Model
 
     /**
      * Get all of the leave records' processes.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
     public function processes(): MorphMany
     {

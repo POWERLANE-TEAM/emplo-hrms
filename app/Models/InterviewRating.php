@@ -19,8 +19,6 @@ class InterviewRating extends Model
 
     /**
      * The final interview ratings that belong to the interview rating code.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function finalRatings(): BelongsToMany
     {

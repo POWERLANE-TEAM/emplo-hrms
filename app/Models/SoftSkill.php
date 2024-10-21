@@ -19,8 +19,6 @@ class SoftSkill extends Model
 
     /**
      * The job titles that belong to the soft skill.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function jobTitles(): BelongsToMany
     {

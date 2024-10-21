@@ -19,8 +19,6 @@ class HardSkill extends Model
 
     /**
      * The job titles that belong to the hard skill.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function jobTitles(): BelongsToMany
     {

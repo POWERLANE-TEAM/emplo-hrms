@@ -53,8 +53,6 @@ enum UserPermission: string
 
     /**
      * Return user-friendly permission labels.
-     * 
-     * @return string
      */
     public function label(): string
     {

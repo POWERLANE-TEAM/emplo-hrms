@@ -21,8 +21,6 @@ class FinalInterview extends Model
 
     /**
      * Get the job application that owns the final interview.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function application(): BelongsTo
     {
@@ -31,8 +29,6 @@ class FinalInterview extends Model
 
     /**
      * Get the employee who is the interviewer of the final interview.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function interviewer(): BelongsTo
     {
@@ -41,8 +37,6 @@ class FinalInterview extends Model
 
     /**
      * The interview ratings that belong to the final interview.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function ratings(): BelongsToMany
     {

@@ -21,8 +21,6 @@ class Training extends Model
 
     /**
      * Get the parent model (Employee or OutsourcedTrainer) that the training record belongs to.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
     public function trainer(): MorphTo
     {
@@ -31,8 +29,6 @@ class Training extends Model
 
     /**
      * Get the parent model (Employee or OutsourcedTrainer) that the training record belongs to.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
     public function comment(): MorphTo
     {
@@ -41,8 +37,6 @@ class Training extends Model
 
     /**
      * Get the employee who is the HR personnel that prepared the training record.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function preparedBy(): BelongsTo
     {
@@ -51,8 +45,6 @@ class Training extends Model
 
     /**
      * Get the employee — most likely the HR Manager — who reviewed and approved the training record.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function reviewedBy(): BelongsTo
     {

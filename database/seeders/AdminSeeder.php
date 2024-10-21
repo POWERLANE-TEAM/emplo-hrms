@@ -4,12 +4,10 @@ namespace Database\Seeders;
 
 use App\Enums\AccountType;
 use App\Enums\GuardType;
-use App\Enums\UserPermission;
 use App\Enums\UserRole;
 use App\Enums\UserStatus as EnumUserStatus;
 use App\Models\Employee;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Permission;
@@ -20,7 +18,6 @@ use Spatie\Permission\Models\Role;
  */
 class AdminSeeder extends Seeder
 {
-
     /**
      * Additional permissions for the admin account.
      *
@@ -31,12 +28,9 @@ class AdminSeeder extends Seeder
     const ADDITIONAL_PERMISSIONS = [
         // View cases goes here
 
-
         // Create cases goes here
 
-
         // Update cases goes here
-
 
         // Delete cases goes here
 
@@ -68,13 +62,13 @@ class AdminSeeder extends Seeder
     /**
      * Give the seeded admin account extra permissions aside from the ADVANCE role.
      *
-     * @param \App\Models\User $employee_user The user to whom the extra permissions will be given.
+     * @param  \App\Models\User  $employee_user  The user to whom the extra permissions will be given.
      * @return void
      */
     private function GiveExtraPermissions(User $employee_user)
     {
         $permissions = collect(self::ADDITIONAL_PERMISSIONS)
-            ->map(fn($permission) => Permission::where('name', $permission)
+            ->map(fn ($permission) => Permission::where('name', $permission)
                 ->where('guard_name', GuardType::ADMIN->value)
                 ->first());
 

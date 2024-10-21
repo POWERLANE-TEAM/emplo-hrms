@@ -19,8 +19,6 @@ class PerformanceCategory extends Model
 
     /**
      * The performance ratings that belong to the performance category.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function ratings(): BelongsToMany
     {

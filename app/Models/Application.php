@@ -24,8 +24,6 @@ class Application extends Model
 
     /**
      * Get the applicant that owns the job application.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function applicant(): BelongsTo
     {
@@ -34,18 +32,14 @@ class Application extends Model
 
     /**
      * Get the employee that owns the job application.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function employee(): BelongsTo
     {
         return $this->belongsTo(Employee::class, 'application_id', 'employee_id');
-    }    
+    }
 
     /**
      * Get the documents associated with the job application.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function documents(): HasMany
     {
@@ -54,8 +48,6 @@ class Application extends Model
 
     /**
      * Get the examination associated with the job application.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function exam(): HasOne
     {
@@ -64,8 +56,6 @@ class Application extends Model
 
     /**
      * Get the vacancy of the job application.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function vacancy(): BelongsTo
     {
@@ -74,8 +64,6 @@ class Application extends Model
 
     /**
      * Get the current status of the job application.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function status(): BelongsTo
     {
@@ -84,8 +72,6 @@ class Application extends Model
 
     /**
      * Get the initial interview associated with the job application.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function initialInterview(): HasOne
     {
@@ -94,8 +80,6 @@ class Application extends Model
 
     /**
      * Get the employee who is the initial interviewer of the job application.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function initialInterviewer(): BelongsTo
     {
@@ -104,8 +88,6 @@ class Application extends Model
 
     /**
      * Get the final interview associated with the job application.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function finalInterview(): HasOne
     {
@@ -114,8 +96,6 @@ class Application extends Model
 
     /**
      * Get the employee who is the final interviewer of the job application.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function finalInterviewer(): BelongsTo
     {

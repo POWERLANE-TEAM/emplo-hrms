@@ -9,7 +9,6 @@ use App\Models\Applicant;
 use App\Models\Application;
 use App\Models\ApplicationStatus;
 use App\Models\Department;
-use App\Models\Employee;
 use App\Models\EmploymentStatus;
 use App\Models\JobDetail;
 use App\Models\JobFamily;

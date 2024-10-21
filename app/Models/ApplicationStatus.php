@@ -19,8 +19,6 @@ class ApplicationStatus extends Model
 
     /**
      * Get the job applications associated with the status.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function applications(): HasMany
     {

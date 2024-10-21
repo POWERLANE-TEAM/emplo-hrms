@@ -21,8 +21,6 @@ class JobFamily extends Model
 
     /**
      * Get the office head of the job family.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function head(): BelongsTo
     {
@@ -31,8 +29,6 @@ class JobFamily extends Model
 
     /**
      * The job titles that belong to the job family.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function jobTitles(): BelongsToMany
     {
@@ -42,8 +38,6 @@ class JobFamily extends Model
 
     /**
      * The job levels that belong to the job family.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function jobLevels(): BelongsToMany
     {
@@ -53,8 +47,6 @@ class JobFamily extends Model
 
     /**
      * The specific areas that belong to the job family.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function specificAreas(): BelongsToMany
     {

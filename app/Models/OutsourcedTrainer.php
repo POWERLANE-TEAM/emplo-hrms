@@ -21,8 +21,6 @@ class OutsourcedTrainer extends Model
 
     /**
      * Get the trainings associated with the outsourced trainer.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
     public function trainings(): MorphMany
     {
@@ -31,8 +29,6 @@ class OutsourcedTrainer extends Model
 
     /**
      * Get the comments associated with the outsourced trainer.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
     public function comments(): MorphMany
     {
@@ -41,8 +37,6 @@ class OutsourcedTrainer extends Model
 
     /**
      * Get the training provider the outsourced trainer belongs to.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function provider(): BelongsTo
     {

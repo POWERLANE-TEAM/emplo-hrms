@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Applicant extends Model
 {
@@ -22,8 +22,6 @@ class Applicant extends Model
 
     /**
      * Get the account associated with the applicant.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
      */
     public function account(): MorphOne
     {
@@ -32,8 +30,6 @@ class Applicant extends Model
 
     /**
      * Get the job application associated with the applicant.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function application(): HasOne
     {
@@ -42,8 +38,6 @@ class Applicant extends Model
 
     /**
      * Get the permanent barangay of the applicant.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function permanentBarangay(): BelongsTo
     {
@@ -52,8 +46,6 @@ class Applicant extends Model
 
     /**
      * Get the present barangay of the applicant.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function presentBarangay(): BelongsTo
     {

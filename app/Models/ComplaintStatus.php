@@ -19,8 +19,6 @@ class ComplaintStatus extends Model
 
     /**
      * Get the employee complaints associated with the complaint status.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function complaints(): HasMany
     {
