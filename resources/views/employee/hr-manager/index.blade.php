@@ -19,7 +19,7 @@
 @endPushOnce
 @section('content')
     <hgroup class="mb-5 ms-n1">
-        <div class="fs-2 fw-bold mb-2">Good afternoon, {{ Auth::user()->account->first_name }}!</div>
+        <div class="fs-2 fw-bold mb-2">Good afternoon, {{ $user->account->first_name }}!</div>
         <p>It is <time datetime="{{ now() }}"> {{ \Carbon\Carbon::now()->format('l, d F') }}</time></p>
     </hgroup>
     <section role="navigation" aria-label="Quick Links" class=" mb-5 d-flex gap-5">
