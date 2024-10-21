@@ -30,10 +30,21 @@ class AdminSeeder extends Seeder
      */
     const ADDITIONAL_PERMISSIONS = [
         // View cases goes here
-
+        UserPermission::VIEW_ADMIN_DASHBOARD,
+        UserPermission::VIEW_CALENDAR_MANAGER,
+        UserPermission::VIEW_ACCOUNT_MANAGER,
+        UserPermission::VIEW_EMPLOYEE_MANAGER,
+        UserPermission::VIEW_JOB_LISTING_MANAGER,
+        UserPermission::VIEW_POLICY_MANAGER,
+        UserPermission::VIEW_ANNOUNCEMENT_MANAGER,
+        UserPermission::VIEW_PERFORMANCE_CONFIG,
+        UserPermission::VIEW_FORM_CONFIG,
 
         // Create cases goes here
-
+        UserPermission::CREATE_JOB_LISTING,
+        UserPermission::CREATE_ANNOUNCEMENT,
+        UserPermission::CREATE_EMPLOYEE_ACCOUNT,
+        UserPermission::CREATE_BULK_EMPLOYEE_ACCOUNT,
 
         // Update cases goes here
 
@@ -63,6 +74,8 @@ class AdminSeeder extends Seeder
 
         $role = Role::firstOrCreate(['name' => UserRole::ADVANCED, 'guard_name' => GuardType::ADMIN->value]);
         $employee_user->assignRole($role);
+
+        $this->giveExtraPermissions($employee_user);
     }
 
     /**
@@ -71,7 +84,7 @@ class AdminSeeder extends Seeder
      * @param \App\Models\User $employee_user The user to whom the extra permissions will be given.
      * @return void
      */
-    private function GiveExtraPermissions(User $employee_user)
+    private function giveExtraPermissions(User $employee_user)
     {
         $permissions = collect(self::ADDITIONAL_PERMISSIONS)
             ->map(fn($permission) => Permission::where('name', $permission)

@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Enums\AccountType;
-use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -15,19 +13,13 @@ class DashboardController extends Controller
     {
         $guard = Auth::guard('admin');
 
-        $authenticated_user_with_role = Cache::flexible('user_' . $guard->id(), [25, 40], function () use ($guard) {
+        Cache::flexible('user_' . $guard->id(), [25, 40], function () use ($guard) {
             return User::where('user_id', $guard->id())
-                ->with('roles')
+                ->with(['roles', 'account'])
+                ->get()
                 ->first();
         });
 
-        $is_admin = $authenticated_user_with_role->account_type == AccountType::EMPLOYEE->value && $authenticated_user_with_role->hasRole(UserRole::ADVANCED->value);
-
-        if (! $is_admin) {
-            abort(403);
-        }
-
-        // file://./../../../../resources/views/employee/hr-manager/index.blade.php
-        return view('employee.head-admin.index');
+        return view('employee.admin.index');
     }
 }

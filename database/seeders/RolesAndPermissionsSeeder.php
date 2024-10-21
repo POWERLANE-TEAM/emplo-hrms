@@ -37,90 +37,115 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // delete permissions here
 
-        /*
-         * Using employee guard
-         */
 
-        // create permissions goes here
-        Permission::firstOrCreate(['guard_name' => GuardType::EMPLOYEE->value, 'name' => UserPermission::CREATE_JOB_LISTING]);
-        Permission::firstOrCreate(['guard_name' => GuardType::EMPLOYEE->value, 'name' => UserPermission::CREATE_ANNOUNCEMENT]);
+        $permissions = [
 
-        // view permissions goes here
-        Permission::firstOrCreate(['guard_name' => GuardType::EMPLOYEE->value, 'name' => UserPermission::VIEW_APPLICANT_INFORMATION]);
-        Permission::firstOrCreate(['guard_name' => GuardType::EMPLOYEE->value, 'name' => UserPermission::VIEW_EMPLOYEE_INFORMATION]);
-        Permission::firstOrCreate(['guard_name' => GuardType::EMPLOYEE->value, 'name' => UserPermission::VIEW_EMPLOYEE_DASHBOARD]);
+            /**
+             * Using employee guard
+             */
+            GuardType::EMPLOYEE->value => [
 
-        Permission::firstOrCreate(['guard_name' => GuardType::EMPLOYEE->value, 'name' => UserPermission::VIEW_HR_MANAGER_DASHBOARD]);
-        Permission::firstOrCreate(['guard_name' => GuardType::EMPLOYEE->value, 'name' => UserPermission::VIEW_ALL_APPLICANTS]);
-        Permission::firstOrCreate(['guard_name' => GuardType::EMPLOYEE->value, 'name' => UserPermission::VIEW_ALL_EMPLOYEES]);
-        Permission::firstOrCreate(['guard_name' => GuardType::EMPLOYEE->value, 'name' => UserPermission::VIEW_ALL_ATTENDANCE]);
-        Permission::firstOrCreate(['guard_name' => GuardType::EMPLOYEE->value, 'name' => UserPermission::VIEW_ALL_LEAVES]);
-        Permission::firstOrCreate(['guard_name' => GuardType::EMPLOYEE->value, 'name' => UserPermission::VIEW_ALL_OVERTIME]);
-        Permission::firstOrCreate(['guard_name' => GuardType::EMPLOYEE->value, 'name' => UserPermission::VIEW_ALL_PAYSLIPS]);
-        Permission::firstOrCreate(['guard_name' => GuardType::EMPLOYEE->value, 'name' => UserPermission::VIEW_ALL_PERFORMANCE]);
-        Permission::firstOrCreate(['guard_name' => GuardType::EMPLOYEE->value, 'name' => UserPermission::VIEW_ALL_RELATIONS]);
-        Permission::firstOrCreate(['guard_name' => GuardType::EMPLOYEE->value, 'name' => UserPermission::VIEW_MATRIX_PROJECTOR]);
-        Permission::firstOrCreate(['guard_name' => GuardType::EMPLOYEE->value, 'name' => UserPermission::VIEW_TALENT_EVALUATOR]);
-        Permission::firstOrCreate(['guard_name' => GuardType::EMPLOYEE->value, 'name' => UserPermission::VIEW_PLAN_GENERATOR]);
+                /**
+                 * create permissions goes here
+                 */ 
+                UserPermission::CREATE_JOB_LISTING,
+                UserPermission::CREATE_ANNOUNCEMENT,
+                UserPermission::CREATE_EMPLOYEE_ACCOUNT,
+                UserPermission::CREATE_BULK_EMPLOYEE_ACCOUNT,
 
-        // update permissions goes here
-        Permission::firstOrCreate(['guard_name' => GuardType::EMPLOYEE->value, 'name' => UserPermission::UDPATE_JOB_LISTING]);
-        Permission::firstOrCreate(['guard_name' => GuardType::EMPLOYEE->value, 'name' => UserPermission::UPDATE_ANNOUNCEMENT]);
+                /**
+                 * view permissions goes here
+                 */ 
+                UserPermission::VIEW_APPLICANT_INFORMATION,
+                UserPermission::VIEW_EMPLOYEE_INFORMATION,
+                UserPermission::VIEW_EMPLOYEE_DASHBOARD,
+                UserPermission::VIEW_HR_MANAGER_DASHBOARD,
+                UserPermission::VIEW_ALL_APPLICANTS,
+                UserPermission::VIEW_ALL_EMPLOYEES,
+                UserPermission::VIEW_ALL_ATTENDANCE,
+                UserPermission::VIEW_ALL_LEAVES,
+                UserPermission::VIEW_ALL_OVERTIME,
+                UserPermission::VIEW_ALL_PAYSLIPS,
+                UserPermission::VIEW_ALL_PERFORMANCE,
+                UserPermission::VIEW_ALL_RELATIONS,
+                UserPermission::VIEW_MATRIX_PROJECTOR,
+                UserPermission::VIEW_TALENT_EVALUATOR,
+                UserPermission::VIEW_PLAN_GENERATOR,
+                UserPermission::VIEW_CALENDAR_MANAGER,
+                UserPermission::VIEW_ACCOUNT_MANAGER,
+                UserPermission::VIEW_EMPLOYEE_MANAGER,
+                UserPermission::VIEW_JOB_LISTING_MANAGER,
+                UserPermission::VIEW_POLICY_MANAGER,
+                UserPermission::VIEW_ANNOUNCEMENT_MANAGER,
+                UserPermission::VIEW_PERFORMANCE_CONFIG,
+                UserPermission::VIEW_FORM_CONFIG,
 
-        // delete permissions here
-        Permission::firstOrCreate(['guard_name' => GuardType::EMPLOYEE->value, 'name' => UserPermission::DELETE_JOB_LISTING]);
-        Permission::firstOrCreate(['guard_name' => GuardType::EMPLOYEE->value, 'name' => UserPermission::DELETE_ANNOUNCEMENT]);
+                /**
+                 * update permissions goes here
+                 */ 
+                UserPermission::UDPATE_JOB_LISTING,
+                UserPermission::UPDATE_ANNOUNCEMENT,
 
-        /*
-         * Using admin guard
-         */
+                /**
+                 * delete permissions goes here
+                 */ 
+                UserPermission::DELETE_JOB_LISTING,
+                UserPermission::DELETE_ANNOUNCEMENT,
+            ],
 
-        // create permissions goes here
-        Permission::firstOrCreate(['guard_name' => GuardType::ADMIN->value, 'name' => UserPermission::CREATE_JOB_LISTING]);
-        Permission::firstOrCreate(['guard_name' => GuardType::ADMIN->value, 'name' => UserPermission::CREATE_ANNOUNCEMENT]);
-        Permission::firstOrCreate(['guard_name' => GuardType::ADMIN->value, 'name' => UserPermission::CREATE_EMPLOYEE_ACCOUNT]);
-        Permission::firstOrCreate(['guard_name' => GuardType::ADMIN->value, 'name' => UserPermission::CREATE_BULK_EMPLOYEE_ACCOUNT]);
+            /*
+            * Using admin guard
+            */
+            GuardType::ADMIN->value => [
+                
+                /**
+                 * create permissions goes here
+                 */
+                UserPermission::CREATE_JOB_LISTING,
+                UserPermission::CREATE_ANNOUNCEMENT,
+                UserPermission::CREATE_EMPLOYEE_ACCOUNT,
+                UserPermission::CREATE_BULK_EMPLOYEE_ACCOUNT,
 
-        // view permissions goes here
-        Permission::firstOrCreate(['guard_name' => GuardType::ADMIN->value, 'name' => UserPermission::VIEW_ADMIN_DASHBOARD]);
-        Permission::firstOrCreate(['guard_name' => GuardType::ADMIN->value, 'name' => UserPermission::VIEW_CALENDAR_MANAGEMENT]);
+                /**
+                 * view permissions goes here
+                 */
+                UserPermission::VIEW_ADMIN_DASHBOARD,
+                UserPermission::VIEW_CALENDAR_MANAGER,
+                UserPermission::VIEW_ACCOUNT_MANAGER,
+                UserPermission::VIEW_EMPLOYEE_MANAGER,
+                UserPermission::VIEW_JOB_LISTING_MANAGER,
+                UserPermission::VIEW_POLICY_MANAGER,
+                UserPermission::VIEW_ANNOUNCEMENT_MANAGER,
+                UserPermission::VIEW_PERFORMANCE_CONFIG,
+                UserPermission::VIEW_FORM_CONFIG,
 
-        // update permissions goes here
-        Permission::firstOrCreate(['guard_name' => GuardType::ADMIN->value, 'name' => UserPermission::UDPATE_JOB_LISTING]);
-        Permission::firstOrCreate(['guard_name' => GuardType::ADMIN->value, 'name' => UserPermission::UPDATE_ANNOUNCEMENT]);
+                /**
+                 * update permissions goes here
+                 */
+                UserPermission::UDPATE_JOB_LISTING,
+                UserPermission::UPDATE_ANNOUNCEMENT,
 
-        // delete permissions here
-        Permission::firstOrCreate(['guard_name' => GuardType::ADMIN->value, 'name' => UserPermission::DELETE_JOB_LISTING]);
-        Permission::firstOrCreate(['guard_name' => GuardType::ADMIN->value, 'name' => UserPermission::DELETE_ANNOUNCEMENT]);
+                /**
+                 * delete permissions goes here
+                 */
+                UserPermission::DELETE_JOB_LISTING,
+                UserPermission::DELETE_ANNOUNCEMENT,
+            ],
+        ];
 
-        app()[PermissionRegistrar::class]->forgetCachedPermissions();
+        foreach($permissions as $guard => $permission_list) {
+            foreach($permission_list as $permission) {
+                Permission::firstOrCreate(['guard_name' => $guard, 'name' => $permission]);
+            }
+        } 
 
         /*
          * Define user roles with default permissions here using backed enums in Roles
          */
+        Role::create(['guard_name' => GuardType::EMPLOYEE->value, 'name' => UserRole::BASIC]);
+        Role::create(['guard_name' => GuardType::EMPLOYEE->value, 'name' => UserRole::INTERMEDIATE]);
+        Role::create(['guard_name' => GuardType::ADMIN->value, 'name' => UserRole::ADVANCED]);
 
-        // basic level permissions goes here
-        $basic = Role::create(['name' => UserRole::BASIC]);
-        $basic->givePermissionTo([
-            UserPermission::VIEW_APPLICANT_INFORMATION,
-            UserPermission::VIEW_EMPLOYEE_INFORMATION,
-        ]);
-
-        // intermediate level permissions goes here
-        $intermediate = Role::create(['guard_name' => GuardType::EMPLOYEE->value, 'name' => UserRole::INTERMEDIATE]);
-        $intermediate->givePermissionTo([
-            UserPermission::VIEW_APPLICANT_INFORMATION,
-            UserPermission::VIEW_EMPLOYEE_INFORMATION,
-            UserPermission::VIEW_EMPLOYEE_DASHBOARD,
-            UserPermission::CREATE_JOB_LISTING,
-            UserPermission::CREATE_ANNOUNCEMENT,
-        ]);
-
-        // advanced level permissions goes here
-        $advanced = Role::create(['guard_name' => GuardType::ADMIN->value, 'name' => UserRole::ADVANCED]);
-
-        // Select permissions for admin as admin role cannot have permission that is not in admin guard
-        $advance_permissions = Permission::where('guard_name', GuardType::ADMIN->value)->get();
-        $advanced->givePermissionTo($advance_permissions);
+        app()[PermissionRegistrar::class]->forgetCachedPermissions();
     }
 }
