@@ -1,7 +1,3 @@
-@php
-    $nonce = csp_nonce();
-@endphp
-
 @extends('components.layout.applicant.layout', ['description' => 'Guest Layout', 'nonce' => $nonce, 'main_content_class' => 'container'])
 
 @section('head')

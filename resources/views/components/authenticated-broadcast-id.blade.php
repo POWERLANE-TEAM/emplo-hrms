@@ -1,5 +1,5 @@
 @php
-    $nonce = csp_nonce();
+
     $use_guard = \App\Http\Helpers\ChooseGuard::getByRequest();
 @endphp
 

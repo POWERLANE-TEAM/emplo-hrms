@@ -1,8 +1,5 @@
 {{-- Code from larvel UI library --}}
 
-@php
-    $nonce = csp_nonce();
-@endphp
 
 @extends('layout.guest-secondary', ['description' => 'Veryfting email', 'nonce' => $nonce])
 
