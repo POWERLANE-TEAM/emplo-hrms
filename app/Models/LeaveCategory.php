@@ -17,13 +17,11 @@ class LeaveCategory extends Model
         'leave_desc',
     ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | Define model relationships below
-    |--------------------------------------------------------------------------
-    */
-
-    // returns employee leaves under which category
+    /**
+     * Get the employee leave records associated with the leave category
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function leaves(): HasMany
     {
         return $this->hasMany(EmployeeLeave::class, 'leave_id', 'leave_id');

@@ -18,19 +18,21 @@ class InitialInterview extends Model
         'updated_at',
     ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | Define model relationships below
-    |--------------------------------------------------------------------------
-    */
-
-    // returns application for the initial interview
+    /**
+     * Get the job application that owns the initial interview.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function application(): BelongsTo
     {
         return $this->belongsTo(Application::class, 'application_id', 'application_id');
     }
 
-    // returns the employee/initial interviewer for the initial interview
+    /**
+     * Get the employee who is the interviewer of the initial interview.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function interviewer(): BelongsTo
     {
         return $this->belongsTo(Employee::class, 'init_interviewer', 'employee_id');

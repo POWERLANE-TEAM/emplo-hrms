@@ -18,12 +18,11 @@ class Shift extends Model
         'end_time',
     ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | Define model relationships below
-    |--------------------------------------------------------------------------
-    */
-
+    /**
+     * Get the employees associated with the shift schedule.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function employees(): HasMany
     {
         return $this->hasMany(Employee::class, 'shift_id', 'shift_id');

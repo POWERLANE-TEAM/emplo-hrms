@@ -17,7 +17,11 @@ class SoftSkill extends Model
         'soft_skill_desc',
     ];
 
-    // returns job titles of a soft skill
+    /**
+     * The job titles that belong to the soft skill.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function jobTitles(): BelongsToMany
     {
         return $this->belongsToMany(JobTitle::class, 'job_soft_skills', 'job_title_id', 'soft_skill_id')

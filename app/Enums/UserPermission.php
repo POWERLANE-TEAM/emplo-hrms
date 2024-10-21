@@ -4,20 +4,20 @@ namespace App\Enums;
 
 enum UserPermission: string
 {
-        /*
+    /*
      * Set enum cases for permissions here and ensure to follow the laravel
      * resource authorization convention: create, view, update, and delete
      *
      * Format: VERB_RESOURCE_NAME = verb resource name
     */
 
-        // Create cases goes here
+    // Create cases goes here
     case CREATE_JOB_LISTING = 'create job listing';
     case CREATE_ANNOUNCEMENT = 'create announcement';
     case CREATE_EMPLOYEE_ACCOUNT = 'create employee account';
     case CREATE_BULK_EMPLOYEE_ACCOUNT = 'create bulk employee accounts';
 
-        // View cases goes here
+    // View cases goes here
     case VIEW_APPLICANT_INFORMATION = 'view applicant information';
     case VIEW_EMPLOYEE_INFORMATION = 'view employee information';
     case VIEW_EMPLOYEE_DASHBOARD = 'view employee dashboard';
@@ -43,15 +43,19 @@ enum UserPermission: string
     case VIEW_ADMIN_DASHBOARD = 'view admin dashboard';
     case VIEW_CALENDAR_MANAGEMENT = 'view calendar management';
 
-        // Update cases goes here
+    // Update cases goes here
     case UDPATE_JOB_LISTING = 'update job listing';
     case UPDATE_ANNOUNCEMENT = 'update announcement';
 
-        // Delete cases goes here
+    // Delete cases goes here
     case DELETE_JOB_LISTING = 'delete job listing';
     case DELETE_ANNOUNCEMENT = 'delete announcement';
 
-    // displays user-friendly permission names in blade templates
+    /**
+     * Return user-friendly permission labels.
+     * 
+     * @return string
+     */
     public function label(): string
     {
         return match ($this) {

@@ -18,6 +18,11 @@ class Guest extends Model
         'updated_at',
     ];
 
+    /**
+     * Get the account associated with the guest.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+     */
     public function account(): MorphOne
     {
         return $this->morphOne(User::class, 'account');

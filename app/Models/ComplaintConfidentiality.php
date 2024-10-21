@@ -17,6 +17,11 @@ class ComplaintConfidentiality extends Model
         'confidentiality_desc',
     ];
 
+    /**
+     * Get the employee complaints associated with the confidentiality preference.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function complaints(): HasMany
     {
         return $this->hasMany(EmployeeComplaint::class, 'confidentiality_id', 'confidentiality_id');

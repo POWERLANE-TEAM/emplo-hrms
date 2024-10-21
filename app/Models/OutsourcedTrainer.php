@@ -19,23 +19,32 @@ class OutsourcedTrainer extends Model
         'updated_at',
     ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | Define model relationships below
-    |--------------------------------------------------------------------------
-    */
-
+    /**
+     * Get the trainings associated with the outsourced trainer.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
     public function trainings(): MorphMany
     {
         return $this->morphMany(Training::class, 'trainer');
     }
 
+    /**
+     * Get the comments associated with the outsourced trainer.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
     public function comments(): MorphMany
     {
         return $this->morphMany(Training::class, 'comment');
     }
 
-    public function providers(): BelongsTo
+    /**
+     * Get the training provider the outsourced trainer belongs to.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function provider(): BelongsTo
     {
         return $this->belongsTo(TrainingProvider::class, 'training_provider', 'training_provider_id');
     }

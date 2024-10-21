@@ -16,12 +16,11 @@ class TrainingProvider extends Model
         'training_provider_name',
     ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | Define model relationships below
-    |--------------------------------------------------------------------------
-    */
-
+    /**
+     * Get the outsourced trainers associated with the training provider.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function outsourcedTrainers(): HasMany
     {
         return $this->hasMany(OutsourcedTrainer::class, 'training_provider', 'training_provider_id');
