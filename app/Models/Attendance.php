@@ -16,7 +16,12 @@ class Attendance extends Model
         'attendance_id',
     ];
 
-    public function employees(): BelongsTo
+    /**
+     * Get the employee that owns the attendance record.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function employee(): BelongsTo
     {
         return $this->belongsTo(Employee::class, 'employee_id', 'employee_id');
     }

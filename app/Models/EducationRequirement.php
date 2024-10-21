@@ -17,6 +17,11 @@ class EducationRequirement extends Model
         'study_field',
     ];
 
+    /**
+     * The job titles that belong to the education requirement.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function jobTitles(): BelongsToMany
     {
         return $this->belongsToMany(JobTitle::class, 'job_education_requirements', 'job_title_id', 'education_req_id')

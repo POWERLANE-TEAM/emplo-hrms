@@ -61,17 +61,21 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Define model relationships below
-    |--------------------------------------------------------------------------
-    */
-
+    /**
+     * Get the parent model (Guest, Applicant, or Employee) that the account belongs to.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     */
     public function account(): MorphTo
     {
         return $this->morphTo();
     }
 
+    /**
+     * Get the user status of the user.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function status(): BelongsTo
     {
         return $this->belongsTo(UserStatus::class, 'user_status_id', 'user_status_id');

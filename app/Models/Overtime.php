@@ -19,17 +19,21 @@ class Overtime extends Model
         'updated_at',
     ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | Define model relationships below
-    |--------------------------------------------------------------------------
-    */
-
+    /**
+     * Get the employee that owns the overtime records.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function employee(): BelongsTo
     {
         return $this->belongsTo(Employee::class, 'employee_id', 'employee_id');
     }
 
+    /**
+     * Get all of the overtime records' processes.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
     public function processes(): MorphMany
     {
         return $this->morphMany(Process::class, 'processable');

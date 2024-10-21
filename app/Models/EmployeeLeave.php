@@ -19,24 +19,31 @@ class EmployeeLeave extends Model
         'updated_at',
     ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | Define model relationships below
-    |--------------------------------------------------------------------------
-    */
-
-    // returns the employee's leave category/type
+    /**
+     * Get the leave name/category of the leave record.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function category(): BelongsTo
     {
         return $this->belongsTo(LeaveCategory::class, 'leave_id', 'leave_id');
     }
 
-    // returns employee who submitted the leave
+    /**
+     * Get the employee that owns the leave record.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function employee(): BelongsTo
     {
         return $this->belongsTo(Employee::class, 'employee_id', 'employee_id');
     }
 
+    /**
+     * Get all of the leave records' processes.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
     public function processes(): MorphMany
     {
         return $this->morphMany(Process::class, 'processable');
