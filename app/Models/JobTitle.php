@@ -21,8 +21,6 @@ class JobTitle extends Model
 
     /**
      * Get the department that owns the job title.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function department(): BelongsTo
     {
@@ -31,8 +29,6 @@ class JobTitle extends Model
 
     /**
      * The job levels that belong to the job title.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function jobLevels(): BelongsToMany
     {
@@ -42,8 +38,6 @@ class JobTitle extends Model
 
     /**
      * The job families that belong to the job title.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function jobFamilies(): BelongsToMany
     {
@@ -53,8 +47,6 @@ class JobTitle extends Model
 
     /**
      * The specific areas that belong to the job title.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function specificAreas(): BelongsToMany
     {
@@ -64,8 +56,6 @@ class JobTitle extends Model
 
     /**
      * The soft skills that belong to the job title.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function softSkills(): BelongsToMany
     {
@@ -75,8 +65,6 @@ class JobTitle extends Model
 
     /**
      * The hard skills that belong to the job title.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function hardSkills(): BelongsToMany
     {
@@ -86,8 +74,6 @@ class JobTitle extends Model
 
     /**
      * The education requirements that belong to the job title.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function educationRequirements(): BelongsToMany
     {
@@ -97,8 +83,6 @@ class JobTitle extends Model
 
     /**
      * The experience requirements that belong to the job title.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function experienceRequirements(): BelongsToMany
     {

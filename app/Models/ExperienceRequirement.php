@@ -20,8 +20,6 @@ class ExperienceRequirement extends Model
 
     /**
      * The job tites that belong to the experience requirement.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function jobTitles(): BelongsToMany
     {

@@ -16,8 +16,6 @@ class JobDetail extends Model
 
     /**
      * Get the job vacancies associated with the job detail.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function vacancies(): HasMany
     {

@@ -20,8 +20,6 @@ class JobLevel extends Model
 
     /**
      * The job titles that belong to the job level.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function jobTitles(): BelongsToMany
     {
@@ -31,8 +29,6 @@ class JobLevel extends Model
 
     /**
      * The job families that belong to the job level.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function jobFamilies(): BelongsToMany
     {
@@ -42,9 +38,8 @@ class JobLevel extends Model
 
     /**
      * The specific areas that belong to the job level.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */    public function specificAreas(): BelongsToMany
+     */
+    public function specificAreas(): BelongsToMany
     {
         return $this->belongsToMany(SpecificArea::class, 'job_details', 'job_level_id', 'area_id')
             ->withTimestamps();

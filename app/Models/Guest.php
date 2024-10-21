@@ -20,8 +20,6 @@ class Guest extends Model
 
     /**
      * Get the account associated with the guest.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
      */
     public function account(): MorphOne
     {

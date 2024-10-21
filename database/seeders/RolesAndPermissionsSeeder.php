@@ -28,7 +28,6 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // create permissions goes here
 
-
         // view permissions goes here
         Permission::firstOrCreate(['name' => UserPermission::VIEW_APPLICANT_INFORMATION]);
         Permission::firstOrCreate(['name' => UserPermission::VIEW_EMPLOYEE_INFORMATION]);

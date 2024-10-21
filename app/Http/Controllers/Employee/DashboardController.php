@@ -14,7 +14,7 @@ class DashboardController extends Controller
     {
         $guard = Auth::guard('employee');
 
-        $authenticated_user = Cache::flexible('user_' . $guard->id(), [30, 60], function () use ($guard) {
+        $authenticated_user = Cache::flexible('user_'.$guard->id(), [30, 60], function () use ($guard) {
             return User::where('user_id', $guard->id())
                 ->with(['roles', 'account'])
                 ->get()
@@ -23,11 +23,11 @@ class DashboardController extends Controller
 
         $dashboard = match (true) {
             $authenticated_user->hasRole(UserRole::INTERMEDIATE->value) => 'employee.hr-manager.index',
-                // HR
+            // HR
 
-                // Superviser
+            // Superviser
 
-                // Employee
+            // Employee
 
             default => '',
         };
