@@ -18,6 +18,11 @@ class ExperienceRequirement extends Model
         'exp_desc',
     ];
 
+    /**
+     * The job tites that belong to the experience requirement.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function jobTitles(): BelongsToMany
     {
         return $this->belongsToMany(JobTitle::class, 'job_experience_requirements', 'job_title_id', 'experience_req_id')

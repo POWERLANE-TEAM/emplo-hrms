@@ -14,13 +14,11 @@ class JobDetail extends Model
 
     protected $fillable = [];
 
-    /*
-    |--------------------------------------------------------------------------
-    | Define model relationships below
-    |--------------------------------------------------------------------------
-    */
-
-    // returns job vacancies of the job detail
+    /**
+     * Get the job vacancies associated with the job detail.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function vacancies(): HasMany
     {
         return $this->hasMany(JobVacancy::class, 'job_detail_id', 'job_detail_id');

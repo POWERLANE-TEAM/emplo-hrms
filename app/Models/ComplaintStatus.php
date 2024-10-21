@@ -17,6 +17,11 @@ class ComplaintStatus extends Model
         'complaint_status_desc',
     ];
 
+    /**
+     * Get the employee complaints associated with the complaint status.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function complaints(): HasMany
     {
         return $this->hasMany(EmployeeComplaint::class, 'complaint_status_id', 'complaint_status_id');

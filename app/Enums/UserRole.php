@@ -8,7 +8,11 @@ enum UserRole: string
     case INTERMEDIATE = 'intermediate';
     case ADVANCED = 'advanced';
 
-    // displays user-friendly role names in blade templates
+    /**
+     * Return user-friendly role labels.
+     * 
+     * @return string
+     */
     public function label(): string
     {
         return match ($this) {

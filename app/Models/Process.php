@@ -19,32 +19,45 @@ class Process extends Model
 
     /*
     |--------------------------------------------------------------------------
-    | Define model relationships below
+    | Processes: Overtime requests, Employee leaves
     |--------------------------------------------------------------------------
-    |
-    | Processes: Overtime requests, performance evaluations, employee leaves
-    |
     */
 
-    // returns supervisor who approved/signed the process
+    /**
+     * Get the Supervisor who approved/signed the process(e.g.: overtime, leave)
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function supervisor(): BelongsTo
     {
         return $this->belongsTo(Employee::class, 'supervisor', 'employee_id');
     }
 
-    // returns area manager who approved/signed the process
+    /**
+     * Get the Area Manager who approved/signed the process(e.g.: overtime, leave)
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function areaManager(): BelongsTo
     {
         return $this->belongsTo(Employee::class, 'area_manager', 'employee_id');
     }
 
-    // returns hr manager who approved/signed the process
+    /**
+     * Get the HR Manager who approved/signed the process(e.g.: overtime, leave)
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function hrManager(): BelongsTo
     {
         return $this->belongsTo(Employee::class, 'hr_manager', 'employee_id');
     }
 
-    // returns which type of process
+    /**
+     * Get the parent model (Overtime or Leave) that the process belongs to.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     */
     public function processable(): MorphTo
     {
         return $this->morphTo();

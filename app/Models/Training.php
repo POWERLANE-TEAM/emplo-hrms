@@ -19,29 +19,41 @@ class Training extends Model
         'updated_at',
     ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | Define model relationships below
-    |--------------------------------------------------------------------------
-    */
-
-    // returns trainer that may be employee or outsourced
+    /**
+     * Get the parent model (Employee or OutsourcedTrainer) that the training record belongs to.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     */
     public function trainer(): MorphTo
     {
         return $this->morphTo();
     }
 
-    // returns comment that may belong to employee or outsourced trainer
+    /**
+     * Get the parent model (Employee or OutsourcedTrainer) that the training record belongs to.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     */
     public function comment(): MorphTo
     {
         return $this->morphTo();
     }
 
+    /**
+     * Get the employee who is the HR personnel that prepared the training record.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function preparedBy(): BelongsTo
     {
         return $this->belongsTo(Employee::class, 'prepared_by', 'employee_id');
     }
 
+    /**
+     * Get the employee — most likely the HR Manager — who reviewed and approved the training record.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function reviewedBy(): BelongsTo
     {
         return $this->belongsTo(Employee::class, 'reviewed_by', 'employee_id');
