@@ -56,9 +56,8 @@ document.addEventListener('livewire:init', () => {
 
 /* ----------------------------------------------------
   TODO:
-  1. Validate other form fields only if is touched
-  2. Track for unsaved or unfinished form
-  3. Reset form on confirmed discard signup (on modal dismiss)
+  1. Track for unsaved or unfinished form
+  2. Reset form on confirmed discard signup (on modal dismiss)
 ------------------------------------------------------- */
 
 togglePassword(`form[action='applicant/sign-up']`, `#signUp-password`, `#toggle-psw`);
@@ -203,17 +202,11 @@ lastNameValidator.initValidation(() => validateSignUpForm(sigUpFormString), sign
 
 const passwordValidator = new PasswordValidator(DEFAULT_PASSWORD_VALIDATION);
 
-console.log(`${sigUpFormString} input[name="consent"]`)
-
 const termsPrivacyValidator = new ConsentValidator(`${sigUpFormString} input[name="consent"]`,
     new InputValidator(TERMS_AND_PRIVACY_VALIDATION),
     signUpBool.consentAgreed,
     () => validateSignUpForm(sigUpFormString)
 );
-
-// const signUpConsentEvent = new GlobalListener('input', document, `${sigUpFormString} input[name="consent"]`, function (event) {
-//     validateSignUpForm(sigUpFormString);
-// });
 
 function validateSignUpForm(sigUpFormString = `form[action='applicant/sign-up']`) {
     const stack = new Error().stack;
@@ -248,10 +241,6 @@ function validateSignUpForm(sigUpFormString = `form[action='applicant/sign-up']`
         signUpBool.isPasswordMatch = validateConfirmPassword(`${sigUpFormString} input[name="password_confirmation"]`);
     }
 
-    // console.log(sigUpFormString)
-    console.log(signUpBool)
-    // console.log(consentAgreed)
-    // console.log(isWeakPassword)
     if (!signUpBool.isValidEmail || !signUpBool.isValidPassword || !signUpBool.isValidFirstName || !signUpBool.isValidMiddleName || !signUpBool.isValidLastName) {
         signUpBtn.disabled = true;
     } else
@@ -297,9 +286,5 @@ const signUpEvent = new GlobalListener('click', document, `${sigUpFormString} ${
     END: CHECK SIGNUP FORM
 ------------------------------------------------------- */
 
-// console.log(document.querySelector(`form[action='applicant/sign-up'] #signUpBtn`))
-
-
-// $("#form_id").trigger("reset");
 
 

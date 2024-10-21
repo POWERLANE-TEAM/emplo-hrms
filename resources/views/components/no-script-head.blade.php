@@ -1,7 +1,3 @@
-@php
-    $nonce = csp_nonce();
-@endphp
-
 <noscript>
-    {{--  --}}
+    {{-- Insert external links and resources --}}
 </noscript>

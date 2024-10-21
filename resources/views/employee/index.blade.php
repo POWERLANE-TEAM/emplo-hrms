@@ -1,7 +1,3 @@
-@php
-    $nonce = csp_nonce();
-@endphp
-
 @extends('layout.employee', ['description' => 'Employee Dashboard', 'nonce' => $nonce])
 
 @section('head')

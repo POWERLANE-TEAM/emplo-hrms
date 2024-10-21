@@ -3,16 +3,12 @@
 namespace App\Providers;
 
 use App\Enums\UserRole;
-use App\Http\Helpers\ChooseGuard;
-use App\Models\User;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Broadcasting\BroadcastServiceProvider;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
@@ -24,7 +20,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        /**
+         * Includes similar data without repeating code.
+         */
+        $this->app->register(ComposerServiceProvider::class);
     }
 
     /**
@@ -83,22 +82,5 @@ class AppServiceProvider extends ServiceProvider
         // Gate::before(function ($user, $ability) {
         //     return $user->hasRole(UserRole::ADVANCED) ? true : null;
         // });
-
-        View::composer('*', function ($view) {
-
-            if (Auth::guard(ChooseGuard::getByRequest())->check()) {
-                $authenticated_user = Auth::guard(ChooseGuard::getByRequest())->user();
-                $user = User::where('user_id', $authenticated_user->user_id)
-                    ->with('roles')
-                    ->first();
-
-                $role_name = $user->roles->pluck('name')->first();
-
-                $view->with([
-                    'role_name' => $role_name,
-                    'user' => $user,
-                ]);
-            }
-        });
     }
 }

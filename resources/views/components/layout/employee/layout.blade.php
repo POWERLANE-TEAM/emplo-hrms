@@ -1,13 +1,8 @@
-@php
-    $nonce = csp_nonce();
-@endphp
-
 @props([
     'no_crawl' => false,
     'description' => '',
     'main_cont_class' => '',
     'font_weights' => [' 400 ', '500', '700'],
-    'user' => $user,
 ])
 
 <!DOCTYPE html>
@@ -68,8 +63,8 @@
     @yield('before-nav')
 
     @if (!View::hasSection('header-nav'))
-        <x-layout.employee.nav.main-menu :sidebar_expanded="true"
-            class="position-sticky top-0 start-0"></x-layout.employee.nav.main-menu>
+        <x-layout.employee.nav.main-menu :sidebar_expanded="true" class="position-sticky top-0 start-0"
+            :user="$user"></x-layout.employee.nav.main-menu>
     @else
         @yield('header-nav')
     @endif

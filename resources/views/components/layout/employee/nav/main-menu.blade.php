@@ -1,5 +1,5 @@
 @use('\App\Enums\UserRole', 'EnumsUserRole')
-@props(['sidebar_expanded' => true, 'icon_size' => '25', 'icon_ratio' => '1/1'])
+@props(['sidebar_expanded' => true, 'icon_size' => '25', 'icon_ratio' => '1/1', 'user'])
 
 <div {{ $attributes->merge(['class' => 'container-fluid main-menu-container text-white']) }}>
     <x-layout.employee.nav.sidebar sidebar_expanded="{{ $sidebar_expanded }}" class="shadow"
