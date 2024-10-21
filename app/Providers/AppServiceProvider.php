@@ -20,7 +20,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        /**
+         * Includes similar data without repeating code.
+         */
+        $this->app->register(ComposerServiceProvider::class);
     }
 
     /**
@@ -79,8 +82,5 @@ class AppServiceProvider extends ServiceProvider
         // Gate::before(function ($user, $ability) {
         //     return $user->hasRole(UserRole::ADVANCED) ? true : null;
         // });
-
-        // Includes similar data across views without repeating code
-        ComposerServiceProvider::class;
     }
 }
