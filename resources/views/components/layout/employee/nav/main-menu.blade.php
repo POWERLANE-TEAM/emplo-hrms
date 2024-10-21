@@ -7,7 +7,7 @@
 
         @include('components.layout.employee.nav.sidebar.employee-navs')
 
-        @include('components.layout.employee.nav.sidebar.head-admin-navs')
+        @include('components.layout.employee.nav.sidebar.admin-navs')
 
     </x-layout.employee.nav.sidebar>
     <x-layout.employee.nav.topbar class="">
