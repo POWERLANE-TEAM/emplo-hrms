@@ -20,31 +20,41 @@ class Applicant extends Model
         'updated_at',
     ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | Define model relationships below
-    |--------------------------------------------------------------------------
-    */
-
-    // returns the account of applicant
+    /**
+     * Get the account associated with the applicant.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+     */
     public function account(): MorphOne
     {
         return $this->morphOne(User::class, 'account');
     }
 
-    // returns the job application of applicant
+    /**
+     * Get the job application associated with the applicant.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function application(): HasOne
     {
         return $this->hasOne(Application::class, 'applicant_id', 'applicant_id');
     }
 
-    // returns applicants's permanent barangay address
+    /**
+     * Get the permanent barangay of the applicant.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function permanentBarangay(): BelongsTo
     {
         return $this->belongsTo(Barangay::class, 'permanent_barangay', 'barangay_code');
     }
 
-    // returns applicant's present barangay address
+    /**
+     * Get the present barangay of the applicant.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function presentBarangay(): BelongsTo
     {
         return $this->belongsTo(Barangay::class, 'present_barangay', 'barangay_code');
