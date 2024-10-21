@@ -3,13 +3,10 @@
 namespace Database\Seeders;
 
 use App\Enums\AccountType;
-use App\Enums\UserPermission;
-use App\Enums\UserRole;
 use App\Models\Applicant;
 use App\Models\Application;
 use App\Models\ApplicationStatus;
 use App\Models\Department;
-use App\Models\Employee;
 use App\Models\EmploymentStatus;
 use App\Models\JobDetail;
 use App\Models\JobFamily;
@@ -18,7 +15,6 @@ use App\Models\JobVacancy;
 use App\Models\SpecificArea;
 use App\Models\User;
 use Illuminate\Database\Seeder;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\PermissionRegistrar;
 
@@ -54,20 +50,9 @@ class DatabaseSeeder extends Seeder
 
         JobDetail::factory(rand(5, 20))->create();
 
-        User::factory()
-            ->count(10)
-            ->create()
-            ->each(function ($user) {
-                $user->assignRole(UserRole::BASIC);
-                $user->givePermissionTo([
-                    UserPermission::VIEW_APPLICANT_INFORMATION,
-                    UserPermission::VIEW_EMPLOYEE_INFORMATION,
-                ]);
-            });
-
         $applicant = Applicant::factory()->create();
 
-        $applicant_user = User::factory()->create([
+        User::factory()->create([
             'account_type' => AccountType::APPLICANT,
             'account_id' => $applicant->applicant_id,
             'email' => 'applicant.001@gmail.com',
@@ -75,8 +60,6 @@ class DatabaseSeeder extends Seeder
             'user_status_id' => 1,
             'email_verified_at' => fake()->dateTimeBetween('-10 days', 'now'),
         ]);
-
-        $applicant_user->assignRole(UserRole::BASIC);
 
         $this->call(HRManagerSeeder::class);
 
