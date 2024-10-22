@@ -21,6 +21,16 @@ class Applicant extends Model
     ];
 
     /**
+     * Get the applicant's full name.
+     * 
+     * @return string
+     */
+    public function getFullNameAttribute()
+    {
+        return ucwords("{$this->first_name} {$this->middle_name} {$this->last_name}");
+    }
+
+    /**
      * Get the account associated with the applicant.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\MorphOne
