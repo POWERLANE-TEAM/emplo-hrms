@@ -14,39 +14,39 @@ Route::middleware('auth:admin')->group(function () {
     Route::get('dashboard', DashboardController::class)
         ->name('dashboard');
 
-    Route::get('system/pulse', function() {
+    Route::get('system/pulse', function () {
         return view('vendor.pulse.dashboard');
     })->name('system.pulse');
 
-    Route::get('accounts', function() {
+    Route::get('accounts', function () {
         abort(404);
     })->name('accounts');
 
-    Route::get('employees', function() {
+    Route::get('employees', function () {
         abort(404);
     })->name('employees');
 
-    Route::get('calendar', function() {
+    Route::get('calendar', function () {
         abort(404);
     })->name('calendar');
 
-    Route::get('job-listing', function() {
+    Route::get('job-listing', function () {
         abort(404);
     })->name('job-listing');
 
-    Route::get('policy', function() {
+    Route::get('policy', function () {
         abort(404);
     })->name('policy');
 
-    Route::get('announcement', function() {
+    Route::get('announcement', function () {
         abort(404);
     })->name('announcement');
 
-    Route::get('performance', function() {
+    Route::get('performance', function () {
         abort(404);
     })->name('performance');
 
-    Route::get('form', function() {
+    Route::get('form', function () {
         abort(404);
     })->name('form');
 });

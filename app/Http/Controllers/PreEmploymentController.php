@@ -23,6 +23,7 @@ class PreEmploymentController extends Controller
         if ($isCopy) {
             return view('employee.pre-employment-copy');
         }
+
         return view('employee.pre-employment');
     }
 

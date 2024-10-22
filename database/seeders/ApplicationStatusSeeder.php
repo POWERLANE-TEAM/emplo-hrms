@@ -7,7 +7,6 @@ use App\Models\ApplicationStatus;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
-
 class ApplicationStatusSeeder extends Seeder
 {
     /**

@@ -19,8 +19,6 @@ class Department extends Model
 
     /**
      * Get the job titles associated with the department.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function jobTitles(): HasMany
     {

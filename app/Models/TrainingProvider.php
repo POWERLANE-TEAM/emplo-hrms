@@ -18,8 +18,6 @@ class TrainingProvider extends Model
 
     /**
      * Get the outsourced trainers associated with the training provider.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function outsourcedTrainers(): HasMany
     {

@@ -7,7 +7,6 @@ use Livewire\Component;
 
 class PreEmploymentPreview extends Component
 {
-
     public PreempRequirement $pre_employment_req;
 
     public function render()

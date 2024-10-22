@@ -2,10 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Enums\AccountType;
-use App\Models\Applicant;
 use App\Models\Application;
-use App\Models\ApplicationStatus;
 use App\Models\Department;
 use App\Models\EmploymentStatus;
 use App\Models\JobDetail;
@@ -13,9 +10,7 @@ use App\Models\JobFamily;
 use App\Models\JobLevel;
 use App\Models\JobVacancy;
 use App\Models\SpecificArea;
-use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\PermissionRegistrar;
 
 class DatabaseSeeder extends Seeder

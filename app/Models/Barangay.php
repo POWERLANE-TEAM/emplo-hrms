@@ -18,8 +18,6 @@ class Barangay extends Model
 
     /**
      * Get the employees who are permanent residents of the barangay.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function permanentEmployeeResidents(): HasMany
     {
@@ -28,8 +26,6 @@ class Barangay extends Model
 
     /**
      * Get the applicants who are permanent residents of the barangay.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function permanentApplicantResidents(): HasMany
     {
@@ -38,8 +34,6 @@ class Barangay extends Model
 
     /**
      * Get the employees who are present residents of the barangay.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function presentEmployeeResidents(): HasMany
     {
@@ -48,8 +42,6 @@ class Barangay extends Model
 
     /**
      * Get the applicants who are present residents of the barangay.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function presentApplicantResidents(): HasMany
     {

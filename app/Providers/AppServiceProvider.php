@@ -2,20 +2,19 @@
 
 namespace App\Providers;
 
-use App\Models\User;
 use App\Enums\UserRole;
-use Laravel\Pulse\Facades\Pulse;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Vite;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rules\Password;
+use App\Models\User;
 use Illuminate\Auth\Notifications\VerifyEmail;
-use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Broadcasting\BroadcastServiceProvider;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Vite;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Validation\Rules\Password;
+use Laravel\Pulse\Facades\Pulse;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -40,11 +39,11 @@ class AppServiceProvider extends ServiceProvider
 
             return
                 $rule->letters()
-                ->mixedCase()
-                ->numbers()
-                ->symbols()
-                ->uncompromised()
-                ->rules(['not_regex:/\s/']); // No spaces allowed
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols()
+                    ->uncompromised()
+                    ->rules(['not_regex:/\s/']); // No spaces allowed
         });
 
         Validator::extend('valid_email_dns', function ($attributes, $value, $parameters, $validator) {
@@ -66,10 +65,10 @@ class AppServiceProvider extends ServiceProvider
 
         /**
          * Store strings representing the models.
-         * 
-         * Instead of inserting import names of App\Models\ModelName in the column_type, we 
+         *
+         * Instead of inserting import names of App\Models\ModelName in the column_type, we
          * can store strings representing the model (e.g.: 'guest' => 'App\Models\Guest').
-         * 
+         *
          * @see https://laravel.com/docs/11.x/eloquent-relationships#custom-polymorphic-types
          */
         Relation::enforceMorphMap([
@@ -92,7 +91,7 @@ class AppServiceProvider extends ServiceProvider
          * - making requests
          * - experiencing slow endpoints
          * - dispatching jobs
-         * 
+         *
          * @see https://laravel.com/docs/11.x/pulse#dashboard-resolving-users
          */
         Pulse::user(fn ($user) => [
@@ -103,10 +102,10 @@ class AppServiceProvider extends ServiceProvider
 
         /**
          * This will only allow user with advanced role to access the pulse dashboard.
-         * 
+         *
          * @see https://laravel.com/docs/11.x/pulse#dashboard-authorization
          */
-        Gate::define('viewPulse', function(User $user) {
+        Gate::define('viewPulse', function (User $user) {
             return $user->hasRole(UserRole::ADVANCED);
         });
     }

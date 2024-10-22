@@ -19,8 +19,6 @@ class ApplicationExam extends Model
 
     /**
      * Get the examination's name/type.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function exam(): BelongsTo
     {
@@ -29,8 +27,6 @@ class ApplicationExam extends Model
 
     /**
      * Get the job application that owns the examination.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function application(): BelongsTo
     {
@@ -39,8 +35,6 @@ class ApplicationExam extends Model
 
     /**
      * Get the result associated with the examination.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function result(): HasOne
     {

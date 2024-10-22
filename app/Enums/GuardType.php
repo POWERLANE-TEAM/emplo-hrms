@@ -11,11 +11,9 @@ namespace App\Enums;
  */
 enum GuardType: string
 {
-
     case DEFAULT = 'web';
     case EMPLOYEE = AccountType::EMPLOYEE->value;
     case ADMIN = 'admin';
-
 
     /**
      * Displays user-friendly guard types in blade templates.

@@ -22,8 +22,6 @@ class JobVacancy extends Model
 
     /**
      * Get the job detail that owns the job vacancy.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function jobDetail(): BelongsTo
     {
@@ -32,8 +30,6 @@ class JobVacancy extends Model
 
     /**
      * Get the job applications associated with the job vacancy.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function applications(): HasMany
     {
@@ -42,8 +38,6 @@ class JobVacancy extends Model
 
     /**
      * Get the job title through the job detail.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasOneThrough
      */
     public function jobTitle(): HasOneThrough
     {

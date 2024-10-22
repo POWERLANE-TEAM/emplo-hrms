@@ -19,8 +19,6 @@ class EmploymentStatus extends Model
 
     /**
      * Get the employees associated with the employment status.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function employees(): HasMany
     {

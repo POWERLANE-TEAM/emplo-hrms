@@ -29,7 +29,6 @@ class RolesAndPermissionsSeeder extends Seeder
         // create permissions goes here
         Permission::firstOrCreate(['name' => UserPermission::CREATE_PRE_EMPLOYMENT_DOCUMENT]);
 
-
         // view permissions goes here
         Permission::firstOrCreate(['name' => UserPermission::VIEW_APPLICANT_INFORMATION]);
         Permission::firstOrCreate(['name' => UserPermission::VIEW_EMPLOYEE_INFORMATION]);
@@ -39,7 +38,6 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // delete permissions here
         Permission::firstOrCreate(['name' => UserPermission::DELETE_OWNED_PRE_EMPLOYMENT_DOCUMENT]);
-
 
         $permissions = [
 

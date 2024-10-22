@@ -21,8 +21,6 @@ class SpecificArea extends Model
 
     /**
      * Get the area manager of the specific area.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function areaManager(): BelongsTo
     {
@@ -31,8 +29,6 @@ class SpecificArea extends Model
 
     /**
      * The job titles that belong to the specific area.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function jobTitles(): BelongsToMany
     {
@@ -42,8 +38,6 @@ class SpecificArea extends Model
 
     /**
      * The job levels that belong to the specific area.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function jobLevels(): BelongsToMany
     {
@@ -53,8 +47,6 @@ class SpecificArea extends Model
 
     /**
      * The job families that belong to the specific area.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function jobFamilies(): BelongsToMany
     {

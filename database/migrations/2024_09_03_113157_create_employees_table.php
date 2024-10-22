@@ -1,13 +1,12 @@
 <?php
 
 use App\Models\Employee;
-use App\Models\JobDetail;
-use App\Models\Application;
-use App\Models\LeaveCategory;
 use App\Models\EmploymentStatus;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
+use App\Models\JobDetail;
+use App\Models\LeaveCategory;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -45,7 +44,7 @@ return new class extends Migration
                 ->references('barangay_code')->on('barangays')
                 ->onDelete('cascade');
 
-            $table->longText('permanent_address');         
+            $table->longText('permanent_address');
             $table->string('permanent_barangay', 10);
             $table->foreign('permanent_barangay')
                 ->references('barangay_code')->on('barangays')

@@ -10,8 +10,6 @@ enum ApplicationStatus: int
 
     /**
      * Return user-friendly application status labels.
-     *
-     * @return string
      */
     public function label(): string
     {

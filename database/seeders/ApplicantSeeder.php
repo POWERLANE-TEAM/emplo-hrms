@@ -4,21 +4,16 @@ namespace Database\Seeders;
 
 use App\Enums\AccountType;
 use App\Enums\ApplicationStatus;
-use App\Enums\GuardType;
 use App\Enums\UserPermission;
 use App\Enums\UserRole;
-use App\Models\Employee;
-use App\Models\User;
 use App\Enums\UserStatus as EnumUserStatus;
 use App\Models\Applicant;
 use App\Models\Application;
 use App\Models\JobVacancy;
-use Google\Service\AdMob\App;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 /**
@@ -26,7 +21,6 @@ use Spatie\Permission\Models\Role;
  */
 class ApplicantSeeder extends Seeder
 {
-
     const PRE_EMPLOYMENT_PERMISSIONS = [
         UserPermission::CREATE_PRE_EMPLOYMENT_DOCUMENT,
         UserPermission::UPDATE_OWNED_PRE_EMPLOYMENT_DOCUMENT,
