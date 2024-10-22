@@ -41,7 +41,15 @@ enum UserPermission: string
     case VIEW_TALENT_EVALUATOR = 'view talent evaluator';
     case VIEW_PLAN_GENERATOR = 'view plan generator';
     case VIEW_ADMIN_DASHBOARD = 'view admin dashboard';
-    case VIEW_CALENDAR_MANAGEMENT = 'view calendar management';
+    case VIEW_ACCOUNT_MANAGER = 'view account manager';
+    case VIEW_EMPLOYEE_MANAGER = 'view employee manager';
+    case VIEW_CALENDAR_MANAGER = 'view calendar manager';
+    case VIEW_JOB_LISTING_MANAGER = 'view job listing manager';
+    case VIEW_POLICY_MANAGER = 'view policies manager';
+    case VIEW_ANNOUNCEMENT_MANAGER = 'view announcement manager';
+    case VIEW_PERFORMANCE_CONFIG = 'view performance configurator';
+    case VIEW_FORM_CONFIG = 'view form configurator';
+
 
     // Update cases goes here
     case UDPATE_JOB_LISTING = 'update job listing';
@@ -90,7 +98,14 @@ enum UserPermission: string
             self::VIEW_TALENT_EVALUATOR => 'View talent evaluator',
             self::VIEW_PLAN_GENERATOR => 'View plan generator',
             self::VIEW_ADMIN_DASHBOARD => 'View admin dashboard',
-            self::VIEW_CALENDAR_MANAGEMENT => 'View calendar management',
+            self::VIEW_ACCOUNT_MANAGER => 'View account manager',
+            self::VIEW_EMPLOYEE_MANAGER => 'View employee manager',
+            self::VIEW_CALENDAR_MANAGER => 'View calendar manager',
+            self::VIEW_JOB_LISTING_MANAGER => 'View job listing manager',
+            self::VIEW_POLICY_MANAGER => 'View company policies manager',
+            self::VIEW_ANNOUNCEMENT_MANAGER => 'View announcement manager',
+            self::VIEW_PERFORMANCE_CONFIG => 'View performance configurator',
+            self::VIEW_FORM_CONFIG => 'View form configurator',
 
             // Update labels goes here
             self::UDPATE_JOB_LISTING => 'Update job listing/s',
