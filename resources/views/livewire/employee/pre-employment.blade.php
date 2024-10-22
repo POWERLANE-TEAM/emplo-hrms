@@ -49,11 +49,39 @@
         </thead>
         <tbody>
 
+
+
+            {{--
+            This component is inluded in
+            file://./../../employee/pre-employment.blade.php line:42
+
+                Livewire class
+                    file:///./../../../../app/Livewire/Employee/PreEmployment.php
+
+                BUG
+                1. Upload a file
+                2. Close modal preview (dont upload yet)
+                3. Scroll to bottom
+                4. Check that already queued file requirement will be lost
+
+                Removing {$loads}
+                1. Scroll to bottom
+                2. The livewire snapshot will be lost on already loaded preemployment requirements components
+
+                Components
+                    Livewire View
+                        file://./pre-employment-doc.blade.php
+                        file://./pre-employment-modal.blade.php
+
+            --}}
             @foreach ($pre_employment_reqs as $pre_employment_req)
                 @livewire('employee.pre-employment-doc', ['pre_employment_req' => $pre_employment_req], key("preemp_req-$pre_employment_req->preemp_req_id{$loads}"))
                 @livewire('employee.pre-employment-modal', ['pre_employment_req' => $pre_employment_req], key("preemp_req_modal-$pre_employment_req->preemp_req_id{$loads}"))
             @endforeach
 
+            {{--
+                A hidden element to triggeer to load more pre employment requirements when scrolled in to view
+            --}}
             <tr class="opacity-0" x-data="{ isVisible: true }" x-show="isVisible"
                 x-on:pre-employment-docs-loaded.window="$nextTick(() => { isVisible = false })"
                 x-intersect.full="$wire.loadMore()">
@@ -61,7 +89,7 @@
                 </td>
             </tr>
 
-            <script>
+            <script nonce="{{ $nonce }}">
                 document.addEventListener('alpine:init', () => {
                     Alpine.data('file_preemp_req', (docId) => ({
                         dropingFile: false,
@@ -78,15 +106,6 @@
 
                         updateProgress(event) {
                             this.progress = Math.min(event.detail.progress);
-                            console.log(this.$el)
-                            // if (CSS && CSS.registerProperty) {
-                            //     CSS.registerProperty({
-                            //         name: '--data-upload-progress',
-                            //         syntax: '<percentage>',
-                            //         inherits: false,
-                            //         initialValue: '0%'
-                            //     });
-                            // }
                             this.$el.style.setProperty('--data-upload-progress', `${this.progress}%`);
 
                         },

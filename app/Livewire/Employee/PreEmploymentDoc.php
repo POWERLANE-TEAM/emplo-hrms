@@ -30,17 +30,15 @@ class PreEmploymentDoc extends Component
     public function mount()
     {
         $authenticated_user = Auth::guard()->user();
-        // dump($authenticated_user);
 
         $this->applicant = User::where('user_id', $authenticated_user->user_id)
             ->with('roles')
             ->first();
-
-        // dump($this->applicant);
     }
 
     public function save(Request $request, PreEmploymentController $controller)
     {
+        // check permission instead of role
         if (!$this->applicant->hasRole([UserRole::BASIC])) {
             abort(403);
         }
@@ -61,16 +59,10 @@ class PreEmploymentDoc extends Component
             $error_message = $this->getErrorBag();
             $preemp_file_errors = $error_message->get('preemp_file');
 
-            // dump($preemp_file_errors);
             $this->dispatch("{$this->__id}:uploadError", ['docId' => $this->pre_employment_req->preemp_req_id, 'message' => $preemp_file_errors[0]]);
 
             return;
         }
-
-        // $this->preemp_file->store('pre-employment-docs', 'public');
-        // $originalName = $this->preemp_file->getClientOriginalName();
-        // dump($originalName);
-        // dump($this->preemp_file);
     }
 
     public function placeholder()

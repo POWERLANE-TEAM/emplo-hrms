@@ -3,6 +3,11 @@
     $doc_name = $pre_employment_req->preemp_req_name;
 @endphp
 
+{{--
+    Livewire class
+        file:///./../../../../app/Livewire/Employee/PreEmploymentModal.php
+--}}
+
 <div x-data="modal_preemp_req('{{ $doc_id }}')" wire:ignore.self {{-- Pota wire:ignore lng pla fix sa bug --}} class="modal fade"
     id="preemp-doc-{{ $doc_id }}-attachment" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
 

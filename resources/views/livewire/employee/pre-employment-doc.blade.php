@@ -7,15 +7,10 @@
 
 @endphp
 
-{{-- <section>
-    {{ dump($pre_employment_req->preemp_req_id) }}
-</section> --}}
-
-{{-- @script
-    <script>
-        console.log('$this->__id')
-    </script>
-@endscript --}}
+{{--
+    Livewire class
+        file:///./../../../../app/Livewire/Employee/PreEmploymentDoc.php
+--}}
 
 <tr class="rounded-2 outline  position-relative" style="height: 100px; vertical-align: middle; " x-data="file_preemp_req('{{ $doc_id }}')"
     x-bind:class="dropingFile ? 'bg-light border-primary' : 'border-secondary'"
