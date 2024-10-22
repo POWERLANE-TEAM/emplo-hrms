@@ -7,10 +7,10 @@
 <header>
     <hgroup>
         <h4 class="card-title text-primary fw-bold mb-0">' .
-            $job_vacancy['jobDetails']['jobTitle'][0]['job_title'] .
+            $job_vacancy['jobDetail']['jobTitle'][0]['job_title'] .
             '</h4>
         <p class="fs-6 text-black ">' .
-            $job_vacancy['jobDetails']['specificAreas'][0]['area_name'] .
+            $job_vacancy['jobDetail']['specificAreas'][0]['area_name'] .
             '</p>
     </hgroup>
     <a href="' .
@@ -27,7 +27,7 @@
 
     <label for="job-descr-panel" class="job-descr card-text">
         ' .
-            $job_vacancy['jobDetails']['jobTitle'][0]['job_desc'] .
+            $job_vacancy['jobDetail']['jobTitle'][0]['job_desc'] .
             '
     </label>
     <input type="checkbox" class="showMoreToggle" name="" id="job-descr-panel">

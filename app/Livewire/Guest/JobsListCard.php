@@ -24,7 +24,7 @@ class JobsListCard extends Component
 
     private function highlightText($text, $search)
     {
-        return preg_replace_callback('/('.preg_quote($search, '/').')/i', function ($matches) {
+        return preg_replace_callback('/(' . preg_quote($search, '/') . ')/i', function ($matches) {
             return "<mark>{$matches[1]}</mark>";
         }, $text);
     }
@@ -33,14 +33,14 @@ class JobsListCard extends Component
     {
         $query->where(function ($query) use ($search) {
             $query->WhereHas('jobTitle', function ($query) use ($search) {
-                $query->where('job_title', 'ilike', '%'.$search.'%')
-                    ->orWhere('job_desc', 'ilike', '%'.$search.'%');
+                $query->where('job_title', 'ilike', '%' . $search . '%')
+                    ->orWhere('job_desc', 'ilike', '%' . $search . '%');
             })
                 ->orWhereHas('jobTitle.specificAreas', function ($query) use ($search) {
-                    $query->where('area_name', 'ilike', '%'.$search.'%');
+                    $query->where('area_name', 'ilike', '%' . $search . '%');
                 })
                 ->orWhereHas('jobTitle.jobFamilies', function ($query) use ($search) {
-                    $query->where('job_family_name', 'ilike', '%'.$search.'%');
+                    $query->where('job_family_name', 'ilike', '%' . $search . '%');
                 });
         });
     }
@@ -73,7 +73,7 @@ class JobsListCard extends Component
     private function getJobVacancies()
     {
         return $this->baseJobVacancyQuery()
-            ->with(['jobDetails', 'jobTitle.jobFamilies', 'jobTitle.specificAreas'])
+            ->with(['jobDetail', 'jobTitle.jobFamilies', 'jobTitle.specificAreas'])
             ->latest()
             ->get();
     }
@@ -83,7 +83,7 @@ class JobsListCard extends Component
     {
         if (strlen(trim($search)) >= 1) {
             $query = $this->baseJobVacancyQuery()->with([
-                'jobDetails',
+                'jobDetail',
                 'jobTitle.specificAreas',
                 'jobTitle.jobFamilies',
             ]);

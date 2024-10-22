@@ -8,7 +8,7 @@
         <li class="card nav-item ps-0 " role="presentation">
             <button value="{{ $job_vacancy->jobTitle->job_title_id }}"
                 x-on:click.debounce.10ms="$dispatch('job-hiring-selected', { job_vacancy: {
-                jobDetails: {
+                jobDetail: {
                     jobTitle: [
                         {{ $job_vacancy->jobTitle }}
                     ],
