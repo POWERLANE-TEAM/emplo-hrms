@@ -1,120 +1,66 @@
 @php
+    use App\Enums\PreEmploymentReqStatus;
     $doc_parts = explode('(', $pre_employment_req->preemp_req_name, 2);
     $doc_name = trim($doc_parts[0]);
     $doc_hint = isset($doc_parts[1]) ? '(' . rtrim($doc_parts[1], ')') . ')' : null;
     $doc_id = $pre_employment_req->preemp_req_id;
+
 @endphp
 
-<tr class="rounded-2 outline dropzone position-relative" style="height: 100px; vertical-align: middle;"
-    id="preemp-doc-{{ $doc_id }}" x-init="preEmpDoc{{ $doc_id }} = new Dropzone(
-        '#preemp-doc-{{ $doc_id }}', {
-            url: '/preemploy',
-            withCredentials: true,
-            paramName: 'pre_emp_doc',
-            autoProcessQueue: false,
-            maxFilesize: 2, // MB
-            clickable: '#preemp-doc-{{ $doc_id }} .btn.btn-primary',
-            parallelUploads: 1,
-            maxFiles: 1,
-            thumbnailWidth: null,
-            thumbnailHeight: null,
-            thumbnailMethod: 'contain',
-            previewsContainer: '#preemp-doc-{{ $doc_id }}-preview',
-            addRemoveLinks: true,
-            maxfilesexceeded: function(file) {
-                console.log(file);
-                this.removeFile(this.files[0]);
-            },
-            maxfilesreached: function(file) {
-                console.log(file);
-            },
-            addedfiles: function(file) {
-                let modalSelector = `#preemp-doc-{{ $doc_id }}-attachment`;
-    
-                console.log(file);
-    
-                $(`${modalSelector} button.submit`).off('click');
-                $(`${modalSelector} button.submit`).on('click', () => {
-                    this.processQueue(file);
-                });
-    
-                const previewModal = bootstrap.Modal.getOrCreateInstance(modalSelector);
-                previewModal.show();
-            },
-            sending: function(file, xhr, formData) {
-                formData.append('doc_id', {{ $doc_id }});
-            },
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name=\'csrf-token\']').getAttribute('content')
-            },
-            totaluploadprogress: function(progress, totalBytes, totalBytesSent) {
-                let percentProgress = Math.min(progress, 100);
-                this.element.style.setProperty('--data-upload-progress', `${percentProgress}%`);
-                this.element.setAttribute('data-upload-progress', `${percentProgress}`);
-            },
-            errormultiple: function() {
-                console.log('error');
-            },
-            processingmultiple: function() {
-                console.log('processing');
-            },
-            queuecomplete: function() {
-                console.log('queue complete');
-            },
-            sendingmultiple: function() {
-                console.log('sending');
-            },
-            completemultiple: function() {
-                console.log('complete');
-            },
-            successmultiple: function() {
-                console.log('success');
-            }
-        });">
-    <form action="" wire:model="document_id" name="{{ $doc_id }}">
-        <td class="dz-message">
-            @csrf
-            <div class="fw-bold">{{ $doc_name }}
+{{--
+    Livewire class
+        file:///./../../../../app/Livewire/Employee/PreEmploymentDoc.php
+--}}
 
-                @isset($doc_hint)
-                    <div class="small">
-                        {{ $doc_hint }}
-                    </div>
-                @endisset
-            </div>
-        </td>
-        <td class="dz-message">
-            <x-status-badge color="danger">Invalid</x-status-badge>
-        </td>
-        <td class="dz-message"><button type="button" data-bs-toggle="modal"
-                data-bs-target="#preemp-doc-{{ $doc_id }}-attachment"
-                class="btn bg-transparent text-decoration-underline text-capitalize text-nowrap">View
-                Attachment</button></td>
-        <td class="dz-message">
-            <button type="button" class="btn btn-primary"> <i class="icon p-1  d-inline" data-lucide="plus-circle"></i>
-                Upload</button>
-        </td>
-    </form>
+<tr class="rounded-2 outline  position-relative" style="height: 100px; vertical-align: middle; " x-data="file_preemp_req('{{ $doc_id }}')"
+    x-bind:class="dropingFile ? 'bg-light border-primary' : 'border-secondary'"
+    x-bind:style="hasError ? { '--bs-table-border-color': 'var(--bs-danger)' } : { '--bs-table-border-color': outlineColor }"
+    x-on:drop.prevent="handleFileDrop($event)" x-on:dragover.prevent="dropingFile = true"
+    x-on:dragleave.prevent="dropingFile = false" x-on:livewire-upload-progress="updateProgress"
+    x-on:livewire-upload-start="onUpload" x-on:livewire-upload-error="hasError = true"
+    x-bind:data-upload-progress="progress">
 
-    <div class="modal fade" id="preemp-doc-{{ $doc_id }}-attachment" tabindex="-1"
-        aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-fullscreen-sm-down modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class=" dropzone-previews dropzone" id="preemp-doc-{{ $doc_id }}-preview">
-
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary submit"
-                        @click="preEmpDoc{{ $doc_id }}.processQueue()">Submit</button>
-                </div>
-            </div>
+    <td>
+        <div class="fw-bold">{{ $doc_name }}
+            @isset($doc_hint)
+                <div class="small">{{ $doc_hint }}</div>
+            @endisset
         </div>
-    </div>
+    </td>
+
+    <td>
+        <x-status-badge x-ref="statusBadge"
+            color="{{ $errors->has('preemp_file') ? 'danger' : '' }}">{{ $errors->has('preemp_file') ? PreEmploymentReqStatus::INVALID : '' }}</x-status-badge>
+    </td>
+
+    <td>
+        <button type="button" data-bs-toggle="modal" data-bs-target="#preemp-doc-{{ $doc_id }}-attachment"
+            class="btn bg-transparent text-decoration-underline text-body text-capitalize text-nowrap"
+            x-bind:class="preemp_file ? '' : 'opacity-50'">
+            View Attachment
+        </button>
+    </td>
+
+    <td>
+        <button type="button" class="btn btn-primary" @click="openFilePicker">
+            <i class="icon p-1 d-inline" data-lucide="plus-circle"></i> Upload
+        </button>
+        <form wire:submit.prevent="save" x-ref="uploadForm">
+            <input type="file" wire:model="preemp_file" hidden x-ref="fileInput" @change="handleFileChange"
+                wire:ignore />
+        </form>
+    </td>
+
+
 </tr>
+
+@error('preemp_file')
+    @script
+        <script>
+            $dispatch('preemp-file-error', {
+                docId: {{ $doc_id }},
+                message: '{{ $message }}',
+            });
+        </script>
+    @endscript
+@enderror

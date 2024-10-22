@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Http\Helpers\ChooseGuard;
 use App\View\Composers\AuthenticatedUserComposer;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -49,7 +51,9 @@ class ComposerServiceProvider extends ServiceProvider
     {
         View::composer($this->views_needs_user_data, AuthenticatedUserComposer::class);
         View::composer('*', function ($view) {
-            $view->with('nonce', csp_nonce());
+            $guard = Auth::guard(ChooseGuard::getByRequest());
+
+            $view->with(['nonce' => csp_nonce(), 'guard' => $guard]);
         });
     }
 }

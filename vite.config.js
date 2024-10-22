@@ -1,6 +1,40 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
+import os from 'os';
+
+function getLocalIpAddress() {
+    const interfaces = os.networkInterfaces();
+
+    // Prioritize Wi-Fi adapters based on common names
+    const wifiNames = ['Wi-Fi', 'wlan', 'WiFi'];
+
+    // Check Wi-Fi interfaces first
+    for (const name of Object.keys(interfaces)) {
+        if (wifiNames.some(wifiName => name.toLowerCase().includes(wifiName.toLowerCase()))) {
+            for (const iface of interfaces[name]) {
+                if (iface.family === 'IPv4' && !iface.internal && iface.address !== '127.0.0.1') {
+                    return iface.address;
+                }
+            }
+        }
+    }
+
+    // If no Wi-Fi interface is found, fallback to the first NIC
+    for (const name of Object.keys(interfaces)) {
+        for (const iface of interfaces[name]) {
+            if (iface.family === 'IPv4' && !iface.internal && iface.address !== '127.0.0.1') {
+                return iface.address;
+            }
+        }
+    }
+
+    return 'localhost';
+}
+
+
+
+const localIpAddress = getLocalIpAddress();
 
 export default defineConfig({
     plugins: [
@@ -45,9 +79,9 @@ export default defineConfig({
         })
     ],
     server: {
-        host: process.env.APP_URL,
+        host: localIpAddress,
         hmr: {
-            host: 'localhost',
+            host: localIpAddress,
         },
     },
 });

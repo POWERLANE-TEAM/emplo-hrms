@@ -65,6 +65,10 @@ table.table {
 
 }
 
+.modal-header {
+    text-wrap-style: pretty;
+}
+
 .dropzone {
     &.dropzone-previews {
         border: none;

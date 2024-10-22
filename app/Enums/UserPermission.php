@@ -4,20 +4,21 @@ namespace App\Enums;
 
 enum UserPermission: string
 {
-    /*
+        /*
      * Set enum cases for permissions here and ensure to follow the laravel
      * resource authorization convention: create, view, update, and delete
      *
      * Format: VERB_RESOURCE_NAME = verb resource name
     */
 
-    // Create cases goes here
+        // Create cases goes here
     case CREATE_JOB_LISTING = 'create job listing';
     case CREATE_ANNOUNCEMENT = 'create announcement';
     case CREATE_EMPLOYEE_ACCOUNT = 'create employee account';
     case CREATE_BULK_EMPLOYEE_ACCOUNT = 'create bulk employee accounts';
+    case CREATE_PRE_EMPLOYMENT_DOCUMENT = 'create pre employment document';
 
-    // View cases goes here
+        // View cases goes here
     case VIEW_APPLICANT_INFORMATION = 'view applicant information';
     case VIEW_EMPLOYEE_INFORMATION = 'view employee information';
     case VIEW_EMPLOYEE_DASHBOARD = 'view employee dashboard';
@@ -51,17 +52,19 @@ enum UserPermission: string
     case VIEW_FORM_CONFIG = 'view form configurator';
 
 
-    // Update cases goes here
+        // Update cases goes here
     case UDPATE_JOB_LISTING = 'update job listing';
     case UPDATE_ANNOUNCEMENT = 'update announcement';
+    case UPDATE_OWNED_PRE_EMPLOYMENT_DOCUMENT = 'update owned pre employment document';
 
-    // Delete cases goes here
+        // Delete cases goes here
     case DELETE_JOB_LISTING = 'delete job listing';
     case DELETE_ANNOUNCEMENT = 'delete announcement';
+    case DELETE_OWNED_PRE_EMPLOYMENT_DOCUMENT = 'delete owned pre employment document';
 
     /**
      * Return user-friendly permission labels.
-     * 
+     *
      * @return string
      */
     public function label(): string
@@ -73,6 +76,7 @@ enum UserPermission: string
             self::CREATE_ANNOUNCEMENT => 'Publish announcement/s',
             self::CREATE_EMPLOYEE_ACCOUNT => 'Create an employee account ',
             self::CREATE_BULK_EMPLOYEE_ACCOUNT => 'Create employee accounts',
+            self::CREATE_PRE_EMPLOYMENT_DOCUMENT => 'Create pre-employment document',
 
             // View labels goes here
             self::VIEW_APPLICANT_INFORMATION => 'View applicant/s information',
@@ -110,10 +114,12 @@ enum UserPermission: string
             // Update labels goes here
             self::UDPATE_JOB_LISTING => 'Update job listing/s',
             self::UPDATE_ANNOUNCEMENT => 'Update announcement/s',
+            self::UPDATE_OWNED_PRE_EMPLOYMENT_DOCUMENT => 'Update owned pre-employment document',
 
             // Delete labels goes here
             self::DELETE_JOB_LISTING => 'Delete job listing/s',
             self::DELETE_ANNOUNCEMENT => 'Delete announcement/s',
+            self::DELETE_OWNED_PRE_EMPLOYMENT_DOCUMENT => 'Delete owned pre-employment document',
         };
     }
 }

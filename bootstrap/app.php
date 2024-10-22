@@ -14,9 +14,9 @@ use Spatie\Permission\Middleware\RoleOrPermissionMiddleware;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
-        web: __DIR__.'/../routes/web.php',
-        api: __DIR__.'/../routes/api.php',
-        commands: __DIR__.'/../routes/console.php',
+        web: __DIR__ . '/../routes/web.php',
+        api: __DIR__ . '/../routes/api.php',
+        commands: __DIR__ . '/../routes/console.php',
         health: '/up',
         then: function () {
             Route::middleware('web')
@@ -31,7 +31,7 @@ return Application::configure(basePath: dirname(__DIR__))
         },
     )
     ->withBroadcasting(
-        __DIR__.'/../routes/channels.php',
+        __DIR__ . '/../routes/channels.php',
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->append(AddCspHeaders::class);
@@ -51,6 +51,8 @@ return Application::configure(basePath: dirname(__DIR__))
             if ($request->is('admin/*')) {
                 return 'admin/login';
             }
+
+            return '/login';
         });
 
         $middleware->redirectUsersTo(function (Request $request) {
@@ -60,6 +62,8 @@ return Application::configure(basePath: dirname(__DIR__))
             if ($request->is('admin/*')) {
                 return 'admin/dashboard';
             }
+
+            return '/';
         });
     })
     ->withExceptions(function (Exceptions $exceptions) {
