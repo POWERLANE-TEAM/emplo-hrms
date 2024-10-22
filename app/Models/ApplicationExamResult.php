@@ -20,8 +20,6 @@ class ApplicationExamResult extends Model
 
     /**
      * Get the job application that owns the result of the examination.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function application(): BelongsTo
     {
@@ -30,8 +28,6 @@ class ApplicationExamResult extends Model
 
     /**
      * Get the employee who is the grader of the examination.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function grader(): BelongsTo
     {

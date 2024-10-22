@@ -6,10 +6,9 @@ use App\Enums\AccountType;
 use App\Enums\GuardType;
 use App\Enums\UserPermission;
 use App\Enums\UserRole;
+use App\Enums\UserStatus as EnumUserStatus;
 use App\Models\Employee;
 use App\Models\User;
-use App\Enums\UserStatus as EnumUserStatus;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -21,7 +20,6 @@ use Spatie\Permission\Models\Role;
  */
 class HRManagerSeeder extends Seeder
 {
-
     const HR_MANAGER_PERMISSIONS = [
         UserPermission::VIEW_HR_MANAGER_DASHBOARD,
         UserPermission::VIEW_ALL_APPLICANTS,
@@ -61,7 +59,7 @@ class HRManagerSeeder extends Seeder
             $employee_user->assignRole($role);
 
             $permissions = collect(self::HR_MANAGER_PERMISSIONS)
-                ->map(fn($permission) => Permission::where('name', $permission)
+                ->map(fn ($permission) => Permission::where('name', $permission)
                     ->where('guard_name', GuardType::EMPLOYEE->value)
                     ->first());
 

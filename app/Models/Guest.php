@@ -20,7 +20,7 @@ class Guest extends Model
 
     /**
      * Get the guest's full name.
-     * 
+     *
      * @return string
      */
     public function getFullNameAttribute()
@@ -30,8 +30,6 @@ class Guest extends Model
 
     /**
      * Get the account associated with the guest.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
      */
     public function account(): MorphOne
     {

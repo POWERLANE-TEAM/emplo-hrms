@@ -20,8 +20,6 @@ class Shift extends Model
 
     /**
      * Get the employees associated with the shift schedule.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function employees(): HasMany
     {

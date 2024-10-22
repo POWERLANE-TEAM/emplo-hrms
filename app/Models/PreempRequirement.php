@@ -20,8 +20,6 @@ class PreempRequirement extends Model
 
     /**
      * Get the application documents associated with the pre-employment requirement.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function applicationDocs(): HasMany
     {

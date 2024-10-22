@@ -13,7 +13,7 @@ class DashboardController extends Controller
     {
         $guard = Auth::guard('admin');
 
-        Cache::flexible('user_' . $guard->id(), [25, 40], function () use ($guard) {
+        Cache::flexible('user_'.$guard->id(), [25, 40], function () use ($guard) {
             return User::where('user_id', $guard->id())
                 ->with(['roles', 'account'])
                 ->get()

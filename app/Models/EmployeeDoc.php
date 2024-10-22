@@ -19,8 +19,6 @@ class EmployeeDoc extends Model
 
     /**
      * Get the employee that owns the documents.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function employee(): BelongsTo
     {

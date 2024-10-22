@@ -10,8 +10,6 @@ enum UserStatus: int
 
     /**
      * Return user-friendly user status labels.
-     * 
-     * @return string
      */
     public function label(): string
     {

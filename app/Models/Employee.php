@@ -25,7 +25,7 @@ class Employee extends Model
 
     /**
      * Get the employee's full name.
-     * 
+     *
      * @return string
      */
     public function getFullNameAttribute()
@@ -35,8 +35,6 @@ class Employee extends Model
 
     /**
      * Get the account associated with the employee.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
      */
     public function account(): MorphOne
     {
@@ -45,8 +43,6 @@ class Employee extends Model
 
     /**
      * Get the job application associated with the employee.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function application(): HasOne
     {
@@ -55,8 +51,6 @@ class Employee extends Model
 
     /**
      * Get the employment status of the employee.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function employmentStatus(): BelongsTo
     {
@@ -65,8 +59,6 @@ class Employee extends Model
 
     /**
      * Get the attendance records associated with the employee.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function attendances(): HasMany
     {
@@ -75,8 +67,6 @@ class Employee extends Model
 
     /**
      * Get the job detail of the employee.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function jobDetail(): BelongsTo
     {
@@ -85,8 +75,6 @@ class Employee extends Model
 
     /**
      * Get the area name where employee is the Area Manager.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function areaManagerOf(): HasOne
     {
@@ -95,8 +83,6 @@ class Employee extends Model
 
     /**
      * Get the office name where employee is the office head.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function headOf(): HasOne
     {
@@ -105,8 +91,6 @@ class Employee extends Model
 
     /**
      * Get the shift schedule of the employee.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function shift(): BelongsTo
     {
@@ -115,8 +99,6 @@ class Employee extends Model
 
     /**
      * Get the documents associated with the employee.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function documents(): HasMany
     {
@@ -125,8 +107,6 @@ class Employee extends Model
 
     /**
      * Get the overtime records associated with the employee
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function overtimes(): HasMany
     {
@@ -135,8 +115,6 @@ class Employee extends Model
 
     /**
      * Get the leave records associated with the employee.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function leaves(): HasMany
     {
@@ -145,8 +123,6 @@ class Employee extends Model
 
     /**
      * Get the permanent barangay of the employee.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function permanentBarangay(): BelongsTo
     {
@@ -155,8 +131,6 @@ class Employee extends Model
 
     /**
      * Get the present barangay of the employee.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function presentBarangay(): BelongsTo
     {
@@ -171,8 +145,6 @@ class Employee extends Model
 
     /**
      * Get the initial interviews where employee is the initial interviewer.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function asInitInterviewer(): HasMany
     {
@@ -181,8 +153,6 @@ class Employee extends Model
 
     /**
      * Get the final interviews where employee is the final interviewer.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function asFinalInterviewer(): HasMany
     {
@@ -191,8 +161,6 @@ class Employee extends Model
 
     /**
      * Get the application documents where employee is the evaluator.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function asApplicationDocsEvaluator(): HasMany
     {
@@ -201,8 +169,6 @@ class Employee extends Model
 
     /**
      * Get the examination results where employee is the grader
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function asExamGrader(): HasMany
     {
@@ -217,8 +183,6 @@ class Employee extends Model
 
     /**
      * Get the training records associated with the employee.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function trainings(): HasMany
     {
@@ -227,8 +191,6 @@ class Employee extends Model
 
     /**
      * Get the training records where employee is the trainer.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
     public function trainingsAsTrainer(): MorphMany
     {
@@ -237,8 +199,6 @@ class Employee extends Model
 
     /**
      * Get the training comments where employee is the trainer.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
     public function commentsAsTrainer(): MorphMany
     {
@@ -247,8 +207,6 @@ class Employee extends Model
 
     /**
      * Get the prepared training records where employee is an HR Personnel.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function preparedTrainings(): HasMany
     {
@@ -257,8 +215,6 @@ class Employee extends Model
 
     /**
      * Get the reviewed/approved training records where employee is the HR Manager.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function reviewedTrainings(): HasMany
     {
@@ -273,8 +229,6 @@ class Employee extends Model
 
     /**
      * Get the complaint records where employee is the complainant.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function complaintsAsComplainant(): HasMany
     {
@@ -283,8 +237,6 @@ class Employee extends Model
 
     /**
      * The complaint records that belong to the complainee(employee).
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function complaintsAsComplainee(): BelongsToMany
     {
@@ -300,8 +252,6 @@ class Employee extends Model
 
     /**
      * Get the processes(e.g., overtimes, leaves) where employee is the supervisor.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function supervisedProcesses(): HasMany
     {
@@ -310,8 +260,6 @@ class Employee extends Model
 
     /**
      * Get the processes(e.g., overtimes, leaves) where employee is the Area Manager.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function areaManagedProcesses(): HasMany
     {
@@ -320,8 +268,6 @@ class Employee extends Model
 
     /**
      * Get the processes(e.g., overtimes, leaves) where employee is the HR Manager.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function hrManagedProcesses(): HasMany
     {
@@ -336,8 +282,6 @@ class Employee extends Model
 
     /**
      * Get the performance evaluation records associated with the employee.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function performances(): HasMany
     {
@@ -346,8 +290,6 @@ class Employee extends Model
 
     /**
      * Get the performance evalation records where employee is the evaluator.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function evaluatedPerformances(): HasMany
     {
@@ -356,8 +298,6 @@ class Employee extends Model
 
     /**
      * Get the performance evaluation records where employee is the Supervisor.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function supervisedPerformances(): HasMany
     {
@@ -366,8 +306,6 @@ class Employee extends Model
 
     /**
      * Get the performance evaluation records where employee is the Area Manager.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function areaManagedPerformances(): HasMany
     {
@@ -376,8 +314,6 @@ class Employee extends Model
 
     /**
      * Get the performance evaluation records where employee is the HR Manager.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function hrManagedPerformances(): HasMany
     {
