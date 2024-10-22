@@ -2,14 +2,20 @@
 
 namespace App\Providers;
 
-use Illuminate\Auth\Notifications\VerifyEmail;
-use Illuminate\Broadcasting\BroadcastServiceProvider;
-use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Support\Facades\Validator;
+use App\Models\User;
+use App\Enums\UserRole;
+use Laravel\Pulse\Facades\Pulse;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Vite;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Auth\Notifications\VerifyEmail;
+use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Broadcasting\BroadcastServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -58,9 +64,14 @@ class AppServiceProvider extends ServiceProvider
                 ->action('Verify Email Address', $url);
         });
 
-        // stores strings representing the models in the tables
-        // e.g: from column_type = App\Models\OutsourcedTrainer to column_type = outsourced_trainer
-        // ref: https://laravel.com/docs/11.x/eloquent-relationships#custom-polymorphic-types
+        /**
+         * Store strings representing the models.
+         * 
+         * Instead of inserting import names of App\Models\ModelName in the column_type, we 
+         * can store strings representing the model (e.g.: 'guest' => 'App\Models\Guest').
+         * 
+         * @see https://laravel.com/docs/11.x/eloquent-relationships#custom-polymorphic-types
+         */
         Relation::enforceMorphMap([
             'guest' => 'App\Models\Guest',
             'user' => 'App\Models\User',
@@ -75,5 +86,28 @@ class AppServiceProvider extends ServiceProvider
         ]);
 
         BroadcastServiceProvider::class;
+
+        /**
+         * For cards that display information about users:
+         * - making requests
+         * - experiencing slow endpoints
+         * - dispatching jobs
+         * 
+         * @see https://laravel.com/docs/11.x/pulse#dashboard-resolving-users
+         */
+        Pulse::user(fn ($user) => [
+            'name' => $user->account->full_name,
+            'extra' => $user->email,
+            'avatar' => $user->photo ?? Storage::url('icons/default-avatar.png'),
+        ]);
+
+        /**
+         * This will only allow user with authenticated user with advanced role to access the pulse dashboard.
+         * 
+         * @see https://laravel.com/docs/11.x/pulse#dashboard-authorization
+         */
+        Gate::define('viewPulse', function(?User $user) {
+            return Auth::user()->hasRole(UserRole::ADVANCED);
+        });
     }
 }
