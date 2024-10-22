@@ -50,17 +50,6 @@ class DatabaseSeeder extends Seeder
 
         JobDetail::factory(rand(5, 20))->create();
 
-        $applicant = Applicant::factory()->create();
-
-        User::factory()->create([
-            'account_type' => AccountType::APPLICANT,
-            'account_id' => $applicant->applicant_id,
-            'email' => 'applicant.001@gmail.com',
-            'password' => Hash::make('UniqP@ssw0rd'),
-            'user_status_id' => 1,
-            'email_verified_at' => fake()->dateTimeBetween('-10 days', 'now'),
-        ]);
-
         $this->call(HRManagerSeeder::class);
 
         $this->call(AdminSeeder::class);
@@ -69,11 +58,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call(PreempRequirementSeeder::class);
 
-        Application::create([
-            'applicant_id' => $applicant->applicant_id,
-            'job_vacancy_id' => JobVacancy::inRandomOrder()->first()->job_vacancy_id,
-            'application_status_id' => ApplicationStatus::inRandomOrder()->first()->application_status_id,
-        ]);
+        $this->call(ApplicantSeeder::class);
 
         // update cache to know about the newly created permissions (required if using WithoutModelEvents in seeders)
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
