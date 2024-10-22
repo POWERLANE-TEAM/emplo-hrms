@@ -18,9 +18,11 @@
     <script src="{{ Vite::asset('resources/js/forms/nbp.min.js') }}" defer></script>
     @vite(['resources/js/employee/hr/dashboard.js'])
 @endPushOnce
+
 @pushOnce('styles')
     @vite(['resources/css/employee/dashboard.css'])
 @endPushOnce
+
 @section('content')
     <hgroup class="mb-5 ms-n1">
         <div class="fs-2 fw-bold mb-2">Good afternoon, {{ $user->account->first_name }}!</div>
@@ -40,18 +42,17 @@
             </x-nav-link>
         </div>
 
-        <div class="card bg-primary text-white col-md-4  border-0 px-md-5 py-4" role="none"
-            aria-describedby="leaves-nav-desc">
-            <x-nav-link href="#" class="unstyled">
+        <div class="card bg-primary text-white col-md-4  border-0 px-md-5 py-4" role="none">
+            <a href="{{ route('admin.system.pulse') }}" target="_blank" class="unstyled">
                 <div class="mb-3">
                     <span></span>
-                    <div class="fs-4 fw-bold text-white">Leaves</div>
+                    <div class="fs-4 fw-bold text-white">Laravel Pulse</div>
                 </div>
                 <div class="card-text text-white" id="leaves-nav-desc">
-                    Track pending leave request, its leave type and approval.
+                    Check the app's performance and usage via Laravel Pulse.
                 </div>
-            </x-nav-link>
-        </div>
+            </a>
+        </div>            
 
         <div class="card bg-body-secondary col-md-4  border-0 px-md-5 py-4" role="none"
             aria-describedby="attendance-nav-desc">
