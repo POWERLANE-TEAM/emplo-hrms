@@ -14,6 +14,10 @@ Route::middleware('auth:admin')->group(function () {
     Route::get('dashboard', DashboardController::class)
         ->name('dashboard');
 
+    Route::get('system/pulse', function() {
+        return view('vendor.pulse.dashboard');
+    })->name('system.pulse');
+
     Route::get('accounts', function() {
         abort(404);
     })->name('accounts');
