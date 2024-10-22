@@ -24,6 +24,16 @@ class Employee extends Model
     ];
 
     /**
+     * Get the employee's full name.
+     * 
+     * @return string
+     */
+    public function getFullNameAttribute()
+    {
+        return ucwords("{$this->first_name} {$this->middle_name} {$this->last_name}");
+    }
+
+    /**
      * Get the account associated with the employee.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\MorphOne
