@@ -129,8 +129,10 @@ class FortifyServiceProvider extends ServiceProvider
                 }
 
                 if ($authenticated_user->account_type == AccountType::APPLICANT->value) {
-                    //
+                    return redirect('/applicant');
                 }
+
+                return redirect('/');
             }
         });
     }
@@ -146,7 +148,7 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
 
-        Fortify::verifyEmailView(fn () => app(UnverifiedEmail::class)->render());
+        Fortify::verifyEmailView(fn() => app(UnverifiedEmail::class)->render());
 
         Fortify::loginView(function () {
             $view = match (true) {
@@ -159,7 +161,7 @@ class FortifyServiceProvider extends ServiceProvider
         });
 
         RateLimiter::for('login', function (Request $request) {
-            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
+            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())) . '|' . $request->ip());
 
             return Limit::perMinute(5)->by($throttleKey);
         });
