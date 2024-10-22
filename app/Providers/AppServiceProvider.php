@@ -102,12 +102,12 @@ class AppServiceProvider extends ServiceProvider
         ]);
 
         /**
-         * This will only allow user with authenticated user with advanced role to access the pulse dashboard.
+         * This will only allow user with advanced role to access the pulse dashboard.
          * 
          * @see https://laravel.com/docs/11.x/pulse#dashboard-authorization
          */
-        Gate::define('viewPulse', function(?User $user) {
-            return Auth::user()->hasRole(UserRole::ADVANCED);
+        Gate::define('viewPulse', function(User $user) {
+            return $user->hasRole(UserRole::ADVANCED);
         });
     }
 }
