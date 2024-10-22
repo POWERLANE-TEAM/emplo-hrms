@@ -71,12 +71,12 @@
                 Components
                     Livewire View
                         file://./pre-employment-doc.blade.php
-                        file://./pre-employment-modal.blade.php
+                        file://./modal/pre-employment-preview.blade.php
 
             --}}
             @foreach ($pre_employment_reqs as $pre_employment_req)
                 @livewire('employee.pre-employment-doc', ['pre_employment_req' => $pre_employment_req], key("preemp_req-$pre_employment_req->preemp_req_id{$loads}"))
-                @livewire('employee.pre-employment-modal', ['pre_employment_req' => $pre_employment_req], key("preemp_req_modal-$pre_employment_req->preemp_req_id{$loads}"))
+                @livewire('employee.modal.pre-employment-preview', ['pre_employment_req' => $pre_employment_req], key("preemp_req_modal-$pre_employment_req->preemp_req_id{$loads}"))
             @endforeach
 
             {{--

@@ -5,11 +5,11 @@
 
 {{--
     Livewire class
-        file:///./../../../../app/Livewire/Employee/PreEmploymentModal.php
+        file:///./../../../../../app/Livewire/Employee/Modal/PreEmploymentPreview.php
 --}}
 
-<div x-data="modal_preemp_req('{{ $doc_id }}')" wire:ignore.self {{-- Pota wire:ignore lng pla fix sa bug --}} class="modal fade"
-    id="preemp-doc-{{ $doc_id }}-attachment" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+<div x-data="modal_preemp_req('{{ $doc_id }}')" wire:ignore.self class="modal fade" id="preemp-doc-{{ $doc_id }}-attachment"
+    tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
 
 
     <div class="modal-dialog modal-lg">
