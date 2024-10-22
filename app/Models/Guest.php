@@ -19,6 +19,16 @@ class Guest extends Model
     ];
 
     /**
+     * Get the guest's full name.
+     * 
+     * @return string
+     */
+    public function getFullNameAttribute()
+    {
+        return ucwords("{$this->first_name} {$this->middle_name} {$this->last_name}");
+    }
+
+    /**
      * Get the account associated with the guest.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\MorphOne
