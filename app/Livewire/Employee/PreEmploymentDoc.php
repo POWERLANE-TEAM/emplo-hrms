@@ -2,8 +2,10 @@
 
 namespace App\Livewire\Employee;
 
+use App\Enums\UserPermission;
 use App\Enums\UserRole;
 use App\Http\Controllers\PreEmploymentController;
+use App\Http\Helpers\ChooseGuard;
 use App\Models\PreempRequirement;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -19,28 +21,19 @@ class PreEmploymentDoc extends Component
 
     public PreempRequirement $pre_employment_req;
 
-    public User $applicant;
-
     const MAX_FILE_SIZE = 5 * 1024;
 
     /*  When global validation of livewire is triggered the attribute specified in :as is not respected */
     #[Validate("mimes:pdf|max:" . self::MAX_FILE_SIZE, as: "Preemployment File")]
     public $preemp_file;
 
-    public function mount()
-    {
-        $authenticated_user = Auth::guard()->user();
-
-        $this->applicant = User::where('user_id', $authenticated_user->user_id)
-            ->with('roles')
-            ->first();
-    }
-
     public function save(Request $request, PreEmploymentController $controller)
     {
-        // check permission instead of role
-        if (!$this->applicant->hasRole([UserRole::BASIC])) {
-            abort(403);
+
+        $user = Auth::guard(ChooseGuard::getByRequest())->user();
+
+        if (!$user->hasAllPermissions([UserPermission::CREATE_PRE_EMPLOYMENT_DOCUMENT, UserPermission::UPDATE_OWNED_PRE_EMPLOYMENT_DOCUMENT])) {
+            abort(403, 'You are not authorized to perform this action yet');
         }
 
         try {
