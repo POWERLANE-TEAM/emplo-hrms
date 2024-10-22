@@ -27,6 +27,7 @@ class RolesAndPermissionsSeeder extends Seeder
         */
 
         // create permissions goes here
+        Permission::firstOrCreate(['name' => UserPermission::CREATE_PRE_EMPLOYMENT_DOCUMENT]);
 
 
         // view permissions goes here
@@ -34,8 +35,10 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::firstOrCreate(['name' => UserPermission::VIEW_EMPLOYEE_INFORMATION]);
 
         // update permissions goes here
+        Permission::firstOrCreate(['name' => UserPermission::UPDATE_OWNED_PRE_EMPLOYMENT_DOCUMENT]);
 
         // delete permissions here
+        Permission::firstOrCreate(['name' => UserPermission::DELETE_OWNED_PRE_EMPLOYMENT_DOCUMENT]);
 
 
         $permissions = [
@@ -47,7 +50,7 @@ class RolesAndPermissionsSeeder extends Seeder
 
                 /**
                  * create permissions goes here
-                 */ 
+                 */
                 UserPermission::CREATE_JOB_LISTING,
                 UserPermission::CREATE_ANNOUNCEMENT,
                 UserPermission::CREATE_EMPLOYEE_ACCOUNT,
@@ -55,7 +58,7 @@ class RolesAndPermissionsSeeder extends Seeder
 
                 /**
                  * view permissions goes here
-                 */ 
+                 */
                 UserPermission::VIEW_APPLICANT_INFORMATION,
                 UserPermission::VIEW_EMPLOYEE_INFORMATION,
                 UserPermission::VIEW_EMPLOYEE_DASHBOARD,
@@ -82,13 +85,13 @@ class RolesAndPermissionsSeeder extends Seeder
 
                 /**
                  * update permissions goes here
-                 */ 
+                 */
                 UserPermission::UDPATE_JOB_LISTING,
                 UserPermission::UPDATE_ANNOUNCEMENT,
 
                 /**
                  * delete permissions goes here
-                 */ 
+                 */
                 UserPermission::DELETE_JOB_LISTING,
                 UserPermission::DELETE_ANNOUNCEMENT,
             ],
@@ -97,7 +100,7 @@ class RolesAndPermissionsSeeder extends Seeder
             * Using admin guard
             */
             GuardType::ADMIN->value => [
-                
+
                 /**
                  * create permissions goes here
                  */
@@ -133,11 +136,11 @@ class RolesAndPermissionsSeeder extends Seeder
             ],
         ];
 
-        foreach($permissions as $guard => $permission_list) {
-            foreach($permission_list as $permission) {
+        foreach ($permissions as $guard => $permission_list) {
+            foreach ($permission_list as $permission) {
                 Permission::firstOrCreate(['guard_name' => $guard, 'name' => $permission]);
             }
-        } 
+        }
 
         /*
          * Define user roles with default permissions here using backed enums in Roles
