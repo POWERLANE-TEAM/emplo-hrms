@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Employee;
 
-use App\Enums\UserRole;
+use App\Enums\UserPermission;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -14,7 +14,7 @@ class DashboardController extends Controller
     {
         $guard = Auth::guard('employee');
 
-        $authenticated_user = Cache::flexible('user_' . $guard->id(), [30, 60], function () use ($guard) {
+        $user = Cache::flexible('user_' . $guard->id(), [30, 60], function () use ($guard) {
             return User::where('user_id', $guard->id())
                 ->with(['roles', 'account'])
                 ->get()
@@ -22,14 +22,11 @@ class DashboardController extends Controller
         });
 
         $dashboard = match (true) {
-            $authenticated_user->hasRole(UserRole::INTERMEDIATE->value) => 'employee.hr-manager.index',
-                // HR
+            $user->hasPermissionTo(UserPermission::VIEW_HR_MANAGER_DASHBOARD->value) => 'employee.hr-manager.index',
+            $user->hasPermissionTo(UserPermission::VIEW_EMPLOYEE_DASHBOARD->value) => 'employee.supervisor.index',
+            $user->hasPermissionTo(UserPermission::VIEW_EMPLOYEE_DASHBOARD->value) => 'employee.basic.index',
 
-                // Superviser
-
-                // Employee
-
-            default => '',
+            default => abort(403, 'Unauthorized')
         };
 
         return view($dashboard);
