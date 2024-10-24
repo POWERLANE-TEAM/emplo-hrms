@@ -1,7 +1,7 @@
 {{-- Code from larvel UI library --}}
 
 
-@extends('layout.guest-secondary', ['description' => 'Veryfting email', 'nonce' => $nonce])
+@extends('components.layout.app', ['description' => 'Veryfting email', 'nonce' => $nonce])
 
 @section('head')
     <title>Verify Email Notice</title>
