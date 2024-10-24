@@ -1,4 +1,7 @@
+@import 'utils';
+@import 'core';
 @import 'font/font-size';
+@import 'scrollbar';
 
 img.pri-sm-logo {
     width: clamp(3px, 0.875rem + 0.5vw + 0.75vh, 750px);
@@ -80,12 +83,6 @@ body {
 
 main {
     margin-bottom: calc(2rem + 1vh);
-}
-
-%rm-dropdown-triangle {
-    button::after {
-        content: none;
-    }
 }
 
 .icon {
