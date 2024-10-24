@@ -14,12 +14,7 @@ class DashboardController extends Controller
     {
         $guard = Auth::guard('employee');
 
-        $user = Cache::flexible('user_' . $guard->id(), [30, 60], function () use ($guard) {
-            return User::where('user_id', $guard->id())
-                ->with(['roles', 'account'])
-                ->get()
-                ->first();
-        });
+        $user = $guard->user();
 
         $dashboard = match (true) {
             $user->hasPermissionTo(UserPermission::VIEW_HR_MANAGER_DASHBOARD->value) => 'employee.hr-manager.index',

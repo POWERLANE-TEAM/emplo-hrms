@@ -19,7 +19,8 @@ class ComposerServiceProvider extends ServiceProvider
      */
     private $views_needs_user_data = [
         'components.layout.employee.layout',
-        'employee/*'
+        'components.layout.applicant.layout',
+        'components.layout.app',
     ];
 
 

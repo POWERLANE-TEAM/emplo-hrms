@@ -7,6 +7,7 @@ use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
 use App\Enums\AccountType;
+use App\Enums\UserPermission;
 use App\Enums\UserRole;
 use App\Events\UserLoggedout;
 use App\Http\Helpers\ChooseGuard;
@@ -76,18 +77,14 @@ class FortifyServiceProvider extends ServiceProvider
         {
             public function toResponse($request)
             {
-                $authenticated_user = Auth::guard(ChooseGuard::getByReferrer())->user();
-
-                $user_with_role_and_account = User::where('user_id', $authenticated_user->user_id)
-                    ->with(['roles'])
-                    ->first();
+                $authUser = Auth::guard(ChooseGuard::getByReferrer())->user();
 
                 // Redirection to previously visited page before being prompt to login
                 // For example you visit /employee/payslip and you are not logged in
                 // Instead of redirecting to dashboard after successful login you will be redirected to /employee/payslip
                 $intended_url = Session::get('url.intended');
 
-                if ($intended_url && $authenticated_user) {
+                if ($intended_url && $authUser) {
                     $route = Route::getRoutes()->match(Request::create($intended_url));
                     $middleware = $route->gatherMiddleware();
 
@@ -95,17 +92,9 @@ class FortifyServiceProvider extends ServiceProvider
 
                     foreach ($middleware as $middleware_item) {
 
-                        if (str_contains($middleware_item, 'role:')) {
-                            $role = explode(':', $middleware_item)[1];
-                            if (! $user_with_role_and_account->hasRole($role)) {
-                                $has_access = false;
-                                break;
-                            }
-                        }
-
                         if (str_contains($middleware_item, 'permission:')) {
                             $permission = explode(':', $middleware_item)[1];
-                            if (! $user_with_role_and_account->can($permission)) {
+                            if (! $authUser->can($permission)) {
                                 $has_access = false;
                                 break;
                             }
@@ -117,18 +106,18 @@ class FortifyServiceProvider extends ServiceProvider
                     }
                 }
 
-                if ($authenticated_user->account_type == AccountType::EMPLOYEE->value) {
+                if ($authUser->account_type == AccountType::EMPLOYEE->value) {
 
-                    if ($user_with_role_and_account->hasRole(UserRole::ADVANCED->value)) {
+                    if ($authUser->hasPermissionTo(UserPermission::VIEW_ADMIN_DASHBOARD->value)) {
                         return redirect('/admin/dashboard');
                     }
 
-                    if ($user_with_role_and_account->hasRole([UserRole::BASIC->value, UserRole::INTERMEDIATE->value])) {
+                    if ($authUser->hasAnyPermission([UserPermission::VIEW_EMPLOYEE_DASHBOARD->value, UserPermission::VIEW_HR_MANAGER_DASHBOARD->value])) {
                         return redirect('/employee/dashboard');
                     }
                 }
 
-                if ($authenticated_user->account_type == AccountType::APPLICANT->value) {
+                if ($authUser->account_type == AccountType::APPLICANT->value) {
                     return redirect('/applicant');
                 }
 
