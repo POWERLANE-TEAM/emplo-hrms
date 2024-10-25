@@ -1,4 +1,4 @@
-@aware(['icon_size' => '31px', 'icon_ratio' => '1/1'])
+@aware(['icon_size' => '31px', 'icon_ratio' => '1/1', 'user'])
 @use('App\Enums\UserRole')
 @use('App\Enums\UserPermission')
 
@@ -19,6 +19,8 @@
 
     {{-- Employee, HR Manager, Supervisor --}}
     @php
+        // dump($user);
+        // dump($user->hasPermissionTo(UserPermission::VIEW_ALL_ATTENDANCE));
         $nav_attendance_order = $user->hasPermissionTo(UserPermission::VIEW_ALL_ATTENDANCE) ? 4 : 2;
     @endphp
     @canAny([UserPermission::VIEW_ATTENDANCE, UserPermission::VIEW_ALL_ATTENDANCE])
@@ -92,7 +94,7 @@
     {{-- HR Manager --}}
     @can(UserPermission::VIEW_ALL_RELATIONS)
         <x-layout.employee.nav.sidebar.nav-item href="#" :active="request()->is('#')" class="tw-order-[11]" nav_txt="Relations"
-            :default_icon="['src' => 'daily', 'alt' => '']" :active_icon="['src' => 'daily', 'alt' => '']">
+            :default_icon="['src' => 'clients', 'alt' => '']" :active_icon="['src' => 'clients', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan
 
