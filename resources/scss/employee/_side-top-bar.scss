@@ -53,11 +53,6 @@ img.icon {
     aspect-ratio: 1/1;
 }
 
-.nav-icon img {
-    width: calc(1rem + 0.5vw + 0.6vh);
-    height: auto;
-}
-
 .icon.ellipsis {
 
     width: calc(0.75rem + 0.5vw + 0.5vh);
@@ -106,8 +101,54 @@ sidebar.main-menu {
             width: 0;
             left: -1rem;
             overflow: hidden;
+        }
+
+        &:not(.active.closing) {
+
+            .user-bar div:has(.user-img),
+            button.main-menu div:has(img),
+            .nav-icon img {
+                width: 0;
+                padding: 0;
+                opacity: 0;
+                background-color: transparent;
+
+                img,
+                picture {
+                    opacity: 0;
+                    width: 0;
+                    padding: 0;
+                }
+            }
+        }
+
+        &.active:not(.opening) {
+
+            .user-bar div:has(.user-img),
+            button.main-menu div:has(img),
+            .nav-icon img {
+                width: initial;
+                padding: initial;
+                background-color: initial;
+                opacity: 1;
+
+                img,
+                picture {
+                    padding: initial;
+                    width: initial;
+                    opacity: 1;
+                }
+            }
+
+            @include pri-sm-logo;
+
+            button.main-menu div:has(img) picture {
+                padding: 0.25rem;
+                height: auto;
+            }
 
         }
+
     }
 
     @media screen and (min-width: 576px) {
@@ -328,8 +369,6 @@ sidebar.main-menu {
             transition: transform ease-in-out 0.2s;
             transform: translateX(30%);
 
-
-
         }
 
         .user-info {
@@ -484,11 +523,29 @@ sidebar.main-menu.active:not(.opening) {
     .user-info,
     .company-name {
         min-width: fit-content;
+        opacity: 1;
     }
 
     .user-bar,
     button.main-menu {
         min-width: var(--sidebar-width-active);
+
+        @media screen and (max-width: 576px) {
+            margin: 0;
+
+            .user-info {
+                min-width: 55%;
+                max-width: 58%;
+
+                >* {
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+
+                }
+            }
+
+        }
     }
 }
 
@@ -509,6 +566,11 @@ body {
                 width: 5vw;
             }
 
+            .nav-icon img {
+                width: calc(1rem + 0.5vw + 0.6vh);
+                height: auto;
+            }
+
             button.main-menu {
 
                 gap: 0 calc(0.5rem + 1vw);
@@ -523,6 +585,7 @@ body {
                     transition: transform ease-in-out 0.2s;
                     isolation: isolate;
                     transform: translate(0, 10%);
+
                 }
             }
 
@@ -553,10 +616,9 @@ body {
                 }
 
                 .user-info {
-                    opacity: 1;
-                    width: 5vw;
+                    // width: 5vw;
                     // min-width: fit-content;
-                    max-width: 100cqw;
+                    // max-width: var(--sidebar-width-active);
                 }
 
                 .user-menu {

@@ -41,3 +41,10 @@
         content: none;
     }
 }
+
+@mixin pri-sm-logo {
+    img.pri-sm-logo {
+        width: clamp(24px, 0.875rem + 0.5vw + 0.75vh, 75px);
+        height: auto;
+    }
+}

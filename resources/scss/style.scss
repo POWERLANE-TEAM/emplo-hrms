@@ -3,12 +3,7 @@
 @import 'font/font-size';
 @import 'scrollbar';
 
-img.pri-sm-logo {
-    width: clamp(3px, 0.875rem + 0.5vw + 0.75vh, 750px);
-    height: auto;
-}
-
-
+@include pri-sm-logo;
 
 header,
 sidebar {
