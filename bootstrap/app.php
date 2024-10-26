@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\Localization;
 use App\Http\Middleware\SaveVisitedPage;
+use App\Http\Middleware\SetDynamicGuard;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -34,6 +35,7 @@ return Application::configure(basePath: dirname(__DIR__))
         __DIR__ . '/../routes/channels.php',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        $middleware->prepend(SetDynamicGuard::class);
         $middleware->append(AddCspHeaders::class);
 
         $middleware->alias([
@@ -45,6 +47,9 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->redirectGuestsTo(function (Request $request) {
+
+
+
             if ($request->is('employee/*')) {
                 return 'employee/login';
             }

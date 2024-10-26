@@ -11,7 +11,7 @@ class Logout extends Component
 {
     protected $class;
 
-    protected $auth_broadcast_id;
+    protected $authBroadcastId;
 
     protected $nonce;
 
@@ -26,7 +26,7 @@ class Logout extends Component
         $this->use_guard = ChooseGuard::getByRequest();
 
         $user_session = session()->getId();
-        $this->auth_broadcast_id = hash('sha512', $user_session.Auth::guard($this->use_guard)->user()->email.$user_session);
+        $this->authBroadcastId = hash('sha512', $user_session . Auth::guard($this->use_guard)->user()->email . $user_session);
     }
 
     public function render()
@@ -35,7 +35,7 @@ class Logout extends Component
         return <<<'HTML'
         <form action="/{{ $this->use_guard }}/logout" method="POST" nonce="{{ $this->nonce }}">
             @csrf
-            <input type="hidden" name="auth_broadcast_id" value="{{$this->auth_broadcast_id}}">
+            <input type="hidden" name="authBroadcastId" value="{{$this->authBroadcastId}}">
             <button type="submit"  nonce="{{ $this->nonce }}" class="{{$this->class}}">
                 Logout
             </button>

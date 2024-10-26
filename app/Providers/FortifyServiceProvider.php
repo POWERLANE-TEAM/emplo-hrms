@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\User;
 use App\Enums\UserRole;
+use App\Enums\GuardType;
 use App\Enums\AccountType;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -64,7 +65,7 @@ class FortifyServiceProvider extends ServiceProvider
             public function toResponse($request)
             {
                 try {
-                    broadcast(new UserLoggedout($request->auth_broadcast_id))->toOthers();
+                    broadcast(new UserLoggedout($request->authBroadcastId))->toOthers();
                 } catch (\Throwable $th) {
                     // avoid Pusher error: cURL error 7: Failed to connect to localhost port 8080 after 2209 ms: Couldn't connect to server
                     /* when websocket server is not started */
@@ -78,59 +79,59 @@ class FortifyServiceProvider extends ServiceProvider
         {
             public function toResponse($request)
             {
-                $authenticated_user = Auth::guard(ChooseGuard::getByReferrer())->user();
+                $user = Auth::guard(ChooseGuard::getByReferrer())->user();
 
-                $user_with_role_and_account = User::where('user_id', $authenticated_user->user_id)
+                $userWithRoleAndAccount = User::where('user_id', $user->user_id)
                     ->with(['roles'])
                     ->first();
 
                 // Redirection to previously visited page before being prompt to login
                 // For example you visit /employee/payslip and you are not logged in
                 // Instead of redirecting to dashboard after successful login you will be redirected to /employee/payslip
-                $intended_url = Session::get('url.intended');
+                $intendedUrl = Session::get('url.intended');
 
-                if ($intended_url && $authenticated_user) {
-                    $route = Route::getRoutes()->match(Request::create($intended_url));
+                if ($intendedUrl && $user) {
+                    $route = Route::getRoutes()->match(Request::create($intendedUrl));
                     $middleware = $route->gatherMiddleware();
 
-                    $has_access = true;
+                    $hasAccess = true;
 
-                    foreach ($middleware as $middleware_item) {
+                    foreach ($middleware as $middlewareItem) {
 
-                        if (str_contains($middleware_item, 'role:')) {
-                            $role = explode(':', $middleware_item)[1];
-                            if (! $user_with_role_and_account->hasRole($role)) {
-                                $has_access = false;
+                        if (str_contains($middlewareItem, 'role:')) {
+                            $role = explode(':', $middlewareItem)[1];
+                            if (! $userWithRoleAndAccount->hasRole($role)) {
+                                $hasAccess = false;
                                 break;
                             }
                         }
 
-                        if (str_contains($middleware_item, 'permission:')) {
-                            $permission = explode(':', $middleware_item)[1];
-                            if (! $user_with_role_and_account->can($permission)) {
-                                $has_access = false;
+                        if (str_contains($middlewareItem, 'permission:')) {
+                            $permission = explode(':', $middlewareItem)[1];
+                            if (! $userWithRoleAndAccount->can($permission)) {
+                                $hasAccess = false;
                                 break;
                             }
                         }
                     }
 
-                    if ($has_access) {
+                    if ($hasAccess) {
                         return redirect()->intended();
                     }
                 }
 
-                if ($authenticated_user->account_type == AccountType::EMPLOYEE->value) {
+                if ($user->account_type == AccountType::EMPLOYEE->value) {
 
-                    if ($user_with_role_and_account->hasRole(UserRole::ADVANCED->value)) {
+                    if ($userWithRoleAndAccount->hasRole(UserRole::ADVANCED->value)) {
                         return redirect('/admin/dashboard');
                     }
 
-                    if ($user_with_role_and_account->hasRole([UserRole::BASIC->value, UserRole::INTERMEDIATE->value])) {
+                    if ($userWithRoleAndAccount->hasRole([UserRole::BASIC->value, UserRole::INTERMEDIATE->value])) {
                         return redirect('/employee/dashboard');
                     }
                 }
 
-                if ($authenticated_user->account_type == AccountType::APPLICANT->value) {
+                if ($user->account_type == AccountType::APPLICANT->value) {
                     return redirect('/applicant');
                 }
 
@@ -153,6 +154,22 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::verifyEmailView(fn() => app(UnverifiedEmail::class)->render());
 
         Fortify::loginView(function () {
+
+            $guard = null;
+
+            // Loop through all guards and check which one has authenticated user then use that guard
+            $guards = GuardType::values();
+            for ($i = 0; $i < count($guards); $i++) {
+                $guardType = $guards[$i];
+                $isAuthenticated = Auth::guard($guardType)->check();
+                if ($isAuthenticated) {
+                    $guard = $guardType;
+                    $view = "$guard.dashboard";
+                    /*TODO If web add check if guest or applicant? */
+                    return redirect()->route($view);
+                }
+            }
+
             $view = match (true) {
                 request()->is('employee/*') => 'livewire.auth.employees.login-view',
                 request()->is('admin/*') => 'livewire.auth.admins.login-view',

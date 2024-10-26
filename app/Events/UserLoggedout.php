@@ -13,14 +13,14 @@ class UserLoggedout implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    protected $auth_broadcast_id;
+    protected $authBroadcastId;
 
     /**
      * Create a new event instance.
      */
-    public function __construct($auth_broadcast_id)
+    public function __construct($authBroadcastId)
     {
-        $this->auth_broadcast_id = $auth_broadcast_id;
+        $this->authBroadcastId = $authBroadcastId;
     }
 
     /**
@@ -34,13 +34,13 @@ class UserLoggedout implements ShouldBroadcastNow
         //     new PrivateChannel('channel-name'),
         // ];
 
-        return new PrivateChannel('user_auth.'.$this->auth_broadcast_id);
+        return new PrivateChannel('user_auth.' . $this->authBroadcastId);
     }
 
     public function broadcastWith()
     {
         return [
-            'auth_broadcast_id' => $this->auth_broadcast_id,
+            'authBroadcastId' => $this->authBroadcastId,
         ];
     }
 }
