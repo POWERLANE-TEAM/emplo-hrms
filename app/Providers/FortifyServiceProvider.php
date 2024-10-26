@@ -2,29 +2,29 @@
 
 namespace App\Providers;
 
-use App\Actions\Fortify\CreateNewUser;
-use App\Actions\Fortify\ResetUserPassword;
-use App\Actions\Fortify\UpdateUserPassword;
-use App\Actions\Fortify\UpdateUserProfileInformation;
-use App\Enums\AccountType;
+use App\Models\User;
 use App\Enums\UserRole;
+use App\Enums\AccountType;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Laravel\Fortify\Fortify;
 use App\Events\UserLoggedout;
 use App\Http\Helpers\ChooseGuard;
-use App\Livewire\Auth\UnverifiedEmail;
-use App\Models\User;
-use Illuminate\Cache\RateLimiting\Limit;
-use Illuminate\Contracts\Auth\StatefulGuard;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
+use App\Actions\Fortify\CreateNewUser;
+use App\Livewire\Auth\UnverifiedEmail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Str;
-use Laravel\Fortify\Actions\AttemptToAuthenticate;
+use Illuminate\Cache\RateLimiting\Limit;
+use App\Actions\Fortify\ResetUserPassword;
+use App\Actions\Fortify\UpdateUserPassword;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Contracts\Auth\StatefulGuard;
 use Laravel\Fortify\Contracts\LoginResponse;
 use Laravel\Fortify\Contracts\LogoutResponse;
-use Laravel\Fortify\Fortify;
+use Laravel\Fortify\Actions\AttemptToAuthenticate;
+use App\Actions\Fortify\UpdateUserProfileInformation;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 
 class FortifyServiceProvider extends ServiceProvider
@@ -50,6 +50,8 @@ class FortifyServiceProvider extends ServiceProvider
                 ]
             );
         }
+
+        config(['fortify.prefix' => ChooseGuard::getByReferrer()]);
 
         $this->app->when([AuthenticatedSessionController::class, AttemptToAuthenticate::class])
             ->needs(StatefulGuard::class)
@@ -159,6 +161,10 @@ class FortifyServiceProvider extends ServiceProvider
 
             return view($view);
         });
+
+        Fortify::twoFactorChallengeView(function() {
+            return view('livewire.auth.two-factor-challenge-form-view');
+        });            
 
         RateLimiter::for('login', function (Request $request) {
             $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())) . '|' . $request->ip());
