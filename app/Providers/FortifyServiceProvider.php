@@ -157,15 +157,14 @@ class FortifyServiceProvider extends ServiceProvider
             $guard = null;
 
             // Loop through all guards and check which one has authenticated user then use that guard
-            foreach (GuardType::values() as $guardType) {
+            $guards = GuardType::values();
+            for ($i = 0; $i < count($guards); $i++) {
+                $guardType = $guards[$i];
                 $isAuthenticated = Auth::guard($guardType)->check();
-
                 if ($isAuthenticated) {
                     $guard = $guardType;
                     $view = "$guard.dashboard";
-
                     /*TODO If web add check if guest or applicant? */
-
                     return redirect()->route($view);
                     break;
                 }
