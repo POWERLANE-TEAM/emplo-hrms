@@ -7,6 +7,8 @@ use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
 use App\Enums\AccountType;
+use App\Enums\GuardType;
+use App\Enums\UserPermission;
 use App\Enums\UserRole;
 use App\Events\UserLoggedout;
 use App\Http\Helpers\ChooseGuard;
@@ -151,6 +153,24 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::verifyEmailView(fn() => app(UnverifiedEmail::class)->render());
 
         Fortify::loginView(function () {
+
+            $guard = null;
+
+            // Loop through all guards and check which one has authenticated user then use that guard
+            foreach (GuardType::values() as $guardType) {
+                $currentUser = Auth::guard($guardType)->user();
+
+                if ($currentUser) {
+                    $guard = $guardType;
+                    $view = "$guard.dashboard";
+
+                    /*TODO Add check if guest or applicant */
+
+                    return redirect()->route($view);
+                    break;
+                }
+            }
+
             $view = match (true) {
                 request()->is('employee/*') => 'livewire.auth.employees.login-view',
                 request()->is('admin/*') => 'livewire.auth.admins.login-view',
