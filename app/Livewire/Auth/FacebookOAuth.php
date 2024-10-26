@@ -55,11 +55,11 @@ class FacebookOAuth extends Component
 
             $guest = $this->createGuest();
 
-            $new_user = $this->createUserAccount($guest);
+            $newUser = $this->createUserAccount($guest);
 
             DB::commit();
 
-            Auth::login($new_user);
+            Auth::login($newUser);
 
             return redirect('/hiring');
 
@@ -92,16 +92,16 @@ class FacebookOAuth extends Component
 
     private function createUserAccount(Guest $guest)
     {
-        $new_user = $guest->account()->create([
+        $newUser = $guest->account()->create([
             'email' => $this->payload->getEmail() ?? null,
             'account_type' => AccountType::APPLICANT,
             'account_id' => $guest->guest_id,
-            'password' => Hash::make(Str::random()), // random placeholder shit
+            'password' => Hash::make(Str::random()),
             'photo' => $this->payload->getAvatar(),
             'facebook_id' => $this->payload->getId(),
             'user_status_id' => UserStatus::ACTIVE,
         ]);
 
-        return $new_user;
+        return $newUser;
     }
 }
