@@ -17,29 +17,27 @@ class Login extends Component
     #[Validate('required')]
     public $password = '';
 
-    public $remember = false;
-
-    public function store(AuthenticatedSessionController $session_controller)
+    public function store(AuthenticatedSessionController $sessionController)
     {
-
-        $login_attempt = [
+        $loginAttempt = [
             'email' => $this->email,
             'password' => $this->password,
         ];
 
-        if (! Auth::validate($login_attempt)) {
+        if (! Auth::validate($loginAttempt)) {
 
             $this->password = '';
+
             throw ValidationException::withMessages([
                 'credentials' => 'Incorrect credentials or user does not exist.',
             ]);
         }
 
-        $login_request = new LoginRequest;
+        $loginRequest = new LoginRequest;
+        $loginRequest->merge($loginAttempt);
+        $loginRequest->setLaravelSession(app('session')->driver());
 
-        $login_request->merge($login_attempt);
-
-        $session_controller->store($login_request, $this->remember);
+        $sessionController->store($loginRequest);
     }
 
     public function render()
