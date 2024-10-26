@@ -5,7 +5,6 @@ namespace App\Providers;
 use App\Models\User;
 use App\Enums\UserRole;
 use Laravel\Pulse\Facades\Pulse;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\Facades\Storage;
@@ -66,10 +65,10 @@ class AppServiceProvider extends ServiceProvider
 
         /**
          * Store strings representing the models.
-         * 
-         * Instead of inserting import names of App\Models\ModelName in the column_type, we 
+         *
+         * Instead of inserting import names of App\Models\ModelName in the column_type, we
          * can store strings representing the model (e.g.: 'guest' => 'App\Models\Guest').
-         * 
+         *
          * @see https://laravel.com/docs/11.x/eloquent-relationships#custom-polymorphic-types
          */
         Relation::enforceMorphMap([
@@ -92,10 +91,10 @@ class AppServiceProvider extends ServiceProvider
          * - making requests
          * - experiencing slow endpoints
          * - dispatching jobs
-         * 
+         *
          * @see https://laravel.com/docs/11.x/pulse#dashboard-resolving-users
          */
-        Pulse::user(fn ($user) => [
+        Pulse::user(fn($user) => [
             'name' => $user->account->full_name,
             'extra' => $user->email,
             'avatar' => $user->photo ?? Storage::url('icons/default-avatar.png'),
@@ -103,10 +102,10 @@ class AppServiceProvider extends ServiceProvider
 
         /**
          * This will only allow user with advanced role to access the pulse dashboard.
-         * 
+         *
          * @see https://laravel.com/docs/11.x/pulse#dashboard-authorization
          */
-        Gate::define('viewPulse', function(User $user) {
+        Gate::define('viewPulse', function (User $user) {
             return $user->hasRole(UserRole::ADVANCED);
         });
     }
