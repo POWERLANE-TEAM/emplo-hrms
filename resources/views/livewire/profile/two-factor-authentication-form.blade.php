@@ -1,5 +1,3 @@
-@use('App\Enums\UserRole')
-
 <section class="my-5">
     <div class="card">
         <div class="card-header">
@@ -12,23 +10,26 @@
                 @if ($this->enabled)
                     @if ($showingConfirmation)
                         {{ __('Finish enabling two factor authentication.') }}
-                    @else
-                        {{ __('You have enabled two factor authentication.') }}
                     @endif
                 @else
-                    {{ __('You have not enabled two factor authentication.') }}
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <p class="mb-0">{{ __('Security Alert!') }}</p>
+                        <hr>
+                        <div class="small mb-0">{{ __('We strongly recommend enabling two factor authentication for an additional layer of security to your account.') }}</div>
+                        <button type="button" class="btn-sm btn-close shadow-none" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
                 @endif
             </h6>
 
-            <div class="mt-3">
-                <p class="max-w-xl text-md text-gray-600">
+            <div class="mt-0">
+                <p class="text-muted">
                     {{ __('When two factor authentication is enabled, you will be prompted for a secure, random token during authentication.') }}
                 </p>                
             </div>
 
             @if ($this->enabled)
                 @if ($showingQrCode)
-                    <div class="mt-4">
+                    <div>
                         <div class="alert alert-info">
                             <p class="fw-semibold">
                                 @if ($showingConfirmation)
@@ -39,7 +40,7 @@
                             </p>
                         </div>
 
-                        <div class="d-flex justify-content-center">
+                        <div class="d-flex justify-content-start">
                             {!! $this->user->twoFactorQrCodeSvg() !!}
                         </div>
                         
@@ -59,21 +60,21 @@
                 @endif
 
                 @if ($showingRecoveryCodes)
-                    <div class="alert alert-warning mt-4">
+                    <div class="alert alert-info">
                         <p>{{ __('Store these recovery codes securely. They can be used to recover access to your account if you lose your authentication device.') }}</p>
-                        <ul class="list-group">
-                            @foreach (json_decode(decrypt($this->user->two_factor_recovery_codes), true) as $code)
-                                <li class="list-group-item">{{ $code }}</li>
-                            @endforeach
-                        </ul>
                     </div>
+                    <ul class="list-group list-group-flush">
+                        @foreach (json_decode(decrypt($this->user->two_factor_recovery_codes), true) as $code)
+                            <li class="list-group-item">{{ $code }}</li>
+                        @endforeach
+                    </ul>
                 @endif
             @endif
 
-            <div class="mt-5">
+            <div class="mt-4">
                 @if (! $this->enabled)
                     <x-modals.confirms-password wire:then="enableTwoFactorAuthentication">
-                        <button class="btn btn-primary" type="button" wire:loading.attr="disabled">
+                        <button class="btn btn-primary py-2" type="button" wire:loading.attr="disabled">
                             {{ __('Enable Two-Factor Authentication') }}
                         </button>
                     </x-modals.confirms-password>
@@ -86,19 +87,19 @@
                         </x-modals.confirms-password>
                     @elseif ($showingConfirmation)
                         <x-modals.confirms-password wire:then="confirmTwoFactorAuthentication">
-                            <button class="btn btn-success mr-3" wire:loading.attr="disabled">
-                                {{ __('Confirm') }}
+                            <button class="btn btn-primary mr-3" wire:loading.attr="disabled">
+                                {{ __('Confirm OTP') }}
                             </button>
                         </x-modals.confirms-password>
                     @else
                         <x-modals.confirms-password wire:then="showRecoveryCodes">
-                            <button class="btn btn-secondary mr-3">
+                            <button class="btn btn-primary mr-3">
                                 {{ __('Show Recovery Codes') }}
                             </button>
                         </x-modals.confirms-password>
                     @endif
 
-                    @unless ($this->user->hasRole(UserRole::ADVANCED))
+                    @unless ($this->user->hasRole(\App\Enums\UserRole::ADVANCED))
                         @if ($showingConfirmation)
                             <x-modals.confirms-password wire:then="disableTwoFactorAuthentication">
                                 <button class="btn btn-danger" wire:loading.attr="disabled">
