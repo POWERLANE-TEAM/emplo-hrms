@@ -128,9 +128,7 @@
                 <td><button class="btn btn-primary">Upload</button></td>
             </tr>
         </tbody>
-
-
-
-
     </table>
+
+    <livewire:tables.hrmanager.applicants-table />
 @endsection

@@ -1,3 +1,4 @@
+import 'power-grid';
 import '../../script.js';
 import GLOBAL_CONST from '../../global-constant.js';
 import initSidebar from '../side-top-bar.js';

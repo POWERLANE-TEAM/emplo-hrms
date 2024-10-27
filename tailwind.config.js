@@ -6,8 +6,11 @@ export default {
     content: [
         "./resources/**/*.blade.php",
         "./resources/**/*.js",
+        './app/Livewire/**/*Table.php',
+        './vendor/power-components/livewire-powergrid/resources/views/**/*.php',
+        './vendor/power-components/livewire-powergrid/src/Themes/Tailwind.php'
     ],
-    prefix: 'tw-', /* Added to differentiate tailwind css */
+    // prefix: 'tw-', /* Added to differentiate tailwind css */
     theme: {
         extend: {},
     },
@@ -16,4 +19,5 @@ export default {
     },
     plugins: [
     ],
+    darkMode: 'class',
 }

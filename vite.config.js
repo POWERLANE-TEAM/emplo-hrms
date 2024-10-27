@@ -78,6 +78,11 @@ export default defineConfig({
             ]
         })
     ],
+    resolve: {
+        alias: {
+            'power-grid': "/vendor/power-components/livewire-powergrid/dist/powergrid",
+        },
+    },
     server: {
         host: localIpAddress,
         hmr: {
