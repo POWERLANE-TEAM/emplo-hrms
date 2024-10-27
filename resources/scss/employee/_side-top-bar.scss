@@ -10,7 +10,7 @@
     --main-menu-padding-top: clamp(1rem, 0.5rem + 1dvh, 4rem);
     --sidebar-width: clamp(48px, 16px + 1.5rem + 5vw, 200px);
     --sidebar-width-active: clamp(200px + 2rem, 128px + 1.5rem + 10vw, 696px + 4rem);
-    --topbar-padding-x: clamp(1rem, 0.5rem + 5dvw, 4rem);
+    --topbar-padding-x: clamp(1rem, 3.5dvw + 2.5vh, 10rem);
     --topnav-padding-x: clamp(1.25rem, 0.63rem + 2dvw, 4rem);
     --topnav-padding-y: clamp(0.5rem, 0.25rem + 0.5dvw, 2rem);
 }
@@ -399,7 +399,7 @@ sidebar.main-menu {
 
 div:has(>.topnav) {
     /* Base style for top bar */
-    z-index: 1000;
+    z-index: 900;
     position: absolute;
     display: flex;
     top: 0;
