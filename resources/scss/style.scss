@@ -1,11 +1,9 @@
+@import 'utils';
+@import 'core';
 @import 'font/font-size';
+@import 'scrollbar';
 
-img.pri-sm-logo {
-    width: clamp(3px, 0.875rem + 0.5vw + 0.75vh, 750px);
-    height: auto;
-}
-
-
+@include pri-sm-logo;
 
 header,
 sidebar {
@@ -22,7 +20,7 @@ sidebar {
                 padding: clamp(.25rem, .1rem + .2vw + .3vh, 2rem) clamp(.25rem, .1rem + .15vw + .2vh, 2rem);
                 transform: translateY(-5%);
                 background-color: var(--main-white);
-                border-radius: min(0.8cqw, 0.75rem);
+                border-radius: min(0.5cqh, 0.75rem);
             }
         }
     }
@@ -80,12 +78,6 @@ body {
 
 main {
     margin-bottom: calc(2rem + 1vh);
-}
-
-%rm-dropdown-triangle {
-    button::after {
-        content: none;
-    }
 }
 
 .icon {

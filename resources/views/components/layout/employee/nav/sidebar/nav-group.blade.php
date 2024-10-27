@@ -11,7 +11,7 @@
         <span class="small ">{{ $txt_collapsed }} <span class=" small truncate">{{ $txt_expanded }}</span></span>
     </header>
     <nav class="ps-2">
-        <ul role="menu">
+        <ul class="d-grid" role="menu">
 
             {{ $slot }}
 

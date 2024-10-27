@@ -1,0 +1,32 @@
+[class*="-custom-scrollbar"] {
+    &::-webkit-scrollbar-track {
+        background-color: inherit;
+    }
+
+    &::-webkit-scrollbar {
+        background-color: inherit;
+    }
+
+    &::-webkit-scrollbar-track-piece {
+        background-color: inherit;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: currentColor;
+        visibility: hidden;
+        border-radius: 1cqw;
+    }
+
+    &:hover,
+    &:has(:focus-within) {
+        &::-webkit-scrollbar-thumb {
+            visibility: visible;
+        }
+    }
+}
+
+.thin-custom-scrollbar {
+    &::-webkit-scrollbar {
+        width: calc(0.25rem + 0.3vw);
+    }
+}

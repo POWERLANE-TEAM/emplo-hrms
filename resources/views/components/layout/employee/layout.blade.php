@@ -48,6 +48,7 @@
     <x-no-script-body />
 
     <!-- Styles -->
+    @vite(['resources/css/style.css'])
     @stack('pre-styles')
     @stack('styles')
 
@@ -63,8 +64,8 @@
     @yield('before-nav')
 
     @if (!View::hasSection('header-nav'))
-        <x-layout.employee.nav.main-menu :sidebar_expanded="true" class="position-sticky top-0 start-0"
-            :user="$user"></x-layout.employee.nav.main-menu>
+        <x-layout.employee.nav.main-menu class="position-sticky top-0 start-0" :user="$user" :userPhoto="$userPhoto"
+            :defaultAvatar="$defaultAvatar"></x-layout.employee.nav.main-menu>
     @else
         @yield('header-nav')
     @endif

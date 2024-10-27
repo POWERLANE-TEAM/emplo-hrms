@@ -1,0 +1,50 @@
+@mixin max-width($value) {
+    // $value: min($value, 100);
+    max-width: #{$value}+"%";
+    max-width: #{$value}vw;
+    max-width: #{$value}dvw;
+}
+
+@mixin min-width($value) {
+    // $value: min($value, 100);
+    min-width: #{$value}+"%";
+    min-width: #{$value}vw;
+    min-width: #{$value}dvw;
+}
+
+@mixin max-height($value) {
+    // $value: min($value, 100);
+    max-height: #{$value}+"%";
+    max-height: #{$value}vh;
+    max-height: #{$value}dvh;
+}
+
+@mixin min-height($value) {
+    // $value: min($value, 100);
+    min-height: #{$value}+"%";
+    min-height: #{$value}vh;
+    min-height: #{$value}dvh;
+}
+
+@mixin line-clamp-y($max-line-clamp) {
+    --max-line-clamp: #{$max-line-clamp};
+    display: -webkit-box;
+    line-clamp: var(--max-line-clamp);
+    -webkit-line-clamp: var(--max-line-clamp);
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+%rm-dropdown-triangle {
+    button::after {
+        content: none;
+    }
+}
+
+@mixin pri-sm-logo {
+    img.pri-sm-logo {
+        width: clamp(24px, 0.875rem + 0.5vw + 0.75vh, 75px);
+        height: auto;
+    }
+}
