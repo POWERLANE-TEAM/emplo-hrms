@@ -51,7 +51,7 @@
     @stack('pre-styles')
     @stack('styles')
 
-    @if (!View::hasSection('bootstrap-script'))
+    @if (! View::hasSection('bootstrap-script'))
         @vite(['node_modules/bootstrap/dist/js/bootstrap.bundle.min.js'])
     @else
         @yield('bootstrap-script')
@@ -64,7 +64,7 @@
 
     @if (!View::hasSection('header-nav'))
         <x-layout.employee.nav.main-menu :sidebar_expanded="true" class="position-sticky top-0 start-0"
-            :user="$user"></x-layout.employee.nav.main-menu>
+            :user="auth()->user()"></x-layout.employee.nav.main-menu>
     @else
         @yield('header-nav')
     @endif
