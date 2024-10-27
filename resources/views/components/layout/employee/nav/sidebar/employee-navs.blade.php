@@ -19,8 +19,6 @@
 
     {{-- Employee, HR Manager, Supervisor --}}
     @php
-        // dump($user);
-        // dump($user->hasPermissionTo(UserPermission::VIEW_ALL_ATTENDANCE));
         $nav_attendance_order = $user->hasPermissionTo(UserPermission::VIEW_ALL_ATTENDANCE) ? 4 : 2;
     @endphp
     @canAny([UserPermission::VIEW_ATTENDANCE, UserPermission::VIEW_ALL_ATTENDANCE])
