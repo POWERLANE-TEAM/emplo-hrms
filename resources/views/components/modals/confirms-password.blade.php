@@ -24,11 +24,10 @@
                 <div class="modal-body">
                     <div class="mb-3" x-data="{}" x-on:confirming-password.window="setTimeout(() => $refs.confirmable_password.focus(), 250)">
                         <div for="content" class="col-form-label">{{ $content }}</div>
-                        <x-form.input-text type="password" label="{{ __('Password:') }}" autocomplete="current-password" name="confirmablePassword" id="confirmable_password" x-ref="confirmable_password" class="form-control" />
-                        @includeWhen($errors->first('confirmable_password'), 'components.form.input-feedback', [
-                            'feedback_id' => 'confirmable_password', 
-                            'message' => $errors->first('confirmable_password')
-                        ])                    
+                        <x-form.input-text type="password" label="{{ __('Password:') }}" autocomplete="current-password" name="confirmablePassword" x-ref="confirmable_password" class="form-control" />
+                        @error('confirmable_password')
+                            <div class="text-danger mt-1">{{ $message }}</div>
+                        @enderror                    
                     </div>
                 </div>
                 <div class="modal-footer">
