@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\User;
 use App\Enums\UserRole;
+use App\Enums\UserPermission;
 use Laravel\Pulse\Facades\Pulse;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Vite;
@@ -106,6 +107,13 @@ class AppServiceProvider extends ServiceProvider
          * @see https://laravel.com/docs/11.x/pulse#dashboard-authorization
          */
         Gate::define('viewPulse', function (User $user) {
+            return $user->hasRole(UserRole::ADVANCED);
+        });
+
+        /**
+         * This will only allow user with advanced role to access the admin dashboard.
+         */
+        Gate::define(UserPermission::VIEW_ADMIN_DASHBOARD, function (User $user) {
             return $user->hasRole(UserRole::ADVANCED);
         });
     }
