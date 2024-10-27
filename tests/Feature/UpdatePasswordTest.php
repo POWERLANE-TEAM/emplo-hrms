@@ -12,32 +12,22 @@ class UpdatePasswordTest extends TestCase
 {
     public function test_password_can_be_updated(): void
     {
-        $user = User::find(2);
-
-        $user->password = Hash::make('password');
-        $user->save();
-
-        $this->actingAs($user);
+        $this->actingAs($user = User::factory()->create());
 
         Livewire::test(UpdatePasswordForm::class)
             ->set('state', [
-                'current_password' => 'password',
-                'password' => 'new-password',
-                'password_confirmation' => 'new-password',
+                'current_password' => 'UniqP@ssw0rd',
+                'password' => 'newUniqP@ssw0rd',
+                'password_confirmation' => 'UniqP@ssw0rd',
             ])
             ->call('updatePassword');
 
-        $this->assertTrue(Hash::check('new-password', $user->fresh()->password));
+        $this->assertTrue(Hash::check('UniqP@ssw0rd', $user->fresh()->password));
     }
 
     public function test_current_password_must_be_correct(): void
     {
-        $user = User::find(2);
-
-        $user->password = Hash::make('password');
-        $user->save();
-        
-        $this->actingAs($user);
+        $this->actingAs($user = User::factory()->create());
 
         Livewire::test(UpdatePasswordForm::class)
             ->set('state', [
@@ -48,27 +38,22 @@ class UpdatePasswordTest extends TestCase
             ->call('updatePassword')
             ->assertHasErrors(['current_password']);
 
-        $this->assertTrue(Hash::check('password', $user->fresh()->password));
+        $this->assertTrue(Hash::check('UniqP@ssw0rd', $user->fresh()->password));
     }
 
     public function test_new_passwords_must_match(): void
     {
-        $user = User::find(2);
-
-        $user->password = Hash::make('password');
-        $user->save();
-        
-        $this->actingAs($user);
+        $this->actingAs($user = User::factory()->create());
 
         Livewire::test(UpdatePasswordForm::class)
             ->set('state', [
-                'current_password' => 'password',
+                'current_password' => 'UniqP@ssw0rd',
                 'password' => 'new-password',
                 'password_confirmation' => 'wrong-password',
             ])
             ->call('updatePassword')
             ->assertHasErrors(['password']);
 
-        $this->assertTrue(Hash::check('password', $user->fresh()->password));
+        $this->assertTrue(Hash::check('UniqP@ssw0rd', $user->fresh()->password));
     }
 }

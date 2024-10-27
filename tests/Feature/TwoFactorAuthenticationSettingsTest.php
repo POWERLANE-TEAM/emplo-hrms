@@ -16,9 +16,7 @@ class TwoFactorAuthenticationSettingsTest extends TestCase
             $this->markTestSkipped('Two factor authentication is not enabled.');
         }
 
-        $user = User::find(2);
-
-        $this->actingAs($user);
+        $this->actingAs($user = User::factory()->create());
 
         $this->withSession(['auth.password_confirmed_at' => time()]);
 
@@ -37,9 +35,7 @@ class TwoFactorAuthenticationSettingsTest extends TestCase
             $this->markTestSkipped('Two factor authentication is not enabled.');
         }
 
-        $user = User::find(2);
-
-        $this->actingAs($user);
+        $this->actingAs($user = User::factory()->create());
 
         $this->withSession(['auth.password_confirmed_at' => time()]);
 
@@ -61,9 +57,7 @@ class TwoFactorAuthenticationSettingsTest extends TestCase
             $this->markTestSkipped('Two factor authentication is not enabled.');
         }
 
-        $user = User::find(2);
-
-        $this->actingAs($user);
+        $this->actingAs($user = User::factory()->create());
 
         $this->withSession(['auth.password_confirmed_at' => time()]);
 
