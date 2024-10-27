@@ -49,7 +49,7 @@ class ComposerServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        View::composer($this->views_needs_user_data, AuthenticatedUserComposer::class);
+        // View::composer($this->views_needs_user_data, AuthenticatedUserComposer::class);
         View::composer('*', function ($view) {
             $guard = Auth::guard(ChooseGuard::getByRequest());
 
