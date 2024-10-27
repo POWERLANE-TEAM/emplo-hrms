@@ -10,7 +10,7 @@
 
 @aware(['icon_size' => '31px', 'icon_ratio' => '1/1'])
 
-<li role="none" {{ $attributes->merge(['class' => 'my-3 sidebar-item']) }}>
+<li role="none" {{ $attributes->merge(['class' => 'my-1 sidebar-item']) }}>
     <x-nav-link href="{{ $href }}" active="{{ $active }}" rel=""
         class="d-flex align-items-center nav-link " role="menuitem">
         <div class="nav-icon">
