@@ -129,6 +129,4 @@
             </tr>
         </tbody>
     </table>
-
-    <livewire:tables.hrmanager.applicants-table />
 @endsection
