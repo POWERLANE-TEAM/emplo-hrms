@@ -1,6 +1,6 @@
 @use('\App\Enums\UserRole', 'EnumsUserRole')
 @props([
-    'sidebar_expanded' => true,
+    'sidebar_expanded' => false,
     'icon_size' => '25',
     'icon_ratio' => '1/1',
     'user',
