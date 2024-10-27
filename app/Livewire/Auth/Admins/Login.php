@@ -19,6 +19,8 @@ class Login extends Component
 
     public function store(AuthenticatedSessionController $sessionController)
     {
+        $this->validate();
+
         $loginAttempt = [
             'email' => $this->email,
             'password' => $this->password,
@@ -26,7 +28,7 @@ class Login extends Component
 
         if (! Auth::validate($loginAttempt)) {
 
-            $this->password = '';
+            $this->reset('password');
 
             throw ValidationException::withMessages([
                 'credentials' => 'Incorrect credentials or user does not exist.',
