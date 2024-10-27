@@ -12,7 +12,8 @@
 <div {{ $attributes->merge(['class' => 'container-fluid main-menu-container text-white']) }}>
     <x-layout.employee.nav.sidebar sidebar_expanded="{{ $sidebar_expanded }}" class="shadow">
 
-        @include('components.layout.employee.nav.sidebar.employee-navs')
+
+        @includeWhen($guard->getName() == 'employee', 'components.layout.employee.nav.sidebar.employee-navs')
 
         @include('components.layout.employee.nav.sidebar.admin-navs')
 

@@ -21,6 +21,7 @@ class ComposerServiceProvider extends ServiceProvider
         'components.layout.employee.layout',
         'components.layout.applicant.layout',
         'components.layout.app',
+        'employee.*.index',
     ];
 
 
