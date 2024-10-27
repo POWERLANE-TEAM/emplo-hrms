@@ -1,20 +1,25 @@
-@extends('layout.employee', ['description' => 'Employee Dashboard', 'nonce' => $nonce])
+@extends('components.layout.employee.layout', ['description' => 'Employee Dashboard', 'nonce' => $nonce])
 
 @section('head')
     <title>Home Page</title>
 
-    {{-- Critical Assets that will cause cumulative shift if late loaded --}}
     <script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
     <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
-    <script nonce="{{ $nonce }}">
-        lucide.createIcons();
-    </script>
-
-    @vite(['resources/js/employee/hr/dashboard.js'])
 @endsection
 
+@pushOnce('pre-scripts')
+@endPushOnce
+
+@pushOnce('scripts')
+    @vite(['resources/js/employee/basic/dashboard.js'])
+@endPushOnce
+
+@pushOnce('styles')
+    @vite(['resources/css/employee/basic/dashboard.css'])
+@endPushOnce
+
 @section('content')
-    {{-- <div class="fs-2 fw-bold mb-5 ms-n1">Good afternoon, {{ $user->first_name }}!</div> --}}
+    <div class="fs-2 fw-bold mb-5 ms-n1">Good afternoon, {{ $guard->user()->account->first_name }}!</div>
 
     <section class=" mb-5 d-flex gap-5">
         <div class="card bg-body-secondary col-md-4 border-0 p-md-5">

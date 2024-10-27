@@ -2,17 +2,18 @@ import addGlobalListener from '../global-event-listener.js';
 
 export function handleMobileSidebar(mainSideBar) {
 
-    if (window.innerWidth < 576 && mainSideBar.classList.contains('active')) {
+    document.addEventListener('click', (event) => {
 
-        document.addEventListener('click', (event) => {
+        if (window.innerWidth < 576 && mainSideBar.classList.contains('active') && !mainSideBar.classList.contains('opening')) {
             if (mainSideBar.contains(event.target)) {
                 return;
             }
 
             mainSideBar.classList.remove('active');
+        }
 
-        }, { once: true });
-    }
+    });
+
 }
 
 export default function initSidebar() {
@@ -34,7 +35,7 @@ export default function initSidebar() {
             });
         }
 
-        handleMobileSidebar(mainSideBar);
+        // handleMobileSidebar(mainSideBar);
 
     });
 
@@ -51,6 +52,12 @@ export default function initSidebar() {
                         link.setAttribute('tabindex', '-1');
                     });
                 }
+
+                mainSideBar.classList.add('closing');
+
+                setTimeout(() => {
+                    mainSideBar.classList.remove('closing');
+                }, 250);
 
             } else {
                 mainSideBar.classList.add('active', 'opening');
