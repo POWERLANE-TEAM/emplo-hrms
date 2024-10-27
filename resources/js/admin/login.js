@@ -102,10 +102,7 @@ function validateUserLoginForm(userLoginFormString = `form[action='/login']`) {
         userLoginBool.isValidPassword = passwordValidator.validatePassword(`${userLoginFormString} input[name="password"]`);
     }
 
-    // console.log(userLoginFormString)
-    console.log(userLoginBool)
-    // console.log(consentAgreed)
-    // console.log(isWeakPassword)
+
     if (!userLoginBool.isValidEmail) {
         userLoginBtn.disabled = true;
     } else
@@ -140,6 +137,6 @@ const signUpEvent = new GlobalListener('click', document, `${userLoginFormString
     END: CHECK SIGNUP FORM
 ------------------------------------------------------- */
 
-// $("#form_id").trigger("reset");
+
 
 

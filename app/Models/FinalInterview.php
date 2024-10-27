@@ -19,24 +19,31 @@ class FinalInterview extends Model
         'updated_at',
     ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | Define model relationships below
-    |--------------------------------------------------------------------------
-    */
-
-    // returns the application of the final interview
+    /**
+     * Get the job application that owns the final interview.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function application(): BelongsTo
     {
         return $this->belongsTo(Application::class, 'application_id', 'application_id');
     }
 
-    // returns the employee/final interviewer of the final interview
+    /**
+     * Get the employee who is the interviewer of the final interview.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function interviewer(): BelongsTo
     {
         return $this->belongsTo(Employee::class, 'final_interviewer', 'employee_id');
     }
 
+    /**
+     * The interview ratings that belong to the final interview.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function ratings(): BelongsToMany
     {
         return $this->belongsToMany(InterviewRating::class, 'final_interview_ratings', 'final_interview_id', 'rating_id')

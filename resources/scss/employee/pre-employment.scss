@@ -34,6 +34,36 @@ main.container {
     }
 }
 
+table.table {
+    border-collapse: separate;
+    border-spacing: 0 50px;
+
+    tr.outline {
+        outline: 2px solid var(--bs-table-border-color);
+    }
+
+    &.table-hover {
+        tbody {
+            tr.no-hover:hover {
+                // pointer-events: none;
+                background-color: var(--bs-body-bg);
+                --bs-table-bg-state: var(--bs-body-bg);
+
+                &>* {
+                    background-color: var(--bs-body-bg);
+                    --bs-table-bg-state: var(--bs-body-bg);
+                }
+
+            }
+        }
+    }
+
+}
+
+.modal-header {
+    text-wrap-style: pretty;
+}
+
 .dropzone {
     &.dropzone-previews {
         border: none;

@@ -1,7 +1,3 @@
-@php
-    $nonce = csp_nonce();
-@endphp
-
 @extends('components.layout.app', ['description' => 'Guest Layout'])
 
 @pushOnce('pre-scripts')

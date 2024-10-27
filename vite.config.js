@@ -1,13 +1,47 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
+import os from 'os';
+
+function getLocalIpAddress() {
+    const interfaces = os.networkInterfaces();
+
+    // Prioritize Wi-Fi adapters based on common names
+    const wifiNames = ['Wi-Fi', 'wlan', 'WiFi'];
+
+    // Check Wi-Fi interfaces first
+    for (const name of Object.keys(interfaces)) {
+        if (wifiNames.some(wifiName => name.toLowerCase().includes(wifiName.toLowerCase()))) {
+            for (const iface of interfaces[name]) {
+                if (iface.family === 'IPv4' && !iface.internal && iface.address !== '127.0.0.1') {
+                    return iface.address;
+                }
+            }
+        }
+    }
+
+    // If no Wi-Fi interface is found, fallback to the first NIC
+    for (const name of Object.keys(interfaces)) {
+        for (const iface of interfaces[name]) {
+            if (iface.family === 'IPv4' && !iface.internal && iface.address !== '127.0.0.1') {
+                return iface.address;
+            }
+        }
+    }
+
+    return 'localhost';
+}
+
+
+
+const localIpAddress = getLocalIpAddress();
 
 export default defineConfig({
     plugins: [
         laravel({
             input: [
-                'vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js',
-                'vendor/node_modules/chartjs-plugin-annotation/dist/chartjs-plugin-annotation.min.js',
+                'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js',
+                'node_modules/chartjs-plugin-annotation/dist/chartjs-plugin-annotation.min.js',
                 // 'resources/js/app.js',
                 'resources/js/hiring.js',
                 'resources/js/applicant/login.js',
@@ -44,16 +78,10 @@ export default defineConfig({
             ]
         })
     ],
-    resolve: {
-        alias: {
-            'laravel-echo': '/vendor/node_modules/laravel-echo/dist/echo.js',
-            'pusher-js': '/vendor/node_modules/pusher-js/dist/web/pusher.js',
-        },
-    },
     server: {
-        host: process.env.APP_URL,
+        host: localIpAddress,
         hmr: {
-            host: 'localhost',
+            host: localIpAddress,
         },
     },
 });

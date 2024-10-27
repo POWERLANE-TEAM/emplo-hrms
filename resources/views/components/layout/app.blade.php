@@ -1,15 +1,9 @@
-@php
-    $nonce = csp_nonce();
-@endphp
-
 @props([
     'no_crawl' => false,
     'description' => '',
     'main_cont_class' => '',
     'font_weights' => [' 400 ', '500', '700'],
 ])
-
-{{-- {{ dd($font_weights) }} --}}
 
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -61,7 +55,7 @@
     @stack('styles')
 
     @if (!View::hasSection('bootstrap-script'))
-        @vite(['vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js'])
+        @vite(['node_modules/bootstrap/dist/js/bootstrap.bundle.min.js'])
     @else
         @yield('bootstrap-script')
     @endif

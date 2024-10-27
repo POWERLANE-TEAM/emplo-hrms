@@ -17,6 +17,11 @@ class InterviewRating extends Model
         'rating_desc',
     ];
 
+    /**
+     * The final interview ratings that belong to the interview rating code.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function finalRatings(): BelongsToMany
     {
         return $this->belongsToMany(FinalInterviewRating::class, 'final_interview_ratings', 'rating_id', 'final_interview_id')

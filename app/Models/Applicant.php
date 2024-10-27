@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Applicant extends Model
 {
@@ -19,21 +20,53 @@ class Applicant extends Model
         'updated_at',
     ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | Define model relationships below
-    |--------------------------------------------------------------------------
-    */
+    /**
+     * Get the applicant's full name.
+     * 
+     * @return string
+     */
+    public function getFullNameAttribute()
+    {
+        return ucwords("{$this->first_name} {$this->middle_name} {$this->last_name}");
+    }
 
-    // returns the account of applicant
+    /**
+     * Get the account associated with the applicant.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+     */
     public function account(): MorphOne
     {
         return $this->morphOne(User::class, 'account');
     }
 
-    // returns the job application of applicant
+    /**
+     * Get the job application associated with the applicant.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function application(): HasOne
     {
         return $this->hasOne(Application::class, 'applicant_id', 'applicant_id');
+    }
+
+    /**
+     * Get the permanent barangay of the applicant.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function permanentBarangay(): BelongsTo
+    {
+        return $this->belongsTo(Barangay::class, 'permanent_barangay', 'barangay_code');
+    }
+
+    /**
+     * Get the present barangay of the applicant.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function presentBarangay(): BelongsTo
+    {
+        return $this->belongsTo(Barangay::class, 'present_barangay', 'barangay_code');
     }
 }

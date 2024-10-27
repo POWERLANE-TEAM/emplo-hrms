@@ -1,14 +1,27 @@
 :root {
-    --base-font-size: clamp(1rem, 0.50rem + 0.005vw + 0.88vh, 2.75rem);
+    --base-font-size: clamp(0.75rem, 0.453rem + 0.375vw, 2.75rem);
+    /* 14.5 */
 }
 
 $font-sizes: (
-    1: clamp(2.5rem, 2rem + 0.005vw + 0.90vh, 2rem),
-    2: clamp(2rem, 1.5rem + 0.003vw + 0.90vh, 2rem),
-    3: clamp(1.75rem, 1.25rem + 0.003vw + 0.90vh, 2rem),
-    4: clamp(1.5rem, 1rem + 0.003vw + 0.90vh, 2rem),
-    5: clamp(1.25rem, 0.75rem + 0.005vw + 0.90vh, 2rem),
+    1: clamp(1.75rem, 1.4rem + 0.525vw + 0.15vh, 4.25rem),
+    /* 34 */
+
+    2: clamp(1.25rem, 1rem + 0.5vw + 0.1vh, 3.5rem),
+    /* 26 */
+
+    3: clamp(1rem, 0.9rem + 0.45vw + 0.1vh, 3.25rem),
+    /* 24 */
+
+    4:clamp(0.9rem, 0.75rem + 0.4vw, 3rem),
+    /* 20 */
+
+    5: clamp(0.8rem, 0.55rem + 0.375vw, 2.75rem),
+    /* 16 */
+
     6: var(--base-font-size),
+    /* 14.5 */
+
 );
 
 $font-display-sizes: (

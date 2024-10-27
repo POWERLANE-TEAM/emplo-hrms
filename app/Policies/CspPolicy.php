@@ -21,27 +21,35 @@ class CspPolicy extends CustomSpatiePolicy
 
             */
 
+            $server_ip = $this->getActiveIpAddress();
+
             $this
                 ->addDirective(Directive::DEFAULT, 'localhost:*')
-                ->addDirective(Directive::BASE, 'localhost:*');
+                ->addDirective(Directive::DEFAULT, "$server_ip:*")
+                ->addDirective(Directive::BASE, 'localhost:*')
+                ->addDirective(Directive::BASE, "$server_ip:*");
 
             $this
                 ->addDirective(Directive::CONNECT, 'localhost:*')
-                ->addDirective(Directive::CONNECT, 'ws://localhost:*'); /* websocket */
+                ->addDirective(Directive::CONNECT, 'ws://localhost:*') /* websocket */
+                ->addDirective(Directive::CONNECT, "ws://$server_ip:*"); /* websocket */
 
             $this
                 ->addDirective(Directive::SCRIPT, 'localhost:*')
+                ->addDirective(Directive::SCRIPT, "$server_ip:*")
                 ->addDirective(Directive::SCRIPT, 'unsafe-inline');
             $this->addDirective(Directive::SCRIPT, 'https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js');
             $this->addDirective(Directive::SCRIPT, 'https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone-min.js');
 
             $this
-                ->addDirective(Directive::STYLE, 'localhost:*');
+                ->addDirective(Directive::STYLE, 'localhost:*')
+                ->addDirective(Directive::STYLE, "$server_ip:*");
             $this->addDirective(Directive::STYLE, 'https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.css');
             $this->addDirective(Directive::STYLE, 'https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone.css');
 
             $this
                 ->addDirective(Directive::IMG, 'localhost:*')
+                ->addDirective(Directive::IMG, "$server_ip:*")
                 ->addDirective(Directive::IMG, 'www.placeholder.com')
                 ->addDirective(Directive::IMG, 'via.placeholder.com')
                 ->addDirective(Directive::IMG, 'https://dummyimage.com')
@@ -89,5 +97,39 @@ class CspPolicy extends CustomSpatiePolicy
         $this->addDirective(Directive::FRAME_ANCESTORS, 'self');
         $this->addDirective(Directive::FRAME, 'https://www.google.com');
         $this->addDirective(Directive::FRAME_ANCESTORS, 'https://www.google.com');
+    }
+
+    private function getActiveIpAddress()
+    {
+        $interfaces = net_get_interfaces();
+        $wifiKeywords = ['wi-fi', 'wlan', 'wifi'];
+
+        // First, try to find an active Wi-Fi interface
+        foreach ($interfaces as $name => $details) {
+            if (isset($details['description']) && isset($details['unicast'])) {
+                foreach ($wifiKeywords as $keyword) {
+                    if (stripos($details['description'], $keyword) !== false) {
+                        foreach ($details['unicast'] as $unicast) {
+                            if ($unicast['family'] === AF_INET && isset($details['up']) && $details['up']) {
+                                return $unicast['address'];
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // If no Wi-Fi interface is found, fallback to the first active non-internal IPv4 address
+        foreach ($interfaces as $details) {
+            if (isset($details['unicast'])) {
+                foreach ($details['unicast'] as $unicast) {
+                    if ($unicast['family'] === AF_INET && isset($details['up']) && $details['up']) {
+                        return $unicast['address'];
+                    }
+                }
+            }
+        }
+
+        return null;
     }
 }

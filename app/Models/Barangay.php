@@ -16,21 +16,43 @@ class Barangay extends Model
 
     protected $fillable = [];
 
-    /*
-    |--------------------------------------------------------------------------
-    | Define model relationships below
-    |--------------------------------------------------------------------------
-    */
-
-    // returns employees who are permanent barangay residents
-    public function permanentResidents(): HasMany
+    /**
+     * Get the employees who are permanent residents of the barangay.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function permanentEmployeeResidents(): HasMany
     {
         return $this->hasMany(Employee::class, 'permanent_barangay', 'barangay_code');
     }
 
-    // returns employees who are present barangay residents
-    public function presentResidents(): HasMany
+    /**
+     * Get the applicants who are permanent residents of the barangay.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function permanentApplicantResidents(): HasMany
+    {
+        return $this->hasMany(Applicant::class, 'permanent_barangay', 'barangay_code');
+    }
+
+    /**
+     * Get the employees who are present residents of the barangay.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function presentEmployeeResidents(): HasMany
     {
         return $this->hasMany(Employee::class, 'present_barangay', 'barangay_code');
+    }
+
+    /**
+     * Get the applicants who are present residents of the barangay.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function presentApplicantResidents(): HasMany
+    {
+        return $this->hasMany(Applicant::class, 'present_barangay', 'barangay_code');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\GuardType;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -16,6 +17,13 @@ class User extends Authenticatable implements MustVerifyEmail
     use HasApiTokens, HasFactory, HasRoles, Notifiable;
 
     protected $primaryKey = 'user_id';
+
+    /**
+     * The names of the guards used for authentication.
+     *
+     * @var array
+     */
+    protected $guard_name = [GuardType::DEFAULT->value, GuardType::EMPLOYEE->value, GuardType::ADMIN->value];
 
     /**
      * The attributes that are not mass assignable.
@@ -53,17 +61,21 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Define model relationships below
-    |--------------------------------------------------------------------------
-    */
-
+    /**
+     * Get the parent model (Guest, Applicant, or Employee) that the account belongs to.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     */
     public function account(): MorphTo
     {
         return $this->morphTo();
     }
 
+    /**
+     * Get the user status of the user.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function status(): BelongsTo
     {
         return $this->belongsTo(UserStatus::class, 'user_status_id', 'user_status_id');

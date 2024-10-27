@@ -17,6 +17,11 @@ class ApplicationStatus extends Model
         'application_status_desc',
     ];
 
+    /**
+     * Get the job applications associated with the status.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function applications(): HasMany
     {
         return $this->hasMany(Application::class, 'application_status_id', 'application_status_id');

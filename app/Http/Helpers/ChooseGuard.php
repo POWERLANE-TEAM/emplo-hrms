@@ -7,10 +7,11 @@ use Illuminate\Support\Str;
 
 class ChooseGuard
 {
-    public static function getByReferrer(): string
+    public static function getByReferrer(?Request $request = null): string
     {
-        $request_referer = request()->headers->get('referer');
-        $referrer = parse_url($request_referer, PHP_URL_PATH);
+        $request = $request ?? request();
+        $requestReferer = $request->headers->get('referer');
+        $referrer = parse_url($requestReferer, PHP_URL_PATH);
 
         return match (true) {
             Str::is('/employee/*', $referrer) => 'employee',
@@ -19,7 +20,7 @@ class ChooseGuard
         };
     }
 
-    public static function getByRequest(?Request $request = null): string
+    public static function getByRequest(?Request  $request = null): string
     {
         $request = $request ?? request();
 

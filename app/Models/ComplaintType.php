@@ -17,6 +17,11 @@ class ComplaintType extends Model
         'complaint_type_name',
     ];
 
+    /**
+     * Get the employee complaints associated with the complaint type.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function complaints(): HasMany
     {
         return $this->hasMany(EmployeeComplaint::class, 'complaint_type_id', 'complaint_type_id');

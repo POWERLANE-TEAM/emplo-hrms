@@ -22,6 +22,7 @@ document.addEventListener('livewire:init', () => {
     Livewire.on('pre-employment-docs-rendered', (event) => {
         setTimeout(() => {
             initLucideIcons();
+            
         }, 0);
 
         csrf_token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');

@@ -2,20 +2,19 @@
 
 namespace App\Providers;
 
-use App\Enums\UserRole;
-use App\Http\Helpers\ChooseGuard;
 use App\Models\User;
-use Illuminate\Auth\Notifications\VerifyEmail;
-use Illuminate\Broadcasting\BroadcastServiceProvider;
-use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Support\Facades\Auth;
+use App\Enums\UserRole;
+use Laravel\Pulse\Facades\Pulse;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Vite;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Auth\Notifications\VerifyEmail;
+use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Broadcasting\BroadcastServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,7 +23,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        /**
+         * Includes similar data without repeating code.
+         */
+        $this->app->register(ComposerServiceProvider::class);
     }
 
     /**
@@ -37,11 +39,11 @@ class AppServiceProvider extends ServiceProvider
 
             return
                 $rule->letters()
-                    ->mixedCase()
-                    ->numbers()
-                    ->symbols()
-                    ->uncompromised()
-                    ->rules(['not_regex:/\s/']); // No spaces allowed
+                ->mixedCase()
+                ->numbers()
+                ->symbols()
+                ->uncompromised()
+                ->rules(['not_regex:/\s/']); // No spaces allowed
         });
 
         Validator::extend('valid_email_dns', function ($attributes, $value, $parameters, $validator) {
@@ -61,9 +63,14 @@ class AppServiceProvider extends ServiceProvider
                 ->action('Verify Email Address', $url);
         });
 
-        // stores strings representing the models in the tables
-        // e.g: from column_type = App\Models\OutsourcedTrainer to column_type = outsourced_trainer
-        // ref: https://laravel.com/docs/11.x/eloquent-relationships#custom-polymorphic-types
+        /**
+         * Store strings representing the models.
+         *
+         * Instead of inserting import names of App\Models\ModelName in the column_type, we
+         * can store strings representing the model (e.g.: 'guest' => 'App\Models\Guest').
+         *
+         * @see https://laravel.com/docs/11.x/eloquent-relationships#custom-polymorphic-types
+         */
         Relation::enforceMorphMap([
             'guest' => 'App\Models\Guest',
             'user' => 'App\Models\User',
@@ -79,26 +86,27 @@ class AppServiceProvider extends ServiceProvider
 
         BroadcastServiceProvider::class;
 
-        // if user role is advanced, bypass all permission checks
-        Gate::before(function ($user, $ability) {
-            return $user->hasRole(UserRole::ADVANCED) ? true : null;
-        });
+        /**
+         * For cards that display information about users:
+         * - making requests
+         * - experiencing slow endpoints
+         * - dispatching jobs
+         *
+         * @see https://laravel.com/docs/11.x/pulse#dashboard-resolving-users
+         */
+        Pulse::user(fn($user) => [
+            'name' => $user->account->full_name,
+            'extra' => $user->email,
+            'avatar' => $user->photo ?? Storage::url('icons/default-avatar.png'),
+        ]);
 
-        View::composer('*', function ($view) {
-
-            if (Auth::guard(ChooseGuard::getByRequest())->check()) {
-                $authenticated_user = Auth::guard(ChooseGuard::getByRequest())->user();
-                $user = User::where('user_id', $authenticated_user->user_id)
-                    ->with('roles')
-                    ->first();
-
-                $role_name = $user->roles->pluck('name')->first();
-
-                $view->with([
-                    'role_name' => $role_name,
-                    'user' => $user,
-                ]);
-            }
+        /**
+         * This will only allow user with advanced role to access the pulse dashboard.
+         *
+         * @see https://laravel.com/docs/11.x/pulse#dashboard-authorization
+         */
+        Gate::define('viewPulse', function (User $user) {
+            return $user->hasRole(UserRole::ADVANCED);
         });
     }
 }

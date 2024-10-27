@@ -1,7 +1,3 @@
-@php
-    $nonce = csp_nonce();
-@endphp
-
 <script nonce="{{ $nonce }}">
     @env('local')
         console.time("DOMContentLoaded");

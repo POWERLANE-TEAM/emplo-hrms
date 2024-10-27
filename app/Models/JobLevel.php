@@ -18,28 +18,33 @@ class JobLevel extends Model
         'job_level_desc',
     ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | Define model relationships below
-    |--------------------------------------------------------------------------
-    */
-
-    // returns job titles associated with a specific job level
+    /**
+     * The job titles that belong to the job level.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function jobTitles(): BelongsToMany
     {
         return $this->belongsToMany(JobTitle::class, 'job_details', 'job_level_id', 'job_title_id')
             ->withTimestamps();
     }
 
-    // returns job families associated with a specific job level
+    /**
+     * The job families that belong to the job level.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function jobFamilies(): BelongsToMany
     {
         return $this->belongsToMany(JobFamily::class, 'job_details', 'job_level_id', 'job_family_id')
             ->withTimestamps();
     }
 
-    // returns available specific areas associated with a specific job level
-    public function specificAreas(): BelongsToMany
+    /**
+     * The specific areas that belong to the job level.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */    public function specificAreas(): BelongsToMany
     {
         return $this->belongsToMany(SpecificArea::class, 'job_details', 'job_level_id', 'area_id')
             ->withTimestamps();

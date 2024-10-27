@@ -2,19 +2,23 @@
 
 namespace App\Enums;
 
-enum ApplicationStatus: string
+enum ApplicationStatus: int
 {
-    case PENDING = 'pending';
-    case APPROVED = 'approved';
-    case REJECTED = 'rejected';
+    case PENDING = 1;
+    case APPROVED = 2;
+    case REJECTED = 3;
 
-    // displays user-friendly account statuses in blade templates
+    /**
+     * Return user-friendly application status labels.
+     *
+     * @return string
+     */
     public function label(): string
     {
         return match ($this) {
-            self::PENDING => 'Pending approval',
-            self::APPROVED => 'Approved application',
-            self::REJECTED => 'Rejected application',
+            self::PENDING => 'Pending',
+            self::APPROVED => 'Approved',
+            self::REJECTED => 'Rejected',
         };
     }
 }

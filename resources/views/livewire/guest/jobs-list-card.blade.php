@@ -4,11 +4,23 @@
         No jobs Available
     @endif
 
+    {{--
+    This Blade template renders a list of job vacancies as cards. Each card is a button that, when clicked, dispatches a
+    'job-hiring-selected' event with detailed information about the selected job vacancy. The button also toggles a Bootstrap tab to display the job details in a
+    separate pane.
+
+    Event:
+    - 'job-hiring-selected': Triggers JobViewPane to display the Job details.
+    Livewire class
+    file:///./../../../../app/Livewire/Guest/JobViewPane.php
+    Livewire View
+    file://./job-view-pane.blade.php
+--}}
     @foreach ($job_vacancies as $job_vacancy)
         <li class="card nav-item ps-0 " role="presentation">
             <button value="{{ $job_vacancy->jobTitle->job_title_id }}"
                 x-on:click.debounce.10ms="$dispatch('job-hiring-selected', { job_vacancy: {
-                jobDetails: {
+                jobDetail: {
                     jobTitle: [
                         {{ $job_vacancy->jobTitle }}
                     ],
