@@ -19,19 +19,19 @@
     @vite(['resources/js/employee/hr/dashboard.js'])
 @endPushOnce
 @pushOnce('styles')
-    @vite(['resources/css/employee/dashboard.css'])
+    @vite(['resources/css/employee/hr-manager/dashboard.css'])
 @endPushOnce
 @section('content')
-    <x-breadcrumbs>
+    {{-- <x-breadcrumbs>
         <x-slot:breadcrumbs>
             <x-breadcrumb href="/">
                 Home
             </x-breadcrumb>
-            <x-breadcrumb href="employee/dashboard" :active="request()->is('employee/dashboard')">
+            <x-breadcrumb href="/employee/dashboard" :active="request()->is('employee/dashboard')">
                 Dashboard
             </x-breadcrumb>
         </x-slot:breadcrumbs>
-    </x-breadcrumbs>
+    </x-breadcrumbs> --}}
 
 
     <x-layout.main-heading :isHeading="true">
@@ -42,41 +42,39 @@
         <x-slot:description>
             <p>It is <time datetime="{{ now() }}"> {{ \Carbon\Carbon::now()->format('l, d F') }}</time></p>
         </x-slot:description>
-
-
     </x-layout.main-heading>
 
     <x-table.top-menu-layout>
-        <span class="fw-bold fs-5">
-            <span class=" text-primary">
-                11
-                <span>requirements</span>
-            </span>
-            <span>
-                out of
-                <span>
-                    18
-                </span>
-                submitted
-            </span>
-        </span>
+        <div class="d-flex col-md-4 justify-content-between">
+            <x-form.select id="positionFilter" groupClass="!tw-w-[60%]" class="bg-body">
+                <x-slot:labelContent class="d-inline align-middle">
+                    Applcants for:
+                </x-slot>
+                <option selected value="allJobs">All Job Position</option>
 
-        <div class="ms-md-auto" wire:ignore>
+            </x-form.select>
+        </div>
+
+        <div class="d-flex ms-md-auto gap-1 gap-md-5" wire:ignore>
             <button class=" bg-transparent border-0"><i class="icon p-1 d-inline text-info"
                     data-lucide="arrow-down-wide-narrow"></i>Sort By</button>
             <button class="bg-transparent border-0"><i class="icon p-1 d-inline text-info"
                     data-lucide="list-filter"></i>Filters</button>
-        </div>
-        <div class="dropdown px-2 d-inline-block" wire:ignore>
-            <button class=" bg-transparent border-0 dropdown-toggle d-flex align-content-center" data-bs-toggle="dropdown">
-                <i class="icon p-1 d-inline text-info" data-lucide="download"></i>
-                Download as
-            </button>
-            <ul class="dropdown-menu">
-                <li class="dropdown-item">PDF</li>
+            <div class="w-auto d-inline-block">
+                <x-form.search-group class="col-12" container_class="col-12">
 
-            </ul>
+                    <x-form.search type="search" class=" text-body"
+                        placeholder="Search job titles or companies"></x-form.search>
+
+                    <x-slot:right_icon>
+                        <i data-lucide="search"></i>
+
+                    </x-slot:right_icon>
+
+                </x-form.search-group>
+            </div>
         </div>
+
     </x-table.top-menu-layout>
 
     {{-- <table class="table">

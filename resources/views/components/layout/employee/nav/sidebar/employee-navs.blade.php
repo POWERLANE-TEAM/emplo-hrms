@@ -12,7 +12,7 @@
 
     {{-- Employee, HR Manager, Supervisor --}}
     @canAny([UserPermission::VIEW_EMPLOYEE_DASHBOARD, UserPermission::VIEW_HR_MANAGER_DASHBOARD])
-        <x-layout.employee.nav.sidebar.nav-item href="#" :active="request()->is('employee/dashboard')" class="tw-order-[0]" nav_txt="Dashboard"
+        <x-layout.employee.nav.sidebar.nav-item href="dashboard" :active="request()->is('employee/dashboard')" class="tw-order-[0]" nav_txt="Dashboard"
             :default_icon="['src' => 'dashboard', 'alt' => '']" :active_icon="['src' => 'dashboard', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan
