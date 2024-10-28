@@ -1,5 +1,5 @@
 @props(['sidebar_expanded' => true])
-@aware(['user' => '', 'icon_size' => '31px', 'icon_ratio' => '1/1'])
+@aware(['user', 'userPhoto', 'defaultAvatar', 'icon_size' => '31px', 'icon_ratio' => '1/1'])
 
 
 <sidebar
@@ -22,7 +22,7 @@
         </button>
     </div>
 
-    <section class="overflow-y-auto">
+    <section class="overflow-y-auto thin-custom-scrollbar">
 
         <div class="nav-list">
             {{ $slot }}
@@ -30,16 +30,17 @@
 
     </section>
 
-    <div class="user-bar bg-primary d-flex align-content-center py-4">
-        <div class="px-4">
+    <div class="user-bar bg-primary d-flex align-content-center mt-2">
+        <div class="px-2 px-md-4">
             <picture>
                 <img class="rounded-circle overflow-hidden user-img" width="45px" height="45px"
-                    aspect-ratio="{{ $icon_ratio }}" src="http://placehold.it/45/45" alt="">
+                    aspect-ratio="{{ $icon_ratio }}" src="{{ $userPhoto ?? $defaultAvatar }}"
+                    onerror="this.onerror=null;this.src='http://placehold.it/45/45';" alt="">
             </picture>
         </div>
         <div class="flex-column me-auto user-info">
-            <div>{{ trim($user['name'] ?? 'Unknown User') }}</div>
-            <div>{{ trim($user['email'] ?? 'No email.') }}</div>
+            <div>{{ trim($user->account->getFullNameAttribute() ?? 'Unknown User') }}</div>
+            <div>{{ trim($user->email ?? 'No email.') }}</div>
         </div>
         <div class="dropdown user-menu px-2">
             <button class="bg-transparent border-0 dropdown-toggle d-flex align-content-center" type="button"

@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import '../utils';
 @import '../input/search';
 
 /* Adjusting transition duration may need to adjust delay of removing opeing class in sidebar on side-top-bar.js */
@@ -6,7 +10,7 @@
     --main-menu-padding-top: clamp(1rem, 0.5rem + 1dvh, 4rem);
     --sidebar-width: clamp(48px, 16px + 1.5rem + 5vw, 200px);
     --sidebar-width-active: clamp(200px + 2rem, 128px + 1.5rem + 10vw, 696px + 4rem);
-    --topbar-padding-x: clamp(1rem, 0.5rem + 5dvw, 4rem);
+    --topbar-padding-x: clamp(1rem, 2dvw + 2.5vh, 10rem);
     --topnav-padding-x: clamp(1.25rem, 0.63rem + 2dvw, 4rem);
     --topnav-padding-y: clamp(0.5rem, 0.25rem + 0.5dvw, 2rem);
 }
@@ -47,11 +51,6 @@ img.icon {
     width: calc(0.75rem + 0.5vw);
     height: auto;
     aspect-ratio: 1/1;
-}
-
-.nav-icon img {
-    width: calc(1rem + 0.5vw + 0.6vh);
-    height: auto;
 }
 
 .icon.ellipsis {
@@ -103,6 +102,53 @@ sidebar.main-menu {
             left: -1rem;
             overflow: hidden;
         }
+
+        &:not(.active.closing) {
+
+            .user-bar div:has(.user-img),
+            button.main-menu div:has(img),
+            .nav-icon img {
+                width: 0;
+                padding: 0;
+                opacity: 0;
+                background-color: transparent;
+
+                img,
+                picture {
+                    opacity: 0;
+                    width: 0;
+                    padding: 0;
+                }
+            }
+        }
+
+        &.active:not(.opening) {
+
+            .user-bar div:has(.user-img),
+            button.main-menu div:has(img),
+            .nav-icon img {
+                width: initial;
+                padding: initial;
+                background-color: initial;
+                opacity: 1;
+
+                img,
+                picture {
+                    padding: initial;
+                    width: 1.5rem;
+                    opacity: 1;
+                }
+            }
+
+            @include pri-sm-logo;
+
+            button.main-menu div:has(img) picture {
+                padding: 0.5rem 0.25rem;
+                height: auto;
+            }
+
+        }
+
     }
 
     @media screen and (min-width: 576px) {
@@ -114,6 +160,12 @@ sidebar.main-menu {
     padding-left: var(--sidebar-padding-x);
     // padding-right: var(--sidebar-padding-x);
     padding-bottom: clamp(1.5rem, 1rem + 2dvh, 4rem);
+
+    [class*="-custom-scrollbar"] {
+        &::-webkit-scrollbar-thumb {
+            background-color: var(--bs-body-bg);
+        }
+    }
 
     section:has(nav) {
         scrollbar-gutter: stable;
@@ -279,6 +331,7 @@ sidebar.main-menu {
 
 
         div:has(svg) {
+            /* This is the round button with chevron icon */
             padding: 0.15vw 0.3vh;
 
             align-self: center;
@@ -307,6 +360,8 @@ sidebar.main-menu {
         position: relative;
         margin-left: auto;
         margin-right: auto;
+        height: 100%;
+        max-height: 48px;
 
         div:has(.user-img) {
             display: grid;
@@ -314,11 +369,6 @@ sidebar.main-menu {
             transition: transform ease-in-out 0.2s;
             transform: translateX(30%);
 
-
-            img {
-                width: calc(2rem + 0.75vw);
-                height: auto;
-            }
         }
 
         .user-info {
@@ -348,18 +398,20 @@ sidebar.main-menu {
 
 div:has(>.topnav) {
     /* Base style for top bar */
-    z-index: 1000;
+    z-index: 900;
     position: absolute;
     display: flex;
     top: 0;
     left: 0;
 
     @media screen and (min-width: 768px) {
-        left: calc(3dvw + var(--sidebar-width));
+        left: var(--sidebar-width);
+        width: calc(100% - (var(--sidebar-width)));
+        max-width: calc(100% - (var(--sidebar-width)));
     }
 
-    width: calc(100% - (3dvw + var(--sidebar-width)));
-    max-width: calc(100% - (3dvw + var(--sidebar-width)));
+    width: 100dvw;
+
     @extend %main-menu-padding-top;
     padding-left: var(--topbar-padding-x);
     padding-right: var(--topbar-padding-x);
@@ -367,7 +419,7 @@ div:has(>.topnav) {
     .topnav {
         display: flex;
         width: 100%;
-        border-radius: 1.5cqw;
+        border-radius: max(1.25rem, 0.5cqw);
         background-color: var(--bs-primary);
 
         padding: var(--topnav-padding-y) var(--topnav-padding-x);
@@ -441,21 +493,58 @@ div:has(>.topnav-mobile) {
     }
 }
 
-sidebar.main-menu.opening {
-    overflow: hidden;
+// during opening animation
+sidebar.main-menu {
+    &.opening {
+        >* {
+            overflow: hidden;
+        }
 
-    .user-info,
-    .company-name {
-        flex-wrap: nowrap;
-        text-wrap: nowrap;
+        .user-info,
+        .company-name {
+            flex-wrap: nowrap;
+            text-wrap: nowrap;
+        }
+
     }
+
+    &.closing {
+        .nav-head {
+            text-align: initial;
+        }
+    }
+
 }
 
+// waits for animation to finish
 sidebar.main-menu.active:not(.opening) {
 
     .user-info,
     .company-name {
         min-width: fit-content;
+        opacity: 1;
+    }
+
+    .user-bar,
+    button.main-menu {
+        min-width: var(--sidebar-width-active);
+
+        @media screen and (max-width: 576px) {
+            margin: 0;
+
+            .user-info {
+                min-width: 55%;
+                max-width: 58%;
+
+                >* {
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+
+                }
+            }
+
+        }
     }
 }
 
@@ -476,8 +565,13 @@ body {
                 width: 5vw;
             }
 
+            .nav-icon img {
+                width: calc(1rem + 0.5vw + 0.6vh);
+                height: auto;
+            }
+
             button.main-menu {
-                min-width: fit-content;
+
                 gap: 0 calc(0.5rem + 1vw);
 
                 svg {
@@ -490,6 +584,7 @@ body {
                     transition: transform ease-in-out 0.2s;
                     isolation: isolate;
                     transform: translate(0, 10%);
+
                 }
             }
 
@@ -507,17 +602,22 @@ body {
             }
 
             .user-bar {
-
+                max-height: none;
 
                 div:has(.user-img) {
                     transition: transform ease-in-out 0.2s;
                     transform: unset;
+
+                    img {
+                        width: calc(2rem + 0.75vw);
+                        height: auto;
+                    }
                 }
 
                 .user-info {
-                    opacity: 1;
-                    width: 5vw;
+                    // width: 5vw;
                     // min-width: fit-content;
+                    // max-width: var(--sidebar-width-active);
                 }
 
                 .user-menu {

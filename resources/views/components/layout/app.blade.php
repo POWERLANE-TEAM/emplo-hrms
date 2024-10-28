@@ -51,6 +51,7 @@
     <x-no-script-body />
 
     <!-- Styles -->
+    @vite(['resources/css/style.css'])
     @stack('pre-styles')
     @stack('styles')
 

@@ -1,9 +1,17 @@
 @use('\App\Enums\UserRole', 'EnumsUserRole')
-@props(['sidebar_expanded' => true, 'icon_size' => '25', 'icon_ratio' => '1/1', 'user'])
+@props([
+    'sidebar_expanded' => false,
+    'icon_size' => '25',
+    'icon_ratio' => '1/1',
+    'user',
+    'userPhoto',
+    'defaultAvatar',
+])
+
 
 <div {{ $attributes->merge(['class' => 'container-fluid main-menu-container text-white']) }}>
-    <x-layout.employee.nav.sidebar sidebar_expanded="{{ $sidebar_expanded }}" class="shadow"
-        icon_size="{{ $icon_size }}" icon_ratio="{{ $icon_ratio }}">
+    <x-layout.employee.nav.sidebar sidebar_expanded="{{ $sidebar_expanded }}" class="shadow">
+
 
         @include('components.layout.employee.nav.sidebar.employee-navs')
 
@@ -50,7 +58,8 @@
                         srcset="{{ Vite::asset('resources/images/icons/notif-bell-69x69.webp') }}"> --}}
 
                     <img class="" width="{{ $icon_size * 1.25 }}" height="{{ $icon_size * 1.25 }}"
-                        aspect-ratio="{{ $icon_ratio }}" src="http://placehold.it/20/20" alt="">
+                        aspect-ratio="{{ $icon_ratio }}" src="{{ $userPhoto ?? $defaultAvatar }}"
+                        onerror="this.onerror=null;this.src='http://placehold.it/45/45';" alt="">
                 </picture>
             </div>
 

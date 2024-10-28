@@ -1,0 +1,1 @@
+C:/DevPackage/xampp/htdocs/emplo-hrms/resources/views/employee/basic/index.blade.php
