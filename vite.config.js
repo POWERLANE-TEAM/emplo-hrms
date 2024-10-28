@@ -83,6 +83,14 @@ export default defineConfig({
             ]
         })
     ],
+    resolve: {
+        alias: {
+            'emp-sidebar-script': "/resources/js/employee/side-top-bar.js",
+            'theme-listener-script': "/resources/js/theme-listener.js",
+            'employee-page-script': "/resources/js/employee/employee.js",
+            'globalListener-script': "/resources/js/global-event-listener.js",
+        },
+    },
     server: {
         host: localIpAddress,
         hmr: {
