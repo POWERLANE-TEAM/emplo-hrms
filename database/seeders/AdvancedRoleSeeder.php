@@ -9,7 +9,6 @@ use App\Enums\UserRole;
 use App\Enums\UserStatus as EnumUserStatus;
 use App\Models\Employee;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Permission;
@@ -18,7 +17,7 @@ use Spatie\Permission\Models\Role;
 /**
  * Seeder class for a Admin account with roles and permissions.
  */
-class AdminSeeder extends Seeder
+class AdvancedRoleSeeder extends Seeder
 {
 
     /**
@@ -28,7 +27,7 @@ class AdminSeeder extends Seeder
      *
      * View cases, create cases, update cases, and delete cases will be defined here.
      */
-    const ADDITIONAL_PERMISSIONS = [
+    const ADVANCED_PERMISSIONS = [
         // View cases goes here
         UserPermission::VIEW_ADMIN_DASHBOARD,
         UserPermission::VIEW_CALENDAR_MANAGER,
@@ -58,39 +57,27 @@ class AdminSeeder extends Seeder
      */
     public function run(): void
     {
-
         $employee = Employee::factory()->create();
 
-        $users_data = [
+        $userData = [
             'account_type' => AccountType::EMPLOYEE,
             'account_id' => $employee->employee_id,
-            'email' => 'admin.001@gmail.com',
+            'email' => 'advanced.' . fake()->unique()->safeEmail(),
             'password' => Hash::make('UniqP@ssw0rd'),
             'user_status_id' => EnumUserStatus::ACTIVE,
             'email_verified_at' => fake()->dateTimeBetween('-10 days', 'now'),
         ];
 
-        $employee_user = User::factory()->create($users_data);
+        $employeeUser = User::factory()->create($userData);
 
         $role = Role::firstOrCreate(['name' => UserRole::ADVANCED, 'guard_name' => GuardType::ADMIN->value]);
-        $employee_user->assignRole($role);
+        $employeeUser->assignRole($role);
 
-        $this->giveExtraPermissions($employee_user);
-    }
-
-    /**
-     * Give the seeded admin account extra permissions aside from the ADVANCE role.
-     *
-     * @param \App\Models\User $employee_user The user to whom the extra permissions will be given.
-     * @return void
-     */
-    private function giveExtraPermissions(User $employee_user)
-    {
-        $permissions = collect(self::ADDITIONAL_PERMISSIONS)
+        $permissions = collect(self::ADVANCED_PERMISSIONS)
             ->map(fn($permission) => Permission::where('name', $permission)
                 ->where('guard_name', GuardType::ADMIN->value)
                 ->first());
 
-        $employee_user->givePermissionTo($permissions);
+        $employeeUser->givePermissionTo($permissions);
     }
 }
