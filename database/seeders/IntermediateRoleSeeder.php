@@ -19,10 +19,10 @@ use Spatie\Permission\Models\Role;
 /**
  * Seeder class for a HR Manager account with roles and permissions.
  */
-class HRManagerSeeder extends Seeder
+class IntermediateRoleSeeder extends Seeder
 {
 
-    const HR_MANAGER_PERMISSIONS = [
+    const INTERMEDIATE_PERMISSIONS = [
         UserPermission::VIEW_HR_MANAGER_DASHBOARD,
         UserPermission::VIEW_ALL_APPLICANTS,
         UserPermission::VIEW_ALL_EMPLOYEES,
@@ -42,30 +42,27 @@ class HRManagerSeeder extends Seeder
      */
     public function run(): void
     {
+        $employee = Employee::factory()->create();
 
-        DB::transaction(function () {
-            $employee = Employee::factory()->create();
+        $userData = [
+            'account_type' => AccountType::EMPLOYEE,
+            'account_id' => $employee->employee_id,
+            'email' => 'hr.001@gmail.com',
+            'password' => Hash::make('UniqP@ssw0rd'),
+            'user_status_id' => EnumUserStatus::ACTIVE,
+            'email_verified_at' => fake()->dateTimeBetween('-10 days', 'now'),
+        ];
 
-            $users_data = [
-                'account_type' => AccountType::EMPLOYEE,
-                'account_id' => $employee->employee_id,
-                'email' => 'hr.001@gmail.com',
-                'password' => Hash::make('UniqP@ssw0rd'),
-                'user_status_id' => EnumUserStatus::ACTIVE,
-                'email_verified_at' => fake()->dateTimeBetween('-10 days', 'now'),
-            ];
+        $employeeUser = User::factory()->create($userData);
 
-            $employee_user = User::factory()->create($users_data);
+        $role = Role::firstOrCreate(['name' => UserRole::INTERMEDIATE, 'guard_name' => GuardType::EMPLOYEE->value]);
+        $employeeUser->assignRole($role);
 
-            $role = Role::firstOrCreate(['name' => UserRole::INTERMEDIATE, 'guard_name' => GuardType::EMPLOYEE->value]);
-            $employee_user->assignRole($role);
+        $permissions = collect(self::INTERMEDIATE_PERMISSIONS)
+            ->map(fn($permission) => Permission::where('name', $permission)
+                ->where('guard_name', GuardType::EMPLOYEE->value)
+                ->first());
 
-            $permissions = collect(self::HR_MANAGER_PERMISSIONS)
-                ->map(fn($permission) => Permission::where('name', $permission)
-                    ->where('guard_name', GuardType::EMPLOYEE->value)
-                    ->first());
-
-            $employee_user->givePermissionTo($permissions);
-        });
+        $employeeUser->givePermissionTo($permissions);
     }
 }

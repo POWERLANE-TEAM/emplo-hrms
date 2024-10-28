@@ -11,7 +11,7 @@
         </span>
     </hgroup>
 
-    <form wire:submit.prevent="store" action="/login" nonce="{{ $nonce }}">
+    <form wire:submit="store" action="/login" nonce="{{ $nonce }}">
         @csrf
 
         @if ($errors->has('credentials'))
@@ -24,8 +24,8 @@
             </div>
         @endif
 
-        <x-form.email input_id="userLogin-email" label="Email Address" input_name="email" auto_complete="email"
-            :nonce="$nonce" aria-owns="userLogin-email-feedback"
+        <x-form.email id="userLogin-email" label="Email Address" name="email" auto_complete="email"
+            :$nonce aria-owns="userLogin-email-feedback"
             class=" {{ $errors->has('email') ? 'is-invalid' : '' }}">
 
             <x-slot:feedback>
@@ -36,8 +36,8 @@
             </x-slot:feedback>
         </x-form.email>
 
-        <x-form.password input_id="userLogin-password" label="Password" :has_confirm="true" input_name="password"
-            minlength="8" auto_complete="current-password" :nonce="$nonce" aria-owns="userLogin-password-feedback"
+        <x-form.password id="userLogin-password" label="Password" name="password"
+            minlength="8" auto_complete="current-password" :$nonce aria-owns="userLogin-password-feedback"
             class=" {{ $errors->has('password') ? 'is-invalid' : '' }}">
 
             <x-slot:toggle_password>
@@ -56,14 +56,6 @@
         </x-form.password>
 
         <div class="d-flex flex-wrap gap-4 gap-md-5">
-            <div class="position-relative d-flex col-12 col-md-5 order-0">
-                <input type="checkbox" id="remember-toggle" name="remember" wire:model="remember"
-                    class="checkbox checkbox-primary">
-                <label for="remember-toggle" class="checkbox-label d-flex flex-wrap">
-                    Remember me
-                </label>
-            </div>
-
             <div class=" col-md-auto mx-auto me-md-0 ms-md-auto order-2 order-md-1">
                 <button class="border-0 bg-transparent text-decoration-underline ">
                     Forgot your password?
@@ -71,16 +63,9 @@
             </div>
 
             <button type="submit" nonce="{{ $nonce }}" id="userLoginBtn"
-                class="btn btn-primary btn-lg col-12 order-1 order-md-2" disabled>
+                class="btn btn-primary btn-lg col-12 order-1 order-md-2">
                 Sign In
             </button>
         </div>
-
-        <div class="my-4 justify-content-center align-items-center">
-            <div class="text-center">Or</div>
-        </div>
-
-        @livewire('auth.google-o-auth')
-
     </form>
 </section>

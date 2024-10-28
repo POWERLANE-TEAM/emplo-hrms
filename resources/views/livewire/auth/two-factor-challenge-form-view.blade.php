@@ -1,17 +1,22 @@
 @extends('components.layout.employee.layout')
 
 @section('head')
-    <title>Sign in as Admin</title>
+    <title>Two Factor Authentication</title>
 @endsection
 
 @pushOnce('pre-scripts')
     <script src="https://unpkg.com/lucide@latest"></script>
 @endPushOnce
 
+@pushOnce('scripts')
+    <script src="{{ Vite::asset('resources/js/forms/nbp.min.js') }}" defer></script>
+    @vite(['resources/js/admin/login.js'])
+@endPushOnce
+
 @section('critical-styles')
     @use('Illuminate\Support\Facades\Vite')
 
-    <style>
+    <style nonce="{{ $nonce }}">
         {!! Vite::content('resources/css/guest/secondary-bg.css') !!}
     </style>
 @endsection
@@ -29,9 +34,8 @@
 @endsection
 
 @section('content')
-    @livewire('auth.admins.login')
+    @livewire('auth.two-factor-challenge-form')
 @endsection
-
 
 @section('footer')
     <x-guest.footer />
