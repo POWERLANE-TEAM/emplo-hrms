@@ -2,12 +2,13 @@
 
 namespace App\Livewire\Auth\Admins;
 
+use App\Enums\UserRole;
+use Livewire\Component;
+use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
-use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 use Laravel\Fortify\Http\Requests\LoginRequest;
-use Livewire\Attributes\Validate;
-use Livewire\Component;
+use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 
 class Login extends Component
 {
@@ -26,12 +27,23 @@ class Login extends Component
             'password' => $this->password,
         ];
 
-        if (! Auth::validate($loginAttempt)) {
+        if (! Auth::attempt($loginAttempt)) {
 
             $this->reset('password');
 
             throw ValidationException::withMessages([
-                'credentials' => 'Incorrect credentials or user does not exist.',
+                'credentials' => [__('Incorrect credentials or user does not exist.')],
+            ]);
+        }
+
+        if (! Auth::user()->hasRole(UserRole::ADVANCED)) {
+
+            $this->reset();
+
+            Auth::logout();
+
+            throw ValidationException::withMessages([
+                'credentials' => [__('Incorrect credentials or user does not exist.')],
             ]);
         }
 
