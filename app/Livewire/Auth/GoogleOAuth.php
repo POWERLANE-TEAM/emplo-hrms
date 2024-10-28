@@ -23,10 +23,10 @@ class GoogleOAuth extends Component
     {
         try {
 
-            $google_user = Socialite::driver('google')->stateless()->user();
+            $googleUser = Socialite::driver('google')->stateless()->user();
 
-            $user = User::where('google_id', $google_user->id)
-                ->orWhere('email', $google_user->getEmail())
+            $user = User::where('google_id', $googleUser->id)
+                ->orWhere('email', $googleUser->getEmail())
                 ->first();
 
             if ($user) {
@@ -38,18 +38,18 @@ class GoogleOAuth extends Component
 
             DB::beginTransaction();
 
-            $new_user = $this->saveGooglePayload($google_user->user);
+            $newUser = $this->saveGooglePayload($googleUser->user);
 
             DB::commit();
 
-            if (! $new_user) {
+            if (! $newUser) {
 
                 session()->flash('error', 'Something went wrong.');
 
                 return redirect('/');
             }
 
-            Auth::login($new_user);
+            Auth::login($newUser);
 
             return redirect('/hiring');
 

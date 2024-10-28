@@ -17,9 +17,9 @@ trait GoogleCallback
 
         $guest = $this->createGuest($payload);
 
-        $new_user = $this->createUserAccount($guest, $payload);
+        $newUser = $this->createUserAccount($guest, $payload);
 
-        return $new_user;
+        return $newUser;
     }
 
     private function createGuest($payload)

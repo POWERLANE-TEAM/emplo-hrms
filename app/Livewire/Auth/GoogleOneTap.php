@@ -44,18 +44,18 @@ class GoogleOneTap extends Component
 
                 DB::beginTransaction();
 
-                $new_user = $this->saveGooglePayload($payload);
+                $newUser = $this->saveGooglePayload($payload);
 
                 DB::commit();
 
-                if (! $new_user) {
+                if (! $newUser) {
 
                     session()->flash('error', 'Something went wrong.');
 
                     return redirect('/');
                 }
 
-                Auth::login($new_user);
+                Auth::login($newUser);
 
                 return redirect('hiring');
             }

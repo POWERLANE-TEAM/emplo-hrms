@@ -2,12 +2,13 @@
 
 namespace App\Livewire\Auth\Admins;
 
+use App\Enums\UserRole;
+use Livewire\Component;
+use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
-use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 use Laravel\Fortify\Http\Requests\LoginRequest;
-use Livewire\Attributes\Validate;
-use Livewire\Component;
+use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 
 class Login extends Component
 {
@@ -17,29 +18,40 @@ class Login extends Component
     #[Validate('required')]
     public $password = '';
 
-    public $remember = false;
-
-    public function store(AuthenticatedSessionController $session_controller)
+    public function store(AuthenticatedSessionController $sessionController)
     {
+        $this->validate();
 
-        $login_attempt = [
+        $loginAttempt = [
             'email' => $this->email,
             'password' => $this->password,
         ];
 
-        if (! Auth::validate($login_attempt)) {
+        if (! Auth::attempt($loginAttempt)) {
 
-            $this->password = '';
+            $this->reset('password');
+
             throw ValidationException::withMessages([
-                'credentials' => 'Incorrect credentials or user does not exist.',
+                'credentials' => [__('Incorrect credentials or user does not exist.')],
             ]);
         }
 
-        $login_request = new LoginRequest;
+        if (! Auth::user()->hasRole(UserRole::ADVANCED)) {
 
-        $login_request->merge($login_attempt);
+            $this->reset();
 
-        $session_controller->store($login_request, $this->remember);
+            Auth::logout();
+
+            throw ValidationException::withMessages([
+                'credentials' => [__('Incorrect credentials or user does not exist.')],
+            ]);
+        }
+
+        $loginRequest = new LoginRequest;
+        $loginRequest->merge($loginAttempt);
+        $loginRequest->setLaravelSession(app('session')->driver());
+
+        $sessionController->store($loginRequest);
     }
 
     public function render()

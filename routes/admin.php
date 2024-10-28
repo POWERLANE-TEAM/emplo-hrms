@@ -1,17 +1,19 @@
 <?php
 
-use App\Http\Controllers\Admin\DashboardController;
+use App\Enums\UserPermission;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\DashboardController;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 
 Route::middleware('guest:admin')->group(function () {
-    Route::get('/login', [AuthenticatedSessionController::class, 'create'])
+    Route::get('login', [AuthenticatedSessionController::class, 'create'])
         ->name('login');
 });
 
 Route::middleware('auth:admin')->group(function () {
 
     Route::get('dashboard', DashboardController::class)
+        ->can(UserPermission::VIEW_ADMIN_DASHBOARD)
         ->name('dashboard');
 
     Route::get('system/pulse', function() {
@@ -49,4 +51,8 @@ Route::middleware('auth:admin')->group(function () {
     Route::get('form', function() {
         abort(404);
     })->name('form');
+
+    Route::get('profile', function() {
+        return view('employee.admin.profile');
+    })->name('profile');
 });
