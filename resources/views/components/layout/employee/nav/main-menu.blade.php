@@ -33,10 +33,10 @@
                                 alt="">
                         </picture>
                     </button>
-                    <ul class="dropdown-menu" role="button">
-                        <li><span class="dropdown-item" data-isSystem="true">System</span></li>
-                        <li><span class="dropdown-item" data-isSystem="false">Light</span></li>
-                        <li><span class="dropdown-item" data-isSystem="false">Dark</span></li>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><span class="dropdown-item" data-isSystem="true" role="button">System</span></li>
+                        <li><span class="dropdown-item" data-isSystem="false" role="button">Light</span></li>
+                        <li><span class="dropdown-item" data-isSystem="false" role="button">Dark</span></li>
                     </ul>
                 </div>
             </aside>
