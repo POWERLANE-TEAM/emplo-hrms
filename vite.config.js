@@ -65,6 +65,7 @@ export default defineConfig({
                 'resources/css/applicant/apply.css',
                 'resources/css/employee/pre-employment.css',
                 'resources/css/employee/hr-manager/dashboard.css',
+                'resources/css/employee/hr-manager/applicants.css',
                 'resources/css/employee/supervisor/dashboard.css',
                 'resources/css/employee/basic/dashboard.css',
             ],
