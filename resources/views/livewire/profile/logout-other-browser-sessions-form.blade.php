@@ -1,4 +1,4 @@
-<section class="my-5">
+<section wire:poll.visible class="my-5">
     <div class="card">
         <div class="card-header">
             <div class="fs-5 fw-medium">{{ __('Browser Sessions') }}</div>
