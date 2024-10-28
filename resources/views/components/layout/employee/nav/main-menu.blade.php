@@ -12,10 +12,7 @@
 <div {{ $attributes->merge(['class' => 'container-fluid main-menu-container text-white']) }}>
     <x-layout.employee.nav.sidebar sidebar_expanded="{{ $sidebar_expanded }}" class="shadow">
 
-
         @include('components.layout.employee.nav.sidebar.employee-navs')
-
-        @include('components.layout.employee.nav.sidebar.admin-navs')
 
     </x-layout.employee.nav.sidebar>
     <x-layout.employee.nav.topbar class="">
@@ -36,7 +33,7 @@
                                 alt="">
                         </picture>
                     </button>
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu" role="button">
                         <li><span class="dropdown-item" data-isSystem="true">System</span></li>
                         <li><span class="dropdown-item" data-isSystem="false">Light</span></li>
                         <li><span class="dropdown-item" data-isSystem="false">Dark</span></li>

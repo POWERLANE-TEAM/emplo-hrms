@@ -112,6 +112,21 @@ class RolesAndPermissionsSeeder extends Seeder
                 /**
                  * view permissions goes here
                  */
+                UserPermission::VIEW_APPLICANT_INFORMATION,
+                UserPermission::VIEW_EMPLOYEE_INFORMATION,
+                UserPermission::VIEW_EMPLOYEE_DASHBOARD,
+                UserPermission::VIEW_HR_MANAGER_DASHBOARD,
+                UserPermission::VIEW_ALL_APPLICANTS,
+                UserPermission::VIEW_ALL_EMPLOYEES,
+                UserPermission::VIEW_ALL_ATTENDANCE,
+                UserPermission::VIEW_ALL_LEAVES,
+                UserPermission::VIEW_ALL_OVERTIME,
+                UserPermission::VIEW_ALL_PAYSLIPS,
+                UserPermission::VIEW_ALL_PERFORMANCE,
+                UserPermission::VIEW_ALL_RELATIONS,
+                UserPermission::VIEW_MATRIX_PROJECTOR,
+                UserPermission::VIEW_TALENT_EVALUATOR,
+                UserPermission::VIEW_PLAN_GENERATOR,
                 UserPermission::VIEW_ADMIN_DASHBOARD,
                 UserPermission::VIEW_CALENDAR_MANAGER,
                 UserPermission::VIEW_ACCOUNT_MANAGER,

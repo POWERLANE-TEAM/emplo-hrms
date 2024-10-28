@@ -64,7 +64,7 @@
     @yield('before-nav')
 
     @if (!View::hasSection('header-nav'))
-        <x-layout.employee.nav.main-menu class="position-sticky top-0 start-0" :user="auth()->user()" :userPhoto="$userPhoto"
+        <x-layout.employee.nav.main-menu class="position-sticky top-0 start-0" :user="$user" :userPhoto="$userPhoto"
             :defaultAvatar="$defaultAvatar"></x-layout.employee.nav.main-menu>
     @else
         @yield('header-nav')

@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Http\Helpers\ChooseGuard;
 use App\View\Composers\AuthenticatedUserComposer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
@@ -17,7 +16,7 @@ class ComposerServiceProvider extends ServiceProvider
      *
      * @var array
      */
-    private $views_needs_user_data = [
+    private $viewsNeedsUserData = [
         'components.layout.employee.layout',
         'components.layout.applicant.layout',
         'components.layout.app',
@@ -51,9 +50,9 @@ class ComposerServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // View::composer($this->views_needs_user_data, AuthenticatedUserComposer::class);
+        View::composer($this->viewsNeedsUserData, AuthenticatedUserComposer::class);
         View::composer('*', function ($view) {
-            $guard = Auth::guard(ChooseGuard::getByRequest());
+            $guard = Auth::getDefaultDriver();
 
             $view->with(['nonce' => csp_nonce(), 'guard' => $guard]);
         });

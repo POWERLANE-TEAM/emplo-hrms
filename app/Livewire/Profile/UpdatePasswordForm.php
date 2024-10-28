@@ -46,16 +46,6 @@ class UpdatePasswordForm extends Component
         $this->dispatch('saved');
     }
 
-    /**
-     * Get the current authenticated user.
-     *
-     * @return mixed
-     */
-    public function getUserProperty()
-    {
-        return Auth::user();
-    }
-
     public function render()
     {
         return view('livewire.profile.update-password-form');

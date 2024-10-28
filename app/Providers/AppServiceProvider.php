@@ -109,12 +109,5 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('viewPulse', function (User $user) {
             return $user->hasRole(UserRole::ADVANCED);
         });
-
-        /**
-         * This will only allow user with advanced role to access the admin dashboard.
-         */
-        Gate::define(UserPermission::VIEW_ADMIN_DASHBOARD, function (User $user) {
-            return $user->hasRole(UserRole::ADVANCED);
-        });
     }
 }
