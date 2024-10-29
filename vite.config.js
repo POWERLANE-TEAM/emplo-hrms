@@ -90,6 +90,7 @@ export default defineConfig({
             'theme-listener-script': "/resources/js/theme-listener.js",
             'employee-page-script': "/resources/js/employee/employee.js",
             'globalListener-script': "/resources/js/global-event-listener.js",
+            'datatable': "/vendor/rappasoft/laravel-livewire-tables/resources/imports/laravel-livewire-tables-all.js",
         },
     },
     server: {
