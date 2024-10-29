@@ -65,6 +65,7 @@ export default defineConfig({
                 'resources/css/applicant/apply.css',
                 'resources/css/employee/pre-employment.css',
                 'resources/css/employee/hr-manager/dashboard.css',
+                'resources/css/employee/hr-manager/applicants.css',
                 'resources/css/employee/supervisor/dashboard.css',
                 'resources/css/employee/basic/dashboard.css',
             ],
@@ -83,6 +84,15 @@ export default defineConfig({
             ]
         })
     ],
+    resolve: {
+        alias: {
+            'emp-sidebar-script': "/resources/js/employee/side-top-bar.js",
+            'theme-listener-script': "/resources/js/theme-listener.js",
+            'employee-page-script': "/resources/js/employee/employee.js",
+            'globalListener-script': "/resources/js/global-event-listener.js",
+            'datatable': "/vendor/rappasoft/laravel-livewire-tables/resources/imports/laravel-livewire-tables-all.js",
+        },
+    },
     server: {
         host: localIpAddress,
         hmr: {

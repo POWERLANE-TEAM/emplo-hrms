@@ -10,7 +10,7 @@
     --main-menu-padding-top: clamp(1rem, 0.5rem + 1dvh, 4rem);
     --sidebar-width: clamp(160px, 16px + 1.5rem + 5vw, 200px);
     --sidebar-width-active: clamp(200px + 2rem, 128px + 1.5rem + 10vw, 696px + 4rem);
-    --topbar-padding-x: clamp(1rem, 3.5dvw + 2.5vh, 10rem);
+    --topbar-padding-x: clamp(1rem, 2dvw + 2.5vh, 10rem);
     --topnav-padding-x: clamp(1.25rem, 0.63rem + 2dvw, 4rem);
     --topnav-padding-y: clamp(0.3rem, 0.25rem + 0.5dvw, 2rem)
 }
@@ -388,7 +388,6 @@ sidebar.main-menu {
                 opacity: 0;
             }
 
-            @extend %rm-dropdown-triangle;
         }
 
     }
@@ -406,11 +405,13 @@ div:has(>.topnav) {
     left: 0;
 
     @media screen and (min-width: 768px) {
-        left: calc(3dvw + var(--sidebar-width));
+        left: var(--sidebar-width);
+        width: calc(100% - (var(--sidebar-width)));
+        max-width: calc(100% - (var(--sidebar-width)));
     }
 
-    width: calc(100% - (3dvw + var(--sidebar-width)));
-    max-width: calc(100% - (3dvw + var(--sidebar-width)));
+    width: 100dvw;
+
     @extend %main-menu-padding-top;
     padding-left: var(--topbar-padding-x);
     padding-right: var(--topbar-padding-x);
@@ -418,7 +419,7 @@ div:has(>.topnav) {
     .topnav {
         display: flex;
         width: 100%;
-        border-radius: 1.5cqw;
+        border-radius: max(1.25rem, 0.5cqw);
         background-color: var(--bs-primary);
 
         padding: var(--topnav-padding-y) var(--topnav-padding-x);
@@ -434,7 +435,6 @@ div:has(>.topnav) {
             background-color: color-mix(in srgb, var(--bs-primary) 75%, white 25%);
         }
 
-        @extend %rm-dropdown-triangle;
     }
 
     @media screen and (max-width: 576px) {
@@ -458,7 +458,6 @@ div:has(>.topnav-mobile) {
 .topnav-mobile {
     display: flex;
     padding: calc(var(--topnav-padding-y) + var(--main-menu-padding-top)) var(--topnav-padding-x);
-    @extend %rm-dropdown-triangle;
 
     @media screen and (min-width: 576px) {
         display: none;
