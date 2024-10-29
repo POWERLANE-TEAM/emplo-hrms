@@ -12,6 +12,7 @@ Route::middleware('guest:admin')->group(function () {
 
 Route::middleware('auth:admin')->group(function () {
 
+    // Dashboard
     Route::get('dashboard', DashboardController::class)
         ->can(UserPermission::VIEW_ADMIN_DASHBOARD)
         ->name('dashboard');
@@ -20,9 +21,16 @@ Route::middleware('auth:admin')->group(function () {
         return view('vendor.pulse.dashboard');
     })->name('system.pulse');
 
+    
+    // Accounts Routes
     Route::get('accounts', function() {
-        abort(404);
-    })->name('accounts');
+        return view('employee.admin.accounts');
+    })->name('accounts'); 
+
+    Route::get('create-accounts', function() {
+        return view('employee.admin.create-accounts');
+    })->name('create-accounts'); 
+    // End of Accounts
 
     Route::get('employees', function() {
         abort(404);
