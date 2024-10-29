@@ -16,12 +16,6 @@ HeadingRowFormatter::default('none');
 
 class PsgcImport implements ToModel, WithBatchInserts, WithHeadingRow, WithMultipleSheets
 {
-    protected $regions = [];
-
-    protected $provinces = [];
-
-    protected $cities = [];
-
     public function sheets(): array
     {
         return [
@@ -36,87 +30,45 @@ class PsgcImport implements ToModel, WithBatchInserts, WithHeadingRow, WithMulti
 
     public function model(array $row)
     {
-
         // for mapping of sheet's heading names
         $psgc = $row['10-digit PSGC'];
-
         $name = $row['Name'];
+        $geoLevel = $row['Geographic Level'];
 
-        $geo_level = $row['Geographic Level'];
-
-        /*
-         * The offset and length are based according to the PSGC Coding Structure.
-         *
-         * Reference: app\storage\PSGC-2Q-2024-Publication-Datafile-rev.xlsx
-         *
-         * We can then determine jurisdictional relationships of the ff:
-         *
-         * - Which region has jurisdiction to which provinces
-         * - Which province has jurisdiction to which cities
-         * - Which cities has jurisdiction to which barangays
-         *
-         * - Carl Tabuso
-         */
-        $region_code = substr($psgc, 0, 2);
-
-        $province_code = substr($psgc, 0, 5);
-
-        $city_code = substr($psgc, 0, 8);
-
-        // checks for region level
-        if ($geo_level === 'Reg') {
-
-            $region = new Region([
-                'region_code' => $psgc,
-                'region_name' => $name,
+        if ($geoLevel === 'Reg') {
+            return new Region([
+                'code' => $psgc,
+                'name' => $name,
+                'region_code' => substr($psgc, 0, 2),
             ]);
-
-            $this->regions[$region_code] = $region;
-
-            return $region;
         }
 
-        // checks for province level
-        if ($geo_level === 'Prov') {
-
-            $region = $this->regions[$region_code] ?? null;
-
-            $province = new Province([
-                'province_code' => $psgc,
-                'province_name' => $name,
-                'region_code' => $region->region_code ?? null,
+        if ($geoLevel === 'Prov') {
+            return new Province([
+                'code' => $psgc,
+                'name' => $name,
+                'province_code' => substr($psgc, 0, 5),
+                'region_code' => substr($psgc, 0, 2),
             ]);
-
-            $this->provinces[$province_code] = $province;
-
-            return $province;
         }
 
-        // checks for municipal, submunicipal, or city level
-        if (in_array($geo_level, ['Mun', 'SubMun', 'City'])) {
-
-            $province = $this->provinces[$province_code] ?? null;
-
-            $city = new City([
-                'city_code' => $psgc,
-                'city_name' => $name,
-                'province_code' => $province->province_code ?? null,
+        if (in_array($geoLevel, ['Mun', 'SubMun', 'City'])) {
+            return new City([
+                'code' => $psgc,
+                'name' => $name,
+                'city_code' => substr($psgc, 0, 7),
+                'province_code' => substr($psgc, 0, 5),
+                'region_code' => substr($psgc, 0, 2),
             ]);
-
-            $this->cities[$city_code] = $city;
-
-            return $city;
         }
 
-        // checks for barangay level
-        if ($geo_level === 'Bgy') {
-
-            $city = $this->cities[$city_code] ?? null;
-
+        if ($geoLevel === 'Bgy') {
             return new Barangay([
-                'barangay_code' => $psgc,
-                'barangay_name' => $name,
-                'city_code' => $city->city_code ?? null,
+                'code' => $psgc,
+                'name' => $name,
+                'city_code' => substr($psgc, 0, 7),
+                'province_code' => substr($psgc, 0, 5),
+                'region_code' => substr($psgc, 0, 2),
             ]);
         }
 

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
@@ -84,6 +85,36 @@ class Employee extends Model
     }
 
     /**
+     * Get the job title of the employee.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasOneThrough
+     */
+    public function jobTitle(): HasOneThrough
+    {
+        return $this->hasOneThrough(JobTitle::class, JobDetail::class, 'job_detail_id', 'job_title_id', 'job_detail_id', 'job_title_id');
+    }
+
+    /**
+     * Get the job family/office of the employee.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasOneThrough
+     */
+    public function jobFamily(): HasOneThrough
+    {
+        return $this->hasOneThrough(JobFamily::class, JobDetail::class, 'job_detail_id', 'job_family_id', 'job_detail_id', 'job_family_id');
+    }
+
+    /**
+     * Get the specific area destination of the employee.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasOneThrough
+     */
+    public function specificArea(): HasOneThrough
+    {
+        return $this->hasOneThrough(SpecificArea::class, JobDetail::class, 'job_detail_id', 'area_id', 'job_detail_id', 'area_id');    
+    }
+
+    /**
      * Get the area name where employee is the Area Manager.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
@@ -150,7 +181,7 @@ class Employee extends Model
      */
     public function permanentBarangay(): BelongsTo
     {
-        return $this->belongsTo(Barangay::class, 'permanent_barangay', 'barangay_code');
+        return $this->belongsTo(Barangay::class, 'permanent_barangay');
     }
 
     /**
@@ -160,7 +191,7 @@ class Employee extends Model
      */
     public function presentBarangay(): BelongsTo
     {
-        return $this->belongsTo(Barangay::class, 'present_barangay', 'barangay_code');
+        return $this->belongsTo(Barangay::class, 'present_barangay');
     }
 
     /*
