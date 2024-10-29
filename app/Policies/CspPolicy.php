@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use Illuminate\Support\Facades\Cache;
 use Spatie\Csp\Directive;
 
 class CspPolicy extends CustomSpatiePolicy
@@ -101,17 +102,30 @@ class CspPolicy extends CustomSpatiePolicy
 
     private function getActiveIpAddress()
     {
+        $cacheKey = 'active_ip_address';
+        $cacheDuration = 60; // Cache duration in seconds
+
+        // Check if the result is cached
+        if (Cache::has($cacheKey)) {
+            return Cache::get($cacheKey); // Return the cached IP address directly
+        }
+
         $interfaces = net_get_interfaces();
         $wifiKeywords = ['wi-fi', 'wlan', 'wifi'];
+        $activeIps = [];
 
-        // First, try to find an active Wi-Fi interface
+        // First loop: Check for Wi-Fi interfaces with internet connectivity and store active IPs
         foreach ($interfaces as $name => $details) {
-            if (isset($details['description']) && isset($details['unicast'])) {
-                foreach ($wifiKeywords as $keyword) {
-                    if (stripos($details['description'], $keyword) !== false) {
-                        foreach ($details['unicast'] as $unicast) {
-                            if ($unicast['family'] === AF_INET && isset($details['up']) && $details['up']) {
-                                return $unicast['address'];
+            if (isset($details['description']) && isset($details['unicast']) && isset($details['up']) && $details['up']) {
+                foreach ($details['unicast'] as $unicast) {
+                    if ($unicast['family'] === AF_INET) {
+                        foreach ($wifiKeywords as $keyword) {
+                            if (stripos($details['description'], $keyword) !== false) {
+                                if ($this->hasInternetConnection($unicast['address'])) {
+                                    Cache::put($cacheKey, $unicast['address'], $cacheDuration);
+                                    return $unicast['address'];
+                                }
+                                $activeIps[] = ['type' => 'wifi', 'address' => $unicast['address']];
                             }
                         }
                     }
@@ -119,17 +133,59 @@ class CspPolicy extends CustomSpatiePolicy
             }
         }
 
-        // If no Wi-Fi interface is found, fallback to the first active non-internal IPv4 address
-        foreach ($interfaces as $details) {
-            if (isset($details['unicast'])) {
+        // Second loop: Check for any interfaces with internet connectivity and store active IPs
+        foreach ($interfaces as $name => $details) {
+            if (isset($details['description']) && isset($details['unicast']) && isset($details['up']) && $details['up']) {
                 foreach ($details['unicast'] as $unicast) {
-                    if ($unicast['family'] === AF_INET && isset($details['up']) && $details['up']) {
-                        return $unicast['address'];
+                    if ($unicast['family'] === AF_INET) {
+                        if ($this->hasInternetConnection($unicast['address'])) {
+                            Cache::put($cacheKey, $unicast['address'], $cacheDuration);
+                            return $unicast['address'];
+                        }
+                        $activeIps[] = ['type' => 'other', 'address' => $unicast['address']];
                     }
                 }
             }
         }
 
-        return null;
+        // If no IP address with internet connectivity is found, fallback to any active IP address, prioritizing Wi-Fi
+        foreach ($activeIps as $ip) {
+            if ($ip['type'] === 'wifi') {
+                Cache::put($cacheKey, $ip['address'], $cacheDuration);
+                return $ip['address'];
+            }
+        }
+
+        // If no Wi-Fi IP is found, return any active IP
+        $fallbackIp = $activeIps[0]['address'] ?? "0.0.0.0";
+        Cache::put($cacheKey, $fallbackIp, $cacheDuration);
+        return $fallbackIp;
+    }
+
+    private function hasInternetConnection($ipAddress)
+    {
+        $cacheKey = 'internet_connection_check';
+        $cacheDuration = 60; // Cache duration in seconds
+
+        // Check if the result is cached
+        if (Cache::has($cacheKey)) {
+            return Cache::get($cacheKey);
+        }
+
+        $servers = ["8.8.8.8", "1.1.1.1", "208.67.222.222"]; // Google's DNS, Cloudflare's DNS, OpenDNS
+        $connected = false;
+
+        foreach ($servers as $server) {
+            $connected = @fsockopen($server, 53); // Attempt to connect to the DNS server
+            if ($connected) {
+                fclose($connected);
+                break;
+            }
+        }
+
+        // Cache the result
+        Cache::put($cacheKey, $connected, $cacheDuration);
+
+        return $connected;
     }
 }
