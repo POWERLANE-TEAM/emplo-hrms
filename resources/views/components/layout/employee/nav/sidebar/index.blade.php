@@ -30,7 +30,7 @@
 
     </section>
 
-    <div class="user-bar bg-primary d-flex align-content-center ">
+    <div class="user-bar bg-primary d-flex align-content-center mt-2">
         <div class="px-2 px-md-4">
             <picture>
                 <img class="rounded-circle overflow-hidden user-img" width="45px" height="45px"

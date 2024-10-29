@@ -24,7 +24,7 @@
                         <source media="(min-width:768px)" class=""
                             srcset="{{ Vite::asset('resources/images/icons/microphone-99x85.webp') }}">
 
-                        <img class="icon" width="{{ $icon_size }}" aspect-ratio="aspect-ratio="{{ $icon_ratio }}"
+                        <img class="icon" width="{{ $icon_size }}" aspect-ratio="{{ $icon_ratio }}"
                             src="{{ Vite::asset('resources/images/icons/microphone-60x61.webp') }}" alt="">
                     </picture>
 
