@@ -1,8 +1,8 @@
 <?php
 
+use App\Models\Barangay;
 use App\Models\Employee;
 use App\Models\JobDetail;
-use App\Models\Application;
 use App\Models\LeaveCategory;
 use App\Models\EmploymentStatus;
 use Illuminate\Support\Facades\Schema;
@@ -40,16 +40,14 @@ return new class extends Migration
                 ->restrictOnDelete();
 
             $table->longText('present_address');
-            $table->string('present_barangay', 10);
-            $table->foreign('present_barangay')
-                ->references('barangay_code')->on('barangays')
-                ->onDelete('cascade');
+            $table->foreignIdFor(Barangay::class, 'present_barangay')
+                ->constrained('barangays', 'id')
+                ->cascadeOnDelete();
 
             $table->longText('permanent_address');         
-            $table->string('permanent_barangay', 10);
-            $table->foreign('permanent_barangay')
-                ->references('barangay_code')->on('barangays')
-                ->onDelete('cascade');
+            $table->foreignIdFor(Barangay::class, 'permanent_barangay')
+                ->constrained('barangays', 'id')
+                ->cascadeOnDelete();
 
             $table->string('contact_number', 11)->unique();
             $table->enum('sex', ['MALE', 'FEMALE']);

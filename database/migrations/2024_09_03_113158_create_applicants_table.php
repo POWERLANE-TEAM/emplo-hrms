@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use App\Models\Barangay;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -18,16 +19,14 @@ return new class extends Migration
             $table->string('last_name');
 
             $table->longText('present_address');
-            $table->string('present_barangay', 10);
-            $table->foreign('present_barangay')
-                ->references('barangay_code')->on('barangays')
-                ->onDelete('cascade');
+            $table->foreignIdFor(Barangay::class, 'present_barangay')
+                ->constrained('barangays', 'id')
+                ->cascadeOnDelete();
 
-            $table->longText('permanent_address');
-            $table->string('permanent_barangay', 10);
-            $table->foreign('permanent_barangay')
-                ->references('barangay_code')->on('barangays')
-                ->onDelete('cascade');
+            $table->longText('permanent_address');         
+            $table->foreignIdFor(Barangay::class, 'permanent_barangay')
+                ->constrained('barangays', 'id')
+                ->cascadeOnDelete();
 
             $table->string('contact_number', 11)->index();
             $table->enum('sex', ['MALE', 'FEMALE']);
