@@ -28,10 +28,6 @@
             <x-livewire-tables::tools.toolbar.items.reorder-buttons />
         @endif
 
-        @if ($this->searchIsEnabled() && $this->searchVisibilityIsEnabled())
-            <x-livewire-tables::tools.toolbar.items.search-field />
-        @endif
-
         @if ($this->filtersAreEnabled() && $this->filtersVisibilityIsEnabled() && $this->hasVisibleFilters())
             <x-livewire-tables::tools.toolbar.items.filter-button />
         @endif
@@ -50,6 +46,7 @@
                     $this->getParametersForConfigurableArea('toolbar-left-end'))
             </div>
         @endif
+
     </div>
 
     <div x-cloak x-show="!currentlyReorderingStatus" @class([
@@ -75,13 +72,20 @@
         @endif
 
         @if ($this->paginationIsEnabled() && $this->perPageVisibilityIsEnabled())
-            <x-livewire-tables::tools.toolbar.items.pagination-dropdown />
+            {{-- <x-livewire-tables::tools.toolbar.items.pagination-dropdown /> --}}
+        @endif
+
+
+        @if ($this->searchIsEnabled() && $this->searchVisibilityIsEnabled())
+            <x-livewire-tables::tools.toolbar.items.search-field />
         @endif
 
         @includeWhen(
             $this->hasConfigurableAreaFor('toolbar-right-end'),
             $this->getConfigurableAreaFor('toolbar-right-end'),
             $this->getParametersForConfigurableArea('toolbar-right-end'))
+
+
     </div>
 </div>
 @if (
