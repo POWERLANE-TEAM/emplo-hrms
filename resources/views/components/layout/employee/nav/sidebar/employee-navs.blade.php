@@ -37,8 +37,8 @@
     @endphp
     @canAny([UserPermission::VIEW_PAYSLIPS, UserPermission::VIEW_ALL_PAYSLIPS])
     <x-layout.employee.nav.sidebar.nav-item href="#" :active="request()->routeIs($guard . '.payslips')"
-        class="tw-order-[{{ $nav_payslip_order }}]" nav_txt="Payslips" :default_icon="['src' => 'clients', 'alt' => '']"
-        :active_icon="['src' => 'clients', 'alt' => '']">
+        class="tw-order-[{{ $nav_payslip_order }}]" nav_txt="Payslips" :default_icon="['src' => 'payslips', 'alt' => '']"
+        :active_icon="['src' => 'payslips', 'alt' => '']">
     </x-layout.employee.nav.sidebar.nav-item>
     @endcan
 
@@ -64,23 +64,23 @@
     {{-- Employee, HR Manager, Supervisor --}}
     @canAny([UserPermission::VIEW_OVERTIME, UserPermission::VIEW_ALL_OVERTIME])
     <x-layout.employee.nav.sidebar.nav-item href="#" :active="request()->routeIs($guard . '.overtimes')" class="tw-order-[6]"
-        nav_txt="Overtime" :default_icon="['src' => 'daily', 'alt' => '']"
-        :active_icon="['src' => 'daily', 'alt' => '']">
+        nav_txt="Overtime" :default_icon="['src' => 'overtime', 'alt' => '']"
+        :active_icon="['src' => 'overtime', 'alt' => '']">
     </x-layout.employee.nav.sidebar.nav-item>
     @endcan
 
     {{-- Employee, Supervisor --}}
     @canAny([UserPermission::VIEW_DOCUMENTS])
     <x-layout.employee.nav.sidebar.nav-item href="#" :active="request()->routeIs($guard . '.documents')" class="tw-order-[7]"
-        nav_txt="Documents" :default_icon="['src' => 'daily', 'alt' => '']"
-        :active_icon="['src' => 'daily', 'alt' => '']">
+        nav_txt="Documents" :default_icon="['src' => 'documents', 'alt' => '']"
+        :active_icon="['src' => 'documents', 'alt' => '']">
     </x-layout.employee.nav.sidebar.nav-item>
     @endcan
 
     {{-- Employee, Supervisor --}}
     @can(UserPermission::VIEW_ISSUES)
         <x-layout.employee.nav.sidebar.nav-item href="#" :active="request()->routeIs($guard . '.issues')" class="tw-order-[8]"
-            nav_txt="Issues" :default_icon="['src' => 'daily', 'alt' => '']" :active_icon="['src' => 'daily', 'alt' => '']">
+            nav_txt="Issues" :default_icon="['src' => 'issues', 'alt' => '']" :active_icon="['src' => 'issues', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan
 
@@ -103,16 +103,16 @@
     {{-- HR Manager --}}
     @can(UserPermission::VIEW_ALL_RELATIONS)
         <x-layout.employee.nav.sidebar.nav-item href="#" :active="request()->routeIs($guard . '.relations')" class="tw-order-[11]"
-            nav_txt="Relations" :default_icon="['src' => 'clients', 'alt' => '']"
-            :active_icon="['src' => 'clients', 'alt' => '']">
+            nav_txt="Relations" :default_icon="['src' => 'relations', 'alt' => '']"
+            :active_icon="['src' => 'relations', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan
 
     @can(UserPermission::VIEW_ACCOUNT_MANAGER)
         <x-layout.employee.nav.sidebar.nav-item href="{{ route($guard . '.accounts') }}"
             :active="request()->routeIs($guard . '.accounts')" class="" nav_txt="Accounts"
-            :default_icon="['src' => 'skill-evaluator', 'alt' => '']"
-            :active_icon="['src' => 'skill-evaluator', 'alt' => '']">
+            :default_icon="['src' => 'accounts', 'alt' => '']"
+            :active_icon="['src' => 'accounts', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan
 
@@ -125,29 +125,29 @@
 
     @can(UserPermission::VIEW_CALENDAR_MANAGER)
         <x-layout.employee.nav.sidebar.nav-item href="{{ route($guard . '.calendar') }}"
-            :active="request()->routeIs($guard . '.calendar')" class="" nav_txt="Calendar"
-            :default_icon="['src' => 'calendar', 'alt' => '']" :active_icon="['src' => 'calendar', 'alt' => '']">
+            :active="request()->routeIs($guard . '.calendar-manager')" class="" nav_txt="Calendar"
+            :default_icon="['src' => 'calendar-manager', 'alt' => '']" :active_icon="['src' => 'calendar', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan
 
     @can(UserPermission::VIEW_JOB_LISTING_MANAGER)
         <x-layout.employee.nav.sidebar.nav-item href="{{ route($guard . '.job-listing') }}"
-            :active="request()->routeIs($guard . '.job-listing')" class="" nav_txt="Job Listing"
-            :default_icon="['src' => 'job-listing', 'alt' => '']" :active_icon="['src' => 'job-listing', 'alt' => '']">
+            :active="request()->routeIs($guard . '.jobboard')" class="" nav_txt="Job Listing"
+            :default_icon="['src' => 'jobboard', 'alt' => '']" :active_icon="['src' => 'job-listing', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan
 
     @can(UserPermission::VIEW_POLICY_MANAGER)
         <x-layout.employee.nav.sidebar.nav-item href="{{ route($guard . '.policy') }}"
             :active="request()->routeIs($guard . '.policy')" class="" nav_txt="Policies"
-            :default_icon="['src' => 'policies', 'alt' => '']" :active_icon="['src' => 'policy', 'alt' => '']">
+            :default_icon="['src' => 'documents', 'alt' => '']" :active_icon="['src' => 'documents', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan
 
     @can(UserPermission::VIEW_ANNOUNCEMENT_MANAGER)
         <x-layout.employee.nav.sidebar.nav-item href="{{ route($guard . '.announcement') }}"
             :active="request()->routeIs($guard . '.announcement')" class="" nav_txt="Announcements"
-            :default_icon="['src' => 'announcement', 'alt' => '']" :active_icon="['src' => 'announcement', 'alt' => '']">
+            :default_icon="['src' => 'announcements', 'alt' => '']" :active_icon="['src' => 'announcements', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan
 
@@ -166,7 +166,7 @@
     @can(UserPermission::VIEW_PERFORMANCE_CONFIG)
         <x-layout.employee.nav.sidebar.nav-item href="{{ route($guard . '.performance') }}"
             :active="request()->routeIs($guard . '.performance')" class="" nav_txt="Performance"
-            :default_icon="['src' => 'performance', 'alt' => '']" :active_icon="['src' => 'performance', 'alt' => '']">
+            :default_icon="['src' => 'performances', 'alt' => '']" :active_icon="['src' => 'performances', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan
 
@@ -189,24 +189,17 @@
 <x-layout.employee.nav.sidebar.nav-group :sidebar_expanded="$sidebar_expanded" class="" txt_collapsed="AI Tools"
     txt_expanded="">
 
-    @can(UserPermission::VIEW_MATRIX_PROJECTOR)
-        <x-layout.employee.nav.sidebar.nav-item href="#" :active="request()->is('#')" class="" nav_txt="Matrix Projector"
-            :default_icon="['src' => 'matrix-projector', 'alt' => '']"
-            :active_icon="['src' => 'matrix-projector', 'alt' => '']">
-        </x-layout.employee.nav.sidebar.nav-item>
-    @endcan
-
     @can(UserPermission::VIEW_TALENT_EVALUATOR)
-        <x-layout.employee.nav.sidebar.nav-item href="#" :active="request()->is('#')" class="" nav_txt="Talent Evaluator"
-            :default_icon="['src' => 'skill-evaluator', 'alt' => '']"
-            :active_icon="['src' => 'skill-evaluator', 'alt' => '']">
+        <x-layout.employee.nav.sidebar.nav-item href="#" :active="request()->is('#')" class="" nav_txt="Resume Evaluator"
+            :default_icon="['src' => 'resume-evaluator', 'alt' => '']"
+            :active_icon="['src' => 'resume-evaluator', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan
 
     @can(UserPermission::VIEW_PLAN_GENERATOR)
         <x-layout.employee.nav.sidebar.nav-item href="#" :active="request()->is('#')" class="" nav_txt="Plan Generator"
-            :default_icon="['src' => 'skill-evaluator', 'alt' => '']"
-            :active_icon="['src' => 'skill-evaluator', 'alt' => '']">
+            :default_icon="['src' => 'plan-generator', 'alt' => '']"
+            :active_icon="['src' => 'plan-generator', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan
 

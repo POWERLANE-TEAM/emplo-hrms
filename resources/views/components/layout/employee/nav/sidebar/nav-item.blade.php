@@ -4,7 +4,7 @@
     'nav_txt' => '',
     'default_icon' => '',
     'active_icon' => '',
-    'src_path' => 'resources/images/icons/',
+    'src_path' => 'resources/images/icons/sidebar/',
     'src_extn' => '.webp',
 ])
 
