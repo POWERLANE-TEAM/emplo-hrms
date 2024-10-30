@@ -184,7 +184,7 @@ $enable-negative-margins: true;
 *::before,
 *::after {
     box-sizing: border-box;
-    letter-spacing: calc(0.02rem + 0.025vw);
+    letter-spacing: calc(0.01rem + 0.025vw);
 }
 
 
