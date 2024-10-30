@@ -57,7 +57,7 @@ class Applicant extends Model
      */
     public function permanentBarangay(): BelongsTo
     {
-        return $this->belongsTo(Barangay::class, 'permanent_barangay', 'barangay_code');
+        return $this->belongsTo(Barangay::class, 'permanent_barangay');
     }
 
     /**
@@ -67,6 +67,6 @@ class Applicant extends Model
      */
     public function presentBarangay(): BelongsTo
     {
-        return $this->belongsTo(Barangay::class, 'present_barangay', 'barangay_code');
+        return $this->belongsTo(Barangay::class, 'present_barangay');
     }
 }

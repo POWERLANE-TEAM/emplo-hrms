@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -12,26 +12,39 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('regions', function (Blueprint $table) {
-            $table->string('region_code', 10)->primary();
-            $table->string('region_name');
+            $table->id();
+            $table->string('code')->unique();
+            $table->string('name');
+            $table->string('region_code')->index();
         });
 
         Schema::create('provinces', function (Blueprint $table) {
-            $table->string('province_code', 10)->primary();
-            $table->string('province_name');
-            $table->string('region_code', 10)->index()->nullable();
+            $table->id();
+            $table->string('code')->unique();
+            $table->string('name');
+            $table->string('province_code');
+            $table->string('region_code');
+            $table->index(['province_code', 'region_code']);
         });
 
         Schema::create('cities', function (Blueprint $table) {
-            $table->string('city_code', 10)->primary();
-            $table->string('city_name');
-            $table->string('province_code', 10)->index()->nullable();
+            $table->id();
+            $table->string('code')->unique();
+            $table->string('name');
+            $table->string('city_code');
+            $table->string('province_code');
+            $table->string('region_code');
+            $table->index(['city_code', 'province_code', 'region_code']);
         });
 
         Schema::create('barangays', function (Blueprint $table) {
-            $table->string('barangay_code', 10)->primary();
-            $table->string('barangay_name');
-            $table->string('city_code', 10)->index()->nullable();
+            $table->id();
+            $table->string('code')->unique();
+            $table->string('name');
+            $table->string('city_code');
+            $table->string('province_code');
+            $table->string('region_code');
+            $table->index(['city_code', 'province_code', 'region_code']);
         });
     }
 
