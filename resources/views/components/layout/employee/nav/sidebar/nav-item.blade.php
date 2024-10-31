@@ -8,7 +8,7 @@
     'src_extn' => '.webp',
 ])
 
-@aware(['icon_size' => '31px', 'icon_ratio' => '1/1'])
+@aware(['icon_size' => '23px', 'icon_ratio' => '1/1'])
 
 <li role="none" {{ $attributes->merge(['class' => 'my-1 sidebar-item']) }}>
     <x-nav-link href="{{ $href }}" active="{{ $active }}" rel=""
@@ -26,7 +26,7 @@
                     alt="{{ $active_icon['alt'] }}" aspect-ratio="{{ $icon_ratio }}" class="">
             @endif
         </div>
-        <span class="nav-item">{{ $nav_txt }}</span>
+        <span class="nav-item fs-7">{{ $nav_txt }}</span>
         <span class="tooltip">{{ $nav_txt }}</span>
     </x-nav-link>
 

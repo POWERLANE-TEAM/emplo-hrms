@@ -55,6 +55,13 @@ html {
     }
 }
 
+body.employee-main {
+    main.main {
+        padding-left: 2rem; 
+        padding-right: 1rem;
+    }
+}
+
 input.rm-bg-icon {
     &.form-control {
 

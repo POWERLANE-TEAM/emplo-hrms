@@ -1,7 +1,7 @@
-@aware(['icon_size' => '25vw', 'icon_ratio' => '1/1'])
+@aware(['icon_size' => '12vw', 'icon_ratio' => '1/1'])
 
 <div {{ $attributes->merge(['class' => '']) }}>
-    <nav class="topnav">
+    <nav class="topnav main-body">
         <div class="left d-flex align-items-center justify-content-end col-md-8 col-lg-6">
             <picture class=" ">
                 <source media="(min-width:2560px)" class=""
@@ -15,20 +15,7 @@
             <x-form.search-group class="col-11 px-3" container_class="col-12">
 
                 <x-form.search type="search" class=""
-                    placeholder="Search job titles or companies"></x-form.search>
-
-                <x-slot:right_icon>
-                    <picture class="">
-                        <source media="(min-width:2560px)" class=""
-                            srcset="{{ Vite::asset('resources/images/icons/microphone-513x443.webp') }}">
-                        <source media="(min-width:768px)" class=""
-                            srcset="{{ Vite::asset('resources/images/icons/microphone-99x85.webp') }}">
-
-                        <img class="icon" width="{{ $icon_size }}" aspect-ratio="{{ $icon_ratio }}"
-                            src="{{ Vite::asset('resources/images/icons/microphone-60x61.webp') }}" alt="">
-                    </picture>
-
-                </x-slot:right_icon>
+                    placeholder="Search modules"></x-form.search>
 
             </x-form.search-group>
 
