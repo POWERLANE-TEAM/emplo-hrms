@@ -108,14 +108,16 @@
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan
 
+    {{-- Head Admin --}}
     @can(UserPermission::VIEW_ACCOUNT_MANAGER)
-        <x-layout.employee.nav.sidebar.nav-item href="{{ route($guard . '.accounts') }}"
-            :active="request()->routeIs($guard . '.accounts')" class="" nav_txt="Accounts"
+        <x-layout.employee.nav.sidebar.nav-item href="{{ route($guard . '.create-account') }}"
+            :active="request()->routeIs($guard . '.create-account')" class="" nav_txt="Accounts"
             :default_icon="['src' => 'accounts', 'alt' => '']"
             :active_icon="['src' => 'accounts', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan
 
+    {{-- Head Admin --}}
     @can(UserPermission::VIEW_EMPLOYEE_MANAGER)
         <x-layout.employee.nav.sidebar.nav-item href="{{ route($guard . '.employees') }}"
             :active="request()->routeIs($guard . '.employees')" class="" nav_txt="Employees"
@@ -123,6 +125,7 @@
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan
 
+    {{-- Head Admin --}}
     @can(UserPermission::VIEW_CALENDAR_MANAGER)
         <x-layout.employee.nav.sidebar.nav-item href="{{ route($guard . '.calendar') }}"
             :active="request()->routeIs($guard . '.calendar-manager')" class="" nav_txt="Calendar"
@@ -130,13 +133,15 @@
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan
 
+    {{-- Head Admin --}}
     @can(UserPermission::VIEW_JOB_LISTING_MANAGER)
         <x-layout.employee.nav.sidebar.nav-item href="{{ route($guard . '.job-listing') }}"
-            :active="request()->routeIs($guard . '.jobboard')" class="" nav_txt="Job Listing"
+            :active="request()->routeIs($guard . '.jobboard')" class="" nav_txt="Job Board"
             :default_icon="['src' => 'jobboard', 'alt' => '']" :active_icon="['src' => 'job-listing', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan
 
+    {{-- Head Admin --}}
     @can(UserPermission::VIEW_POLICY_MANAGER)
         <x-layout.employee.nav.sidebar.nav-item href="{{ route($guard . '.policy') }}"
             :active="request()->routeIs($guard . '.policy')" class="" nav_txt="Policies"
@@ -144,9 +149,10 @@
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan
 
+    {{-- Head Admin --}}
     @can(UserPermission::VIEW_ANNOUNCEMENT_MANAGER)
-        <x-layout.employee.nav.sidebar.nav-item href="{{ route($guard . '.announcement') }}"
-            :active="request()->routeIs($guard . '.announcement')" class="" nav_txt="Announcements"
+        <x-layout.employee.nav.sidebar.nav-item href="{{ route($guard . '.create-announcement') }}"
+            :active="request()->routeIs($guard . '.create-announcement')" class="" nav_txt="Announcements"
             :default_icon="['src' => 'announcements', 'alt' => '']" :active_icon="['src' => 'announcements', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan
@@ -163,6 +169,7 @@
 <x-layout.employee.nav.sidebar.nav-group :sidebar_expanded="$sidebar_expanded" class="" txt_collapsed="Config"
     txt_expanded="Configuration">
 
+    {{-- Head Admin --}}
     @can(UserPermission::VIEW_PERFORMANCE_CONFIG)
         <x-layout.employee.nav.sidebar.nav-item href="{{ route($guard . '.performance') }}"
             :active="request()->routeIs($guard . '.performance')" class="" nav_txt="Performance"
@@ -170,6 +177,7 @@
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan
 
+    {{-- Head Admin --}}
     @can(UserPermission::VIEW_FORM_CONFIG)
         <x-layout.employee.nav.sidebar.nav-item href="{{ route($guard . '.form') }}"
             :active="request()->routeIs($guard . '.form')" class="" nav_txt="Forms"
@@ -189,6 +197,7 @@
 <x-layout.employee.nav.sidebar.nav-group :sidebar_expanded="$sidebar_expanded" class="" txt_collapsed="AI Tools"
     txt_expanded="">
 
+    {{-- HR Manager --}}
     @can(UserPermission::VIEW_TALENT_EVALUATOR)
         <x-layout.employee.nav.sidebar.nav-item href="#" :active="request()->is('#')" class="" nav_txt="Resume Evaluator"
             :default_icon="['src' => 'resume-evaluator', 'alt' => '']"
@@ -196,6 +205,7 @@
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan
 
+    {{-- HR Manager --}}
     @can(UserPermission::VIEW_PLAN_GENERATOR)
         <x-layout.employee.nav.sidebar.nav-item href="#" :active="request()->is('#')" class="" nav_txt="Plan Generator"
             :default_icon="['src' => 'plan-generator', 'alt' => '']"
