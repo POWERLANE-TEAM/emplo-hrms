@@ -15,7 +15,7 @@
             <x-form.search-group class="col-11 px-3" container_class="col-12">
 
                 <x-form.search type="search" class=""
-                    placeholder="Search modules"></x-form.search>
+                    placeholder="Search page..."></x-form.search>
 
             </x-form.search-group>
 

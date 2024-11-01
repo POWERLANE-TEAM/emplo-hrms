@@ -2,7 +2,7 @@
 @import 'core';
 @import 'font/font-size';
 @import 'scrollbar';
-
+@import 'icon-sizing';
 @include pri-sm-logo;
 
 header,
@@ -57,7 +57,7 @@ html {
 
 body.employee-main {
     main.main {
-        padding-left: 2rem; 
+        padding-left: 3.5rem; 
         padding-right: 1rem;
     }
 }
