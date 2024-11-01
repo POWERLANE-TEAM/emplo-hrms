@@ -20,7 +20,7 @@
 @endPushOnce
 
 @pushOnce('styles')
-    @vite(['resources/css/employee/dashboard.css'])
+    @vite(['resources/css/employee/main.css'])
 @endPushOnce
 
 @section('content')
