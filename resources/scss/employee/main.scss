@@ -1,0 +1,16 @@
+// ===================================================================
+// Main Foundation Stylesheet for Employee Interface
+// ===================================================================
+//
+// Imports:
+// - '../utils'          : Utility styles used across the employee interface.
+// - '../icon/lucide'    : Icon styles from the Lucide library for UI elements.
+// - 'side-top-bar'      : Styles for the side/top navigation bar.
+// - '../footer'         : Styles for the footer component.
+//
+// ===================================================================
+
+@import '../utils';
+@import '../icon/lucide';
+@import 'side-top-bar';
+@import '../footer';
