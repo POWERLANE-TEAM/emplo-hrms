@@ -8,7 +8,7 @@
             {{ $input_icon_left }}
         @endif
     </div>
-    <input wire:model="{{ $attributes->get('name') }}"
+    <input @if($attributes->has('name')) wire:model="{{ $attributes->get('name') }}" @endif
         {{ $attributes->merge(['class' => 'form-control border-bottom ps-5', 'autocomplete' => $attributes->get('autocomplete', 'off')]) }}
         nonce="{{ $nonce }}">
     @if (!empty($feedback))

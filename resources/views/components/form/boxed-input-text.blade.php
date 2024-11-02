@@ -16,7 +16,7 @@
 <div class="input-group mb-3 position-relative">
     <!-- Input with boxed styling -->
     <input 
-        wire:model="{{ $attributes->get('name') }}" 
+        @if($attributes->has('name')) wire:model="{{ $attributes->get('name') }}" @endif 
         {{ $attributes->merge([
             'class' => 'form-control border ps-3 rounded',
             'autocomplete' => $attributes->get('autocomplete', 'off'),

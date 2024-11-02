@@ -14,7 +14,7 @@
     @endif
 </label>
 <div class="input-group mb-3 position-relative">
-    <textarea wire:model="{{ $attributes->get('name') }}"
+    <textarea @if($attributes->has('name')) wire:model="{{ $attributes->get('name') }}" @endif
               {{ $attributes->merge([
                   'class' => 'form-control border ps-3 rounded',
                   'autocomplete' => $attributes->get('autocomplete', 'off'),

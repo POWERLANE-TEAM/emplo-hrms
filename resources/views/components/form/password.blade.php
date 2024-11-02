@@ -22,7 +22,7 @@
             pattern="{{ $attributes->get('pattern') }}" @endif
     @else pattern="^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[\W_])[^\s]{8,72}$" @endif
     aria-owns="{{ $attributes->get('id') }}-feedback {{ $has_confirm ? $attributes->get('id') . '-confirm' : '' }}"
-    minlength="8" maxlength="72" required wire:model="{{ $attributes->get('name') }}" nonce="{{ $nonce }}">
+    minlength="8" maxlength="72" required @if($attributes->has('name')) wire:model="{{ $attributes->get('name') }}" @endif nonce="{{ $nonce }}">
 
     @if (!empty($toggle_password))
         {{ $toggle_password }}

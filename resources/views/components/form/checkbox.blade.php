@@ -7,7 +7,7 @@
             // 'autocomplete' => $attributes->get('autocomplete', 'off'),
         ]) }}
         @if (isset($feedback)) aria-owns="{{ $attributes->get('id') }}-feedback" @endif
-        wire:model="{{ $attributes->get('name') }}" nonce="{{ $nonce }}">
+        @if($attributes->has('name')) wire:model="{{ $attributes->get('name') }}" @endif nonce="{{ $nonce }}">
 
     @if (!empty($label))
         <label for="{{ $attributes->get('id') }}" class="checkbox-label d-flex flex-wrap">

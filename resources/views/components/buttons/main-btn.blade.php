@@ -12,7 +12,7 @@
 <div class="bottom-0 pt-1 pb-md-3 bg-body z-3 w-100">
     <button type="submit" nonce="{{ $nonce }}"
             id="{{ $id }}"
-            wire:model="{{ $attributes->get('name') }}"
+            @if($attributes->has('name')) wire:model="{{ $attributes->get('name') }}" @endif
             {{ $attributes->merge(['class' => 'btn btn-primary btn-lg']) }}
             @if($disabled) disabled @endif>
         
