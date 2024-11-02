@@ -33,10 +33,16 @@ Route::middleware('auth:admin')->group(function () {
     // End of Accounts
 
 
-    Route::get('employees', function() {
-        abort(404);
-    })->name('employees');
+    // -- Organization Routes --
+    Route::get('create-dept', function() {
+        return view('employee.admin.organization.create-dept');
+    })->name('create-dept');
 
+    Route::get('create-position', function() {
+        return view('employee.admin.organization.create-position');
+    })->name('create-position');
+    // End of Organization
+    
 
     Route::get('calendar', function() {
         abort(404);

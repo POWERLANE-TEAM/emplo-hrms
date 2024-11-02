@@ -119,8 +119,8 @@
 
     {{-- Head Admin --}}
     @can(UserPermission::VIEW_EMPLOYEE_MANAGER)
-        <x-layout.employee.nav.sidebar.nav-item href="{{ route($guard . '.employees') }}"
-            :active="request()->routeIs($guard . '.employees')" class="" nav_txt="Employees"
+        <x-layout.employee.nav.sidebar.nav-item href="{{ route($guard . '.create-dept') }}"
+            :active="request()->routeIs($guard . '.create-dept')" class="" nav_txt="Organization"
             :default_icon="['src' => 'employee', 'alt' => '']" :active_icon="['src' => 'employee', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan
