@@ -1,3 +1,7 @@
+@import 'font/font-size';
+
+$prefix: bs-;
+
 :root {
     --main-green: #61b000;
     --main-lime: #EEEE13;
@@ -6,6 +10,7 @@
     --main-container-px: clamp(1.25rem, 5dvw, 30dvw);
 }
 
+// bootstrap variable location is in file://./../../node_modules/bootstrap/scss/_variables.scss
 // custom style variables LIGHT
 $primary: #61b000;
 $secondary: #d9d9d9;
@@ -73,7 +78,7 @@ $font-family-sans-serif: 'Figtree', system-ui, -apple-system, "Segoe UI", Roboto
 // $font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !default;
 
 
-$btn-color: #f5f5f5;
+// $btn-color: #f5f5f5;
 // $btn-padding-y:               $input-btn-padding-y !default;
 // $btn-padding-x:               $input-btn-padding-x !default;
 // $btn-font-family:             $input-btn-font-family !default;
@@ -170,13 +175,23 @@ $breadcrumb-divider: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/
 
 $mark-padding: none;
 
-// custom style variables DARK todo
-// dark variable location is in ../../node_modules/bootstrap/scss/_variables-dark.scss
-$headings-color-dark: #f5f5f5;
-
 $table-color: var(--bs-body-color);
 
+$nav-link-padding-y: .5em;
+$nav-link-padding-x: 1em;
+
 $enable-negative-margins: true;
+
+// custom style variables DARK todo
+// dark variable location is in file://./../../node_modules/bootstrap/scss/_variables-dark.scss
+$headings-color-dark: #f5f5f5;
+
+// $body-color-dark:                   $gray-300 !default;
+// $body-bg-dark: $gray-900 !default;
+// $body-secondary-color-dark:         rgba($body-color-dark, .75) !default;
+$body-secondary-bg-dark: $gray-700 ;
+// $body-tertiary-color-dark:          rgba($body-color-dark, .5) !default;
+$body-tertiary-bg-dark: mix($gray-500, $gray-900, 50%);
 
 @import '../../node_modules/bootstrap/scss/bootstrap';
 
@@ -207,7 +222,7 @@ body {
 }
 
 a.unstyled {
-    color: var(--bs-black);
+    color: var(--bs-body-color);
     text-decoration: unset;
 }
 

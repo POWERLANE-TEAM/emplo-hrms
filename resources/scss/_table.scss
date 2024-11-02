@@ -1,0 +1,278 @@
+@mixin table-common-styles {
+    border-collapse: separate;
+    border-spacing: 0 calc(1rem + 0.5vw);
+
+    tr.outline {
+        outline: clamp(1px, 0.031rem + 0.1vw, 0.5rem) solid var(--bs-table-border-color);
+    }
+}
+
+@mixin table-hover-styles {
+    tbody {
+        tr.no-hover:hover {
+            // pointer-events: none;
+            background-color: var(--bs-body-bg);
+            --bs-table-bg-state: var(--bs-body-bg);
+
+            &>* {
+                background-color: var(--bs-body-bg);
+                --bs-table-bg-state: var(--bs-body-bg);
+            }
+        }
+    }
+}
+
+table.table {
+    @include table-common-styles;
+
+    &.table-hover {
+        @include table-hover-styles;
+    }
+
+    td {
+        font-size: 1.05em;
+        font-weight: 500;
+    }
+
+}
+
+/*
+ * |--------------------------------------------------------------------------
+ * | Rappasoft Table Specific Styles
+ * |--------------------------------------------------------------------------
+ * Description
+ */
+
+//  parent div
+div:has(div[wire\:\key="table-wrapper"]) {
+
+    // wrapper div
+    div[wire\:\key="table-wrapper"] {
+
+        // wrapper that contains tool bar etc.
+        div[id^="datatable-"] {
+            /* Your styles here */
+            // background-color: lightgreen;
+            // border: 2px solid #ccc;
+
+            div:has(>div[wire\:click="clearSearch"]) {
+                // Hides clear button of datatable
+                display: none !important;
+            }
+
+            /*
+             * |--------------------------------------------------------------------------
+             * | START of Top Toolbar Reordering of Elements
+             * |--------------------------------------------------------------------------
+             * Description
+             */
+
+            //  toolbar container
+            div:has(>div>div>[wire\:model\.live="search"]),
+            div:has(>div>div>div>.dropdown-menu>[wire\:key^="table-filter-"][wire\:key$="-toolbar"]),
+            div:has(>div>[x-show="reorderStatus"]>[x-on\:click="reorderToggle"]) {
+                // override justify-content-between class of bootstrap
+                justify-content: end;
+                gap: clamp(0.25rem, 0.075rem + 1dvw, 2rem + 48px);
+                align-content: center;
+            }
+
+            // targets the container of left built in tools in toolbar (filter and search)
+            div:has(>div>[wire\:model\.live="search"]),
+            div:has(>div>div>.dropdown-menu>[wire\:key^="table-filter-"][wire\:key$="-toolbar"]) {
+                display: contents !important;
+            }
+
+            // targets the container of right built in tools in toolbar (per page item select and show/hide columns)
+            div:has(>div>div>[id="table-columnSelect"]),
+            div:has(>div>[wire\:model\.live="perPage"]) {
+                display: contents !important;
+            }
+
+            div:has(>div>.dropdown-menu>[wire\:key^="table-filter-"][wire\:key$="-toolbar"]) {
+                order: 8;
+
+                // START for position middle
+                display: flex;
+                align-content: center;
+                flex-wrap: wrap;
+                // END for position middle
+            }
+
+            .input-group:has(>[wire\:model\.live="search"]) {
+                @media screen and (min-width: 768px) {
+                    max-width: 15cqw;
+                }
+
+                order: 9;
+            }
+
+            div:has(>div>[id="table-columnSelect"]) {
+                order: 10;
+
+                // START for position middle
+                display: flex;
+                align-content: center;
+                flex-wrap: wrap;
+                // END for position middle
+            }
+
+
+            div:has(>[wire\:model\.live="perPage"]) {
+                order: 11;
+                // display: none;
+
+                // START for position middle
+                display: flex;
+                align-content: center;
+                flex-wrap: wrap;
+                // END for position middle
+
+                [wire\:model\.live="perPage"] {
+                    width: min-content;
+                }
+            }
+
+            // targets reorder group of button use for drag and drop reordering
+            div[x-show="reorderStatus"]:has([x-on\:click="reorderToggle"]) {
+                margin-right: auto !important;
+                order: 3;
+
+                // START for position middle
+                display: flex;
+                align-content: center;
+                flex-wrap: wrap;
+                // END for position middle
+            }
+
+            /*
+             * |--------------------------------------------------------------------------
+             * | END of Top Toolbar Reordering of Elements
+             * |--------------------------------------------------------------------------
+             * Description
+             */
+
+            //  Style for custom <select> filter
+            [wire\:key="inst-select-filter-table"] {
+                label {
+                    @media screen and (max-width: 768px) {
+                        font-size: 0.875em;
+                    }
+
+
+                }
+
+                .input-group:has(select) {
+
+
+
+                    @media screen and (min-width: 992px) {
+                        // min-width: fit-content !important;
+                        // width: 100%;
+                        max-width: 60%;
+                    }
+
+                }
+            }
+
+            // center the Table head label
+            [wire\:key^="table-table-head"] {
+                div {
+                    justify-content: center;
+                }
+            }
+
+            div:has(>div>div>div>nav>.pagination) {
+
+                // min-width: 100cqw;
+                // max-width: 100cqw;
+
+                // Make the pagination button last
+                div:has(>div>nav>.pagination) {
+
+                    @media screen and (min-width: 768) {
+                        order: 12;
+                    }
+                }
+
+                // Overiding the pagination class of showing result
+                .text-md-end {
+                    @media screen and (min-width: 768) {
+                        text-align: start !important;
+                    }
+
+                }
+
+                div:has(>div>div>nav>.pagination) {
+
+                    // START removes the overflow caused by row class of bootstrap
+                    @media screen and (max-width: 576px) {
+                        min-width: calc(100% * 1);
+                        max-width: calc(104% * 1);
+                    }
+
+                    clip-path: polygon(0.75rem 0, calc(100% + 3cqw) 0, calc(100% + 3cqw) 100%, 0.75rem 100%);
+                    // END removes the overflow caused by row class of bootstrap
+
+                }
+
+                nav {
+                    ul {
+                        column-gap: clamp(0.25rem, 0.1em + 1%, 3rem);
+
+                        .page-item {
+
+                            &.active span {
+                                font-weight: 900;
+                            }
+
+                            button,
+                            &.disabled span {
+                                border-radius: 0.3cqw;
+                                color: inherit;
+                                font-weight: 500;
+
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+
+    }
+
+    // yuh table wrapper of the actual <table> inside
+    div[wire\:\key="table-twrap"] {
+        /* Your styles here */
+        // background-color: lightblue;
+        // border: 2px solid #ccc;
+
+        table {
+
+            @include table-hover-styles;
+
+            tr {
+                min-height: fit-content;
+                --tr-padding-x: calc(0.25rem + 0.5vw);
+                --padding-y: calc(1rem + 0.5vw);
+
+                td,
+                th {
+                    padding-top: var(--padding-y);
+                    padding-bottom: var(--padding-y);
+                }
+
+                td:first-of-type,
+                td:last-of-type {
+                    padding-left: var(--tr-padding-x);
+                    padding-right: var(--tr-padding-x);
+                }
+
+            }
+
+
+
+        }
+    }
+}
