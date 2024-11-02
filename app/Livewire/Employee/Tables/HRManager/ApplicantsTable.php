@@ -38,7 +38,7 @@ class ApplicantsTable extends DataTableComponent
 
         $this->setEagerLoadAllRelationsEnabled();
 
-        $this->setSingleSortingDisabled();
+        // $this->setSingleSortingDisabled();
         $this->setDefaultSort('applicants.created_at', 'desc');
 
         $this->setDefaultReorderSort('applicants.created_at', 'desc');
@@ -143,7 +143,8 @@ class ApplicantsTable extends DataTableComponent
                 ->sortable(function ($query, $direction) {
                     return $query->orderBy('last_name', $direction)
                         ->orderBy('first_name', $direction)
-                        ->orderBy('middle_name', $direction);
+                        ->orderBy('middle_name', $direction)
+                    ;
                 })
                 ->searchable(function (Builder $query, $searchTerm) {
                     $this->applyFullNameSearch($query, $searchTerm);
