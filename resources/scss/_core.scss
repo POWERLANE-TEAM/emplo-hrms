@@ -1,5 +1,6 @@
 :root {
     --main-green: #61b000;
+    --main-green-transparent: rgba(97, 176, 0, 0.5);
     --main-lime: #EEEE13;
     --main-white: #fff;
     --main-muted-gray: #f6f6f6;
@@ -232,6 +233,23 @@ a.unstyled {
     -webkit-user-drag: none;
     -webkit-user-select: none;
     -ms-user-select: none;
+}
+
+.underline-padded {
+    padding-bottom: 3px; /* Customize padding */
+    border-bottom: 3px solid var(--main-green); /* Customize underline color and thickness */
+    display: inline-block;
+}
+
+.border-dashed {
+    padding: .5rem;
+    border: 2px dashed var(--main-green);
+    color: var(--main-green);
+}
+
+.border-dashed:hover {
+    border-color: var(--main-green-transparent) !important; 
+    color: var(--main-green-transparent) !important;
 }
 
 body {

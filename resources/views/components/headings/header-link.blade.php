@@ -6,7 +6,7 @@
 
 @props(['heading', 'description', 'nonce', 'label'])
 
-<div class="pt-2 mb-5 ms-n1">
+<div class="pt-2 pb-4 ms-n1">
     <div class="row">
         <div class="col-10">
             <div class="fs-2 fw-bold mb-2">{{ $heading }}</div>
