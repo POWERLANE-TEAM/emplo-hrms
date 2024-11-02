@@ -162,7 +162,7 @@ sidebar.main-menu {
 
     [class*="-custom-scrollbar"] {
         &::-webkit-scrollbar-thumb {
-            background-color: var(--bs-body-bg);
+            background-color: rgba(var(--bs-body-bg-rgb), 0.2);
         }
     }
 
