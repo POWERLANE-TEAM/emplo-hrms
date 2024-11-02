@@ -29,31 +29,4 @@
         </div>
 
     </section>
-
-    <div class="user-bar bg-primary d-flex align-content-center mt-2">
-        <div class="px-2 px-md-4">
-            <picture>
-                <img class="rounded-circle overflow-hidden user-img" width="45px" height="45px"
-                    aspect-ratio="{{ $icon_ratio }}" src="{{ $userPhoto ?? $defaultAvatar }}"
-                    onerror="this.onerror=null;this.src='http://placehold.it/45/45';" alt="">
-            </picture>
-        </div>
-        <div class="flex-column me-auto user-info">
-            <div>{{ trim($user->account->getFullNameAttribute() ?? 'Unknown User') }}</div>
-            <div>{{ trim($user->email ?? 'No email.') }}</div>
-        </div>
-        <div class="dropdown user-menu px-2">
-            <button class="bg-transparent border-0 dropdown-toggle d-flex align-content-center" type="button"
-                aria-label="User Menu" data-bs-toggle="dropdown">
-                <i class="icon ellipsis text-white" data-lucide="more-vertical"></i>
-            </button>
-            <ul class="dropdown-menu">
-                <li class="dropdown-item">Notif 1</li>
-                <li class="dropdown-item">Notif 1</li>
-                <li class="dropdown-item"> @livewire('auth.logout')</li>
-
-            </ul>
-        </div>
-
-    </div>
 </sidebar>

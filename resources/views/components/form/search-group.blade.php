@@ -15,11 +15,11 @@
 
             {{ $slot }}
 
-            @if (!empty($right_icon))
+            <!-- @if (!empty($right_icon))
                 <span class="input-group-text icon overlap right">
                     {{ $right_icon }}
                 </span>
-            @endif
+            @endif -->
         </div>
     </search>
 </div>

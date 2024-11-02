@@ -44,6 +44,8 @@ class DatabaseSeeder extends Seeder
 
         JobDetail::factory(rand(5, 20))->create();
 
+        $this->call(BasicRoleSeeder::class);
+
         $this->call(IntermediateRoleSeeder::class);
 
         $this->call(AdvancedRoleSeeder::class);

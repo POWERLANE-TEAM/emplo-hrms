@@ -34,7 +34,7 @@
     </x-breadcrumbs> --}}
 
 
-    <x-layout.main-heading :isHeading="true">
+    <x-headings.main-heading :isHeading="true">
         <x-slot:heading>
             Good afternoon, {{ $user->account->first_name }}!
         </x-slot:heading>
@@ -42,7 +42,7 @@
         <x-slot:description>
             <p>It is <time datetime="{{ now() }}"> {{ \Carbon\Carbon::now()->format('l, d F') }}</time></p>
         </x-slot:description>
-    </x-layout.main-heading>
+    </x-headings.main-heading>
 
     <x-table.top-menu-layout>
         <div class="d-flex col-md-4 justify-content-between">

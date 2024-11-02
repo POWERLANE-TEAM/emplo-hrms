@@ -15,7 +15,7 @@
             'pattern' => $attributes->get('pattern', '/^[a-zA-Z0-9._\-]+@[a-z0-9.-]+\.[a-z]{2,4}$/'),
         ]) }}
         aria-owns="{{ $attributes->get('id') }}-feedback" maxlength="320" required
-        wire:model="{{ $attributes->get('name') }}" nonce="{{ $nonce }}">
+        @if($attributes->has('name')) wire:model="{{ $attributes->get('name') }}" @endif nonce="{{ $nonce }}">
     @if (!empty($feedback))
         {{ $feedback }}
     @endif
