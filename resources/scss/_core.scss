@@ -215,6 +215,10 @@ a.unstyled {
     color: #f5f5f5;
 }
 
+.btn-outline-primary {
+    --bs-btn-hover-color: #fff;
+}
+
 .form-control {
     padding-top: calc(0.2rem + 0.3vw);
     padding-bottom: calc(0.2rem + 0.2vw);
