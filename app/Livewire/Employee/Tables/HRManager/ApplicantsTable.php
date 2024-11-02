@@ -9,14 +9,27 @@ use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\JobVacancy;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
-use Rappasoft\LaravelLivewireTables\Views\Actions\Action;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateFilter;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
+
+/**
+ * Implemented Methods:
+ * @method  configure(): void
+ * @method  columns(): array
+ * @method  builder(): Builder
+ * @method  filters(): array
+ * @method  applyFullNameSearch(Builder $query, $searchTerm): Builder
+ * @method  applyJobPositionSearch(Builder $query, $searchTerm): Builder
+ * @method  applyDateSearch(Builder $query, $searchTerm)
+ */
 class ApplicantsTable extends DataTableComponent
 {
     protected $model = Application::class;
 
+    /**
+     * @var array $customFilterOptions contains the dropdown values and keys.
+     */
     protected $customFilterOptions;
 
     public function configure(): void
@@ -58,12 +71,6 @@ class ApplicantsTable extends DataTableComponent
         ]);
 
         $this->setTrimSearchStringEnabled();
-
-        // $this->setReorderMethod('changeOrder');
-
-        // $this->setHideReorderColumnUnlessReorderingEnabled();
-
-        // $this->setReorderEnabled();
 
         $this->setConfigurableAreas([
             'toolbar-left-start' => [
@@ -226,27 +233,6 @@ class ApplicantsTable extends DataTableComponent
         ];
     }
 
-    public function reorder(array $items): void
-    {
-        // $item[$this->getPrimaryKey()] ensures that the Primary Key is used to find the User
-        // 'sort' is the name of your "sort" field in your database
-
-        foreach ($items as $item) {
-            Application::find($item[$this->getPrimaryKey()])->update(['sort' => (int)$item[$this->getDefaultReorderColumn()]]);
-        }
-    }
-
-    public function actions(): array
-    {
-        return [
-            Action::make('View Dashboard')
-                ->setActionAttributes([
-                    'class' => 'btn btn-primary',
-                    'default-colors' => false,
-                    'default-styling' => false
-                ])->setRoute(route('employee.dashboard')),
-        ];
-    }
 
     /**
      * |--------------------------------------------------------------------------
@@ -255,6 +241,16 @@ class ApplicantsTable extends DataTableComponent
      * Description
      */
 
+    /**
+     * Apply a search filter to the query based on the full name of the applicant.
+     *
+     * This method splits the search term into individual words and applies a case-insensitive
+     * search on the first name, middle name, and last name of the applicant.
+     *
+     * @param \Illuminate\Database\Query\Builder $query The query builder instance.
+     * @param string $searchTerm The search term to filter applicants by full name.
+     * @return \Illuminate\Database\Query\Builder The modified query builder instance.
+     */
     public function applyFullNameSearch(Builder $query, $searchTerm): Builder
     {
         $terms = explode(' ', $searchTerm);
@@ -269,6 +265,13 @@ class ApplicantsTable extends DataTableComponent
         });
     }
 
+    /**
+     * Apply a case-insensitive search using the 'ILIKE' operator on the 'job_title' field in the query.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query The query builder instance.
+     * @param string $searchTerm The term to search for in the job titles.
+     * @return \Illuminate\Database\Eloquent\Builder The modified query builder instance with the search filter applied.
+     */
     public function applyJobPositionSearch(Builder $query, $searchTerm): Builder
     {
         return $query->orWhereHas('vacancy.jobTitle', function ($query) use ($searchTerm) {
@@ -276,6 +279,27 @@ class ApplicantsTable extends DataTableComponent
         });
     }
 
+    /**
+     * Apply a date search filter to the query.
+     *
+     * This method normalizes the search term by removing spaces and then applies
+     * a series of `orWhereRaw` conditions to the query to match the `created_at`
+     * field of the `applicants` table against various date formats.
+     *
+     * Supported date formats:
+     * - 'YYYY-MM-DD'
+     * - 'MM/DD/YYYY'
+     * - 'MM-DD-YYYY'
+     * - 'Month DD, YYYY'
+     * - 'Month YYYY'
+     * - 'Month'
+     * - 'DD-MM-YYYY'
+     * - 'DD/MM/YYYY'
+     *
+     * @param \Illuminate\Database\Query\Builder $query The query builder instance.
+     * @param string $searchTerm The search term to filter by.
+     * @return \Illuminate\Database\Query\Builder The modified query builder instance.
+     */
     public function applyDateSearch(Builder $query, $searchTerm)
     {
         $normalizedSearchTerm = str_replace(' ', '', $searchTerm);
@@ -287,34 +311,5 @@ class ApplicantsTable extends DataTableComponent
             ->orWhereRaw("replace(to_char(applicants.created_at, 'Month'), ' ', '') ILIKE ?", ["%{$normalizedSearchTerm}%"])
             ->orWhereRaw("replace(to_char(applicants.created_at, 'DD-MM-YYYY'), ' ', '') ILIKE ?", ["%{$normalizedSearchTerm}%"])
             ->orWhereRaw("replace(to_char(applicants.created_at, 'DD/MM/YYYY'), ' ', '') ILIKE ?", ["%{$normalizedSearchTerm}%"]);
-    }
-
-
-    /**
-     * Called after configure is executed
-     *
-     *  See more hooks in https://rappasoft.com/docs/laravel-livewire-tables/v3/misc/lifecycle-hooks#content-configured
-     *
-     * @return void
-     */
-    public function configured()
-    {
-        // dd($this);
-    }
-
-    public function rowsRetrieved($rows)
-    {
-
-        // Tried to populate the the Application For Select Dropdown here but is late
-        // The component is already proccesed or rendered
-        // $withApplications = $rows->where('applications_count', '>', 0)
-        //     ->mapWithKeys(function ($vacancy) {
-        //         return [$vacancy->jobTitle->job_title_id => $vacancy->jobTitle->job_title];
-        //     })
-        //     ->toArray();
-
-        // $this->customFilterOptions = $this->customFilterOptions + $withApplications;
-
-        // $this->configurableAreas['toolbar-left-start'][1]['filter']->options = $this->customFilterOptions;
     }
 }
