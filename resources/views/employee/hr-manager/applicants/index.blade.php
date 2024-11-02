@@ -15,11 +15,22 @@
 @endPushOnce
 
 @pushOnce('scripts')
-    <script src="{{ Vite::asset('resources/js/forms/nbp.min.js') }}" defer></script>
-    @vite(['resources/js/employee/hr/dashboard.js'])
+    @vite(['resources/js/employee/hr-manager/applicants.js'])
+    <!-- Adds the Core Table Styles -->
+    @rappasoftTableStyles
+
+    <!-- Adds any relevant Third-Party Styles (Used for DateRangeFilter (Flatpickr) and NumberRangeFilter) -->
+    @rappasoftTableThirdPartyStyles
+
+    <!-- Adds the Core Table Scripts -->
+    @rappasoftTableScripts
+
+    <!-- Adds any relevant Third-Party Scripts (e.g. Flatpickr) -->
+    @rappasoftTableThirdPartyScripts
 @endPushOnce
+
 @pushOnce('styles')
-    @vite(['resources/css/employee/hr-manager/dashboard.css'])
+    @vite(['resources/css/employee/hr-manager/applicants.css'])
 @endPushOnce
 @section('content')
     {{-- <x-breadcrumbs>
@@ -127,4 +138,7 @@
             </tr>
         </tbody>
     </table>
+
+
+    <livewire:employee.tables.hrmanager.applicants-table />
 @endsection

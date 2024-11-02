@@ -59,7 +59,7 @@
     @endif
 
     @stack('pre-scripts')
-    @stack('scripts')
+
 
     @yield('before-nav')
 
@@ -81,6 +81,8 @@
     @once
         @livewireScripts()
     @endonce
+
+    @stack('scripts')
 
     @yield('footer')
 </body>

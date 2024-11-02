@@ -1,9 +1,5 @@
 @props(['nonce', 'groupClass' => ''])
 
-{{-- {{ dd($attributes) }} --}}
-{{-- {{ dd($labelContent) }} --}}
-
-{{-- {{ dd($labelContent->attributes) }} --}}
 @isset($labelContent)
     <x-form.label id="{{ $attributes->get('id') }}" class="{{ $labelContent->attributes->get('class') }}">
         {{ $labelContent }}
@@ -12,7 +8,14 @@
 
 <div class="input-group {{ $groupClass }}">
 
-    <select id="{{ $attributes->get('id') }}" class="form-select {{ $attributes->get('class') ?? '' }}">
+    <select {{ $attributes->merge(['class' => 'form-select']) }} x-data="{ selected: null }"
+        x-on:change="if (!{{ $attributes->has('multiple') ? 'true' : 'false' }}) selected = $event.target.value">
+        <template x-for="option in $el.options">
+            <option :value="option.value"
+                x-bind:disabled="!{{ $attributes->has('multiple') ? 'true' : 'false' }} && selected === option.value">
+                <span x-text="option.text"></span>
+            </option>
+        </template>
         {{ $slot }}
     </select>
 
