@@ -56,7 +56,7 @@
             <div class="row">
                 <div class="col">
                     <x-form.boxed-input-text id="first_name" label="First Name" name="first_name" :nonce="$nonce"
-                        :required="true" placeholder="Biella"/>
+                        :required="true" placeholder=""/>
                 </div>
                 <div class="col">
                     <x-form.boxed-input-text id="middle_name" label="Middle Name" name="middle_name" :nonce="$nonce"
@@ -309,14 +309,33 @@
 
 
 {{--
-|--------------------------------------------------------------------------
-| List of IDs and Names
-| *Both ID and Name attributes share the same naming convention.
-|--------------------------------------------------------------------------
-| Element | ID/Name | Description
-|--------------------------------------------------------------------------
-| Announcement Title | announcement_title | Title of the announcement
-| Description | announcement_desc | Main description field
-| Post Announcement | post_announcement | Button to post announcement
-|--------------------------------------------------------------------------
+|-----------------------------------------------------------------------------------|
+| List of IDs and Names                                                             |
+| *Both ID and Name attributes share the same naming convention.                    |
+|-----------------------------------------------------------------------------------|
+| Element                  | ID/Name             | Description                      |
+|-----------------------------------------------------------------------------------|
+| First Name               | first_name          | First name of the user           |
+| Middle Name              | middle_name         | Middle name of the user          |
+| Last Name                | last_name           | Last name of the user            |
+| Email Address            | email               | User's email address             |
+| Contact Number           | contact_no          | User's contact number            |
+| Present Address          | present_address     | User's current address           |
+| Permanent Address        | perm_address        | User's permanent address         |
+| Birthdate                | birthdate           | User's date of birth             |
+| Sex at birth             | sex                 | User's sex at birth              |
+| Civil Status             | civil_status        | User's civil status              |
+| Educational Attainment   | educ_attain         | User's educational level         |
+| Department               | dept                | Department of the user           |
+| Job Position             | job_position        | Job position of the user         |
+| Base Salary              | salary              | User's base salary               |
+| Role                     | role                | User's role                      |
+| Employment Status        | emp_status          | Employment status of the user    |
+| Schedule / Shift         | shift               | User's work schedule/shift       |
+| SSS                      | sss_no              | User's SSS number                |
+| Cedula/CTC               | cedula_no           | User's Cedula or CTC number      |
+| PhilHealth               | philhealth_no       | User's PhilHealth number         |
+| TIN                      | tin_no              | User's TIN number                |
+| PAGIBIG                  | pagibig_no          | User's PAGIBIG number            |
+|-----------------------------------------------------------------------------------|
 --}}
