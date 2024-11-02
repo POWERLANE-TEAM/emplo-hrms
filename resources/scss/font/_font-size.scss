@@ -33,6 +33,10 @@ $font-display-sizes: (
     4: clamp(3.4rem, 3rem + 0.002vw + 0.81vh, 3.75rem),
     5: clamp(2.9rem, 2.5rem + 0.002vw + 0.81vh, 3.25rem),
     6: clamp(2.4rem, 2rem + 0.002vw + 0.81vh, 2.75rem),
+    7: clamp(1.9rem, 1.5rem + 0.002vw + 0.81vh, 2.25rem),
+    8: clamp(1.4rem, 1rem + 0.002vw + 0.81vh, 1.75rem),
+    9: clamp(0.9rem, 0.5rem + 0.002vw + 0.81vh, 1.25rem),
+    10: clamp(0.7rem, 0.3rem + 0.002vw + 0.81vh, 1rem),
 );
 
 body {

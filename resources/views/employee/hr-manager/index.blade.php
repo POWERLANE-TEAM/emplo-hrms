@@ -23,49 +23,52 @@
         <div class="fs-2 fw-bold mb-2">Good afternoon, {{ $user->account->first_name }}!</div>
         <p>It is <time datetime="{{ now() }}"> {{ \Carbon\Carbon::now()->format('l, d F') }}</time></p>
     </hgroup>
-    <section role="navigation" aria-label="Quick Links" class=" mb-5 d-flex gap-5">
-        <div class="card bg-body-secondary col-md-4 border-0 px-md-5 py-4 " role="none"
-            aria-describedby="applicants-nav-desc">
-            <x-nav-link href="#" class="unstyled">
-                <div class="mb-3">
-                    <span></span>
-                    <div class="fs-4 fw-bold">Applicants</div>
-                </div>
-                <div class="card-text" id="applicants-nav-desc">
-                    Review and verify candidates, resume and documents.
-                </div>
-            </x-nav-link>
+    <section role="navigation" aria-label="Quick Links" class="mb-5">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card bg-body-secondary border-0 px-md-5 py-4" role="none" aria-describedby="applicants-nav-desc">
+                <x-nav-link href="#" class="unstyled">
+                    <div class="mb-3">
+                        <span></span>
+                        <div class="fs-4 fw-bold">Applicants</div>
+                    </div>
+                    <div class="card-text" id="applicants-nav-desc">
+                        Review and verify candidates, resume and documents.
+                    </div>
+                </x-nav-link>
+            </div>
         </div>
 
-        <div class="card bg-primary text-white col-md-4  border-0 px-md-5 py-4" role="none"
-            aria-describedby="leaves-nav-desc">
-            <x-nav-link href="#" class="unstyled">
-                <div class="mb-3">
-                    <span></span>
-                    <div class="fs-4 fw-bold text-white">Leaves</div>
-                </div>
-                <div class="card-text text-white" id="leaves-nav-desc">
-                    Track pending leave request, its leave type and approval.
-                </div>
-            </x-nav-link>
+        <div class="col-md-4">
+            <div class="card bg-primary text-white border-0 px-md-5 py-4" role="none" aria-describedby="leaves-nav-desc">
+                <x-nav-link href="#" class="unstyled">
+                    <div class="mb-3">
+                        <span></span>
+                        <div class="fs-4 fw-bold text-white">Leaves</div>
+                    </div>
+                    <div class="card-text text-white" id="leaves-nav-desc">
+                        Track pending leave requests, leave types, and approvals.
+                    </div>
+                </x-nav-link>
+            </div>
         </div>
 
-        <div class="card bg-body-secondary col-md-4  border-0 px-md-5 py-4" role="none"
-            aria-describedby="attendance-nav-desc">
-            <x-nav-link href="#" class="unstyled">
-                <div class="mb-3">
-                    <span></span>
-                    <div class="fs-4 fw-bold">Attendance</div>
-                </div>
-
-                <div class="card-text" id="attendance-nav-desc">
-                    Monitor employees attendance, absence and workday hours.
-                </div>
-            </x-nav-link>
+        <div class="col-md-4">
+            <div class="card bg-body-secondary border-0 px-md-5 py-4" role="none" aria-describedby="attendance-nav-desc">
+                <x-nav-link href="#" class="unstyled">
+                    <div class="mb-3">
+                        <span></span>
+                        <div class="fs-4 fw-bold">Attendance</div>
+                    </div>
+                    <div class="card-text" id="attendance-nav-desc">
+                        Monitor employees' attendance, absences, and workday hours.
+                    </div>
+                </x-nav-link>
+            </div>
         </div>
+    </div>
+</section>
 
-
-    </section>
 
     <section class="mb-5">
         <header class="fs-4 fw-bold mb-4" role="heading" aria-level="2">
@@ -191,73 +194,65 @@
             });
         </script>
 
-        <div class="d-flex gap-5 mb-5">
-            <div class="col-md-7">
-
-                <div class="col-12">
-                    <div class="col-md-3 ms-auto">
-                        <select name="" id="" class="bg-primary form-select "
-                            aria-label="Default select example"style="--bs-bg-opacity: .25;">
-                            <option value="">September</option>
-                        </select>
-                    </div>
-                </div>
-
-                <ul class="nav nav-underline">
-                    <li class="nav-item" id="emp-satisf-tab" data-bs-toggle="tab" data-bs-target="#emp-satisf-tab-pane"
-                        role="tab" aria-controls="emp-satisf-tab-pane" aria-selected="true">
-                        <a class="nav-link " href="#">Employee Satisfaction</a>
-                    </li>
-                    <li class="nav-item" id="absence-rate-tab" data-bs-toggle="tab" data-bs-target="#absence-rate-tab-pane"
-                        role="tab" aria-controls="absence-rate-tab-pane" aria-selected="false">
-                        <a class="nav-link active" href="#">Absence Rate</a>
-                    </li>
-                    <li class="nav-item" id="training-compl-tab" data-bs-toggle="tab"
-                        data-bs-target="#training-compl-tab-pane" role="tab" aria-controls="training-compl-tab-pane"
-                        aria-selected="false">
-                        <a class="nav-link " href="#">Training Copmpletion</a>
-                    </li>
-                </ul>
-
-                <div class="tab-content" id="hr-dashboard-stats">
-                    <div class="tab-pane fade " id="emp-satisf-tab-pane" role="tabpanel" aria-labelledby="emp-satisf-tab"
-                        tabindex="0">...</div>
-                    <div class="tab-pane fade show active" id="absence-rate-tab-pane" role="tabpanel"
-                        aria-labelledby="absence-rate-tab" tabindex="0">
-                        <canvas id="hr-absence-rate"></canvas>
-                    </div>
-                    <div class="tab-pane fade " id="training-compl-tab-pane" role="tabpanel"
-                        aria-labelledby="training-compl-tab" tabindex="0">...</div>
-                </div>
-            </div>
-
-            <div class="col-md-5">
-                <div class="mb-4">
-                    <canvas id="hr-attendance"></canvas>
-                </div>
-                <div class=" card  p-4">
-                    <table class="table table-borderless">
-                        <thead>
-                            <tr>
-                                <th>Employee</th>
-                                <th>Time In</th>
-                                <th>Time Out</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            @for ($i = 0; $i < 5; $i++)
-                                <tr>
-                                    <td>{{ fake()->name() }}</td>
-                                    <td>{{ fake()->time() }}</td>
-                                    <td>{{ fake()->time() }}</td>
-                                </tr>
-                            @endfor
-                        </tbody>
-                    </table>
-                </div>
+<div class="row mb-5">
+    <div class="col-md-7">
+        <div class="row mb-3">
+            <div class="col-md-3 ms-auto">
+                <select name="" id="" class="bg-primary form-select" aria-label="Default select example" style="--bs-bg-opacity: .25;">
+                    <option value="">September</option>
+                </select>
             </div>
         </div>
+
+        <ul class="nav nav-underline">
+            <li class="nav-item" id="emp-satisf-tab" data-bs-toggle="tab" data-bs-target="#emp-satisf-tab-pane" role="tab" aria-controls="emp-satisf-tab-pane" aria-selected="true">
+                <a class="nav-link" href="#">Employee Satisfaction</a>
+            </li>
+            <li class="nav-item" id="absence-rate-tab" data-bs-toggle="tab" data-bs-target="#absence-rate-tab-pane" role="tab" aria-controls="absence-rate-tab-pane" aria-selected="false">
+                <a class="nav-link active" href="#">Absence Rate</a>
+            </li>
+            <li class="nav-item" id="training-compl-tab" data-bs-toggle="tab" data-bs-target="#training-compl-tab-pane" role="tab" aria-controls="training-compl-tab-pane" aria-selected="false">
+                <a class="nav-link" href="#">Training Completion</a>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="hr-dashboard-stats">
+            <div class="tab-pane fade" id="emp-satisf-tab-pane" role="tabpanel" aria-labelledby="emp-satisf-tab" tabindex="0">...</div>
+            <div class="tab-pane fade show active" id="absence-rate-tab-pane" role="tabpanel" aria-labelledby="absence-rate-tab" tabindex="0">
+                <canvas id="hr-absence-rate"></canvas>
+            </div>
+            <div class="tab-pane fade" id="training-compl-tab-pane" role="tabpanel" aria-labelledby="training-compl-tab" tabindex="0">...</div>
+        </div>
+    </div>
+
+    <div class="col-md-5">
+        <div class="mb-4">
+            <canvas id="hr-attendance"></canvas>
+        </div>
+        <div class="card p-4">
+            <table class="table table-borderless">
+                <thead>
+                    <tr>
+                        <th>Employee</th>
+                        <th>Time In</th>
+                        <th>Time Out</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @for ($i = 0; $i < 5; $i++)
+                        <tr>
+                            <td>{{ fake()->name() }}</td>
+                            <td>{{ fake()->time() }}</td>
+                            <td>{{ fake()->time() }}</td>
+                        </tr>
+                    @endfor
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
 
 
 

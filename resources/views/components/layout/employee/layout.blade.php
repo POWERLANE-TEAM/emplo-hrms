@@ -1,7 +1,7 @@
 @props([
     'no_crawl' => false,
     'description' => '',
-    'main_cont_class' => '',
+    'main_cont_class' => 'mt-6',
     'font_weights' => [' 400 ', '500', '700'],
 ])
 
@@ -43,7 +43,7 @@
 
 </head>
 
-<body>
+<body class="employee-main">
     @yield('critical-styles')
     <x-no-script-body />
 

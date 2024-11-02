@@ -8,11 +8,11 @@
 
 :root {
     --main-menu-padding-top: clamp(1rem, 0.5rem + 1dvh, 4rem);
-    --sidebar-width: clamp(48px, 16px + 1.5rem + 5vw, 200px);
+    --sidebar-width: clamp(160px, 16px + 1.5rem + 5vw, 200px);
     --sidebar-width-active: clamp(200px + 2rem, 128px + 1.5rem + 10vw, 696px + 4rem);
     --topbar-padding-x: clamp(1rem, 2dvw + 2.5vh, 10rem);
     --topnav-padding-x: clamp(1.25rem, 0.63rem + 2dvw, 4rem);
-    --topnav-padding-y: clamp(0.5rem, 0.25rem + 0.5dvw, 2rem);
+    --topnav-padding-y: clamp(0.3rem, 0.25rem + 0.5dvw, 2rem)
 }
 
 main {
@@ -48,7 +48,7 @@ main {
 }
 
 img.icon {
-    width: calc(0.75rem + 0.5vw);
+    width: calc(0.5rem + 0.5vw);
     height: auto;
     aspect-ratio: 1/1;
 }
@@ -87,7 +87,7 @@ main.main {
 sidebar.main-menu {
     /* Base style for sidebar when collpased */
 
-    --sidebar-padding-x: clamp(0.25rem, 0.5dvw, 4rem);
+    // --sidebar-padding-x: clamp(0.25rem, 0.5dvw, 4rem);
     z-index: 1000;
     isolation: isolate;
     position: absolute;
@@ -153,7 +153,6 @@ sidebar.main-menu {
 
     @media screen and (min-width: 576px) {
         min-width: fit-content;
-        width: var(--sidebar-width);
     }
 
     @extend %main-menu-padding-top;
@@ -163,7 +162,7 @@ sidebar.main-menu {
 
     [class*="-custom-scrollbar"] {
         &::-webkit-scrollbar-thumb {
-            background-color: var(--bs-body-bg);
+            background-color: rgba(var(--bs-body-bg-rgb), 0.2);
         }
     }
 
@@ -259,7 +258,7 @@ sidebar.main-menu {
         }
 
         a {
-            --padding-y: clamp(0.75rem, 0.25rem + 0.25vw + 1vh, 3rem);
+            --padding-y: clamp(0.5rem, 0.2rem + 0.2vw + 0.8vh, 2.5rem);
             --padding-x: clamp(1.5rem + 1cqw, 0.6rem + 1.5vw + 0.25vh, 3rem);
             color: var(--bs-white);
             font-weight: bold;
@@ -418,7 +417,7 @@ div:has(>.topnav) {
 
     .topnav {
         display: flex;
-        width: 100%;
+        width: 98%;
         border-radius: max(1.25rem, 0.5cqw);
         background-color: var(--bs-primary);
 
@@ -552,7 +551,12 @@ body {
     /* Style of side panel when expanded */
 
     &:has(sidebar.main-menu.active) {
+
         --sidebar-padding-x: clamp(0.75rem, 1.25dvw, 4rem);
+
+        main.main {
+            padding-left: var(--main-container-px);
+        }
 
         sidebar.main-menu {
             width: var(--sidebar-width-active);
@@ -566,13 +570,12 @@ body {
             }
 
             .nav-icon img {
-                width: calc(1rem + 0.5vw + 0.6vh);
                 height: auto;
             }
 
             button.main-menu {
 
-                gap: 0 calc(0.5rem + 1vw);
+                gap: 0 calc(0.2rem + 1vw);
 
                 svg {
 

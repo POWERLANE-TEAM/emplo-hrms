@@ -12,6 +12,7 @@ Route::middleware('guest:admin')->group(function () {
 
 Route::middleware('auth:admin')->group(function () {
 
+    // Dashboard
     Route::get('dashboard', DashboardController::class)
         ->can(UserPermission::VIEW_ADMIN_DASHBOARD)
         ->name('dashboard');
@@ -20,33 +21,53 @@ Route::middleware('auth:admin')->group(function () {
         return view('vendor.pulse.dashboard');
     })->name('system.pulse');
 
+    
+    // -- Accounts Routes --
     Route::get('accounts', function() {
-        abort(404);
-    })->name('accounts');
+        return view('employee.admin.accounts.accounts');
+    })->name('accounts'); 
+
+    Route::get('create-account', function() {
+        return view('employee.admin.accounts.create-account');
+    })->name('create-account'); 
+    // End of Accounts
+
 
     Route::get('employees', function() {
         abort(404);
     })->name('employees');
 
+
     Route::get('calendar', function() {
         abort(404);
     })->name('calendar');
+
 
     Route::get('job-listing', function() {
         abort(404);
     })->name('job-listing');
 
+
     Route::get('policy', function() {
         abort(404);
     })->name('policy');
 
-    Route::get('announcement', function() {
-        abort(404);
+
+    // -- Announcements Routes --
+    Route::get('announcements', function() {
+        return view('employee.admin.announcements.announcements');
     })->name('announcement');
+
+    Route::get('create-announcement', function() {
+        return view('employee.admin.announcements.create-announcement');
+    })->name('create-announcement');
+    // End of Announcements
+
 
     Route::get('performance', function() {
         abort(404);
     })->name('performance');
+
 
     Route::get('form', function() {
         abort(404);

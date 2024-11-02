@@ -72,7 +72,7 @@
         @endif
 
         @if ($this->paginationIsEnabled() && $this->perPageVisibilityIsEnabled())
-            {{-- <x-livewire-tables::tools.toolbar.items.pagination-dropdown /> --}}
+            <x-livewire-tables::tools.toolbar.items.pagination-dropdown />
         @endif
 
 

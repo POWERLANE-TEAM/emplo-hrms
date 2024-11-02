@@ -1,6 +1,7 @@
 :root {
     --search-padding-y: clamp(0.25rem, 0.1rem + 0.15vw + 0.2vh, 5rem);
-    --search-height: clamp(1.2rem, 1rem + 1vw + 1.5vh, 5rem);
+    --l-search-height: clamp(1.2rem, 1rem + 1vw + 1.5vh, 5rem);
+    --search-height: clamp(1.2rem, 0.9rem + 0.5vw + 1vh, 4rem);
 }
 
 %base-search-group-style {

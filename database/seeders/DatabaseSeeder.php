@@ -44,6 +44,8 @@ class DatabaseSeeder extends Seeder
 
         JobDetail::factory(rand(4, env('APP_SEEDING_COUNT', 25)))->create();
 
+        $this->call(BasicRoleSeeder::class);
+
         $this->call(IntermediateRoleSeeder::class);
 
         $this->call(AdvancedRoleSeeder::class);

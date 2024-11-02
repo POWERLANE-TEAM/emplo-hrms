@@ -1,7 +1,3 @@
-@php
-    $nonce = csp_nonce();
-@endphp
-
 @extends('components.layout.employee.layout', ['description' => 'Employee Dashboard', 'nonce' => $nonce])
 
 @section('head')
@@ -33,7 +29,7 @@
     @vite(['resources/css/employee/hr-manager/applicants.css'])
 @endPushOnce
 @section('content')
-    <x-layout.main-heading :isHeading="true">
+    <x-headings.main-heading :isHeading="true">
         <x-slot:heading>
             Applicants
         </x-slot:heading>
@@ -41,7 +37,7 @@
         <x-slot:description>
             <p>Keep track of all new applications for available job positions.</p>
         </x-slot:description>
-    </x-layout.main-heading>
+    </x-headings.main-heading>
 
 
     <livewire:employee.tables.hrmanager.applicants-table />

@@ -113,7 +113,7 @@ class ApplicantsTable extends DataTableComponent
             ],
         ]);
 
-        $this->setToolsAttributes(['class' => ' bg-body-secondary border-0 rounded-3 px-5 py-md-3 my-md-2']);
+        $this->setToolsAttributes(['class' => ' bg-body-secondary border-0 rounded-3 px-5 py-3']);
 
         $this->setToolBarAttributes(['class' => ' d-md-flex my-md-2']);
 

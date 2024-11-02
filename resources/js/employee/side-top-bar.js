@@ -16,6 +16,8 @@ export function handleMobileSidebar(mainSideBar) {
 
 }
 
+// Sidebar Toggle
+
 export default function initSidebar() {
     let mainMenuToggles = document.querySelectorAll(`button.main-menu`);
     const mainSideBar = document.querySelector(`sidebar.main-menu`);
@@ -84,4 +86,19 @@ export default function initSidebar() {
 
         e.target.classList.toggle("active");
     })
+}
+
+// Customized dropdown behavior for User Profile icon in the top bar
+function toggleUserDropdown() {
+    const dropdownMenu = document.getElementById('dropdown-menu');
+    dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+}
+
+window.onclick = function(event) {
+    const dropdownMenu = document.getElementById('dropdown-menu');
+    const dropdownButton = document.getElementById('user-prof-btn');
+
+    if (dropdownMenu.style.display === 'block' && !dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+        dropdownMenu.style.display = 'none';
+    }
 }
