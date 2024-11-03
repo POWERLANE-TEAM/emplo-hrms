@@ -135,8 +135,8 @@
 
     {{-- Head Admin --}}
     @can(UserPermission::VIEW_JOB_LISTING_MANAGER)
-        <x-layout.employee.nav.sidebar.nav-item href="{{ route($guard . '.job-listing') }}"
-            :active="request()->routeIs($guard . '.jobboard')" class="" nav_txt="Job Board"
+        <x-layout.employee.nav.sidebar.nav-item href="{{ route($guard . '.add-open-position') }}"
+            :active="request()->routeIs($guard . '.add-open-position')" class="" nav_txt="Job Board"
             :default_icon="['src' => 'jobboard', 'alt' => '']" :active_icon="['src' => 'job-listing', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan
@@ -179,8 +179,8 @@
 
     {{-- Head Admin --}}
     @can(UserPermission::VIEW_FORM_CONFIG)
-        <x-layout.employee.nav.sidebar.nav-item href="{{ route($guard . '.form') }}"
-            :active="request()->routeIs($guard . '.form')" class="" nav_txt="Forms"
+        <x-layout.employee.nav.sidebar.nav-item href="{{ route($guard . '.pre-emp-reqs') }}"
+            :active="request()->routeIs($guard . '.pre-emp-reqs')" class="" nav_txt="Forms"
             :default_icon="['src' => 'forms', 'alt' => '']" :active_icon="['src' => 'forms', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan

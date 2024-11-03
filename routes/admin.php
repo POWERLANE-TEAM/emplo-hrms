@@ -49,9 +49,9 @@ Route::middleware('auth:admin')->group(function () {
     })->name('calendar');
 
 
-    Route::get('job-listing', function() {
-        abort(404);
-    })->name('job-listing');
+    Route::get('add-open-position', function() {
+        return view('employee.admin.jobboard.add-open-position');
+    })->name('add-open-position');
 
 
     Route::get('policy', function() {
@@ -75,9 +75,11 @@ Route::middleware('auth:admin')->group(function () {
     })->name('performance');
 
 
-    Route::get('form', function() {
-        abort(404);
-    })->name('form');
+    // -- Forms Routes --
+    Route::get('pre-emp-reqs', function() {
+        return view('employee.admin.forms.pre-emp-reqs');
+    })->name('pre-emp-reqs');
+    // End of Forms
 
     Route::get('profile', function() {
         return view('employee.admin.profile');
