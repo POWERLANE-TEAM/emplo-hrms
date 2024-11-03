@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Blocks\DragDrop;
 
 use Livewire\Component;
 
@@ -24,6 +24,16 @@ class ShowDraggableData extends Component
         }
     }
 
+    public function updateItems($newOrder)
+    {
+        // Update the items array based on the new order received
+        $this->items = $newOrder;
+
+        // Optionally, you can save the new order to the database here
+        // For example, if you have a model for this data
+        // YourModel::updateOrder($this->items);
+    }
+
     public function moveDown($index)
     {
         if ($index < count($this->items) - 1) {
@@ -40,6 +50,6 @@ class ShowDraggableData extends Component
 
     public function render()
     {
-        return view('livewire.show-draggable-data');
+        return view('livewire.blocks.dragdrop.show-draggable-data');
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Blocks\Inputs;
 
 use Livewire\Component;
 
@@ -23,6 +23,6 @@ class QualificationInput extends Component
 
     public function render()
     {
-        return view('livewire.qualification-input');
+        return view('livewire.blocks.inputs.qualification-input');
     }
 }
