@@ -14,30 +14,29 @@
 
         <!-- Input field and dropdown; only shown when showInput is true -->
         <div x-show="showInput" class="mt-2">
-        <div class="mb-2 mt-3 green-divider" ></div>
+            <div class="mb-2 mt-3 green-divider"></div>
 
             <div class="row align-items-center py-3">
                 <!-- Text input field -->
                 <div class="col-7">
                     <input id="{{ $id }}" name="{{ $name }}" class="form-control border ps-3 rounded"
-                        placeholder="Enter qualification..." wire:model="{{ $name }}" autocomplete="off">
+                        placeholder="Enter qualification..." wire:model="qualificationText" autocomplete="off">
                 </div>
 
-                <!-- Dropdown -->
+                <!-- Dropdown for priority -->
                 <div class="col-3 position-relative">
-                    <select class="form-control border ps-3 rounded pe-5" aria-label="Qualification options">
+                    <select class="form-select form-control border ps-3 rounded pe-5" wire:model="selectedPriority" aria-label="Qualification options">
+                        <option value="">Select Priority</option>
                         @foreach ($options as $option)
                             <option value="{{ $option }}">{{ $option }}</option>
                         @endforeach
                     </select>
-                    <!-- Chevron icon for dropdown -->
-                    <i data-lucide="chevron-down"
-                        class="icon-large position-absolute end-0 top-50 translate-middle-y me-3"></i>
+                    
                 </div>
 
                  <!-- Buttons -->
                 <div class="col-2 d-flex">
-                    <button type="submit" class="btn btn-success me-2 text-white flex-fill">
+                    <button type="button" class="btn btn-success me-2 text-white flex-fill" wire:click="addQualification">
                         Go
                     </button>
                     <button @click.prevent="showInput = false" type="button" class="btn btn-secondary flex-fill">
@@ -46,6 +45,5 @@
                 </div>
             </div>
         </div>
-
     </div>
 </div>
