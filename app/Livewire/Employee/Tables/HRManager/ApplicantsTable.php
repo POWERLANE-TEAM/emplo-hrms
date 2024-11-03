@@ -61,7 +61,7 @@ class ApplicantsTable extends DataTableComponent
         $this->setTrAttributes(function ($row, $index) {
             return [
                 'default' => true,
-                'class' => 'border-1 rounded-2 outline ',
+                'class' => 'border-1 rounded-2 outline',
             ];
         });
 
@@ -124,7 +124,7 @@ class ApplicantsTable extends DataTableComponent
 
             return [
                 'default' => true,
-                'class' => 'text-center',
+                'class' => 'text-center fw-normal',
             ];
         });
 

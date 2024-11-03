@@ -78,6 +78,10 @@ div:has(div[wire\:\key="table-wrapper"]) {
                 justify-content: end;
                 gap: clamp(0.25rem, 0.075rem + 1dvw, 2rem + 48px);
                 align-content: center;
+
+                button {
+                    font-weight: 500;
+                }
             }
 
             // targets the container of left built in tools in toolbar (filter and search)
