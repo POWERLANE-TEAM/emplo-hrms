@@ -121,7 +121,7 @@ class CspPolicy extends CustomSpatiePolicy
                     if ($unicast['family'] === AF_INET) {
                         foreach ($wifiKeywords as $keyword) {
                             if (stripos($details['description'], $keyword) !== false) {
-                                if ($this->hasInternetConnection($unicast['address'])) {
+                                if ($this->hasInternetConnection($unicast['address']) && !str_ends_with($unicast['address'], '.1')) {
                                     Cache::put($cacheKey, $unicast['address'], $cacheDuration);
                                     return $unicast['address'];
                                 }
@@ -138,7 +138,7 @@ class CspPolicy extends CustomSpatiePolicy
             if (isset($details['description']) && isset($details['unicast']) && isset($details['up']) && $details['up']) {
                 foreach ($details['unicast'] as $unicast) {
                     if ($unicast['family'] === AF_INET) {
-                        if ($this->hasInternetConnection($unicast['address'])) {
+                        if ($this->hasInternetConnection($unicast['address']) && !str_ends_with($unicast['address'], '.1')) {
                             Cache::put($cacheKey, $unicast['address'], $cacheDuration);
                             return $unicast['address'];
                         }
@@ -150,14 +150,14 @@ class CspPolicy extends CustomSpatiePolicy
 
         // If no IP address with internet connectivity is found, fallback to any active IP address, prioritizing Wi-Fi
         foreach ($activeIps as $ip) {
-            if ($ip['type'] === 'wifi') {
+            if ($ip['type'] === 'wifi' && !str_ends_with($ip['address'], '.1')) {
                 Cache::put($cacheKey, $ip['address'], $cacheDuration);
                 return $ip['address'];
             }
         }
 
         // If no Wi-Fi IP is found, return any active IP
-        $fallbackIp = $activeIps[0]['address'] ?? "0.0.0.0";
+        $fallbackIp = $activeIps[0]['address'] ?? "localhost";
         Cache::put($cacheKey, $fallbackIp, $cacheDuration);
         return $fallbackIp;
     }

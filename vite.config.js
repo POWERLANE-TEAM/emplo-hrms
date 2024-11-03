@@ -13,7 +13,7 @@ function getLocalIpAddress() {
     for (const name of Object.keys(interfaces)) {
         if (wifiNames.some(wifiName => name.toLowerCase().includes(wifiName.toLowerCase()))) {
             for (const iface of interfaces[name]) {
-                if (iface.family === 'IPv4' && !iface.internal && iface.address !== '127.0.0.1') {
+                if (iface.family === 'IPv4' && !iface.internal && iface.address !== '127.0.0.1' && !iface.address.endsWith('.1')) {
                     return iface.address;
                 }
             }
@@ -23,7 +23,7 @@ function getLocalIpAddress() {
     // If no Wi-Fi interface is found, fallback to the first NIC
     for (const name of Object.keys(interfaces)) {
         for (const iface of interfaces[name]) {
-            if (iface.family === 'IPv4' && !iface.internal && iface.address !== '127.0.0.1') {
+            if (iface.family === 'IPv4' && !iface.internal && iface.address !== '127.0.0.1' && !iface.address.endsWith('.1')) {
                 return iface.address;
             }
         }
