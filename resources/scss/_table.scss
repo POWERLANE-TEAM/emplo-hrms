@@ -9,14 +9,21 @@
 
 @mixin table-hover-styles {
     tbody {
-        tr.no-hover:hover {
-            // pointer-events: none;
-            background-color: var(--bs-body-bg);
-            --bs-table-bg-state: var(--bs-body-bg);
+        tr {
 
-            &>* {
+            &:hover {
+                border-color: var(--bs-primary);
+            }
+
+            .no-hover:hover {
+                // pointer-events: none;
                 background-color: var(--bs-body-bg);
                 --bs-table-bg-state: var(--bs-body-bg);
+
+                &>* {
+                    background-color: var(--bs-body-bg);
+                    --bs-table-bg-state: var(--bs-body-bg);
+                }
             }
         }
     }
