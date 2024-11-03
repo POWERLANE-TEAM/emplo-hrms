@@ -3,3 +3,12 @@
     height: auto;
     aspect-ratio: 1/1;
 }
+
+.icon-opacity {
+    opacity: 1; 
+    transition: opacity 0.3s; 
+}
+
+.icon-opacity:hover {
+    opacity: 0.5;
+}
