@@ -39,11 +39,7 @@
 <x-headings.header-link heading="Create New Department" description="Create a new department of the company."
     label="Bulk Creation" nonce="{{ $nonce }}" href="{{ route($guard . '.accounts') }}" />
 
-    <x-sub-navs.tabular-nav :guard="$guard" :items="[
-    ['title' => 'Department', 'route' => 'create-dept', 'active' => true],
-    ['title' => 'Position', 'route' => 'create-position', 'active' => false],
-]" />
-
+    @include('components.includes.tab_navs.org-tab-navs')
 
 {{--
 |--------------------------------------------------------------------------
