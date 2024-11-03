@@ -4,7 +4,9 @@ import initLucideIcons from '../../icons/lucide.js';
 import addGlobalListener from 'globalListener-script';
 import '../../auth-listener.js';
 import 'employee-page-script';
-import '../../modals.js'
+import '../../modals.js';
+import '../../drag-and-drop.js';
+import '../../tooltip.js';
 
 
 
