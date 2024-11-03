@@ -8,7 +8,12 @@
 
 <div class="d-flex mb-3">
     @foreach ($items as $item)
-        @if ($item['active'])
+        @php
+            // Determine if the current route matches the item's route
+            $isActive = request()->routeIs($guard . '.' . $item['route']);
+        @endphp
+
+        @if ($isActive)
             <span class="fw-bold underline-padded text-primary me-4 mb-0">
                 {{ $item['title'] }}
             </span>
