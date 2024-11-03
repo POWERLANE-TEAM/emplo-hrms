@@ -13,11 +13,6 @@
         ($filter->hasCustomPosition() ? '-' . $filter->getCustomPosition() : '');
 @endphp
 
-{{-- This has no error --}}
-{{-- <div >
-    {{$wireMethods}}
-</div> --}}
-
 <div x-data="{ open: false }" @keydown.window.escape="open = false" x-on:click.away="open = false"
     wire:key="inst-select-filter-{{ $component->getTableName() }}" class="align-content-md-center flex-wrap">
     <div class="d-flex gap-2 gap-md-3 flex-wrap">
