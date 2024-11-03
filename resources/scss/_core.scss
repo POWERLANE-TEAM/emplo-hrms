@@ -226,6 +226,7 @@ a.unstyled {
     font-size: .8rem !important;
 }
 
+
 .no-drag {
     user-drag: none;
     user-select: none;
@@ -236,8 +237,8 @@ a.unstyled {
 }
 
 .underline-padded {
-    padding-bottom: 3px; /* Customize padding */
-    border-bottom: 3px solid var(--main-green); /* Customize underline color and thickness */
+    padding-bottom: 3px; 
+    border-bottom: 3px solid var(--main-green);
     display: inline-block;
 }
 
@@ -252,6 +253,26 @@ a.unstyled {
     color: var(--main-green-transparent) !important;
 }
 
+.no-hover-border {
+    border: none;
+    outline: none; 
+    box-shadow: none; 
+}
+
+.no-hover-border:hover,
+.no-hover-border:active {
+    border: none; 
+}
+
+.list-group-item.drag-over {
+    border: 2px solid var(--main-green) !important; 
+    background-color: transparent; 
+}
+
+.green-divider {
+    height: 2px;
+    background-color: var(--main-green);
+}
 body {
 
     &:not([data-bs-theme]) {
