@@ -22,35 +22,35 @@ class CspPolicy extends CustomSpatiePolicy
 
             */
 
-            $server_ip = $this->getActiveIpAddress();
+            $serverIp = $this->getActiveIpAddress();
 
             $this
                 ->addDirective(Directive::DEFAULT, 'localhost:*')
-                ->addDirective(Directive::DEFAULT, "$server_ip:*")
+                ->addDirective(Directive::DEFAULT, "$serverIp:*")
                 ->addDirective(Directive::BASE, 'localhost:*')
-                ->addDirective(Directive::BASE, "$server_ip:*");
+                ->addDirective(Directive::BASE, "$serverIp:*");
 
             $this
                 ->addDirective(Directive::CONNECT, 'localhost:*')
                 ->addDirective(Directive::CONNECT, 'ws://localhost:*') /* websocket */
-                ->addDirective(Directive::CONNECT, "ws://$server_ip:*"); /* websocket */
+                ->addDirective(Directive::CONNECT, "ws://$serverIp:*"); /* websocket */
 
             $this
                 ->addDirective(Directive::SCRIPT, 'localhost:*')
-                ->addDirective(Directive::SCRIPT, "$server_ip:*")
+                ->addDirective(Directive::SCRIPT, "$serverIp:*")
                 ->addDirective(Directive::SCRIPT, 'unsafe-inline');
             $this->addDirective(Directive::SCRIPT, 'https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js');
             $this->addDirective(Directive::SCRIPT, 'https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone-min.js');
 
             $this
                 ->addDirective(Directive::STYLE, 'localhost:*')
-                ->addDirective(Directive::STYLE, "$server_ip:*");
+                ->addDirective(Directive::STYLE, "$serverIp:*");
             $this->addDirective(Directive::STYLE, 'https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.css');
             $this->addDirective(Directive::STYLE, 'https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone.css');
 
             $this
                 ->addDirective(Directive::IMG, 'localhost:*')
-                ->addDirective(Directive::IMG, "$server_ip:*")
+                ->addDirective(Directive::IMG, "$serverIp:*")
                 ->addDirective(Directive::IMG, 'www.placeholder.com')
                 ->addDirective(Directive::IMG, 'via.placeholder.com')
                 ->addDirective(Directive::IMG, 'https://dummyimage.com')
