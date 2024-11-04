@@ -13,26 +13,26 @@ class UserStatusSeeder extends Seeder
      */
     public function run(): void
     {
-        $user_statuses = [
+        $userStatuses = collect([
             [
-                'user_status_id' => AccountStatus::ACTIVE,
-                'user_status_name' => AccountStatus::ACTIVE->label(),
-                'user_status_desc' => fake()->paragraph(),
+                AccountStatus::ACTIVE->value,
+                AccountStatus::ACTIVE->label()
             ],
             [
-                'user_status_id' => AccountStatus::INACTIVE,
-                'user_status_name' => AccountStatus::INACTIVE->label(),
-                'user_status_desc' => fake()->paragraph(),
+                AccountStatus::SUSPENDED->value,
+                AccountStatus::SUSPENDED->label()
             ],
             [
-                'user_status_id' => AccountStatus::SUSPENDED,
-                'user_status_name' => AccountStatus::SUSPENDED->label(),
-                'user_status_desc' => fake()->paragraph(),
+                AccountStatus::NOT_VERIFIED->value,
+                AccountStatus::NOT_VERIFIED->label()
             ],
-        ];
+        ]);
 
-        foreach ($user_statuses as $user_status) {
-            UserStatus::create($user_status);
-        }
+        $userStatuses->eachSpread(function (int $id, string $label) {
+            UserStatus::create([
+                'user_status_id' => $id,
+                'user_status_name' => $label,
+            ]);
+        });
     }
 }

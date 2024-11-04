@@ -9,9 +9,7 @@ use App\Enums\UserRole;
 use App\Models\Employee;
 use App\Models\User;
 use App\Enums\UserStatus as EnumUserStatus;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -47,7 +45,7 @@ class IntermediateRoleSeeder extends Seeder
         $userData = [
             'account_type' => AccountType::EMPLOYEE,
             'account_id' => $employee->employee_id,
-            'email' => 'hr.001@gmail.com',
+            'email' => 'intermediate' . fake()->unique()->safeEmail(),
             'password' => Hash::make('UniqP@ssw0rd'),
             'user_status_id' => EnumUserStatus::ACTIVE,
             'email_verified_at' => fake()->dateTimeBetween('-10 days', 'now'),

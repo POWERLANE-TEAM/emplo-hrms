@@ -38,6 +38,7 @@ class AdvancedRoleSeeder extends Seeder
         UserPermission::VIEW_ANNOUNCEMENT_MANAGER,
         UserPermission::VIEW_PERFORMANCE_CONFIG,
         UserPermission::VIEW_FORM_CONFIG,
+        UserPermission::VIEW_ONLINE_USERS,
 
         // Create cases goes here
         UserPermission::CREATE_JOB_LISTING,

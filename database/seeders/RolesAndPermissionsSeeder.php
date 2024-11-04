@@ -74,6 +74,7 @@ class RolesAndPermissionsSeeder extends Seeder
                 UserPermission::VIEW_MATRIX_PROJECTOR,
                 UserPermission::VIEW_TALENT_EVALUATOR,
                 UserPermission::VIEW_PLAN_GENERATOR,
+                UserPermission::VIEW_ADMIN_DASHBOARD,
                 UserPermission::VIEW_CALENDAR_MANAGER,
                 UserPermission::VIEW_ACCOUNT_MANAGER,
                 UserPermission::VIEW_EMPLOYEE_MANAGER,
@@ -82,6 +83,7 @@ class RolesAndPermissionsSeeder extends Seeder
                 UserPermission::VIEW_ANNOUNCEMENT_MANAGER,
                 UserPermission::VIEW_PERFORMANCE_CONFIG,
                 UserPermission::VIEW_FORM_CONFIG,
+                UserPermission::VIEW_ONLINE_USERS,
 
                 /**
                  * update permissions goes here
@@ -136,6 +138,7 @@ class RolesAndPermissionsSeeder extends Seeder
                 UserPermission::VIEW_ANNOUNCEMENT_MANAGER,
                 UserPermission::VIEW_PERFORMANCE_CONFIG,
                 UserPermission::VIEW_FORM_CONFIG,
+                UserPermission::VIEW_ONLINE_USERS,
 
                 /**
                  * update permissions goes here
@@ -157,13 +160,13 @@ class RolesAndPermissionsSeeder extends Seeder
             }
         }
 
+        app()[PermissionRegistrar::class]->forgetCachedPermissions();
+
         /*
          * Define user roles with default permissions here using backed enums in Roles
          */
         Role::create(['guard_name' => GuardType::EMPLOYEE->value, 'name' => UserRole::BASIC]);
         Role::create(['guard_name' => GuardType::EMPLOYEE->value, 'name' => UserRole::INTERMEDIATE]);
         Role::create(['guard_name' => GuardType::ADMIN->value, 'name' => UserRole::ADVANCED]);
-
-        app()[PermissionRegistrar::class]->forgetCachedPermissions();
     }
 }
