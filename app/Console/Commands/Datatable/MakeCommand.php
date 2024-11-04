@@ -78,7 +78,12 @@ class MakeCommand extends Command implements PromptsForMissingInput
 
         $this->createClass($force);
 
-        $this->info("Livewire Datatable {$this->parser->className()} Created: file://" . base_path() . '/' . $this->parser->relativeClassPath());
+        $this->info("<bg=green;fg=white;options=bold> CLASS PATH </> Livewire Datatable {$this->parser->className()} Created: file://" . base_path() . '/' . $this->parser->relativeClassPath());
+
+        $relativeClassPath = $this->parser->relativeClassPath();
+        $processedPath = $this->getTableIncludePath($relativeClassPath);
+
+        $this->info("\n<bg=green;fg=white;options=bold> INCLUDE PATH </> Include {$this->parser->className()} table by:  <livewire:{$processedPath} />");
     }
 
     protected function createClass(bool $force = false): bool
@@ -259,5 +264,32 @@ class MakeCommand extends Command implements PromptsForMissingInput
                 $input->setArgument('modelpath', $modelPath);
             }
         }
+    }
+
+    private function getTableIncludePath($relativeClassPath)
+    {
+        $dirSeparator = '[\/\\\\]'; // Variable for directory separator
+
+        // Step 1: Remove the initial segments 'app\Livewire\'
+        $relativeClassPath = preg_replace("/^app{$dirSeparator}Livewire{$dirSeparator}/", '', $relativeClassPath);
+
+        // Step 2: Replace backslashes and forward slashes with dots
+        $processedPath = preg_replace("/{$dirSeparator}+/", '.', $relativeClassPath);
+
+        // Step 3: Remove the .php extension
+        $processedPath = preg_replace('/\.php$/', '', $processedPath);
+
+        // Step 4: Replace the last segment's PascalCase with kebab case
+        $processedPath = preg_replace_callback('/\.(\w+)$/', function ($matches) {
+            return '.' . preg_replace('/([a-z])([A-Z])/', '$1-$2', $matches[1]);
+        }, $processedPath);
+
+        // Step 5: Convert to lowercase
+        $processedPath = strtolower($processedPath);
+
+        // Step 6: Remove any leading dots
+        $processedPath = ltrim($processedPath, '.');
+
+        return $processedPath;
     }
 }
