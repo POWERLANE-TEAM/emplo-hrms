@@ -36,7 +36,7 @@
 
     <x-headings.main-heading :isHeading="true">
         <x-slot:heading>
-            Good afternoon, {{ $user->account->first_name }}!
+            Good afternoon, {{ Auth::user()->account->first_name }}!
         </x-slot:heading>
 
         <x-slot:description>

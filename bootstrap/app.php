@@ -35,7 +35,6 @@ return Application::configure(basePath: dirname(__DIR__))
         __DIR__ . '/../routes/channels.php',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->prepend(SetDynamicGuard::class);
         $middleware->append(AddCspHeaders::class);
 
         $middleware->alias([
@@ -47,8 +46,6 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->redirectGuestsTo(function (Request $request) {
-
-
 
             if ($request->is('employee/*')) {
                 return 'employee/login';

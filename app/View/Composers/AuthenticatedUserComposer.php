@@ -2,7 +2,7 @@
 
 namespace App\View\Composers;
 
-use App\Http\Helpers\ChooseGuard;
+use App\Http\Helpers\RoutePrefix;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +19,9 @@ class AuthenticatedUserComposer
      */
     public function compose(View $view): void
     {
-        $guard = Auth::guard(ChooseGuard::getByRequest());
+
+        $routePrefix = RoutePrefix::getByRequest();
+        $guard = Auth::guard(Auth::getDefaultDriver());
 
 
         if ($guard->check()) {
@@ -30,6 +32,7 @@ class AuthenticatedUserComposer
 
             $view->with([
                 'user' => $user,
+                'routePrefix' => $routePrefix,
                 'userPhoto' => $userPhoto,
                 'defaultAvatar' => $defaultAvatar,
             ]);

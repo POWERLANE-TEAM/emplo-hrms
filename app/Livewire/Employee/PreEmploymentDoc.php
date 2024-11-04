@@ -5,7 +5,6 @@ namespace App\Livewire\Employee;
 use App\Enums\UserPermission;
 use App\Enums\UserRole;
 use App\Http\Controllers\PreEmploymentController;
-use App\Http\Helpers\ChooseGuard;
 use App\Models\PreempRequirement;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -30,7 +29,7 @@ class PreEmploymentDoc extends Component
     public function save(Request $request, PreEmploymentController $controller)
     {
 
-        $user = Auth::guard(ChooseGuard::getByRequest())->user();
+        $user = Auth::guard()->user();
 
         if (!$user->hasAllPermissions([UserPermission::CREATE_PRE_EMPLOYMENT_DOCUMENT, UserPermission::UPDATE_OWNED_PRE_EMPLOYMENT_DOCUMENT])) {
             abort(403, 'You are not authorized to perform this action yet');

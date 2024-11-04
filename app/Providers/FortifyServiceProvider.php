@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use Laravel\Fortify\Fortify;
 use App\Enums\UserPermission;
 use App\Events\UserLoggedout;
-use App\Http\Helpers\ChooseGuard;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Actions\Fortify\CreateNewUser;
@@ -34,30 +33,6 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        if (request()->is('employee/*')) {
-            config(
-                [
-                    'fortify.guard' => 'employee',
-                    'fortify.home' => '/employee/dashboard',
-                ]
-            );
-        }
-        if (request()->is('admin/*')) {
-            config(
-                [
-                    'fortify.guard' => 'admin',
-                    'fortify.home' => '/admin/dashboard',
-                ]
-            );
-        }
-
-        config(['fortify.prefix' => ChooseGuard::getByReferrer()]);
-
-        $this->app->when([AuthenticatedSessionController::class, AttemptToAuthenticate::class])
-            ->needs(StatefulGuard::class)
-            ->give(function () {
-                return Auth::guard(ChooseGuard::getByReferrer());
-            });
 
         $this->app->instance(LogoutResponse::class, new class implements LogoutResponse
         {
@@ -78,7 +53,7 @@ class FortifyServiceProvider extends ServiceProvider
         {
             public function toResponse($request)
             {
-                $authUser = Auth::guard(ChooseGuard::getByReferrer())->user();
+                $authUser = Auth::guard()->user();
 
                 // Redirection to previously visited page before being prompt to login
                 // For example you visit /employee/payslip and you are not logged in
@@ -142,21 +117,6 @@ class FortifyServiceProvider extends ServiceProvider
 
         Fortify::loginView(function () {
 
-            $guard = null;
-
-            // Loop through all guards and check which one has authenticated user then use that guard
-            $guards = GuardType::values();
-            for ($i = 0; $i < count($guards); $i++) {
-                $guardType = $guards[$i];
-                $isAuthenticated = Auth::guard($guardType)->check();
-                if ($isAuthenticated) {
-                    $guard = $guardType;
-                    $view = "$guard.dashboard";
-                    /*TODO If web add check if guest or applicant? */
-                    return redirect()->route($view);
-                }
-            }
-
             $view = match (true) {
                 request()->is('employee/*') => 'livewire.auth.employees.login-view',
                 request()->is('admin/*') => 'livewire.auth.admins.login-view',
@@ -166,9 +126,9 @@ class FortifyServiceProvider extends ServiceProvider
             return view($view);
         });
 
-        Fortify::twoFactorChallengeView(function() {
+        Fortify::twoFactorChallengeView(function () {
             return view('livewire.auth.two-factor-challenge-form-view');
-        });            
+        });
 
         RateLimiter::for('login', function (Request $request) {
             $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())) . '|' . $request->ip());

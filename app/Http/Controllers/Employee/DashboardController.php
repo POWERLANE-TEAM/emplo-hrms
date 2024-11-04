@@ -12,7 +12,7 @@ class DashboardController extends Controller
 {
     public function __invoke()
     {
-        $guard = Auth::guard('employee');
+        $guard = Auth::guard();
 
         $user = $guard->user();
 
