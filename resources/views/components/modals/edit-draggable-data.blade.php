@@ -12,7 +12,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button onclick="closeEditModal()" class="btn btn-secondary">Close</button>
+                <button onclick="hideModal('editModalId')" class="btn btn-secondary">Close</button>
                 <button onclick="saveChanges()" class="btn btn-primary">Save changes</button>
             </div>
         </div>
