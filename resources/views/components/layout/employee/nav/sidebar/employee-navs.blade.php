@@ -171,8 +171,8 @@
 
     {{-- Head Admin --}}
     @can(UserPermission::VIEW_PERFORMANCE_CONFIG)
-        <x-layout.employee.nav.sidebar.nav-item href="{{ route($guard . '.performance') }}"
-            :active="request()->routeIs($guard . '.performance')" class="" nav_txt="Performance"
+        <x-layout.employee.nav.sidebar.nav-item href="{{ route($guard . '.categories') }}"
+            :active="request()->routeIs($guard . '.categories')" class="" nav_txt="Performance"
             :default_icon="['src' => 'performances', 'alt' => '']" :active_icon="['src' => 'performances', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan

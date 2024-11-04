@@ -70,10 +70,23 @@ Route::middleware('auth:admin')->group(function () {
     // End of Announcements
 
 
-    Route::get('performance', function() {
-        abort(404);
-    })->name('performance');
+    // -- Performance Eval Routes --
+    Route::get('categories', function() {
+        return view('employee.admin.performance.categories');
+    })->name('categories');
 
+    Route::get('pass-rate-range', function() {
+        return view('employee.admin.performance.pass-rate-range');
+    })->name('pass-rate-range');
+
+    Route::get('perf-scales', function() {
+        return view('employee.admin.performance.perf-scales');
+    })->name('perf-scales');
+
+    Route::get('scoring', function() {
+        return view('employee.admin.performance.scoring');
+    })->name('scoring');
+    // End of Performance Eval Routes
 
     // -- Forms Routes --
     Route::get('pre-emp-reqs', function() {
