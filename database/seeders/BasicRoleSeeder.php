@@ -51,12 +51,10 @@ class BasicRoleSeeder extends Seeder
 
         $employeeUser = User::factory()->create($userData);
 
-        $role = Role::firstOrCreate(['name' => UserRole::BASIC, 'guard_name' => GuardType::EMPLOYEE->value]);
-        $employeeUser->assignRole($role);
+        $employeeUser->assignRole(UserRole::BASIC);
 
         $permissions = collect(self::BASIC_PERMISSIONS)
             ->map(fn($permission) => Permission::where('name', $permission)
-                ->where('guard_name', GuardType::EMPLOYEE->value)
                 ->first());
 
         $employeeUser->givePermissionTo($permissions);

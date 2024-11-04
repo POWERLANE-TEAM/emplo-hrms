@@ -29,140 +29,54 @@ class RolesAndPermissionsSeeder extends Seeder
         // create permissions goes here
         Permission::firstOrCreate(['name' => UserPermission::CREATE_PRE_EMPLOYMENT_DOCUMENT]);
 
-
         // view permissions goes here
         Permission::firstOrCreate(['name' => UserPermission::VIEW_APPLICANT_INFORMATION]);
         Permission::firstOrCreate(['name' => UserPermission::VIEW_EMPLOYEE_INFORMATION]);
+        Permission::firstOrCreate(['name' => UserPermission::VIEW_EMPLOYEE_DASHBOARD]);
+        Permission::firstOrCreate(['name' => UserPermission::VIEW_HR_MANAGER_DASHBOARD]);
+        Permission::firstOrCreate(['name' => UserPermission::VIEW_ALL_APPLICANTS]);
+        Permission::firstOrCreate(['name' => UserPermission::VIEW_ALL_EMPLOYEES]);
+        Permission::firstOrCreate(['name' => UserPermission::VIEW_ALL_ATTENDANCE]);
+        Permission::firstOrCreate(['name' => UserPermission::VIEW_ALL_LEAVES]);
+        Permission::firstOrCreate(['name' => UserPermission::VIEW_ALL_OVERTIME]);
+        Permission::firstOrCreate(['name' => UserPermission::VIEW_ALL_PAYSLIPS]);
+        Permission::firstOrCreate(['name' => UserPermission::VIEW_ALL_PERFORMANCE]);
+        Permission::firstOrCreate(['name' => UserPermission::VIEW_ALL_RELATIONS]);
+        Permission::firstOrCreate(['name' => UserPermission::VIEW_MATRIX_PROJECTOR]);
+        Permission::firstOrCreate(['name' => UserPermission::VIEW_TALENT_EVALUATOR]);
+        Permission::firstOrCreate(['name' => UserPermission::VIEW_PLAN_GENERATOR]);
+        Permission::firstOrCreate(['name' => UserPermission::VIEW_CALENDAR_MANAGER]);
+        Permission::firstOrCreate(['name' => UserPermission::VIEW_ACCOUNT_MANAGER]);
+        Permission::firstOrCreate(['name' => UserPermission::VIEW_EMPLOYEE_MANAGER]);
+        Permission::firstOrCreate(['name' => UserPermission::VIEW_JOB_LISTING_MANAGER]);
+        Permission::firstOrCreate(['name' => UserPermission::VIEW_POLICY_MANAGER]);
+        Permission::firstOrCreate(['name' => UserPermission::VIEW_ANNOUNCEMENT_MANAGER]);
+        Permission::firstOrCreate(['name' => UserPermission::VIEW_PERFORMANCE_CONFIG]);
+        Permission::firstOrCreate(['name' => UserPermission::VIEW_FORM_CONFIG]);
+        Permission::firstOrCreate(['name' => UserPermission::VIEW_ADMIN_DASHBOARD]);
 
         // update permissions goes here
         Permission::firstOrCreate(['name' => UserPermission::UPDATE_OWNED_PRE_EMPLOYMENT_DOCUMENT]);
+        Permission::firstOrCreate(['name' => UserPermission::UDPATE_JOB_LISTING]);
+        Permission::firstOrCreate(['name' => UserPermission::UPDATE_ANNOUNCEMENT]);
+
+        // create permissions goes here
+        Permission::firstOrCreate(['name' => UserPermission::CREATE_JOB_LISTING]);
+        Permission::firstOrCreate(['name' => UserPermission::CREATE_ANNOUNCEMENT]);
+        Permission::firstOrCreate(['name' => UserPermission::CREATE_EMPLOYEE_ACCOUNT]);
+        Permission::firstOrCreate(['name' => UserPermission::CREATE_BULK_EMPLOYEE_ACCOUNT]);
 
         // delete permissions here
         Permission::firstOrCreate(['name' => UserPermission::DELETE_OWNED_PRE_EMPLOYMENT_DOCUMENT]);
-
-
-        $permissions = [
-
-            /**
-             * Using employee guard
-             */
-            GuardType::EMPLOYEE->value => [
-
-                /**
-                 * create permissions goes here
-                 */
-                UserPermission::CREATE_JOB_LISTING,
-                UserPermission::CREATE_ANNOUNCEMENT,
-                UserPermission::CREATE_EMPLOYEE_ACCOUNT,
-                UserPermission::CREATE_BULK_EMPLOYEE_ACCOUNT,
-
-                /**
-                 * view permissions goes here
-                 */
-                UserPermission::VIEW_APPLICANT_INFORMATION,
-                UserPermission::VIEW_EMPLOYEE_INFORMATION,
-                UserPermission::VIEW_EMPLOYEE_DASHBOARD,
-                UserPermission::VIEW_HR_MANAGER_DASHBOARD,
-                UserPermission::VIEW_ALL_APPLICANTS,
-                UserPermission::VIEW_ALL_EMPLOYEES,
-                UserPermission::VIEW_ALL_ATTENDANCE,
-                UserPermission::VIEW_ALL_LEAVES,
-                UserPermission::VIEW_ALL_OVERTIME,
-                UserPermission::VIEW_ALL_PAYSLIPS,
-                UserPermission::VIEW_ALL_PERFORMANCE,
-                UserPermission::VIEW_ALL_RELATIONS,
-                UserPermission::VIEW_MATRIX_PROJECTOR,
-                UserPermission::VIEW_TALENT_EVALUATOR,
-                UserPermission::VIEW_PLAN_GENERATOR,
-                UserPermission::VIEW_CALENDAR_MANAGER,
-                UserPermission::VIEW_ACCOUNT_MANAGER,
-                UserPermission::VIEW_EMPLOYEE_MANAGER,
-                UserPermission::VIEW_JOB_LISTING_MANAGER,
-                UserPermission::VIEW_POLICY_MANAGER,
-                UserPermission::VIEW_ANNOUNCEMENT_MANAGER,
-                UserPermission::VIEW_PERFORMANCE_CONFIG,
-                UserPermission::VIEW_FORM_CONFIG,
-
-                /**
-                 * update permissions goes here
-                 */
-                UserPermission::UDPATE_JOB_LISTING,
-                UserPermission::UPDATE_ANNOUNCEMENT,
-
-                /**
-                 * delete permissions goes here
-                 */
-                UserPermission::DELETE_JOB_LISTING,
-                UserPermission::DELETE_ANNOUNCEMENT,
-            ],
-
-            /*
-            * Using admin guard
-            */
-            GuardType::ADMIN->value => [
-
-                /**
-                 * create permissions goes here
-                 */
-                UserPermission::CREATE_JOB_LISTING,
-                UserPermission::CREATE_ANNOUNCEMENT,
-                UserPermission::CREATE_EMPLOYEE_ACCOUNT,
-                UserPermission::CREATE_BULK_EMPLOYEE_ACCOUNT,
-
-                /**
-                 * view permissions goes here
-                 */
-                UserPermission::VIEW_APPLICANT_INFORMATION,
-                UserPermission::VIEW_EMPLOYEE_INFORMATION,
-                UserPermission::VIEW_EMPLOYEE_DASHBOARD,
-                UserPermission::VIEW_HR_MANAGER_DASHBOARD,
-                UserPermission::VIEW_ALL_APPLICANTS,
-                UserPermission::VIEW_ALL_EMPLOYEES,
-                UserPermission::VIEW_ALL_ATTENDANCE,
-                UserPermission::VIEW_ALL_LEAVES,
-                UserPermission::VIEW_ALL_OVERTIME,
-                UserPermission::VIEW_ALL_PAYSLIPS,
-                UserPermission::VIEW_ALL_PERFORMANCE,
-                UserPermission::VIEW_ALL_RELATIONS,
-                UserPermission::VIEW_MATRIX_PROJECTOR,
-                UserPermission::VIEW_TALENT_EVALUATOR,
-                UserPermission::VIEW_PLAN_GENERATOR,
-                UserPermission::VIEW_ADMIN_DASHBOARD,
-                UserPermission::VIEW_CALENDAR_MANAGER,
-                UserPermission::VIEW_ACCOUNT_MANAGER,
-                UserPermission::VIEW_EMPLOYEE_MANAGER,
-                UserPermission::VIEW_JOB_LISTING_MANAGER,
-                UserPermission::VIEW_POLICY_MANAGER,
-                UserPermission::VIEW_ANNOUNCEMENT_MANAGER,
-                UserPermission::VIEW_PERFORMANCE_CONFIG,
-                UserPermission::VIEW_FORM_CONFIG,
-
-                /**
-                 * update permissions goes here
-                 */
-                UserPermission::UDPATE_JOB_LISTING,
-                UserPermission::UPDATE_ANNOUNCEMENT,
-
-                /**
-                 * delete permissions goes here
-                 */
-                UserPermission::DELETE_JOB_LISTING,
-                UserPermission::DELETE_ANNOUNCEMENT,
-            ],
-        ];
-
-        foreach ($permissions as $guard => $permission_list) {
-            foreach ($permission_list as $permission) {
-                Permission::firstOrCreate(['guard_name' => $guard, 'name' => $permission]);
-            }
-        }
+        Permission::firstOrCreate(['name' => UserPermission::DELETE_JOB_LISTING]);
+        Permission::firstOrCreate(['name' => UserPermission::DELETE_ANNOUNCEMENT]);
 
         /*
          * Define user roles with default permissions here using backed enums in Roles
          */
-        Role::create(['guard_name' => GuardType::EMPLOYEE->value, 'name' => UserRole::BASIC]);
-        Role::create(['guard_name' => GuardType::EMPLOYEE->value, 'name' => UserRole::INTERMEDIATE]);
-        Role::create(['guard_name' => GuardType::ADMIN->value, 'name' => UserRole::ADVANCED]);
+        Role::create(['name' => UserRole::BASIC]);
+        Role::create(['name' => UserRole::INTERMEDIATE]);
+        Role::create(['name' => UserRole::ADVANCED]);
 
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
     }

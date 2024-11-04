@@ -59,8 +59,7 @@ class ApplicantSeeder extends Seeder
                 'application_status_id' => ApplicationStatus::APPROVED,
             ]);
 
-            $role = Role::firstOrCreate(['name' => UserRole::BASIC]);
-            $applicant_user->assignRole($role);
+            $applicant_user->assignRole(UserRole::BASIC);
 
             $applicant_user->givePermissionTo(self::PRE_EMPLOYMENT_PERMISSIONS);
         });
