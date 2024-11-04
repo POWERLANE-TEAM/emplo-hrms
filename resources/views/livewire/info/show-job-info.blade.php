@@ -25,7 +25,7 @@
 
         {{-- Submit Button --}}
         <section class="my-2"></section>
-        <x-buttons.main-btn id="add_open_position" label="Create Department" name="add_open_position" :nonce="$nonce"
+        <x-buttons.main-btn id="add_open_position" label="Add Open Job Position" name="add_open_position" :nonce="$nonce"
             :disabled="false" class="w-25" :loading="'Creating...'" />
         </section>
     @else
