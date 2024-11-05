@@ -63,14 +63,22 @@ class FortifyServiceProvider extends ServiceProvider
         {
             public function toResponse($request)
             {
+                $redirectUrl = match (Auth::getDefaultDriver()) {
+                    GuardType::DEFAULT->value => '/login',
+                    GuardType::EMPLOYEE->value => '/employee/login',
+                    GuardType::ADMIN->value => '/admin/login',
+                };
+
                 try {
-                    broadcast(new UserLoggedout($request->authBroadcastId))->toOthers();
+                    broadcast(new UserLoggedout($request->authBroadcastId, $redirectUrl))->toOthers();
+                    return redirect($redirectUrl);
                 } catch (\Throwable $th) {
                     // avoid Pusher error: cURL error 7: Failed to connect to localhost port 8080 after 2209 ms: Couldn't connect to server
                     /* when websocket server is not started */
-                }
 
-                return redirect('/');
+                    \Log::error('Broadcast error: '.$th);
+                    return redirect($redirectUrl);
+                }
             }
         });
 
