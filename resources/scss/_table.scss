@@ -16,7 +16,6 @@
             }
 
             .no-hover:hover {
-                // pointer-events: none;
                 background-color: var(--bs-body-bg);
                 --bs-table-bg-state: var(--bs-body-bg);
 
@@ -29,8 +28,17 @@
     }
 }
 
+.table-hover {
+
+    >tbody>tr>*,
+    >tbody>tr {
+        transition: all 0.3s ease-out 0.05s, color 0.1s ease-in-out, border-color 0.8s ease-in-out;
+    }
+}
+
 table.table {
     @include table-common-styles;
+
 
     &.table-hover {
         @include table-hover-styles;
