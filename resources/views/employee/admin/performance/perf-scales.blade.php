@@ -42,7 +42,7 @@
     </x-slot:heading>
 
     <x-slot:description>
-        Add, edit or remove performance categories.
+        Add, edit or remove performance evaluations elements.
     </x-slot:description>
 </x-headings.main-heading>
 
@@ -51,7 +51,7 @@
 <section>
 
     <p>The assigned numerical ratings used to rate an employee’s performance in a category.</p>
-    
+
 
     {{-- Placeholder datas. Need to be mounted properly from the db. --}}
     @php
@@ -66,11 +66,11 @@
 
     {{-- Customization of the data rendering in the table --}}
     @php
-        $dataOneHtml = array_map(function($item) {
+        $dataOneHtml = array_map(function ($item) {
             return "<span class='fw-bold text-primary'>{$item['data-one']} =</span>";
         }, $placeholderItems);
 
-        $dataTwoHtml = array_map(function($item) {
+        $dataTwoHtml = array_map(function ($item) {
             return "<span class='text-muted'>{$item['data-two']}</span>";
         }, $placeholderItems);
     @endphp
@@ -81,9 +81,10 @@
     'items' => $placeholderItems,
     'dataOneHtml' => $dataOneHtml,
     'dataTwoHtml' => $dataTwoHtml,
-    'editCallback' => 'openEditPerfScalesModal'])
+    'editCallback' => 'openEditPerfScalesModal'
+])
 
-    
+
     {{-- Add Category Button --}}
     <x-buttons.dotted-btn-open-modal label="Add Performance Scale" modal="addPerfScale" :disabled="false" />
 </section>

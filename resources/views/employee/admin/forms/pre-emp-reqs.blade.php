@@ -11,7 +11,7 @@
 
 {{-- Head Section: Title, Scripts, & Styles --}}
 @section('head')
-<title>Create Department</title>
+<title>Configure Pre-Employment Requirements</title>
 <script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">

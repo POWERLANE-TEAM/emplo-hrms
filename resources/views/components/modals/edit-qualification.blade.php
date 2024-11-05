@@ -22,7 +22,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button onclick="closeEditQualificationModal()" class="btn btn-secondary">Close</button>
+                <button onclick="hideModal('editQualificationModalId')" class="btn btn-secondary">Close</button>
                 <button onclick="saveQualificationChanges()" class="btn btn-primary">Save changes</button>
             </div>
         </div>

@@ -42,7 +42,7 @@
     </x-slot:heading>
 
     <x-slot:description>
-        Add, edit or remove performance categories.
+        Add, edit or remove performance evaluations elements.
     </x-slot:description>
 </x-headings.main-heading>
 
