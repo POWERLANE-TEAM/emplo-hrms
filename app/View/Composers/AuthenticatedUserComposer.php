@@ -20,19 +20,14 @@ class AuthenticatedUserComposer
     public function compose(View $view): void
     {
 
-        $routePrefix = RoutePrefix::getByRequest();
-        $guard = Auth::guard(Auth::getDefaultDriver());
-
-
-        if ($guard->check()) {
-            $user = $guard->user();
+        if (Auth::check()) {
+            $user = Auth::user();
 
             $userPhoto = $user->photo ? Storage::url($user->photo) : null;
             $defaultAvatar = Storage::url('icons/default-avatar.png');
 
             $view->with([
                 'user' => $user,
-                'routePrefix' => $routePrefix,
                 'userPhoto' => $userPhoto,
                 'defaultAvatar' => $defaultAvatar,
             ]);

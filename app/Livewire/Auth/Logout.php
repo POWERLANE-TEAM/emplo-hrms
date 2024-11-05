@@ -23,7 +23,7 @@ class Logout extends Component
         $this->nonce = csp_nonce();
 
         $user_session = session()->getId();
-        $this->authBroadcastId = hash('sha512', $user_session . Auth::guard()->user()->email . $user_session);
+        $this->authBroadcastId = hash('sha512', $user_session . Auth::user()->email . $user_session);
     }
 
     public function render()

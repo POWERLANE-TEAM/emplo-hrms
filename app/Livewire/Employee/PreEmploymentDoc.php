@@ -29,7 +29,7 @@ class PreEmploymentDoc extends Component
     public function save(Request $request, PreEmploymentController $controller)
     {
 
-        $user = Auth::guard()->user();
+        $user = Auth::user();
 
         if (!$user->hasAllPermissions([UserPermission::CREATE_PRE_EMPLOYMENT_DOCUMENT, UserPermission::UPDATE_OWNED_PRE_EMPLOYMENT_DOCUMENT])) {
             abort(403, 'You are not authorized to perform this action yet');

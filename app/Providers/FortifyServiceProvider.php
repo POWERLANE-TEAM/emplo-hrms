@@ -53,7 +53,7 @@ class FortifyServiceProvider extends ServiceProvider
         {
             public function toResponse($request)
             {
-                $authUser = Auth::guard()->user();
+                $authUser = Auth::user();
 
                 // Redirection to previously visited page before being prompt to login
                 // For example you visit /employee/payslip and you are not logged in
