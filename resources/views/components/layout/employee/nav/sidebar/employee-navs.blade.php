@@ -72,15 +72,15 @@
 
     {{-- Employee, Supervisor --}}
     @can(UserPermission::VIEW_ISSUES)
-        <x-layout.employee.nav.sidebar.nav-item href="{{ route($routePrefix . '.applicants') }}" :active="request()->routeIs($routePrefix . '.issues')"
-            class="tw-order-[8]" nav_txt="Issues" :default_icon="['src' => 'issues', 'alt' => '']" :active_icon="['src' => 'issues', 'alt' => '']">
+        <x-layout.employee.nav.sidebar.nav-item href="#" :active="request()->routeIs($routePrefix . '.issues')" class="tw-order-[8]" nav_txt="Issues"
+            :default_icon="['src' => 'issues', 'alt' => '']" :active_icon="['src' => 'issues', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan
 
     {{-- HR Manager --}}
     @can(UserPermission::VIEW_ALL_APPLICANTS)
-        <x-layout.employee.nav.sidebar.nav-item href="#" :active="request()->routeIs($routePrefix . '.applicants')" class="tw-order-[2]" nav_txt="Applicants"
-            :default_icon="['src' => 'applicants', 'alt' => '']" :active_icon="['src' => 'applicants', 'alt' => '']">
+        <x-layout.employee.nav.sidebar.nav-item href="{{ route($routePrefix . '.applicants') }}" :active="request()->routeIs($routePrefix . '.applicants')"
+            class="tw-order-[2]" nav_txt="Applicants" :default_icon="['src' => 'applicants', 'alt' => '']" :active_icon="['src' => 'applicants', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan
 
