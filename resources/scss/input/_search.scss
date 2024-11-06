@@ -8,7 +8,7 @@
     border: none;
     padding: var(--search-padding-y) clamp(1.5rem, 1rem + 0.75vw + 0.5vh, 10rem);
     height: var(--search-height);
-    color: var(--bs-white);
+    color: inherit;
 }
 
 %base-search-group-with-icon-style {
@@ -26,7 +26,7 @@
     }
 
     &>:not(input[type="search"], input.search) {
-        background-color: transparent;
+        // background-color: initial;
         border: none;
 
         &.input-group-text {
@@ -66,21 +66,27 @@ input.search {
 }
 
 input[type="search"]::-ms-input-placeholder {
-    color: var(--bs-white);
+    color: inherit;
 }
 
 input[type="search"]::-moz-placeholder {
-    color: var(--bs-white);
+    color: inherit;
 }
 
 input[type="search"]::placeholder {
-    color: var(--bs-white);
+    color: inherit;
 }
 
 input[type="search"]::placeholder-show {
-    color: var(--bs-white);
+    color: inherit;
 }
 
 input[type="search"]::-webkit-input-placeholder {
-    color: var(--bs-white);
+    color: inherit;
+}
+
+input[type="search"]::-webkit-search-cancel-button {
+    --clear-btn-padding-y: calc(0.1rem + 0.125vw);
+    padding-right: calc(0.5rem + 0.25vw);
+    padding-top: var(--clear-btn-padding-y);
 }

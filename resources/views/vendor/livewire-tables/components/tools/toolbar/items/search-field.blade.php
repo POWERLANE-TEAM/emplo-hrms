@@ -5,7 +5,6 @@
     'flex rounded-md shadow-sm' => $this->isTailwind,
 ])>
     <input wire:model{{ $this->getSearchOptions() }}="search" placeholder="{{ $this->getSearchPlaceholder() }}"
-        type="search"
         {{ $attributes->merge($this->getSearchFieldAttributes())->class([
                 'block w-full rounded-md shadow-sm transition duration-150 ease-in-out sm:text-sm sm:leading-5 rounded-none rounded-l-md focus:ring-0 focus:border-gray-300' =>
                     $this->isTailwind &&

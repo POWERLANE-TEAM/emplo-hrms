@@ -32,17 +32,17 @@ class DatabaseSeeder extends Seeder
 
         EmploymentStatus::factory(10)->create();
 
-        Department::factory(rand(5, 15))->create();
+        Department::factory(rand(4, env('APP_SEEDING_COUNT', 25)))->create();
 
         $this->call(JobTitleSeeder::class);
 
-        JobLevel::factory(rand(5, 15))->create();
+        JobLevel::factory(rand(4, env('APP_SEEDING_COUNT', 25)))->create();
 
-        JobFamily::factory(rand(5, 20))->create();
+        JobFamily::factory(rand(4, env('APP_SEEDING_COUNT', 25)))->create();
 
-        SpecificArea::factory(rand(10, 25))->create();
+        SpecificArea::factory(rand(4, env('APP_SEEDING_COUNT', 25)))->create();
 
-        JobDetail::factory(rand(5, 20))->create();
+        JobDetail::factory(rand(4, env('APP_SEEDING_COUNT', 25)))->create();
 
         $this->call(BasicRoleSeeder::class);
 
@@ -50,11 +50,11 @@ class DatabaseSeeder extends Seeder
 
         $this->call(AdvancedRoleSeeder::class);
 
-        JobVacancy::factory(25)->create();
+        JobVacancy::factory(rand(4, env('APP_SEEDING_COUNT', 25)))->create();
 
         $this->call(PreempRequirementSeeder::class);
 
-        $this->call(ApplicantSeeder::class);
+        $this->call(ApplicantSeeder::class, false, ['count' => env('APP_USER_SEEDING_COUNT', 100)]);
 
         // update cache to know about the newly created permissions (required if using WithoutModelEvents in seeders)
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
