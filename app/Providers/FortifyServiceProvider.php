@@ -24,6 +24,7 @@ use Laravel\Fortify\Contracts\LoginResponse;
 use Laravel\Fortify\Contracts\LogoutResponse;
 use Laravel\Fortify\Actions\AttemptToAuthenticate;
 use App\Actions\Fortify\UpdateUserProfileInformation;
+use App\Http\Helpers\RoutePrefix;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 
 class FortifyServiceProvider extends ServiceProvider
@@ -34,7 +35,7 @@ class FortifyServiceProvider extends ServiceProvider
     public function register(): void
     {
 
-        config(['fortify.prefix' => ChooseGuard::getByReferrer()]);
+        config(['fortify.prefix' => RoutePrefix::getByReferrer()]);
 
         $this->app->instance(LogoutResponse::class, new class implements LogoutResponse
         {
