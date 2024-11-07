@@ -45,7 +45,7 @@
 
         <div class="col-md-4">
             <div class="card bg-primary text-white border-0 px-md-5 py-4" role="none">
-                <a href="{{ route('admin.system.pulse') }}" target="_blank" class="unstyled">
+                <a href="{{ route('system.pulse') }}" target="_blank" class="unstyled">
                     <div class="mb-3">
                         <span></span>
                         <div class="fs-4 fw-bold text-white">Laravel Pulse</div>

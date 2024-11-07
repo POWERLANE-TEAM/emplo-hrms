@@ -46,14 +46,6 @@ let userLoginFormString = `form[action='/login']`;
 
 let userLoginBtn = `#userLoginBtn`;
 
-function checkConsent(consentForm) {
-    return consentForm.checked;
-}
-
-function checkCaptcha() {
-    return true;
-}
-
 const userLoginBool = {
     isValidEmail: false,
     isValidPassword: false,
@@ -86,8 +78,6 @@ function validateUserLoginForm(userLoginFormString = `form[action='/login']`) {
     let passwordInput = document.querySelector(`${userLoginFormString} input[name="password"]`);
 
     userLoginBtn.disabled = true;
-
-    let isCaptchaValid = checkCaptcha();
 
     let isWeakPassword;
     try {

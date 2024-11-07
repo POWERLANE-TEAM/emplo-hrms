@@ -36,7 +36,7 @@
 {{-- Body/Content Section --}}
 @section('content')
     <x-headings.header-link heading="Create an Account" description="Kindly fill up the following information."
-        label="Bulk Creation" nonce="{{ $nonce }}" href="{{ route($routePrefix . '.accounts') }}" />
+        label="Bulk Creation" nonce="{{ $nonce }}" href="{{ route('accounts') }}" />
 
 
     {{--
@@ -75,7 +75,7 @@
                             placeholder="">
 
                             <!-- For validation. Uncomment if needed.
-                                <x-slot:feedback>
+                                    <x-slot:feedback>
                             @include('components.form.input-feedback', [
                                 'feedback_id' => 'signUp-email-feedback',
                                 'message' => $errors->first('email'),

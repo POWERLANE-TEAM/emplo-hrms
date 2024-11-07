@@ -2,45 +2,32 @@
 
 namespace App\Livewire\Auth;
 
-use App\Http\Controllers\SessionController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 use Laravel\Fortify\Http\Requests\LoginRequest;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 class Login extends Component
 {
+    #[Validate('required|email')]
     public $email = '';
 
+    #[Validate('required')]
     public $password = '';
 
     public $remember = false;
-    // public $captcha;
 
-    // public function store(SessionController $session_controller)
-    // {
-    //     $login_credentials = $this->validate([
-    //         'email' => 'required|email',
-    //         'password' => [
-    //             'required',
-    //             // Password::defaults(),
-    //         ],
-    //     ]);
-
-    //     $session_controller->store($login_credentials);
-    // }
     public function store(AuthenticatedSessionController $session_controller)
     {
 
-        $login_credentials = $this->validate([
-            'email' => 'required|email',
-            'password' => [
-                'required',
-            ],
-        ]);
+        $login_attempt = [
+            'email' => $this->email,
+            'password' => $this->password,
+        ];
 
-        if (! Auth::validate($login_credentials)) {
+        if (! Auth::validate($login_attempt)) {
 
             $this->password = '';
             throw ValidationException::withMessages([
@@ -50,28 +37,13 @@ class Login extends Component
 
         $login_request = new LoginRequest;
 
-        $login_request->merge([
-            'email' => $this->email,
-            'password' => $this->password,
-            'remember' => $this->remember,
-        ]);
+        $login_request->merge($login_attempt);
 
-        $session_controller->store($login_request);
+        $session_controller->store($login_request, $this->remember);
     }
-
-    // public function placeholder()
-    // {
-    //     $this->dispatch('guest-sign-up-load');
-    //     return view('livewire.placeholder.sign-up');
-    // }
 
     public function render()
     {
         return view('livewire.auth.login');
-    }
-
-    public function rendered()
-    {
-        // $this->dispatch('guest-sign-up-rendered');
     }
 }
