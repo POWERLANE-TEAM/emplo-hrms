@@ -2,13 +2,14 @@
 
 namespace App\Providers;
 
-use App\Enums\GuardType;
+use App\Enums\UserRole;
 use App\Enums\AccountType;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Laravel\Fortify\Fortify;
 use App\Enums\UserPermission;
 use App\Events\UserLoggedout;
+use App\Http\Helpers\RoutePrefix;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Actions\Fortify\CreateNewUser;
@@ -19,13 +20,9 @@ use Illuminate\Cache\RateLimiting\Limit;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Contracts\Auth\StatefulGuard;
 use Laravel\Fortify\Contracts\LoginResponse;
 use Laravel\Fortify\Contracts\LogoutResponse;
-use Laravel\Fortify\Actions\AttemptToAuthenticate;
 use App\Actions\Fortify\UpdateUserProfileInformation;
-use App\Http\Helpers\RoutePrefix;
-use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -57,6 +54,13 @@ class FortifyServiceProvider extends ServiceProvider
             public function toResponse($request)
             {
                 $authUser = Auth::user();
+
+                if (! Auth::user()->hasRole(UserRole::ADVANCED)) {
+
+                    Auth::logout();
+
+                    session(['forbidden' => __('You\'re trying to access a forbidden resource.')]);
+                }
 
                 // Redirection to previously visited page before being prompt to login
                 // For example you visit /employee/payslip and you are not logged in
