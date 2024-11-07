@@ -12,9 +12,7 @@ class DashboardController extends Controller
 {
     public function __invoke()
     {
-        $guard = Auth::guard('employee');
-
-        $user = $guard->user();
+        $user = Auth::user();
 
         $dashboard = match (true) {
             $user->hasPermissionTo(UserPermission::VIEW_HR_MANAGER_DASHBOARD->value) => 'employee.hr-manager.index',

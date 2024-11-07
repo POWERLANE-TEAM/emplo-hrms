@@ -49,8 +49,7 @@ function createApplicants($chunkStart, $chunk, $permissions)
                         'application_status_id' => ApplicationStatus::APPROVED,
                     ]);
 
-                    $role = Role::firstOrCreate(['name' => UserRole::BASIC]);
-                    $applicant_user->assignRole($role);
+                    $applicant_user->assignRole(UserRole::BASIC);
 
                     $applicant_user->givePermissionTo($permissions);
                 } catch (\Exception $e) {

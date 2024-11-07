@@ -19,7 +19,7 @@
 @endPushOnce
 
 @section('content')
-    <div class="fs-2 fw-bold mb-5 ms-n1">Good afternoon, {{ $guard->user()->account->first_name }}!</div>
+    <div class="fs-2 fw-bold mb-5 ms-n1">Good afternoon, {{ Auth::user()->account->first_name }}!</div>
 
     <section class=" mb-5 d-flex gap-5">
         <div class="card bg-body-secondary col-md-4 border-0 p-md-5">

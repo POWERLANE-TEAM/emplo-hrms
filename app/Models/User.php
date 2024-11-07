@@ -24,17 +24,6 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $primaryKey = 'user_id';
 
     /**
-     * The names of the guards used for authentication.
-     *
-     * @var array
-     */
-    protected $guard_name = [
-        GuardType::DEFAULT->value,
-        GuardType::EMPLOYEE->value,
-        GuardType::ADMIN->value
-    ];
-
-    /**
      * The attributes that are not mass assignable.
      *
      * @var array<int, string>
@@ -75,7 +64,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     /**
      * Get the parent model (Guest, Applicant, or Employee) that the account belongs to.
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
     public function account(): MorphTo
@@ -85,7 +74,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     /**
      * Get the user status of the user.
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function status(): BelongsTo
