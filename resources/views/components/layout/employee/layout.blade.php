@@ -52,14 +52,14 @@
     @stack('pre-styles')
     @stack('styles')
 
-    @if (! View::hasSection('bootstrap-script'))
+    @if (!View::hasSection('bootstrap-script'))
         @vite(['node_modules/bootstrap/dist/js/bootstrap.bundle.min.js'])
     @else
         @yield('bootstrap-script')
     @endif
 
     @stack('pre-scripts')
-    @stack('scripts')
+
 
     @yield('before-nav')
 
@@ -83,6 +83,8 @@
     @endonce
 
     @yield('footer')
+
+    @stack('scripts')
 </body>
 
 </html>

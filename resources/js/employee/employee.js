@@ -6,6 +6,9 @@ const themeToggle = document.getElementById(`theme-toggle-btn`).closest('.dropdo
 
 const initAll = () => {
     try {
+        document.querySelectorAll('.not-transition').forEach(element => {
+            element.classList.remove('not-transition');
+        });
         initPageTheme(themeManager, themeToggle);
         handleThemeBtn(themeToggle, themeManager, addGlobalListener);
         initSidebar();

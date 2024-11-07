@@ -53,12 +53,10 @@ class IntermediateRoleSeeder extends Seeder
 
         $employeeUser = User::factory()->create($userData);
 
-        $role = Role::firstOrCreate(['name' => UserRole::INTERMEDIATE, 'guard_name' => GuardType::EMPLOYEE->value]);
-        $employeeUser->assignRole($role);
+        $employeeUser->assignRole(UserRole::INTERMEDIATE);
 
         $permissions = collect(self::INTERMEDIATE_PERMISSIONS)
             ->map(fn($permission) => Permission::where('name', $permission)
-                ->where('guard_name', GuardType::EMPLOYEE->value)
                 ->first());
 
         $employeeUser->givePermissionTo($permissions);

@@ -14,7 +14,7 @@ Broadcast::channel('user_auth.{userBroadcastId}', function ($user, string $userB
     $thisAuthBroadcastId = hash('sha512', $user_session . $user->email . $user_session);
 
     return $thisAuthBroadcastId == $userBroadcastId;
-}, ['guards' => ['web', 'employee', 'admin']]);
+});
 
 
 Broadcast::channel('online-users', function (User $user){

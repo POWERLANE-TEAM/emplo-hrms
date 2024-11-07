@@ -41,7 +41,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call(PreempRequirementSeeder::class);
 
-        $this->call(ApplicantSeeder::class);
+        $this->call(ApplicantSeeder::class, false, ['count' => env('APP_USER_SEEDING_COUNT', 100)]);
 
         $this->call(UserSeeder::class);
 

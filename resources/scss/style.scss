@@ -1,7 +1,7 @@
 @import 'utils';
 @import 'core';
-@import 'font/font-size';
 @import 'scrollbar';
+@import 'table';
 @import 'icon-sizing';
 @include pri-sm-logo;
 
@@ -57,7 +57,7 @@ html {
 
 body.employee-main {
     main.main {
-        padding-left: 3.5rem; 
+        padding-left: 3.5rem;
         padding-right: 1rem;
     }
 }
@@ -170,28 +170,28 @@ mark {
     }
 }
 
-table.table {
-    border-collapse: separate;
-    border-spacing: 0 50px;
+select {
 
-    tr.outline {
-        outline: clamp(1px, 0.031rem + 0.1vw, 0.5rem) solid var(--bs-table-border-color);
-    }
+    option,
+    [id="select-options"] {
+        background-color: var(--bs-body-tertiary);
+        font-size: 1.12em;
+        color: var(--bs-primary);
+        font-weight: 900;
 
-    &.table-hover {
-        tbody {
-            tr.no-hover:hover {
-                // pointer-events: none;
-                background-color: var(--bs-body-bg);
-                --bs-table-bg-state: var(--bs-body-bg);
+        &:not(:checked) {
+            font-weight: bolder;
+            color: var(--bs-body-secondary);
+            font-size: 1em;
+        }
 
-                &>* {
-                    background-color: var(--bs-body-bg);
-                    --bs-table-bg-state: var(--bs-body-bg);
-                }
-
-            }
+        &:disabled {
+            color: gray;
         }
     }
 
+}
+
+.no-transition {
+    transition: none !important;
 }

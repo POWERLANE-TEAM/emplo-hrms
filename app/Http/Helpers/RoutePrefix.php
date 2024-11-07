@@ -5,7 +5,7 @@ namespace App\Http\Helpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
-class ChooseGuard
+class RoutePrefix
 {
     public static function getByReferrer(?Request $request = null): string
     {
@@ -16,7 +16,7 @@ class ChooseGuard
         return match (true) {
             Str::is('/employee/*', $referrer) => 'employee',
             Str::is('/admin/*', $referrer) => 'admin',
-            default => 'web',
+            default => '',
         };
     }
 
@@ -27,7 +27,7 @@ class ChooseGuard
         return match (true) {
             $request->is('employee/*') => 'employee',
             $request->is('admin/*') => 'admin',
-            default => 'web',
+            default => '',
         };
     }
 }

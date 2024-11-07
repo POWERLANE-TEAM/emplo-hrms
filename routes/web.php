@@ -44,6 +44,6 @@ Route::middleware('guest')->group(function () {
     Route::get('/auth/facebook/callback', [FacebookOAuth::class, 'handleCallback']);
 });
 
-Route::post('/web/logout', [Logout::class, 'destroy'])
-    ->middleware('auth:web')
-    ->name('web.logout');
+Route::post('/logout', [Logout::class, 'destroy'])
+    ->middleware('auth')
+    ->name('logout');

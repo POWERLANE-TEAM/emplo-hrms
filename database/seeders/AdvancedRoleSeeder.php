@@ -71,12 +71,10 @@ class AdvancedRoleSeeder extends Seeder
 
         $employeeUser = User::factory()->create($userData);
 
-        $role = Role::firstOrCreate(['name' => UserRole::ADVANCED, 'guard_name' => GuardType::ADMIN->value]);
-        $employeeUser->assignRole($role);
+        $employeeUser->assignRole(UserRole::ADVANCED);
 
         $permissions = collect(self::ADVANCED_PERMISSIONS)
             ->map(fn($permission) => Permission::where('name', $permission)
-                ->where('guard_name', GuardType::ADMIN->value)
                 ->first());
 
         $employeeUser->givePermissionTo($permissions);

@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Http\Helpers\RoutePrefix;
 use App\View\Composers\AuthenticatedUserComposer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
@@ -20,7 +21,6 @@ class ComposerServiceProvider extends ServiceProvider
         'components.layout.employee.layout',
         'components.layout.applicant.layout',
         'components.layout.app',
-        'employee.*.index',
     ];
 
 
@@ -52,9 +52,9 @@ class ComposerServiceProvider extends ServiceProvider
     {
         View::composer($this->viewsNeedsUserData, AuthenticatedUserComposer::class);
         View::composer('*', function ($view) {
-            $guard = Auth::getDefaultDriver();
+            $routePrefix = RoutePrefix::getByRequest();
 
-            $view->with(['nonce' => csp_nonce(), 'guard' => $guard]);
+            $view->with(['nonce' => csp_nonce(), 'routePrefix' => $routePrefix]);
         });
     }
 }

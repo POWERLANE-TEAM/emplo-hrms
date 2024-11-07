@@ -2,7 +2,7 @@
 
 namespace App\View\Composers;
 
-use App\Http\Helpers\ChooseGuard;
+use App\Http\Helpers\RoutePrefix;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Auth;
@@ -19,11 +19,9 @@ class AuthenticatedUserComposer
      */
     public function compose(View $view): void
     {
-        $guard = Auth::guard(ChooseGuard::getByRequest());
 
-
-        if ($guard->check()) {
-            $user = $guard->user();
+        if (Auth::check()) {
+            $user = Auth::user();
 
             $userPhoto = $user->photo ? Storage::url($user->photo) : null;
             $defaultAvatar = Storage::url('icons/default-avatar.png');
