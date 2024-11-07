@@ -24,6 +24,7 @@ use Laravel\Fortify\Contracts\LoginResponse;
 use Laravel\Fortify\Contracts\LogoutResponse;
 use Laravel\Fortify\Actions\AttemptToAuthenticate;
 use App\Actions\Fortify\UpdateUserProfileInformation;
+use App\Http\Helpers\RoutePrefix;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 
 class FortifyServiceProvider extends ServiceProvider
@@ -33,6 +34,8 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+
+        config(['fortify.prefix' => RoutePrefix::getByReferrer()]);
 
         $this->app->instance(LogoutResponse::class, new class implements LogoutResponse
         {
@@ -82,6 +85,21 @@ class FortifyServiceProvider extends ServiceProvider
                     }
                 }
 
+                if ($authUser->account_type == AccountType::EMPLOYEE->value) {
+
+                    if ($authUser->hasPermissionTo(UserPermission::VIEW_ADMIN_DASHBOARD->value)) {
+                        return redirect('/admin/dashboard');
+                    }
+
+                    if ($authUser->hasAnyPermission([UserPermission::VIEW_EMPLOYEE_DASHBOARD->value, UserPermission::VIEW_HR_MANAGER_DASHBOARD->value])) {
+                        return redirect('/employee/dashboard');
+                    }
+                }
+
+                if ($authUser->account_type == AccountType::APPLICANT->value) {
+                    return redirect('/applicant');
+                }
+
                 return redirect('/');
             }
         });
@@ -102,7 +120,13 @@ class FortifyServiceProvider extends ServiceProvider
 
         Fortify::loginView(function () {
 
-            return view('livewire.auth.login-view');
+            $view = match (true) {
+                request()->is('employee/*') => 'livewire.auth.employees.login-view',
+                request()->is('admin/*') => 'livewire.auth.admins.login-view',
+                default => 'livewire.auth.applicants.login-view',
+            };
+
+            return view($view);
         });
 
         Fortify::twoFactorChallengeView(function () {

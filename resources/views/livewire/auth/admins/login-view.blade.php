@@ -1,18 +1,17 @@
-@extends('components.layout.app', ['description' => 'Guest Layout'])
+@extends('components.layout.employee.layout')
+
+@section('head')
+    <title>Sign in as Admin</title>
+@endsection
 
 @pushOnce('pre-scripts')
     <script src="https://unpkg.com/lucide@latest"></script>
 @endPushOnce
 
-@pushOnce('scripts')
-    <script src="{{ Vite::asset('resources/js/forms/nbp.min.js') }}" defer></script>
-    @vite(['resources/js/login.js'])
-@endPushOnce
-
 @section('critical-styles')
     @use('Illuminate\Support\Facades\Vite')
 
-    <style nonce="{{ $nonce }}">
+    <style>
         {!! Vite::content('resources/css/guest/secondary-bg.css') !!}
     </style>
 @endsection
@@ -22,15 +21,15 @@
 @endPushOnce
 
 @section('before-nav')
-    <x-layout.guest.secondary-bg />
+    <x-layout.employee.nav.secondary-bg />
 @endsection
 
 @section('header-nav')
-    <x-layout.guest.secondary-header />
+    <x-layout.employee.nav.secondary-header />
 @endsection
 
 @section('content')
-    @livewire('auth.login')
+    @livewire('auth.admins.login')
 @endsection
 
 

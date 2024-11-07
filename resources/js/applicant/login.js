@@ -1,16 +1,14 @@
 
-import './script.js';
-import initLucideIcons from './icons/lucide.js';
-import addGlobalScrollListener, { documentScrollPosY } from './global-scroll-fn.js';
-import addGlobalListener, { GlobalListener } from './global-event-listener.js';
-import togglePassword from './toggle-password.js';
-import { initPasswordEvaluator, evalPassword } from './forms/eval-password.js';
-import InputValidator, { setInvalidMessage } from './forms/input-validator.js';
-import initEmailValidation, { validateEmail } from './forms/email-validation.js';
-import PasswordValidator from './forms/password-validation.js';
-import initPasswordConfirmValidation, { validateConfirmPassword } from './forms/password-confirm-validation.js';
-import debounce from './debounce-fn.js';
-// import './livewire.js'
+import '../script.js';
+import initLucideIcons from '../icons/lucide.js';
+import addGlobalScrollListener, { documentScrollPosY } from '../global-scroll-fn.js';
+import addGlobalListener, { GlobalListener } from '../global-event-listener.js';
+import togglePassword from '../toggle-password.js';
+import { initPasswordEvaluator, evalPassword } from '../forms/eval-password.js';
+import InputValidator, { setInvalidMessage } from '../forms/input-validator.js';
+import initEmailValidation, { validateEmail } from '../forms/email-validation.js';
+import PasswordValidator from '../forms/password-validation.js';
+import debounce from '../debounce-fn.js';
 
 document.addEventListener("DOMContentLoaded", (event) => {
     initLucideIcons();
@@ -137,5 +135,6 @@ const signUpEvent = new GlobalListener('click', document, `${userLoginFormString
 /* ----------------------------------------------------
     END: CHECK SIGNUP FORM
 ------------------------------------------------------- */
+
 
 

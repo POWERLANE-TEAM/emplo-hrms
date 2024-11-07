@@ -12,6 +12,11 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
 
+    // Dashboard
+    Route::get('dashboard', DashboardController::class)
+        ->can(UserPermission::VIEW_ADMIN_DASHBOARD)
+        ->name('dashboard');
+
     Route::get('system/pulse', function () {
         return view('vendor.pulse.dashboard');
     })->name('system.pulse');

@@ -2,6 +2,7 @@
 
 namespace App\View\Composers;
 
+use App\Http\Helpers\RoutePrefix;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Auth;
