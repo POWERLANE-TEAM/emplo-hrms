@@ -11,11 +11,8 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // Seed 10 users: 5 each for advanced and intermediate users
-        for ($i = 0; $i < 5; $i++) {
-
-            $this->call(AdvancedRoleSeeder::class);
-            $this->call(IntermediateRoleSeeder::class);
-        }
+        $this->call(BasicUserSeeder::class);
+        $this->call(IntermediateUserSeeder::class);
+        $this->call(AdvancedUserSeeder::class);
     }
 }

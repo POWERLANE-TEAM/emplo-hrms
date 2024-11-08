@@ -17,6 +17,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call(RolesAndPermissionsSeeder::class);
 
+        $this->call(ShiftSeeder::class);
+
         $this->call(PsgcSeeder::class);
 
         $this->call(EmploymentStatusSeeder::class);
@@ -31,20 +33,16 @@ class DatabaseSeeder extends Seeder
 
         $this->call(JobFamilySeeder::class);
 
-        $this->call(BasicRoleSeeder::class);
+        $this->call(BasicUserSeeder::class);
 
-        $this->call(IntermediateRoleSeeder::class);
+        $this->call(IntermediateUserSeeder::class);
 
-        $this->call(AdvancedRoleSeeder::class);
+        $this->call(AdvancedUserSeeder::class);
 
         $this->call(JobVacancySeeder::class);
 
         $this->call(PreempRequirementSeeder::class);
 
         $this->call(ApplicantSeeder::class, false, ['count' => env('APP_USER_SEEDING_COUNT', 100)]);
-
-        $this->call(UserSeeder::class);
-
-        $this->call(ShiftSeeder::class);
     }
 }
