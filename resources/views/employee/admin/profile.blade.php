@@ -22,11 +22,11 @@
 @section('content')
     <div class="container">
 
-        @livewire('profile.update-password-form')
+        <livewire:profile.update-password-form />
 
-        @livewire('profile.two-factor-authentication-form')
-
-        @livewire('profile.logout-other-browser-sessions-form')
+        <livewire:profile.two-factor-authentication-form />
+        
+        <livewire:profile.logout-other-browser-sessions-form />
 
     </div>
 @endsection
