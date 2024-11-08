@@ -11,7 +11,7 @@
         </span>
     </hgroup>
 
-    <form wire:submit.prevent="store" action="/login" nonce="{{ $nonce }}">
+    <form action="login" method="POST" nonce="{{ $nonce }}">
         @csrf
 
         @if ($errors->has('credentials'))
@@ -25,7 +25,7 @@
         @endif
 
         <x-form.email id="userLogin-email" label="Email Address" name="email" autocomplete="email" :nonce="$nonce"
-            aria-owns="userLogin-email-feedback" class=" {{ $errors->has('email') ? 'is-invalid' : '' }}">
+            class=" {{ $errors->has('email') ? 'is-invalid' : '' }}">
 
             <x-slot:feedback>
                 @include('components.form.input-feedback', [
@@ -36,8 +36,7 @@
         </x-form.email>
 
         <x-form.password id="userLogin-password" label="Password" name="password" autocomplete="current-password"
-            :nonce="$nonce" aria-owns="userLogin-password-feedback"
-            class=" {{ $errors->has('password') ? 'is-invalid' : '' }}">
+            pattern="" :nonce="$nonce" class=" {{ $errors->has('password') ? 'is-invalid' : '' }}">
 
             <x-slot:toggle_password>
                 @include('components.form.toggle-password', [
@@ -54,17 +53,14 @@
             </x-slot:feedback>
         </x-form.password>
 
-
-
         <div class="d-flex flex-wrap gap-4 gap-md-5">
-            <x-form.checkbox container_class="col-12 col-md-5 order-0" :nonce="$nonce" id="remember-toggle"
-                name="remember" wire:model="remember" class="checkbox checkbox-primary">
-
-                <x-slot:label>
+            <div class="position-relative d-flex col-12 col-md-5 order-0">
+                <input type="checkbox" id="remember-toggle" name="remember" wire:model="remember"
+                    class="checkbox checkbox-primary">
+                <label for="remember-toggle" class="checkbox-label d-flex flex-wrap">
                     Remember me
-                </x-slot:label>
-            </x-form.checkbox>                
-
+                </label>
+            </div>
 
             <div class=" col-md-auto mx-auto me-md-0 ms-md-auto order-2 order-md-1">
                 <button class="border-0 bg-transparent text-decoration-underline ">
@@ -77,5 +73,9 @@
                 Sign In
             </button>
         </div>
+
+        @livewire('auth.google-o-auth')
+
+        @livewire('auth.facebook-o-auth')
     </form>
 </section>

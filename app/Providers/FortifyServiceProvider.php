@@ -23,6 +23,10 @@ use Illuminate\Support\Facades\RateLimiter;
 use Laravel\Fortify\Contracts\LoginResponse;
 use Laravel\Fortify\Contracts\LogoutResponse;
 use App\Actions\Fortify\UpdateUserProfileInformation;
+use App\Enums\RoutePrefix as EnumsRoutePrefix;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -55,12 +59,12 @@ class FortifyServiceProvider extends ServiceProvider
             {
                 $authUser = Auth::user();
 
-                if (! Auth::user()->hasRole(UserRole::ADVANCED)) {
+                // if (! Auth::user()->hasRole(UserRole::ADVANCED)) {
 
-                    Auth::logout();
+                //     Auth::logout();
 
-                    session(['forbidden' => __('You\'re trying to access a forbidden resource.')]);
-                }
+                //     session(['forbidden' => __('You\'re trying to access a forbidden resource.')]);
+                // }
 
                 // Redirection to previously visited page before being prompt to login
                 // For example you visit /employee/payslip and you are not logged in
@@ -79,6 +83,14 @@ class FortifyServiceProvider extends ServiceProvider
                             $permission = explode(':', $middlewareItem)[1];
                             if (! $authUser->can($permission)) {
                                 $hasAccess = false;
+                                break;
+                            }
+                        }
+
+                        if (str_contains($middlewareItem, 'role:')) {
+                            $role = explode(':', $middlewareItem)[1];
+                            if (! $authUser->hasRole($role)) {
+                                $has_access = false;
                                 break;
                             }
                         }
@@ -122,15 +134,39 @@ class FortifyServiceProvider extends ServiceProvider
 
         Fortify::verifyEmailView(fn() => app(UnverifiedEmail::class)->render());
 
+        Fortify::authenticateUsing(function (Request $request) {
+
+            // Log::info('Request', ['request' => $request]);
+
+            $routePrefix = RoutePrefix::getByRequest($request);
+
+            Log::info("Request  $routePrefix");
+
+            $user = User::where('email', $request->email)->first();
+
+            if ($this->isUnauthorized($user, $routePrefix)) {
+                $redirectPrefix = $this->getRedirectPrefix($user, $routePrefix);
+                $routePrefixWithDot = !empty($redirectPrefix) ? "{$redirectPrefix}." : $redirectPrefix;
+                $routeName = "{$routePrefixWithDot}login";
+                $redirectUrl = url(route($routeName));
+
+                session()->flash('redirectHint', $redirectUrl);
+                abort(403, __('You\'re trying to access a forbidden resource.'));
+            }
+
+            if (
+                $user &&
+                Hash::check($request->password, $user->password)
+            ) {
+                Log::info('Success ');
+
+                return $user;
+            }
+        });
+
         Fortify::loginView(function () {
 
-            $view = match (true) {
-                request()->is('employee/*') => 'livewire.auth.employees.login-view',
-                request()->is('admin/*') => 'livewire.auth.admins.login-view',
-                default => 'livewire.auth.applicants.login-view',
-            };
-
-            return view($view);
+            return view('livewire.auth.login-view');
         });
 
         Fortify::twoFactorChallengeView(function () {
@@ -146,5 +182,39 @@ class FortifyServiceProvider extends ServiceProvider
         RateLimiter::for('two-factor', function (Request $request) {
             return Limit::perMinute(5)->by($request->session()->get('login.id'));
         });
+    }
+
+    private function isUnauthorized($user, $routePrefix): bool
+    {
+        if (!$user) {
+            return false;
+        }
+
+        if ($user->hasRole(UserRole::ADVANCED) && $routePrefix != EnumsRoutePrefix::ADVANCED->value) {
+            return true;
+        }
+
+        if ($user->hasRole(UserRole::INTERMEDIATE) && $routePrefix != EnumsRoutePrefix::EMPLOYEE->value) {
+            return true;
+        }
+
+        if ($user->getRoleNames()->isEmpty() && in_array($routePrefix, EnumsRoutePrefix::valuesNotDefault())) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private function getRedirectPrefix($user, $routePrefix): string
+    {
+        if ($user->hasRole(UserRole::ADVANCED) && $routePrefix != EnumsRoutePrefix::ADVANCED->value) {
+            return EnumsRoutePrefix::ADVANCED->value;
+        }
+
+        if ($user->hasRole(UserRole::INTERMEDIATE) && $routePrefix != EnumsRoutePrefix::EMPLOYEE->value) {
+            return EnumsRoutePrefix::EMPLOYEE->value;
+        }
+
+        return '';
     }
 }

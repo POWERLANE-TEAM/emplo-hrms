@@ -2,7 +2,6 @@
 
 use App\Http\Middleware\Localization;
 use App\Http\Middleware\SaveVisitedPage;
-use App\Http\Middleware\SetDynamicGuard;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;

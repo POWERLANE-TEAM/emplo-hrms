@@ -38,9 +38,9 @@ document.addEventListener('livewire:navigate', (event) => {
   3. Reset form on confirmed discard signup (on modal dismiss)
 ------------------------------------------------------- */
 
-togglePassword(`form[action='/login']`, `#userLogin-password`, `#toggle-psw`);
+togglePassword(`form[action='login']`, `#userLogin-password`, `#toggle-psw`);
 
-let userLoginFormString = `form[action='/login']`;
+let userLoginFormString = `form[action='login']`;
 
 let userLoginBtn = `#userLoginBtn`;
 
@@ -77,15 +77,13 @@ let PASSWORD_VALIDATION = {
 const passwordValidator = new PasswordValidator(PASSWORD_VALIDATION);
 
 
-function validateUserLoginForm(userLoginFormString = `form[action='/login']`) {
+function validateUserLoginForm(userLoginFormString = `form[action='login']`) {
     const stack = new Error().stack;
 
     let userLoginBtn = document.querySelector(`${userLoginFormString} #userLoginBtn`);
     let passwordInput = document.querySelector(`${userLoginFormString} input[name="password"]`);
 
     userLoginBtn.disabled = true;
-
-    let isCaptchaValid = checkCaptcha();
 
     let isWeakPassword;
     try {
