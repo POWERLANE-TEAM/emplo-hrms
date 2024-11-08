@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class JobDetail extends Model
 {
@@ -18,6 +19,16 @@ class JobDetail extends Model
         'created_at',
         'updated_at',
     ];
+
+    /**
+     * Get the employee associated with the job detail.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function employee(): HasOne
+    {
+        return $this->hasOne(Employee::class, 'job_detail_id', 'job_detail_id');
+    }
 
     /**
      * Get the job vacancies associated with the job detail.
