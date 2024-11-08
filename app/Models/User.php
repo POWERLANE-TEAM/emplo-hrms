@@ -23,6 +23,8 @@ class User extends Authenticatable implements MustVerifyEmail
 
     protected $primaryKey = 'user_id';
 
+    protected $guard_name = 'web';
+
     /**
      * The attributes that are not mass assignable.
      *
