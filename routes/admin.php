@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\UserPermission;
+use App\Livewire\Auth\Logout;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
@@ -29,7 +30,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('create-account', function () {
         return view('employee.admin.accounts.create-account');
-    })->name('create-account');
+    })->can(UserPermission::CREATE_EMPLOYEE_ACCOUNT)
+        ->name('create-account'); 
     // End of Accounts
 
 
@@ -38,8 +40,8 @@ Route::middleware('auth')->group(function () {
     })->name('employees');
 
 
-    Route::get('calendar', function () {
-        abort(404);
+    Route::get('calendar', function() {
+       return view('employee.admin.calendar');
     })->name('calendar');
 
 
@@ -76,4 +78,7 @@ Route::middleware('auth')->group(function () {
     Route::get('profile', function () {
         return view('employee.admin.profile');
     })->name('profile');
+
+    Route::post('logout', [Logout::class, 'destroy'])
+        ->name('logout');
 });

@@ -6,7 +6,7 @@
 
 @props(['label', 'nonce', 'required' => false,])
 
-<label for="{{ $attributes->get('id') }}" class="mb-1 fw-semibold">
+<label for="{{ $attributes->get('id') }}" class="mb-1 fw-semibold text-secondary-emphasis">
     {{ $label }}
     {{-- Conditionally display the red asterisk for required fields --}}
     @if($required)
