@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Shift;
 use App\Models\Barangay;
 use App\Models\Employee;
 use App\Models\JobDetail;
@@ -31,6 +32,11 @@ return new class extends Migration
 
             $table->foreignIdFor(JobDetail::class, 'job_detail_id')
                 ->constrained('job_details', 'job_detail_id')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+
+            $table->foreignIdFor(Shift::class, 'shift_id')
+                ->constrained('shifts', 'shift_id')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
