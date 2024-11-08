@@ -38,10 +38,10 @@ class FortifyServiceProvider extends ServiceProvider
         {
             public function toResponse($request)
             {
-                $redirectUrl = match (Auth::getDefaultDriver()) {
-                    GuardType::DEFAULT->value => '/login',
-                    GuardType::EMPLOYEE->value => '/employee/login',
-                    GuardType::ADMIN->value => '/admin/login',
+                $redirectUrl = match (RoutePrefix::getByReferrer()) {      
+                    'employee' => '/employee/login',
+                    'admin' => '/admin/login',
+                    default => '/login',
                 };
 
                 try {
@@ -62,13 +62,6 @@ class FortifyServiceProvider extends ServiceProvider
             public function toResponse($request)
             {
                 $authUser = Auth::user();
-
-                if (! Auth::user()->hasRole(UserRole::ADVANCED)) {
-
-                    Auth::logout();
-
-                    session(['forbidden' => __('You\'re trying to access a forbidden resource.')]);
-                }
 
                 // Redirection to previously visited page before being prompt to login
                 // For example you visit /employee/payslip and you are not logged in
