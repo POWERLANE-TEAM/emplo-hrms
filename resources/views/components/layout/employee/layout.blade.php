@@ -43,7 +43,7 @@
 
 </head>
 
-<body class="employee-main">
+<body class="employee-main" data-bs-theme>
     @yield('critical-styles')
     <x-no-script-body />
 
