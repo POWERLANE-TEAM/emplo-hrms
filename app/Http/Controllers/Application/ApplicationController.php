@@ -1,17 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\HRManager;
+namespace App\Http\Controllers\Application;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Livewire\Employee\Applicants\Show;
+use App\Models\Application;
 
-class ApplicantController extends Controller
+class ApplicationController extends Controller
 {
     /* Show all resource */
     public function index($page = null)
     {
         if (empty($page) || $page == 'index') {
-            return view('employee.hr-manager.applicants.index');
+            return view('employee.application.index');
         }
     }
 
@@ -29,9 +30,9 @@ class ApplicantController extends Controller
     }
 
     /* Get single resource */
-    public function show()
+    public function show(Application $application)
     {
-        //
+        return view('employee.application.show', ['application' => $application]);
     }
 
     /* Patch or edit */
