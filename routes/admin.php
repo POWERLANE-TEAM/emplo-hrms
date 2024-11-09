@@ -36,9 +36,9 @@ Route::middleware('auth')->group(function () {
 
 
     // -- Organization Routes --
-    Route::get('create-dept', function() {
-        return view('employee.admin.organization.create-dept');
-    })->name('create-dept');
+    Route::get('employees', function () {
+        abort(404);
+    })->name('employees');
 
     Route::get('create-position', function() {
         return view('employee.admin.organization.create-position');
@@ -51,9 +51,15 @@ Route::middleware('auth')->group(function () {
     })->name('calendar');
 
 
+<<<<<<< HEAD
     Route::get('add-open-position', function() {
         return view('employee.admin.jobboard.add-open-position');
     })->name('add-open-position');
+=======
+    Route::get('job-listing', function () {
+        abort(404);
+    })->name('job-listing');
+>>>>>>> 6fccd2ec8794bb836e85e2ea48e81d413875f5bb
 
 
     Route::get('policy', function () {
@@ -72,15 +78,22 @@ Route::middleware('auth')->group(function () {
     // End of Announcements
 
 
+<<<<<<< HEAD
     // -- Performance Eval Routes --
     Route::get('categories', function() {
         return view('employee.admin.performance.categories');
     })->name('categories');
+=======
+    Route::get('performance', function () {
+        abort(404);
+    })->name('performance');
+>>>>>>> 6fccd2ec8794bb836e85e2ea48e81d413875f5bb
 
     Route::get('pass-rate-range', function() {
         return view('employee.admin.performance.pass-rate-range');
     })->name('pass-rate-range');
 
+<<<<<<< HEAD
     Route::get('perf-scales', function() {
         return view('employee.admin.performance.perf-scales');
     })->name('perf-scales');
@@ -96,6 +109,12 @@ Route::middleware('auth')->group(function () {
     })->name('pre-emp-reqs');
     // End of Forms
 
+=======
+    Route::get('form', function () {
+        abort(404);
+    })->name('form');
+
+>>>>>>> 6fccd2ec8794bb836e85e2ea48e81d413875f5bb
     Route::get('profile', function () {
         return view('employee.admin.profile');
     })->name('profile');
