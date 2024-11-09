@@ -13,6 +13,8 @@ class JobTitle extends Model
 
     protected $primaryKey = 'job_title_id';
 
+    public $timestamps = false;
+
     protected $fillable = [
         'job_title',
         'job_desc',

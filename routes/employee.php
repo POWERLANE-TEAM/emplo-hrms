@@ -10,12 +10,12 @@ use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 use Laravel\Fortify\RoutePath;
 
 
-Route::middleware('guest:employee')->group(function () {
+Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthenticatedSessionController::class, 'create'])
         ->name('login');
 });
 
-Route::middleware('auth:employee'/* , 'verified' */)->group(function () {
+Route::middleware('auth'/* , 'verified' */)->group(function () {
     Route::get('/dashboard', DashboardController::class)
         ->name('dashboard');
 
@@ -26,7 +26,4 @@ Route::middleware('auth:employee'/* , 'verified' */)->group(function () {
         dd(request());
         echo 'sample';
     });
-
-    Route::post('/logout', [Logout::class, 'destroy'])
-        ->name('logout');
 });

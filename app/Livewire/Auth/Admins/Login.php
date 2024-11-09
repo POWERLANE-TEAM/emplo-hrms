@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Auth\Admins;
 
-use App\Enums\UserRole;
 use Livewire\Component;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\Auth;
@@ -27,7 +26,7 @@ class Login extends Component
             'password' => $this->password,
         ];
 
-        if (! Auth::attempt($loginAttempt)) {
+        if (! Auth::validate($loginAttempt)) {
 
             $this->reset('password');
 
@@ -35,18 +34,6 @@ class Login extends Component
                 'credentials' => [__('Incorrect credentials or user does not exist.')],
             ]);
         }
-
-        if (! Auth::user()->hasRole(UserRole::ADVANCED)) {
-
-            $this->reset();
-
-            Auth::logout();
-
-            throw ValidationException::withMessages([
-                'credentials' => [__('Incorrect credentials or user does not exist.')],
-            ]);
-        }
-
         $loginRequest = new LoginRequest;
         $loginRequest->merge($loginAttempt);
         $loginRequest->setLaravelSession(app('session')->driver());

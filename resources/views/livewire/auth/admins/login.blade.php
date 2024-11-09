@@ -1,15 +1,26 @@
 <section nonce="{{ $nonce }}" class="auth-form px-md-4 py-md-3 mx-auto">
-    <hgroup class="d-flex flex-column text-center mb-5 mt-md-n4">
-        <header class="display-5 fw-semibold text-primary mb-3 d-none d-md-block">
-            Welcome Back
+    <hgroup class="d-flex flex-column text-center mt-md-n4">
+        <header class="display-6 fw-semibold text-primary d-none d-md-block">
+            {{ __('Hello, Admin!') }}
         </header>
-        <header class="h2 fw-semibold text-primary mb-3 d-block d-md-none" aria-hidden="true">
-            Welcome Back
+        <header class="h2 fw-semibold text-primary d-block d-md-none" aria-hidden="true"> 
+            {{ __('Hello, Admin!') }}
         </header>
         <span class="fs-5 text-wrap">
-            Enter your credentials to access your account.
+            {{ __('Let\'s get you sign in to get started.') }}
         </span>
     </hgroup>
+
+    @session('forbidden')
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <p class="mb-0">{{ $value }}</p>
+            <button type="button" class="btn-sm btn-close shadow-none" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endsession
+
+    @php
+        session()->forget('forbidden')
+    @endphp
 
     <form wire:submit="store" action="/login" nonce="{{ $nonce }}">
         @csrf
@@ -24,7 +35,7 @@
             </div>
         @endif
 
-        <x-form.email id="userLogin-email" label="Email Address" name="email" auto_complete="email"
+        <x-form.email id="userLogin-email" label="{{ __('Email Address') }}" name="email" auto_complete="email"
             :$nonce aria-owns="userLogin-email-feedback"
             class=" {{ $errors->has('email') ? 'is-invalid' : '' }}">
 
@@ -36,7 +47,7 @@
             </x-slot:feedback>
         </x-form.email>
 
-        <x-form.password id="userLogin-password" label="Password" name="password"
+        <x-form.password id="userLogin-password" label="{{ __('Password') }}" name="password"
             minlength="8" auto_complete="current-password" :$nonce aria-owns="userLogin-password-feedback"
             class=" {{ $errors->has('password') ? 'is-invalid' : '' }}">
 
@@ -58,13 +69,13 @@
         <div class="d-flex flex-wrap gap-4 gap-md-5">
             <div class=" col-md-auto mx-auto me-md-0 ms-md-auto order-2 order-md-1">
                 <button class="border-0 bg-transparent text-decoration-underline ">
-                    Forgot your password?
+                    {{ __('Forgot your password?') }}
                 </button>
             </div>
 
             <button type="submit" nonce="{{ $nonce }}" id="userLoginBtn"
                 class="btn btn-primary btn-lg col-12 order-1 order-md-2">
-                Sign In
+                {{ __('Sign In') }}
             </button>
         </div>
     </form>

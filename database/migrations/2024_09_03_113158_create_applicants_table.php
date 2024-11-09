@@ -29,8 +29,8 @@ return new class extends Migration
                 ->cascadeOnDelete();
 
             $table->string('contact_number', 11)->index();
-            $table->enum('sex', ['MALE', 'FEMALE']);
-            $table->enum('civil_status', ['SINGLE', 'MARRIED', 'WIDOWED', 'LEGALLY SEPARATED']);
+            $table->string('sex');
+            $table->string('civil_status');
             $table->date('date_of_birth')->nullable();
             $table->jsonb('education')->nullable();
             $table->jsonb('experience')->nullable();

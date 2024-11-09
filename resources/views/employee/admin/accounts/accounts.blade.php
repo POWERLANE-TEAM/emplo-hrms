@@ -1,10 +1,3 @@
-{{-- Initialization Section: Sets CSP nonce, retrieves authenticated user, --}}
-@php
-    $nonce = csp_nonce();
-    $user = Auth::user();
-@endphp
-
-
 {{-- Extends layout --}}
 @extends('components.layout.employee.layout', ['description' => 'Admin Dashboard', 'nonce' => $nonce])
 

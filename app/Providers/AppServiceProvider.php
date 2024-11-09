@@ -82,6 +82,7 @@ class AppServiceProvider extends ServiceProvider
             'employee_leave' => 'App\Models\EmployeeLeave',
             'job_vacancy' => 'App\Models\JobVacancy',
             'preemp_requirement' => 'App\Models\PreempRequirement',
+            'province' => 'App\Models\Province',
         ]);
 
         BroadcastServiceProvider::class;
