@@ -55,12 +55,12 @@ html {
     }
 }
 
-body.employee-main {
-    main.main {
-        padding-left: 3.5rem;
-        padding-right: 1rem;
-    }
-}
+// body.employee-main {
+//     main.main {
+//         padding-left: 3.5rem;
+//         padding-right: 1rem;
+//     }
+// }
 
 input.rm-bg-icon {
     &.form-control {
@@ -194,4 +194,20 @@ select {
 
 .no-transition {
     transition: none !important;
+}
+
+div:has(iframe, .btn-full-screen) {
+    .btn-full-screen {
+        position: absolute;
+        top: calc(1.75em + 2.25vw);
+        right: calc(1.75em + 2.25vw);
+
+        &:hover {
+            background-color: var(--bs-secondary-bg);
+        }
+    }
+}
+
+iframe body {
+    background-color: red;
 }

@@ -7,7 +7,7 @@ $prefix: bs-;
     --main-lime: #EEEE13;
     --main-white: #fff;
     --main-muted-gray: #f6f6f6;
-    --main-container-px: clamp(1.25rem, 5dvw, 30dvw);
+    --main-container-px: clamp(1rem, 4dvw, 8rem);
 }
 
 // bootstrap variable location is in file://./../../node_modules/bootstrap/scss/_variables.scss
@@ -77,8 +77,7 @@ $body-emphasis-color: #61b000;
 $font-family-sans-serif: 'Figtree', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
 // $font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !default;
 
-
-// $btn-color: #f5f5f5;
+$btn-color: var(--bs-body-bg) !important;
 // $btn-padding-y:               $input-btn-padding-y !default;
 // $btn-padding-x:               $input-btn-padding-x !default;
 // $btn-font-family:             $input-btn-font-family !default;
@@ -230,13 +229,13 @@ a.unstyled {
     text-decoration: unset;
 }
 
-.btn-primary {
-    color: #f5f5f5;
-}
+// .btn-primary {
+//     color: #f5f5f5;
+// }
 
-.btn-outline-primary {
-    --bs-btn-hover-color: #fff;
-}
+// .btn-outline-primary {
+//     --bs-btn-hover-color: #fff;
+// }
 
 .form-control {
     padding-top: calc(0.2rem + 0.3vw);
@@ -302,7 +301,14 @@ body {
 
 .btn.bg-transparent {
     color: var(--bs-black);
+}
 
+.btn[class*="btn-outline"] {
+    color: var(--bs-btn-border-color);
+
+    &:hover {
+        color: var(--bs-btn-color);
+    }
 }
 
 .text-orange {
