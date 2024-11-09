@@ -139,7 +139,7 @@ class ApplicantsTable extends DataTableComponent
     {
         return [
             Column::make("Full Name")
-                ->label(fn($row) => $row->applicant->getFullNameAttribute())
+                ->label(fn($row) => $row->applicant->fullName)
                 ->sortable(function ($query, $direction) {
                     return $query->orderBy('last_name', $direction)
                         ->orderBy('first_name', $direction)
