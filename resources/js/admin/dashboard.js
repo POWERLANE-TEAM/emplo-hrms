@@ -19,7 +19,3 @@ document.addEventListener("DOMContentLoaded", (event) => {
 });
 
 initSidebar();
-
-
-zzz
-
