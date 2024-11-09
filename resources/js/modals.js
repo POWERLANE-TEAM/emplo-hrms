@@ -50,30 +50,33 @@ window.openEditModal = openEditModal;
 // Save Changes Functions
 // ================================
 
+//  Commented these block of codes out due to the back-end behavior of saving of changes might be done in livewire.
+
 // Common function to emit Livewire events and hide modals
-function emitSaveChanges(modalId, emitEvent, itemName, index, priority = null) {
-    if (priority !== null) {
-        Livewire.emit(emitEvent, itemName, priority, index);
-    } else {
-        Livewire.emit(emitEvent, itemName, index);
-    }
-    hideModal(modalId);
-}
+// function emitSaveChanges(modalId, emitEvent, itemName, index, priority = null) {
+//     if (priority !== null) {
+//         Livewire.emit(emitEvent, itemName, priority, index);
+//     } else {
+//         Livewire.emit(emitEvent, itemName, index);
+//     }
+//     hideModal(modalId);
+// }
 
 // Define saveChanges function for general items and attach to window
-export function saveChanges() {
-    const itemName = document.getElementById('editItemInput').value;
-    emitSaveChanges('editModalId', 'saveChanges', itemName, window.currentEditIndex);
-}
-window.saveChanges = saveChanges;
+// export function saveChanges() {
+//     const itemName = document.getElementById('editItemInput').value;
+//     emitSaveChanges('editModalId', 'saveChanges', itemName, window.currentEditIndex);
+// }
+// window.saveChanges = saveChanges;
 
-// Define saveQualificationChanges function and attach to window
-export function saveQualificationChanges() {
-    const itemName = document.getElementById('editQualificationInput').value;
-    const priority = document.getElementById('qualificationSelect').value;
-    emitSaveChanges('editQualificationModalId', 'saveQualificationChanges', itemName, window.currentEditQualificationIndex, priority);
-}
-window.saveQualificationChanges = saveQualificationChanges;
+// // Define saveQualificationChanges function and attach to window
+// export function saveQualificationChanges() {
+//     const itemName = document.getElementById('editQualificationInput').value;
+//     const priority = document.getElementById('qualificationSelect').value;
+//     emitSaveChanges('editQualificationModalId', 'saveQualificationChanges', itemName, window.currentEditQualificationIndex, priority);
+// }
+// window.saveQualificationChanges = saveQualificationChanges;
+
 
 
 

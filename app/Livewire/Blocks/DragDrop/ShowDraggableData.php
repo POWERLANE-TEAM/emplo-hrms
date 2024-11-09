@@ -13,7 +13,7 @@ class ShowDraggableData extends Component
         // Logic to save the changes made to the item
         if ($index !== null) {
             $this->items[$index] = $itemName; // Update the item in the list
-            $this->emit('itemUpdated'); // Optional: Emit an event if you want to listen for updates elsewhere
+            $this->dispatch('itemUpdated'); // Optional: Emit an event if you want to listen for updates elsewhere
         }
     }
 
