@@ -1,7 +1,8 @@
 <?php
 
+use App\Enums\UserPermission;
 use App\Http\Controllers\Employee\DashboardController;
-use App\Http\Controllers\HRManager\ApplicantController as HRApplicantController;
+use App\Http\Controllers\Application\ApplicationController;
 use App\Livewire\Auth\Employees\Login;
 use App\Livewire\Auth\Logout;
 use Illuminate\Support\Facades\Auth;
@@ -17,10 +18,18 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth'/* , 'verified' */)->group(function () {
     Route::get('/dashboard', DashboardController::class)
+        ->can(UserPermission::VIEW_HR_MANAGER_DASHBOARD)
         ->name('dashboard');
 
-    Route::get('/applicants', [HRApplicantController::class, 'index'])
+
+    Route::get('/applicants/{page?}', [ApplicationController::class, 'index'])
+        ->where('page', 'index|')
+        ->can(UserPermission::VIEW_ALL_APPLICANTS)
         ->name('applicants');
+
+    Route::get('/applicant/{application}', [ApplicationController::class, 'show'])
+        ->middleware(['permission:' . UserPermission::VIEW_APPLICANT_INFORMATION->value . '|' . UserPermission::VIEW_ALL_APPLICANTS->value])
+        ->name('applicant.show');
 
     Route::get('/sample', function () {
         dd(request());
