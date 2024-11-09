@@ -288,6 +288,10 @@ a.unstyled {
     background-color: transparent; 
 }
 
+.list-group-item+.list-group-item {
+    border-top-width: 2px;
+}
+
 .green-divider {
     height: 2px;
     background-color: var(--main-green);

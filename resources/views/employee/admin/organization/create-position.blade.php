@@ -37,7 +37,7 @@
 @section('content')
 
 <x-headings.header-link heading="Create New Position" description="Create a new job position." label="Bulk Creation"
-    nonce="{{ $nonce }}" href="{{ route($guard . '.accounts') }}">
+    nonce="{{ $nonce }}" href="{{ route($routePrefix . '.accounts') }}">
 </x-headings.header-link>
 
 @include('components.includes.tab_navs.org-tab-navs')
