@@ -21,10 +21,9 @@ return new class extends Migration
     {
         Schema::create('job_levels', function (Blueprint $table) {
             $table->id('job_level_id');
-            $table->integer('job_level');
+            $table->integer('job_level')->unique();
             $table->string('job_level_name');
             $table->longText('job_level_desc')->nullable();
-            $table->timestamps();
         });
 
         Schema::create('job_titles', function (Blueprint $table) {

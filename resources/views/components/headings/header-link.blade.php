@@ -9,7 +9,7 @@
 <div class="pt-2 mb-5 ms-n1">
     <div class="row">
         <div class="col-10">
-            <div class="fs-2 fw-bold mb-2">{{ $heading }}</div>
+            <div class="fs-2 fw-bold mb-2 text-secondary-emphasis">{{ $heading }}</div>
             <div class="description">
                 {{ $description }}
             </div>

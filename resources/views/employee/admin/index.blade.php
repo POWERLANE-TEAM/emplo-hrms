@@ -16,7 +16,7 @@
 
 @pushOnce('scripts')
     <script src="{{ Vite::asset('resources/js/forms/nbp.min.js') }}" defer></script>
-    @vite(['resources/js/employee/hr/dashboard.js'])
+    @vite(['resources/js/admin/dashboard.js'])
 @endPushOnce
 
 @pushOnce('styles')
@@ -25,7 +25,7 @@
 
 @section('content')
     <hgroup class="mb-5 ms-n1">
-        <div class="fs-2 fw-bold mb-2">Good afternoon, {{ Auth::user()->account->first_name }}!</div>
+        <div class="fs-2 fw-bold mb-2">Good afternoon, {{ auth()->user()->account->first_name }}!</div>
         <p>It is <time datetime="{{ now() }}"> {{ \Carbon\Carbon::now()->format('l, d F') }}</time></p>
     </hgroup>
     <section role="navigation" aria-label="Quick Links" class="mb-5 row">
@@ -71,6 +71,8 @@
             </div>
         </div>
     </section>
+
+    <livewire:admin.dashboard.online-users />
 
     <section class="mb-5">
         <header class="fs-4 fw-bold mb-4" role="heading" aria-level="2">

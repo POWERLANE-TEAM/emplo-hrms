@@ -38,14 +38,22 @@ class FortifyServiceProvider extends ServiceProvider
         {
             public function toResponse($request)
             {
+                $redirectUrl = match (RoutePrefix::getByReferrer()) {      
+                    'employee' => '/employee/login',
+                    'admin' => '/admin/login',
+                    default => '/login',
+                };
+
                 try {
-                    broadcast(new UserLoggedout($request->authBroadcastId))->toOthers();
+                    broadcast(new UserLoggedout($request->authBroadcastId, $redirectUrl))->toOthers();
+                    return redirect($redirectUrl);
                 } catch (\Throwable $th) {
                     // avoid Pusher error: cURL error 7: Failed to connect to localhost port 8080 after 2209 ms: Couldn't connect to server
                     /* when websocket server is not started */
-                }
 
-                return redirect('/');
+                    \Log::error('Broadcast error: '.$th);
+                    return redirect($redirectUrl);
+                }
             }
         });
 
@@ -54,13 +62,6 @@ class FortifyServiceProvider extends ServiceProvider
             public function toResponse($request)
             {
                 $authUser = Auth::user();
-
-                if (! Auth::user()->hasRole(UserRole::ADVANCED)) {
-
-                    Auth::logout();
-
-                    session(['forbidden' => __('You\'re trying to access a forbidden resource.')]);
-                }
 
                 // Redirection to previously visited page before being prompt to login
                 // For example you visit /employee/payslip and you are not logged in

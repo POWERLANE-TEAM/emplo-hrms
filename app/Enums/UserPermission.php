@@ -50,6 +50,7 @@ enum UserPermission: string
     case VIEW_ANNOUNCEMENT_MANAGER = 'view announcement manager';
     case VIEW_PERFORMANCE_CONFIG = 'view performance configurator';
     case VIEW_FORM_CONFIG = 'view form configurator';
+    case VIEW_ONLINE_USERS = 'view online users';
 
 
         // Update cases goes here
@@ -110,6 +111,7 @@ enum UserPermission: string
             self::VIEW_ANNOUNCEMENT_MANAGER => 'View announcement manager',
             self::VIEW_PERFORMANCE_CONFIG => 'View performance configurator',
             self::VIEW_FORM_CONFIG => 'View form configurator',
+            self::VIEW_ONLINE_USERS => 'Monitor online users',
 
             // Update labels goes here
             self::UDPATE_JOB_LISTING => 'Update job listing/s',

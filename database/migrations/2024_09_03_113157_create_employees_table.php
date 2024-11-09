@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Shift;
 use App\Models\Barangay;
 use App\Models\Employee;
 use App\Models\JobDetail;
@@ -19,7 +20,7 @@ return new class extends Migration
         Schema::create('employment_statuses', function (Blueprint $table) {
             $table->id('emp_status_id');
             $table->string('emp_status_name');
-            $table->longText('emp_status_desc');
+            $table->longText('emp_status_desc')->nullable();
             $table->timestamps();
         });
 
@@ -31,6 +32,11 @@ return new class extends Migration
 
             $table->foreignIdFor(JobDetail::class, 'job_detail_id')
                 ->constrained('job_details', 'job_detail_id')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+
+            $table->foreignIdFor(Shift::class, 'shift_id')
+                ->constrained('shifts', 'shift_id')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
@@ -50,14 +56,14 @@ return new class extends Migration
                 ->cascadeOnDelete();
 
             $table->string('contact_number', 11)->unique();
-            $table->enum('sex', ['MALE', 'FEMALE']);
-            $table->enum('civil_status', ['SINGLE', 'MARRIED', 'WIDOWED', 'LEGALLY SEPARATED']);
+            $table->string('sex');
+            $table->string('civil_status');
             $table->date('date_of_birth')->nullable();
             $table->string('sss_no', 10)->unique();
             $table->string('philhealth_no', 12)->unique();
             $table->string('tin_no', 12)->unique();
             $table->string('pag_ibig_no', 12)->unique();
-            $table->binary('signature');
+            $table->binary('signature')->nullable();
             $table->jsonb('education')->nullable();
             $table->jsonb('experience')->nullable();
             $table->integer('leave_balance')->default(0);

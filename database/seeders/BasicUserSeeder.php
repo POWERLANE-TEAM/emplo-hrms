@@ -3,36 +3,18 @@
 namespace Database\Seeders;
 
 use App\Enums\AccountType;
-use App\Enums\GuardType;
-use App\Enums\UserPermission;
 use App\Enums\UserRole;
 use App\Models\Employee;
 use App\Models\User;
 use App\Enums\UserStatus as EnumUserStatus;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
 
 /**
  * Seeder class for Employee Account with roles and permissions.
  */
-class BasicRoleSeeder extends Seeder
+class BasicUserSeeder extends Seeder
 {
-
-    const BASIC_PERMISSIONS = [
-        UserPermission::VIEW_EMPLOYEE_DASHBOARD,
-        UserPermission::VIEW_ATTENDANCE,
-        UserPermission::VIEW_PAYSLIPS,
-        UserPermission::VIEW_PERFORMANCE,
-        UserPermission::VIEW_LEAVES,
-        UserPermission::VIEW_OVERTIME,
-        UserPermission::VIEW_DOCUMENTS,
-        UserPermission::VIEW_ISSUES
-    ];
-
     /**
      * Run the database seeds.
      */
@@ -52,11 +34,5 @@ class BasicRoleSeeder extends Seeder
         $employeeUser = User::factory()->create($userData);
 
         $employeeUser->assignRole(UserRole::BASIC);
-
-        $permissions = collect(self::BASIC_PERMISSIONS)
-            ->map(fn($permission) => Permission::where('name', $permission)
-                ->first());
-
-        $employeeUser->givePermissionTo($permissions);
     }
 }

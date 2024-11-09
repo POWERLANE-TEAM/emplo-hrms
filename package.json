@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "start": "php artisan optimize:clear && npm run build && concurrently \"php artisan serve\" \"php artisan reverb:start --debug\" \"npm run dev\" ",
+    "start": "php artisan optimize:clear && npm run build && concurrently \"php artisan serve\" \"php artisan reverb:start --debug\" \"php artisan queue:work\" \"npm run dev\" ",
     "kill": "taskkill /F /IM php.exe && taskkill /F /IM node.exe"
   },
   "devDependencies": {

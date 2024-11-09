@@ -18,7 +18,7 @@ return new class extends Migration
                 ->nullable()
                 ->constrained('applications', 'application_id')
                 ->cascadeOnUpdate()
-                ->restrictOnDelete();
+                ->nullOnDelete();
         });
     }
 

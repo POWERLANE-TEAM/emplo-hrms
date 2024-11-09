@@ -21,6 +21,7 @@
         "livewire/livewire": "^3.5",
         "maatwebsite/excel": "^3.1",
         "mobiledetect/mobiledetectlib": "^4.8",
+        "omnia-digital/livewire-calendar": "^3.1",
         "rappasoft/laravel-livewire-tables": "^3.4",
         "spatie/laravel-activitylog": "^4.8",
         "spatie/laravel-csp": "^2.10",
