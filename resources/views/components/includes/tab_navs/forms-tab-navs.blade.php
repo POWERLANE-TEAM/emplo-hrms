@@ -4,7 +4,7 @@
 * |-------------------------------------------------------------------------- 
 --}}
 
-<x-sub-navs.tabular-nav :guard="$guard" :items="[
+<x-sub-navs.tabular-nav :guard="$routePrefix" :items="[
     ['title' => 'Pre-Employment Requirements', 'route' => 'pre-emp-reqs'],
     ['title' => 'Attendance Rules', 'route' => 'create-position'],
     ['title' => 'Leaves', 'route' => 'create-position'],
