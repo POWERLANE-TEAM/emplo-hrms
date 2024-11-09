@@ -16,7 +16,6 @@
 }
 
 main {
-    contain: paint;
     position: relative;
     /* Ofset of main content below of top bar */
     margin-top: calc(var(--main-menu-padding-top) + var(--topnav-padding-y) + var(--search-height) + var(--search-padding-y) + var(--main-menu-padding-top) + 1vh);
@@ -29,7 +28,7 @@ main {
 
 .main-menu-container {
     padding: 0;
-    z-index: 1000;
+    z-index: 200;
 
     &:has(sidebar.main-menu.active) {
         @media screen and (max-width: 576px) {
@@ -88,7 +87,7 @@ sidebar.main-menu {
     /* Base style for sidebar when collpased */
 
     // --sidebar-padding-x: clamp(0.25rem, 0.5dvw, 4rem);
-    z-index: 1000;
+    z-index: 200;
     isolation: isolate;
     position: absolute;
     top: 0;
@@ -398,7 +397,7 @@ sidebar.main-menu {
 
 div:has(>.topnav) {
     /* Base style for top bar */
-    z-index: 900;
+    z-index: 190;
     position: absolute;
     display: flex;
     top: 0;
