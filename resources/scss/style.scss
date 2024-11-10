@@ -50,7 +50,7 @@ html {
 
 
     main.main {
-        padding-left: var(--main-container-px);
+        padding-left: var(--main-container-px) !important;
         padding-right: var(--main-container-px);
     }
 }

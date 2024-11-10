@@ -6,7 +6,7 @@
 * |-------------------------------------------------------------------------- 
 --}}
 
-@props(['type' => 'info', 'description' => null])
+@props(['type' => 'info', 'description' => null, 'note' => false])
 
 @php
     // Define class, icon, and color mappings based on the type
@@ -23,9 +23,16 @@
     $iconColor = $config[$type]['color'] ?? $config['info']['color'];
 @endphp
 
-<div class="px-4">
-    <div class="callout {{ $styleClass }} bg-body-tertiary">
+<div class="px-3 mb-4">
+    <div class="callout {{ $styleClass }} bg-body-tertiary d-flex align-items-center">
         <i class="icon p-1 mx-2 {{ $iconColor }}" data-lucide="{{ $icon }}"></i>
-        {{ $description ?? 'Default description text if none provided.' }}
+
+        {{-- Display the description --}}
+        <span>
+        @if($note)
+            <strong>NOTE: </strong>
+        @endif
+        {{ $description ?? 'Default description text if none provided.' }}</span>
     </div>
 </div>
+

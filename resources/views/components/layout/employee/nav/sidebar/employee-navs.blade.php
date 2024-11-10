@@ -107,7 +107,7 @@
 
     {{-- Head Admin --}}
     @can(UserPermission::VIEW_EMPLOYEE_MANAGER)
-        <x-layout.employee.nav.sidebar.nav-item href="{{ route($routePrefix . '.employees') }}" :active="request()->routeIs($routePrefix . '.employees')"
+        <x-layout.employee.nav.sidebar.nav-item href="{{ route($routePrefix . '.create-dept') }}" :active="request()->routeIs($routePrefix . '.create-dept')"
             class="" nav_txt="Employees" :default_icon="['src' => 'employee', 'alt' => '']" :active_icon="['src' => 'employee', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan
@@ -121,14 +121,14 @@
 
     {{-- Head Admin --}}
     @can(UserPermission::VIEW_JOB_LISTING_MANAGER)
-        <x-layout.employee.nav.sidebar.nav-item href="{{ route($routePrefix . '.job-listing') }}" :active="request()->routeIs($routePrefix . '.jobboard')"
+        <x-layout.employee.nav.sidebar.nav-item href="{{ route($routePrefix . '.add-open-position') }}" :active="request()->routeIs($routePrefix . '.add-open-position')"
             class="" nav_txt="Job Board" :default_icon="['src' => 'jobboard', 'alt' => '']" :active_icon="['src' => 'job-listing', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan
 
     {{-- Head Admin --}}
     @can(UserPermission::VIEW_POLICY_MANAGER)
-        <x-layout.employee.nav.sidebar.nav-item href="{{ route($routePrefix . '.policy') }}" :active="request()->routeIs($routePrefix . '.policy')"
+        <x-layout.employee.nav.sidebar.nav-item href="{{ route($routePrefix . '.create-dept') }}" :active="request()->routeIs($routePrefix . '.create-dept')"
             class="" nav_txt="Policies" :default_icon="['src' => 'documents', 'alt' => '']" :active_icon="['src' => 'documents', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan
@@ -154,14 +154,14 @@
 
     {{-- Head Admin --}}
     @can(UserPermission::VIEW_PERFORMANCE_CONFIG)
-        <x-layout.employee.nav.sidebar.nav-item href="{{ route($routePrefix . '.performance') }}" :active="request()->routeIs($routePrefix . '.performance')"
+        <x-layout.employee.nav.sidebar.nav-item href="{{ route($routePrefix . '.categories') }}" :active="request()->routeIs($routePrefix . '.categories')"
             class="" nav_txt="Performance" :default_icon="['src' => 'performances', 'alt' => '']" :active_icon="['src' => 'performances', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan
 
     {{-- Head Admin --}}
     @can(UserPermission::VIEW_FORM_CONFIG)
-        <x-layout.employee.nav.sidebar.nav-item href="{{ route($routePrefix . '.form') }}" :active="request()->routeIs($routePrefix . '.form')"
+        <x-layout.employee.nav.sidebar.nav-item href="{{ route($routePrefix . '.pre-emp-reqs') }}" :active="request()->routeIs($routePrefix . '.pre-emp-reqs')"
             class="" nav_txt="Forms" :default_icon="['src' => 'forms', 'alt' => '']" :active_icon="['src' => 'forms', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan

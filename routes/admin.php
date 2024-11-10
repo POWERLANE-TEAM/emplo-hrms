@@ -35,19 +35,25 @@ Route::middleware('auth')->group(function () {
     // End of Accounts
 
 
-    Route::get('employees', function () {
-        abort(404);
-    })->name('employees');
+    // -- Organization Routes --
+    Route::get('create-dept', function() {
+        return view('employee.admin.organization.create-dept');
+    })->name('create-dept');
 
+    Route::get('create-position', function() {
+        return view('employee.admin.organization.create-position');
+    })->name('create-position');
+    // End of Organization
+    
 
     Route::get('calendar', function() {
        return view('employee.admin.calendar');
     })->name('calendar');
 
 
-    Route::get('job-listing', function () {
-        abort(404);
-    })->name('job-listing');
+    Route::get('add-open-position', function() {
+        return view('employee.admin.jobboard.add-open-position');
+    })->name('add-open-position');
 
 
     Route::get('policy', function () {
@@ -66,14 +72,29 @@ Route::middleware('auth')->group(function () {
     // End of Announcements
 
 
-    Route::get('performance', function () {
-        abort(404);
-    })->name('performance');
+    // -- Performance Eval Routes --
+    Route::get('categories', function() {
+        return view('employee.admin.performance.categories');
+    })->name('categories');
 
+    Route::get('pass-rate-range', function() {
+        return view('employee.admin.performance.pass-rate-range');
+    })->name('pass-rate-range');
 
-    Route::get('form', function () {
-        abort(404);
-    })->name('form');
+    Route::get('perf-scales', function() {
+        return view('employee.admin.performance.perf-scales');
+    })->name('perf-scales');
+
+    Route::get('scoring', function() {
+        return view('employee.admin.performance.scoring');
+    })->name('scoring');
+    // End of Performance Eval Routes
+
+    // -- Forms Routes --
+    Route::get('pre-emp-reqs', function() {
+        return view('employee.admin.forms.pre-emp-reqs');
+    })->name('pre-emp-reqs');
+    // End of Forms
 
     Route::get('profile', function () {
         return view('employee.admin.profile');

@@ -5,6 +5,9 @@ import addGlobalListener from 'globalListener-script';
 import '../../auth-listener.js';
 import '../../listeners/online-users.js';
 import 'employee-page-script';
+import '../../modals.js';
+import '../../drag-and-drop.js';
+import '../../tooltip.js';
 
 
 
