@@ -1,15 +1,17 @@
-// Reusable Classes <33333333333
 
-applyTypewriterEffect(".typewriter-text"); // Apply typewriter effect
-applyFadeInEffect(".fadein-text", 1, 1); // Apply fade-in effect with 2s duration and 1s delay
-applySlideUpEffect(".slide-up-text", 2); // Apply slide-up effect with 2s duration
-applyBounceEffect(".bounce-text", 1); // Apply bounce effect with 1s duration
-applyZoomInEffect(".zoom-in-text", 1); // Apply zoom-in effect with 1s duration
-applyTextColorChange(".color-change-text", "#ff0000"); // Apply color change effect
-applyTextRotationEffect(".rotate-text", 2); // Apply text rotation effect with 2s duration
-applyShakeEffect(".shake-text", 0.5, 10); // Apply shake effect with 0.5s duration and 10px shake distance
-applyLetterByLetterFadeInEffect(".letter-by-letter-text"); // Apply letter-by-letter fade-in effect
-applyWiggleEffect(".wiggle-text", 1); // Apply wiggle effect with 1s duration
+document.addEventListener("DOMContentLoaded", function() {
+    // Apply animations
+    applyTypewriterEffect('.typewriter-text'); // Apply typewriter effect
+    applyFadeInEffect('.fadein-text', 1, 1); // Apply fade-in effect with 1s duration and 1s delay
+    applySlideUpEffect('.slide-up-text', 2); // Apply slide-up effect with 2s duration
+    applyBounceEffect('.bounce-text', 1); // Apply bounce effect with 1s duration
+    applyZoomInEffect('.zoom-in-text', 1); // Apply zoom-in effect with 1s duration
+    applyTextColorChange('.color-change-text', '#ff0000'); // Apply color change effect
+    applyTextRotationEffect('.rotate-text', 2); // Apply text rotation effect with 2s duration
+    applyShakeEffect('.shake-text', 0.5, 10); // Apply shake effect with 0.5s duration and 10px shake distance
+    applyLetterByLetterFadeInEffect('.letter-by-letter-text'); // Apply letter-by-letter fade-in effect
+    applyWiggleEffect('.wiggle-text', 1); // Apply wiggle effect with 1s duration
+});
 
 function applyTypewriterEffect(targetClass) {
     const element = document.querySelector(targetClass);
