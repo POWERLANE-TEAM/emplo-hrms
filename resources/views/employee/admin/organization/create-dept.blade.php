@@ -50,12 +50,16 @@
 <section class="mx-2">
     <form>
         {{-- Input field for: Department Title --}}
-        <x-form.boxed-input-text id="dep_name" label="Department Name" name="dep_name"
+        <x-form.boxed-input-text id="dep_name" label="Name" name="dep_name"
+            :nonce="$nonce" :required="true">
+        </x-form.boxed-input-text>
+
+        <x-form.boxed-input-text id="office_head" label="Office Head" name="office_head"
             :nonce="$nonce" :required="true">
         </x-form.boxed-input-text>
 
         {{-- Textarea field for: Description --}}
-        <x-form.boxed-textarea id="dep_desc" label="Department Description" name="dep_desc" :nonce="$nonce"
+        <x-form.boxed-textarea id="dep_desc" label="Description" name="dep_desc" :nonce="$nonce"
             :rows="6" :required="true" />
 
         {{-- Submit Button --}}
