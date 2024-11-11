@@ -1,4 +1,4 @@
-<section nonce="{{ $nonce }}" class="auth-form px-md-4 py-md-3 mx-auto">
+<section nonce="{{ $nonce }}" class="auth-form px-md-4 py-md-3 mx-auto hidden-until-load">
     <hgroup class="d-flex flex-column text-center mb-3 mt-md-n4">
         <header class="typewriter-text display-5 fw-semibold text-primary mb-3 d-none d-md-block">
             Welcome Back!

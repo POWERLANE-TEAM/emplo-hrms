@@ -297,6 +297,10 @@ a.unstyled {
     background-color: var(--main-green);
 }
 
+.hidden-until-load {
+    opacity: 0;
+}
+
 .border-bottom {
     border: none !important;
     border-bottom: 2px solid var(--bs-secondary) !important;
