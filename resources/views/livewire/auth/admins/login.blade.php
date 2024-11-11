@@ -1,9 +1,9 @@
 <section nonce="{{ $nonce }}" class="auth-form px-md-4 py-md-3 mx-auto">
-    <hgroup class="d-flex flex-column text-center mt-md-n4">
-        <header class="display-6 fw-semibold text-primary d-none d-md-block">
+    <hgroup class="d-flex flex-column text-center mb-3 mt-md-n4">
+        <header class="display-5 fw-semibold text-primary mb-3 d-none d-md-block">
             {{ __('Hello, Admin!') }}
         </header>
-        <header class="h2 fw-semibold text-primary d-block d-md-none" aria-hidden="true"> 
+        <header class="h2 fw-semibold text-primary mb-3 d-block d-md-none" aria-hidden="true"> 
             {{ __('Hello, Admin!') }}
         </header>
         <span class="fs-5 text-wrap">

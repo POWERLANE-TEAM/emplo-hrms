@@ -1,38 +1,45 @@
-@extends('components.layout.employee.layout')
+@extends('components.layout.app', ['description' => 'Guest Layout'])
 
 @section('head')
-    <title>Sign in as Admin</title>
+<title>Sign in as Admin</title>
 @endsection
 
 @pushOnce('pre-scripts')
     <script src="https://unpkg.com/lucide@latest"></script>
 @endPushOnce
 
-@section('critical-styles')
-    @use('Illuminate\Support\Facades\Vite')
+@pushOnce('scripts')
+    <script src="{{ Vite::asset('resources/js/forms/nbp.min.js') }}" defer></script>
+    @vite(['resources/js/employee/login.js'])
+    @vite(['resources/js/animations/auth-effect.js'])
+@endPushOnce
 
-    <style>
-        {!! Vite::content('resources/css/guest/secondary-bg.css') !!}
-    </style>
+@section('critical-styles')
+@use('Illuminate\Support\Facades\Vite')
+
+<style>
+    {!! Vite::content('resources/css/guest/secondary-bg.css') !!}
+</style>
 @endsection
 
 @pushOnce('styles')
     @vite(['resources/css/login.css'])
+    @vite(['resources/css/animations/auth-effect.css'])
 @endPushOnce
 
 @section('before-nav')
-    <x-layout.employee.nav.secondary-bg />
+<x-layout.guest.secondary-bg />
 @endsection
 
 @section('header-nav')
-    <x-layout.employee.nav.secondary-header />
+<x-layout.guest.secondary-header />
 @endsection
 
 @section('content')
-    @livewire('auth.admins.login')
+@livewire('auth.admins.login')
 @endsection
 
 
 @section('footer')
-    <x-guest.footer />
+<x-guest.footer />
 @endsection

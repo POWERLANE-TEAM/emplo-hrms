@@ -1,5 +1,5 @@
 <section nonce="{{ $nonce }}" class="auth-form px-md-4 py-md-3 mx-auto">
-    <hgroup class="d-flex flex-column text-center mb-5 mt-md-n4">
+    <hgroup class="d-flex flex-column text-center mb-3 mt-md-n4">
         <header class="display-5 fw-semibold text-primary mb-3 d-none d-md-block">
             Welcome Back
         </header>
