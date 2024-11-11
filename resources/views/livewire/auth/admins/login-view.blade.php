@@ -6,6 +6,7 @@
 
 @pushOnce('pre-scripts')
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
 @endPushOnce
 
 @pushOnce('scripts')
