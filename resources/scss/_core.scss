@@ -296,6 +296,33 @@ a.unstyled {
     height: 2px;
     background-color: var(--main-green);
 }
+
+.hidden-until-load {
+    opacity: 0;
+}
+
+.border-bottom {
+    border: none !important;
+    border-bottom: 2px solid var(--bs-secondary) !important;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  
+    &:focus {
+        border-bottom: 2px solid var(--bs-primary) !important;
+        box-shadow: none !important;
+        outline: none;
+    }
+
+    &.is-invalid {
+        border-bottom: 2px solid var(--bs-danger) !important;
+        box-shadow: none !important; 
+    
+        &:focus {
+            border-bottom: 2px solid var(--bs-danger) !important;
+            box-shadow: none !important; 
+        }
+      }
+}
+
 body {
 
     &:not([data-bs-theme]) {

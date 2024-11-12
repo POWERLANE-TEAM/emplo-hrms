@@ -39,4 +39,6 @@ try {
     console.error(error)
 }
 
-
+document.querySelectorAll('.hidden-until-load').forEach(element => {
+    element.classList.remove('hidden-until-load');
+});
