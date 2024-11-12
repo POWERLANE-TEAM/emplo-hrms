@@ -49,7 +49,7 @@
 
 {{--
 |--------------------------------------------------------------------------
-| Announcement Form
+| Job Title
 |--------------------------------------------------------------------------
 --}}
 
@@ -59,6 +59,14 @@
         <x-form.boxed-input-text id="announcement_title" label="Announcement Title" name="announcement_title"
             :nonce="$nonce" :required="true">
         </x-form.boxed-input-text>
+
+        {{-- Dropwdown for: Job Family --}}
+        <x-form.boxed-dropdown id="sex" label="Job Family" name="job_fam" :nonce="$nonce" :required="true" :options="[
+        'accountancy' => 'Accountancy',
+        'hr' => 'HR',
+        'marketing' => 'Marketing']"
+        placeholder="Select Job Family">
+        </x-form.boxed-dropdown>
 
         {{-- Textarea field for: Description --}}
         <x-form.boxed-textarea id="announcement_desc" label="Description" name="announcement_desc" :nonce="$nonce"
