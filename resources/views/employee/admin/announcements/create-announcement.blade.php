@@ -18,7 +18,8 @@
 @endsection
 
 @pushOnce('pre-scripts')
-    <script src="https://cdn.jsdelivr.net/npm/chart.js" nonce="{{ $nonce }}"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 @endPushOnce
 
 @pushOnce('scripts')
@@ -61,11 +62,16 @@
         </x-form.boxed-input-text>
 
         {{-- Dropwdown for: Job Family --}}
-        <x-form.boxed-dropdown id="sex" label="Job Family" name="job_fam" :nonce="$nonce" :required="true" :options="[
-        'accountancy' => 'Accountancy',
+        <x-form.boxed-dropdown id="job_fam" label="Job Family" name="job_fam" :nonce="$nonce" :required="true" :options="[
+        'reg_emp' => 'Regular Employees',
         'hr' => 'HR',
-        'marketing' => 'Marketing']"
-        placeholder="Select Job Family">
+        'marketing' => 'Marketing']" class="col-12" :multiple="true">
+        </x-form.boxed-dropdown>
+
+        <x-form.boxed-dropdown id="job_fam" label="Job Family" name="job_fam" :nonce="$nonce" :required="true" :options="[
+        'reg_emp' => 'Regular Employees',
+        'hr' => 'HR',
+        'marketing' => 'Marketing']" class="col-12" :multiple="false">
         </x-form.boxed-dropdown>
 
         {{-- Textarea field for: Description --}}
@@ -79,17 +85,3 @@
 </section>
 @endsection
 
-
-
-{{--
-|--------------------------------------------------------------------------
-| List of IDs and Names
-| *Both ID and Name attributes share the same naming convention.
-|--------------------------------------------------------------------------
-| Element | ID/Name | Description
-|--------------------------------------------------------------------------
-| Announcement Title | announcement_title | Title of the announcement
-| Description | announcement_desc | Main description field
-| Post Announcement | post_announcement | Button to post announcement
-|--------------------------------------------------------------------------
---}}
