@@ -1,0 +1,39 @@
+@import 'keyframes/slink-in';
+
+/* Initial States */
+.green-wave-container {
+    opacity: 0;
+    transform: translateY(50px);
+    animation-duration: 2.5s;
+    animation-fill-mode: forwards;
+}
+
+.left-circle,
+.right-circle {
+    opacity: 0;
+    transform: translateX(-100vw);
+    animation-duration: 2.7s;
+    animation-fill-mode: forwards;
+}
+
+
+/* Application of the animation to elements when the 'animate' class is added */
+.left-circle.animate,
+.right-circle.animate {
+    animation-name: slink-in-circles;
+}
+
+.green-wave-container.animate {
+    animation-name: slink-in;
+    animation-delay: 0.3s; /* Adjust for staggered animation */
+}
+
+
+/* Delay for staggered animation */
+.left-circle.animate {
+    animation-delay: 0.6s;
+}
+
+.right-circle.animate {
+    animation-delay: 0.9s;
+}
