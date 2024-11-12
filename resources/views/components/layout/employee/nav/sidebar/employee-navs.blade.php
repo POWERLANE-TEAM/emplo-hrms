@@ -107,8 +107,8 @@
 
     {{-- Head Admin --}}
     @can(UserPermission::VIEW_EMPLOYEE_MANAGER)
-        <x-layout.employee.nav.sidebar.nav-item href="{{ route($routePrefix . '.create-dept') }}" :active="request()->routeIs($routePrefix . '.create-dept')"
-            class="" nav_txt="Employees" :default_icon="['src' => 'employee', 'alt' => '']" :active_icon="['src' => 'employee', 'alt' => '']">
+        <x-layout.employee.nav.sidebar.nav-item href="{{ route($routePrefix . '.create-job-family') }}" :active="request()->routeIs($routePrefix . '.create-job-family')"
+            class="" nav_txt="Organization" :default_icon="['src' => 'employee', 'alt' => '']" :active_icon="['src' => 'employee', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan
 
@@ -128,7 +128,7 @@
 
     {{-- Head Admin --}}
     @can(UserPermission::VIEW_POLICY_MANAGER)
-        <x-layout.employee.nav.sidebar.nav-item href="{{ route($routePrefix . '.create-dept') }}" :active="request()->routeIs($routePrefix . '.create-dept')"
+        <x-layout.employee.nav.sidebar.nav-item href="{{ route($routePrefix . '.policy') }}" :active="request()->routeIs($routePrefix . '.policy')"
             class="" nav_txt="Policies" :default_icon="['src' => 'documents', 'alt' => '']" :active_icon="['src' => 'documents', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan

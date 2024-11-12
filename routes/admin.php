@@ -36,13 +36,13 @@ Route::middleware('auth')->group(function () {
 
 
     // -- Organization Routes --
-    Route::get('create-dept', function() {
-        return view('employee.admin.organization.create-dept');
-    })->name('create-dept');
+    Route::get('create-job-family', function() {
+        return view('employee.admin.organization.create-job-family');
+    })->name('create-job-family');
 
-    Route::get('create-position', function() {
-        return view('employee.admin.organization.create-position');
-    })->name('create-position');
+    Route::get('create-job-title', function() {
+        return view('employee.admin.organization.create-job-title');
+    })->name('create-job-title');
     // End of Organization
     
 

@@ -43,7 +43,7 @@
 
 {{--
 |--------------------------------------------------------------------------
-| DEPARTMENT FORM
+| JOB FAMILY FORM
 |--------------------------------------------------------------------------
 --}}
 
@@ -54,6 +54,7 @@
             :nonce="$nonce" :required="true">
         </x-form.boxed-input-text>
 
+        {{-- Input field for: Department Title --}}
         <x-form.boxed-input-text id="office_head" label="Office Head" name="office_head"
             :nonce="$nonce" :required="true">
         </x-form.boxed-input-text>
