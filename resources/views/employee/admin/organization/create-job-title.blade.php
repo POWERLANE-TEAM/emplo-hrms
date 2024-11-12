@@ -36,7 +36,7 @@
 {{-- Body/Content Section --}}
 @section('content')
 
-<x-headings.header-link heading="Create New Position" description="Create a new job position." label="Bulk Creation"
+<x-headings.header-link heading="Create Job Title" description="Create a new job title." label="Bulk Creation"
     nonce="{{ $nonce }}" href="{{ route($routePrefix . '.accounts') }}">
 </x-headings.header-link>
 

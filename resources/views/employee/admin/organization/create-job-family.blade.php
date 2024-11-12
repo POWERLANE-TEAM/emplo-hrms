@@ -36,7 +36,7 @@
 {{-- Body/Content Section --}}
 @section('content')
 
-<x-headings.header-link heading="Create New Department" description="Create a new department of the company."
+<x-headings.header-link heading="Create Job Family" description="Create a new job family of the company."
     label="Bulk Creation" nonce="{{ $nonce }}" href="{{ route($routePrefix . '.accounts') }}" />
 
     @include('components.includes.tab_navs.org-tab-navs')
