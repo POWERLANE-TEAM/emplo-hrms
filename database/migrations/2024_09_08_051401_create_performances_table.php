@@ -25,8 +25,8 @@ return new class extends Migration
 
         Schema::create('performance_ratings', function (Blueprint $table) {
             $table->id('perf_rating_id');
+            $table->integer('perf_rating');
             $table->string('perf_rating_name');
-            $table->longText('perf_rating_desc')->nullable();
             $table->timestamps();
         });
 
