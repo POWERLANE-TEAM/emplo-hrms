@@ -61,7 +61,7 @@
             :nonce="$nonce" :required="true">
         </x-form.boxed-input-text>
 
-        {{-- Dropwdown for: Job Family --}}
+        {{-- Multiselect Dropwdown for: Job Family --}}
         <x-form.boxed-dropdown id="job_fam" label="Job Family" name="job_fam" :nonce="$nonce" :required="true" :options="[
         'reg_emp' => 'Regular Employees',
         'hr' => 'HR',

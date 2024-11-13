@@ -1,6 +1,8 @@
 {{--
 * |--------------------------------------------------------------------------
-* | Boxed: Enhanced Multi-Select Input Field with Choices.js
+* | Boxed: Dropdowns
+* |
+* | Note: To select between a normal dropdown and multiselect, toggle the multiple prop
 * |--------------------------------------------------------------------------
 --}}
 
@@ -28,7 +30,7 @@
         @endforeach
     </select>
 
-    <style>
+    <!-- <style>
         .has-no-choices {
             display: none;
         }
@@ -119,7 +121,7 @@
             background-color: white;
             box-sizing: border-box;
         }
-    </style>
+    </style> -->
 </div>
 
 @once
