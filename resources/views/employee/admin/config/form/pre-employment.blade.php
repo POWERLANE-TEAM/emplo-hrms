@@ -38,43 +38,17 @@
 
 <x-headings.main-heading :isHeading="true">
     <x-slot:heading>
-        Configure Forms
+        {{ __('Configure Forms') }}
     </x-slot:heading>
 
     <x-slot:description>
-        Set up and configure all of the forms within the system.
+        {{ __('Set up and configure all of the forms within the system.') }}
     </x-slot:description>
 </x-headings.main-heading>
 
 @include('components.includes.tab_navs.forms-tab-navs')
 
-<p class="py-2">Pre-employment requirements are the list of documents or attachments that pre-employed applicants needs
-    to submit before proceeding.</p>
-
-{{--
-* |--------------------------------------------------------------------------
-* | Pre-Employment Requirements Section
-* |--------------------------------------------------------------------------
---}}
-
-
-{{-- Placeholder datas. Need to be mounted properly from the db. --}}
-@php
-    $customOptions = ['SSS Registration Record (E-1/E-4/ID/Contribution/Emp. History)', 'CEDULA/ Community Tax Certificate', 'Barangay Clearance', 'Police Clearance/NBI Clearance']; // Replace this with data fetched from db
-@endphp
-
-
-{{-- Grid Table of Pre-Emp Requirements --}}
-@livewire('blocks.dragdrop.show-draggable-data', ['items' => $customOptions])
-
-
-{{-- Add Another Pre-Emp Field --}}
-@livewire('blocks.inputs.add-drag-item', [
-    'label' => 'Add Pre-Employment Requirement',
-    'required' => true,
-    'id' => 'pre-emp-input',
-    'name' => 'pre-emp-input',
-])
+<livewire:admin.config.form.pre-employment />
 
 @endsection
 
