@@ -10,15 +10,16 @@ class ShowMultDragData extends Component
     public $items = [];
 
     public $editCallback;
-    public $dataOneHtml;
-    public $dataTwoHtml;
+    public $head;
+    public $subhead;
 
-    public function mount($items, $editCallback = null, $dataOneHtml = null, $dataTwoHtml = null)
+    public function mount($items, $editCallback = null, $head = null, $subhead = null)
     {
+        // dd($items);
         $this->items = $items;
         $this->editCallback = $editCallback;
-        $this->dataOneHtml = $dataOneHtml;
-        $this->dataTwoHtml = $dataTwoHtml;
+        $this->head = $head;
+        $this->subhead = $subhead;
     }
 
 
