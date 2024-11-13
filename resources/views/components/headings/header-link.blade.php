@@ -4,7 +4,7 @@
 * |--------------------------------------------------------------------------
 --}}
 
-@props(['heading', 'description', 'nonce', 'label'])
+@props(['heading', 'description', 'nonce', 'label' => null])
 
 <div {{ $attributes->merge([
     'class' => "pt-2 pb-4 ms-n1",
