@@ -20,6 +20,7 @@ use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
+use App\Notifications\EmployeeAccountCreated;
 
 class CreateAccountForm extends Form
 {
@@ -44,7 +45,7 @@ class CreateAccountForm extends Form
     /**
      * @var string $email
      */
-    #[Validate('required')]
+    #[Validate('required|email:rfc,dns,spoof|max:320|unique:users,email')]
     public $email;
 
     /**
@@ -218,6 +219,18 @@ class CreateAccountForm extends Form
     public $pagibig;
 
     /**
+     * @var string $password
+     */
+    private $password;
+
+    /**
+     * For storing instance of a new User model.
+     * 
+     * @var User $newUser
+     */
+    private User $newUser;
+
+    /**
      * Begin db transaction and perform insertions and stuff.
      * 
      * @return void
@@ -227,9 +240,12 @@ class CreateAccountForm extends Form
         DB::transaction(function () {
             $jobDetail = $this->storeJobDetails();
             $employee = $this->storeEmployee($jobDetail);
-            $user = $this->storeUser($employee);
-            $this->assignRole($user);
+            $newUser = $this->storeUser($employee);
+            $this->assignRole($newUser);
+            $this->newUser = $newUser;
         });
+
+        $this->newUser->notify(new EmployeeAccountCreated($this->newUser, $this->password));
     }
 
     /**
@@ -240,11 +256,13 @@ class CreateAccountForm extends Form
      */
     private function storeUser(Employee $employee)
     {
+        $this->password = Str::random();
+
         return $employee->account()->create([
             'account_type' => AccountType::EMPLOYEE,
             'account_id' => $employee->employee_id,
             'email' => $this->email,
-            'password' => Hash::make(Str::random()),
+            'password' => Hash::make($this->password),
             'user_status_id' => UserStatus::NOT_VERIFIED,
         ]);
     }
@@ -255,10 +273,10 @@ class CreateAccountForm extends Form
      * @param \App\Models\User $user
      * @return void
      */
-    private function assignRole(User $user)
+    private function assignRole(User $newUser)
     {
         Role::where('name', $this->role);
-        $user->assignRole($this->role);
+        $newUser->assignRole($this->role);
     }
 
     /**
