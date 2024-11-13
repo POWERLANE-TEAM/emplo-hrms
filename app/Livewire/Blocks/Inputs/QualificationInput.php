@@ -3,46 +3,39 @@
 namespace App\Livewire\Blocks\Inputs;
 
 use Livewire\Component;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\Validate;
+use App\Enums\JobQualificationPriorityLevel;
 
 class QualificationInput extends Component
 {
-    public $label;
-    public $id;
-    public $name;
-    public $required;
-    public $options = [];
-    
-    public $qualificationText;
-    public $selectedPriority;
-    
-    protected $listeners = ['qualificationAdded'];
+    #[Validate('required')]
+    public $qualification;
 
-    public function mount($label, $id, $name, $required = false, $options = [])
+    #[Validate('required')]
+    public $priority;
+
+    public function mount()
     {
-        $this->label = $label;
-        $this->id = $id;
-        $this->name = $name;
-        $this->required = $required;
-        $this->options = $options;
+        //
     }
 
-    public function addQualification()
+    public function save()
     {
-        if ($this->qualificationText && $this->selectedPriority) {
-            // Emit event with qualification and priority
-            $this->emit('qualificationAdded', [
-                'text' => $this->qualificationText,
-                'priority' => $this->selectedPriority
-            ]);
+        $this->validate();
+        $this->dispatch('qualification-added', $this->qualification, $this->priority);
+        $this->reset();
+    }
 
-            // Reset input fields
-            $this->qualificationText = '';
-            $this->selectedPriority = '';
-        }
+    #[Computed]
+    public function priorityLevels()
+    {
+        return collect(JobQualificationPriorityLevel::options())->flip()->toArray();
     }
 
     public function render()
     {
+        // dd($this->priorityLevels);
         return view('livewire.blocks.inputs.qualification-input');
     }
 }

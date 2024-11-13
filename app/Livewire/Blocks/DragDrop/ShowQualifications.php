@@ -2,33 +2,68 @@
 
 namespace App\Livewire\Blocks\DragDrop;
 
+use App\Livewire\Admin\JobTitle\CreateJobTitleForm;
 use Livewire\Component;
+use Livewire\Attributes\On;
+use Livewire\Attributes\Computed;
+use App\Enums\JobQualificationPriorityLevel;
 
 class ShowQualifications extends Component
 {
-
     public $items = [];
+    
+    public $eventName = 'save-changes';
 
-    protected $listeners = ['qualificationAdded' => 'addQualification'];
+    public $priority;
 
-    // Adding Qualification
-    public function addQualification($qualification)
+    public $qualification;
+
+    public $index;
+
+    #[Computed]
+    public function priorityLevels()
     {
-        $this->items[] = $qualification;
+        return collect(JobQualificationPriorityLevel::options())->flip()->toArray();
     }
 
-
-    // Saving Changes (From the Edit dialogue)
-    public function saveChanges($itemName, $index)
+    #[On('qualification-added')]
+    public function showQualifications($qualification, $priority)
     {
-        // Logic to save the changes made to the item
-        if ($index !== null) {
-            $this->items[$index] = $itemName; // Update the item in the list
-            $this->dispatch('itemUpdated'); // Optional: Emit an event if you want to listen for updates elsewhere
-        }
+        $this->items[] = [
+            'text' => $qualification,
+            'priority' => $priority,
+        ];
     }
 
-    // Swapping of datas in the Grid
+    #[On('save-changes')]
+    public function saveChanges()
+    {
+        $this->items[$this->index]['text'] = $this->qualification;
+        $this->items[$this->index]['priority'] = $this->priority;
+
+        $this->dispatch('save-changes-close');
+        $this->dispatch('qualification-updated',
+            $this->index, 
+            $this->qualification, 
+            $this->priority
+        )->to(CreateJobTitleForm::class);
+    }
+
+    #[On('job-title-created')]
+    public function resetQualifications()
+    {
+        $this->items = [];
+    }
+
+    public function loadQualification($index)
+    {
+        $this->index = $index;
+        $this->qualification = $this->items[$index]['text'];
+        $this->priority = $this->items[$index]['priority'];
+
+        $this->dispatch('open-modal');
+    }
+
     public function moveUp($index)
     {
         if ($index > 0) {
@@ -38,12 +73,7 @@ class ShowQualifications extends Component
 
     public function updateItems($newOrder)
     {
-        // Update the items array based on the new order received
         $this->items = $newOrder;
-
-        // Optionally, you can save the new order to the database here
-        // For example, if you have a model for this data
-        // YourModel::updateOrder($this->items);
     }
 
     public function moveDown($index)
