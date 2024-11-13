@@ -12,8 +12,6 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-
-    // Dashboard
     Route::get('dashboard', DashboardController::class)
         ->can(UserPermission::VIEW_ADMIN_DASHBOARD)
         ->name('dashboard');
@@ -22,79 +20,77 @@ Route::middleware('auth')->group(function () {
         return view('vendor.pulse.dashboard');
     })->name('system.pulse');
 
-
-    // -- Accounts Routes --
     Route::get('accounts', function () {
         return view('employee.admin.accounts.accounts');
     })->name('accounts');
+        
+    Route::prefix('account')->name('account.')->group(function () {
+        Route::get('create', function () {
+            return view('employee.admin.accounts.create');
+        })
+            ->can(UserPermission::CREATE_EMPLOYEE_ACCOUNT)
+            ->name('create');
+    });
 
-    Route::get('create-account', function () {
-        return view('employee.admin.accounts.create-account');
-    })->can(UserPermission::CREATE_EMPLOYEE_ACCOUNT)
-        ->name('create-account'); 
-    // End of Accounts
+    Route::prefix('job-family')->name('job-family.')->group(function () {
+        Route::get('create', function() {
+            return view('employee.admin.job-family.create');
+        })
+            ->can(UserPermission::CREATE_JOB_FAMILY)
+            ->name('create');        
+    });
 
-
-    // -- Organization Routes --
-    Route::get('create-dept', function() {
-        return view('employee.admin.organization.create-dept');
-    })->name('create-dept');
-
-    Route::get('create-position', function() {
-        return view('employee.admin.organization.create-position');
-    })->name('create-position');
-    // End of Organization
-    
+    Route::prefix('job-title')->name('job-title.')->group(function () {
+        Route::get('create', function() {
+            return view('employee.admin.job-title.create');
+        })
+            ->can(UserPermission::CREATE_JOB_TITLE)
+            ->name('create');
+    });
 
     Route::get('calendar', function() {
        return view('employee.admin.calendar');
     })->name('calendar');
 
+    Route::prefix('job-board')->name('job-board.')->group(function () {
+        Route::get('create', function() {
+            return view('employee.admin.jobboard.add-open-position');
+        })->name('create');        
+    });
 
-    Route::get('add-open-position', function() {
-        return view('employee.admin.jobboard.add-open-position');
-    })->name('add-open-position');
-
-
-    Route::get('policy', function () {
-        abort(404);
-    })->name('policy');
-
-
-    // -- Announcements Routes --
     Route::get('announcements', function () {
         return view('employee.admin.announcements.announcements');
     })->name('announcement');
 
-    Route::get('create-announcement', function () {
-        return view('employee.admin.announcements.create-announcement');
-    })->name('create-announcement');
-    // End of Announcements
+    Route::prefix('announcement')->name('announcement.')->group(function () {
+        Route::get('create', function () {
+            return view('employee.admin.announcements.create-announcement');
+        })
+            ->can(UserPermission::CREATE_ANNOUNCEMENT)
+            ->name('create');        
+    });
 
+    Route::prefix('config')->name('config.')->group(function () {
+        Route::prefix('performance')->name('performance.')->group(function () {
+            Route::get('categories', function() {
+                return view('employee.admin.config.performance.categories');
+            })->name('categories');
+            
+            Route::get('rating-scales', function() {
+                return view('employee.admin.config.performance.rating-scales');
+            })->name('rating-scales');
+            
+            Route::get('scorings', function() {
+                return view('employee.admin.config.performance.scorings');
+            })->name('scorings');
+        });
 
-    // -- Performance Eval Routes --
-    Route::get('categories', function() {
-        return view('employee.admin.performance.categories');
-    })->name('categories');
-
-    Route::get('pass-rate-range', function() {
-        return view('employee.admin.performance.pass-rate-range');
-    })->name('pass-rate-range');
-
-    Route::get('perf-scales', function() {
-        return view('employee.admin.performance.perf-scales');
-    })->name('perf-scales');
-
-    Route::get('scoring', function() {
-        return view('employee.admin.performance.scoring');
-    })->name('scoring');
-    // End of Performance Eval Routes
-
-    // -- Forms Routes --
-    Route::get('pre-emp-reqs', function() {
-        return view('employee.admin.forms.pre-emp-reqs');
-    })->name('pre-emp-reqs');
-    // End of Forms
+        Route::prefix('form')->name('form.')->group(function () {
+            Route::get('pre-employment', function() {
+                return view('employee.admin.config.form.pre-employment');
+            })->name('pre-employment');            
+        });
+    });
 
     Route::get('profile', function () {
         return view('employee.admin.profile');
