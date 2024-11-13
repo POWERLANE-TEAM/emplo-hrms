@@ -246,16 +246,6 @@ class Employee extends Model
         return $this->hasMany(ApplicationDoc::class, 'evaluated_by', 'employee_id');
     }
 
-    /**
-     * Get the examination results where employee is the grader
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function asExamGrader(): HasMany
-    {
-        return $this->hasMany(ApplicationExamResult::class, 'graded_by', 'employee_id');
-    }
-
     /*
     |--------------------------------------------------------------------------
     | Training Records Management
