@@ -32,7 +32,7 @@
 <x-headings.header-link heading="{{ __('Create Job Family') }}" description="{{ __('Kindly fill-in the fields below.') }}"
     label="Bulk Creation" nonce="{{ $nonce }}" href="{{ route($routePrefix . '.accounts') }}" />
 
-    @include('components.includes.tab_navs.org-tab-navs')
+    @include('components.includes.tab_navs.job-tab-navs')
 
 <section class="mx-2">
 

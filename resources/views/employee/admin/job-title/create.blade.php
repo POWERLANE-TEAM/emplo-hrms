@@ -28,7 +28,7 @@
     nonce="{{ $nonce }}" href="{{ route($routePrefix . '.accounts') }}">
 </x-headings.header-link>
 
-@include('components.includes.tab_navs.org-tab-navs')
+@include('components.includes.tab_navs.job-tab-navs')
 
 {{-- <x-info_panels.callout type="info"
     description="{{ __('Ensure the job family is added before assigning a position, otherwise it will not appear.') }}" note="true">
