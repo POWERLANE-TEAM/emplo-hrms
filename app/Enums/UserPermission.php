@@ -17,6 +17,8 @@ enum UserPermission: string
     case CREATE_EMPLOYEE_ACCOUNT = 'create employee account';
     case CREATE_BULK_EMPLOYEE_ACCOUNT = 'create bulk employee accounts';
     case CREATE_PRE_EMPLOYMENT_DOCUMENT = 'create pre employment document';
+    case CREATE_JOB_FAMILY = 'create job family';
+    case CREATE_JOB_TITLE = 'create job title';
 
         // View cases goes here
     case VIEW_APPLICANT_INFORMATION = 'view applicant information';
@@ -78,6 +80,8 @@ enum UserPermission: string
             self::CREATE_EMPLOYEE_ACCOUNT => 'Create an employee account ',
             self::CREATE_BULK_EMPLOYEE_ACCOUNT => 'Create employee accounts',
             self::CREATE_PRE_EMPLOYMENT_DOCUMENT => 'Create pre-employment document',
+            self::CREATE_JOB_FAMILY => 'Create job family',
+            self::CREATE_JOB_TITLE => 'Create job title',
 
             // View labels goes here
             self::VIEW_APPLICANT_INFORMATION => 'View applicant/s information',
