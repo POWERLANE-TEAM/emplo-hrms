@@ -29,103 +29,11 @@
             <option value="{{ $value }}">{{ $optionLabel }}</option>
         @endforeach
     </select>
-
-    <!-- <style>
-        .has-no-choices {
-            display: none;
-        }
-
-        .choices-custom,
-        .choices__inner,
-        select {
-            width: 100% !important;
-            border-radius: 5px;
-            background-color: #fff;
-        }
-
-        .choices__list--dropdown {
-            width: 100%;
-            box-sizing: border-box;
-            font-size: .5rem;
-            border: 2px solid #ddd;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-height: 200px;
-            /* Adjust as needed */
-            overflow-y: auto;
-            background: #fff;
-        }
-
-        /* SELECTED ITEMS */
-        .choices__list--multiple .choices__item {
-            background-color: green;
-            /* Transparent background */
-            color: white;
-            /* Black text color */
-        }
-
-        /* Remove the default grey background on first active item */
-        .choices__list--dropdown .choices__item.is-highlighted {
-            background-color: transparent !important;
-            /* Remove grey background */
-            color: inherit;
-            /* Keep the original text color */
-            outline: none;
-            /* Remove any outline if present */
-        }
-
-        /* HOVER ON DROPDOWN ITEMS */
-        .choices__list--dropdown .choices__item--selectable:hover {
-            background-color: #FAFAFA !important;
-            color: green;
-            font-weight: 700;
-        }
-
-
-        /* Placeholder text styling */
-        .choices__placeholder {
-            color: #6c757d;
-            font-style: italic;
-        }
-
-        /* Disabled items */
-        .choices__item--disabled.custom-disabled {
-            color: #888;
-            background-color: #000;
-        }
-
-        /* Remove item button */
-        .choices__button {
-            background-color: transparent;
-            color: #ff0000;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        /* Customizing the search box */
-        .choices__input {
-            border: none;
-            padding: 0;
-            margin: 0;
-        }
-
-
-        /* Ensure that the dropdown takes full width */
-
-
-        /* Adjust the input field within the dropdown for full width */
-        .choices__input {
-            width: 50% !important;
-            /* Ensures placeholder text takes full width */
-            padding-right: 30px;
-            /* Adjust for remove button space if needed */
-            background-color: white;
-            box-sizing: border-box;
-        }
-    </style> -->
 </div>
 
 @once
     <script>
+        // Necessary script to trigger the multi select.
         document.addEventListener('DOMContentLoaded', function () {
             const element = document.getElementById('{{ $attributes->get("id") }}');
 
@@ -159,16 +67,16 @@
                             console.log('Total options:', totalOptions);
 
 
-                            const placeholderOption = element.querySelector('option[value=""]');  // Select the placeholder option by value
+                            const placeholderOption = element.querySelector('option[value=""]'); 
                             console.log(placeholderOption);
                             if (selectedItems.length === totalOptions) {
 
-                                placeholderOption.textContent = '';  // Clear the text of the placeholder option
+                                placeholderOption.textContent = ''; 
                                 console.log('Placeholder text removed');
 
                             } else {
 
-                                placeholderOption.textContent = '{{ $attributes->get('placeholder', 'Select an option') }}';  // Reset text
+                                placeholderOption.textContent = '{{ $attributes->get('placeholder', 'Select an option') }}';
                             }
 
                         });

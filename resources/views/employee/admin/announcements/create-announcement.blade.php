@@ -68,12 +68,6 @@
         'marketing' => 'Marketing']" class="col-12" :multiple="true">
         </x-form.boxed-dropdown>
 
-        <x-form.boxed-dropdown id="job_fam" label="Job Family" name="job_fam" :nonce="$nonce" :required="true" :options="[
-        'reg_emp' => 'Regular Employees',
-        'hr' => 'HR',
-        'marketing' => 'Marketing']" class="col-12" :multiple="false">
-        </x-form.boxed-dropdown>
-
         {{-- Textarea field for: Description --}}
         <x-form.boxed-textarea id="announcement_desc" label="Description" name="announcement_desc" :nonce="$nonce"
             :rows="6" :required="true" />
