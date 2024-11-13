@@ -13,7 +13,7 @@ function getLocalIpAddress() {
     for (const name of Object.keys(interfaces)) {
         if (wifiNames.some(wifiName => name.toLowerCase().includes(wifiName.toLowerCase()))) {
             for (const iface of interfaces[name]) {
-                if (iface.family === 'IPv4' && !iface.internal && iface.address !== '127.0.0.1' && !iface.address.endsWith('.1')) {
+                if (iface.family === 'IPv4' && !iface.internal && iface.address !== '127.0.0.1') {
                     return iface.address;
                 }
             }
@@ -23,7 +23,7 @@ function getLocalIpAddress() {
     // If no Wi-Fi interface is found, fallback to the first NIC
     for (const name of Object.keys(interfaces)) {
         for (const iface of interfaces[name]) {
-            if (iface.family === 'IPv4' && !iface.internal && iface.address !== '127.0.0.1' && !iface.address.endsWith('.1')) {
+            if (iface.family === 'IPv4' && !iface.internal && iface.address !== '127.0.0.1') {
                 return iface.address;
             }
         }
@@ -56,6 +56,7 @@ export default defineConfig({
                 'resources/js/employee/pre-employment.js',
                 'resources/js/forms/nbp.min.js',
                 'resources/js/applicant/apply.js',
+                'resources/js/modals.js',
                 'resources/css/style.css',
                 'resources/css/hiring.css',
                 'resources/css/login.css',
@@ -68,6 +69,8 @@ export default defineConfig({
                 'resources/css/employee/hr-manager/applicants.css',
                 'resources/css/employee/supervisor/dashboard.css',
                 'resources/css/employee/basic/dashboard.css',
+                'resources/css/employee/main.css',
+                'resources/css/animations/auth-effect.css',
             ],
             refresh: true,
         }),
