@@ -2,14 +2,18 @@
 @import '../../icon-sizing';
 @import '../../icon/lucide';
 @import '../side-top-bar';
-@import '../../font/text-colors';
+@import '../../palette/text-colors';
+@import '../../palette/start-borders';
 @import '../../footer';
 
 
-.pulse-card {
-    
-}
+/* ==========================================================================
+   Section 2: Laravel Pulse & 
+   ========================================================================== */
 
+
+/* Laravel Pulse
+========================================================================== */
 .pulse-card:hover {
     background-color: var(--main-green) !important;
 }
@@ -25,9 +29,9 @@
 
 /* Set initial styles for images */
 .image-container img {
-    width: 60%; /* Control the size */
+    width: 60%;
     opacity: 1;
-    transition: opacity 0.4s ease, transform 0.4s ease; /* Smooth fade and zoom */
+    transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
 /* Hide the animated image initially with opacity */
@@ -57,7 +61,15 @@
 
 /* Change text color to white on hover */
 .pulse-card:hover .card-cont-green-hover {
-    color: white;
+    color: var(--main-white);
 }
 
 
+.col-md-7 p {
+    margin-bottom: 0 !important;
+}
+
+.icons-container {
+    padding-left: 3rem;
+    margin-right: 1.6rem;
+}
