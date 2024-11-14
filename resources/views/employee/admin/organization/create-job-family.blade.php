@@ -54,7 +54,7 @@
             :nonce="$nonce" :required="true">
         </x-form.boxed-input-text>
 
-        {{-- Input field for: Department Title --}}
+        {{-- Input field for: Office Head --}}
         <x-form.boxed-input-text id="office_head" label="Office Head" name="office_head"
             :nonce="$nonce" :required="true">
         </x-form.boxed-input-text>
