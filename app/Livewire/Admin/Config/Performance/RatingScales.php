@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Admin\Config\Performances;
+namespace App\Livewire\Admin\Config\Performance;
 
 use Livewire\Component;
 use App\Models\PerformanceRating;
@@ -23,6 +23,6 @@ class RatingScales extends Component
 
     public function render()
     {
-        return view('livewire.admin.config.performances.rating-scales');
+        return view('livewire.admin.config.performance.rating-scales');
     }
 }

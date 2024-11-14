@@ -48,7 +48,7 @@
 
 @include('components.includes.tab_navs.perf-eval-navs')
 
-<livewire:admin.config.performances.rating-scales />
+<livewire:admin.config.performance.rating-scales />
 
 @endsection
 
