@@ -1,0 +1,18 @@
+$start-colors: (
+    "green": #61B000,
+    "blue": #60A5FA,
+    "teal": #008080,
+    "purple": #CDA0D4
+);
+
+// Mixin for the left border
+@mixin card-start-border($color) {
+    border-left: 4px solid $color;
+}
+
+// Loop through colors to create classes
+@each $name, $color in $start-colors {
+    .card-start-border-#{$name} {
+        @include card-start-border($color);
+    }
+}
