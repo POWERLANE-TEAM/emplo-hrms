@@ -5,9 +5,9 @@
 --}}
 
 <x-sub-navs.tabular-nav :guard="$routePrefix" :items="[
-    ['title' => 'Pre-Employment Requirements', 'route' => 'pre-emp-reqs'],
-    ['title' => 'Attendance Rules', 'route' => 'create-position'],
-    ['title' => 'Leaves', 'route' => 'create-position'],
-    ['title' => 'Overtime Summary Forms', 'route' => 'create-position'],
-    ['title' => 'Issues', 'route' => 'create-position'],
+    ['title' => 'Pre-Employment Requirements', 'route' => 'config.form.pre-employment'],
+    ['title' => 'Attendance Rules', 'route' => 'dashboard'],
+    ['title' => 'Leaves', 'route' => 'dashboard'],
+    ['title' => 'Overtime Summary Forms', 'route' => 'dashboard'],
+    ['title' => 'Issues', 'route' => 'dashboard'],
 ]" />

@@ -5,6 +5,6 @@
 --}}
 
 <x-sub-navs.tabular-nav :guard="$routePrefix" :items="[
-    ['title' => 'Job Family', 'route' => 'create-job-family'],
-    ['title' => 'Job Title', 'route' => 'create-job-title'],
+    ['title' => 'Job Family', 'route' => 'job-family.create'],
+    ['title' => 'Job Title', 'route' => 'job-title.create'],
 ]" />

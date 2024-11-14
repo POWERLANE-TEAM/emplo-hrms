@@ -102,6 +102,8 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::CREATE_ANNOUNCEMENT->value,
             UserPermission::CREATE_EMPLOYEE_ACCOUNT->value,
             UserPermission::CREATE_BULK_EMPLOYEE_ACCOUNT->value,
+            UserPermission::CREATE_JOB_FAMILY->value,
+            UserPermission::CREATE_JOB_TITLE->value,
     
             // Update cases goes here
     

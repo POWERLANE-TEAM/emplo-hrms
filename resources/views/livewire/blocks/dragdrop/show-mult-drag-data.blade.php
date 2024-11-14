@@ -1,6 +1,6 @@
 <div id="sortable-list" class="list-group">
     @foreach($items as $index => $item)
-        @if(is_array($item) && isset($item['data-one'], $item['data-two']))
+        @if(is_array($item) && isset($item['head'], $item['subhead']))
             <div class="list-group-item d-flex align-items-center mb-2 border border-secondary py-2 px-3 rounded"
                  draggable="true"
                  ondragstart="handleDragStart(event, this, '{{ $index }}')"
@@ -10,13 +10,13 @@
 
                 <!-- Render prepared HTML for dataOne and dataTwo -->
                 <div class="col-10 p-2">
-                    {!! $dataOneHtml[$index] ?? $item['data-one'] !!}
-                    {!! $dataTwoHtml[$index] ?? $item['data-two'] !!}
+                    {!! $head[$index] ?? $item['head'] !!}
+                    {!! $subhead[$index] ?? $item['subhead'] !!}
                 </div>
 
                 <div class="d-flex col-2 justify-content-end">
                     <button class="btn no-hover-border me-2"
-                        @if($editCallback) onclick="{{ $editCallback }}('{{ $item['data-one'] }}', {{ $index }}, '{{ $item['data-two'] }}')" @endif
+                        @if($editCallback) onclick="{{ $editCallback }}('{{ $item['head'] }}', {{ $index }}, '{{ $item['subhead'] }}')" @endif
                         data-bs-toggle="tooltip" title="Edit">
                         <i class="icon p-1 mx-2 text-info" data-lucide="pencil"></i>
                     </button>

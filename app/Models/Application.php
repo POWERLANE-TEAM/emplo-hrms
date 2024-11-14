@@ -53,16 +53,6 @@ class Application extends Model
     }
 
     /**
-     * Get the examination associated with the job application.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function exam(): HasOne
-    {
-        return $this->hasOne(ApplicationExam::class, 'application_id', 'application_id');
-    }
-
-    /**
      * Get the vacancy of the job application.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

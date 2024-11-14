@@ -13,8 +13,8 @@ class PerformanceRating extends Model
     protected $primaryKey = 'perf_rating_id';
 
     protected $fillable = [
+        'perf_rating',
         'perf_rating_name',
-        'perf_rating_desc',
     ];
 
     /**
