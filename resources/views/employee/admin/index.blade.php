@@ -25,54 +25,73 @@
 
 @section('content')
 <hgroup class="mb-5 ms-n1">
-    <div class="fs-2 fw-bold mb-2">Good afternoon, {{ auth()->user()->account->first_name }}!</div>
+    <div class="fs-2 pt-3 fw-bold mb-2">Good afternoon, {{ auth()->user()->account->first_name }}!</div>
     <p>It is <time datetime="{{ now() }}"> {{ \Carbon\Carbon::now()->format('l, d F') }}</time></p>
 </hgroup>
+
+
 <section role="navigation" aria-label="Quick Links" class="mb-5 row">
-    <div class="col-md-4">
-        <div class="card bg-body-secondary border-0 px-md-5 py-4" role="none" aria-describedby="applicants-nav-desc">
-            <x-nav-link href="#" class="unstyled">
-                <div class="mb-3">
-                    <span></span>
-                    <div class="fs-4 fw-bold">Applicants</div>
+    <div class="col-md-3">
+        <div class="card bg-body-secondary border-0 py-4 card-start-border-teal">
+            <div class="row">
+                <div class="col-md-3 icons-container">
+                    <img class="icons-row-card"
+                        src="{{ Vite::asset('resources/images/illus/dashboard/active-accs.webp') }}" alt="">
                 </div>
-                <div class="card-text" id="applicants-nav-desc">
-                    Review and verify candidates, resume and documents.
+                <div class="col-md-7 mx-2">
+                    <p class="fw-medium fs-7 text-opacity-25">Active Accounts</p>
+                    <p class="fw-semibold fs-3">40</p>
                 </div>
-            </x-nav-link>
+            </div>
         </div>
     </div>
 
-    <div class="col-md-4">
-        <div class="card bg-primary text-white border-0 px-md-5 py-4" role="none">
-            <a href="{{ route('admin.system.pulse') }}" target="_blank" class="unstyled">
-                <div class="mb-3">
-                    <span></span>
-                    <div class="fs-4 fw-bold text-white">Laravel Pulse</div>
+    <div class="col">
+        <div class="card bg-body-secondary border-0 py-4 card-start-border-green" role="none">
+            <div class="row">
+                <div class="col-md-3 icons-container">
+                    <img class="icons-row-card"
+                        src="{{ Vite::asset('resources/images/illus/dashboard/online-users.webp') }}" alt="">
                 </div>
-                <div class="card-text text-white" id="leaves-nav-desc">
-                    Check the app's performance and usage via Laravel Pulse.
+                <div class="col-md-7 mx-2">
+                    <p class="fw-medium fs-7 text-opacity-25">Online Users</p>
+                    <p class="fw-semibold fs-3">12</p>
                 </div>
-            </a>
+            </div>
         </div>
     </div>
 
-    <div class="col-md-4">
-        <div class="card bg-body-secondary border-0 px-md-5 py-4" role="none" aria-describedby="attendance-nav-desc">
-            <x-nav-link href="#" class="unstyled">
-                <div class="mb-3">
-                    <span></span>
-                    <div class="fs-4 fw-bold">Attendance</div>
+    <div class="col">
+        <div class="card bg-body-secondary border-0 py-4 card-start-border-blue" role="none" aria-describedby="attendance-nav-desc">
+            <div class="row">
+                <div class="col-md-3 icons-container">
+                    <img class="icons-row-card"
+                        src="{{ Vite::asset('resources/images/illus/dashboard/total-users.webp') }}" alt="">
                 </div>
-                <div class="card-text" id="attendance-nav-desc">
-                    Monitor employees attendance, absence, and workday hours.
+                <div class="col-md-7 mx-2">
+                    <p class="fw-medium fs-7 text-opacity-25">Total Users</p>
+                    <p class="fw-semibold fs-3">52</p>
                 </div>
-            </x-nav-link>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="card bg-body-secondary border-0 py-4 card-start-border-purple" role="none"
+            aria-describedby="attendance-nav-desc">
+            <div class="row">
+                <div class="col-md-3 icons-container">
+                    <img class="icons-row-card"
+                        src="{{ Vite::asset('resources/images/illus/dashboard/last-24-hours.webp') }}" alt="">
+                </div>
+                <div class="col-md-7 mx-2">
+                    <p class="fw-medium fs-7 text-opacity-25">Logins Within 24h</p>
+                    <p class="fw-semibold fs-3">40</p>
+                </div>
+            </div>
         </div>
     </div>
 </section>
-
-<livewire:admin.dashboard.online-users />
 
 <section class="mb-5">
     <header class="fs-4 fw-bold mb-4" role="heading" aria-level="2">
@@ -81,13 +100,14 @@
 
 
     <div class="d-flex mb-5 row">
+        <!-- Laravel Pulse -->
         <div class="col-md-7">
-            <a href="{{ route('admin.system.pulse') }}" target="_blank" class="unstyled">
+            <x-nav-link href="{{ route('admin.system.pulse') }}" class="unstyled">
                 <div class="card p-4 pulse-card">
                     <div class="row">
                         <div class="col-md-7">
                             <div class="p-3">
-                                <div class="fs-2 fw-bold text-primary card-cont-green-hover">Laravel</div>
+                                <div class="fs-2 fw-bold text-primary card-cont-green-hover">Laravel Pulse</div>
                                 <div class="fs-5 fw-regular card-cont-green-hover">Check the system’s performance and
                                     usage via Laravel Pulse.</div>
                             </div>
@@ -102,7 +122,7 @@
                         </div>
                     </div>
                 </div>
-            </a>
+            </x-nav-link>
         </div>
 
 
@@ -113,6 +133,8 @@
     </div>
 
 </section>
+
+<livewire:admin.dashboard.online-users />
 
 <section class="mb-5">
     <header class="fs-4 fw-bold text-primary mb-4" role="heading" aria-level="2">
