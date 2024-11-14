@@ -1,0 +1,63 @@
+@import '../../utils';
+@import '../../icon-sizing';
+@import '../../icon/lucide';
+@import '../side-top-bar';
+@import '../../font/text-colors';
+@import '../../footer';
+
+
+.pulse-card {
+    
+}
+
+.pulse-card:hover {
+    background-color: var(--main-green) !important;
+}
+
+/* Position the image container relative to contain the absolutely positioned GIF */
+.image-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Ensures any overflow is hidden */
+}
+
+/* Set initial styles for images */
+.image-container img {
+    width: 60%; /* Control the size */
+    opacity: 1;
+    transition: opacity 0.4s ease, transform 0.4s ease; /* Smooth fade and zoom */
+}
+
+/* Hide the animated image initially with opacity */
+.image-container .animated-image {
+    position: absolute;
+    opacity: 0;
+    width: 50%; /* Keep both images the same size */
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* Make the static image disappear smoothly on hover */
+.pulse-card:hover .image-container .static-image {
+    opacity: 0;
+    transform: scale(1.05); /* Slight zoom on hover for static image */
+}
+
+/* Make the animated image appear smoothly on hover */
+.pulse-card:hover .image-container .animated-image {
+    opacity: 1;
+    transform: scale(1); /* Restore scale for animated image */
+}
+
+/* Smooth color transition for text */
+.card-cont-green-hover {
+    transition: color 0.4s ease;
+}
+
+/* Change text color to white on hover */
+.pulse-card:hover .card-cont-green-hover {
+    color: white;
+}
+
+
