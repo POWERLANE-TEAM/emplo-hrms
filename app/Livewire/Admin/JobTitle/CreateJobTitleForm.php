@@ -35,8 +35,6 @@ class CreateJobTitleForm extends Component
 
         $this->validate();
 
-        // collect($this->jobQualifications)->
-
         DB::transaction(function () {
             $jobTitle = JobTitle::create([
                 'job_title' => $this->jobTitleName,
