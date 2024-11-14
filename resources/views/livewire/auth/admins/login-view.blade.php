@@ -1,4 +1,4 @@
-@extends('components.layout.app', ['description' => 'Guest Layout'])
+@extends('components.layout.employee.layout')
 
 @section('head')
 <title>Sign in as Admin</title>
@@ -29,11 +29,11 @@
 @endPushOnce
 
 @section('before-nav')
-<x-layout.guest.secondary-bg />
+<x-layout.employee.nav.secondary-bg />
 @endsection
 
 @section('header-nav')
-<x-layout.guest.secondary-header />
+<x-layout.employee.nav.secondary-header />
 @endsection
 
 @section('content')

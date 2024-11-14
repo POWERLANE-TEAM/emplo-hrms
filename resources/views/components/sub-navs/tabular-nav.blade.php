@@ -18,7 +18,7 @@
                 {{ $item['title'] }}
             </span>
         @else
-            <a href="{{ route($routePrefix . '.' . $item['route']) }}" class="fw-light text-muted text-decoration-none me-4 mb-0">
+            <a wire:navigate href="{{ route($routePrefix . '.' . $item['route']) }}" class="fw-light text-muted text-decoration-none me-4 mb-0">
                 {{ $item['title'] }}
             </a>
         @endif

@@ -38,57 +38,17 @@
 
 <x-headings.main-heading :isHeading="true">
     <x-slot:heading>
-        Configure Performance Evaluation
+        {{ __('Configure Performance Evaluation') }}
     </x-slot:heading>
 
     <x-slot:description>
-        Add, edit or remove performance evaluations elements.
+        {{ __('Add, edit or remove performance evaluations elements.') }}
     </x-slot:description>
 </x-headings.main-heading>
 
 @include('components.includes.tab_navs.perf-eval-navs')
 
-<section>
-
-    <p>The assigned numerical ratings used to rate an employee’s performance in a category.</p>
-
-
-    {{-- Placeholder datas. Need to be mounted properly from the db. --}}
-    @php
-        $placeholderItems = [
-            ['data-one' => '1', 'data-two' => 'Needs Improvement'],
-            ['data-one' => '2', 'data-two' => 'Meets Expectations'],
-            ['data-one' => '3', 'data-two' => 'Exceeds Expectations'],
-            ['data-one' => '4', 'data-two' => 'Outstanding']
-        ]; // Replace this with data fetched from db
-    @endphp
-
-
-    {{-- Customization of the data rendering in the table --}}
-    @php
-        $dataOneHtml = array_map(function ($item) {
-            return "<span class='fw-bold text-primary'>{$item['data-one']} =</span>";
-        }, $placeholderItems);
-
-        $dataTwoHtml = array_map(function ($item) {
-            return "<span class='text-muted'>{$item['data-two']}</span>";
-        }, $placeholderItems);
-    @endphp
-
-
-    {{-- Draggable Grid Table --}}
-    @livewire('blocks.dragdrop.show-mult-drag-data', [
-    'items' => $placeholderItems,
-    'dataOneHtml' => $dataOneHtml,
-    'dataTwoHtml' => $dataTwoHtml,
-    'editCallback' => 'openEditPerfScalesModal'
-])
-
-
-    {{-- Add Category Button --}}
-    <x-buttons.dotted-btn-open-modal label="Add Performance Scale" modal="addPerfScale" :disabled="false" />
-</section>
-
+<livewire:admin.config.performance.rating-scales />
 
 @endsection
 

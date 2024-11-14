@@ -10,35 +10,30 @@ class ShowMultDragData extends Component
     public $items = [];
 
     public $editCallback;
-    public $dataOneHtml;
-    public $dataTwoHtml;
+    public $head;
+    public $subhead;
 
-    public function mount($items, $editCallback = null, $dataOneHtml = null, $dataTwoHtml = null)
+    public function mount($items, $editCallback = null, $head = null, $subhead = null)
     {
         $this->items = $items;
         $this->editCallback = $editCallback;
-        $this->dataOneHtml = $dataOneHtml;
-        $this->dataTwoHtml = $dataTwoHtml;
+        $this->head = $head;
+        $this->subhead = $subhead;
     }
-
 
     public function addItems($allitems)
     {
         $this->items[] = $allitems;
     }
 
-
-    // Saving Changes (From the Edit dialogue)
     public function saveChanges($itemName, $index)
     {
-        // Logic to save the changes made to the item
         if ($index !== null) {
-            $this->items[$index] = $itemName; // Update the item in the list
-            $this->emit('itemUpdated'); // Optional: Emit an event if you want to listen for updates elsewhere
+            $this->items[$index] = $itemName;
+            $this->emit('itemUpdated');
         }
     }
 
-    // Swapping of datas in the Grid
     public function moveUp($index)
     {
         if ($index > 0) {
@@ -48,12 +43,7 @@ class ShowMultDragData extends Component
 
     public function updateItems($newOrder)
     {
-        // Update the items array based on the new order received
         $this->items = $newOrder;
-
-        // Optionally, you can save the new order to the database here
-        // For example, if you have a model for this data
-        // YourModel::updateOrder($this->items);
     }
 
     public function moveDown($index)
