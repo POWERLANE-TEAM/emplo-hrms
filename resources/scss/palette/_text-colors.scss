@@ -4,6 +4,7 @@
     --main-white: #fff;
     --main-black: #000;
     --main-muted-gray: #f6f6f6;
+    --info-blue: #0096DA;
     --main-container-px: clamp(1.25rem, 5dvw, 30dvw);
 }
 
@@ -18,3 +19,14 @@
 .black-hover:hover {
     color: var(--main-black) !important;
 }
+
+.hover-opacity:hover {
+    opacity: 0.5 !important;
+}
+
+a.text-link-blue {
+    color: var(--info-blue);
+    text-decoration: underline;
+    font-weight: 500;
+}
+
