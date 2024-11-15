@@ -35,13 +35,11 @@ class ApplicantsTable extends DataTableComponent
 
     public function configure(): void
     {
-        $routePrefix = RoutePrefix::getByRequest() ?? RoutePrefix::getByReferrer();
+        $routePrefix = auth()->user()->account_type;
 
         $this->setPrimaryKey('application_id')
             ->setTableRowUrl(function ($row) use ($routePrefix) {
-                if ($routePrefix != '') {
-                    return route('employee.application.show', $row);
-                }
+                return route($routePrefix . '.application.show', $row);
             });
 
         $this->setEagerLoadAllRelationsEnabled();
