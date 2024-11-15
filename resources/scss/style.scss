@@ -211,3 +211,14 @@ div:has(iframe, .btn-full-screen) {
 iframe body {
     background-color: red;
 }
+
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"] {
+    &:not(:focus):not(.has-value):before {
+        @media screen and (max-width: 576px) {
+            color: inherit;
+            content: attr(placeholder);
+        }
+    }
+}
