@@ -1,7 +1,11 @@
 @extends('components.layout.employee.layout', ['description' => 'Employee Dashboard', 'nonce' => $nonce])
 
+@php
+    $subPage = 'Pending';
+@endphp
+
 @section('head')
-    <title>Home Page</title>
+    <title>{{ $subPage }} Applicants</title>
     <script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
     <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 @endsection
@@ -11,7 +15,7 @@
 @endPushOnce
 
 @pushOnce('scripts')
-    @vite(['resources/js/employee/hr-manager/applicants.js'])
+    @vite(['resources/js/employee/applicants.js'])
     <!-- Adds the Core Table Styles -->
     @rappasoftTableStyles
 
