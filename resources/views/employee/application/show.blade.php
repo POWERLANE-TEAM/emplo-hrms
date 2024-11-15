@@ -2,21 +2,24 @@
     $nonce = csp_nonce();
 @endphp
 
-@extends('components.layout.employee.layout', ['description' => 'Employee Dashboard', 'nonce' => $nonce, 'main_cont_class' => 'mb-0'])
+@php
+    $applicantName = $application->applicant->fullname;
+@endphp
+
+@extends('components.layout.employee.layout', ['description' => 'Employee Dashboard', 'nonce' => $nonce])
 
 @section('head')
-    <title>Home Page</title>
+    <title>Applicant Profile | {{ $applicantName }}</title>
     <script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
     <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 @endsection
 
 @pushOnce('pre-scripts')
-    <script src="https://cdn.jsdelivr.net/npm/chart.js" nonce="{{ $nonce }}"></script>
+    {{--  --}}
 @endPushOnce
 
 @pushOnce('scripts')
-    <script src="{{ Vite::asset('resources/js/forms/nbp.min.js') }}" defer></script>
-    @vite(['resources/js/employee/hr-manager/dashboard.js'])
+    @vite(['resources/js/employee/applicants.js'])
 @endPushOnce
 
 @pushOnce('styles')
@@ -26,10 +29,10 @@
 @section('content')
     <x-breadcrumbs>
         <x-slot:breadcrumbs>
-            <x-breadcrumb :href="route($routePrefix . '.applicants')">
+            <x-breadcrumb :href="route($routePrefix . '.applications')">
                 Applicants
             </x-breadcrumb>
-            <x-breadcrumb :active="request()->routeIs($routePrefix . '.applicant.*')">
+            <x-breadcrumb :active="request()->routeIs($routePrefix . '.application.*')">
                 Applicant Profile
             </x-breadcrumb>
         </x-slot:breadcrumbs>
@@ -45,5 +48,10 @@
         </x-slot:description>
     </x-headings.main-heading>
 
-    @livewire('employee.applicants.show', ['application' => $application])
+    @php
+        $modalId = 'application-approve-modal';
+    @endphp
+
+    @livewire('employee.applicants.show', ['application' => $application, 'modalId' => $modalId])
+    @livewire('employee.modal.applicant.resume.approve', ['application' => $application, 'modalId' => $modalId])
 @endsection
