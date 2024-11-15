@@ -1,27 +1,29 @@
-{{-- 
-* |-------------------------------------------------------------------------- 
-* | Boxed: Date Input Field 
-* |-------------------------------------------------------------------------- 
+{{--
+* |--------------------------------------------------------------------------
+* | Boxed: Date Input Field
+* |--------------------------------------------------------------------------
 --}}
 
-@props(['label', 'nonce', 'required' => false,])
+@props(['label', 'nonce'])
 
 <label for="{{ $attributes->get('id') }}" class="mb-1 fw-semibold text-secondary-emphasis">
     {{ $label }}
-    {{-- Conditionally display the red asterisk for required fields --}}
-    @if($required)
+    {{-- Conditionally display the red asterisk if the required attribute is present --}}
+    @if ($attributes->has('required'))
         <span class="text-danger">*</span>
     @endif
 </label>
 <div class="input-group mb-3 position-relative">
     <!-- Date input with boxed styling -->
-    <input 
-        type="date" 
-        @if($attributes->has('name')) wire:model="{{ $attributes->get('name') }}" @endif 
+    <input type="{{ $attributes->get('type', 'date') }}"
+        @if ($attributes->has('name')) wire:model="{{ $attributes->get('name') }}" @endif
         {{ $attributes->merge([
             'class' => 'form-control border ps-3 rounded',
             'autocomplete' => $attributes->get('autocomplete', 'off'),
-            'placeholder' => $attributes->get('placeholder', '')
-        ]) }} 
+            'placeholder' => $attributes->get('placeholder', ''),
+        ]) }}
         nonce="{{ $nonce }}">
+    @if (!empty($feedback))
+        {{ $feedback }}
+    @endif
 </div>
