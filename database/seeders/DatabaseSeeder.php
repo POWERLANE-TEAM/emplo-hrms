@@ -2,15 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Department;
-use App\Models\EmploymentStatus;
-use App\Models\JobDetail;
-use App\Models\JobFamily;
-use App\Models\JobLevel;
-use App\Models\JobVacancy;
-use App\Models\SpecificArea;
 use Illuminate\Database\Seeder;
-use Spatie\Permission\PermissionRegistrar;
 
 class DatabaseSeeder extends Seeder
 {
@@ -19,44 +11,44 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Reset cached roles and permissions
-        app()[PermissionRegistrar::class]->forgetCachedPermissions();
-
         $this->call(UserStatusSeeder::class);
 
         $this->call(ApplicationStatusSeeder::class);
 
         $this->call(RolesAndPermissionsSeeder::class);
 
+        $this->call(ShiftSeeder::class);
+
         $this->call(PsgcSeeder::class);
 
-        EmploymentStatus::factory(10)->create();
+        $this->call(EmploymentStatusSeeder::class);
 
-        Department::factory(rand(4, env('APP_SEEDING_COUNT', 25)))->create();
+        $this->call(DepartmentSeeder::class);
 
         $this->call(JobTitleSeeder::class);
 
-        JobLevel::factory(rand(4, env('APP_SEEDING_COUNT', 25)))->create();
+        $this->call(JobLevelSeeder::class);
 
-        JobFamily::factory(rand(4, env('APP_SEEDING_COUNT', 25)))->create();
+        $this->call(SpecificAreaSeeder::class);
 
-        SpecificArea::factory(rand(4, env('APP_SEEDING_COUNT', 25)))->create();
+        $this->call(JobFamilySeeder::class);
 
-        JobDetail::factory(rand(4, env('APP_SEEDING_COUNT', 25)))->create();
+        $this->call(BasicUserSeeder::class);
 
-        $this->call(BasicRoleSeeder::class);
+        $this->call(IntermediateUserSeeder::class);
 
-        $this->call(IntermediateRoleSeeder::class);
+        $this->call(AdvancedUserSeeder::class);
 
-        $this->call(AdvancedRoleSeeder::class);
-
-        JobVacancy::factory(rand(4, env('APP_SEEDING_COUNT', 25)))->create();
+        $this->call(JobVacancySeeder::class);
 
         $this->call(PreempRequirementSeeder::class);
 
-        $this->call(ApplicantSeeder::class, false, ['count' => env('APP_USER_SEEDING_COUNT', 100)]);
+        $this->call(PerformanceCategorySeeder::class);
 
-        // update cache to know about the newly created permissions (required if using WithoutModelEvents in seeders)
-        app()[PermissionRegistrar::class]->forgetCachedPermissions();
+        $this->call(PerformanceRatingSeeder::class);
+
+        $this->call(PerformancePeriodSeeder::class);
+
+        // $this->call(ApplicantSeeder::class, false, ['count' => env('APP_USER_SEEDING_COUNT', 20)]);
     }
 }

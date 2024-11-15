@@ -6,7 +6,7 @@
 
 @props(['label', 'options' => [], 'nonce', 'required' => false,])
 
-<label for="{{ $attributes->get('id') }}" class="mb-1 fw-semibold">
+<label for="{{ $attributes->get('id') }}" class="mb-1 fw-semibold text-secondary-emphasis">
     {{ $label }}
     {{-- Conditionally display the red asterisk for required fields --}}
     @if($required)
@@ -18,7 +18,7 @@
     <select 
         @if($attributes->has('name')) wire:model="{{ $attributes->get('name') }}" @endif 
         {{ $attributes->merge([
-            'class' => 'form-control border ps-3 rounded pe-5',
+            'class' => 'form-control form-select border ps-3 rounded pe-5',
             'autocomplete' => $attributes->get('autocomplete', 'off'),
         ]) }} 
         nonce="{{ $nonce }}">
@@ -27,6 +27,4 @@
             <option value="{{ $value }}">{{ $optionLabel }}</option>
         @endforeach
     </select>
-    
-    <i data-lucide="chevron-down" class="icon-large position-absolute end-0 top-50 translate-middle-y me-2"></i> {{-- Adjust positioning as needed --}}
 </div>

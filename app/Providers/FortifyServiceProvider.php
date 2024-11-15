@@ -42,14 +42,22 @@ class FortifyServiceProvider extends ServiceProvider
         {
             public function toResponse($request)
             {
+                $redirectUrl = match (RoutePrefix::getByReferrer()) {
+                    'employee' => '/employee/login',
+                    'admin' => '/admin/login',
+                    default => '/login',
+                };
+
                 try {
-                    broadcast(new UserLoggedout($request->authBroadcastId))->toOthers();
+                    broadcast(new UserLoggedout($request->authBroadcastId, $redirectUrl))->toOthers();
                 } catch (\Throwable $th) {
                     // avoid Pusher error: cURL error 7: Failed to connect to localhost port 8080 after 2209 ms: Couldn't connect to server
                     /* when websocket server is not started */
-                }
 
-                return redirect('/');
+                    Log::error('Broadcast error: ' . $th);
+                } finally {
+                    return redirect($redirectUrl);
+                }
             }
         });
 
@@ -58,13 +66,6 @@ class FortifyServiceProvider extends ServiceProvider
             public function toResponse($request)
             {
                 $authUser = Auth::user();
-
-                // if (! Auth::user()->hasRole(UserRole::ADVANCED)) {
-
-                //     Auth::logout();
-
-                //     session(['forbidden' => __('You\'re trying to access a forbidden resource.')]);
-                // }
 
                 // Redirection to previously visited page before being prompt to login
                 // For example you visit /employee/payslip and you are not logged in
@@ -136,11 +137,7 @@ class FortifyServiceProvider extends ServiceProvider
 
         Fortify::authenticateUsing(function (Request $request) {
 
-            // Log::info('Request', ['request' => $request]);
-
             $routePrefix = RoutePrefix::getByRequest($request);
-
-            Log::info("Request  $routePrefix");
 
             $user = User::where('email', $request->email)->first();
 
@@ -158,8 +155,6 @@ class FortifyServiceProvider extends ServiceProvider
                 $user &&
                 Hash::check($request->password, $user->password)
             ) {
-                Log::info('Success ');
-
                 return $user;
             }
         });

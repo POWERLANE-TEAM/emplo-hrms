@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\GuardType;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -22,6 +21,8 @@ class User extends Authenticatable implements MustVerifyEmail
     use TwoFactorAuthenticatable;
 
     protected $primaryKey = 'user_id';
+
+    protected $guard_name = 'web';
 
     /**
      * The attributes that are not mass assignable.

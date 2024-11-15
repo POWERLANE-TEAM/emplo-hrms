@@ -2,7 +2,10 @@
 
 namespace Database\Factories;
 
+use App\Enums\Sex;
+use App\Models\Shift;
 use App\Models\JobDetail;
+use App\Enums\CivilStatus;
 use App\Models\Application;
 use App\Models\EmploymentStatus;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -46,15 +49,16 @@ class EmployeeFactory extends Factory
             'last_name' => fake()->lastName,
             'application_id' => Application::factory(),
             'job_detail_id' => JobDetail::factory(),
-            'emp_status_id' => EmploymentStatus::factory(),
+            'shift_id' => Shift::inRandomOrder()->first()->shift_id,
+            'emp_status_id' => EmploymentStatus::inRandomOrder()->first()->emp_status_id,
             'present_barangay' => fake()->randomNumber(1, 9),
             'permanent_barangay' => fake()->randomNumber(1, 9),
             'present_address' => fake()->streetName(),
             'permanent_address' => fake()->streetName(),
             'contact_number' => fake()->unique()->numerify('+63########'),
             'date_of_birth' => fake()->date,
-            'sex' => fake()->randomElement(['MALE', 'FEMALE']),
-            'civil_status' => fake()->randomElement(['SINGLE', 'MARRIED', 'WIDOWED', 'LEGALLY SEPARATED']),
+            'sex' => fake()->randomElement(array_map(fn ($case) => $case->value, Sex::cases())),
+            'civil_status' => fake()->randomElement(array_map(fn ($case) => $case->value, CivilStatus::cases())),
             'sss_no' => fake()->numerify('##########'),
             'philhealth_no' => fake()->numerify('############'),
             'tin_no' => fake()->numerify('############'),

@@ -4,6 +4,7 @@ $prefix: bs-;
 
 :root {
     --main-green: #61b000;
+    --main-green-transparent: rgba(97, 176, 0, 0.5);
     --main-lime: #EEEE13;
     --main-white: #fff;
     --main-muted-gray: #f6f6f6;
@@ -16,7 +17,7 @@ $primary: #61b000;
 $secondary: #d9d9d9;
 $success: #61b000;
 $info: #006390;
-$warning: #f50000;
+$warning: #FD7E14;
 $danger: #f50000;
 // $light:         $gray-100 ;
 // $dark:          $gray-900 ;
@@ -244,6 +245,7 @@ a.unstyled {
     font-size: .8rem !important;
 }
 
+
 .no-drag {
     user-drag: none;
     user-select: none;
@@ -251,6 +253,74 @@ a.unstyled {
     -webkit-user-drag: none;
     -webkit-user-select: none;
     -ms-user-select: none;
+}
+
+.underline-padded {
+    padding-bottom: 3px; 
+    border-bottom: 3px solid var(--main-green);
+    display: inline-block;
+}
+
+.border-dashed {
+    padding: .5rem;
+    border: 2px dashed var(--main-green);
+    color: var(--main-green);
+}
+
+.border-dashed:hover {
+    border-color: var(--main-green-transparent) !important; 
+    color: var(--main-green-transparent) !important;
+}
+
+.no-hover-border {
+    border: none;
+    outline: none; 
+    box-shadow: none; 
+}
+
+.no-hover-border:hover,
+.no-hover-border:active {
+    border: none; 
+}
+
+.list-group-item.drag-over {
+    border: 2px solid var(--main-green) !important; 
+    background-color: transparent; 
+}
+
+.list-group-item+.list-group-item {
+    border-top-width: 2px;
+}
+
+.green-divider {
+    height: 2px;
+    background-color: var(--main-green);
+}
+
+.hidden-until-load {
+    opacity: 0;
+}
+
+.border-bottom {
+    border: none !important;
+    border-bottom: 2px solid var(--bs-secondary) !important;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  
+    &:focus {
+        border-bottom: 2px solid var(--bs-primary) !important;
+        box-shadow: none !important;
+        outline: none;
+    }
+
+    &.is-invalid {
+        border-bottom: 2px solid var(--bs-danger) !important;
+        box-shadow: none !important; 
+    
+        &:focus {
+            border-bottom: 2px solid var(--bs-danger) !important;
+            box-shadow: none !important; 
+        }
+      }
 }
 
 body {

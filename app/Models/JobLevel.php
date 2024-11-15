@@ -11,6 +11,8 @@ class JobLevel extends Model
     use HasFactory;
 
     protected $primaryKey = 'job_level_id';
+    
+    public $timestamps = false;
 
     protected $fillable = [
         'job_level',

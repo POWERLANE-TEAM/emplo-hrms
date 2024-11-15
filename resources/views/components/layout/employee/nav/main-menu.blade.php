@@ -54,10 +54,10 @@
                             aspect-ratio="{{ $icon_ratio }}" src="{{ $userPhoto ?? $defaultAvatar }}"
                             onerror="this.onerror=null;this.src='http://placehold.it/45/45';" alt="">
                     </button>
-                    <ul id="dropdown-menu" class="dropdown-menu dropdown-menu-end">
-                        <li class="dropdown-item">Profile</li>
-                        <li class="dropdown-item">Settings</li>
-                        <li class="dropdown-item">@livewire('auth.logout')</li>
+                    <ul id="dropdown-menu" class="dropdown-menu dropdown-menu-end" role="menu">
+                        <a href="{{ route($routePrefix.'.profile') }}"><li class="dropdown-item" role="button">Profile</li></a>
+                        <li class="dropdown-item" role="button">Settings</li>
+                        <li class="dropdown-item" role="button">@livewire('auth.logout')</li>
                     </ul>
                 </div>
             </div>

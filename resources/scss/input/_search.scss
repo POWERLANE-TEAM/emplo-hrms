@@ -26,12 +26,12 @@
     }
 
     &>:not(input[type="search"], input.search) {
-        // background-color: initial;
-        border: none;
+        background-color: initial;
+        // border: none;
 
         &.input-group-text {
             background-color: transparent;
-            border: none;
+            // border: none;
 
             &.icon.overlap {
                 position: absolute;

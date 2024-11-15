@@ -1,5 +1,6 @@
 
 import '../script.js';
+import '../animations/texts-effect.js';
 import initLucideIcons from '../icons/lucide.js';
 import addGlobalScrollListener, { documentScrollPosY } from '../global-scroll-fn.js';
 import addGlobalListener, { GlobalListener } from '../global-event-listener.js';

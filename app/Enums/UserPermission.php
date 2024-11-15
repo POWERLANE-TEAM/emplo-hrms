@@ -17,6 +17,8 @@ enum UserPermission: string
     case CREATE_EMPLOYEE_ACCOUNT = 'create employee account';
     case CREATE_BULK_EMPLOYEE_ACCOUNT = 'create bulk employee accounts';
     case CREATE_PRE_EMPLOYMENT_DOCUMENT = 'create pre employment document';
+    case CREATE_JOB_FAMILY = 'create job family';
+    case CREATE_JOB_TITLE = 'create job title';
 
         // View cases goes here
     case VIEW_APPLICANT_INFORMATION = 'view applicant information';
@@ -50,6 +52,7 @@ enum UserPermission: string
     case VIEW_ANNOUNCEMENT_MANAGER = 'view announcement manager';
     case VIEW_PERFORMANCE_CONFIG = 'view performance configurator';
     case VIEW_FORM_CONFIG = 'view form configurator';
+    case VIEW_ONLINE_USERS = 'view online users';
 
 
         // Update cases goes here
@@ -77,6 +80,8 @@ enum UserPermission: string
             self::CREATE_EMPLOYEE_ACCOUNT => 'Create an employee account ',
             self::CREATE_BULK_EMPLOYEE_ACCOUNT => 'Create employee accounts',
             self::CREATE_PRE_EMPLOYMENT_DOCUMENT => 'Create pre-employment document',
+            self::CREATE_JOB_FAMILY => 'Create job family',
+            self::CREATE_JOB_TITLE => 'Create job title',
 
             // View labels goes here
             self::VIEW_APPLICANT_INFORMATION => 'View applicant/s information',
@@ -110,6 +115,7 @@ enum UserPermission: string
             self::VIEW_ANNOUNCEMENT_MANAGER => 'View announcement manager',
             self::VIEW_PERFORMANCE_CONFIG => 'View performance configurator',
             self::VIEW_FORM_CONFIG => 'View form configurator',
+            self::VIEW_ONLINE_USERS => 'Monitor online users',
 
             // Update labels goes here
             self::UDPATE_JOB_LISTING => 'Update job listing/s',

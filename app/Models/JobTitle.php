@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class JobTitle extends Model
@@ -16,6 +17,7 @@ class JobTitle extends Model
     protected $fillable = [
         'job_title',
         'job_desc',
+        'department_id',
         'vacancy',
     ];
 
@@ -63,46 +65,12 @@ class JobTitle extends Model
     }
 
     /**
-     * The soft skills that belong to the job title.
+     * Get the qualifications associated with the job title.
      * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function softSkills(): BelongsToMany
+    public function qualifications(): HasMany
     {
-        return $this->belongsToMany(SoftSkill::class, 'job_soft_skills', 'job_title_id', 'soft_skill_id')
-            ->withTimestamps();
-    }
-
-    /**
-     * The hard skills that belong to the job title.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function hardSkills(): BelongsToMany
-    {
-        return $this->belongsToMany(HardSkill::class, 'job_hard_skills', 'job_title_id', 'hard_skill_id')
-            ->withTimestamps();
-    }
-
-    /**
-     * The education requirements that belong to the job title.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function educationRequirements(): BelongsToMany
-    {
-        return $this->belongsToMany(EducationRequirement::class, 'job_education_requirements', 'job_title_id', 'education_req_id')
-            ->withTimestamps();
-    }
-
-    /**
-     * The experience requirements that belong to the job title.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function experienceRequirements(): BelongsToMany
-    {
-        return $this->belongsToMany(ExperienceRequirement::class, 'job_education_requirements', 'job_title_id', 'experience_req_id')
-            ->withTimestamps();
+        return $this->hasMany(JobTitleQualification::class, 'job_title_id', 'job_title_id');
     }
 }

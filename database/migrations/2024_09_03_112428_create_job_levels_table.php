@@ -1,12 +1,10 @@
 <?php
 
 use App\Models\Department;
-use App\Models\HardSkill;
 use App\Models\JobDetail;
 use App\Models\JobFamily;
 use App\Models\JobLevel;
 use App\Models\JobTitle;
-use App\Models\SoftSkill;
 use App\Models\SpecificArea;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -21,10 +19,9 @@ return new class extends Migration
     {
         Schema::create('job_levels', function (Blueprint $table) {
             $table->id('job_level_id');
-            $table->integer('job_level');
+            $table->integer('job_level')->unique();
             $table->string('job_level_name');
             $table->longText('job_level_desc')->nullable();
-            $table->timestamps();
         });
 
         Schema::create('job_titles', function (Blueprint $table) {
@@ -34,54 +31,6 @@ return new class extends Migration
 
             $table->foreignIdFor(Department::class, 'department_id')
                 ->constrained('departments', 'department_id')
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
-
-            $table->timestamps();
-        });
-
-        Schema::create('soft_skills', function (Blueprint $table) {
-            $table->id('soft_skill_id');
-            $table->string('soft_skill_name');
-            $table->longText('soft_skill_desc')->nullable();
-            $table->timestamps();
-        });
-
-        // pivot table
-        Schema::create('job_soft_skills', function (Blueprint $table) {
-            $table->id('job_soft_skill_id');
-
-            $table->foreignIdFor(JobTitle::class, 'job_title_id')
-                ->constrained('job_titles', 'job_title_id')
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
-
-            $table->foreignIdFor(SoftSkill::class, 'soft_skill_id')
-                ->constrained('soft_skills', 'soft_skill_id')
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
-
-            $table->timestamps();
-        });
-
-        Schema::create('hard_skills', function (Blueprint $table) {
-            $table->id('hard_skill_id');
-            $table->string('hard_skill_name');
-            $table->longText('hard_skill_desc')->nullable();
-            $table->timestamps();
-        });
-
-        // pivot table
-        Schema::create('job_hard_skills', function (Blueprint $table) {
-            $table->id('job_hard_skill_id');
-
-            $table->foreignIdFor(JobTitle::class, 'job_title_id')
-                ->constrained('job_titles', 'job_title_id')
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
-
-            $table->foreignIdFor(HardSkill::class, 'hard_skill_id')
-                ->constrained('hard_skills', 'hard_skill_id')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
@@ -142,10 +91,6 @@ return new class extends Migration
     {
         Schema::dropIfExists('job_levels');
         Schema::dropIfExists('job_titles');
-        Schema::dropIfExists('soft_skills');
-        Schema::dropIfExists('job_soft_skills');
-        Schema::dropIfExists('hard_skills');
-        Schema::dropIfExists('job_hard_skills');
         Schema::dropIfExists('job_families');
         Schema::dropIfExists('job_details');
         Schema::dropIfExists('job_vacancies');

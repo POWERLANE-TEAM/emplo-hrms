@@ -61,4 +61,14 @@ class JobFamily extends Model
         return $this->belongsToMany(SpecificArea::class, 'job_details', 'job_family_id', 'area_id')
             ->withTimestamps();
     }
+
+    /**
+     * Get the announcements that belong/include the job family.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function announcements(): BelongsToMany
+    {
+        return $this->belongsToMany(Announcement::class, 'announcement_details', 'job_family_id', 'announcement_id');
+    }
 }

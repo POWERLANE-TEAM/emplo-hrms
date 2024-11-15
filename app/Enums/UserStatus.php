@@ -5,8 +5,8 @@ namespace App\Enums;
 enum UserStatus: int
 {
     case ACTIVE = 1;
-    case INACTIVE = 2;
-    case SUSPENDED = 3;
+    case SUSPENDED = 2;
+    case NOT_VERIFIED = 3;
 
     /**
      * Return user-friendly user status labels.
@@ -17,8 +17,17 @@ enum UserStatus: int
     {
         return match ($this) {
             self::ACTIVE => 'Active',
-            self::INACTIVE => 'Inactive',
             self::SUSPENDED => 'Suspended',
+            self::NOT_VERIFIED => 'Unverified'
+        };
+    }
+
+    public function description(): string
+    {
+        return match ($this) {
+            self::ACTIVE => 'Account is active',
+            self::SUSPENDED => 'Account is suspended',
+            self::NOT_VERIFIED => 'Account is not verified.'
         };
     }
 }
