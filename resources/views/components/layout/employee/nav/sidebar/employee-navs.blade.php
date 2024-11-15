@@ -79,7 +79,7 @@
 
     {{-- HR Manager --}}
     @can(UserPermission::VIEW_ALL_APPLICANTS)
-        <x-layout.employee.nav.sidebar.nav-item href="{{ route($routePrefix . '.applicants') }}" :active="request()->routeIs($routePrefix . '.applicants')"
+        <x-layout.employee.nav.sidebar.nav-item href="{{ route($routePrefix . '.applications') }}" :active="request()->routeIs($routePrefix . '.applications')"
             class="tw-order-[2]" nav_txt="Applicants" :default_icon="['src' => 'applicants', 'alt' => '']" :active_icon="['src' => 'applicants', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan
