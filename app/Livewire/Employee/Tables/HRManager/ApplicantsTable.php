@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Employee\Tables\HRManager;
 
+use App\Http\Helpers\RoutePrefix;
 use App\Models\Applicant;
 use App\Models\Application;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
@@ -34,7 +35,14 @@ class ApplicantsTable extends DataTableComponent
 
     public function configure(): void
     {
-        $this->setPrimaryKey('application_id');
+        $routePrefix = RoutePrefix::getByRequest() ?? RoutePrefix::getByReferrer();
+
+        $this->setPrimaryKey('application_id')
+            ->setTableRowUrl(function ($row) use ($routePrefix) {
+                if ($routePrefix != '') {
+                    return route('employee.application.show', $row);
+                }
+            });
 
         $this->setEagerLoadAllRelationsEnabled();
 
