@@ -20,8 +20,8 @@ class RolesAndPermissionsSeeder extends Seeder
         $permissions = collect([]);
 
         $allRoles = $permissions->concat($this->basicPermissions())
-                                ->concat($this->intermediatePermissions())
-                                ->concat($this->advancedPermissions());
+            ->concat($this->intermediatePermissions())
+            ->concat($this->advancedPermissions());
 
         $allRoles->each(function (string $name) {
             Permission::firstOrCreate([
@@ -36,7 +36,7 @@ class RolesAndPermissionsSeeder extends Seeder
 
         Role::firstOrCreate(['name' => UserRole::INTERMEDIATE])
             ->givePermissionTo($this->intermediatePermissions());
-            
+
         Role::firstOrCreate(['name' => UserRole::ADVANCED])
             ->givePermissionTo($this->advancedPermissions());
     }
@@ -71,13 +71,16 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::VIEW_TALENT_EVALUATOR->value,
             UserPermission::VIEW_PLAN_GENERATOR->value,
 
-            
-            // Create cases goes here
 
-            
+            // Create cases goes here
+            UserPermission::CREATE_APPLICANT_EXAM_SCHEDULE->value,
+            UserPermission::CREATE_APPLICANT_INIT_INTERVIEW_SCHEDULE->value,
+
+
             // Update cases goes here
-    
-    
+            UserPermission::UPDATE_APPLICATION_STATUS->value,
+
+
             // Delete cases goes here
         ];
     }
@@ -96,16 +99,16 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::VIEW_PERFORMANCE_CONFIG->value,
             UserPermission::VIEW_FORM_CONFIG->value,
             UserPermission::VIEW_ONLINE_USERS->value,
-    
+
             // Create cases goes here
             UserPermission::CREATE_JOB_LISTING->value,
             UserPermission::CREATE_ANNOUNCEMENT->value,
             UserPermission::CREATE_EMPLOYEE_ACCOUNT->value,
             UserPermission::CREATE_BULK_EMPLOYEE_ACCOUNT->value,
-    
+
             // Update cases goes here
-    
-    
+
+
             // Delete cases goes here
         ];
     }

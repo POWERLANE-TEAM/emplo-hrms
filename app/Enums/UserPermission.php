@@ -17,6 +17,8 @@ enum UserPermission: string
     case CREATE_EMPLOYEE_ACCOUNT = 'create employee account';
     case CREATE_BULK_EMPLOYEE_ACCOUNT = 'create bulk employee accounts';
     case CREATE_PRE_EMPLOYMENT_DOCUMENT = 'create pre employment document';
+    case CREATE_APPLICANT_EXAM_SCHEDULE = 'create applicant exam schedule';
+    case CREATE_APPLICANT_INIT_INTERVIEW_SCHEDULE = 'create applicant initial interview schedule';
 
         // View cases goes here
     case VIEW_APPLICANT_INFORMATION = 'view applicant information';
@@ -57,6 +59,7 @@ enum UserPermission: string
     case UDPATE_JOB_LISTING = 'update job listing';
     case UPDATE_ANNOUNCEMENT = 'update announcement';
     case UPDATE_OWNED_PRE_EMPLOYMENT_DOCUMENT = 'update owned pre employment document';
+    case UPDATE_APPLICATION_STATUS = 'update application status';
 
         // Delete cases goes here
     case DELETE_JOB_LISTING = 'delete job listing';
@@ -78,6 +81,8 @@ enum UserPermission: string
             self::CREATE_EMPLOYEE_ACCOUNT => 'Create an employee account ',
             self::CREATE_BULK_EMPLOYEE_ACCOUNT => 'Create employee accounts',
             self::CREATE_PRE_EMPLOYMENT_DOCUMENT => 'Create pre-employment document',
+            self::CREATE_APPLICANT_EXAM_SCHEDULE => 'Create applicant exam schedule',
+            self::CREATE_APPLICANT_INIT_INTERVIEW_SCHEDULE => 'Create applicant initial interview schedule',
 
             // View labels goes here
             self::VIEW_APPLICANT_INFORMATION => 'View applicant/s information',
@@ -117,6 +122,7 @@ enum UserPermission: string
             self::UDPATE_JOB_LISTING => 'Update job listing/s',
             self::UPDATE_ANNOUNCEMENT => 'Update announcement/s',
             self::UPDATE_OWNED_PRE_EMPLOYMENT_DOCUMENT => 'Update owned pre-employment document',
+            self::UPDATE_APPLICATION_STATUS => 'Update application status',
 
             // Delete labels goes here
             self::DELETE_JOB_LISTING => 'Delete job listing/s',
