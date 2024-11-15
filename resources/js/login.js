@@ -2,7 +2,7 @@
 import './script.js';
 import initLucideIcons from './icons/lucide.js';
 import addGlobalScrollListener, { documentScrollPosY } from './global-scroll-fn.js';
-import addGlobalListener, { GlobalListener } from './global-event-listener.js';
+import addGlobalListener, { GlobalListener } from 'globalListener-script';
 import togglePassword from './toggle-password.js';
 import { initPasswordEvaluator, evalPassword } from './forms/eval-password.js';
 import InputValidator, { setInvalidMessage } from './forms/input-validator.js';

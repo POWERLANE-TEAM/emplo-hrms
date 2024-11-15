@@ -1,4 +1,4 @@
-import addGlobalListener from '../global-event-listener.js';
+import addGlobalListener from 'globalListener-script';
 
 export function handleMobileSidebar(mainSideBar) {
 
@@ -94,7 +94,7 @@ function toggleUserDropdown() {
     dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
 }
 
-window.onclick = function(event) {
+window.onclick = function (event) {
     const dropdownMenu = document.getElementById('dropdown-menu');
     const dropdownButton = document.getElementById('user-prof-btn');
 

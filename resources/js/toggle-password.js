@@ -1,4 +1,4 @@
-import addGlobalListener, { GlobalListener } from './global-event-listener.js';
+import addGlobalListener, { GlobalListener } from 'globalListener-script';
 
 export default function togglePassword(parent, inputSelector, toggleSelector) {
     const togglePasswordVisibility = () => {
