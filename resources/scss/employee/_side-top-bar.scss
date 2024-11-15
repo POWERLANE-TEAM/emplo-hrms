@@ -1,6 +1,3 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 @import '../utils';
 @import '../input/search';
 
@@ -15,13 +12,15 @@
     --topnav-padding-y: clamp(0.3rem, 0.25rem + 0.5dvw, 2rem)
 }
 
-main {
+.main-layout-container > main {
     contain: paint;
     position: relative;
-    /* Ofset of main content below of top bar */
+    /* Offset of main content below top bar */
     margin-top: calc(var(--main-menu-padding-top) + var(--topnav-padding-y) + var(--search-height) + var(--search-padding-y) + var(--main-menu-padding-top) + 1vh);
+}
 
-    @media screen and (min-width: 768px) {
+@media screen and (min-width: 768px) {
+    .main-layout-container > main {
         left: var(--sidebar-width);
         max-width: calc(95cqw - var(--sidebar-width));
     }
