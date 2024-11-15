@@ -311,6 +311,15 @@ body {
     }
 }
 
+.btn:not([class*="btn-"]) {
+    color: var(--bs-body-color) !important;
+
+    button.btn-sm,
+    button.btn-lg {
+        color: var(--bs-btn-color) !important;
+    }
+}
+
 .text-orange {
     color: $orange;
 }
