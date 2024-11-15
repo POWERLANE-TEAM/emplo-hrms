@@ -11,9 +11,9 @@
 ])
 
 @php
-    $defaultAttributes = ['class' => 'mx-auto fw-medium'];
-    $defaultHeaderAttributes = ['class' => 'fs-2 fw-bold text-center text-primary mb-md-3'];
-    $defaultMessageAttributes = ['class' => 'fs-5 mb-md-4'];
+    $defaultAttributes = ['class' => 'mx-auto fw-medium mb-md-4'];
+    $defaultHeaderAttributes = ['class' => 'fs-1 fw-bold text-center text-primary mb-3 mb-md-1'];
+    $defaultMessageAttributes = ['class' => 'fs-4 mb-3 mb-md-1'];
 
     if (!$overrideClass) {
         $attributes = $attributes->merge($defaultAttributes);
