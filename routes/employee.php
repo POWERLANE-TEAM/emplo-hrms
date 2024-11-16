@@ -23,8 +23,9 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     Route::get('/applicants', [HRApplicantController::class, 'index'])
         ->name('applicants');
 
-
-
+    Route::get('profile', function () {
+        return view('employee.profile.settings');
+    })->name('profile');
 
     Route::get('/index', [EmployeeController::class, 'index'])
         ->name('index');
