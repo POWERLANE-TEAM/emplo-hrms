@@ -1,11 +1,11 @@
-@import 'font/font-size';
+@import "scales/font-size";
 
 $prefix: bs-;
 
 :root {
     --main-green: #61b000;
     --main-green-transparent: rgba(97, 176, 0, 0.5);
-    --main-lime: #EEEE13;
+    --main-lime: #eeee13;
     --main-white: #fff;
     --main-muted-gray: #f6f6f6;
     --main-container-px: clamp(1.25rem, 5dvw, 30dvw);
@@ -17,8 +17,8 @@ $primary: #61b000;
 $secondary: #d9d9d9;
 $success: #61b000;
 $info: #006390;
-$warning: #FD7E14;
-$danger: #f50000;
+$warning: #fd7e14;
+$danger: #dc3030;
 // $light:         $gray-100 ;
 // $dark:          $gray-900 ;
 
@@ -39,7 +39,7 @@ $gray-800: #343a40 !default;
 $gray-900: #212529 !default;
 $black: #000 !default;
 
-$blue: #0096DA !default;
+$blue: #0096da !default;
 $indigo: #6610f2 !default;
 $purple: #6f42c1 !default;
 $pink: #d63384 !default;
@@ -64,7 +64,7 @@ $colors: (
     "black": $black,
     "white": $white,
     "gray": #939393,
-    "gray-dark": #404040
+    "gray-dark": #404040,
 );
 
 $border-width: calc(1px + 0.06dvw);
@@ -73,11 +73,10 @@ $headings-color: #222222;
 
 $body-emphasis-color: #61b000;
 
-
-
-$font-family-sans-serif: 'Figtree', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
+$font-family-sans-serif: "Figtree", system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
 // $font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !default;
-
 
 // $btn-color: #f5f5f5;
 // $btn-padding-y:               $input-btn-padding-y !default;
@@ -181,7 +180,7 @@ $table-color: var(--bs-body-color);
 $table-hover-color: #f5f5f5;
 $table-hover-bg: $primary;
 
-$nav-link-padding-y: .5em;
+$nav-link-padding-y: 0.5em;
 $nav-link-padding-x: 1em;
 
 $enable-negative-margins: true;
@@ -194,11 +193,11 @@ $headings-color-dark: var(--bs-body-color);
 // $body-color-dark:                   $gray-300 !default;
 // $body-bg-dark: $gray-900 !default;
 // $body-secondary-color-dark:         rgba($body-color-dark, .75) !default;
-$body-secondary-bg-dark: $gray-700 ;
+$body-secondary-bg-dark: $gray-700;
 // $body-tertiary-color-dark:          rgba($body-color-dark, .5) !default;
 $body-tertiary-bg-dark: mix($gray-500, $gray-900, 50%);
 
-@import '../../node_modules/bootstrap/scss/bootstrap';
+@import "../../node_modules/bootstrap/scss/bootstrap";
 
 *,
 *::before,
@@ -207,11 +206,9 @@ $body-tertiary-bg-dark: mix($gray-500, $gray-900, 50%);
     letter-spacing: calc(0.01rem + 0.025vw);
 }
 
-
 html {
     @include min-height(100);
     @include max-width(100);
-
 }
 
 body {
@@ -223,7 +220,6 @@ body {
     overflow-y: auto;
     overflow-x: clip;
     font-size: var(--base-font-size);
-
 }
 
 a.unstyled {
@@ -242,9 +238,8 @@ a.unstyled {
 .form-control {
     padding-top: calc(0.2rem + 0.3vw);
     padding-bottom: calc(0.2rem + 0.2vw);
-    font-size: .8rem !important;
+    font-size: 0.8rem !important;
 }
-
 
 .no-drag {
     user-drag: none;
@@ -256,39 +251,39 @@ a.unstyled {
 }
 
 .underline-padded {
-    padding-bottom: 3px; 
+    padding-bottom: 3px;
     border-bottom: 3px solid var(--main-green);
     display: inline-block;
 }
 
 .border-dashed {
-    padding: .5rem;
+    padding: 0.5rem;
     border: 2px dashed var(--main-green);
     color: var(--main-green);
 }
 
 .border-dashed:hover {
-    border-color: var(--main-green-transparent) !important; 
+    border-color: var(--main-green-transparent) !important;
     color: var(--main-green-transparent) !important;
 }
 
 .no-hover-border {
     border: none;
-    outline: none; 
-    box-shadow: none; 
+    outline: none;
+    box-shadow: none;
 }
 
 .no-hover-border:hover,
 .no-hover-border:active {
-    border: none; 
+    border: none;
 }
 
 .list-group-item.drag-over {
-    border: 2px solid var(--main-green) !important; 
-    background-color: transparent; 
+    border: 2px solid var(--main-green) !important;
+    background-color: transparent;
 }
 
-.list-group-item+.list-group-item {
+.list-group-item + .list-group-item {
     border-top-width: 2px;
 }
 
@@ -305,7 +300,7 @@ a.unstyled {
     border: none !important;
     border-bottom: 2px solid var(--bs-secondary) !important;
     transition: border-color 0.3s, box-shadow 0.3s;
-  
+
     &:focus {
         border-bottom: 2px solid var(--bs-primary) !important;
         box-shadow: none !important;
@@ -314,13 +309,13 @@ a.unstyled {
 
     &.is-invalid {
         border-bottom: 2px solid var(--bs-danger) !important;
-        box-shadow: none !important; 
-    
+        box-shadow: none !important;
+
         &:focus {
             border-bottom: 2px solid var(--bs-danger) !important;
-            box-shadow: none !important; 
+            box-shadow: none !important;
         }
-      }
+    }
 }
 
 .small-circle {
@@ -333,23 +328,41 @@ a.unstyled {
     width: 50px;
 }
 
+.table-attendance-cont {
+    padding: 15px 0px 2px 20px !important;
+}
+
+.table-attendance-list {
+    border-collapse: collapse;
+}
+
+.table-attendance-list td,
+.table-attendance-list th {
+    padding: 2px;
+}
+
+.green-highlight {
+    display: inline-block; 
+    background-color: rgba(95, 173, 0, 0.1); 
+    color: #3c6d00; 
+    padding: .5rem 2rem; 
+    border-radius: 1rem;
+    text-transform: uppercase;
+    font-weight: 700;
+}
 
 body {
-
     &:not([data-bs-theme]) {
-
         @media screen and (prefers-color-scheme: dark) {
             .breadcrumb-item:not(.active) {
                 a {
                     color: whitesmoke;
                 }
             }
-
         }
     }
 
     &[data-bs-theme="dark"] {
-
         .breadcrumb-item:not(.active) {
             a {
                 color: whitesmoke;
@@ -363,7 +376,6 @@ body {
 }
 
 .breadcrumb-item {
-
     &.active {
         font-weight: 700;
     }
@@ -378,12 +390,10 @@ body {
             }
         }
     }
-
 }
 
 .btn.bg-transparent {
     color: var(--bs-black);
-
 }
 
 .text-orange {
@@ -403,7 +413,6 @@ body {
         background-color: shade-color($orange, 80%);
     }
 }
-
 
 .callout {
     border-left-width: calc(1px + 0.25vw);
