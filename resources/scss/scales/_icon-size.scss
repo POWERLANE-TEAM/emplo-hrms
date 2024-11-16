@@ -1,0 +1,31 @@
+// Icon Sizing Variables
+$icon-small: 0.75em;   // Small icon size
+$icon-medium: 1em;     // Default icon size
+$icon-large: 1.25em;   // Large icon size
+$icon-xlarge: 2em;     // Extra large icon size
+
+// Utility Classes for Icon Sizes
+.icon-small {
+    width: $icon-small !important;
+    height: $icon-small !important;
+}
+
+.icon-medium {
+    width: $icon-medium !important;
+    height: $icon-medium !important;
+}
+
+.icon-large {
+    width: $icon-large !important;
+    height: $icon-large !important;
+}
+
+.icon-xlarge {
+    width: $icon-xlarge !important;
+    height: $icon-xlarge !important;
+}
+
+// Additional styling (if needed)
+.icon {
+    display: inline-block; // Ensures it respects width and height
+}
