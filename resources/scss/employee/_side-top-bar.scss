@@ -16,7 +16,7 @@
 }
 
 main {
-    contain: paint;
+    // contain: paint;
     position: relative;
     /* Ofset of main content below of top bar */
     margin-top: calc(var(--main-menu-padding-top) + var(--topnav-padding-y) + var(--search-height) + var(--search-padding-y) + var(--main-menu-padding-top) + 1vh);
