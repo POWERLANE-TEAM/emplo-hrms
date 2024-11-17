@@ -1,8 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 @import '../utils';
 @import '../input/search';
+@import '../scales/img-size';
 
 /* Adjusting transition duration may need to adjust delay of removing opeing class in sidebar on side-top-bar.js */
 
@@ -18,10 +16,12 @@
 main {
     // contain: paint;
     position: relative;
-    /* Ofset of main content below of top bar */
+    /* Offset of main content below top bar */
     margin-top: calc(var(--main-menu-padding-top) + var(--topnav-padding-y) + var(--search-height) + var(--search-padding-y) + var(--main-menu-padding-top) + 1vh);
+}
 
-    @media screen and (min-width: 768px) {
+@media screen and (min-width: 768px) {
+    .main-layout-container > main {
         left: var(--sidebar-width);
         max-width: calc(95cqw - var(--sidebar-width));
     }

@@ -20,13 +20,19 @@
     >
         <div class="d-flex">
             <ul class="list-unstyled">
-                <template x-for="user in onlineUsers" :key="user.user_id">
-                    <li>
-                        <x-online-status status="online">
-                            <img :src="user.photo" alt="user" class="img-fluid rounded-circle" width="35" height="35" />
-                        </x-online-status>                           
-                        <span class="ps-1" x-text="user.email"></span>    
-                    </li>
+                <template x-if="onlineUsers.length > 0">
+                    <template x-for="user in onlineUsers" :key="user.user_id">
+                        <li>
+                            <x-online-status status="online">
+                                <img :src="user.photo" alt="user" class="img-fluid rounded-circle" width="35" height="35" />
+                            </x-online-status>                           
+                            <span class="ps-1" x-text="user.email"></span>    
+                        </li>
+                    </template>
+                </template>
+
+                <template x-if="onlineUsers.length === 0">
+                    <li>No online people</li>
                 </template>
             </ul>
         </div>
