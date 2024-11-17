@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\Employee\DashboardController;
 use App\Http\Controllers\HRManager\ApplicantController as HRApplicantController;
 use App\Livewire\Auth\Employees\Login;
@@ -21,6 +22,10 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
     Route::get('/applicants', [HRApplicantController::class, 'index'])
         ->name('applicants');
+
+
+    Route::get('/attendance/index', [AttendanceController::class, 'index'])
+        ->name('attendance.index');
 
     Route::get('/sample', function () {
         dd(request());

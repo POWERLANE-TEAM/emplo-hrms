@@ -29,7 +29,8 @@
                                 srcset="{{ Vite::asset('resources/images/icons/moon-and-stars-69x69.webp') }}">
 
                             <img class="icon" width="{{ $icon_size }}" aspect-ratio="{{ $icon_ratio }}"
-                                src="{{ Vite::asset('resources/images/icons/moon-and-stars-35x35.webp') }}" alt="">
+                                src="{{ Vite::asset('resources/images/icons/moon-and-stars-35x35.webp') }}"
+                                alt="">
                         </picture>
                     </button>
                     <ul class="dropdown-menu" role="menu">
@@ -55,7 +56,9 @@
                             onerror="this.onerror=null;this.src='http://placehold.it/45/45';" alt="">
                     </button>
                     <ul id="dropdown-menu" class="dropdown-menu dropdown-menu-end" role="menu">
-                        <a href="{{ route($routePrefix.'.profile') }}"><li class="dropdown-item" role="button">Profile</li></a>
+                        <a href="{{-- {{ route($routePrefix.'.profile') }} --}}">
+                            <li class="dropdown-item" role="button">Profile</li>
+                        </a>
                         <li class="dropdown-item" role="button">Settings</li>
                         <li class="dropdown-item" role="button">@livewire('auth.logout')</li>
                     </ul>
