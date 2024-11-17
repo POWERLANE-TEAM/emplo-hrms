@@ -6,7 +6,7 @@
             '
 <header>
     <hgroup>
-        <h4 class="card-title text-primary fw-bold mb-0">' .
+        <h1 class="card-title text-primary fw-bold mb-0">' .
             $job_vacancy['jobDetail']['jobTitle'][0]['job_title'] .
             '</h4>
         <p class="fs-6 text-black ">' .
