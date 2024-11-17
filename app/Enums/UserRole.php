@@ -10,7 +10,7 @@ enum UserRole: string
 
     /**
      * Return user-friendly role labels.
-     * 
+     *
      * @return string
      */
     public function label(): string
@@ -20,5 +20,13 @@ enum UserRole: string
             self::INTERMEDIATE => 'Intermediate Level',
             self::ADVANCED => 'Advanced Level',
         };
+    }
+
+    /**
+     * @return array An array of all user roles values.
+     */
+    public static function values(): array
+    {
+        return array_column(self::cases(), 'value');
     }
 }
