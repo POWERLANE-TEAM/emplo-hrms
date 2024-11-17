@@ -32,6 +32,8 @@
     <x-authenticated-broadcast-id />
     <x-livewire-listener />
 
+    @vite(['resources/js/listeners/online-users.js'])
+
     {{-- Waiting for this fix in livewire https://github.com/livewire/livewire/pull/8793 --}}
     {{-- livewire.js?id=cc800bf4:9932 Detected multiple instances of Livewire running --}}
     {{-- livewire.js?id=cc800bf4:9932 Detected multiple instances of Alpine running --}}
