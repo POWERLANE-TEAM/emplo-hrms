@@ -30,7 +30,7 @@
             </x-nav-link>
         </div>
 
-        <!-- Recent Activity Logs -->
+        <!-- Upcoming Dates in Calendar Manager -->
         <div class="col-md-6 d-flex">
             <div class="card border-primary p-4 h-100 w-100">
                 <div class="px-3">

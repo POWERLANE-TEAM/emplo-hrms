@@ -54,7 +54,7 @@
                     </div>
                     <div class="w-100">
 
-                        <!-- BACK-END REPLACE: Recent Activity Logs. Limit to 2. -->
+                        <!-- BACK-END REPLACE: Recent Activity Logs. Limit to 8. -->
                         <ul>
                             <li class="fs-5 pb-2">You updated the <b>salary range</b> for Software Developer.</li>
                             <li class="fs-5 pb-2">You removed the <b>location</b> requirement from Customer Support
