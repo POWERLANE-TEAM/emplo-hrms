@@ -10,17 +10,17 @@
   
   /* Additional color classes */
   $colors: (
-    green: #61b000,
-    blue: #60A5FA,
-    teal: #008080,
-    purple: #CDA0D4
+    "green": #61b000,
+    "blue": #60A5FA,
+    "teal": #008080,
+    "purple": #CDA0D4
   );
   
   @each $color-name, $color-value in $colors {
     .text-#{$color-name} {
       color: $color-value;
     }
-  
+    
     .bg-#{$color-name}-subtle {
       background-color: rgba($color-value, 0.1);
     }
