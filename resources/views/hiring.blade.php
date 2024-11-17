@@ -66,7 +66,7 @@
 <section class="first-section hidden-until-load">
     <div class="row">
         <div class="d-flex flex-column left col-12 col-md-6 align-items-center justify-content-center">
-            <div class="text-primary typewriter-text fs-1 fw-bold" aria-label="We are hiring!">
+            <div class="text-primary typewriter-text hiring-text-header fw-bold" aria-label="We are hiring!">
                 We are hiring!
             </div>
             <p class="fs-4 fw-medium fadein-text text-center">
