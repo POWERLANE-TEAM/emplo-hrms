@@ -11,6 +11,8 @@
 @import 'footer';
 @import 'btn-toggle-psw';
 @import 'input/checkbox';
+@import 'palette/text-colors';
+@import 'scales/img-size';
 
 
 
@@ -120,6 +122,10 @@ section.top-vector {
 
     .job-listing {
 
+        .card:hover {
+            border: none;
+        }
+
         sidebar {
 
             min-height: var(--job-info-min-h);
@@ -152,6 +158,10 @@ section.top-vector {
                 button {
                     place-items: center;
                     min-height: min(10vw, calc(300px + 3rem));
+                }
+
+                button:hover {
+                    border: 2px solid var(--main-green);
                 }
 
                 button * {
