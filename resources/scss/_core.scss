@@ -239,6 +239,11 @@ a.unstyled {
     --bs-btn-hover-color: #fff;
 }
 
+
+button {
+    min-width: fit-content;
+}
+
 .form-control {
     padding-top: calc(0.2rem + 0.3vw);
     padding-bottom: calc(0.2rem + 0.2vw);
@@ -256,7 +261,7 @@ a.unstyled {
 }
 
 .underline-padded {
-    padding-bottom: 3px; 
+    padding-bottom: 3px;
     border-bottom: 3px solid var(--main-green);
     display: inline-block;
 }
@@ -268,24 +273,24 @@ a.unstyled {
 }
 
 .border-dashed:hover {
-    border-color: var(--main-green-transparent) !important; 
+    border-color: var(--main-green-transparent) !important;
     color: var(--main-green-transparent) !important;
 }
 
 .no-hover-border {
     border: none;
-    outline: none; 
-    box-shadow: none; 
+    outline: none;
+    box-shadow: none;
 }
 
 .no-hover-border:hover,
 .no-hover-border:active {
-    border: none; 
+    border: none;
 }
 
 .list-group-item.drag-over {
-    border: 2px solid var(--main-green) !important; 
-    background-color: transparent; 
+    border: 2px solid var(--main-green) !important;
+    background-color: transparent;
 }
 
 .list-group-item+.list-group-item {
@@ -305,7 +310,7 @@ a.unstyled {
     border: none !important;
     border-bottom: 2px solid var(--bs-secondary) !important;
     transition: border-color 0.3s, box-shadow 0.3s;
-  
+
     &:focus {
         border-bottom: 2px solid var(--bs-primary) !important;
         box-shadow: none !important;
@@ -314,13 +319,13 @@ a.unstyled {
 
     &.is-invalid {
         border-bottom: 2px solid var(--bs-danger) !important;
-        box-shadow: none !important; 
-    
+        box-shadow: none !important;
+
         &:focus {
             border-bottom: 2px solid var(--bs-danger) !important;
-            box-shadow: none !important; 
+            box-shadow: none !important;
         }
-      }
+    }
 }
 
 body {
@@ -430,3 +435,22 @@ body {
     border-left-color: var(--bs-danger);
     background-color: var(--bs-danger-subtle);
 }
+
+
+.input-group:has(input:-webkit-autofill, input:autofill) {
+    div.icon {
+        z-index: 10;
+    }
+}
+
+// input:-webkit-autofill {
+//     -webkit-box-shadow: 0 0 0 50px rgba(var(--bs-body-color-rgb), 0.5) inset;
+//     /* Change the color to your own background color */
+//     -webkit-text-fill-color: #333;
+// }
+
+// input:-webkit-autofill:focus {
+//     -webkit-box-shadow: 0 0 0 50px white inset;
+//     /*your box-shadow*/
+//     -webkit-text-fill-color: #333;
+// }
