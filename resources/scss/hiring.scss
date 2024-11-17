@@ -98,10 +98,24 @@ section.top-vector {
         --job-info-min-h: clamp(300px, 50vh, 100svh);
     }
 
-
-
     input[type="search"] {
         background-color: var(--main-green);
+    }
+
+    .job-search-input {
+        color: #fff !important;
+    }
+
+    .job-search-input::placeholder {
+        color: #fff !important;
+    }
+
+    .icon-inside-right span {
+        display: flex !important;
+        max-width: 30px;
+        max-height: 30px;
+        overflow: hidden;
+        border: none !important;
     }
 
     .job-listing {

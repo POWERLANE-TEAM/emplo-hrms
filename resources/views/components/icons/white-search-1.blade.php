@@ -1,4 +1,4 @@
-@aware(['icon_size' => '25', 'icon_ratio' => '1/1'])
+@aware(['icon_size' => '15', 'icon_ratio' => '1/1'])
 
 <picture>
     <source media="(min-width:1200px)" class=""
