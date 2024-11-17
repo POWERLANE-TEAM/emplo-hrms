@@ -1,4 +1,4 @@
-@props(['icon_size' => '25', 'icon_ratio' => '1/1'])
+@props(['iconSize' => '25', 'iconRatio' => '1/1'])
 
 <div class="dropdown">
     <button class="bg-transparent border-0 dropdown-toggle " type="button" data-bs-toggle="dropdown"
@@ -9,8 +9,8 @@
             <source media="(min-width:768px)" class=""
                 srcset="{{ Vite::asset('resources/images/icons/notif-bell-69x69.webp') }}">
 
-            <img class="icon" width="{{ $icon_size }}" height="{{ $icon_size }}"
-                aspect-ratio="{{ $icon_ratio }}"
+            <img class="icon" width="{{ $iconSize }}" height="{{ $iconSize }}"
+                aspect-ratio="{{ $iconRatio }}"
                 src="{{ Vite::asset('resources/images/icons/notif-bell-35x35.webp') }}" alt="">
         </picture>
     </button>

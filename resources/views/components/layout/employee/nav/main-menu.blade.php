@@ -1,8 +1,8 @@
 @use('\App\Enums\UserRole', 'EnumsUserRole')
 @props([
     'sidebar_expanded' => false,
-    'icon_size' => '25',
-    'icon_ratio' => '1/1',
+    'iconSize' => '25',
+    'iconRatio' => '1/1',
     'user',
     'userPhoto',
     'defaultAvatar',
@@ -28,7 +28,7 @@
                             <source media="(min-width:768px)" class=""
                                 srcset="{{ Vite::asset('resources/images/icons/moon-and-stars-69x69.webp') }}">
 
-                            <img class="icon" width="{{ $icon_size }}" aspect-ratio="{{ $icon_ratio }}"
+                            <img class="icon" width="{{ $iconSize }}" aspect-ratio="{{ $iconRatio }}"
                                 src="{{ Vite::asset('resources/images/icons/moon-and-stars-35x35.webp') }}"
                                 alt="">
                         </picture>
@@ -51,8 +51,8 @@
                 <div class="user-menu px-2">
                     <button id="user-prof-btn" class="bg-transparent border-0" type="button" aria-label="User Menu"
                         onclick="toggleUserDropdown()" data-bs-toggle="dropdown">
-                        <img class="rounded-circle" width="{{ $icon_size * 1.25 }}" height="{{ $icon_size * 1.25 }}"
-                            aspect-ratio="{{ $icon_ratio }}" src="{{ $userPhoto ?? $defaultAvatar }}"
+                        <img class="rounded-circle" width="{{ $iconSize * 1.25 }}" height="{{ $iconSize * 1.25 }}"
+                            aspect-ratio="{{ $iconRatio }}" src="{{ $userPhoto ?? $defaultAvatar }}"
                             onerror="this.onerror=null;this.src='http://placehold.it/45/45';" alt="">
                     </button>
                     <ul id="dropdown-menu" class="dropdown-menu dropdown-menu-end" role="menu">

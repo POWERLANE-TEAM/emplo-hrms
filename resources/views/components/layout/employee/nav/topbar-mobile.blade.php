@@ -1,4 +1,4 @@
-@aware(['icon_size' => '25', 'icon_ratio' => '1/1'])
+@aware(['iconSize' => '25', 'iconRatio' => '1/1'])
 
 <div>
     <div {{ $attributes->merge(['class' => ' topnav-mobile']) }}>

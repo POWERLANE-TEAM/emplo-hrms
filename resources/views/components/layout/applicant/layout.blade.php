@@ -1,4 +1,4 @@
-@props(['icon_size' => '25', 'icon_ratio' => '1/1'])
+@props(['iconSize' => '25', 'iconRatio' => '1/1'])
 
 @props([
     'no_crawl' => false,

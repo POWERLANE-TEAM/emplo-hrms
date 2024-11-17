@@ -1,4 +1,4 @@
-@props(['icon_size' => '31', 'icon_ratio' => '1/1'])
+@props(['iconSize' => '31', 'iconRatio' => '1/1'])
 
 
 <header class="top-nav sticky-md-top bg-primary">
@@ -26,8 +26,8 @@
                                 <source media="(min-width:768px)" class=""
                                     srcset="{{ Vite::asset('resources/images/icons/moon-and-stars-69x69.webp') }}">
 
-                                <img class="icon" width="{{ $icon_size }}" height="{{ $icon_size }}"
-                                    aspect-ratio="{{ $icon_ratio }}"
+                                <img class="icon" width="{{ $iconSize }}" height="{{ $iconSize }}"
+                                    aspect-ratio="{{ $iconRatio }}"
                                     src="{{ Vite::asset('resources/images/icons/moon-and-stars-35x35.webp') }}"
                                     alt="">
                             </picture>
@@ -50,8 +50,8 @@
                     <button class=" bg-transparent border-0 dropdown-toggle" type="button" data-bs-toggle="dropdown"
                         aria-label="User Menu">
                         <div class="">
-                            <img class="rounded-circle overflow-hidden" width="{{ $icon_size * 1.5 }}"
-                                height="{{ $icon_size * 1.5 }}" aspect-ratio="{{ $icon_ratio }}"
+                            <img class="rounded-circle overflow-hidden" width="{{ $iconSize * 1.5 }}"
+                                height="{{ $iconSize * 1.5 }}" aspect-ratio="{{ $iconRatio }}"
                                 src="http://placehold.it/35/35" alt="">
                         </div>
 

@@ -1,4 +1,4 @@
-@aware(['icon_size' => '25', 'icon_ratio' => '1/1'])
+@aware(['iconSize' => '25', 'iconRatio' => '1/1'])
 
 <picture>
     <source media="(min-width:1200px)" class=""
@@ -10,6 +10,6 @@
     <source media="(max-width:320px)" class=""
         srcset="{{ Vite::asset('resources/images/icons/white-search-1-xs.webp') }}">
 
-    <img width="{{ $icon_size }}" height="{{ $icon_size }}" aspect-ratio="{{ $icon_ratio }}" class=""
+    <img width="{{ $iconSize }}" height="{{ $iconSize }}" aspect-ratio="{{ $iconRatio }}" class=""
         loading="lazy" src="{{ Vite::asset('resources/images/icons/white-search-1-sm.webp') }}" alt="">
 </picture>
