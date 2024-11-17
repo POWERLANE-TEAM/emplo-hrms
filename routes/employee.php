@@ -35,3 +35,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         echo 'sample';
     });
 });
+
+Route::get('profile', function () {
+    return view('employee.admin.profile');
+})->name('profile'); // Still temporary.

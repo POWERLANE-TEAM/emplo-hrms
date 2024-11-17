@@ -5,246 +5,259 @@
 @extends('components.layout.employee.layout', ['description' => 'Admin Dashboard', 'nonce' => $nonce])
 
 @section('head')
-    <title>Home Page</title>
-    <script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
-    <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
+<title>Home</title>
+<script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
+<script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 @endsection
 
 @pushOnce('pre-scripts')
-    <script src="https://cdn.jsdelivr.net/npm/chart.js" nonce="{{ $nonce }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 @endPushOnce
 
 @pushOnce('scripts')
-    <script src="{{ Vite::asset('resources/js/forms/nbp.min.js') }}" defer></script>
-    @vite(['resources/js/admin/dashboard.js'])
+    @vite(['resources/js/employee/hr-manager/dashboard.js'])
+
+    <!-- Adds the Core Table Styles -->
+    @rappasoftTableStyles
+
+    <!-- Adds any relevant Third-Party Styles (Used for DateRangeFilter (Flatpickr) and NumberRangeFilter) -->
+    @rappasoftTableThirdPartyStyles
+
+    <!-- Adds the Core Table Scripts -->
+    @rappasoftTableScripts
+
+    <!-- Adds any relevant Third-Party Scripts (e.g. Flatpickr) -->
+    @rappasoftTableThirdPartyScripts
 @endPushOnce
 
 @pushOnce('styles')
-    @vite(['resources/css/employee/main.css'])
+
+    @vite(['resources/css/employee/admin/dashboard.css'])
 @endPushOnce
 
 @section('content')
-    <hgroup class="mb-5 ms-n1">
-        <div class="fs-2 fw-bold mb-2">Good afternoon, {{ auth()->user()->account->first_name }}!</div>
-        <p>It is <time datetime="{{ now() }}"> {{ \Carbon\Carbon::now()->format('l, d F') }}</time></p>
-    </hgroup>
-    <section role="navigation" aria-label="Quick Links" class="mb-5 row">
-        <div class="col-md-4">
-            <div class="card bg-body-secondary border-0 px-md-5 py-4" role="none" aria-describedby="applicants-nav-desc">
-                <x-nav-link href="#" class="unstyled">
-                    <div class="mb-3">
-                        <span></span>
-                        <div class="fs-4 fw-bold">Applicants</div>
-                    </div>
-                    <div class="card-text" id="applicants-nav-desc">
-                        Review and verify candidates, resume and documents.
-                    </div>
-                </x-nav-link>
+<hgroup class="mb-5 ms-n1">
+    <div class="fs-2 pt-3 fw-bold mb-2">Good afternoon, {{ auth()->user()->account->first_name }}!</div>
+    <p>It is <time datetime="{{ now() }}"> {{ \Carbon\Carbon::now()->format('l, d F') }}</time></p>
+</hgroup>
+
+<!-- SECTION: Key Metrics -->
+<section role="navigation" aria-label="Key Metrics" class="mb-5 row">
+    <div class="col-md-3">
+        <div class="card bg-body-secondary border-0 py-4 card-start-border-teal">
+            <div class="row">
+                <div class="col-md-3 icons-container">
+                    <img class="icons-row-card"
+                        src="{{ Vite::asset('resources/images/illus/dashboard/active-accs.webp') }}" alt="">
+                </div>
+                <div class="col-md-7 mx-2">
+                    <p class="fw-medium fs-7 text-opacity-25">Active Accounts</p>
+                    <p class="fw-semibold fs-3">40</p>
+                </div>
             </div>
         </div>
+    </div>
 
-        <div class="col-md-4">
-            <div class="card bg-primary text-white border-0 px-md-5 py-4" role="none">
-                <a href="{{ route('admin.system.pulse') }}" target="_blank" class="unstyled">
-                    <div class="mb-3">
-                        <span></span>
-                        <div class="fs-4 fw-bold text-white">Laravel Pulse</div>
-                    </div>
-                    <div class="card-text text-white" id="leaves-nav-desc">
-                        Check the app's performance and usage via Laravel Pulse.
-                    </div>
-                </a>
+    <div class="col">
+        <div class="card bg-body-secondary border-0 py-4 card-start-border-green" role="none">
+            <div class="row">
+                <div class="col-md-3 icons-container">
+                    <img class="icons-row-card"
+                        src="{{ Vite::asset('resources/images/illus/dashboard/online-users.webp') }}" alt="">
+                </div>
+                <div class="col-md-7 mx-2">
+                    <p class="fw-medium fs-7 text-opacity-25">Online Users</p>
+                    <p class="fw-semibold fs-3">12</p>
+                </div>
             </div>
         </div>
+    </div>
 
-        <div class="col-md-4">
-            <div class="card bg-body-secondary border-0 px-md-5 py-4" role="none" aria-describedby="attendance-nav-desc">
-                <x-nav-link href="#" class="unstyled">
-                    <div class="mb-3">
-                        <span></span>
-                        <div class="fs-4 fw-bold">Attendance</div>
-                    </div>
-                    <div class="card-text" id="attendance-nav-desc">
-                        Monitor employees attendance, absence, and workday hours.
-                    </div>
-                </x-nav-link>
+    <div class="col">
+        <div class="card bg-body-secondary border-0 py-4 card-start-border-blue" role="none"
+            aria-describedby="attendance-nav-desc">
+            <div class="row">
+                <div class="col-md-3 icons-container">
+                    <img class="icons-row-card"
+                        src="{{ Vite::asset('resources/images/illus/dashboard/total-users.webp') }}" alt="">
+                </div>
+                <div class="col-md-7 mx-2">
+                    <p class="fw-medium fs-7 text-opacity-25">Total Users</p>
+                    <p class="fw-semibold fs-3">52</p>
+                </div>
             </div>
         </div>
-    </section>
+    </div>
 
-    <livewire:admin.dashboard.online-users />
+    <div class="col">
+        <div class="card bg-body-secondary border-0 py-4 card-start-border-purple" role="none"
+            aria-describedby="attendance-nav-desc">
+            <div class="row">
+                <div class="col-md-3 icons-container">
+                    <img class="icons-row-card"
+                        src="{{ Vite::asset('resources/images/illus/dashboard/last-24-hours.webp') }}" alt="">
+                </div>
+                <div class="col-md-7 mx-2">
+                    <p class="fw-medium fs-7 text-opacity-25">Logins Within 24h</p>
+                    <p class="fw-semibold fs-3">40</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-    <section class="mb-5">
-        <header class="fs-4 fw-bold mb-4" role="heading" aria-level="2">
-            Key Metrics
-        </header>
+<!-- SECTION: Laravel Pulse & Recent Activity Logs -->
+<section class="mb-5">
+    <header class="fs-4 fw-bold mb-4" role="heading" aria-level="2">
+        Key Metrics & Logs
+    </header>
 
+    <div class="d-flex mb-5 row">
 
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const absenceRatelabels = [
-                    'July',
-                    'August', 'September', 'October', 'November', 'December'
-                ];
-                const absenceRateData = {
-                    labels: absenceRatelabels,
-                    datasets: [{
-                        label: '',
-                        data: [8, 14, 9, 15, 19, 20, 10],
-                        fill: false,
-                        borderColor: 'rgb(117, 73, 255)',
-                        tension: 1
-                    }],
-                    options: {
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                display: false
-                            },
-                            // tooltip: {
-                            //     callbacks: {
-                            //         label: ((tooltipItem, data) => {
-                            //             console.log(tooltipItem)
-                            //             return 'Rate';
-                            //         })
-                            //     }
-                            // }
-
-                        }
-
-                    },
-                };
-
-                const empAbsenceRateConfig = {
-                    type: 'line',
-                    data: absenceRateData,
-                };
-
-                // let empAbsenceRateChart = document.getElementById('hr-absence-rate')
-
-                const absenceRateChart = new Chart('hr-absence-rate', empAbsenceRateConfig);
-
-                const labels = [
-                    ''
-                ]
-
-
-                const Utils = {
-                    numbers: (cfg) => {
-                        // Your logic to generate numbers based on cfg
-                        return [10, 20, 30, 40, 50]; // Example data
-                    },
-                    CHART_COLORS: {
-                        red: 'rgba(255, 99, 132, 0.2)',
-                        blue: 'rgba(54, 162, 235, 0.2)',
-                        green: 'rgba(75, 192, 192, 0.2)'
-                    }
-                };
-
-                const DATA_COUNT = 7;
-                const NUMBER_CFG = {
-                    count: DATA_COUNT,
-                    min: -100,
-                    max: 100
-                };
-
-
-                const data = {
-                    labels: labels,
-                    datasets: [{
-                            label: 'Absent ',
-                            data: Utils.numbers(NUMBER_CFG),
-                            backgroundColor: Utils.CHART_COLORS.red,
-                        },
-                        {
-                            label: 'Present ',
-                            data: Utils.numbers(NUMBER_CFG),
-                            backgroundColor: Utils.CHART_COLORS.blue,
-                        },
-                        {
-                            label: 'On leave',
-                            data: Utils.numbers(NUMBER_CFG),
-                            backgroundColor: Utils.CHART_COLORS.green,
-                        },
-                    ]
-                };
-
-                const config = {
-                    type: 'bar',
-                    data: data,
-                    options: {
-                        plugins: {
-                            title: {
-                                display: true,
-                                text: ''
-                            },
-                        },
-                        responsive: true,
-                        indexAxis: 'y',
-                        scales: {
-                            x: {
-                                stacked: true,
-                            },
-                            y: {
-                                stacked: true
-                            }
-                        }
-                    }
-                };
-
-
-
-                const attendance = new Chart('hr-attendance', config);
-            });
-        </script>
-
-        <div class="d-flex mb-5 row">
-            <div class="col-md-7">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="col-md-3 ms-auto">
-                            <select name="" id="" class="bg-primary form-select"
-                                aria-label="Default select example" style="--bs-bg-opacity: .25;">
-                                <option value="">September</option>
-                            </select>
+        <!-- Laravel Pulse -->
+        <div class="col-md-6 d-flex">
+            <x-nav-link href="{{ route('admin.system.pulse') }}" class="unstyled w-100">
+                <div class="card p-4 pulse-card h-100">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <div class="px-3 py-2">
+                                <div class="fs-2 fw-bold text-primary card-cont-green-hover">Laravel Pulse</div>
+                                <div class="fs-5 pt-2 fw-regular card-cont-green-hover">Check the system’s performance
+                                    and usage via Laravel Pulse.</div>
+                            </div>
+                        </div>
+                        <div class="col-md-5 image-container">
+                            <!-- Static Image -->
+                            <img class="static-image"
+                                src="{{ Vite::asset('resources/images/illus/dashboard/pulse-static.webp') }}" alt="">
+                            <!-- Animated Image -->
+                            <img class="animated-image"
+                                src="{{ Vite::asset('resources/images/illus/dashboard/pulse-animated.gif') }}" alt="">
                         </div>
                     </div>
                 </div>
+            </x-nav-link>
+        </div>
 
-                <ul class="nav nav-underline mb-3">
-                    <li class="nav-item" id="emp-satisf-tab" data-bs-toggle="tab" data-bs-target="#emp-satisf-tab-pane"
-                        role="tab" aria-controls="emp-satisf-tab-pane" aria-selected="true">
-                        <a class="nav-link" href="#">Employee Satisfaction</a>
-                    </li>
-                    <li class="nav-item" id="absence-rate-tab" data-bs-toggle="tab" data-bs-target="#absence-rate-tab-pane"
-                        role="tab" aria-controls="absence-rate-tab-pane" aria-selected="false">
-                        <a class="nav-link active" href="#">Absence Rate</a>
-                    </li>
-                    <li class="nav-item" id="training-compl-tab" data-bs-toggle="tab"
-                        data-bs-target="#training-compl-tab-pane" role="tab" aria-controls="training-compl-tab-pane"
-                        aria-selected="false">
-                        <a class="nav-link" href="#">Training Completion</a>
-                    </li>
-                </ul>
+        <!-- Recent Activity Logs -->
+        <div class="col-md-6 d-flex">
+            <div class="card border-primary p-4 h-100 w-100">
+                <div class="px-3">
+                    <div class="row">
+                        <div class="col-9">
+                            <div class="fs-3 fw-bold mb-3">Recent Activity Logs</div>
+                        </div>
 
-                <div class="tab-content" id="hr-dashboard-stats">
-                    <div class="tab-pane fade" id="emp-satisf-tab-pane" role="tabpanel" aria-labelledby="emp-satisf-tab"
-                        tabindex="0">...</div>
-                    <div class="tab-pane fade show active" id="absence-rate-tab-pane" role="tabpanel"
-                        aria-labelledby="absence-rate-tab" tabindex="0">
-                        <canvas id="hr-absence-rate"></canvas>
+                        <div class="col-3">
+                            <div class="d-flex justify-content-end">
+                                <x-buttons.view-link-btn link="#" text="View All" />
+                            </div>
+                        </div>
                     </div>
-                    <div class="tab-pane fade" id="training-compl-tab-pane" role="tabpanel"
-                        aria-labelledby="training-compl-tab" tabindex="0">...</div>
+                    <div class="w-100">
+
+                        <!-- BACK-END REPLACE: Recent Activity Logs. Limit to 2. -->
+                        <ul>
+                            <li>You deleted a <b>qualification</b> from Accountant.
+                            <li>You addeda <b>new open job position</b>: Janitor.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SECTION: Announcements & Daily Time Record -->
+<section class="mb-5">
+    <div class="d-flex mb-5 row">
+
+        <!-- Announcement -->
+        <div class="col-md-7 flex announcement-box">
+            <!-- Header -->
+            <div class="px-4 pb-4">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <img class="img-size-10 img-responsive"
+                            src="{{ Vite::asset('resources/images/illus/dashboard/megaphone.png') }}" alt="">
+
+                        <span class="ms-3 green-highlight">
+                            Latest Announcements
+                        </span>
+                    </div>
+
+                    <!-- Button Link to Create Announcement -->
+                    <a href="{{ route('admin.announcement.create') }}" class="icon-link" data-bs-toggle="tooltip"
+                        title="Post an announcement">
+                        <div class="icon-container">
+                            <i data-lucide="plus" class="icon-with-border"></i>
+                        </div>
+                    </a>
                 </div>
             </div>
 
-            <div class="col-md-5">
-                <div class="mb-4">
-                    <canvas id="hr-attendance"></canvas>
+            <!-- Mock Data Only for color mapping. Remove once data is fetched dynamically. -->
+            @php
+                $announcements = [
+                    [
+                        'title' => 'New Policy Implementation',
+                        'description' => 'Effective next month, we will be implementing a new remote work policy. Please review the details in the policy section of the portal!',
+                        'roles' => ['Technical', 'Employee']
+                    ],
+                    [
+                        'title' => 'Work Anniversary',
+                        'description' => 'Happy 5th work anniversary to John Smith! Thank you for your dedication and hard work over the years.',
+                        'roles' => ['Accountant', 'Employee']
+                    ],
+                    [
+                        'title' => 'Company Picnic',
+                        'description' => 'Join us for the annual company picnic on July 15th at Central Park. Food, games, and fun for the whole family!',
+                        'roles' => ['Relations']
+                    ],
+                ];
+
+                // Bound to change.
+                $colorMapping = [
+                    'HR' => 'blue',
+                    'Employee' => 'teal',
+                    'Accountant' => 'green',
+                    'Relations' => 'purple',
+                    'Technical' => 'orange',
+                    'default' => 'purple',
+                ];
+            @endphp
+
+            <!-- The fetching section -->
+            @foreach ($announcements as $announcement)
+                <div class="card mb-3 bg-body-secondary border-0 p-4">
+                    <div class="w-100">
+                        <div>
+                            <header class="fs-5 fw-bold d-inline-block me-2">{{ $announcement['title'] }}
+                                @foreach ($announcement['roles'] as $role)
+                                    <x-status-badge :color="$colorMapping[$role] ?? $colorMapping['default']">{{ $role }}</x-status-badge>
+                                @endforeach
+                            </header>
+
+                            <p class="fs-7">{{ $announcement['description'] }}</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="card p-4">
-                    <table class="table table-borderless">
+            @endforeach
+
+        </div>
+
+        <!-- Daily Time Record -->
+        <div class="col-md-5 flex">
+            <div class="card p-4">
+                <div class="table-attendance-cont">
+                    <header class="fs-4 fw-bold" role="heading" aria-level="2">
+                        <i class="bi bi-circle-fill text-danger fs-4"></i>
+                        <span class="text-danger text-uppercase fw-bold">Live</span>
+                        Daily Time Record
+                    </header>
+
+                    <table class="table table-borderless table-attendance-list">
                         <thead>
                             <tr>
                                 <th>Employee</th>
@@ -252,6 +265,8 @@
                                 <th>Time Out</th>
                             </tr>
                         </thead>
+
+                        <!-- BACK-END REPLACE: DTI from Database. Limit to 5. -->
                         <tbody>
                             @for ($i = 0; $i < 5; $i++)
                                 <tr>
@@ -262,68 +277,32 @@
                             @endfor
                         </tbody>
                     </table>
-                </div>
-            </div>
-        </div>
 
-
-
-
-    </section>
-
-    <section class="mb-5">
-        <header class="fs-4 fw-bold text-primary mb-4" role="heading" aria-level="2">
-            <span>
-                <picture>
-                    <source media="(min-width:2560px)" class=""
-                        srcset="{{ Vite::asset('resources/images/icons/green-calendar-xxl.webp') }}">
-                    <source media="(min-width:768px)" class=""
-                        srcset="{{ Vite::asset('resources/images/icons/green-calendar-md.webp') }}">
-                    <source media="(min-width:576px)" class=""
-                        srcset="{{ Vite::asset('resources/images/icons/green-calendar-sm.webp') }}">
-                    <source media="(max-width:320px)" class=""
-                        srcset="{{ Vite::asset('resources/images/icons/green-calendar-xs.webp') }}">
-
-                    <img width="28" height="28" aspect-ratio="1/1" class="icon" loading="lazy"
-                        src="{{ Vite::asset('resources/images/icons/green-calendar-md.webp') }}" alt="">
-                </picture>
-            </span>
-            <span class="fs-4 fw-bold ps-1 pe-3">Employee Statistics</span>
-        </header>
-
-        <div class="d-flex">
-            <div class="d-flex col-6 flex-md-wrap gap-3">
-                <div class="card col-md-5 text-center p-3">
-                    <div class="fs-5 fw-bold">128</div>
-                    <small>Total Employment</small>
-                </div>
-                <div class="card col-md-5 text-center p-3">
-                    <div class="fs-5 fw-bold">128</div>
-                    <small>New Hires</small>
-                </div>
-                <div class="card col-md-5 text-center p-3">
-                    <div class="fs-5 fw-bold">128</div>
-                    <small>Departure</small>
-                </div>
-                <div class="card col-md-5 text-center p-3">
-                    <div class="fs-5 fw-bold">128</div>
-                    <small>On Probationary</small>
-                </div>
-            </div>
-            <div class="col-6 card border-primary p-5">
-                <div class="fs-3 fw-bold mb-4">Reminders</div>
-                <div class="d-table w-100">
-                    <div class="d-table-row">
-                        <div class="d-table-cell">Next Payslip Uploading</div>
-                        <div class="d-table-cell">Due this Friday</div>
-                    </div>
-                    <div class="d-table-row">
-                        <div class="d-table-cell">Performance Evaluation</div>
-                        <div class="d-table-cell">Due this Friday</div>
+                    <!-- Redirect Link: To Attendance -->
+                    <div class="col-12 px-5">
+                        <x-buttons.view-link-btn link="#" text="View All" />
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+</section>
 
-    </section>
+<!-- SECTION: High Level View of Users Table -->
+<section class="mb-5">
+    <header class="fs-4 fw-bold mb-4" role="heading" aria-level="2">
+        Users
+    </header>
+
+    <div class="d-flex mb-5">
+        <div class="col-md-12">
+            <div class="card p-4 h-100">
+                <!-- Insert here the Users table. Its supposed width is 100vw. -->
+                List of Users Table
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- <livewire:admin.dashboard.online-users /> -->
 @endsection
