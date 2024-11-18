@@ -9,12 +9,22 @@ class JobViewPane extends Component
 {
     private $job_vacancy;
 
+    public function mount(JobsListCard $jobsListCard)
+    {
+        $job = $jobsListCard->baseJobVacancyQuery()->first();
+        $this->job_vacancy = [
+            'jobDetail' => [
+                'jobTitle' => [$job->jobTitle],
+                'jobFamilies' => [$job->jobTitle->jobFamilies->first()],
+                'specificAreas' => [$job->jobTitle->specificAreas->first()],
+            ]
+        ];
+    }
+
     #[On('job-hiring-selected')]
     public function showJobVacancy($job_vacancy)
     {
         $this->job_vacancy = $job_vacancy;
-
-        // dd($this->job_vacancy);
     }
 
     #[On('job-searched')]
