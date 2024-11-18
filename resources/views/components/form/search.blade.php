@@ -4,7 +4,7 @@
 
 @aware(['nonce'])
 
-<form style="display: contents">
+<form class="d-contents">
 
     @if ($type == 'search')
         <input {{ $attributes->merge(['class' => 'col-12 rounded-pill search']) }} type="search" autocomplete="off"
