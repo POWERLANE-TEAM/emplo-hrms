@@ -23,6 +23,10 @@ use Illuminate\Support\Facades\RateLimiter;
 use Laravel\Fortify\Contracts\LoginResponse;
 use Laravel\Fortify\Contracts\LogoutResponse;
 use App\Actions\Fortify\UpdateUserProfileInformation;
+use App\Enums\RoutePrefix as EnumsRoutePrefix;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -38,7 +42,7 @@ class FortifyServiceProvider extends ServiceProvider
         {
             public function toResponse($request)
             {
-                $redirectUrl = match (RoutePrefix::getByReferrer()) {      
+                $redirectUrl = match (RoutePrefix::getByReferrer()) {
                     'employee' => '/employee/login',
                     'admin' => '/admin/login',
                     default => '/login',
@@ -46,12 +50,12 @@ class FortifyServiceProvider extends ServiceProvider
 
                 try {
                     broadcast(new UserLoggedout($request->authBroadcastId, $redirectUrl))->toOthers();
-                    return redirect($redirectUrl);
                 } catch (\Throwable $th) {
                     // avoid Pusher error: cURL error 7: Failed to connect to localhost port 8080 after 2209 ms: Couldn't connect to server
                     /* when websocket server is not started */
 
-                    \Log::error('Broadcast error: '.$th);
+                    Log::error('Broadcast error: ' . $th);
+                } finally {
                     return redirect($redirectUrl);
                 }
             }
@@ -80,6 +84,14 @@ class FortifyServiceProvider extends ServiceProvider
                             $permission = explode(':', $middlewareItem)[1];
                             if (! $authUser->can($permission)) {
                                 $hasAccess = false;
+                                break;
+                            }
+                        }
+
+                        if (str_contains($middlewareItem, 'role:')) {
+                            $role = explode(':', $middlewareItem)[1];
+                            if (! $authUser->hasRole($role)) {
+                                $has_access = false;
                                 break;
                             }
                         }
@@ -123,15 +135,33 @@ class FortifyServiceProvider extends ServiceProvider
 
         Fortify::verifyEmailView(fn() => app(UnverifiedEmail::class)->render());
 
+        Fortify::authenticateUsing(function (Request $request) {
+
+            $routePrefix = RoutePrefix::getByRequest($request);
+
+            $user = User::where('email', $request->email)->first();
+
+            if ($this->isUnauthorized($user, $routePrefix)) {
+                $redirectPrefix = $this->getRedirectPrefix($user, $routePrefix);
+                $routePrefixWithDot = !empty($redirectPrefix) ? "{$redirectPrefix}." : $redirectPrefix;
+                $routeName = "{$routePrefixWithDot}login";
+                $redirectUrl = url(route($routeName));
+
+                session()->flash('redirectHint', $redirectUrl);
+                abort(403, __('You\'re trying to access a forbidden resource.'));
+            }
+
+            if (
+                $user &&
+                Hash::check($request->password, $user->password)
+            ) {
+                return $user;
+            }
+        });
+
         Fortify::loginView(function () {
 
-            $view = match (true) {
-                request()->is('employee/*') => 'livewire.auth.employees.login-view',
-                request()->is('admin/*') => 'livewire.auth.admins.login-view',
-                default => 'livewire.auth.applicants.login-view',
-            };
-
-            return view($view);
+            return view('livewire.auth.login-view');
         });
 
         Fortify::twoFactorChallengeView(function () {
@@ -147,5 +177,39 @@ class FortifyServiceProvider extends ServiceProvider
         RateLimiter::for('two-factor', function (Request $request) {
             return Limit::perMinute(5)->by($request->session()->get('login.id'));
         });
+    }
+
+    private function isUnauthorized($user, $routePrefix): bool
+    {
+        if (!$user) {
+            return false;
+        }
+
+        if ($user->hasRole(UserRole::ADVANCED) && $routePrefix != EnumsRoutePrefix::ADVANCED->value) {
+            return true;
+        }
+
+        if ($user->hasRole(UserRole::INTERMEDIATE) && $routePrefix != EnumsRoutePrefix::EMPLOYEE->value) {
+            return true;
+        }
+
+        if ($user->getRoleNames()->isEmpty() && in_array($routePrefix, EnumsRoutePrefix::valuesNotDefault())) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private function getRedirectPrefix($user, $routePrefix): string
+    {
+        if ($user->hasRole(UserRole::ADVANCED) && $routePrefix != EnumsRoutePrefix::ADVANCED->value) {
+            return EnumsRoutePrefix::ADVANCED->value;
+        }
+
+        if ($user->hasRole(UserRole::INTERMEDIATE) && $routePrefix != EnumsRoutePrefix::EMPLOYEE->value) {
+            return EnumsRoutePrefix::EMPLOYEE->value;
+        }
+
+        return '';
     }
 }

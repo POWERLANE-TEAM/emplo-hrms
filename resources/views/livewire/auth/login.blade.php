@@ -11,7 +11,7 @@
         </span>
     </hgroup>
 
-    <form wire:submit.prevent="store" action="/login" nonce="{{ $nonce }}">
+    <form action="login" method="POST" nonce="{{ $nonce }}">
         @csrf
 
         @if ($errors->has('credentials'))

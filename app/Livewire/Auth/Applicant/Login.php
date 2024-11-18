@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Livewire\Auth;
+namespace App\Livewire\Auth\Applicant;
 
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 class Login extends Component
 {
-    #[Validate('required|max:320|valid_email_dns')]
+    #[Validate('required|email')]
     public $email = '';
 
     #[Validate('required')]
@@ -17,6 +17,6 @@ class Login extends Component
 
     public function render()
     {
-        return view('livewire.auth.login');
+        return view('livewire.auth.applicant.login');
     }
 }
