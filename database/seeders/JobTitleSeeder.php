@@ -12,13 +12,13 @@ class JobTitleSeeder extends Seeder
      * Run the database seeds.
      */
     public function run(): void
-    {        
+    {
         $jobTitles = collect(Storage::json('public/utils/job-titles.json'));
 
         $jobTitles->each(function ($jobTitle) {
             JobTitle::create([
                 'job_title' => $jobTitle['title'],
-                'job_desc' => fake()->paragraph(),
+                'job_desc' => fake()->boolean ? fake()->paragraph() : fake()->paragraph(500),
                 'department_id' => $jobTitle['department'],
             ]);
         });
