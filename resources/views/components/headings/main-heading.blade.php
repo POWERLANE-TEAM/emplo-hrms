@@ -19,7 +19,7 @@
     }
 
     if (!$overrideContainerClass) {
-        $attributes = $attributes->merge($defaultAttributes);
+        $containerAttributes = $containerAttributes->merge($defaultContainerAttributes);
     }
 @endphp
 
