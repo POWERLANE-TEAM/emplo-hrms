@@ -1,17 +1,15 @@
 {{-- Extends layout --}}
 @extends('components.layout.employee.layout', ['nonce' => $nonce])
 
-
 {{-- Head Section: Title, Scripts, & Styles --}}
 @section('head')
 <title>Category</title>
 <script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
+{{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script> --}}
 @endsection
 
 @pushOnce('scripts')
-    <script src="{{ Vite::asset('resources/js/forms/nbp.min.js') }}" defer></script>
-    @vite(['resources/js/employee/hr-manager/dashboard.js'])
     @vite(['resources/js/drag-and-drop.js'])
 @endPushOnce
 
