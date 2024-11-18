@@ -1,6 +1,5 @@
 <?php
 
-use App\Enums\UserPermission;
 use App\Http\Controllers\ApplicantDocController;
 use App\Http\Controllers\PreEmploymentController;
 use App\Livewire\Auth\FacebookOAuth;
@@ -8,6 +7,7 @@ use App\Livewire\Auth\GoogleOAuth;
 use App\Livewire\Auth\GoogleOneTap;
 use App\Livewire\Auth\Logout;
 use Illuminate\Support\Facades\Route;
+use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 
 Route::get('/apply', function () {
     return view('apply');
@@ -30,6 +30,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 Route::middleware('guest')->group(function () {
+
+    Route::get('/login', [AuthenticatedSessionController::class, 'create'])
+        ->name('login');
 
     Route::get('/auth/google/redirect', [GoogleOAuth::class, 'googleOauth'])
         ->name('auth.google.redirect');
