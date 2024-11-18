@@ -24,6 +24,7 @@
 @endphp
 
 <hgroup {{ $containerAttributes }}>
-    <div {{ $attributes }} {{ $isHeading ? 'role=heading aria-level=1' : '' }}>{{ $heading ?? '' }}</div>
+    <div {!! $attributes !!} {{ $isHeading ? 'role=heading aria-level=1' : '' }}>
+        {{ $heading ?? '' }}</div>
     {{ $description ?? '' }}
 </hgroup>
