@@ -386,6 +386,13 @@ button {
     font-weight: 700;
 }
 
+.vertical-line {
+    width: 2.3px; 
+    background-color: #D9D9D9; 
+    height: 100%; 
+    margin: 0 auto; 
+}
+
 body {
     &:not([data-bs-theme]) {
         @media screen and (prefers-color-scheme: dark) {
