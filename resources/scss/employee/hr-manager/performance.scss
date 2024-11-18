@@ -1,0 +1,14 @@
+@import '../../utils';
+@import '../../scales/icon-size';
+@import '../../icon/lucide';
+@import '../side-top-bar';
+@import '../../palette/text-colors';
+@import '../../palette/start-borders';
+@import '../../footer';
+
+.scrollable-container {
+    max-height: 70vh; 
+    overflow-y: auto; 
+    overflow-x: hidden; 
+    padding-right: 10px; 
+}
