@@ -37,5 +37,5 @@
         </x-slot:description>
     </x-headings.main-heading>
 
-    <livewire:employee.tables.employees-table />
+    <livewire:tables.employees-table />
 @endsection
