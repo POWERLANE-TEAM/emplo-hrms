@@ -6,7 +6,6 @@ import addGlobalScrollListener, { documentScrollPosY } from '../global-scroll-fn
 import addGlobalListener, { GlobalListener } from '../global-event-listener.js';
 import ThemeManager, { initPageTheme, handleThemeBtn } from '../theme-listener.js';
 // import './livewire.js'
-import '../listeners/online-users.js';
 
 const themeManager = new ThemeManager();
 const themeToggle = document.getElementById(`theme-toggle-btn`).closest('.dropdown');

@@ -11,6 +11,8 @@
 @import 'footer';
 @import 'btn-toggle-psw';
 @import 'input/checkbox';
+@import 'palette/text-colors';
+@import 'scales/img-size';
 
 
 
@@ -25,30 +27,35 @@ section.top-vector {
         min-width: 83svw;
         left: 17%;
         transform: scaleX(1.30) scaleY(1.1);
+        top: -3vh;
     }
 
     svg.right-circle {
         position: absolute;
         right: calc(-96px + 1vw);
-        top: 87vh;
+        top: 80vh;
         z-index: -10;
     }
 
     svg.left-circle {
         position: absolute;
         left: calc(-32px + 1vw);
-        top: 47vh;
+        top: 38vh;
         z-index: -10;
     }
 }
 
 .first-section {
 
-    @media (min-width: 768px) {
-        min-height: 90vh;
+    // @media (min-width: 768px) {
+    //     min-height: 90vh;
+    // }
+
+    .hiring-text-header {
+        font-size: 2.7rem;
     }
 
-    transform: translateY(-2%);
+    transform: translateY(-5%);
 
     .right {
         transform: translateX(-2.5%);
@@ -97,13 +104,31 @@ section.top-vector {
         --job-info-min-h: clamp(300px, 50vh, 100svh);
     }
 
-
-
     input[type="search"] {
         background-color: var(--main-green);
     }
 
+    .job-search-input {
+        color: #fff !important;
+    }
+
+    .job-search-input::placeholder {
+        color: #fff !important;
+    }
+
+    .icon-inside-right span {
+        display: flex !important;
+        max-width: 30px;
+        max-height: 30px;
+        overflow: hidden;
+        border: none !important;
+    }
+
     .job-listing {
+
+        .card:hover {
+            border: none;
+        }
 
         sidebar {
 
@@ -137,6 +162,10 @@ section.top-vector {
                 button {
                     place-items: center;
                     min-height: min(10vw, calc(300px + 3rem));
+                }
+
+                button:hover {
+                    border: 2px solid var(--main-green);
                 }
 
                 button * {
