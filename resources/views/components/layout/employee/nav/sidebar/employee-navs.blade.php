@@ -114,9 +114,9 @@
             href="{{ route($routePrefix . '.job-family.create') }}" 
             :active="request()->routeIs($routePrefix . '.job-family.create')"
             class="" 
-            nav_txt="Policies" 
-            :default_icon="['src' => 'documents', 'alt' => '']" 
-            :active_icon="['src' => 'documents', 'alt' => '']"
+            nav_txt="Organization" 
+            :default_icon="['src' => 'employee', 'alt' => '']" 
+            :active_icon="['src' => 'employee', 'alt' => '']"
         >
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan
