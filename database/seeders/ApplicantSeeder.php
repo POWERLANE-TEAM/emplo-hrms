@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Enums\AccountType;
 use App\Enums\ApplicationStatus;
 use App\Enums\UserPermission;
-use App\Enums\UserRole;
 use App\Models\User;
 use App\Enums\UserStatus as EnumUserStatus;
 use App\Models\Applicant;
@@ -17,7 +16,6 @@ use Illuminate\Support\Facades\Concurrency;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
-use Spatie\Permission\Models\Role;
 
 
 function createApplicants($chunkStart, $chunk, $permissions)
@@ -48,8 +46,6 @@ function createApplicants($chunkStart, $chunk, $permissions)
                         'job_vacancy_id' => JobVacancy::inRandomOrder()->first()->job_vacancy_id,
                         'application_status_id' => ApplicationStatus::APPROVED,
                     ]);
-
-                    $applicant_user->assignRole(UserRole::BASIC);
 
                     // $applicant_user->givePermissionTo($permissions);
                 } catch (\Exception $e) {

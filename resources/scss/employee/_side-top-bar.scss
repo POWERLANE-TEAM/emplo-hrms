@@ -14,8 +14,8 @@
     --topnav-padding-y: clamp(0.3rem, 0.25rem + 0.5dvw, 2rem)
 }
 
-.main-layout-container > main {
-    contain: paint;
+main {
+    // contain: paint;
     position: relative;
     /* Offset of main content below top bar */
     margin-top: calc(var(--main-menu-padding-top) + var(--topnav-padding-y) + var(--search-height) + var(--search-padding-y) + var(--main-menu-padding-top) + 1vh);
