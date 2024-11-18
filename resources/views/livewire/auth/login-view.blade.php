@@ -3,7 +3,7 @@
 @use('App\Http\Helpers\RoutePrefix')
 
 @section('head')
-    <title>Sign in {{ $routePrefix ? ' as ' . $routePrefix : '' }}</title>
+<title>Sign in {{ $routePrefix ? ' as ' . ucfirst($routePrefix) : '' }}</title>
 @endsection
 
 @pushOnce('pre-scripts')
@@ -18,11 +18,11 @@
 @endPushOnce
 
 @section('critical-styles')
-    @use('Illuminate\Support\Facades\Vite')
+@use('Illuminate\Support\Facades\Vite')
 
-    <style nonce="{{ $nonce }}">
-        {!! Vite::content('resources/css/guest/secondary-bg.css') !!}
-    </style>
+<style nonce="{{ $nonce }}">
+    {!! Vite::content('resources/css/guest/secondary-bg.css') !!}
+</style>
 @endsection
 
 @pushOnce('styles')
@@ -31,21 +31,21 @@
 @endPushOnce
 
 @section('before-nav')
-    <x-layout.guest.secondary-bg />
+<x-layout.guest.secondary-bg />
 @endsection
 
 @section('header-nav')
-    <x-layout.guest.secondary-header />
+<x-layout.guest.secondary-header />
 @endsection
 
 @section('content')
-    @php
-        $componentName = 'auth.' . ($routePrefix ? $routePrefix . '.' : '') . 'login';
-    @endphp
-    @livewire($componentName)
+@php
+    $componentName = 'auth.' . ($routePrefix ? $routePrefix . '.' : '') . 'login';
+@endphp
+@livewire($componentName)
 @endsection
 
 
 @section('footer')
-    <x-guest.footer />
+<x-guest.footer />
 @endsection
