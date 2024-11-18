@@ -2,7 +2,8 @@
 @import 'core';
 @import 'scrollbar';
 @import 'table';
-@import 'icon-sizing';
+@import 'scales/icon-size';
+@import "scales/img-size";
 @include pri-sm-logo;
 
 header,

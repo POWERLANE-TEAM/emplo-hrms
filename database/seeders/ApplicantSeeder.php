@@ -47,7 +47,7 @@ function createApplicants($chunkStart, $chunk, $permissions)
                         'application_status_id' => ApplicationStatus::APPROVED,
                     ]);
 
-                    $applicant_user->givePermissionTo($permissions);
+                    // $applicant_user->givePermissionTo($permissions);
                 } catch (\Exception $e) {
                     Log::error('Exception: ' . $e->getMessage() . ' in ' . $e->getFile() . ' on line ' . $e->getLine());
                 }

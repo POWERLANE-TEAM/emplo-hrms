@@ -23,9 +23,7 @@ enum UserRole: string
     }
 
     /**
-     * Get an array of all roles types.
-     *
-     * @return array An array of roles types.
+     * @return array An array of all user roles values.
      */
     public static function values(): array
     {
