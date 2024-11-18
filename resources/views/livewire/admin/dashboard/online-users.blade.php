@@ -1,40 +1,65 @@
-<section>
-    <header class="fs-4 fw-bold mb-4" role="heading" aria-level="2">
-        Online Users
-    </header>
-    
-    <div
-        x-data="{ onlineUsers: [] }"
-        x-init="
-            Echo.join('online-users')
-                .here((users) => {
-                    onlineUsers = users.filter(u => u.user_id !== {{ auth()->user()->user_id }});
-                })
-                .joining((user) => {
-                    onlineUsers.push(user);
-                })
-                .leaving((user) => {
-                    onlineUsers = onlineUsers.filter(u => u.user_id !== user.user_id);
-                });
-        "
-    >
-        <div class="d-flex">
+<div class="col-5 d-flex">
+    <div x-data="{ 
+            online: $store.onlineUsers,
+            authUserId: {{ auth()->user()->user_id }} 
+        }" class="card">
+        <div class="card-header w-100 px-3">
+            <header class="p-1 fs-4 fw-bold" role="heading" aria-level="2">
+                <span class="fs-4 fw-bold text-primary pe-2" x-text="online.list.length"></span>
+                {{ __('Online Users') }}
+            </header>
+        </div>
+
+        <div class="card-body px-3">
             <ul class="list-unstyled">
-                <template x-if="onlineUsers.length > 0">
-                    <template x-for="user in onlineUsers" :key="user.user_id">
-                        <li>
+                <template x-if="online.paginatedUsers().length > 0">
+                    <template x-for="user in online.paginatedUsers()" :key="user . user_id">
+                        <li class="d-flex align-items-center mb-2 p-2 rounded-3 bg-body-secondary">
                             <x-online-status status="online">
-                                <img :src="user.photo" alt="user" class="img-fluid rounded-circle" width="35" height="35" />
-                            </x-online-status>                           
-                            <span class="ps-1" x-text="user.email"></span>    
+                                <img :src="user . photo" alt="User Photo" class="img-fluid rounded-circle border"
+                                    width="40" height="40">
+                            </x-online-status>
+                            <div class="ms-3">
+                                <div class="fw-bold text-uppercase">
+                                    <span x-text="user.fullName"></span>
+                                    <template x-if="user.user_id === authUserId">
+                                        <span class="fw-medium text-capitalize">{{ __('(You)') }}</span>
+                                    </template>
+                                </div>
+                                <div class="text-muted" x-text="user.email"></div>
+                            </div>
                         </li>
                     </template>
                 </template>
 
-                <template x-if="onlineUsers.length === 0">
-                    <li>No online people</li>
-                </template>
+                <div class="d-flex flex-column align-items-center justify-content-center" style="height: 100%;">
+                    <template x-if="online.paginatedUsers().length === 0">
+                        <div class="text-center">
+                            <img class="img-size-40 img-responsive"
+                                src="{{ Vite::asset('resources/images/illus/dashboard/time-state.webp') }}" alt="">
+                            <div class="text-muted"> {{ __('No online users') }}</div>
+                        </div>
+                    </template>
+                </div>
+
             </ul>
         </div>
-    </div>  
-</section>
+
+        <div class="card-footer">
+            <button @click="online.changePage(online.currentPage - 1)" :disabled="online . currentPage === 1"
+                class="btn btn-sm border-0">
+                <i data-lucide="chevron-left"></i>
+            </button>
+
+            <span>
+                <span x-text="online.currentPage"></span>
+                {{ __('of') }}
+                <span x-text="online.getTotalPages()"></span>
+            </span>
+
+            <button @click="online.changePage(online.currentPage + 1)" :disabled="online . currentPage === online . getTotalPages()" class="btn btn-sm border-0">
+                <i data-lucide="chevron-right"></i>
+            </button>
+        </div>
+    </div>
+</div>
