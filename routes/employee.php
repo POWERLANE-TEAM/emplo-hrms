@@ -21,8 +21,12 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         ->name('applicants');
 
     Route::get('profile', function () {
-        return view('employee.profile.settings');
+            return view('employee.profile.settings');
     })->name('profile');
+
+    Route::get('probationary-perf-results', function () {
+        return view('employee.hr-manager.performance.probationary.performance-results');
+    })->name('probationary-perf-results');
 
     Route::get('/index', [EmployeeController::class, 'index'])
         ->name('index');
