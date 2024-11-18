@@ -189,6 +189,7 @@ class JobsListCard extends Component
             }
         }
 
+        $this->dispatch('job-vacancies-fetched', ['count' => $this->job_vacancies->count()]);
         return view('livewire.guest.jobs-list-card');
     }
 }

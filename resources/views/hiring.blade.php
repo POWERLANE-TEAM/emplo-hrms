@@ -94,12 +94,12 @@
 
         @livewire('guest.job-search-input')
         <div class="px-md-5  pt-md-5 pb-md-3 ms-5">
-            <em class=" ms-5">
+            <em class=" ms-5" x-data="{ jobCount: 12 }"
+                x-on:job-vacancies-fetched.window="jobCount = $event.detail[0].count || 'no';" nonce="{{ $nonce }}">
                 Currently
-                <span>{{ \App\Models\JobVacancy::where('vacancy_count', '>', 0)->where(function ($query) {
-                        $query->whereNull('application_deadline_at')->orWhere('application_deadline_at', '>', now());
-                    })->count() }}</span>
-                <span>jobs</span> available
+                <span x-text="jobCount" nonce="{{ $nonce }}"></span>
+                <span x-text="jobCount === 'no' ? ' job ' : (jobCount == 1 ? ' job ' : ' jobs ')"
+                    nonce="{{ $nonce }}"></span> available
             </em>
         </div>
         <section class="job-listing d-flex  row gap-5 mb-5 ">
