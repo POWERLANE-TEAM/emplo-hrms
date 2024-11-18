@@ -3,7 +3,7 @@
     'txt_collapsed' => '',
     'txt_expanded' => '',
 ])
-@aware(['icon_size' => '31px', 'icon_ratio' => '1/1'])
+@aware(['iconSize' => '31px', 'iconRatio' => '1/1'])
 
 
 @if (!empty($slot) && trim($slot) != '')

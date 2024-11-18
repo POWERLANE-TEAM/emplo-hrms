@@ -2,13 +2,19 @@
 
 @use('App\Http\Helpers\RoutePrefix')
 
+@section('head')
+    <title>Sign in {{ $routePrefix ? ' as ' . $routePrefix : '' }}</title>
+@endsection
+
 @pushOnce('pre-scripts')
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
 @endPushOnce
 
 @pushOnce('scripts')
     <script src="{{ Vite::asset('resources/js/forms/nbp.min.js') }}" defer></script>
     @vite(['resources/js/employee/login.js'])
+    @vite(['resources/js/animations/auth-effect.js'])
 @endPushOnce
 
 @section('critical-styles')
@@ -21,6 +27,7 @@
 
 @pushOnce('styles')
     @vite(['resources/css/login.css'])
+    @vite(['resources/css/animations/auth-effect.css'])
 @endPushOnce
 
 @section('before-nav')
