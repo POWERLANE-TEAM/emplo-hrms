@@ -41,6 +41,7 @@ class CspPolicy extends CustomSpatiePolicy
                 ->addDirective(Directive::SCRIPT, 'unsafe-inline');
             $this->addDirective(Directive::SCRIPT, 'https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js');
             $this->addDirective(Directive::SCRIPT, 'https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone-min.js');
+            $this->addDirective(Directive::SCRIPT, 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js');
 
             $this
                 ->addDirective(Directive::STYLE, 'localhost:*')
