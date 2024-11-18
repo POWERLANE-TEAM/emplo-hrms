@@ -1,4 +1,5 @@
 import '../websocket';
+import initLucideIcons from '../icons/lucide';
 
 let onlineUsers = Alpine.reactive([]);
 
@@ -41,4 +42,8 @@ Alpine.store('onlineUsers', {
     updateList() {
         this.list = [...this.list];
     }
+});
+
+document.addEventListener('livewire:navigated', () => {
+    initLucideIcons();
 });
