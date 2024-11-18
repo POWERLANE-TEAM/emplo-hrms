@@ -1,13 +1,5 @@
-{{-- Initialization Section: Sets CSP nonce, retrieves authenticated user, --}}
-@php
-    $nonce = csp_nonce();
-    $user = Auth::user();
-@endphp
-
-
 {{-- Extends layout --}}
-@extends('components.layout.employee.layout', ['description' => 'Admin Dashboard', 'nonce' => $nonce])
-
+@extends('components.layout.employee.layout', ['description' => 'Pre-Employment Requirements', 'nonce' => $nonce])
 
 {{-- Head Section: Title, Scripts, & Styles --}}
 @section('head')
@@ -32,8 +24,6 @@
 @endPushOnce
 {{-- END OF Head Section: Title, Scripts, & Styles --}}
 
-
-
 {{-- Body/Content Section --}}
 @section('content')
 
@@ -52,6 +42,3 @@
 <livewire:admin.config.form.pre-employment />
 
 @endsection
-
-{{-- Edit Dialogue --}}
-<x-modals.edit-draggable-data></x-modals.edit-draggable-data>

@@ -70,7 +70,6 @@
     </div>
 </div>
 
-{{-- Fuck this, i had to manually handle opening and closing of the bootstrap modal --}}
 @script
 <script>
     Livewire.hook('morph.added',  ({ el }) => {
