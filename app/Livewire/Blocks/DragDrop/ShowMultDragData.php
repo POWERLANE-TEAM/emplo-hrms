@@ -3,6 +3,10 @@
 namespace App\Livewire\Blocks\Dragdrop;
 
 use Livewire\Component;
+use Illuminate\Support\Str;
+use Livewire\Attributes\On;
+use Livewire\Attributes\Computed;
+use App\Models\PerformanceCategory;
 
 class ShowMultDragData extends Component
 {
@@ -10,20 +14,18 @@ class ShowMultDragData extends Component
     public $items = [];
 
     public $editCallback;
-    public $head;
-    public $subhead;
 
-    public function mount($items, $editCallback = null, $head = null, $subhead = null)
-    {
-        $this->items = $items;
-        $this->editCallback = $editCallback;
-        $this->head = $head;
-        $this->subhead = $subhead;
-    }
+    public $eventName;
 
+    public $title;
+
+    #[On('item-added')]
     public function addItems($allitems)
     {
-        $this->items[] = $allitems;
+        $this->items[] = [
+            'head' => $allitems[0]['head'],
+            'subhead' => $allitems[0]['subhead']
+        ];
     }
 
     public function saveChanges($itemName, $index)
@@ -60,8 +62,21 @@ class ShowMultDragData extends Component
         $this->items[$indexB] = $temp;
     }
 
+    
     public function render()
     {
-        return view('livewire.blocks.dragdrop.show-mult-drag-data');
+        $this->items = $this->categories;
+
+        $head = array_map(function ($item) {
+            return "<div class='fw-bold text-primary fs-5'>{$item['head']}</div>";
+        }, $this->categories);
+
+        $subhead = array_map(function ($item) {
+            return "<div class='text-muted'>{$item['subhead']}</div>";
+        }, $this->categories);  
+
+        return view('livewire.blocks.dragdrop.show-mult-drag-data', 
+            compact('head', 'subhead')
+        );
     }
 }

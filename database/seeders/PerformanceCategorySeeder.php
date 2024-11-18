@@ -18,9 +18,8 @@ class PerformanceCategorySeeder extends Seeder
 
         $categories->each(function ($category) {
             PerformanceCategory::create([
-                'perf_category_id' => $category['id'],
                 'perf_category_name' => Str::lower($category['name']),
-                'perf_category_desc' => $category['description'],
+                'perf_category_desc' => Str::lower($category['description']),
             ]);
         });
     }

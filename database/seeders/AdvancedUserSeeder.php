@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use App\Enums\AccountType;
 use App\Enums\UserRole;
-use App\Enums\UserStatus as EnumUserStatus;
+use App\Enums\UserStatus;
 use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -25,9 +25,9 @@ class AdvancedUserSeeder extends Seeder
         $userData = [
             'account_type' => AccountType::EMPLOYEE,
             'account_id' => $employee->employee_id,
-            'email' => 'advanced.' . fake()->unique()->safeEmail(),
+            'email' => 'services.powerlaneresources@gmail.com',
             'password' => Hash::make('UniqP@ssw0rd'),
-            'user_status_id' => EnumUserStatus::ACTIVE,
+            'user_status_id' => UserStatus::ACTIVE,
             'email_verified_at' => fake()->dateTimeBetween('-10 days', 'now'),
         ];
 
