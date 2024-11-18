@@ -34,15 +34,19 @@
             </x-slot:heading>
 
             <x-slot:description>
-                <p><span></span><span>Live</span> viewing</p>
+                <p><span class="rounded-circle bg-danger d-inline-block"></span><span
+                        class=" fw-bold text-danger text-uppercase">Live</span>
+                    viewing of today's employee attendance.</p>
             </x-slot:description>
         </x-headings.main-heading>
 
         <div>
             <div class="d-flex column-gap-2 column-gap-lg-3">
                 <form class="d-contents">
-                    <button class="btn btn-outline-primary h-100">Previous Day</button>
-                    <button class="btn btn-outline-primary h-100">Next Day</button>
+                    <button class="btn btn-outline-primary h-100"><i class="icon icon-large mx-2"
+                            data-lucide="arrow-left"></i>Previous Day</button>
+                    <button class="btn btn-outline-primary h-100">Next Day<i class="icon icon-large mx-2"
+                            data-lucide="arrow-right"></i></button>
                     <div class="border border-end-1"></div>
                     <button class="btn btn-primary"><i class="icon icon-large" data-lucide="calendar-search"></i></button>
                 </form>
