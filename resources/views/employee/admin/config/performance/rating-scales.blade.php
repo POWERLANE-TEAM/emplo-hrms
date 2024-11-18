@@ -1,13 +1,5 @@
-{{-- Initialization Section: Sets CSP nonce, retrieves authenticated user, --}}
-@php
-    $nonce = csp_nonce();
-    $user = Auth::user();
-@endphp
-
-
 {{-- Extends layout --}}
 @extends('components.layout.employee.layout', ['description' => 'Admin Dashboard', 'nonce' => $nonce])
-
 
 {{-- Head Section: Title, Scripts, & Styles --}}
 @section('head')
@@ -16,10 +8,6 @@
 <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 @endsection
-
-@pushOnce('pre-scripts')
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-@endPushOnce
 
 @pushOnce('scripts')
     <script src="{{ Vite::asset('resources/js/forms/nbp.min.js') }}" defer></script>
@@ -31,8 +19,6 @@
     @vite(['resources/css/employee/main.css'])
 @endPushOnce
 {{-- END OF Head Section: Title, Scripts, & Styles --}}
-
-
 
 {{-- Body/Content Section --}}
 @section('content')
@@ -52,7 +38,3 @@
 <livewire:admin.config.performance.rating-scales />
 
 @endsection
-
-{{-- Add / Edit Category Dialogue --}}
-<x-modals.edits_dialogues.edit-perf-scale />
-<x-modals.create_dialogues.add-perf-scale />

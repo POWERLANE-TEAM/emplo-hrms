@@ -19,6 +19,9 @@ enum UserPermission: string
     case CREATE_PRE_EMPLOYMENT_DOCUMENT = 'create pre employment document';
     case CREATE_JOB_FAMILY = 'create job family';
     case CREATE_JOB_TITLE = 'create job title';
+    case CREATE_PERFORMANCE_CATEGORIES = 'create performance categories';
+    case CREATE_PERFORMANCE_RATING_SCALES = 'create performance rating scales';
+    case CREATE_PREEMPLOYMENT_REQUIREMENTS = 'create pre-employment requirements';
 
         // View cases goes here
     case VIEW_APPLICANT_INFORMATION = 'view applicant information';
@@ -59,6 +62,9 @@ enum UserPermission: string
     case UDPATE_JOB_LISTING = 'update job listing';
     case UPDATE_ANNOUNCEMENT = 'update announcement';
     case UPDATE_OWNED_PRE_EMPLOYMENT_DOCUMENT = 'update owned pre employment document';
+    case UPDATE_PERFORMANCE_CATEGORIES = 'update performance categories';
+    case UPDATE_PERFORMANCE_RATING_SCALES = 'update performance rating scales';
+    case UPDATE_PREEMPLOYMENT_REQUIREMENTS = 'update pre-employment requirements';
 
         // Delete cases goes here
     case DELETE_JOB_LISTING = 'delete job listing';
@@ -82,6 +88,9 @@ enum UserPermission: string
             self::CREATE_PRE_EMPLOYMENT_DOCUMENT => 'Create pre-employment document',
             self::CREATE_JOB_FAMILY => 'Create job family',
             self::CREATE_JOB_TITLE => 'Create job title',
+            self::CREATE_PERFORMANCE_CATEGORIES => 'Create new performance categories',
+            self::CREATE_PERFORMANCE_RATING_SCALES => 'Create new performance rating scales',
+            self::CREATE_PREEMPLOYMENT_REQUIREMENTS => 'Create pre-employment requirements',
 
             // View labels goes here
             self::VIEW_APPLICANT_INFORMATION => 'View applicant/s information',
@@ -121,6 +130,9 @@ enum UserPermission: string
             self::UDPATE_JOB_LISTING => 'Update job listing/s',
             self::UPDATE_ANNOUNCEMENT => 'Update announcement/s',
             self::UPDATE_OWNED_PRE_EMPLOYMENT_DOCUMENT => 'Update owned pre-employment document',
+            self::UPDATE_PERFORMANCE_CATEGORIES => 'Update performnace categories',
+            self::UPDATE_PERFORMANCE_RATING_SCALES => 'Update performance rating scales',
+            self::UPDATE_PREEMPLOYMENT_REQUIREMENTS => 'Update pre-employment requirements',
 
             // Delete labels goes here
             self::DELETE_JOB_LISTING => 'Delete job listing/s',

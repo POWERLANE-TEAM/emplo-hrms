@@ -14,7 +14,6 @@ class PreempRequirement extends Model
 
     protected $fillable = [
         'preemp_req_name',
-        'preemp_req_desc',
         'sample_file',
     ];
 
