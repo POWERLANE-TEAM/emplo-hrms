@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\Employee\DashboardController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\HRManager\ApplicantController as HRApplicantController;
 use App\Livewire\Auth\Employees\Login;
 use App\Livewire\Auth\Logout;
@@ -23,6 +24,13 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     Route::get('/applicants', [HRApplicantController::class, 'index'])
         ->name('applicants');
 
+    Route::get('profile', function () {
+        return view('employee.profile.settings');
+    })->name('profile');
+
+    Route::get('/index', [EmployeeController::class, 'index'])
+        ->name('index');
+
 
     Route::get('/attendance/index', [AttendanceController::class, 'index'])
         ->name('attendance.index');
@@ -32,3 +40,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         echo 'sample';
     });
 });
+
+Route::get('profile', function () {
+    return view('employee.admin.profile');
+})->name('profile'); // Still temporary.

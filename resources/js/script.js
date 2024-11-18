@@ -39,6 +39,16 @@ try {
     console.error(error)
 }
 
+// Hides first before loading
 document.querySelectorAll('.hidden-until-load').forEach(element => {
     element.classList.remove('hidden-until-load');
+});
+
+// Truncates announcement items
+document.querySelectorAll('.announcement-item').forEach(element => {
+    const words = element.innerText.split(' ');
+    
+    if (words.length > 20) {
+        element.innerText = words.slice(0, 15).join(' ') + '...';
+    }
 });

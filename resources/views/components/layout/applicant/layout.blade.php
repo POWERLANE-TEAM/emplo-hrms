@@ -33,6 +33,8 @@
     <!-- Scripts -->
     <x-authenticated-broadcast-id />
     <x-livewire-listener />
+    
+    @vite(['resources/js/listeners/online-users.js'])
 
     @once
         @livewireStyles()

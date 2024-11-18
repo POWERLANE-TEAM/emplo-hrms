@@ -51,7 +51,7 @@ function createApplicants($chunkStart, $chunk, $permissions)
 
                     $applicant_user->assignRole(UserRole::BASIC);
 
-                    $applicant_user->givePermissionTo($permissions);
+                    // $applicant_user->givePermissionTo($permissions);
                 } catch (\Exception $e) {
                     Log::error('Exception: ' . $e->getMessage() . ' in ' . $e->getFile() . ' on line ' . $e->getLine());
                 }

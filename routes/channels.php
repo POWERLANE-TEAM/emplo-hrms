@@ -20,8 +20,13 @@ Broadcast::channel('user_auth.{userBroadcastId}', function ($user, string $userB
 Broadcast::channel('online-users', function (User $user){
     if (Auth::check()) {
         $userPhoto = $user->photo ?? Storage::url('icons/default-avatar.png');
+        $user->load('account');
+        $fullName = $user->account->full_name;
 
-        return array_merge($user->only(['user_id', 'email']), ['photo' => $userPhoto]);
+        return array_merge(
+            $user->only(['user_id', 'email']), 
+            ['photo' => $userPhoto, 'fullName' => $fullName]
+        );
     }
     return false;
 });

@@ -2,7 +2,7 @@
     'href' => '',
     'active' => false,
     'nav_txt' => '',
-    'default_icon' => '',
+    'defaultIcon' => '',
     'activeIcon' => '',
     'src_path' => 'resources/images/icons/sidebar/',
     'src_extn' => '.webp',
@@ -15,14 +15,14 @@
         class="d-flex align-items-center nav-link " role="menuitem">
         <div class="nav-icon">
 
-            @if (!empty($default_icon))
+            @if (!empty($defaultIcon))
                 <img width="{{ $iconSize }}" height="{{ $iconSize }}"
-                    src="{{ Vite::asset($src_path . 'white-' . $default_icon['src'] . $src_extn) }}"
-                    alt="{{ $default_icon['alt'] }}" aspect-ratio="{{ $iconRatio }}" class="default">
+                    src="{{ Vite::asset($src_path . 'white-' . $defaultIcon['src'] . $src_extn) }}"
+                    alt="{{ $defaultIcon['alt'] }}" aspect-ratio="{{ $iconRatio }}" class="default">
             @endif
             @if (!empty($activeIcon))
                 <img width="{{ $iconSize }}" height="{{ $iconSize }}"
-                    src="{{ Vite::asset($src_path . 'green-' . $default_icon['src'] . $src_extn) }}"
+                    src="{{ Vite::asset($src_path . 'green-' . $defaultIcon['src'] . $src_extn) }}"
                     alt="{{ $activeIcon['alt'] }}" aspect-ratio="{{ $iconRatio }}" class="">
             @endif
         </div>
