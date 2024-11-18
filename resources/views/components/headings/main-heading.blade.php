@@ -19,11 +19,12 @@
     }
 
     if (!$overrideContainerClass) {
-        $attributes = $attributes->merge($defaultAttributes);
+        $containerAttributes = $containerAttributes->merge($defaultContainerAttributes);
     }
 @endphp
 
-<hgroup {{ $containerAttributes }} class="pt-2 pb-4 ms-n1"">
-    <div {{ $attributes }} {{ $isHeading ? 'role=heading aria-level=1' : '' }}>{{ $heading ?? '' }}</div>
+<hgroup {{ $containerAttributes }}>
+    <div {!! $attributes !!} {{ $isHeading ? 'role=heading aria-level=1' : '' }}>
+        {{ $heading ?? '' }}</div>
     {{ $description ?? '' }}
 </hgroup>

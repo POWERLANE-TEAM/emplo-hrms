@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\Employee\DashboardController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\HRManager\ApplicantController as HRApplicantController;
@@ -25,6 +26,10 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
     Route::get('/index', [EmployeeController::class, 'index'])
         ->name('index');
+
+
+    Route::get('/attendance/index', [AttendanceController::class, 'index'])
+        ->name('attendance.index');
 
     Route::get('/sample', function () {
         dd(request());

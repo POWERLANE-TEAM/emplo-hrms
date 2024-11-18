@@ -239,6 +239,11 @@ a.unstyled {
     --bs-btn-hover-color: #fff;
 }
 
+
+button {
+    min-width: fit-content;
+}
+
 .form-control {
     padding-top: calc(0.2rem + 0.3vw);
     padding-bottom: calc(0.2rem + 0.2vw);
@@ -256,6 +261,7 @@ a.unstyled {
 
 .underline-padded {
     padding-bottom: 3px;
+    padding-bottom: 3px;
     border-bottom: 3px solid var(--main-green);
     display: inline-block;
 }
@@ -268,6 +274,7 @@ a.unstyled {
 
 .border-dashed:hover {
     border-color: var(--main-green-transparent) !important;
+    border-color: var(--main-green-transparent) !important;
     color: var(--main-green-transparent) !important;
 }
 
@@ -275,19 +282,24 @@ a.unstyled {
     border: none;
     outline: none;
     box-shadow: none;
+    outline: none;
+    box-shadow: none;
 }
 
 .no-hover-border:hover,
 .no-hover-border:active {
+    border: none;
     border: none;
 }
 
 .list-group-item.drag-over {
     border: 2px solid var(--main-green) !important;
     background-color: transparent;
+    border: 2px solid var(--main-green) !important;
+    background-color: transparent;
 }
 
-.list-group-item + .list-group-item {
+.list-group-item+.list-group-item {
     border-top-width: 2px;
 }
 
@@ -319,6 +331,7 @@ a.unstyled {
     border-bottom: 2px solid var(--bs-secondary) !important;
     transition: border-color 0.3s, box-shadow 0.3s;
 
+
     &:focus {
         border-bottom: 2px solid var(--bs-primary) !important;
         box-shadow: none !important;
@@ -329,12 +342,16 @@ a.unstyled {
         border-bottom: 2px solid var(--bs-danger) !important;
         box-shadow: none !important;
 
+        box-shadow: none !important;
+
         &:focus {
             border-bottom: 2px solid var(--bs-danger) !important;
+            box-shadow: none !important;
             box-shadow: none !important;
         }
     }
 }
+
 
 .small-circle {
     width: 50px;
@@ -360,10 +377,10 @@ a.unstyled {
 }
 
 .green-highlight {
-    display: inline-block; 
-    background-color: rgba(95, 173, 0, 0.1); 
-    color: #3c6d00; 
-    padding: .5rem 2rem; 
+    display: inline-block;
+    background-color: rgba(95, 173, 0, 0.1);
+    color: #3c6d00;
+    padding: .5rem 2rem;
     border-radius: 1rem;
     text-transform: uppercase;
     font-weight: 700;
@@ -467,4 +484,16 @@ body {
 .callout-danger {
     border-left-color: var(--bs-danger);
     background-color: var(--bs-danger-subtle);
+}
+
+
+
+.input-group:has(input:-webkit-autofill, input:autofill) {
+    div.icon {
+        z-index: 10;
+    }
+}
+
+.d-contents {
+    display: contents;
 }
