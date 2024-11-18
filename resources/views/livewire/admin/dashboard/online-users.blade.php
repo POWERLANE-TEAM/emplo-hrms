@@ -1,4 +1,4 @@
-<div class="col-5 d-flex">
+<div class="col-5">
     <div x-data="{ 
             online: $store.onlineUsers,
             authUserId: {{ auth()->user()->user_id }} 

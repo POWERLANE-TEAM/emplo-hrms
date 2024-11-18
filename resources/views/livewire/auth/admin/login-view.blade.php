@@ -16,11 +16,7 @@
 @endPushOnce
 
 @section('critical-styles')
-@use('Illuminate\Support\Facades\Vite')
-
-<style>
-    {!! Vite::content('resources/css/guest/secondary-bg.css') !!}
-</style>
+    @vite(['resources/css/guest/secondary-bg.css'])
 @endsection
 
 @pushOnce('styles')
