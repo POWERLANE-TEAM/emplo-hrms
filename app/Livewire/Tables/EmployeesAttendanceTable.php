@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Livewire\Employee\Tables;
+
+namespace App\Livewire\Tables;
 
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
@@ -12,6 +13,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\View\ComponentAttributeBag;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateFilter;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
+use App\Livewire\Tables\Defaults as DefaultTableConfig;
 
 /**
  * Implemented Methods:
@@ -20,8 +22,10 @@ use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
  * @method  builder(): Builder
  * @method  filters(): array
  */
-class EmployeesTable extends DataTableComponent
+class EmployeesAttendanceTable extends DataTableComponent
 {
+    use DefaultTableConfig;
+
     protected $model = Employee::class;
 
     /**
@@ -35,32 +39,29 @@ class EmployeesTable extends DataTableComponent
 
     private $oldestDate;
 
+    public $attendanceDate;
+
     public function configure(): void
     {
         $this->setPrimaryKey('application_id');
 
-        $this->setEagerLoadAllRelationsEnabled();
+        $this->configuringStandardTableMethods();
 
-        // $this->setDefaultSort('applications.hired_at', 'desc');
+        $this->setTdAttributes(function (Column $column, $row, $columnIndex, $rowIndex) {
 
-        $this->setTableAttributes([
-            'default' => true,
-            'class' => 'table-hover px-1',
-        ]);
+            if (in_array($columnIndex, [3, 4])) {
+                // Arrival and Status column
+                return [
+                    'class' => 'text-md-center text-capitalize',
+                ];
+            }
 
-        $this->setTrAttributes(function ($row, $index) {
             return [
-                'default' => true,
-                'class' => 'border-1 rounded-2 outline',
+                'class' => 'text-md-center',
             ];
         });
 
-        $this->setSearchFieldAttributes([
-            'type' => 'search',
-            'class' => 'form-control rounded-pill search text-body body-bg',
-        ]);
-
-        $this->setTrimSearchStringEnabled();
+        $this->attendanceDate = Carbon::now()->format('Y-m-d');
 
         $this->setConfigurableAreas([
             'toolbar-left-start' => [
@@ -69,31 +70,11 @@ class EmployeesTable extends DataTableComponent
                     'overrideClass' => true,
                     'overrideContainerClass' => true,
                     'attributes' => new ComponentAttributeBag(['class' => 'fs-4 fw-bold']),
-                    // 'containerAttributes' => new ComponentAttributeBag(['class' => '']),
-                    'heading' => 'List of Employees',
+                    'heading' => Carbon::parse($this->attendanceDate)->format('F j, Y'),
                 ],
             ],
         ]);
 
-        $this->setToolsAttributes(['class' => ' bg-body-secondary border-0 rounded-3 px-5 py-3']);
-
-        $this->setToolBarAttributes(['class' => ' d-md-flex my-md-2']);
-
-        $this->setPerPageAccepted([10, 25, 50, 100, -1]);
-
-        $this->setThAttributes(function (Column $column) {
-
-            return [
-                'default' => true,
-                'class' => 'text-center fw-normal',
-            ];
-        });
-
-        $this->setTdAttributes(function (Column $column, $row, $columnIndex, $rowIndex) {
-            return [
-                'class' => 'text-md-center',
-            ];
-        });
 
         $this->jobTitles = JobTitle::select('job_title_id', 'job_title')->orderBy('job_title', 'ASC')->get()
             ->mapWithKeys(function ($jobTitle) {
@@ -109,7 +90,9 @@ class EmployeesTable extends DataTableComponent
             ->prepend('Select All Employee Status', '')
             ->toArray();
 
-        $this->oldestDate = Employee::has('application')->join('applications', 'employees.application_id', '=', 'applications.application_id')->min('applications.hired_at');
+
+
+        $this->oldestDate = Employee::has('attendances')->join('attendances', 'employees.employee_id', '=', 'attendances.employee_id')->min('attendances.time_in');
     }
 
     public function columns(): array
@@ -127,16 +110,49 @@ class EmployeesTable extends DataTableComponent
                     $this->applyFullNameSearch($query, $searchTerm);
                 })
                 ->excludeFromColumnSelect(),
-            Column::make("Job Title")
-                ->label(fn($row) => $row->jobTitle->job_title)
-                ->searchable(function (Builder $query, $searchTerm) {
-                    return $this->applyJobPositionSearch($query, $searchTerm);
-                }),
-            Column::make("Department")
-                ->label(fn($row) => $row->jobTitle->department->department_name),
 
-            Column::make("Employment")
-                ->label(fn($row) => $row->employmentStatus->emp_status_name),
+            Column::make("Time In")
+                ->label(fn($row) => optional($row->attendances->first())->time_in ? Carbon::parse($row->attendances->first()->time_in)->format('h:i A') : '-'),
+
+            Column::make("Time Out")
+                ->label(fn($row) => optional($row->attendances->first())->time_out ? Carbon::parse($row->attendances->first()->time_out)->format('h:i A') : '-'),
+
+            Column::make("Arrival")
+                ->label(function ($row) {
+                    $attendance = optional($row->attendances->first())->time_in;
+                    $shiftStartTime = Carbon::parse($row->shift->start_time);
+                    $now = Carbon::now();
+
+                    if (is_null($attendance)) {
+                        return $now->lessThan($shiftStartTime) ? 'arriving' : 'running late';
+                    } else {
+                        $attendanceTime = Carbon::parse($attendance);
+                        return $attendanceTime->lessThan($shiftStartTime) ? 'on time' : 'late';
+                    }
+                }),
+
+            Column::make("Status")
+                ->label(function ($row) {
+                    $attendance = optional($row->attendances->first());
+                    $timeIn = $attendance->time_in;
+                    $timeOut = $attendance->time_out;
+                    $shiftEndTime = Carbon::parse($row->shift->end_time);
+                    $now = Carbon::now();
+
+                    // Temporary
+                    if (is_null($timeOut)) {
+                        if ($now->lessThan($shiftEndTime)) {
+                            return 'on duty';
+                        } elseif ($now->diffInMinutes($shiftEndTime) <= 30) {
+                            return 'duty ended';
+                        } else {
+                            return 'overtime';
+                        }
+                    } else {
+                        return 'clock out';
+                    }
+                }),
+
 
             /**
              * |--------------------------------------------------------------------------
@@ -149,12 +165,20 @@ class EmployeesTable extends DataTableComponent
                 ->label(fn($row) => $row->shift->shift_name)
                 ->deselected(),
 
+            Column::make("Job Title")
+                ->label(fn($row) => $row->jobTitle->job_title)
+                ->deselected(),
+
+            Column::make("Department")
+                ->label(fn($row) => $row->jobTitle->department->department_name)
+                ->deselected(),
+
+            Column::make("Employment")
+                ->label(fn($row) => $row->employmentStatus->emp_status_name)
+                ->deselected(),
+
             Column::make("Hired Date")
                 ->label(fn($row) => Carbon::parse($row->application->hired_at)->format('F j, Y') ?? 'No recorded.')
-                /*                 ->setSortingPillDirections('Oldest first', 'Latest first')
-                ->sortable(function ($query, $direction) {
-                    return $query->orderBy('applications.hired_at', $direction);
-                }) */
                 ->deselected(),
 
 
@@ -163,17 +187,21 @@ class EmployeesTable extends DataTableComponent
 
     public function builder(): Builder
     {
-        $query = Employee::query()->with(['employmentStatus', 'jobTitle.department', 'jobTitle.specificAreas', 'jobTitle.jobLevels', 'application', 'shift'])
+        $query = Employee::query()->with(['attendances', 'employmentStatus', 'jobTitle.department', 'jobTitle.specificAreas', 'jobTitle.jobLevels', 'application', 'shift'])
+
 
             // Without this I got SQLSTATE[42P01]: Undefined table: 7 ERROR: missing FROM-clause entry for table
+            ->join('attendances', 'employees.employee_id', '=', 'attendances.employee_id')
             ->join('employment_statuses', 'employees.emp_status_id', '=', 'employment_statuses.emp_status_id')
             ->join('job_details', 'employees.job_detail_id', '=', 'job_details.job_detail_id')
             ->join('job_titles', 'job_details.job_title_id', '=', 'job_titles.job_title_id')
             ->join('departments', 'job_titles.department_id', '=', 'departments.department_id')
             ->join('specific_areas', 'job_details.area_id', '=', 'specific_areas.area_id')
-            ->join('job_levels', 'job_details.job_level_id', '=', 'job_levels.job_level_id')
             ->join('applications', 'employees.application_id', '=', 'applications.application_id')
-            ->join('shifts', 'employees.shift_id', '=', 'shifts.shift_id');
+            ->join('shifts', 'employees.shift_id', '=', 'shifts.shift_id')
+
+            // prevent duplicate rows (workaround)
+            ->distinct('employees.employee_id');
 
         // Maybe add specific area restriction based on permission?
 
@@ -183,32 +211,37 @@ class EmployeesTable extends DataTableComponent
             $query->where('specific_areas.area_id', $areaId);
         }
 
+        if (!$this->getAppliedFilterWithValue('attendance-date')) {
+            $query->with(['attendances' => function ($query) {
+                $query->whereDate('time_in', now()->format('Y-m-d'));
+            }]);
+        }
+
+
         return $query;
     }
 
     public function filters(): array
     {
         return [
-            DateFilter::make('Hire Date', 'hired-date')
+
+            DateFilter::make('Attendance Date', 'attendance-date')
                 ->setPillsLocale(in_array(session('locale'), explode(',', env('APP_SUPPORTED_LOCALES', 'en'))) ? session('locale') : env('APP_LOCALE', 'en'))
+                ->setFilterDefaultValue($this->attendanceDate)
                 ->config([
                     'min' => (function () {
-                        return $this->oldestDate ? Carbon::parse($this->oldestDate)->format('Y-m-d') : now()->format('Y-m-d');
+                        $minDate = $this->oldestDate;
+                        return $minDate ? Carbon::parse($minDate)->format('Y-m-d') : now()->format('Y-m-d');
                     })(),
                     'max' => now()->format('Y-m-d'),
                     'pillFormat' => 'd M Y',
-                    'placeholder' => 'Enter Date',
+                    'placeholder' => 'Enter Attendance Date',
                 ])
-                ->filter(function (Builder $builder, string $value) {
-                    return;
-                }),
-
-
-
-            SelectFilter::make('Job Title', 'job-title')
-                ->options($this->jobTitles)
-                ->filter(function (Builder $builder, string $value) {
-                    return $query = $builder->where('job_titles.job_title_id',  $value);
+                ->filter(function (Builder $builder, $value) {
+                    $this->attendanceDate = $value;
+                    return $builder->with(['attendances' => function ($builder) use ($value) {
+                        $builder->whereDate('time_in', $value);
+                    }]);
                 }),
 
             SelectFilter::make('Employment Status', 'emp-status')
@@ -219,6 +252,13 @@ class EmployeesTable extends DataTableComponent
 
 
         ];
+    }
+
+    public function filterReset(Builder $builder)
+    {
+        // I think this is work around for unremovable filter so it will not throw error
+        // because it will get all attendance of the employee
+        $this->dispatch('setFilter', 'attendance-date', now()->format('Y-m-d'));
     }
 
     /**
@@ -242,52 +282,4 @@ class EmployeesTable extends DataTableComponent
 
         return $query;
     }
-
-    /**
-     * Apply a case-insensitive search using the 'ILIKE' operator on the 'job_title' field in the query.
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $query The query builder instance.
-     * @param string $searchTerm The term to search for in the job titles.
-     * @return \Illuminate\Database\Eloquent\Builder The modified query builder instance with the search filter applied.
-     */
-    public function applyJobPositionSearch(Builder $query, $searchTerm): Builder
-    {
-        return $query->orWhereHas('jobTitle', function ($query) use ($searchTerm) {
-            $query->where('job_title', 'ILIKE', "%{$searchTerm}%");
-        });
-    }
-
-    /**
-     * Apply a date search filter to the query.
-     *
-     * This method normalizes the search term by removing spaces and then applies
-     * a series of `orWhereRaw` conditions to the query to match the `created_at`
-     * field of the table against various date formats.
-     *
-     * Supported date formats:
-     * - 'YYYY-MM-DD'
-     * - 'MM/DD/YYYY'
-     * - 'MM-DD-YYYY'
-     * - 'Month DD, YYYY'
-     * - 'Month YYYY'
-     * - 'Month'
-     * - 'DD-MM-YYYY'
-     * - 'DD/MM/YYYY'
-     *
-     * @param \Illuminate\Database\Query\Builder $query The query builder instance.
-     * @param string $searchTerm The search term to filter by.
-     * @return \Illuminate\Database\Query\Builder The modified query builder instance.
-     */
-    // public function applyDateSearch(Builder $query, $searchTerm)
-    // {
-    //     $normalizedSearchTerm = str_replace(' ', '', $searchTerm);
-    //     return $query->orWhereRaw("replace(to_char(created_at, 'YYYY-MM-DD'), ' ', '') ILIKE ?", ["%{$normalizedSearchTerm}%"])
-    //         ->orWhereRaw("replace(to_char(created_at, 'MM/DD/YYYY'), ' ', '') ILIKE ?", ["%{$normalizedSearchTerm}%"])
-    //         ->orWhereRaw("replace(to_char(created_at, 'MM-DD-YYYY'), ' ', '') ILIKE ?", ["%{$normalizedSearchTerm}%"])
-    //         ->orWhereRaw("replace(to_char(created_at, 'Month DD, YYYY'), ' ', '') ILIKE ?", ["%{$normalizedSearchTerm}%"])
-    //         ->orWhereRaw("replace(to_char(created_at, 'Month YYYY'), ' ', '') ILIKE ?", ["%{$normalizedSearchTerm}%"])
-    //         ->orWhereRaw("replace(to_char(created_at, 'Month'), ' ', '') ILIKE ?", ["%{$normalizedSearchTerm}%"])
-    //         ->orWhereRaw("replace(to_char(created_at, 'DD-MM-YYYY'), ' ', '') ILIKE ?", ["%{$normalizedSearchTerm}%"])
-    //         ->orWhereRaw("replace(to_char(created_at, 'DD/MM/YYYY'), ' ', '') ILIKE ?", ["%{$normalizedSearchTerm}%"]);
-    // }
 }
