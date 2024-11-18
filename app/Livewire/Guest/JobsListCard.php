@@ -104,7 +104,7 @@ class JobsListCard extends Component
     }
 
 
-    private function getJobVacancies()
+    public function getJobVacancies()
     {
         return $this->baseJobVacancyQuery()
             ->with(['jobDetail', 'jobTitle.jobFamilies', 'jobTitle.specificAreas'])
@@ -189,6 +189,7 @@ class JobsListCard extends Component
             }
         }
 
+        $this->dispatch('job-vacancies-fetched', ['count' => $this->job_vacancies->count()]);
         return view('livewire.guest.jobs-list-card');
     }
 }
