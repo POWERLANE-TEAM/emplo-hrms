@@ -11,7 +11,7 @@ class JobViewPane extends Component
 
     public function mount(JobsListCard $jobsListCard)
     {
-        $job = $jobsListCard->baseJobVacancyQuery()->first();
+        $job = $jobsListCard->getJobVacancies()->first();
         $this->job_vacancy = [
             'jobDetail' => [
                 'jobTitle' => [$job->jobTitle],

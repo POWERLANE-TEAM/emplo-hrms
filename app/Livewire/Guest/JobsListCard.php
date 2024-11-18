@@ -24,7 +24,7 @@ class JobsListCard extends Component
      *
      * @return \Illuminate\Database\Eloquent\Builder The query builder instance for job vacancies.
      */
-    public function baseJobVacancyQuery()
+    private function baseJobVacancyQuery()
     {
         return JobVacancy::where('vacancy_count', '>', 1)
             ->where(function ($query) {
@@ -104,7 +104,7 @@ class JobsListCard extends Component
     }
 
 
-    private function getJobVacancies()
+    public function getJobVacancies()
     {
         return $this->baseJobVacancyQuery()
             ->with(['jobDetail', 'jobTitle.jobFamilies', 'jobTitle.specificAreas'])
