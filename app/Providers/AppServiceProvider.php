@@ -109,5 +109,7 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('viewPulse', function (User $user) {
             return $user->hasRole(UserRole::ADVANCED);
         });
+
+        Vite::useAggressivePrefetching();
     }
 }

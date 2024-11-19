@@ -25,7 +25,7 @@ class PreEmployment extends Component
     
     public function save()
     {
-        // $this->validate();
+        $this->validate();
 
         if ($this->editMode) {
             DB::transaction(function () {

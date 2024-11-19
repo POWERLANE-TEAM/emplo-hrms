@@ -4,9 +4,13 @@
     aspect-ratio: 1/1;
 }
 
+*>[data-lucide] {
+    pointer-events: none;
+}
+
 .icon-opacity {
-    opacity: 1; 
-    transition: opacity 0.3s; 
+    opacity: 1;
+    transition: opacity 0.3s;
 }
 
 .icon-opacity:hover {

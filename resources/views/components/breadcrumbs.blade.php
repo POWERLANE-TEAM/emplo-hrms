@@ -1,7 +1,7 @@
-<nav aria-label="breadcrumb" class="mb-3 ms-n4">
+<nav aria-label="breadcrumb" class="my-2 ms-n3 ms-md-n4">
     <ol class="breadcrumb" role="none">
-        {{-- @if (!empty($breadcrumbs)) --}}
-        {{ $breadcrumbs }}
-        {{-- @endif --}}
+        @if (!empty($breadcrumbs))
+            {{ $breadcrumbs }}
+        @endif
     </ol>
 </nav>

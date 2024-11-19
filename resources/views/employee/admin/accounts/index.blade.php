@@ -15,7 +15,6 @@
 @endPushOnce
 
 @pushOnce('scripts')
-    <script src="{{ Vite::asset('resources/js/forms/nbp.min.js') }}" defer></script>
     @vite(['resources/js/employee/hr-manager/dashboard.js'])
 @endPushOnce
 

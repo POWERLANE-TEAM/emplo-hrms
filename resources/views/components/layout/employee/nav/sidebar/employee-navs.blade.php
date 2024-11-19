@@ -82,7 +82,7 @@
 
     {{-- HR Manager --}}
     @can(UserPermission::VIEW_ALL_APPLICANTS)
-        <x-layout.employee.nav.sidebar.nav-item href="{{ route($routePrefix . '.applicants') }}" :active="request()->routeIs($routePrefix . '.applicants')"
+        <x-layout.employee.nav.sidebar.nav-item href="{{ route($routePrefix . '.applications') }}" :active="request()->routeIs($routePrefix . '.applications')"
             class="tw-order-[2]" nav_txt="Applicants" :defaultIcon="['src' => 'applicants', 'alt' => '']" :activeIcon="['src' => 'applicants', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan
@@ -110,8 +110,8 @@
 
     {{-- Head Admin --}}
     @can(UserPermission::VIEW_EMPLOYEE_MANAGER)
-        <x-layout.employee.nav.sidebar.nav-item href="#" :active="request()->routeIs('#')" class="" nav_txt="Employees"
-            :defaultIcon="['src' => 'employee', 'alt' => '']" :activeIcon="['src' => 'employee', 'alt' => '']">
+        <x-layout.employee.nav.sidebar.nav-item href="{{ route($routePrefix . '.job-family.create') }}" :active="request()->routeIs($routePrefix . '.job-family.create')"
+            class="" nav_txt="Employees" :defaultIcon="['src' => 'employee', 'alt' => '']" :activeIcon="['src' => 'employee', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan
 
@@ -126,13 +126,6 @@
     @can(UserPermission::VIEW_JOB_LISTING_MANAGER)
         <x-layout.employee.nav.sidebar.nav-item href="{{ route($routePrefix . '.job-board.create') }}" :active="request()->routeIs($routePrefix . '.job-board.create')"
             class="" nav_txt="Job Board" :defaultIcon="['src' => 'jobboard', 'alt' => '']" :activeIcon="['src' => 'job-listing', 'alt' => '']">
-        </x-layout.employee.nav.sidebar.nav-item>
-    @endcan
-
-    {{-- Head Admin --}}
-    @can(UserPermission::VIEW_POLICY_MANAGER)
-        <x-layout.employee.nav.sidebar.nav-item href="{{ route($routePrefix . '.job-family.create') }}" :active="request()->routeIs($routePrefix . '.job-family.create')"
-            class="" nav_txt="Policies" :defaultIcon="['src' => 'documents', 'alt' => '']" :activeIcon="['src' => 'documents', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan
 

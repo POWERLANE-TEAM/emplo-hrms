@@ -1,3 +1,4 @@
+@import '../input/choices';
 @import '../utils';
 @import '../input/search';
 @import '../scales/img-size';
@@ -6,7 +7,7 @@
 
 :root {
     --main-menu-padding-top: clamp(1rem, 0.5rem + 1dvh, 4rem);
-    --sidebar-width: clamp(48px, 8px + 1.25rem + 5vw, 200px);
+    --sidebar-width: clamp(48px + 2.75rem, 8px + 1.25rem + 5vw, 200px);
     --sidebar-width-active: clamp(200px + 2rem, 128px + 1.5rem + 10vw, 696px + 4rem);
     --topbar-padding-x: clamp(1rem, 2dvw + 2.5vh, 10rem);
     --topnav-padding-x: clamp(1.25rem, 0.63rem + 2dvw, 4rem);
@@ -14,22 +15,21 @@
 }
 
 main {
-    // contain: paint;
     position: relative;
     /* Offset of main content below top bar */
     margin-top: calc(var(--main-menu-padding-top) + var(--topnav-padding-y) + var(--search-height) + var(--search-padding-y) + var(--main-menu-padding-top) + 1vh);
 }
 
 @media screen and (min-width: 768px) {
-    .main-layout-container > main {
+    .main-layout-container>main {
         left: var(--sidebar-width);
-        max-width: calc(95cqw - var(--sidebar-width));
+        max-width: calc(100cqw - var(--sidebar-width));
     }
 }
 
 .main-menu-container {
     padding: 0;
-    z-index: 1000;
+    z-index: 200;
 
     &:has(sidebar.main-menu.active) {
         @media screen and (max-width: 576px) {
@@ -88,7 +88,7 @@ sidebar.main-menu {
     /* Base style for sidebar when collpased */
 
     // --sidebar-padding-x: clamp(0.25rem, 0.5dvw, 4rem);
-    z-index: 1000;
+    z-index: 200;
     isolation: isolate;
     position: absolute;
     top: 0;
@@ -398,13 +398,13 @@ sidebar.main-menu {
 
 div:has(>.topnav) {
     /* Base style for top bar */
-    z-index: 900;
+    z-index: 190;
     position: absolute;
     display: flex;
     top: 0;
     left: 0;
 
-    @media screen and (min-width: 768px) {
+    @media screen and (min-width: 576px) {
         left: var(--sidebar-width);
         width: calc(100% - (var(--sidebar-width)));
         max-width: calc(100% - (var(--sidebar-width)));
@@ -418,7 +418,7 @@ div:has(>.topnav) {
 
     .topnav {
         display: flex;
-        width: 98%;
+        width: 100%;
         border-radius: max(1.25rem, 0.5cqw);
         background-color: var(--bs-primary);
 
@@ -452,10 +452,13 @@ body[data-bs-theme="dark"] {
 }
 
 div:has(>.topnav-mobile) {
+    position: absolute;
+    width: 100vw;
     background-color: color-mix(in srgb, var(--bs-white) 10%, transparent);
 }
 
 .topnav-mobile {
+    position: relative;
     display: flex;
     padding: calc(var(--topnav-padding-y) + var(--main-menu-padding-top)) var(--topnav-padding-x);
 
@@ -636,7 +639,7 @@ body {
 
         /* Style top bar left offset when side panel is expanded */
         div:has(>.topnav) {
-            @media screen and (min-width: 768px) {
+            @media screen and (min-width: 576px) {
                 left: var(--sidebar-width-active);
                 width: calc(100% - var(--sidebar-width-active));
             }
@@ -645,9 +648,9 @@ body {
 
         /* Style main of main content left offset when side panel is expanded */
         main {
-            @media screen and (min-width: 768px) {
+            @media screen and (min-width: 576px) {
                 left: var(--sidebar-width-active);
-                max-width: calc(95cqw - var(--sidebar-width-active));
+                max-width: calc(100cqw - var(--sidebar-width-active));
             }
         }
     }

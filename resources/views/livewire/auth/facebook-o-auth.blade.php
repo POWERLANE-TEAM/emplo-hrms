@@ -69,6 +69,7 @@
     }
 
     .fb-material-button:hover {
+        color: #000;
         background-color: #f1f1f1;
         border-color: #d1d1d1;
         -webkit-box-shadow: 0 1px 3px 0 rgba(60, 64, 67, .15), 0 1px 2px 0 rgba(60, 64, 67, .30);
@@ -87,7 +88,7 @@
     }
 </style>
 
-<div class="row justify-content-center align-items-center">
+<div class="pt-2 row justify-content-center align-items-center">
     <a href= {{ route('auth.facebook.redirect') }}
         class="fb-material-button btn btn-lg w-100 link-offset-2 link-underline link-underline-opacity-0" role="button">
         <div class="fb-material-button-icon">

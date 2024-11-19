@@ -22,7 +22,7 @@ function createApplicants($chunkStart, $chunk, $permissions)
 {
     try {
         $chunkEnd = $chunkStart + $chunk;
-        Log::info("Creating applicants from $chunkStart to $chunkEnd\n");
+
         for ($i = $chunkStart; $i < $chunkEnd; $i++) {
             DB::transaction(function () use ($i, $permissions) {
                 try {
@@ -90,7 +90,6 @@ class ApplicantSeeder extends Seeder
     {
         $concurrencyCount = $concurrencyCount ?? env('APP_MAX_CONCURRENT_COUNT', 10);
         $chunkCount = ceil($count / $concurrencyCount);
-        Log::info("Total $count chunk $chunkCount\n");
 
         $permissions = [
             UserPermission::CREATE_PRE_EMPLOYMENT_DOCUMENT,

@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
+import { sync } from 'glob';
 import os from 'os';
 
 function getLocalIpAddress() {
@@ -42,35 +43,8 @@ export default defineConfig({
             input: [
                 'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js',
                 'node_modules/chartjs-plugin-annotation/dist/chartjs-plugin-annotation.min.js',
-                // 'resources/js/app.js',
-                'resources/js/hiring.js',
-                'resources/js/applicant/login.js',
-                'resources/js/employee/login.js',
-                'resources/js/admin/login.js',
-                'resources/js/unverified-email.js',
-                'resources/js/applicant/dashboard.js',
-                'resources/js/employee/basic/dashboard.js',
-                'resources/js/employee/hr-manager/dashboard.js',
-                'resources/js/employee/supervisor/dashboard.js',
-                'resources/js/admin/dashboard.js',
-                'resources/js/employee/pre-employment.js',
-                'resources/js/forms/nbp.min.js',
-                'resources/js/applicant/apply.js',
-                'resources/js/modals.js',
-                'resources/css/style.css',
-                'resources/css/hiring.css',
-                'resources/css/login.css',
-                'resources/css/unverified-email.css',
-                'resources/css/guest/primary-bg.css',
-                'resources/css/guest/secondary-bg.css',
-                'resources/css/applicant/apply.css',
-                'resources/css/employee/pre-employment.css',
-                'resources/css/employee/hr-manager/dashboard.css',
-                'resources/css/employee/hr-manager/applicants.css',
-                'resources/css/employee/supervisor/dashboard.css',
-                'resources/css/employee/basic/dashboard.css',
-                'resources/css/employee/main.css',
-                'resources/css/animations/auth-effect.css',
+                ...sync('./resources/js/**/*.js',),
+                ...sync('./resources/css/**/*.css'),
             ],
             refresh: true,
         }),
@@ -92,7 +66,7 @@ export default defineConfig({
             'emp-sidebar-script': "/resources/js/employee/side-top-bar.js",
             'theme-listener-script': "/resources/js/theme-listener.js",
             'employee-page-script': "/resources/js/employee/employee.js",
-            'globalListener-script': "/resources/js/global-event-listener.js",
+            'globalListener-script': "/resources/js/utils/global-event-listener.js",
             'datatable': "/vendor/rappasoft/laravel-livewire-tables/resources/imports/laravel-livewire-tables-all.js",
         },
     },

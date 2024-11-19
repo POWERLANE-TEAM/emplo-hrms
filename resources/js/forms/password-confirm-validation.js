@@ -1,4 +1,4 @@
-import addGlobalListener from '../global-event-listener.js';
+import addGlobalListener from 'globalListener-script';
 import InputValidator, { setInvalidMessage } from './input-validator.js';
 import debounce from '../debounce-fn.js';
 

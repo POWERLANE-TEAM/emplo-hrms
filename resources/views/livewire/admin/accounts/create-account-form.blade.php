@@ -434,7 +434,6 @@ generated password was sent to email. --Carl
                             :nonce="$nonce"
                             :required="false" 
                             placeholder=""
-                            x-model="sss"
                         />
 
                         @error('form.sss')
