@@ -38,6 +38,14 @@
     <x-layout.guest.secondary-header />
 @endsection
 
+@section('before-nav')
+    <x-layout.{{ $routePrefix === 'admin' ? 'employee.secondary-bg' : 'guest.secondary-bg' }} />
+@endsection
+
+@section('header-nav')
+    <x-layout.{{ $routePrefix === 'admin' ? 'employee.secondary-header' : 'guest.secondary-header' }} />
+@endsection
+
 @section('content')
     @php
         $componentName = 'auth.' . ($routePrefix ? $routePrefix . '.' : '') . 'login';
