@@ -32,7 +32,7 @@
     <x-authenticated-broadcast-id />
     <x-livewire-listener />
 
-    @vite(['resources/js/listeners/online-users.js'])
+    @vite(['resources/js/listeners/online-users.js', 'resources/css/style.css'])
 
     {{-- Waiting for this fix in livewire https://github.com/livewire/livewire/pull/8793 --}}
     {{-- livewire.js?id=cc800bf4:9932 Detected multiple instances of Livewire running --}}
@@ -49,19 +49,20 @@
     @yield('critical-styles')
     <x-no-script-body />
 
-    <!-- Styles -->
-    @vite(['resources/css/style.css'])
     @stack('pre-styles')
     @stack('styles')
 
-    @if (!View::hasSection('bootstrap-script'))
+    @env('local')
         @vite(['node_modules/bootstrap/dist/js/bootstrap.bundle.min.js'])
-    @else
-        @yield('bootstrap-script')
-    @endif
+    @endenv
+
+    @env('production')
+        @vite(['node_modules/bootstrap/dist/js/bootstrap.bundle.min.js?commonjs-entry'])
+    @endenv
+
+    @vite(['resources/js/app.js'])
 
     @stack('pre-scripts')
-
 
     @yield('before-nav')
 

@@ -5,38 +5,34 @@
 
 <section>
     {{-- Modal --}}
-    <div wire:ignore.self class="modal fade" id="{{ $modalId }}" tabindex="-1" aria-labelledby="{{ $modalId }}-label" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5">{{ __($title) }}</h1>
-                    <button wire:click="restart" data-bs-toggle="modal" class="btn-close" aria-label="Close"></button>        
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="title" class="col-form-label">{{ __('Category Title:') }}</label>
-                        <input wire:model="state.title" type="text" id="title" class="form-control 
-                            @error('title') is-invalid @enderror" />
-                        @error('title')
-                            <div class="invalid-feedback" role="alert">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="mb-3">
-                        <label for="shortDescription" class="col-form-label">{{ __('Short Description:') }}</label>
-                        <textarea wire:model="state.shortDescription" id="shortDescription" rows="6" class="form-control 
-                            @error('shortDescription') is-invalid @enderror"></textarea>
-                        @error('shortDescription')
-                            <div class="invalid-feedback" role="alert">{{ $message }}</div>
-                        @enderror
-                    </div>  
-                </div>
-                <div class="modal-footer">
-                    <button wire:click="restart" wire:loading.attr="disabled" data-bs-toggle="modal" class="btn btn-secondary">{{ __('Close') }}</button>
-                    <button wire:click="save" wire:loading.attr="disabled" class="btn btn-primary">{{ __('Save changes') }}</button>
-                </div>
+    <x-modals.dialog :id="$modalId">
+        <x-slot:title>
+            <h1 class="modal-title fs-5">{{ __($title) }}</h1>
+            <button wire:click="restart" data-bs-toggle="modal" class="btn-close" aria-label="Close"></button>        
+        </x-slot:title>
+        <x-slot:content>
+            <div class="mb-3">
+                <label for="title" class="col-form-label">{{ __('Category Title:') }}</label>
+                <input wire:model="state.title" type="text" id="title" class="form-control 
+                    @error('title') is-invalid @enderror" />
+                @error('title')
+                    <div class="invalid-feedback" role="alert">{{ $message }}</div>
+                @enderror
             </div>
-        </div>    
-    </div>
+            <div class="mb-3">
+                <label for="shortDescription" class="col-form-label">{{ __('Short Description:') }}</label>
+                <textarea wire:model="state.shortDescription" id="shortDescription" rows="6" class="form-control 
+                    @error('shortDescription') is-invalid @enderror"></textarea>
+                @error('shortDescription')
+                    <div class="invalid-feedback" role="alert">{{ $message }}</div>
+                @enderror
+            </div>
+        </x-slot:content>
+        <x-slot:footer>
+            <button wire:click="restart" wire:loading.attr="disabled" data-bs-toggle="modal" class="btn btn-secondary">{{ __('Close') }}</button>
+            <button wire:click="save" wire:loading.attr="disabled" class="btn btn-primary">{{ __('Save changes') }}</button>
+        </x-slot:footer>
+    </x-modals.dialog>
 
     {{-- Toast --}}
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
