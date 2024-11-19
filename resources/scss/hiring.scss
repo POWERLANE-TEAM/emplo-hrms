@@ -192,30 +192,56 @@ section.top-vector {
     }
 
     .job-descr {
-        /* Need javascript to make dynamic max line value based on device height */
         --max-lines: 9;
         --line-height: 1.5;
-
         max-height: calc(var(--max-lines) * 1em * var(--line-height));
         line-height: var(--line-height);
-        overflow: hidden;
+        overflow-y: auto;
         position: relative;
-
-        &:has(+ .showMoreToggle:not(:checked))::before {
-            content: "";
-            position: absolute;
-            height: calc(0.75rem * var(--line-height));
-            width: 100%;
-            bottom: 0;
-            pointer-events: none;
-            background: linear-gradient(to bottom, transparent, var(--bs-secondary-bg-subtle));
-        }
-
-        &:has(+ .showMoreToggle:checked) {
-            max-height: none;
-        }
-
+        background: var(--bs-secondary-bg); /* Base background color */
     }
+    
+    .job-descr::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2rem; 
+        pointer-events: none;
+        background: linear-gradient(to bottom, transparent, var(--bs-secondary-bg-subtle));
+        display: block;
+    }
+    
+    // .job-descr {
+    //     /* Need javascript to make dynamic max line value based on device height */
+    //     --max-lines: 9;
+    //     --line-height: 1.5;
+
+    //     max-height: calc(var(--max-lines) * 1em * var(--line-height));
+    //     line-height: var(--line-height);
+    //     overflow-y: auto;
+    //     position: relative;
+
+    //         /* Add gradient effect for overflow */
+    //     background: linear-gradient(to bottom, transparent, var(--bs-secondary-bg-subtle)), var(--bs-secondary-bg);
+    //     background-clip: padding-box;
+
+    //     // &:has(+ .showMoreToggle:not(:checked))::before {
+    //     //     content: "";
+    //     //     position: absolute;
+    //     //     height: calc(0.75rem * var(--line-height));
+    //     //     width: 100%;
+    //     //     bottom: 0;
+    //     //     pointer-events: none;
+    //     //     background: linear-gradient(to bottom, transparent, var(--bs-secondary-bg-subtle));
+    //     // }
+
+    //     // &:has(+ .showMoreToggle:checked) {
+    //     //     max-height: none;
+    //     // }
+
+    // }
 
     .showMoreToggle {
         appearance: none;
