@@ -153,4 +153,6 @@
             </div>
         </section>
 
-        @endsection
+@endsection
+
+<x-modals.data_dialogues.eval-approval-history />
