@@ -10,7 +10,7 @@
             $job_vacancy['jobDetail']['jobTitle'][0]['job_title'] .
             '</h4>
         <p class="fs-6 text-black ">' .
-            $job_vacancy['jobDetail']['specificAreas'][0]['area_name'] .
+            $job_vacancy['jobDetail']['jobFamilies'][0]['job_family_name'] .
             '</p>
     </hgroup>
     <a href="' .

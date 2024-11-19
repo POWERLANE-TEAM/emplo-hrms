@@ -58,10 +58,6 @@ Route::middleware('auth')->group(function () {
         })->name('create');        
     });
 
-    Route::get('announcements', function () {
-        return view('employee.admin.announcements.announcements');
-    })->name('announcement');
-
     Route::prefix('announcement')->name('announcement.')->group(function () {
         Route::get('create', function () {
             return view('employee.admin.announcements.create-announcement');

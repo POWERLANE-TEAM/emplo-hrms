@@ -6,14 +6,15 @@
             <div>
                 <img class="img-size-50 img-responsive"
                     src="{{ Vite::asset('resources/images/illus/empty-states/no-docs-found.gif') }}" alt="">
-                <p class="fs-7 pt-4 text-muted">Sorry, no job vacancies match your search. <br> Try refining your search or explore other opportunities.</p>
+                <p class="fs-7 pt-4 text-muted">Sorry, no job vacancies match your search. <br> Try refining your search
+                    or explore other opportunities.</p>
             </div>
         </div>
     @else
-
-        @foreach ($job_vacancies as $job_vacancy)
+        @foreach ($job_vacancies as $index => $job_vacancy)
             <li class="card green-hover-border nav-item ps-0 " role="presentation">
-                <button value="{{ $job_vacancy->jobTitle->job_title_id }}" x-on:click.debounce.10ms="$dispatch('job-hiring-selected', { job_vacancy: {
+                <button value="{{ $job_vacancy->jobTitle->job_title_id }}"
+                    x-on:click.debounce.10ms="$dispatch('job-hiring-selected', { job_vacancy: {
                                     jobDetail: {
                                         jobTitle: [
                                             {{ $job_vacancy->jobTitle }}
@@ -25,7 +26,8 @@
                                             {{ $job_vacancy->jobTitle->specificAreas->first() }}
                                         ],
                                     }
-                                    } })" class="nav-link d-flex flex-row px-md-5 py-md-4"
+                                    } })"
+                    class="nav-link d-flex flex-row px-md-5 py-md-4 {{ $index === 0 ? 'active' : '' }}"
                     id="{{ $job_vacancy->jobTitle->job_title_id }}-tab" data-bs-toggle="tab" role="tab"
                     aria-controls="job-view-pane" aria-label="{{ strip_tags($job_vacancy->jobTitle->job_title) }}">
                     <div class="col-12 text-start">
