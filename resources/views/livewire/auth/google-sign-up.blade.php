@@ -92,6 +92,7 @@
     }
 
     .gsi-material-button:not(:disabled):hover {
+        color: #000;
         -webkit-box-shadow: 0 1px 2px 0 rgba(60, 64, 67, .30), 0 1px 3px 1px rgba(60, 64, 67, .15);
         box-shadow: 0 1px 2px 0 rgba(60, 64, 67, .30), 0 1px 3px 1px rgba(60, 64, 67, .15);
     }
@@ -103,7 +104,7 @@
 </style>
 
 
-<div class="row justify-content-center align-items-center ">
+<div class="pt-3 row justify-content-center align-items-center ">
     <a href= {{ route('auth.google.redirect') }}
         class="gsi-material-button btn btn-lg w-100 link-offset-2 link-underline link-underline-opacity-0"
         style="width:500px" role="button">
@@ -127,7 +128,7 @@
                     <path fill="none" d="M0 0h48v48H0z"></path>
                 </svg>
             </div>
-            <span class="gsi-material-button-contents">Continue with Google</span>
+            <span class="gsi-material-button-contents">Continue with Google</span><br>
             <span style="display: none;">Continue with Google</span>
         </div>
     </a>
