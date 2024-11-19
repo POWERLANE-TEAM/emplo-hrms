@@ -24,6 +24,7 @@
 
 @pushOnce('styles')
     @vite(['resources/css/employee/main.css'])
+    @vite(['resources/css/employee/hr-manager/applicants.css'])
 @endPushOnce
 
 @section('content')

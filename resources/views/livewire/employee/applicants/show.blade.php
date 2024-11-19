@@ -15,7 +15,7 @@
                 <div class="mb-3 mb-md-4">
                     <div id="applicant-email">Email Address</div>
                     <Address aria-labelledby="applicant-email">
-                        <x-mail-link class="d-block text-truncate fw-bold unstyled" :email="$application->applicant->account->email"></x-mail-link>
+                        <x-mail-link class="d-block text-truncate fw-bold unstyled" :email="$application->applicant->account->email ?? ''"></x-mail-link>
                     </Address>
                 </div>
 
