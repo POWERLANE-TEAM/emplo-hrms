@@ -15,32 +15,25 @@
         <p class="mt-3 mb-4 placeholder-glow "><span class=" placeholder text-primary py-3  col-2 "></span></p>
 
         <div class="pe-2 overflow-hidden">
-            @for ($i = 0; $i < 3; $i++)
-                <p class="d-flex card-text placeholder-glow gap-1 mb-3">
-                    <span class="placeholder py-2 col-12"></span>
-                </p>
-            @endfor
+            <p class="d-flex card-text placeholder-glow  mb-3">
+                <span class="placeholder py-2 col-12"></span>
+            </p>
+            <p class="d-flex card-text placeholder-glow  overflow-hidden mb-3">
+                <span class="placeholder py-2  me-1 col-8"></span>
+                <span class="placeholder py-2 col-4"></span>
+            </p>
+            <p class="d-flex card-text placeholder-glow overflow-hidden mb-3">
+                <span class="placeholder py-2 me-1  col-5"></span>
+                <span class="placeholder py-2 col-7"></span>
+            </p>
 
-            @for ($i = 0; $i < 4; $i++)
-                <p class="d-flex card-text placeholder-glow gap-1 mb-3">
-                    @php
-                        $randomNumber = rand(0, 1);
-                        $firstColClass = $randomNumber ? 'col-11' : 'col-12';
-                    @endphp
-
-                    <span class="placeholder py-2 {{ $firstColClass }}"></span>
-                </p>
-            @endfor
-            <p class="d-flex card-text placeholder-glow gap-1 mb-3">
-                <span class="placeholder py-2 col-6"></span>
-                @php
-                    $randomNumber = rand(0, 1);
-                    $firstColClass = $randomNumber ? 'col-4' : 'col-3';
-                    $lastColClass = $randomNumber ? 'col-2' : 'col-3';
-                @endphp
-
-                <span class="placeholder py-2 {{ $firstColClass }}"></span>
-                <span class="placeholder py-2 {{ $lastColClass }}"></span>
+            <p class="d-flex card-text placeholder-glow  mb-3">
+                <span class="placeholder py-2  me-1 col-12"></span>
+            </p>
+            <p class="d-flex card-text placeholder-glow  mb-3">
+                <span class="placeholder py-2 me-1  col-5"></span>
+                <span class="placeholder py-2 me-1  col-3"></span>
+                <span class="placeholder py-2 flex-grow-1"></span>
             </p>
         </div>
 
