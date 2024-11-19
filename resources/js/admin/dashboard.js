@@ -5,17 +5,14 @@ import initLucideIcons from '../icons/lucide.js';
 import addGlobalListener from 'globalListener-script';
 import ThemeManager, { initPageTheme, handleThemeBtn } from '../theme-listener.js';
 import '../auth-listener.js';
-import '../listeners/online-users.js';
+import '../tooltip.js';
 
 const themeManager = new ThemeManager();
 const themeToggle = document.getElementById(`theme-toggle-btn`).closest('.dropdown');
 
-initPageTheme(themeManager, themeToggle);
-
-handleThemeBtn(themeToggle, themeManager, addGlobalListener);
-
-document.addEventListener("DOMContentLoaded", (event) => {
+document.addEventListener('livewire:navigated', () => {
     initLucideIcons();
+    initSidebar();
+    initPageTheme(themeManager, themeToggle);
+    handleThemeBtn(themeToggle, themeManager, addGlobalListener);
 });
-
-initSidebar();

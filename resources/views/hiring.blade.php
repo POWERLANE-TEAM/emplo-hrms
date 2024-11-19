@@ -6,6 +6,7 @@
 
 @pushOnce('pre-scripts')
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
 
     <script>
         if (window.location.hash === '#_=_') {
@@ -19,6 +20,7 @@
 @pushOnce('scripts')
     <script src="{{ Vite::asset('resources/js/forms/nbp.min.js') }}" defer></script>
     @vite(['resources/js/hiring.js'])
+    @vite(['resources/js/animations/scroll-effect.js'])
 @endPushOnce
 @pushOnce('styles')
     @vite(['resources/css/hiring.css'])
@@ -59,39 +61,45 @@
 @endsection
 
 @section('content')
-    <section class="first-section ">
+    <section class="first-section hidden-until-load">
         <div class="row">
-            <div class="left col-12 col-md-6 align-content-center">
-                <div class="text-primary fs-1 fw-bold " aria-label="We are hiring!">
+            <div class="d-flex flex-column left col-12 col-md-6 align-items-center justify-content-center">
+                <div class="text-primary typewriter-text hiring-text-header fw-bold" aria-label="We are hiring!">
                     We are hiring!
                 </div>
-                <p class="fs-4 fw-medium">
+                <p class="fs-4 fw-medium fadein-text text-center">
                     Exciting career opportunities available.
                     <br>
                     Explore our open job positions today.
                 </p>
-
             </div>
 
             <div class="right col-12 col-md-6 ">
                 <div class="illus ">
-                    <div class="box-icon">
+                    <div class="box-icon bounce-text">
                         <x-icons.white-search-2 />
                     </div>
-                    <x-illustration.sapien-1 />
+                    <div class="slide-up-text">
+                        <x-illustration.sapien-1 />
+                    </div>
                 </div>
-                <div class="box-icon">
+                <div class="box-icon bounce-text">
                     <x-icons.white-briefcase-1 />
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="second-section">
+    <section class="second-section hidden-until-scroll scroll-trigger-section">
+
         @livewire('guest.job-search-input')
         <div class="px-md-5  pt-md-5 pb-md-3 ms-5">
-            <em class=" ms-5">
-                Currently <span></span> <span>jobs</span> available
+            <em class=" ms-5" x-data="{ jobCount: 12 }"
+                x-on:job-vacancies-fetched.window="jobCount = $event.detail[0].count || 'no';" nonce="{{ $nonce }}">
+                Currently
+                <span x-text="jobCount" nonce="{{ $nonce }}"></span>
+                <span x-text="jobCount === 'no' ? ' job ' : (jobCount == 1 ? ' job ' : ' jobs ')"
+                    nonce="{{ $nonce }}"></span> available
             </em>
         </div>
         <section class="job-listing d-flex  row gap-5 mb-5 ">
@@ -101,8 +109,8 @@
             @livewire('guest.job-view-pane', ['lazy' => true])
 
         </section>
-
     </section>
+
 
     <div class="modal fade sign-up-form" id="signUpForm" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
         tabindex="-1">

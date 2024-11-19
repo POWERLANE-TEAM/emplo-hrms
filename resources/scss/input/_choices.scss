@@ -1,0 +1,113 @@
+/* Styles Configuration for Choices.js */
+
+/* Define Color Variables for Reusability */
+$border-color-default: #e0e0e2;
+$border-color-focus: #b0d880;
+$highlight-color: #61b000;
+$hover-bg-color: #FAFAFA;
+$placeholder-color: #6c757d;
+$disabled-color: #888;
+$disabled-bg-color: #000;
+$error-color: #ff0000;
+$shadow-color: rgba(0, 0, 0, 0.1);
+
+/* HIDES: No choices left attribute */
+.has-no-choices {
+  display: none;
+}
+
+/* SETS: Full width of its container, entire border and radius */
+.choices-custom,
+select {
+  width: 100% !important;
+  border-radius: 6px;
+  border: 2px solid $border-color-default;
+  background-color: #fff !important;
+}
+
+/* SETS: Active Effect of the Dropdown */
+.choices-custom:focus,
+.choices-custom.is-focused,
+select:focus {
+  border-color: $border-color-focus;
+  outline: 0;
+  box-shadow: 0 0 0 .25rem rgba($highlight-color, .25);
+}
+
+/* ADJUSTS: Overriding default styles */
+.choices__input {
+  border: none !important;
+  font-size: .8rem !important;
+  width: 50% !important;
+  background-color: #fff !important;
+  box-sizing: border-box;
+}
+
+/* Dropdown container styling */
+.choices__inner {
+  background-color: #fff !important;
+  border-radius: 10px !important;
+  border: none !important;
+  outline: none !important;
+
+  &.is-focused {
+    border: none !important;
+    outline: none !important;
+  }
+
+  input {
+    padding-left: 6px !important;
+  }
+}
+
+/* Box or container of the dropdown */
+.choices__list--dropdown {
+  border: 1px solid #000;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: .5rem;
+  box-shadow: 0 4px 8px $shadow-color;
+  max-height: 200px;
+  overflow-y: auto;
+  background: #fff !important;
+}
+
+/* SELECTED STATE: Selected items from dropdown */
+.choices__list--multiple .choices__item {
+  background-color: $highlight-color !important;
+  color: white;
+}
+
+/* HOVER: Default + Using Keyboard */
+.choices__list--dropdown .choices__item.is-highlighted {
+  background-color: $hover-bg-color !important;
+  color: $highlight-color !important;
+  font-weight: 700;
+}
+
+/* HOVER: Using Mouse, Hovering on Dropdown */
+.choices__list--dropdown .choices__item--selectable:hover {
+  background-color: $hover-bg-color !important;
+  color: $highlight-color;
+  font-weight: 700;
+}
+
+/* X ICON: Removes the items */
+.choices__button {
+  background-color: transparent;
+  color: $error-color;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Placeholder text styling */
+.choices__placeholder {
+  color: $placeholder-color;
+  font-style: italic;
+}
+
+/* Disabled items */
+.choices__item--disabled.custom-disabled {
+  color: $disabled-color;
+  background-color: $disabled-bg-color;
+}

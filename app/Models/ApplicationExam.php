@@ -19,15 +19,6 @@ class ApplicationExam extends Model
         'application_exam_id',
     ];
 
-    /**
-     * Get the examination's name/type.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function exam(): BelongsTo
-    {
-        return $this->belongsTo(Exam::class, 'exam_id', 'exam_id');
-    }
 
     /**
      * Get the job application that owns the examination.
@@ -37,15 +28,5 @@ class ApplicationExam extends Model
     public function application(): BelongsTo
     {
         return $this->belongsTo(Application::class, 'application_id', 'application_id');
-    }
-
-    /**
-     * Get the result associated with the examination.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function result(): HasOne
-    {
-        return $this->hasOne(ApplicationExamResult::class, 'application_exam_id', 'application_exam_id');
     }
 }

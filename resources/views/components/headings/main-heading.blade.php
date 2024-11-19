@@ -1,6 +1,31 @@
-@props(['isHeading' => false, 'heading'])
+@use ('Illuminate\View\ComponentAttributeBag')
 
-<hgroup class="mb-5 mb-md-4 ms-md-n1">
-    <div class="fs-3 fw-bold mb-2" {{ $isHeading ? 'role=heading aria-level=1' : '' }}>{{ $heading ?? '' }}</div>
+@props([
+    'isHeading' => false,
+    'heading',
+    'containerAttributes' => new ComponentAttributeBag(),
+    'overrideClass' => false,
+    'overrideContainerClass' => false,
+])
+
+@php
+
+    $defaultAttributes = ['class' => 'fs-2 fw-bold mb-2'];
+
+    $defaultContainerAttributes = ['class' => 'pt-2 pb-4 ms-n1'];
+
+    if (!$overrideClass) {
+        $attributes = $attributes->merge($defaultAttributes);
+    }
+
+    if (!$overrideContainerClass) {
+        $containerAttributes = $containerAttributes->merge($defaultContainerAttributes);
+    }
+@endphp
+
+
+<hgroup {{ $containerAttributes }}>
+    <div {!! $attributes !!} {{ $isHeading ? 'role=heading aria-level=1' : '' }}>
+        {{ $heading ?? '' }}</div>
     {{ $description ?? '' }}
 </hgroup>

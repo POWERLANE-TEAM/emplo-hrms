@@ -85,8 +85,6 @@ function validateUserLoginForm(userLoginFormString = `form[action='/login']`) {
 
     userLoginBtn.disabled = true;
 
-    let isCaptchaValid = checkCaptcha();
-
     let isWeakPassword;
     try {
         isWeakPassword = evalPassword(passwordInput.value);

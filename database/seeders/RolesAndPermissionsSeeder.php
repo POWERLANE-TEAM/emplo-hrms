@@ -105,9 +105,16 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::CREATE_ANNOUNCEMENT->value,
             UserPermission::CREATE_EMPLOYEE_ACCOUNT->value,
             UserPermission::CREATE_BULK_EMPLOYEE_ACCOUNT->value,
+            UserPermission::CREATE_JOB_FAMILY->value,
+            UserPermission::CREATE_JOB_TITLE->value,
+            UserPermission::CREATE_PERFORMANCE_CATEGORIES->value,
+            UserPermission::CREATE_PERFORMANCE_RATING_SCALES->value,
+            UserPermission::CREATE_PREEMPLOYMENT_REQUIREMENTS->value,
 
             // Update cases goes here
-
+            UserPermission::UPDATE_PERFORMANCE_CATEGORIES->value,
+            UserPermission::UPDATE_PERFORMANCE_RATING_SCALES->value,
+            UserPermission::UPDATE_PREEMPLOYMENT_REQUIREMENTS->value,
 
             // Delete cases goes here
         ];

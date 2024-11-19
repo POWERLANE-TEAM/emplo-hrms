@@ -2,7 +2,8 @@
 @import 'core';
 @import 'scrollbar';
 @import 'table';
-@import 'icon-sizing';
+@import 'scales/icon-size';
+@import "scales/img-size";
 @include pri-sm-logo;
 
 header,
@@ -50,7 +51,7 @@ html {
 
 
     main.main {
-        padding-left: var(--main-container-px);
+        padding-left: var(--main-container-px) !important;
         padding-right: var(--main-container-px);
     }
 }

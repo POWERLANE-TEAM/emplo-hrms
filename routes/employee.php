@@ -1,16 +1,14 @@
 <?php
 
 use App\Enums\UserPermission;
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\Employee\DashboardController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\Application\ApplicationController;
 use App\Http\Controllers\ApplicationExamController;
 use App\Http\Controllers\InitialInterviewController;
-use App\Livewire\Auth\Employees\Login;
-use App\Livewire\Auth\Logout;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
-use Laravel\Fortify\RoutePath;
 
 
 Route::middleware('guest')->group(function () {
@@ -44,8 +42,23 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         ->middleware(['permission:' . UserPermission::CREATE_APPLICANT_EXAM_SCHEDULE->value])
         ->name('applicant.exam.store');
 
+    Route::get('profile', function () {
+        return view('employee.profile.settings');
+    })->name('profile');
+
+    Route::get('/index', [EmployeeController::class, 'index'])
+        ->name('index');
+
+
+    Route::get('/attendance/index', [AttendanceController::class, 'index'])
+        ->name('attendance.index');
+
     Route::get('/sample', function () {
         dd(request());
         echo 'sample';
     });
 });
+
+Route::get('profile', function () {
+    return view('employee.admin.profile');
+})->name('profile'); // Still temporary.

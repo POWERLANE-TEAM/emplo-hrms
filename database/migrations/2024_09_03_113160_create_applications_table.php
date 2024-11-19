@@ -44,7 +44,20 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
+            $table->boolean('is_passed')->default(false);
             $table->timestamp('hired_at')->nullable();
+        });
+
+        Schema::create('application_exams', function (Blueprint $table) {
+            $table->id('application_exam_id');
+
+            $table->foreignIdFor(Application::class, 'application_id')
+                ->constrained('applications', 'application_id')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+
+            $table->timestamp('start_time')->nullable();
+            $table->timestamp('end_time')->nullable();
         });
 
         Schema::create('application_docs', function (Blueprint $table) {
@@ -71,42 +84,6 @@ return new class extends Migration
             $table->timestamp('updated_at')->nullable();
             $table->softDeletes();
         });
-
-        Schema::create('application_exams', function (Blueprint $table) {
-            $table->id('application_exam_id');
-
-            $table->foreignIdFor(Exam::class, 'exam_id')
-                ->constrained('exams', 'exam_id')
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
-
-            $table->foreignIdFor(Application::class, 'application_id')
-                ->constrained('applications', 'application_id')
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
-
-            $table->timestamp('start_time')->nullable();
-            $table->timestamp('end_time')->nullable();
-        });
-
-        Schema::create('application_exam_results', function (Blueprint $table) {
-            $table->id('exam_result_id');
-
-            $table->foreignIdFor(ApplicationExam::class, 'application_exam_id')
-                ->constrained('application_exams', 'application_exam_id')
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
-
-            $table->foreignIdFor(Employee::class, 'graded_by')
-                ->nullable()
-                ->constrained('employees', 'employee_id')
-                ->cascadeOnUpdate()
-                ->nullOnDelete();
-
-            $table->integer('total_grades'); // change accordingly if required decimal values
-            $table->boolean('is_passed')->default(false);
-            $table->timestamps();
-        });
     }
 
     /**
@@ -117,7 +94,5 @@ return new class extends Migration
         Schema::dropIfExists('application_statuses');
         Schema::dropIfExists('applications');
         Schema::dropIfExists('application_docs');
-        Schema::dropIfExists('application_exams');
-        Schema::dropIfExists('application_exam_results');
     }
 };

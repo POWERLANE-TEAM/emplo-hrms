@@ -1,0 +1,108 @@
+@import '../../utils';
+@import '../../scales/icon-size';
+@import '../../icon/lucide';
+@import '../side-top-bar';
+@import '../../palette/text-colors';
+@import '../../palette/start-borders';
+@import '../../footer';
+
+
+.col-md-7 p {
+    margin-bottom: 0 !important;
+}
+
+/* ==========================================================================
+   Section 2: Laravel Pulse & Activity Logs
+   ========================================================================== */
+
+
+/* Laravel Pulse
+========================================================================== */
+.pulse-card:hover {
+    background-color: var(--main-green) !important;
+}
+
+/* Position the image container relative to contain the absolutely positioned GIF */
+.image-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Ensures any overflow is hidden */
+}
+
+/* Set initial styles for images */
+.image-container img {
+    width: 60%;
+    opacity: 1;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* Hide the animated image initially with opacity */
+.image-container .animated-image {
+    position: absolute;
+    opacity: 0;
+    width: 50%; /* Keep both images the same size */
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* Make the static image disappear smoothly on hover */
+.pulse-card:hover .image-container .static-image {
+    opacity: 0;
+    transform: scale(1.05); /* Slight zoom on hover for static image */
+}
+
+/* Make the animated image appear smoothly on hover */
+.pulse-card:hover .image-container .animated-image {
+    opacity: 1;
+    transform: scale(1); /* Restore scale for animated image */
+}
+
+/* Smooth color transition for text */
+.card-cont-green-hover {
+    transition: color 0.4s ease;
+}
+
+/* Change text color to white on hover */
+.pulse-card:hover .card-cont-green-hover {
+    color: var(--main-white);
+}
+
+
+/* ==========================================================================
+   Section 3: Announcement & DTR
+   ========================================================================== */
+
+
+/* Create Announcement Button 
+========================================================================== */
+
+
+.icons-container {
+    padding-left: 3rem;
+    margin-right: 1.6rem;
+}
+
+.icon-container {
+    display: inline-flex;
+    padding: 5px;
+    border: 1px solid gray;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.icon-with-border {
+    color: gray;
+    width: 16px; 
+    height: 16px; 
+    transition: all 0.3s ease;
+}
+
+.icon-container:hover {
+    background-color: var(--main-green);
+    border-color: var(--main-green);
+}
+
+.icon-container:hover .icon-with-border {
+    color: white;
+}

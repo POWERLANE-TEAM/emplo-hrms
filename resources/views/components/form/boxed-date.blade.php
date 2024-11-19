@@ -3,8 +3,18 @@
 * | Boxed: Date Input Field
 * |--------------------------------------------------------------------------
 --}}
+@use ('Illuminate\View\ComponentAttributeBag')
 
-@props(['label', 'nonce'])
+@props(['label', 'nonce', 'overrideContainerClass' => false, 'containerAttributes' => new ComponentAttributeBag()])
+
+@php
+
+    $defaultContainerAttributes = ['class' => 'input-group mb-3 position-relative'];
+
+    if (!$overrideContainerClass) {
+        $containerAttributes = $containerAttributes->merge($defaultContainerAttributes);
+    }
+@endphp
 
 <label for="{{ $attributes->get('id') }}" class="mb-1 fw-semibold text-secondary-emphasis">
     {{ $label }}
@@ -13,7 +23,7 @@
         <span class="text-danger">*</span>
     @endif
 </label>
-<div class="input-group mb-3 position-relative">
+<div {{ $containerAttributes }}>
     <!-- Date input with boxed styling -->
     <input type="{{ $attributes->get('type', 'date') }}"
         @if ($attributes->has('name')) wire:model="{{ $attributes->get('name') }}" @endif

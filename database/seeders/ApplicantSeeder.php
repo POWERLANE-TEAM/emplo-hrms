@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Enums\AccountType;
 use App\Enums\ApplicationStatus;
 use App\Enums\UserPermission;
-use App\Enums\UserRole;
 use App\Models\User;
 use App\Enums\UserStatus as EnumUserStatus;
 use App\Models\Applicant;
@@ -17,7 +16,6 @@ use Illuminate\Support\Facades\Concurrency;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
-use Spatie\Permission\Models\Role;
 
 
 function createApplicants($chunkStart, $chunk, $permissions)
@@ -49,9 +47,7 @@ function createApplicants($chunkStart, $chunk, $permissions)
                         'application_status_id' => ApplicationStatus::APPROVED,
                     ]);
 
-                    $applicant_user->assignRole(UserRole::BASIC);
-
-                    $applicant_user->givePermissionTo($permissions);
+                    // $applicant_user->givePermissionTo($permissions);
                 } catch (\Exception $e) {
                     Log::error('Exception: ' . $e->getMessage() . ' in ' . $e->getFile() . ' on line ' . $e->getLine());
                 }

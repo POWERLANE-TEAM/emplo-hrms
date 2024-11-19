@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
+import { sync } from 'glob';
 import os from 'os';
 
 function getLocalIpAddress() {
@@ -42,33 +43,8 @@ export default defineConfig({
             input: [
                 'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js',
                 'node_modules/chartjs-plugin-annotation/dist/chartjs-plugin-annotation.min.js',
-                // 'resources/js/app.js',
-                'resources/js/hiring.js',
-                'resources/js/applicant/login.js',
-                'resources/js/employee/login.js',
-                'resources/js/admin/login.js',
-                'resources/js/unverified-email.js',
-                'resources/js/applicant/dashboard.js',
-                'resources/js/employee/basic/dashboard.js',
-                'resources/js/employee/hr-manager/dashboard.js',
-                'resources/js/employee/supervisor/dashboard.js',
-                'resources/js/employee/applicants.js',
-                'resources/js/admin/dashboard.js',
-                'resources/js/employee/pre-employment.js',
-                'resources/js/forms/nbp.min.js',
-                'resources/js/applicant/apply.js',
-                'resources/css/style.css',
-                'resources/css/hiring.css',
-                'resources/css/login.css',
-                'resources/css/unverified-email.css',
-                'resources/css/guest/primary-bg.css',
-                'resources/css/guest/secondary-bg.css',
-                'resources/css/applicant/apply.css',
-                'resources/css/employee/pre-employment.css',
-                'resources/css/employee/hr-manager/dashboard.css',
-                'resources/css/employee/hr-manager/applicants.css',
-                'resources/css/employee/supervisor/dashboard.css',
-                'resources/css/employee/basic/dashboard.css',
+                ...sync('./resources/js/**/*.js',),
+                ...sync('./resources/css/**/*.css'),
             ],
             refresh: true,
         }),
