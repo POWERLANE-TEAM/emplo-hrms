@@ -25,12 +25,11 @@
         <span><i data-lucide="external-link"></i></span>
     </a>
 
-    <label for="job-descr-panel" class="job-descr card-text">
+    <label for="job-descr-panel" class="job-descr card-text thin-custom-scrollbar">
         ' .
             $job_vacancy['jobDetail']['jobTitle'][0]['job_desc'] .
             '
     </label>
-    <input type="checkbox" class="showMoreToggle" name="" id="job-descr-panel">
 </header>
 <div>
     <button class="bg-transparent border border-0">

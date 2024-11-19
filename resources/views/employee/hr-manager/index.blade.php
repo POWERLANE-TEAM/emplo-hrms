@@ -1,7 +1,7 @@
 @extends('components.layout.employee.layout', ['description' => 'Employee Dashboard', 'nonce' => $nonce])
 
 @section('head')
-    <title>Home Page</title>
+    <title>HR Dashboard</title>
     <script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
     <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 @endsection

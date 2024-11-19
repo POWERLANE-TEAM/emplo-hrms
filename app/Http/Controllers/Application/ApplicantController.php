@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Application;
 
-class ApplicantDocController extends Controller
+use App\Http\Controllers\Controller;
+
+class ApplicantController extends Controller
 {
     /* Show all resource */
     public function index($page = null)

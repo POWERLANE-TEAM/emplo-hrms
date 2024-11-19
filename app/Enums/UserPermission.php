@@ -17,6 +17,8 @@ enum UserPermission: string
     case CREATE_EMPLOYEE_ACCOUNT = 'create employee account';
     case CREATE_BULK_EMPLOYEE_ACCOUNT = 'create bulk employee accounts';
     case CREATE_PRE_EMPLOYMENT_DOCUMENT = 'create pre employment document';
+    case CREATE_APPLICANT_EXAM_SCHEDULE = 'create applicant exam schedule';
+    case CREATE_APPLICANT_INIT_INTERVIEW_SCHEDULE = 'create applicant initial interview schedule';
     case CREATE_JOB_FAMILY = 'create job family';
     case CREATE_JOB_TITLE = 'create job title';
     case CREATE_PERFORMANCE_CATEGORIES = 'create performance categories';
@@ -62,6 +64,7 @@ enum UserPermission: string
     case UDPATE_JOB_LISTING = 'update job listing';
     case UPDATE_ANNOUNCEMENT = 'update announcement';
     case UPDATE_OWNED_PRE_EMPLOYMENT_DOCUMENT = 'update owned pre employment document';
+    case UPDATE_APPLICATION_STATUS = 'update application status';
     case UPDATE_PERFORMANCE_CATEGORIES = 'update performance categories';
     case UPDATE_PERFORMANCE_RATING_SCALES = 'update performance rating scales';
     case UPDATE_PREEMPLOYMENT_REQUIREMENTS = 'update pre-employment requirements';
@@ -86,6 +89,8 @@ enum UserPermission: string
             self::CREATE_EMPLOYEE_ACCOUNT => 'Create an employee account ',
             self::CREATE_BULK_EMPLOYEE_ACCOUNT => 'Create employee accounts',
             self::CREATE_PRE_EMPLOYMENT_DOCUMENT => 'Create pre-employment document',
+            self::CREATE_APPLICANT_EXAM_SCHEDULE => 'Create applicant exam schedule',
+            self::CREATE_APPLICANT_INIT_INTERVIEW_SCHEDULE => 'Create applicant initial interview schedule',
             self::CREATE_JOB_FAMILY => 'Create job family',
             self::CREATE_JOB_TITLE => 'Create job title',
             self::CREATE_PERFORMANCE_CATEGORIES => 'Create new performance categories',
@@ -130,6 +135,7 @@ enum UserPermission: string
             self::UDPATE_JOB_LISTING => 'Update job listing/s',
             self::UPDATE_ANNOUNCEMENT => 'Update announcement/s',
             self::UPDATE_OWNED_PRE_EMPLOYMENT_DOCUMENT => 'Update owned pre-employment document',
+            self::UPDATE_APPLICATION_STATUS => 'Update application status',
             self::UPDATE_PERFORMANCE_CATEGORIES => 'Update performnace categories',
             self::UPDATE_PERFORMANCE_RATING_SCALES => 'Update performance rating scales',
             self::UPDATE_PREEMPLOYMENT_REQUIREMENTS => 'Update pre-employment requirements',
