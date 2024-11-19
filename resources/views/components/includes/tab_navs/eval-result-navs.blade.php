@@ -4,9 +4,9 @@
 * |-------------------------------------------------------------------------- 
 --}}
 
-<x-sub-navs.tabular-nav :guard="$routePrefix" :items="[
-    ['title' => 'Overview', 'route' => 'probationary-perf-results'],
-    ['title' => 'Da Records', 'route' => 'dashboard'],
-    ['title' => 'Attendance', 'route' => 'dashboard'],
-    ['title' => 'Comments', 'route' => 'dashboard'],
+<x-sub-navs.in-page-tab-nav :tabs="[
+        ['title' => 'Overview', 'section' => 'overview'],
+        ['title' => 'Da Records', 'section' => 'da-records'],
+        ['title' => 'Attendance', 'section' => 'attendance'],
+        ['title' => 'Comments', 'section' => 'comments']
 ]" />
