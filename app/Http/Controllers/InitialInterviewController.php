@@ -79,6 +79,9 @@ class InitialInterviewController extends Controller
             'init_interviewer' => auth()->user()->user_id,
             'is_init_interview_passed' => false,
         ]);
+
+        // Insert Interview Notification Event Here
+
     }
 
     /* Get single resource */

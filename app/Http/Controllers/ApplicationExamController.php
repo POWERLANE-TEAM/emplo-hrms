@@ -7,7 +7,6 @@ use App\Enums\UserPermission;
 use App\Http\Controllers\Application\ApplicationController;
 use App\Models\Application;
 use App\Models\ApplicationExam;
-use App\Models\Exam;
 use App\Notifications\Applicant\ExamScheduled;
 use App\Rules\ScheduleDateRule;
 use App\Rules\ScheduleTimeRule;
@@ -85,16 +84,13 @@ class ApplicationExamController extends Controller
             }
 
             $examStart = $examStartDate . ' ' . $examStartTime;
-            $exam = Exam::inRandomOrder()->first();
 
-            $examId = $exam->exam_id;
-            $examDuration = $exam->duration ?? '00:00:00';
+            $examDuration =  '00:30:00';
             list($hours, $minutes, $seconds) = explode(':', $examDuration);
             $totalMinutes = ($hours * 60) + $minutes + ($seconds / 60);
             $examEnd = date('Y-m-d H:i:s', strtotime($examStart . ' + ' . $hours . ' hours ' . $minutes . ' minutes ' . $seconds . ' seconds'));
 
             ApplicationExam::create([
-                'exam_id' => $examId,
                 'application_id' => $applicationId,
                 'start_time' => $examStart,
                 'end_time' => $examEnd,
