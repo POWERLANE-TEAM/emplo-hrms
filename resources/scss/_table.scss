@@ -120,6 +120,12 @@ div:has(div[wire\:\key="table-wrapper"]) {
                 }
 
                 order: 9;
+
+                // START for position middle
+                display: flex;
+                align-content: center;
+                flex-wrap: wrap;
+                // END for position middle
             }
 
             div:has(>div>[id="table-columnSelect"]) {
