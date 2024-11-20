@@ -143,11 +143,11 @@
     @endcan
 
     {{-- Head Admin --}}
-    <!-- @can(UserPermission::VIEW_POLICY_MANAGER)
+    {{-- @can(UserPermission::VIEW_POLICY_MANAGER)
         <x-layout.employee.nav.sidebar.nav-item href="{{ route($routePrefix . '.job-family.create') }}" :active="request()->routeIs($routePrefix . '.job-family.create')"
             class="" nav_txt="Policies" :defaultIcon="['src' => 'documents', 'alt' => '']" :activeIcon="['src' => 'documents', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
-    @endcan -->
+    @endcan --}}
 
     {{-- Head Admin --}}
     @can(UserPermission::VIEW_ANNOUNCEMENT_MANAGER)
