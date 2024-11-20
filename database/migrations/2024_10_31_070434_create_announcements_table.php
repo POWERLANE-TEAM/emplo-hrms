@@ -43,8 +43,6 @@ return new class extends Migration
                 ->constrained('job_families', 'job_family_id')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-
-            $table->timestamps();
         });
     }
 

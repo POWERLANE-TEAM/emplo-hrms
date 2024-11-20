@@ -1,3 +1,8 @@
+@php
+    $routePrefix = $routePrefix ?? '';
+    $component = 'auth.'.($routePrefix ? $routePrefix . '.' : '').'login';
+@endphp
+
 @extends('components.layout.app', ['description' => 'Guest Layout'])
 
 @use('App\Http\Helpers\RoutePrefix')
@@ -18,41 +23,35 @@
 @endPushOnce
 
 @section('critical-styles')
-    @use('Illuminate\Support\Facades\Vite')
-
-    <style nonce="{{ $nonce }}">
-        {!! Vite::content('resources/css/guest/secondary-bg.css') !!}
-    </style>
+    @vite('resources/css/guest/secondary-bg.css')
 @endsection
 
 @pushOnce('styles')
-    @vite(['resources/css/login.css'])
-    @vite(['resources/css/animations/auth-effect.css'])
+    @vite([
+        'resources/css/login.css',
+        'resources/css/animations/auth-effect.css'
+    ])
 @endPushOnce
 
 @section('before-nav')
-    <x-layout.guest.secondary-bg />
+    @if ($routePrefix === 'admin')
+        <x-layout.employee.nav.secondary-bg />
+    @else
+        <x-layout.guest.secondary-bg />
+    @endif
 @endsection
 
 @section('header-nav')
+    @if ($routePrefix === 'admin')
+    <x-layout.employee.nav.secondary-header />
+    @else
     <x-layout.guest.secondary-header />
-@endsection
-
-@section('before-nav')
-    <x-layout.{{ $routePrefix === 'admin' ? 'employee.secondary-bg' : 'guest.secondary-bg' }} />
-@endsection
-
-@section('header-nav')
-    <x-layout.{{ $routePrefix === 'admin' ? 'employee.secondary-header' : 'guest.secondary-header' }} />
+    @endif
 @endsection
 
 @section('content')
-    @php
-        $componentName = 'auth.' . ($routePrefix ? $routePrefix . '.' : '') . 'login';
-    @endphp
-    @livewire($componentName)
+    @livewire($component)
 @endsection
-
 
 @section('footer')
     <x-guest.footer />
