@@ -7,7 +7,10 @@
             </div>
             <div class="modal-body">
                 <div class="mb-3">
-                    <p>Content here lol. This modal style not final</p>
+                    <ul>
+                        <!-- BACK-END Replace: Approval and Time/Data of Approval -->
+                        <li><b>Augistina, De Leon C.</b> (Supervisor) submitted Employee Name's evaluation form on January 2, 2024.</li>
+                    </ul>
                 </div>
             </div>
             <div class="modal-footer">
