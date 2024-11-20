@@ -16,14 +16,14 @@
 
         <!-- SECTION: Supervisor’s Final Recommendation -->
         <div class="pb-3">
-            <p class="fw-medium fs-4">Supervisor’s Final Recommendation</p>
+            <p class="fw-medium fs-5">Supervisor’s Final Recommendation</p>
 
             <!-- BACK-END Replace: Status Icon & Recommendation -->
-            <div class="row px-2 py-3 d-flex align-items-center">
-                <div class="col-2 d-flex justify-content-center">
-                    <i data-lucide="badge-check" class="icon icon-xxlarge text-primary"></i>
+            <div class="row py-3 d-flex align-items-center">
+                <div class="col-2 d-flex justify-content-end p-0">
+                    <i data-lucide="badge-check" class="icon icon-xlarge text-primary"></i>
                 </div>
-                <div class="col">
+                <div class="col justify-content-start">
                     <span class="fs-5">Recommended to become a regular employee</span>
                 </div>
             </div>
@@ -31,7 +31,7 @@
 
         <!-- SECTION: Main Approvals -->
         <div class="pb-3">
-            <p class="fw-medium fs-4">Main Approvals</p>
+            <p class="fw-medium fs-5">Main Approvals</p>
 
             <!-- Supervisor Approval -->
             <div class="ps-4 pe-2 py-3">
@@ -65,7 +65,7 @@
 
         <!-- SECTION: HR Approvals -->
         <div class="pb-3">
-            <p class="fw-medium fs-4">Human Resources Department</p>
+            <p class="fw-medium fs-5">Human Resources Department</p>
 
             <!-- Supervisor Approval -->
             <div class="ps-4 pe-2 py-3">
@@ -86,7 +86,7 @@
                 <div class="row">
                     <div class="col-7">
                         <x-form.checkbox container_class="" :nonce="$nonce" id="hr_head_approval"
-                            name="hr_head_approval" class="checkbox checkbox-primary" checked>
+                            name="hr_head_approval" class="checkbox checkbox-primary">
 
                             <x-slot:label>
                                 <div class="d-flex flex-column">
