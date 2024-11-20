@@ -8,7 +8,7 @@
 @use('App\Http\Helpers\RoutePrefix')
 
 @section('head')
-    <title>Sign in {{ $routePrefix ? ' as '.ucwords($routePrefix) : '' }}</title>
+<title>Sign in {{ $routePrefix ? ' as ' . ucfirst($routePrefix) : '' }}</title>
 @endsection
 
 @pushOnce('pre-scripts')

@@ -1,7 +1,7 @@
 import '../script.js';
 import initLucideIcons from '../icons/lucide.js';
 import addGlobalScrollListener, { documentScrollPosY } from '../global-scroll-fn.js';
-import addGlobalListener, { GlobalListener } from '../global-event-listener.js';
+import addGlobalListener, { GlobalListener } from 'globalListener-script';
 import ThemeManager, { initPageTheme, handleThemeBtn } from '../theme-listener.js';
 // import './livewire.js'
 
@@ -22,7 +22,7 @@ document.addEventListener('livewire:init', () => {
     Livewire.on('pre-employment-docs-rendered', (event) => {
         setTimeout(() => {
             initLucideIcons();
-            
+
         }, 0);
 
         csrf_token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');

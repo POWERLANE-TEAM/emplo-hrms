@@ -17,6 +17,8 @@ class ApplicationStatusSeeder extends Seeder
     {
         $application_statuses = [
             ['application_status_name' => Str::lower(EnumsApplicationStatus::PENDING->label()), 'application_status_desc' => ''],
+            ['application_status_name' => Str::lower(EnumsApplicationStatus::ASSESSMENT_SCHEDULED->label()), 'application_status_desc' => ''],
+            ['application_status_name' => Str::lower(EnumsApplicationStatus::PRE_EMPLOYED->label()), 'application_status_desc' => ''],
             ['application_status_name' => Str::lower(EnumsApplicationStatus::APPROVED->label()), 'application_status_desc' => ''],
             ['application_status_name' => Str::lower(EnumsApplicationStatus::REJECTED->label()), 'application_status_desc' => ''],
         ];

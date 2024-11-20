@@ -48,6 +48,18 @@ return new class extends Migration
             $table->timestamp('hired_at')->nullable();
         });
 
+        Schema::create('application_exams', function (Blueprint $table) {
+            $table->id('application_exam_id');
+
+            $table->foreignIdFor(Application::class, 'application_id')
+                ->constrained('applications', 'application_id')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+
+            $table->timestamp('start_time')->nullable();
+            $table->timestamp('end_time')->nullable();
+        });
+
         Schema::create('application_docs', function (Blueprint $table) {
             $table->id('application_doc_id');
 
@@ -82,7 +94,5 @@ return new class extends Migration
         Schema::dropIfExists('application_statuses');
         Schema::dropIfExists('applications');
         Schema::dropIfExists('application_docs');
-        Schema::dropIfExists('application_exams');
-        Schema::dropIfExists('application_exam_results');
     }
 };

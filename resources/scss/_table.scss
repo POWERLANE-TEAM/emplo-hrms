@@ -226,15 +226,31 @@ div:has(div[wire\:\key="table-wrapper"]) {
                     clip-path: polygon(0.75rem 0, calc(100% + 3cqw) 0, calc(100% + 3cqw) 100%, 0.75rem 100%);
                     // END removes the overflow caused by row class of bootstrap
 
+                    @media screen and (min-width: 768px) {
+                        .col-md-6 {
+
+                            width: 33%;
+
+                            &.overflow-auto {
+                                width: 66.66666667%;
+                            }
+                        }
+                    }
                 }
 
                 nav {
                     ul {
                         column-gap: clamp(0.25rem, 0.1em + 1%, 3rem);
-                        justify-content: end;
                         padding-right: calc(0.25rem + 0.15cqw);
 
+
                         .page-item {
+
+                            @media screen and (min-width: 768px) {
+                                &:first-of-type {
+                                    margin-left: auto;
+                                }
+                            }
 
                             &.active span {
                                 font-weight: 900;
