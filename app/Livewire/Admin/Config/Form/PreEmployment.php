@@ -10,14 +10,8 @@ use Illuminate\Support\Facades\DB;
 
 class PreEmployment extends Component
 {
-    #[Validate([
-        'state.newRequirement' => 'required',
-        'state.existingRequirement' => 'required',
-    ])]
-    public $state = [
-        'newRequirement' => '',
-        'existingRequirement' => '',
-    ];
+    #[Validate('required')]
+    public $requirement;
 
     public $index;
 
@@ -30,13 +24,13 @@ class PreEmployment extends Component
         if ($this->editMode) {
             DB::transaction(function () {
                 PreempRequirement::where('preemp_req_id', $this->index)->update([
-                    'preemp_req_name' => $this->state['existingRequirement'],
+                    'preemp_req_name' => $this->requirement
                 ]);
             });
         } else {
             DB::transaction(function () {
                 PreempRequirement::create([
-                    'preemp_req_name' => $this->state['newRequirement'],
+                    'preemp_req_name' => $this->requirement
                 ]);
             });
         }
@@ -55,7 +49,7 @@ class PreEmployment extends Component
         } else {
             $this->editMode = true;
             $this->index = $requirement->preemp_req_id;
-            $this->state['existingRequirement'] = $requirement->preemp_req_name;
+            $this->requirement = $requirement->preemp_req_name;
 
             $this->dispatch('open-preemployment-modal');
         }
