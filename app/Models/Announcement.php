@@ -40,7 +40,6 @@ class Announcement extends Model
      */
     public function offices(): BelongsToMany
     {
-        return $this->belongsToMany(JobFamily::class, 'announcement_details', 'announcement_id', 'job_family_id')
-            ->withTimestamps();
+        return $this->belongsToMany(JobFamily::class, 'announcement_details', 'announcement_id', 'job_family_id');
     }
 }
