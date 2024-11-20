@@ -54,13 +54,13 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('job-board')->name('job-board.')->group(function () {
         Route::get('create', function() {
-            return view('employee.admin.jobboard.add-open-position');
+            return view('employee.admin.job-board.create');
         })->name('create');        
     });
 
     Route::prefix('announcement')->name('announcement.')->group(function () {
         Route::get('create', function () {
-            return view('employee.admin.announcements.create-announcement');
+            return view('employee.admin.announcements.create');
         })
             ->can(UserPermission::CREATE_ANNOUNCEMENT)
             ->name('create');        
