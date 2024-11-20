@@ -416,8 +416,19 @@ body {
         }
     }
 
-    .breadcrumb-item::before {
-        // margin-top: calc(0.25rem + 0.25vw);
+    .breadcrumb-item {
+        display: flex; 
+        align-items: center;
+    }
+
+    .breadcrumb-item + .breadcrumb-item::before {
+        float: none;
+        display: inline-block;
+        vertical-align: middle;
+        font-size: 1rem;
+        padding-right: 1.4rem;
+        content: var(--bs-breadcrumb-divider, "›");
+        color: var(--bs-breadcrumb-divider-color);
     }
 }
 
