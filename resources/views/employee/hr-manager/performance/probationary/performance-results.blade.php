@@ -37,7 +37,7 @@
 <x-headings.header-with-status title="Clark, Avery Mendiola" color="info" badge="Probationary">
     <span class="fw-bold">Position: </span>
     Associate / Assistant Manager
-</x-profile-header>
+    </x-profile-header>
 
 
     <section class="mb-5 mt-3">
@@ -63,6 +63,21 @@
                     <livewire:hr-manager.performance.category-ratings />
                 </div>
             </section>
+        </div>
+
+        <!-- Approve/Decline Buttons -->
+        <div class="col-md-5 ps-3 pe-4">
+            <div class="row">
+                <!-- Decline -->
+                <div class="col-6 pe-2">
+                    <button type="submit" name="submit" class="btn btn-lg btn-danger col-6 w-100">Decline</button>
+                </div>
+
+               <!-- Approve -->
+                <div class="col-6">
+                    <button type="submit" name="submit" class="btn btn-primary btn-lg col-6 w-100">Approve</button>
+                </div>
+            </div>
         </div>
 
     </section>
