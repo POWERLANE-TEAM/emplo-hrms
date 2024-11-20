@@ -1,13 +1,5 @@
-{{-- Initialization Section: Sets CSP nonce, retrieves authenticated user, --}}
-@php
-    $nonce = csp_nonce();
-    $user = Auth::user();
-@endphp
-
-
 {{-- Extends layout --}}
 @extends('components.layout.employee.layout', ['description' => 'Admin Dashboard', 'nonce' => $nonce])
-
 
 {{-- Head Section: Title, Scripts, & Styles --}}
 @section('head')
@@ -29,7 +21,6 @@
     @vite(['resources/css/employee/hr-manager/dashboard.css'])
 @endPushOnce
 {{-- END OF Head Section: Title, Scripts, & Styles --}}
-
 
 
 {{-- Body/Content Section --}}
