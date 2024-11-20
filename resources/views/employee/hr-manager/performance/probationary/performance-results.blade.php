@@ -21,138 +21,51 @@
 @endPushOnce
 @section('content')
 
-<section class="mb-5">
-    <header class="fs-4 fw-bold mb-4" role="heading" aria-level="2">
+<x-breadcrumbs>
+    <x-slot:breadcrumbs>
+        <x-breadcrumb :href="'#'"> <!-- REPLACE: Link to the Performance Eval tables -->
+            Evaluations
+        </x-breadcrumb>
+        <x-breadcrumb :active="request()->routeIs($routePrefix . '.probationary-perf-results')">
+            Probationary Employee
+        </x-breadcrumb>
+    </x-slot:breadcrumbs>
+</x-breadcrumbs>
 
-    </header>
 
-    <!-- Main Section -->
-    <div class="d-flex mb-5 row">
-        <!-- Left Section: Overview -->
-        <div class="col-md-5 d-flex">
-            <div class="h-100 w-100">
+<!-- BACK-END REPLACE: Name,  Position-->
+<x-headings.header-with-status title="Clark, Avery Mendiola" color="info" badge="Probationary">
+    <span class="fw-bold">Position: </span>
+    Associate / Assistant Manager
+</x-profile-header>
 
-                <!-- Navigation Tabs -->
-                <div class="p-2">
-                    @include('components.includes.tab_navs.eval-result-navs')
+
+    <section class="mb-5 mt-3">
+        <!-- Main Section -->
+        <div class="d-flex mb-5 row align-items-stretch">
+            <!-- Left Section: Overview -->
+            <section class="col-md-5 d-flex">
+                <div class="w-100">
+                    <!-- Navigation Tabs -->
+                    <div class="p-2">
+                        @include('components.includes.tab_navs.eval-result-navs')
+                    </div>
+
+                    <!-- Overview: Navigation Tabs Content -->
+                    <livewire:hr-manager.performance.overview-eval />
                 </div>
+            </section>
 
-                <!-- Overview: Navigation Tabs Content -->
-                <livewire:hr-manager.performance.overview-eval />
-            </div>
+            <!-- Right Section: Performance Category -->
+            <section class="col-md-7 d-flex">
+                <div class="w-100">
+                    <!-- Performance Category + Ratings -->
+                    <livewire:hr-manager.performance.category-ratings />
+                </div>
+            </section>
         </div>
 
-        <!-- Right Section: Performance Catgory -->
-        <section class="col-md-7 d-flex">
-            <div class="h-100 w-100">
+    </section>
+    @endsection
 
-                <!-- HEADER -->
-                <div class="row px-3">
-
-                    <!-- Header of the Performance Category -->
-                    <div class=" col-8 d-flex align-items-center fw-bold" style="margin-right: 2em;">
-                        <i class="icon p-1 mx-2 text-primary" data-lucide="baseline"></i>Performance Category
-                    </div>
-
-                    <div class="col-1 px-2 mr-3">
-                        <div class="text-center fw-bold">3</div>
-                        <div class="text-center text-muted fs-7">mos</div>
-                    </div>
-
-                    <!-- 5 months -->
-                    <div class="col-1 px-2  mr-3">
-                        <div class="text-center fw-bold">5</div>
-                        <div class="text-center text-muted fs-7">mos</div>
-                    </div>
-
-                    <!-- Final -->
-                    <div class="col-1 d-flex align-items-center">
-                        <div class="text-center fw-bold text-primary justify-content-center">
-                            Final
-                        </div>
-                    </div>
-
-                </div>
-
-                <!-- BACK-END Replace: Replace with evaluation results. -->
-
-                @php
-                    $evaluations = [
-                        [
-                            'title' => 'Quantity of Work',
-                            'desc' => 'Consistently delivers high-quality work, meeting deadlines and completing tasks efficiently with minimal supervision.',
-                            'three_month_score' => 3,
-                            'five_month_score' => 5,
-                            'final_score' => 4,
-                        ],
-                        [
-                            'title' => 'Quality of Work',
-                            'desc' => 'Demonstrates attention to detail and ensures that all outputs meet quality standards.',
-                            'three_month_score' => 4,
-                            'five_month_score' => 4,
-                            'final_score' => 5,
-                        ],
-                        [
-                            'title' => 'Quality of Work',
-                            'desc' => 'Demonstrates attention to detail and ensures that all outputs meet quality standards.',
-                            'three_month_score' => 4,
-                            'five_month_score' => 4,
-                            'final_score' => 5,
-                        ],
-                        [
-                            'title' => 'Quality of Work',
-                            'desc' => 'Demonstrates attention to detail and ensures that all outputs meet quality standards.',
-                            'three_month_score' => 4,
-                            'five_month_score' => 4,
-                            'final_score' => 5,
-                        ],
-
-                    ];
-                @endphp
-
-
-                <div class="scrollable-container">
-                    <!-- Results -->
-                    @foreach($evaluations as $evaluation)
-                        <div class="card p-4 my-4 d-flex">
-                            <div class="row px-3">
-                                <!-- Title and Description -->
-                                <div class="col-7">
-                                    <p class="fw-bold fs-5 text-primary">{{ $loop->iteration }}. {{ $evaluation['title'] }}
-                                    </p>
-                                    <p>{{ $evaluation['desc'] }}</p>
-                                </div>
-
-                                <!-- Vertical Line -->
-                                <div class="col-2 d-flex justify-content-center">
-                                    <div class="vertical-line"></div>
-                                </div>
-
-                                <!-- 3 Month Score -->
-                                <div class="col-1 px-2 d-flex align-items-center">
-                                    <div class="text-center fw-bold">{{ $evaluation['three_month_score'] }}</div>
-                                </div>
-
-                                <!-- 5 Month Score -->
-                                <div class="col-1 px-2 d-flex align-items-center">
-                                    <div class="text-center fw-bold">{{ $evaluation['five_month_score'] }}</div>
-                                </div>
-
-                                <!-- Final Score -->
-                                <div class="col-1 d-flex align-items-center">
-                                    <div class="text-center fw-bold text-primary justify-content-center">
-                                        {{ $evaluation['final_score'] }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-
-
-            </div>
-        </section>
-
-@endsection
-
-<x-modals.data_dialogues.eval-approval-history />
+    <x-modals.data_dialogues.eval-approval-history />
