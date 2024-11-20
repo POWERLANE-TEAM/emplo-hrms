@@ -47,7 +47,7 @@
         $navPerformanceOrder = $user->hasPermissionTo(UserPermission::VIEW_ALL_LEAVES) ? 8 : 4;
     @endphp
     @canAny([UserPermission::VIEW_PERFORMANCE, UserPermission::VIEW_ALL_PERFORMANCE])
-        <x-layout.employee.nav.sidebar.nav-item href="#" :active="request()->routeIs($routePrefix . '.performances')"
+        <x-layout.employee.nav.sidebar.nav-item :href="route($routePrefix . '.performance.evaluation.index', ['employeeStatus' => 'probationary'])" :active="request()->routeIs($routePrefix . '.performance.evaluation.index')"
             class="tw-order-[{{ $navPerformanceOrder }}]" nav_txt="Performance" :defaultIcon="['src' => 'performances', 'alt' => '']" :activeIcon="['src' => 'performances', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan

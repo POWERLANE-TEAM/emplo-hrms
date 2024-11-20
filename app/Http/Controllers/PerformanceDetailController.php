@@ -9,9 +9,9 @@ use Illuminate\Http\Request;
 class PerformanceDetailController extends Controller
 {
     /* Show all resource */
-    public function index(): ViewFactory|View
+    public function index($employeeType): ViewFactory|View
     {
-        return view('employee.performance.eval.index');
+        return view('employee.performance.eval.index', ['tab' => $employeeType]);
     }
 
 

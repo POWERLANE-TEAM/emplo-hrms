@@ -7,6 +7,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\Application\ApplicationController;
 use App\Http\Controllers\ApplicationExamController;
 use App\Http\Controllers\InitialInterviewController;
+use App\Http\Controllers\PerformanceDetailController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 
@@ -42,6 +43,14 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         ->middleware(['permission:' . UserPermission::CREATE_APPLICANT_EXAM_SCHEDULE->value])
         ->name('applicant.exam.store');
 
+    Route::prefix('performance')->name('performance.')->group(function () {
+        Route::prefix('evaluation')->name('evaluation.')->group(function () {
+            Route::get('/{employeeStatus}/index', [PerformanceDetailController::class, 'index'])
+                ->where('employeeStatus', 'probationary|regular')
+                ->name('index');
+        });
+    });
+
     Route::get('profile', function () {
         return view('employee.profile.settings');
     })->name('profile');
@@ -58,7 +67,3 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         echo 'sample';
     });
 });
-
-Route::get('profile', function () {
-    return view('employee.admin.profile');
-})->name('profile'); // Still temporary.
