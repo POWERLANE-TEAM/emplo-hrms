@@ -5,13 +5,13 @@
     <x-modals.dialog :id="$modalId">
         <x-slot:title>
             <h1 class="modal-title fs-5">{{ __('Edit Item') }}</h1>
-            <button wire:click="restart" data-bs-toggle="modal" class="btn-close" aria-label="Close"></button>
+            <button wire:click="discard" data-bs-toggle="modal" class="btn-close" aria-label="Close"></button>
         </x-slot:title>
         <x-slot:content>
             <div class="mb-3">
                 <label for="editItemInput" class="col-form-label">{{ __('Item Name:') }}</label>
-                <input wire:model="state.existingRequirement" type="text" id="editItemInput" class="form-control" />
-                @error('state.existingRequirement')
+                <input wire:model="requirement" type="text" id="editItemInput" class="form-control" />
+                @error('requirement')
                     <div class="invalid-feedback" role="alert"> {{ $message }} </div>
                 @enderror
             </div>
@@ -36,9 +36,9 @@
 
                 <div class="row align-items-center py-3">
                     <div class="col-10">
-                        <input wire:model="state.newRequirement" class="form-control border ps-3 rounded"
+                        <input wire:model="requirement" class="form-control border ps-3 rounded"
                             placeholder="Type item here..." autocomplete="off" />
-                        @error('state.newRequirement')
+                        @error('requirement')
                             <div class="invalid-feedback" role="alert">{{ $message }}</div>
                         @enderror
                     </div>
