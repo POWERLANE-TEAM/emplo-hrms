@@ -1,21 +1,10 @@
-@keyframes slink-in {
+@keyframes slideInFromRight {
     0% {
+        transform: translateX(100vw); /* Start off-screen to the right */
         opacity: 0;
-        transform: translateY(50px);
     }
     100% {
+        transform: translateX(0); /* Move to original position */
         opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes slink-in-circles {
-    0% {
-        opacity: 0;
-        transform: translateX(-100vw);
-    }
-    100% {
-        opacity: 1;
-        transform: translateX(0); 
     }
 }
