@@ -25,8 +25,8 @@
         display: inline-block;
         vertical-align: text-top;
         background: white;
-        border: 1px solid #bbb;
-        border-radius: 2px;
+        border: 2px solid #bbb;
+        border-radius: 6px;
         box-sizing: border-box;
         z-index: 2;
         // color: var(--main-color);
@@ -36,12 +36,13 @@
 
         &::before {
             background-color: var(--bs-primary);
+            border: 2px solid var(--bs-primary);
         }
 
         &::after {
             content: '\2713';
             inset: 0;
-            left: calc(0.15rem + 0.05vw);
+            left: calc(0.27rem + 0.05vw);
             position: absolute;
             color: var(--bs-white);
             font-weight: bold;

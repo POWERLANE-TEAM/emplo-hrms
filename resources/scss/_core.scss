@@ -227,6 +227,10 @@ a.unstyled {
     text-decoration: unset;
 }
 
+.btn-secondary {
+    --bs-btn-color: var(--bs-gray-dark) !important;
+}
+
 .btn[class*="btn-"] {
     --bs-btn-color: #f5f5f5;
 
@@ -382,6 +386,17 @@ button {
     font-weight: 700;
 }
 
+.vertical-line {
+    width: 2.3px; 
+    background-color: #D9D9D9; 
+    height: 100%; 
+    margin: 0 auto; 
+}
+
+.underline {
+    text-decoration: underline !important;
+}
+
 body {
     &:not([data-bs-theme]) {
         @media screen and (prefers-color-scheme: dark) {
@@ -401,8 +416,19 @@ body {
         }
     }
 
-    .breadcrumb-item::before {
-        // margin-top: calc(0.25rem + 0.25vw);
+    .breadcrumb-item {
+        display: flex; 
+        align-items: center;
+    }
+
+    .breadcrumb-item + .breadcrumb-item::before {
+        float: none;
+        display: inline-block;
+        vertical-align: middle;
+        font-size: 1rem;
+        padding-right: 1.4rem;
+        content: var(--bs-breadcrumb-divider, "›");
+        color: var(--bs-breadcrumb-divider-color);
     }
 }
 
