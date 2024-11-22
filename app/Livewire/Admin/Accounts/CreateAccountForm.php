@@ -37,10 +37,10 @@ class CreateAccountForm extends Component
      * @var array<string, int>
      */
     public $presentFields = [
-        'regions' => null, 
-        'provinces' => null,
-        'cities' => null,
-        'barangays' => null,
+        'regions' => [], 
+        'provinces' => [],
+        'cities' => [],
+        'barangays' => [],
     ];
 
     /**
@@ -49,10 +49,10 @@ class CreateAccountForm extends Component
      * @var array<string, int, null>
      */
     public $permanentFields = [
-        'regions' => null, 
-        'provinces' => null,
-        'cities' => null,
-        'barangays' => null,
+        'regions' => [], 
+        'provinces' => [],
+        'cities' => [],
+        'barangays' => [],
     ];
 
     /**
@@ -69,6 +69,16 @@ class CreateAccountForm extends Component
     ];
 
     /**
+     * Should show if required present fields have values.
+     * 
+     * @var array<bool> $samePresentAddressChckBox
+     */
+    public $samePresentAddressChckBox = [
+        'shown' => false,
+        'checked' => false,
+    ];
+
+    /**
      * Use computed props for populating regions, provinces, and cities dropdowns.
      * 
      * @return void
@@ -78,14 +88,8 @@ class CreateAccountForm extends Component
         $this->presentFields['regions'] = $this->regions;
         $this->permanentFields['regions'] = $this->regions;
         $this->presentFields['provinces'] = $this->provinces;
-        $this->permanentFields['provinces'] =$this->provinces;
-        $this->presentFields['cities'] =$this->cities;
-        $this->permanentFields['cities'] = $this->cities;
 
         $this->form->presentRegion = $this->initialState['region'];
-        $this->form->permanentRegion = $this->initialState['region'];
-        $this->form->presentProvince = $this->initialState['province'];
-        $this->form->permanentProvince = $this->initialState['province'];
     }
 
     /**
@@ -157,8 +161,51 @@ class CreateAccountForm extends Component
                                                         ->pluck('name', 'id')
                                                         ->toArray();
         }
+        if (! collect([
+                $this->form->presentRegion,
+                $this->form->presentCity,
+                $this->form->presentBarangay,
+                $this->form->presentAddress,
+            ])->contains(null)) {
+        
+            $this->samePresentAddressChckBox['shown'] = true;
+        } else {
+            $this->samePresentAddressChckBox['shown'] = false;
+        }
     }
     
+    public function useSameAsPresentAddress()
+    {
+        if ($this->samePresentAddressChckBox['checked']) {
+            $this->permanentFields['provinces'] = Province::where('region_code', $this->form->presentRegion)
+                                                        ->pluck('name', 'province_code')
+                                                        ->toArray();
+
+            $this->permanentFields['cities'] = City::where('province_code', $this->form->presentProvince)
+                                                ->pluck('name', 'city_code')
+                                                ->toArray();
+
+            $this->permanentFields['barangays'] = Barangay::where('city_code', $this->form->presentCity)
+                                                        ->pluck('name', 'id')
+                                                        ->toArray();
+
+            $this->form->permanentRegion ??= $this->form->presentRegion;
+            $this->form->permanentProvince ??= $this->form->presentProvince;
+            $this->form->permanentCity ??= $this->form->presentCity;
+            $this->form->permanentBarangay ??= $this->form->presentBarangay;
+            $this->form->permanentAddress ??= $this->form->presentAddress; 
+        } else {
+            $this->reset([
+                'form.permanentRegion',
+                'form.permanentProvince',
+                'form.permanentCity',
+                'form.permanentBarangay',
+                'form.permanentAddress'               
+            ]);
+
+        }
+    }
+
     /**
      * Accessor for regions, returning key / value pairs name and region_code.
      * 
@@ -167,7 +214,7 @@ class CreateAccountForm extends Component
     #[Computed]
     public function regions()
     {
-        return Region::all()->pluck('name','region_code')->toArray();
+        return Region::all()->pluck('name', 'region_code')->toArray();
     }
 
     /**
@@ -178,20 +225,9 @@ class CreateAccountForm extends Component
     #[Computed]
     public function provinces()
     {
-        return Province::all()->pluck('name', 'province_code')->toArray();
-    }
-
-    /**
-     * Accessor for provinces, returning key / value pairs name and city_code.
-     * 
-     * @return array
-     */
-    #[Computed]
-    public function cities()
-    {
-        return City::where('province_code', $this->initialState['province'])
-                ->pluck('name', 'city_code')
-                ->toArray();
+        return Province::where('region_code', $this->initialState['region'])
+                    ->pluck('name', 'province_code')
+                    ->toArray();
     }
 
     /**
