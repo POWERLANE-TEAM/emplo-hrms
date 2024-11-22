@@ -15,7 +15,7 @@ class LatestAnnouncements extends Component
     /**
      * Use to measure how long "latest" is
      * 
-     * @var 
+     * @var $weekInterval
      */
     protected $weekInterval;
 
