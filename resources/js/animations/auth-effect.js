@@ -1,17 +1,22 @@
-    // JavaScript to add animation on scroll (IntersectionObserver)
-    const elements = document.querySelectorAll('.green-wave-container, .left-circle, .right-circle');
+window.addEventListener('load', () => {
 
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('animate');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, {
-        threshold: 0.5 // Trigger animation when at least 50% of the element is visible
-    });
+    // Seperate animation of the green wave.
+    const greenWave = document.querySelector('.green-wave');
+    greenWave.style.transform = 'translateX(100vw)';
+    greenWave.style.opacity = '0';
 
+    // Trigger the animation after a brief delay
+    setTimeout(() => {
+        greenWave.style.transition = 'transform 2s ease-out, opacity 2s ease-out';
+        greenWave.style.transform = 'translateX(0)';
+        greenWave.style.opacity = '1';
+        greenWave.style.animation = 'slideInFromRight 2s forwards';
+    }, 10); // Small delay to ensure proper layout rendering. jepoy d
+
+
+    // Add 'animate' class to the circles to trigger their transition
+    const elements = document.querySelectorAll('.left-circle, .right-circle');
     elements.forEach(element => {
-        observer.observe(element);
+        element.classList.add('animate');
     });
+});
