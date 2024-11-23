@@ -54,5 +54,5 @@
 @endsection
 
 @section('footer')
-    <x-guest.footer />
+<x-guest.footer />
 @endsection
