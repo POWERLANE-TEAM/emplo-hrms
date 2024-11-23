@@ -28,7 +28,7 @@
 @endPushOnce
 
 @section('content')
-    {{-- <div class="d-flex justify-content-between align-items-center flex-wrap">
+    <div class="d-flex justify-content-between align-items-center flex-wrap">
         <x-headings.main-heading :isHeading="true">
             <x-slot:heading>
                 Evaluation
@@ -51,7 +51,7 @@
         </div>
     </div>
 
-    <div class="d-flex justify-content-between">
+    <div class="d-flex justify-content-between mb-4">
         <x-sub-navs.tabular-nav :guard="$routePrefix" :items="[
             [
                 'title' => 'Probationary Employees',
@@ -65,16 +65,11 @@
             ],
         ]" :isActiveClosure="function ($isActive, $item) use ($tab) {
             return $isActive && $tab === $item['routeParams']['employeeStatus'];
-        }" />
+        }" :overrideContainerClass="true" :containerAttributes="new ComponentAttributeBag(['class' => 'd-inline-block my-auto'])" />
 
         <button class="btn text-primary"><i class="icon icon-xlarge mx-2" style="transform: translateY(-5%)"
                 data-lucide="star"></i> See Rankings</button>
-    </div> --}}
+    </div>
 
-    @if ($tab == 'probationary')
-        @livewire('tables.performance.evaluation.probationary-table', ['routePrefix' => $routePrefix])
-    @else
-        {{ dd('regulr') }}
-    @endif
-    {{-- <livewire:tables.employees-attendance-table /> --}}
+    @livewire('tables.performance.evaluation-table', ['routePrefix' => $routePrefix, 'employeeStatus' => $tab])
 @endsection
