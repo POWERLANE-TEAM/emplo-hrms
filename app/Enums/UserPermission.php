@@ -14,8 +14,8 @@ enum UserPermission: string
         // Create cases goes here
     case CREATE_JOB_LISTING = 'create job listing';
     case CREATE_ANNOUNCEMENT = 'create announcement';
-    case CREATE_EMPLOYEE_ACCOUNT = 'create employee account';
-    case CREATE_BULK_EMPLOYEE_ACCOUNT = 'create bulk employee accounts';
+    case CREATE_EMPLOYEE_ACCOUNT = 'create an employee account';
+    case CREATE_BULK_EMPLOYEE_ACCOUNT = 'create employee accounts';
     case CREATE_PRE_EMPLOYMENT_DOCUMENT = 'create pre employment document';
     case CREATE_APPLICANT_EXAM_SCHEDULE = 'create applicant exam schedule';
     case CREATE_APPLICANT_INIT_INTERVIEW_SCHEDULE = 'create applicant initial interview schedule';
@@ -27,8 +27,8 @@ enum UserPermission: string
     case CREATE_EMP_PERFORMANCE_EVAL_FORM = 'create employee performance evaluation form';
     case CREATE_ALL_EMP_PERFORMANCE_EVAL_FORM = 'create all employee performance evaluation form';
     case CREATE_EMP_PERFORMANCE_ASSIGNED_TRAINING = 'create employee performance assigned training';
-    case CREATE_PERFORMANCE_CATEGORIES = 'create performance categories';
-    case CREATE_PERFORMANCE_RATING_SCALES = 'create performance rating scales';
+    case CREATE_PERFORMANCE_CATEGORIES = 'create new performance categories';
+    case CREATE_PERFORMANCE_RATING_SCALES = 'create new performance rating scales';
     case CREATE_PREEMPLOYMENT_REQUIREMENTS = 'create pre-employment requirements';
     case CREATE_ATTENDANCE_TODAY = 'create attendance';
     case CREATE_LEAVE_REQUEST = 'create leave request';
@@ -39,8 +39,8 @@ enum UserPermission: string
 
 
         // View cases goes here
-    case VIEW_APPLICATION_INFORMATION = 'view application information';
-    case VIEW_EMPLOYEE_INFORMATION = 'view employee information';
+    case VIEW_APPLICATION_INFORMATION = 'view applicant/s information';
+    case VIEW_EMPLOYEE_INFORMATION = 'view employee/s information';
     case VIEW_ALL_EMPLOYEE_INFORMATION = 'view all employee information';
     case VIEW_EMPLOYEE_DASHBOARD = 'view employee dashboard';
     case VIEW_DAILY_ATTENDANCE = 'view daily attendance';
@@ -87,7 +87,7 @@ enum UserPermission: string
     case VIEW_EMPLOYEE_MANAGER = 'view employee manager';
     case VIEW_CALENDAR_MANAGER = 'view calendar manager';
     case VIEW_JOB_LISTING_MANAGER = 'view job listing manager';
-    case VIEW_POLICY_MANAGER = 'view policies manager';
+    case VIEW_POLICY_MANAGER = 'view company policies manager';
     case VIEW_ANNOUNCEMENT_MANAGER = 'view announcement manager';
     case VIEW_PERFORMANCE_CONFIG = 'view performance configurator';
     case VIEW_FORM_CONFIG = 'view form configurator';
@@ -137,8 +137,8 @@ enum UserPermission: string
         return match ($this) {
 
             // Create labels goes here
-            self::CREATE_JOB_LISTING => 'Create job listing',
-            self::CREATE_ANNOUNCEMENT => 'Create announcement',
+            self::CREATE_JOB_LISTING => 'Publish job listing',
+            self::CREATE_ANNOUNCEMENT => 'Publish announcement',
             self::CREATE_EMPLOYEE_ACCOUNT => 'Create employee account',
             self::CREATE_BULK_EMPLOYEE_ACCOUNT => 'Create bulk employee accounts',
             self::CREATE_PRE_EMPLOYMENT_DOCUMENT => 'Create pre employment document',
@@ -215,11 +215,11 @@ enum UserPermission: string
             self::VIEW_ANNOUNCEMENT_MANAGER => 'View announcement manager',
             self::VIEW_PERFORMANCE_CONFIG => 'View performance configurator',
             self::VIEW_FORM_CONFIG => 'View form configurator',
-            self::VIEW_ONLINE_USERS => 'View online users',
+            self::VIEW_ONLINE_USERS => 'Monitor online users',
 
             // Update labels goes here
-            self::UDPATE_JOB_LISTING => 'Update job listing',
-            self::UPDATE_ANNOUNCEMENT => 'Update announcement',
+            self::UDPATE_JOB_LISTING => 'Update job listing/s',
+            self::UPDATE_ANNOUNCEMENT => 'Update announcement/s',
             self::UPDATE_PENDING_APPLICATION_STATUS => 'Update pending application status',
             self::UPDATE_QUALIFIED_APPLICATION_STATUS => 'Update qualified application status',
             self::UPDATE_PRE_EMPLOYED_APPLICATION_STATUS => 'Update pre employed application status',
@@ -245,8 +245,8 @@ enum UserPermission: string
             self::UPDATE_ISSUE_COMPLAINT_RESOLVED => 'Update issue complaint to resolved',
 
             // Delete labels goes here
-            self::DELETE_JOB_LISTING => 'Delete job listing',
-            self::DELETE_ANNOUNCEMENT => 'Delete announcement',
+            self::DELETE_JOB_LISTING => 'Delete job listing/s',
+            self::DELETE_ANNOUNCEMENT => 'Delete announcement/s',
             self::DELETE_PRE_EMPLOYMENT_DOCUMENT => 'Delete owned pre employment document',
         };
     }
