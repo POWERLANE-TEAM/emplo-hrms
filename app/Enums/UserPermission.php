@@ -39,7 +39,7 @@ enum UserPermission: string
 
 
         // View cases goes here
-    case VIEW_APPLICANT_INFORMATION = 'view applicant information';
+    case VIEW_APPLICATION_INFORMATION = 'view application information';
     case VIEW_EMPLOYEE_INFORMATION = 'view employee information';
     case VIEW_ALL_EMPLOYEE_INFORMATION = 'view all employee information';
     case VIEW_EMPLOYEE_DASHBOARD = 'view employee dashboard';
@@ -61,7 +61,7 @@ enum UserPermission: string
     case VIEW_HR_MANAGER_DASHBOARD = 'view hr manager dashboard';
     case VIEW_ALL_PENDING_APPLICATIONS = 'view all pending applications';
     case VIEW_ALL_QUALIFIED_APPLICATIONS = 'view all qualified applications';
-    case VIEW_ALL_PRE_EMPLOYED_APPLICATIONS = 'view all applications';
+    case VIEW_ALL_PRE_EMPLOYED_APPLICATIONS = 'view all pre employed applications';
     case VIEW_ALL_EMPLOYEES = 'view all employees';
     case VIEW_ALL_DAILY_ATTENDANCE = 'view all daily attendance records';
     case VIEW_ALL_ATTENDANCE_TRACKING = 'view all attendance tracking';
@@ -125,7 +125,7 @@ enum UserPermission: string
         // Delete cases goes here
     case DELETE_JOB_LISTING = 'delete job listing';
     case DELETE_ANNOUNCEMENT = 'delete announcement';
-    case DELETE_OWNED_PRE_EMPLOYMENT_DOCUMENT = 'delete owned pre employment document';
+    case DELETE_PRE_EMPLOYMENT_DOCUMENT = 'delete owned pre employment document';
 
     /**
      * Return user-friendly permission labels.
@@ -163,7 +163,7 @@ enum UserPermission: string
             self::CREATE_BULK_PAYSLIPS => 'Create bulk payslips',
 
             // View labels goes here
-            self::VIEW_APPLICANT_INFORMATION => 'View applicant information',
+            self::VIEW_APPLICATION_INFORMATION => 'View application information',
             self::VIEW_EMPLOYEE_INFORMATION => 'View employee information',
             self::VIEW_ALL_EMPLOYEE_INFORMATION => 'View all employee information',
             self::VIEW_EMPLOYEE_DASHBOARD => 'View employee dashboard',
@@ -247,7 +247,7 @@ enum UserPermission: string
             // Delete labels goes here
             self::DELETE_JOB_LISTING => 'Delete job listing',
             self::DELETE_ANNOUNCEMENT => 'Delete announcement',
-            self::DELETE_OWNED_PRE_EMPLOYMENT_DOCUMENT => 'Delete owned pre employment document',
+            self::DELETE_PRE_EMPLOYMENT_DOCUMENT => 'Delete owned pre employment document',
         };
     }
 }
