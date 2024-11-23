@@ -15,13 +15,13 @@ trait Defaults
 
         $this->setTableAttributes([
             'default' => true,
-            'class' => 'table-hover px-1',
+            'class' => 'table-hover px-1 no-transition',
         ]);
 
         $this->setTrAttributes(function ($row, $index) {
             return [
                 'default' => true,
-                'class' => 'border-1 rounded-2 outline',
+                'class' => 'border-1 rounded-2 outline no-transition',
             ];
         });
 

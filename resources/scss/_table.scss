@@ -150,7 +150,7 @@ div:has(div[wire\:\key="table-wrapper"]) {
                 // END for position middle
 
                 [wire\:model\.live="perPage"] {
-                    width: min-content;
+                    width: min-content !important;
                 }
             }
 
@@ -190,6 +190,7 @@ div:has(div[wire\:\key="table-wrapper"]) {
                     @media screen and (min-width: 992px) {
                         // min-width: fit-content !important;
                         // width: 100%;
+                        min-width: 300px;
                         max-width: 60%;
                     }
 
@@ -325,10 +326,40 @@ div:has(div[wire\:\key="table-wrapper"]) {
                     padding-bottom: var(--padding-y);
                 }
 
+                &:has(td.border-end) {
+                    position: relative;
+
+                    td:first-of-type,
+                    th:first-of-type {
+                        position: sticky;
+                        z-index: 2;
+                        left: 0;
+                    }
+                }
+
                 td:first-of-type,
                 td:last-of-type {
                     padding-left: var(--tr-padding-x);
                     padding-right: var(--tr-padding-x);
+
+                    &.border-end {
+                        border-right: none;
+                        // background-color: red;
+
+                        &::after {
+                            content: "";
+                            border-radius: 1cqw;
+                            align-self: center;
+                            position: absolute;
+                            width: calc(0.1rem + 0.12vw);
+                            height: 60%;
+                            top: 20%;
+                            bottom: 20%;
+                            right: calc(var(--tr-padding-x) / 2);
+                            background-color: currentColor;
+                            opacity: 0.25;
+                        }
+                    }
                 }
 
             }
