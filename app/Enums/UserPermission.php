@@ -14,8 +14,8 @@ enum UserPermission: string
         // Create cases goes here
     case CREATE_JOB_LISTING = 'create job listing';
     case CREATE_ANNOUNCEMENT = 'create announcement';
-    case CREATE_EMPLOYEE_ACCOUNT = 'create an employee account';
-    case CREATE_BULK_EMPLOYEE_ACCOUNT = 'create employee accounts';
+    case CREATE_EMPLOYEE_ACCOUNT = 'create employee account';
+    case CREATE_BULK_EMPLOYEE_ACCOUNT = 'create bulk employee accounts';
     case CREATE_PRE_EMPLOYMENT_DOCUMENT = 'create pre employment document';
     case CREATE_APPLICANT_EXAM_SCHEDULE = 'create applicant exam schedule';
     case CREATE_APPLICANT_INIT_INTERVIEW_SCHEDULE = 'create applicant initial interview schedule';
@@ -27,10 +27,10 @@ enum UserPermission: string
     case CREATE_EMP_PERFORMANCE_EVAL_FORM = 'create employee performance evaluation form';
     case CREATE_ALL_EMP_PERFORMANCE_EVAL_FORM = 'create all employee performance evaluation form';
     case CREATE_EMP_PERFORMANCE_ASSIGNED_TRAINING = 'create employee performance assigned training';
-    case CREATE_PERFORMANCE_CATEGORIES = 'create new performance categories';
-    case CREATE_PERFORMANCE_RATING_SCALES = 'create new performance rating scales';
-    case CREATE_PREEMPLOYMENT_REQUIREMENTS = 'create pre-employment requirements';
-    case CREATE_ATTENDANCE_TODAY = 'create attendance';
+    case CREATE_PERFORMANCE_CATEGORIES = 'create performance categories';
+    case CREATE_PERFORMANCE_RATING_SCALES = 'create performance rating scales';
+    case CREATE_PREEMPLOYMENT_REQUIREMENTS = 'create pre employment requirements';
+    case CREATE_ATTENDANCE_TODAY = 'create attendance today';
     case CREATE_LEAVE_REQUEST = 'create leave request';
     case CREATE_OVERTIME_REQUEST = 'create overtime request';
     case CREATE_ISSUE_COMPLAINT = 'create issue complaint';
@@ -87,7 +87,7 @@ enum UserPermission: string
     case VIEW_EMPLOYEE_MANAGER = 'view employee manager';
     case VIEW_CALENDAR_MANAGER = 'view calendar manager';
     case VIEW_JOB_LISTING_MANAGER = 'view job listing manager';
-    case VIEW_POLICY_MANAGER = 'view company policies manager';
+    case VIEW_POLICY_MANAGER = 'view policies manager';
     case VIEW_ANNOUNCEMENT_MANAGER = 'view announcement manager';
     case VIEW_PERFORMANCE_CONFIG = 'view performance configurator';
     case VIEW_FORM_CONFIG = 'view form configurator';
@@ -112,7 +112,7 @@ enum UserPermission: string
     case UPDATE_LEAVE_BALANCE = 'update leave balance';
     case UPDATE_PERFORMANCE_CATEGORIES = 'update performance categories';
     case UPDATE_PERFORMANCE_RATING_SCALES = 'update performance rating scales';
-    case UPDATE_PREEMPLOYMENT_REQUIREMENTS = 'update pre-employment requirements';
+    case UPDATE_PREEMPLOYMENT_REQUIREMENTS = 'update pre employment requirements';
     case UPDATE_OVERTIME_REQUEST = 'update overtime request';
     case UPDATE_PENDING_OVERTIME_REQUEST_STATUS = 'update pending overtime request status';
     case UPDATE_APPROVED_OVERTIME_REQUEST_STATUS = 'update approved overtime request status';
@@ -137,30 +137,30 @@ enum UserPermission: string
         return match ($this) {
 
             // Create labels goes here
-            self::CREATE_JOB_LISTING => 'Publish job listing',
-            self::CREATE_ANNOUNCEMENT => 'Publish announcement',
-            self::CREATE_EMPLOYEE_ACCOUNT => 'Create employee account',
-            self::CREATE_BULK_EMPLOYEE_ACCOUNT => 'Create bulk employee accounts',
-            self::CREATE_PRE_EMPLOYMENT_DOCUMENT => 'Create pre employment document',
-            self::CREATE_APPLICANT_EXAM_SCHEDULE => 'Create applicant exam schedule',
-            self::CREATE_APPLICANT_INIT_INTERVIEW_SCHEDULE => 'Create applicant initial interview schedule',
-            self::CREATE_APPLICANT_FINAL_INTERVIEW_SCHEDULE => 'Create applicant final interview schedule',
-            self::CREATE_EMPLOYEE_ASSIGNED_SALARY => 'Create employee assigned base salary',
-            self::CREATE_EMPLOYEE_ASSIGNED_SUPERVISOR => 'Create employee assigned supervisor',
+            self::CREATE_JOB_LISTING => 'Publish job listing/s',
+            self::CREATE_ANNOUNCEMENT => 'Publish announcement/s',
+            self::CREATE_EMPLOYEE_ACCOUNT => 'Create an employee account',
+            self::CREATE_BULK_EMPLOYEE_ACCOUNT => 'Create employee accounts',
+            self::CREATE_PRE_EMPLOYMENT_DOCUMENT => 'Upload pre-employment document',
+            self::CREATE_APPLICANT_EXAM_SCHEDULE => 'Set applicant exam schedule',
+            self::CREATE_APPLICANT_INIT_INTERVIEW_SCHEDULE => 'Set applicant initial interview schedule',
+            self::CREATE_APPLICANT_FINAL_INTERVIEW_SCHEDULE => 'Set applicant final interview schedule',
+            self::CREATE_EMPLOYEE_ASSIGNED_SALARY => 'Set employee base salary',
+            self::CREATE_EMPLOYEE_ASSIGNED_SUPERVISOR => 'Assign supervisor to an employee',
             self::CREATE_JOB_FAMILY => 'Create job family',
             self::CREATE_JOB_TITLE => 'Create job title',
             self::CREATE_EMP_PERFORMANCE_EVAL_FORM => 'Create employee performance evaluation form',
-            self::CREATE_ALL_EMP_PERFORMANCE_EVAL_FORM => 'Create all employee performance evaluation form',
-            self::CREATE_EMP_PERFORMANCE_ASSIGNED_TRAINING => 'Create employee performance assigned training',
-            self::CREATE_PERFORMANCE_CATEGORIES => 'Create performance categories',
-            self::CREATE_PERFORMANCE_RATING_SCALES => 'Create performance rating scales',
-            self::CREATE_PREEMPLOYMENT_REQUIREMENTS => 'Create pre-employment requirements',
-            self::CREATE_ATTENDANCE_TODAY => 'Create attendance today',
-            self::CREATE_LEAVE_REQUEST => 'Create leave request',
-            self::CREATE_OVERTIME_REQUEST => 'Create overtime request',
-            self::CREATE_ISSUE_COMPLAINT => 'Create issue complaint',
-            self::CREATE_PAYSLIPS => 'Create payslips',
-            self::CREATE_BULK_PAYSLIPS => 'Create bulk payslips',
+            self::CREATE_ALL_EMP_PERFORMANCE_EVAL_FORM => 'Start employee performance evaluation',
+            self::CREATE_EMP_PERFORMANCE_ASSIGNED_TRAINING => 'Assign employee performance training',
+            self::CREATE_PERFORMANCE_CATEGORIES => 'Create new performance categories',
+            self::CREATE_PERFORMANCE_RATING_SCALES => 'Create new performance rating scales',
+            self::CREATE_PREEMPLOYMENT_REQUIREMENTS => 'Upload pre-employment requirements',
+            self::CREATE_ATTENDANCE_TODAY => 'Set time-in attendance',
+            self::CREATE_LEAVE_REQUEST => 'Create a leave request',
+            self::CREATE_OVERTIME_REQUEST => 'Create an overtime request',
+            self::CREATE_ISSUE_COMPLAINT => 'Create an issue complaint',
+            self::CREATE_PAYSLIPS => 'Create a payslip',
+            self::CREATE_BULK_PAYSLIPS => 'Create payslips',
 
             // View labels goes here
             self::VIEW_APPLICATION_INFORMATION => 'View application information',
@@ -174,26 +174,26 @@ enum UserPermission: string
             self::VIEW_DOWNLOAD_ATTENDANCE => 'View download attendance',
             self::VIEW_PAYSLIPS => 'View payslips',
             self::VIEW_ALL_PAYSLIPS_ARCHIVE => 'View all payslips archive',
-            self::VIEW_DOWNLOAD_PAYSLIPS => 'View download payslips',
-            self::VIEW_DOWNLOAD_ALL_PAYSLIPS => 'View download all payslips',
+            self::VIEW_DOWNLOAD_PAYSLIPS => 'Download payslips',
+            self::VIEW_DOWNLOAD_ALL_PAYSLIPS => 'Download all payslips',
             self::VIEW_EMP_PERFORMANCE_EVAL => 'View employee performance evaluation',
             self::VIEW_EMP_PERFORMANCE_TRAINING => 'View employee performance training',
             self::VIEW_LEAVES => 'View employee leaves',
             self::VIEW_OVERTIME => 'View employee overtime',
             self::VIEW_DOCUMENTS => 'View employee documents',
             self::VIEW_ISSUES => 'View employee issues',
-            self::VIEW_HR_MANAGER_DASHBOARD => 'View HR manager dashboard',
+            self::VIEW_HR_MANAGER_DASHBOARD => 'View Human Resource manager dashboard',
             self::VIEW_ALL_PENDING_APPLICATIONS => 'View all pending applications',
             self::VIEW_ALL_QUALIFIED_APPLICATIONS => 'View all qualified applications',
             self::VIEW_ALL_PRE_EMPLOYED_APPLICATIONS => 'View all pre employed applications',
             self::VIEW_ALL_EMPLOYEES => 'View all employees',
             self::VIEW_ALL_DAILY_ATTENDANCE => 'View all daily attendance records',
             self::VIEW_ALL_ATTENDANCE_TRACKING => 'View all attendance tracking',
-            self::VIEW_DOWNLOAD_ALL_ATTENDANCE => 'View download all attendance records',
+            self::VIEW_DOWNLOAD_ALL_ATTENDANCE => 'Download all attendance records',
             self::VIEW_ALL_ATTENDANCE_SUMMARY => 'View all attendance summaries',
             self::VIEW_ALL_ATTENDANCE_WORKDAYS => 'View all attendance by workdays',
             self::VIEW_ALL_ATTENDANCE_WORKHOURS => 'View all attendance by workhours',
-            self::VIEW_DOWNLOAD_PAYROLL_SUMMARY => 'View download all computed attendance summary',
+            self::VIEW_DOWNLOAD_PAYROLL_SUMMARY => 'Download all computed attendance summary',
             self::VIEW_ALL_LEAVES => 'View all leave requests',
             self::VIEW_ALL_OVERTIME => 'View all overtime requests',
             self::VIEW_ALL_PAYSLIPS => 'View all payslips',
@@ -211,7 +211,7 @@ enum UserPermission: string
             self::VIEW_EMPLOYEE_MANAGER => 'View employee manager',
             self::VIEW_CALENDAR_MANAGER => 'View calendar manager',
             self::VIEW_JOB_LISTING_MANAGER => 'View job listing manager',
-            self::VIEW_POLICY_MANAGER => 'View policies manager',
+            self::VIEW_POLICY_MANAGER => 'View company policies manager',
             self::VIEW_ANNOUNCEMENT_MANAGER => 'View announcement manager',
             self::VIEW_PERFORMANCE_CONFIG => 'View performance configurator',
             self::VIEW_FORM_CONFIG => 'View form configurator',
@@ -223,9 +223,9 @@ enum UserPermission: string
             self::UPDATE_PENDING_APPLICATION_STATUS => 'Update pending application status',
             self::UPDATE_QUALIFIED_APPLICATION_STATUS => 'Update qualified application status',
             self::UPDATE_PRE_EMPLOYED_APPLICATION_STATUS => 'Update pre employed application status',
-            self::UPDATE_PRE_EMPLOYMENT_DOCUMENT => 'Update pre employment document',
-            self::UPDATE_PRE_EMPLOYMENT_DOCUMENT_STATUS => 'Update pre employment document status',
-            self::UPDATE_EMPLOYEE_DOCUMENT => 'Update employee document',
+            self::UPDATE_PRE_EMPLOYMENT_DOCUMENT => 'Update pre-employment document',
+            self::UPDATE_PRE_EMPLOYMENT_DOCUMENT_STATUS => 'Update pre-employment document status',
+            self::UPDATE_EMPLOYEE_DOCUMENT => 'Update an employee document',
             self::UPDATE_EMPLOYEE_DOCUMENT_STATUS => 'Update employee document status',
             self::UPDATE_EMP_PERFORMANCE_EVAL_GRADE_FORM => 'Update employee performance evaluation grade form',
             self::UPDATE_EMP_PERFORMANCE_EVAL_APPROVAL_FORM => 'Update employee performance evaluation approval form',
@@ -239,15 +239,15 @@ enum UserPermission: string
             self::UPDATE_OVERTIME_REQUEST => 'Update overtime request',
             self::UPDATE_PENDING_OVERTIME_REQUEST_STATUS => 'Update pending overtime request status',
             self::UPDATE_APPROVED_OVERTIME_REQUEST_STATUS => 'Update approved overtime request status',
-            self::UPDATE_ISSUE_COMPLAINT => 'Update issue complaint',
+            self::UPDATE_ISSUE_COMPLAINT => 'Update an issue complaint',
             self::UPDATE_ISSUE_COMPLAINT_STATUS => 'Update issue complaint status',
-            self::UPDATE_ISSUE_COMPLAINT_CLOSED => 'Update issue complaint to closed',
-            self::UPDATE_ISSUE_COMPLAINT_RESOLVED => 'Update issue complaint to resolved',
+            self::UPDATE_ISSUE_COMPLAINT_CLOSED => 'Close an issue complaint',
+            self::UPDATE_ISSUE_COMPLAINT_RESOLVED => 'Mark an issue complaint as resolved',
 
             // Delete labels goes here
             self::DELETE_JOB_LISTING => 'Delete job listing/s',
             self::DELETE_ANNOUNCEMENT => 'Delete announcement/s',
-            self::DELETE_PRE_EMPLOYMENT_DOCUMENT => 'Delete owned pre employment document',
+            self::DELETE_PRE_EMPLOYMENT_DOCUMENT => 'Delete a pre-employment document',
         };
     }
 }
