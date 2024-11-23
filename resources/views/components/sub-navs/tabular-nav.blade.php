@@ -3,10 +3,26 @@
 * | Tabular Navs
 * |--------------------------------------------------------------------------
 --}}
+@use ('Illuminate\View\ComponentAttributeBag')
 
-@props(['items' => [], 'guard' => 'employee', 'isActiveClosure' => null])
+@props([
+    'items' => [],
+    'guard' => 'employee',
+    'containerAttributes' => new ComponentAttributeBag(),
+    'overrideContainerClass' => false,
+    'isActiveClosure' => null,
+])
 
-<div class="d-flex mb-3">
+@php
+
+    $defaultContainerAttributes = ['class' => 'd-flex mb-3'];
+
+    if (!$overrideContainerClass) {
+        $containerAttributes = $containerAttributes->merge($defaultContainerAttributes);
+    }
+@endphp
+
+<div {{ $containerAttributes }}>
     @foreach ($items as $item)
         @php
             // Determine if the current route matches the item's route
