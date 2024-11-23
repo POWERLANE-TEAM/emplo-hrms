@@ -1,13 +1,15 @@
 <?php
 
-namespace App\Livewire\Tables\Performance\Evaluation;
+namespace App\Livewire\Tables\Performance;
 
+use App\Enums\EmploymentStatus;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Employee;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateFilter;
 use App\Livewire\Tables\Defaults as DefaultTableConfig;
+use Illuminate\Support\Facades\Log;
 use Rappasoft\LaravelLivewireTables\Views\Columns\LinkColumn;
 use Illuminate\View\ComponentAttributeBag;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
@@ -19,13 +21,14 @@ use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
  * @method  builder(): Builder
  * @method  filters(): array
  */
-class ProbationaryTable extends DataTableComponent
+class EvaluationTable extends DataTableComponent
 {
     use DefaultTableConfig;
 
     protected $model = Employee::class;
 
     public $routePrefix;
+    public $employeeStatus;
 
     /**
      * @var array $customFilterOptions contains the dropdown values and keys.
@@ -33,9 +36,10 @@ class ProbationaryTable extends DataTableComponent
     protected $customFilterOptions;
 
 
-    public function mount(string $routePrefix)
+    public function mount(string $routePrefix, string $employeeStatus)
     {
         $this->routePrefix = $routePrefix;
+        $this->employeeStatus = $employeeStatus;
     }
 
     public function configure(): void
@@ -46,8 +50,23 @@ class ProbationaryTable extends DataTableComponent
 
         $this->setTdAttributes(function (Column $column, $row, $columnIndex, $rowIndex) {
 
+            if ($columnIndex == 0) {
+                // Full name column
+                return [
+                    'class' => 'text-md-center border-end',
+                ];
+            }
+
+            if ($columnIndex == 2) {
+                // Result  column
+                // Log::info($row->result);
+                return [
+                    'class' => 'text-md-center text-capitalize',
+                ];
+            }
+
             if (in_array($columnIndex, [1, 2, 4])) {
-                // Status Result and Performance Scale column
+                // Status and Performance Scale column
                 return [
                     'class' => 'text-md-center text-capitalize',
                 ];
@@ -64,8 +83,19 @@ class ProbationaryTable extends DataTableComponent
                 [
                     'filter' => (function () {
 
+                        // This is just temporary option for the dropdown
+                        $currentMonth = now()->month;
+                        $currentYear = now()->year;
+
+                        if ($currentMonth <= 6) {
+                            $evaluationPeriod = "January {$currentYear} - June {$currentYear}";
+                        } else {
+                            $evaluationPeriod = "July {$currentYear} - December {$currentYear}";
+                        }
+
                         $this->customFilterOptions = [
                             '' => 'Select',
+                            $evaluationPeriod => $evaluationPeriod,
                         ];
 
                         return SelectFilter::make('Evalutation Period', 'eval-period')
@@ -78,7 +108,7 @@ class ProbationaryTable extends DataTableComponent
                             ->setFirstOption('Select');
                     })(),
 
-                    'label' => 'Evaluation Period:',
+                    'label' => 'Evaluation Period: ',
                 ],
             ],
 
@@ -97,7 +127,8 @@ class ProbationaryTable extends DataTableComponent
                 ->title(fn($row) => $row->fullname)
                 ->location(fn($row) => route($this->routePrefix . '.performance.evaluation.index', ['employeeStatus' => 'probationary']))
                 ->attributes(fn($row) => [
-                    'class' => 'text-body fw-bold',
+                    'class' => 'fw-bold',
+                    'style' => 'color: inherit',
                     'wire:navigate' => '',
                 ])
                 ->sortable(function ($query, $direction) {
@@ -146,7 +177,9 @@ class ProbationaryTable extends DataTableComponent
             ->join('departments', 'job_titles.department_id', '=', 'departments.department_id')
             ->join('specific_areas', 'job_details.area_id', '=', 'specific_areas.area_id')
 
-            // ->where('emp_status_id', '=', 1)
+            ->when($this->employeeStatus, function ($query) {
+                $query->where('emp_status_id', '=', EmploymentStatus::findByLabel($this->employeeStatus));
+            })
 
             // prevent duplicate rows (workaround)
             ->distinct('employees.employee_id');
