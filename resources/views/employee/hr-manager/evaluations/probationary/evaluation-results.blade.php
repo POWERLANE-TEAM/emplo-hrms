@@ -26,7 +26,7 @@
         <x-breadcrumb :href="'#'"> <!-- REPLACE: Link to the Performance Eval tables -->
             Evaluations
         </x-breadcrumb>
-        <x-breadcrumb :active="request()->routeIs($routePrefix . '.probationary-perf-results')">
+        <x-breadcrumb :active="request()->routeIs($routePrefix . '.evaluation-results.probationary')">
             Probationary Employee
         </x-breadcrumb>
     </x-slot:breadcrumbs>
