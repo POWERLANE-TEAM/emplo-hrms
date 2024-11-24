@@ -7,10 +7,11 @@ use App\Enums\ActivityLogName;
 use Spatie\Activitylog\LogOptions;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class JobFamily extends Model
 {
@@ -36,36 +37,13 @@ class JobFamily extends Model
     }
 
     /**
-     * The job titles that belong to the job family.
+     * Get the employees associated with the job family through **EmployeeJobDetail** model.
      * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
-    public function jobTitles(): BelongsToMany
+    public function employees(): HasManyThrough
     {
-        return $this->belongsToMany(JobTitle::class, 'job_details', 'job_family_id', 'job_title_id')
-            ->withTimestamps();
-    }
-
-    /**
-     * The job levels that belong to the job family.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function jobLevels(): BelongsToMany
-    {
-        return $this->belongsToMany(JobLevel::class, 'job_details', 'job_family_id', 'job_level_id')
-            ->withTimestamps();
-    }
-
-    /**
-     * The specific areas that belong to the job family.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function specificAreas(): BelongsToMany
-    {
-        return $this->belongsToMany(SpecificArea::class, 'job_details', 'job_family_id', 'area_id')
-            ->withTimestamps();
+        return $this->hasManyThrough(Employee::class, EmployeeJobDetail::class, 'job_family_id', 'employee_id', 'job_family_id', 'employee_id');
     }
 
     /**

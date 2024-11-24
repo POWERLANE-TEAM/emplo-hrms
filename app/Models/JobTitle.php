@@ -11,7 +11,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class JobTitle extends Model
 {
@@ -36,38 +36,15 @@ class JobTitle extends Model
     {
         return $this->belongsTo(Department::class, 'department_id', 'department_id');
     }
-
+    
     /**
-     * The job levels that belong to the job title.
+     * Get the employees associated with the job title through **EmployeeJobDetail** model.
      * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
-    public function jobLevels(): BelongsToMany
+    public function employees(): HasManyThrough
     {
-        return $this->belongsToMany(JobLevel::class, 'job_details', 'job_title_id', 'job_level_id')
-            ->withTimestamps();
-    }
-
-    /**
-     * The job families that belong to the job title.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function jobFamilies(): BelongsToMany
-    {
-        return $this->belongsToMany(JobFamily::class, 'job_details', 'job_title_id', 'job_family_id')
-            ->withTimestamps();
-    }
-
-    /**
-     * The specific areas that belong to the job title.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function specificAreas(): BelongsToMany
-    {
-        return $this->belongsToMany(SpecificArea::class, 'job_details', 'job_title_id', 'area_id')
-            ->withTimestamps();
+        return $this->hasManyThrough(Employee::class, EmployeeJobDetail::class, 'job_title_id', 'employee_id', 'job_title_id', 'employee_id');
     }
 
     /**

@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class JobLevel extends Model
 {
@@ -21,34 +21,12 @@ class JobLevel extends Model
     ];
 
     /**
-     * The job titles that belong to the job level.
+     * Get the employees associated with the job level through **EmployeeJobDetail** model.
      * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
-    public function jobTitles(): BelongsToMany
+    public function employees(): HasManyThrough
     {
-        return $this->belongsToMany(JobTitle::class, 'job_details', 'job_level_id', 'job_title_id')
-            ->withTimestamps();
-    }
-
-    /**
-     * The job families that belong to the job level.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function jobFamilies(): BelongsToMany
-    {
-        return $this->belongsToMany(JobFamily::class, 'job_details', 'job_level_id', 'job_family_id')
-            ->withTimestamps();
-    }
-
-    /**
-     * The specific areas that belong to the job level.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */    public function specificAreas(): BelongsToMany
-    {
-        return $this->belongsToMany(SpecificArea::class, 'job_details', 'job_level_id', 'area_id')
-            ->withTimestamps();
+        return $this->hasManyThrough(Employee::class, EmployeeJobDetail::class, 'job_level_id', 'employee_id', 'job_level_id', 'employee_id');
     }
 }
