@@ -35,7 +35,7 @@
 
     <td>
         <button type="button" data-bs-toggle="modal" data-bs-target="#preemp-doc-{{ $doc_id }}-attachment"
-            class="btn bg-transparent text-decoration-underline text-body text-capitalize text-nowrap"
+            class="btn bg-transparent border-0 text-decoration-underline text-body text-capitalize text-nowrap"
             x-bind:class="preemp_file ? '' : 'opacity-50'">
             View Attachment
         </button>
