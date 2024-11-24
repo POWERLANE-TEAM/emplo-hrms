@@ -37,6 +37,7 @@
      show/hide sections for each stage. -->
 
     @php
+        $isScreening = false;
         $isScheduled = false;
         $isPreEmployed = true;
     @endphp
@@ -59,7 +60,7 @@
             </div>
 
         </div>
-        @if($isScheduled)
+        @if($isScheduled || $isScreening)
         <div class="px-4">
             <div class="callout callout-info bg-body-tertiary"> <i class="icon p-1 mx-2 text-info"
                     data-lucide="message-circle-warning"></i>Status
