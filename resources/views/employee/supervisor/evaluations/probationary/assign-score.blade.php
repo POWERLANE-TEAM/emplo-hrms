@@ -83,7 +83,7 @@
                         note="{{ __('This form requires your signature. By clicking submit, your signature will be automatically added to the downloadable file.') }}" />
                 </div>
                 <!-- Button -->
-                <div class="col-7 text-end align-items-center justify-content-center">
+                <div class="col-7 d-flex align-items-center text-end">
                     <x-buttons.main-btn label="Submit Evaluation" wire:click.prevent="save" :nonce="$nonce"
                         :disabled="false" class="w-50" :loading="'Submitting...'" />
                 </div>
