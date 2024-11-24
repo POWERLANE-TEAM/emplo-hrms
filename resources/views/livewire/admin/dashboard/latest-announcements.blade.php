@@ -1,4 +1,6 @@
-<div class="col-md-7 flex announcement-box">
+@use(Illuminate\Support\Carbon)
+
+<div class="col-md-7 flex announcement-box" x-cloak>
     <!-- Header -->
     <div class="px-4 pb-4">
         <div class="d-flex align-items-center justify-content-between">
@@ -7,12 +9,12 @@
                     src="{{ Vite::asset('resources/images/illus/dashboard/megaphone.png') }}" alt="">
 
                 <span class="ms-3 green-highlight">
-                    Latest Announcements
+                    {{ __('Latest Announcements') }}
                 </span>
             </div>
 
             <!-- Button Link to Create Announcement -->
-            <a href="{{ route('admin.announcement.create') }}" class="icon-link" data-bs-toggle="tooltip"
+            <a wire:navigate href="{{ route('admin.announcement.create') }}" class="icon-link" data-bs-toggle="tooltip"
                 title="Post an announcement">
                 <div class="icon-container">
                     <i data-lucide="plus" class="icon-with-border"></i>
@@ -32,21 +34,41 @@
         ];
     @endphp
 
-    @foreach ($this->announcements as $announcement)
-        <div class="card mb-3 bg-body-secondary border-0 p-4">
-            <div class="w-100">
-                <div>
-                    <header class="fs-5 fw-bold d-inline-block me-2">{{ $announcement->title }}
-                        @foreach ($announcement->offices as $office)
-                            <x-status-badge :color="$colorMapping[$office->name] ?? $colorMapping['default']">{{ $office->name }}</x-status-badge>
-                        @endforeach
-                    </header>
+    @if ($this->announcements)
+        @foreach ($this->announcements as $announcement)
+            <div class="card mb-3 bg-body-secondary border-0">
+                <div class="w-100 p-4">
+                    <div>
+                        <header class="fs-5 fw-bold d-inline-block me-2">{{ $announcement->title }}
+                            @if ($announcement->offices)
+                                @foreach ($announcement->offices as $office)
+                                    <x-status-badge :color="$colorMapping[$office->name] ?? $colorMapping['default']">{{ $office->name }}</x-status-badge>
+                                @endforeach                                
+                            @endif
+                        </header>
+                        <p class="fs-7 pt-2">{{ $announcement->description }}</p>
+                    </div>
 
-                    <p class="fs-7">{{ $announcement->description }}</p>
+                </div>
+                <div class="card-footer px-4">
+                    <small class="fw-regular pe-2">
+                        {{ __('Published by ').$announcement->publisher }}
+                    </small>                            
+                    <small class="text-muted">
+                        {{ Carbon::parse($announcement->published_at)->diffForHumans() }}
+                    </small>
+                    @if ($announcement->modified_at)
+                        @if ($announcement->modified_at > $announcement->published_at)
+                            <small class="text-muted">
+                                {{ __('Modified ').Carbon::parse($announcement->modified_at)->diffForHumans() }}
+                            </small>                                 
+                        @endif
+                    @endif                            
                 </div>
             </div>
-        </div>
-    @endforeach
+        @endforeach        
+    @endif
+
 
     <div class="d-flex justify-content-end">
         {{ $this->announcements->links() }}
