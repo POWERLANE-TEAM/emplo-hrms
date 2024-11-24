@@ -83,6 +83,11 @@ class AppServiceProvider extends ServiceProvider
             'job_vacancy' => 'App\Models\JobVacancy',
             'preemp_requirement' => 'App\Models\PreempRequirement',
             'province' => 'App\Models\Province',
+            'announcement' => 'App\Models\Announcement',
+            'job_family' => 'App\Models\JobFamily',
+            'job_title' => 'App\Models\JobTitle',
+            'performance_category' => 'App\Models\PerformanceCategory',
+            'performance_rating' => 'App\Models\PerformanceRating',
         ]);
 
         BroadcastServiceProvider::class;

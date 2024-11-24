@@ -19,7 +19,7 @@ generated password was sent to email. --Carl
                         <x-form.boxed-input-text
                             id="first_name"
                             label="{{ __('First Name') }}"
-                            wire:model="form.firstName"
+                            name="form.firstName"
                             :nonce="$nonce" 
                             :required="true"
                             placeholder="Ricardo"
@@ -33,7 +33,7 @@ generated password was sent to email. --Carl
                         <x-form.boxed-input-text 
                             id="middle_name" 
                             label="{{ __('Middle Name') }}" 
-                            wire:model="form.middleName" 
+                            name="form.middleName" 
                             :nonce="$nonce"
                             :required="false" 
                             placeholder="Nicanor"
@@ -47,7 +47,7 @@ generated password was sent to email. --Carl
                         <x-form.boxed-input-text 
                             id="last_name" 
                             label="{{ __('Last Name') }}" 
-                            wire:model="form.lastName" 
+                            name="form.lastName" 
                             :nonce="$nonce"
                             :required="true" 
                             placeholder="Dalisay"
@@ -64,7 +64,7 @@ generated password was sent to email. --Carl
                         <x-form.boxed-email 
                             id="email" 
                             label="{{ __('Email Address') }}" 
-                            wire:model="form.email" 
+                            name="form.email" 
                             autocomplete="email" 
                             :nonce="$nonce"
                             class=" {{ $errors->has('form.email') ? 'is-invalid' : '' }}" 
@@ -80,7 +80,7 @@ generated password was sent to email. --Carl
                     <div class="col">
                         <x-form.boxed-input-text 
                             id="contact_no" label="{{ __('Contact Number') }}" 
-                            wire:model="form.contactNumber" 
+                            name="form.contactNumber" 
                             :nonce="$nonce"
                             :required="true" 
                             placeholder="09556677890"
@@ -97,7 +97,7 @@ generated password was sent to email. --Carl
                         <x-form.boxed-date 
                             id="birthdate" 
                             label="{{ __('Birthdate') }}" 
-                            wire:model="form.birthDate" 
+                            name="form.birthDate" 
                             :nonce="$nonce"
                             :required="true" 
                             placeholder="Birthdate"
@@ -111,7 +111,7 @@ generated password was sent to email. --Carl
                         <x-form.boxed-dropdown 
                             id="sex" 
                             label="{{ __('Sex at birth') }}" 
-                            wire:model="form.sex" 
+                            name="form.sex" 
                             :nonce="$nonce" 
                             :required="true"
                             :options="$this->sexes"
@@ -126,7 +126,7 @@ generated password was sent to email. --Carl
                         <x-form.boxed-dropdown 
                             id="civil_status" 
                             label="{{ __('Civil Status') }}" 
-                            wire:model="form.civilStatus" 
+                            name="form.civilStatus" 
                             :nonce="$nonce" 
                             :required="true" 
                             :options="$this->civilStatuses"
@@ -225,6 +225,20 @@ generated password was sent to email. --Carl
             <section>
                 <x-headings.section-title title="{{ __('Permanent Address') }}" />
 
+                @if($samePresentAddressChckBox['shown'])
+                    <div class="form-check mb-3">
+                        <input class="form-check-input"
+                            type="checkbox"
+                            id="sameAddressCheck"
+                            wire:model="samePresentAddressChckBox.checked"
+                            wire:click="useSameAsPresentAddress"
+                        >
+                        <label class="form-check-label" for="sameAddressCheck">
+                            {{ __('Same as present address') }}
+                        </label>
+                    </div>
+                @endif            
+
                 <div class="row">
                     <div class="col">
                         <x-form.boxed-dropdown 
@@ -275,7 +289,7 @@ generated password was sent to email. --Carl
                         <x-form.boxed-dropdown 
                             id="permanent_barangay" 
                             label="{{ __('Barangay') }}" 
-                            wire:model.blur="form.permanentBarangay" 
+                            wire:model.live="form.permanentBarangay" 
                             :nonce="$nonce" 
                             :required="true" 
                             :options="$permanentFields['barangays']"
@@ -292,7 +306,7 @@ generated password was sent to email. --Carl
                         <x-form.boxed-input-text 
                             id="permanent_address" 
                             label="{{ __('Permanent Home Address') }}" 
-                            wire:model.blur="form.permanentAddress" 
+                            wire:model.live="form.permanentAddress" 
                             :nonce="$nonce"
                             :required="true" 
                             placeholder="{{ __('Room/Floor/Unit No. & Bldg. Name | House/Lot & Blk. No. | Street Name | Subdivision') }}"
@@ -314,7 +328,7 @@ generated password was sent to email. --Carl
                         <x-form.boxed-dropdown 
                             id="area" 
                             label="{{ __('Area / Branch') }}" 
-                            wire:model="form.area" 
+                            name="form.area" 
                             :nonce="$nonce" 
                             :required="true" 
                             :options="$this->areas"
@@ -329,7 +343,7 @@ generated password was sent to email. --Carl
                         <x-form.boxed-dropdown 
                             id="dept" 
                             label="{{ __('Job Family') }}" 
-                            wire:model="form.jobFamily" 
+                            name="form.jobFamily" 
                             :nonce="$nonce" 
                             :required="true" 
                             :options="$this->jobFamilies"
@@ -344,7 +358,7 @@ generated password was sent to email. --Carl
                         <x-form.boxed-dropdown 
                             id="job_level" 
                             label="{{ __('Job Level') }}" 
-                            wire:model="form.jobLevel" 
+                            name="form.jobLevel" 
                             :nonce="$nonce" 
                             :required="true" 
                             :options="$this->jobLevels"
@@ -359,7 +373,7 @@ generated password was sent to email. --Carl
                         <x-form.boxed-dropdown 
                             id="job_title" 
                             label="{{ __('Job Title') }}" 
-                            wire:model="form.jobTitle" 
+                            name="form.jobTitle" 
                             :nonce="$nonce" 
                             :required="true" 
                             :options="$this->jobTitles"
@@ -377,7 +391,7 @@ generated password was sent to email. --Carl
                         <x-form.boxed-dropdown 
                             id="role" 
                             label="{{ __('Role') }}" 
-                            wire:model="form.role" 
+                            name="form.role" 
                             :nonce="$nonce" 
                             :required="true" 
                             :options="$this->formattedRoles"
@@ -392,7 +406,7 @@ generated password was sent to email. --Carl
                         <x-form.boxed-dropdown 
                             id="emp_status" 
                             label="{{ __('Employment Status') }}" 
-                            wire:model="form.employmentStatus" 
+                            name="form.employmentStatus" 
                             :nonce="$nonce" 
                             :required="true" 
                             :options="$this->employmentStatuses"
@@ -430,7 +444,7 @@ generated password was sent to email. --Carl
                         <x-form.boxed-input-text
                             id="sss_no" 
                             label="{{ __('SS Number') }}" 
-                            wire:model="form.sss" 
+                            name="form.sss" 
                             :nonce="$nonce"
                             :required="false" 
                             placeholder=""
@@ -445,7 +459,7 @@ generated password was sent to email. --Carl
                         <x-form.boxed-input-text 
                             id="philhealth_no" 
                             label="{{ __('PhilHealth ID Number (PIN)') }}" 
-                            wire:model="form.philhealth" 
+                            name="form.philhealth" 
                             :nonce="$nonce"
                             :required="false" 
                             placeholder=""
@@ -459,7 +473,7 @@ generated password was sent to email. --Carl
                         <x-form.boxed-input-text 
                             id="tin" 
                             label="{{ __('Taxpayer ID Number (TIN)') }}" 
-                            wire:model="form.tin" 
+                            name="form.tin" 
                             :nonce="$nonce"
                             :required="false" 
                             placeholder=""
@@ -473,7 +487,7 @@ generated password was sent to email. --Carl
                         <x-form.boxed-input-text 
                             id="pagibig_no" 
                             label="{{ __('Pag-IBIG MID Number') }}" 
-                            wire:model.live="form.pagibig" 
+                            name="form.pagibig" 
                             :nonce="$nonce"
                             :required="false" 
                             placeholder=""
@@ -506,6 +520,7 @@ generated password was sent to email. --Carl
 
     <span 
         x-data="{ successAlert: false }"
+        x-cloak
         x-on:account-created.window="successAlert = true; setTimeout(() => { successAlert = false }, 2000)"
         x-show.transition.out.opacity.duration.1500ms="successAlert"
         x-transition:leave.opacity.duration.1500ms
