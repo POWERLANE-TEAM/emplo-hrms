@@ -117,11 +117,6 @@
         </div>
     </section>
 
-    <!-- Da Records Tab Section -->
-    <section id="da-records" class="tab-section">
-        Da Records content goes here.
-    </section>
-
     <!-- Attendance Tab Section -->
     <section id="attendance" class="tab-section">
         Attendance content goes here.

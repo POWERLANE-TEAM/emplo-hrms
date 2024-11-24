@@ -52,7 +52,7 @@
                     </div>
 
                     <!-- Overview: Navigation Tabs Content -->
-                    <livewire:hr-manager.performance.overview-eval />
+                    <livewire:hr-manager.evaluations.overview-eval />
                 </div>
             </section>
 
@@ -60,24 +60,9 @@
             <section class="col-md-7 d-flex">
                 <div class="w-100">
                     <!-- Performance Category + Ratings -->
-                    <livewire:hr-manager.performance.category-ratings />
+                    <livewire:hr-manager.evaluations.category-ratings />
                 </div>
             </section>
-        </div>
-
-        <!-- Approve/Decline Buttons -->
-        <div class="col-md-5 ps-3 pe-4">
-            <div class="row">
-                <!-- Decline -->
-                <div class="col-6 pe-2">
-                    <button type="submit" name="submit" class="btn btn-lg btn-danger col-6 w-100">Decline</button>
-                </div>
-
-               <!-- Approve -->
-                <div class="col-6">
-                    <button type="submit" name="submit" class="btn btn-primary btn-lg col-6 w-100">Approve</button>
-                </div>
-            </div>
         </div>
 
     </section>
