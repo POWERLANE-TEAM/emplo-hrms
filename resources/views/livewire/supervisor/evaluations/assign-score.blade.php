@@ -27,7 +27,7 @@
 
     </div>
 
-    <!-- BACK-END Replace: Replace with evaluation results.
+    <!-- BACK-END Replace: Replace with evaluation categories.
         Note that The other months will be disabled until
         it's time for the 5-month or final evaluation.-->
 
