@@ -1,37 +1,245 @@
-@extends('components.layout.app', ['description' => 'Apply for a job'])
+@php
+    $nonce = csp_nonce();
+@endphp
+
+@extends('components.layout.app', ['description' => 'Guest Layout', 'nonce' => $nonce])
 
 @section('head')
     <title>Apply</title>
-@endsection
-
-@pushOnce('pre-scripts')
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="build/assets/nbp.min.js" defer></script>
+    @vite(['resources/js/login.js', 'resources/js/dropzone.config.js', 'resources/js/progress-bar.js'])
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js"></script>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-@endPushOnce
-
-@pushOnce('scripts')
-    @vite(['resources/js/applicant/apply.js', 'resources/js/dropzone.config.js', 'resources/js/progress-bar.js'])
-@endPushOnce
-
-@section('critical-styles')
-    @vite(['resources/css/guest/primary-bg.css'])
-@endsection
-
-@pushOnce('pre-styles')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.css">
-@endPushOnce
+    <style>
+        /* General Styles */
+        .dropzone-container {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+            height: 250px;
+        }
 
-@pushOnce('styles')
-    @vite(['resources/css/applicant/apply.css'])
-@endPushOnce
+        .dropzone {
+            width: 100%;
+            height: 100%;
+            border: 2px dashed #007bff;
+            position: relative;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            text-align: center;
+            flex-direction: column;
+            background: rgba(97, 176, 0, 0.05);
+        }
 
-@section('before-nav')
-    <x-layout.guest.secondary-bg />
-@endsection
+        .dz-message {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+        }
 
-@section('header-nav')
-    <x-layout.guest.secondary-header />
+        /* Hide all sections by default */
+        .form-step {
+            display: none;
+        }
+
+        /* Show the first step by default */
+        .form-step.active {
+            display: block;
+        }
+
+        /* Specific Styles for Labels, Form, and Buttons */
+        .profile-pic {
+            display: block;
+            width: 126px;
+            height: 126px;
+            background: #F6F6F6;
+            padding: 20px;
+            border: 1.5px solid #61B00080;
+            margin: 40px auto;
+            border-radius: 50%;
+            text-align: center;
+        }
+
+        .upload {
+            display: none;
+        }
+
+        .prev {
+            color: rgba(97, 176, 0, 1);
+            font-family: Figtree;
+            font-size: 17px;
+            font-weight: 700;
+            text-align: center;
+            border: none;
+            background: none;
+            margin-right: 70%;
+        }
+
+        .prev:hover {
+            color: white;
+            background: rgba(97, 176, 0, 1);
+            font-family: Figtree;
+            font-size: 17px;
+            font-weight: 700;
+            text-align: center;
+            padding: 5px 5px 8px 5px;
+            border-radius: 5px;
+        }
+
+        button {
+            margin-top: 40px;
+        }
+
+        .personal-details {
+            padding: 20px;
+            background-color: white;
+        }
+
+        .field {
+            font-family: Figtree;
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 14.4px;
+            margin-top: 20px;
+            margin-bottom: 15px
+        }
+
+        .in {
+            width: 100%;
+            height: 45px;
+            border: 1px solid lightgray;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .inp {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+
+        .fvicon {
+            display: block;
+            width: 15px;
+            position: relative;
+            left: 42%;
+            top: 23px;
+        }
+
+        .confirmation {
+            display: block;
+        }
+
+        .res {
+            width: 90%;
+        }
+
+        .resume {
+            width: 303px;
+            height: 319px;
+            border: 1px solid lightgray;
+            border-radius: 15px;
+            text-align: justify;
+        }
+
+        .conf {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+        }
+
+        /* Progress bar container */
+        .progress-bar {
+            display: flex;
+            flex: 1;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            position: relative;
+        }
+
+        /* Individual step container */
+        .step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            display: none;
+            /* Hide all steps by default */
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .step.active {
+            display: flex;
+            /* Show only active step */
+        }
+
+        /* Bullet (circle) styles */
+        .bullet {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            border: 2px solid lightgray;
+            border-radius: 50%;
+            background: white;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+            transition: background 0.4s ease;
+        }
+
+        /* Active step styles */
+        .step.active .bullet {
+            border-color: rgba(97, 176, 0, 1);
+        }
+
+        .step.active p {
+            color: rgba(97, 176, 0, 1);
+        }
+
+        /* Completed step styles */
+        .step.completed .bullet {
+            background-color: rgba(97, 176, 0, 1);
+            border-color: rgba(97, 176, 0, 1);
+        }
+
+        .step.completed .bullet span {
+            display: none;
+        }
+
+        .step.completed .check {
+            display: block;
+            color: white;
+            font-size: 18px;
+            line-height: 40px;
+            position: relative;
+            top: 0;
+            left: 50%;
+            transform: translate(-50%, 0);
+        }
+
+        /* Adjust the checkmark size */
+        .check {
+            font-size: 18px;
+            color: white;
+            display: none;
+        }
+
+        /* Show checkmark when step is completed */
+        .step.completed .check {
+            display: block;
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -83,8 +291,10 @@
                                         <span class="pdf-50">PDF File Only | Max size is 50mb</span>
                                     </div>
                                 </label>
-                                <input class="upload" type="file" accept="image/jpeg, image/jpg, image/png"
-                                    id="drop-box">
+                                <input class="upload" type="file" accept="application/pdf" accept="application/pdf"
+                                    id="drop-box" onchange="validateFile()" />
+                                <span id="error-message" style="color: red; display: none;">File must be a PDF and less than
+                                    3MB</span>
                             </div>
                             <div>
                                 <button type="button" class="btn btn-primary next-btn">Next</button>
@@ -102,23 +312,23 @@
 
                             <div class="personal-details">
                                 <div class="field">Last Name</div>
-                                <input class="in" type="text">
+                                <input class="in" type="text" name="last_name">
 
                                 <div class="d-flex">
                                     <div class="me-2" style="flex: 1;">
                                         <div class="field">First Name</div>
-                                        <input class="inp" type="text">
+                                        <input class="inp" type="text" name="first_name">
                                     </div>
                                     <div style="flex: 1;">
                                         <div class="field">Middle Name</div>
-                                        <input class="inp" type="text">
+                                        <input class="inp" type="text" name="middle_name">
                                     </div>
                                 </div>
 
                                 <div class="d-flex mt-2">
                                     <div class="me-2" style="flex: 1;">
                                         <div class="field">Sex at Birth</div>
-                                        <select class="inp">
+                                        <select class="inp" name="sex_at_birth">
                                             <option value="Select">Select</option>
                                             <option value="Male">Male</option>
                                             <option value="Female">Female</option>
@@ -126,7 +336,7 @@
                                     </div>
                                     <div style="flex: 1;">
                                         <div class="field">Birthdate</div>
-                                        <input type="date" class="inp">
+                                        <input type="date" class="inp" name="birthdate">
                                     </div>
                                 </div>
 
@@ -170,7 +380,7 @@
         </div>
     </section>
 
-    <script nonce="{{ $nonce }}">
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
             let currentStep = 1;
             const totalSteps = 3;
@@ -179,30 +389,123 @@
             const nextBtns = document.querySelectorAll('.next-btn');
             const prevBtns = document.querySelectorAll('.prev-btn');
 
-            nextBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    if (currentStep < totalSteps) {
+            // Inputs
+            const uploadInput = document.getElementById('drop-box');
+            const lastNameInput = document.querySelector('input[name="last_name"]');
+            const firstNameInput = document.querySelector('input[name="first_name"]');
+            const middleNameInput = document.querySelector('input[name="middle_name"]');
+            const sexAtBirth = document.querySelector('select[name="sex_at_birth"]');
+            const birthdate = document.querySelector('input[name="birthdate"]');
+
+            // Function to handle file upload and populate fields
+            async function processResume(file) {
+                const formData = new FormData();
+                formData.append('resume', file);
+
+                try {
+                    const response = await fetch('/resume/process', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        },
+                        body: formData,
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Failed to process resume.');
+                    }
+
+                    const data = await response.json();
+
+                    if (data.status === 'success') {
+                        console.log(data.parsedData); // Log the parsed data
+                        // Populate form fields
+                        document.querySelector('input[name="last_name"]').value = data.parsedData.last_name ||
+                            '';
+                        document.querySelector('input[name="first_name"]').value = data.parsedData.first_name ||
+                            '';
+                        document.querySelector('input[name="middle_name"]').value = data.parsedData
+                            .middle_name || '';
+                        document.querySelector('select[name="sex_at_birth"]').value = data.parsedData
+                            .sex_at_birth || 'Select';
+                        document.querySelector('input[name="birthdate"]').value = data.parsedData.birthdate ||
+                            '';
+                    } else {
+                        console.error(data.message || 'An error occurred while processing the resume.');
+                    }
+                } catch (error) {
+                    console.error(error);
+                    // alert('Failed to upload and process the resume. Please try again.');
+                }
+            }
+
+            // File upload validation and processing
+            uploadInput.addEventListener('change', function() {
+                const file = uploadInput.files[0];
+                if (file) {
+                    processResume(file);
+                }
+            });
+
+            // Step navigation and validation
+            function validateStep(step) {
+                if (step === 1) {
+                    return uploadInput.files.length > 0;
+                } else if (step === 2) {
+                    return (
+                        lastNameInput.value.trim() !== '' &&
+                        firstNameInput.value.trim() !== '' &&
+                        middleNameInput.value.trim() !== '' &&
+                        sexAtBirth.value !== 'Select' &&
+                        birthdate.value.trim() !== ''
+                    );
+                }
+                return true;
+            }
+
+            function updateButtonState(step) {
+                if (validateStep(step)) {
+                    nextBtns[step - 1].style.visibility = 'visible';
+                } else {
+                    nextBtns[step - 1].style.visibility = 'hidden';
+                }
+            }
+
+            // Enable step navigation
+            nextBtns.forEach((btn, index) => {
+                btn.addEventListener('click', function() {
+                    if (currentStep < totalSteps && validateStep(currentStep)) {
                         formSteps[currentStep - 1].classList.remove('active');
                         formSteps[currentStep].classList.add('active');
                         currentStep++;
+                        updateButtonState(currentStep);
                     }
                 });
             });
 
             prevBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
+                btn.addEventListener('click', function() {
                     if (currentStep > 1) {
                         formSteps[currentStep - 1].classList.remove('active');
                         formSteps[currentStep - 2].classList.add('active');
                         currentStep--;
+                        updateButtonState(currentStep);
                     }
                 });
             });
         });
+
+
+        // Validation for name fields (disallow symbols and numbers)
+        function validateTextField(field) {
+            field.addEventListener('input', function() {
+                this.value = this.value.replace(/[^a-zA-Z\s]/g, ''); // Allow only letters and spaces
+            });
+        }
+
+        // Apply the text field validation to name inputs
+        validateTextField(lastNameInput);
+        validateTextField(firstNameInput);
+        validateTextField(middleNameInput);
     </script>
-@endsection
-
-
-@section('footer')
-    <x-guest.footer />
 @endsection

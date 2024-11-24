@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Application\ApplicantController;
 use App\Http\Controllers\PreEmploymentController;
+use App\Http\Controllers\ResumeController;
 use App\Livewire\Auth\FacebookOAuth;
 use App\Livewire\Auth\GoogleOAuth;
 use App\Livewire\Auth\GoogleOneTap;
@@ -28,6 +29,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/preemploy',  [PreEmploymentController::class, 'create']);
     Route::post('/preemploy', [PreEmploymentController::class, 'store']);
 });
+
+Route::post('/resume/process', [ResumeController::class, 'processResume']);
 
 Route::middleware('guest')->group(function () {
 
