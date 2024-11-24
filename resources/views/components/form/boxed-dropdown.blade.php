@@ -4,7 +4,7 @@
 * |-------------------------------------------------------------------------- 
 --}}
 
-@props(['label', 'options' => [], 'nonce', 'required' => false,])
+@props(['label' => null, 'options' => [], 'nonce', 'required' => false])
 
 <label for="{{ $attributes->get('id') }}" class="mb-1 fw-semibold text-secondary-emphasis">
     {{ $label }}
