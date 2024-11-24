@@ -2,9 +2,11 @@
 
 namespace App\Livewire\Auth;
 
+use Livewire\Component;
+use Illuminate\Support\Str;
+use App\Enums\ActivityLogName;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
-use Livewire\Component;
 
 class Logout extends Component
 {
@@ -44,6 +46,11 @@ class Logout extends Component
 
     public function destroy(AuthenticatedSessionController $session_controller)
     {
+        activity()
+            ->by(Auth::user())
+            ->useLog(ActivityLogName::AUTHENTICATION->value)
+            ->log(Str::ucfirst(Auth::user()->account->first_name).' logged out');
+
         $response = $session_controller->destroy(request());
 
         return $response->toResponse(request());

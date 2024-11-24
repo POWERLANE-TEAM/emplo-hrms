@@ -2,15 +2,21 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Str;
+use App\Enums\ActivityLogName;
+use Spatie\Activitylog\LogOptions;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class JobVacancy extends Model
 {
     use HasFactory;
+    use LogsActivity;
 
     protected $primaryKey = 'job_vacancy_id';
 
@@ -48,5 +54,26 @@ class JobVacancy extends Model
     public function jobTitle(): HasOneThrough
     {
         return $this->hasOneThrough(JobTitle::class, JobDetail::class, 'job_detail_id', 'job_title_id', 'job_detail_id', 'job_title_id');
+    }
+
+    /**
+     * Override default values for more controlled logging.
+     * 
+     * @return \Spatie\Activitylog\LogOptions
+     */
+    public function getActivityLogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logUnguarded()
+            ->useLogName(ActivityLogName::RECRUITMENT->value)
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(function (string $eventName) {
+                $causerFirstName = Str::ucfirst(Auth::user()->account->first_name);
+                return match ($eventName) {
+                    'created' => __($causerFirstName .' created a new job listing.'),
+                    'updated' => __($causerFirstName .' updated a job listing\'s information.'),
+                    'deleted' => __($causerFirstName .' deleted a job listing.'),
+                };
+            });
     }
 }

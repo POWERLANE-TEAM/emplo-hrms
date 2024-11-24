@@ -2,14 +2,20 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Str;
+use App\Enums\ActivityLogName;
+use Spatie\Activitylog\LogOptions;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class JobFamily extends Model
 {
     use HasFactory;
+    use LogsActivity;
 
     protected $primaryKey = 'job_family_id';
 
@@ -70,5 +76,26 @@ class JobFamily extends Model
     public function announcements(): BelongsToMany
     {
         return $this->belongsToMany(Announcement::class, 'announcement_details', 'job_family_id', 'announcement_id');
+    }
+
+    /**
+     * Override default values for more controlled logging.
+     * 
+     * @return \Spatie\Activitylog\LogOptions
+     */
+    public function getActivityLogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logFillable()
+            ->useLogName(ActivityLogName::CONFIGURATION->value)
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(function (string $eventName) {
+                $causerFirstName = Str::ucfirst(Auth::user()->account->first_name);
+                return match ($eventName) {
+                    'created' => __($causerFirstName .' created a new job family record.'),
+                    'updated' => __($causerFirstName .' updated a job family information.'),
+                    'deleted' => __($causerFirstName .' deleted a job family record.'),
+                };
+            });
     }
 }
