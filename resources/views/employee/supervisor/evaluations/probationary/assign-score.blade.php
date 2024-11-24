@@ -26,46 +26,69 @@
         <x-breadcrumb :href="'#'"> <!-- REPLACE: Link to the Performance Eval tables -->
             Evaluations
         </x-breadcrumb>
-        <x-breadcrumb :active="request()->routeIs($routePrefix . '.probationary-perf-results')">
-            Probationary Employee
+        <x-breadcrumb :active="request()->routeIs($routePrefix . '.assign-score.probationary')">
+            Assign Score
         </x-breadcrumb>
     </x-slot:breadcrumbs>
 </x-breadcrumbs>
 
 
 <!-- BACK-END REPLACE: Name,  Position-->
-<x-headings.header-with-status title="Clark, Avery Mendiola" color="info" badge="Probationary">
-    <span class="fw-bold">Position: </span>
-    Associate / Assistant Manager
-    </x-profile-header>
+<section class="row">
+    <div class="col-6">
+        <x-headings.header-with-status title="Clark, Avery Mendiola" color="info" badge="Probationary">
+            <span class="fw-bold">Position: </span>
+            Associate / Assistant Manager
+            </x-profile-header>
+    </div>
+    <div class="col-6 pt-2">
+        <x-info_panels.callout type="info" :description="__('Learn more about the <a href=\'#\' class=\'text-link-blue\'>scoring evaluation</a> metrics and details.')">
+        </x-info_panels.callout>
 
+    </div>
+</section>
 
-    <section class="mb-5 mt-3">
-        <!-- Main Section -->
-        <div class="d-flex mb-5 row align-items-stretch">
-            <!-- Left Section: Overview -->
-            <section class="col-md-5 d-flex">
-                <div class="w-100">
-                    <!-- Navigation Tabs -->
-                    <div class="p-2">
-                        @include('components.includes.tab_navs.eval-result-navs')
-                    </div>
+<section class="mb-5 mt-3">
+    <!-- Main Section -->
+    <div class="d-flex mb-5 row align-items-stretch">
 
-                    <!-- Overview: Navigation Tabs Content -->
-                    <livewire:hr-manager.evaluations.overview-eval />
+        <!-- Performance Category & Scoring -->
+        <section class="col-md-12 d-flex">
+            <div class="w-100">
+                <livewire:supervisor.evaluations.assign-score />
+            </div>
+        </section>
+
+        <!-- Final Rating & Scale -->
+        <!-- Back-end Note: This will only show once all scores (up to finals) are assigned. -->
+        <section class="col-md-12 d-flex">
+            <div class="w-100">
+                <livewire:supervisor.evaluations.final-grading />
+            </div>
+        </section>
+
+        <!-- Comments -->
+        <section class="col-md-12 d-flex">
+            <div class="w-100">
+                <livewire:supervisor.evaluations.comments />
+            </div>
+        </section>
+
+        <!-- Button -->
+        <section class="col-md-12">
+            <div class="row">
+                <!-- Note -->
+                <div class="col-5 ps-3">
+                    <x-info_panels.note
+                        note="{{ __('This form requires your signature. By clicking submit, your signature will be automatically added to the downloadable file.') }}" />
                 </div>
-            </section>
-
-            <!-- Right Section: Performance Category -->
-            <section class="col-md-7 d-flex">
-                <div class="w-100">
-                    <!-- Performance Category + Ratings -->
-                    <livewire:hr-manager.evaluations.category-ratings />
+                <!-- Button -->
+                <div class="col-7 text-end align-items-center justify-content-center">
+                    <x-buttons.main-btn label="Submit Evaluation" wire:click.prevent="save" :nonce="$nonce"
+                        :disabled="false" class="w-50" :loading="'Submitting...'" />
                 </div>
-            </section>
-        </div>
-
-    </section>
-    @endsection
-
-    <x-modals.data_dialogues.eval-approval-history />
+            </div>
+        </section>
+    </div>
+</section>
+@endsection
