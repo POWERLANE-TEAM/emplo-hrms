@@ -3,243 +3,38 @@
 @endphp
 
 @extends('components.layout.app', ['description' => 'Guest Layout', 'nonce' => $nonce])
-
 @section('head')
     <title>Apply</title>
-    <script src="build/assets/nbp.min.js" defer></script>
-    @vite(['resources/js/login.js', 'resources/js/dropzone.config.js', 'resources/js/progress-bar.js'])
+@endsection
+
+@pushOnce('pre-scripts')
+    <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js"></script>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+@endPushOnce
+
+@pushOnce('scripts')
+    @vite(['resources/js/applicant/apply.js', 'resources/js/dropzone.config.js', 'resources/js/progress-bar.js'])
+@endPushOnce
+
+@section('critical-styles')
+    @vite(['resources/css/guest/primary-bg.css'])
+@endsection
+
+@pushOnce('pre-styles')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.css">
-    <style>
-        /* General Styles */
-        .dropzone-container {
-            position: relative;
-            display: inline-block;
-            width: 100%;
-            height: 250px;
-        }
+@endPushOnce
 
-        .dropzone {
-            width: 100%;
-            height: 100%;
-            border: 2px dashed #007bff;
-            position: relative;
-            top: 0;
-            left: 0;
-            z-index: 1;
-            text-align: center;
-            flex-direction: column;
-            background: rgba(97, 176, 0, 0.05);
-        }
+@pushOnce('styles')
+    @vite(['resources/css/applicant/apply.css'])
+@endPushOnce
 
-        .dz-message {
-            position: relative;
-            z-index: 2;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-        }
+@section('before-nav')
+    <x-layout.guest.secondary-bg />
+@endsection
 
-        /* Hide all sections by default */
-        .form-step {
-            display: none;
-        }
-
-        /* Show the first step by default */
-        .form-step.active {
-            display: block;
-        }
-
-        /* Specific Styles for Labels, Form, and Buttons */
-        .profile-pic {
-            display: block;
-            width: 126px;
-            height: 126px;
-            background: #F6F6F6;
-            padding: 20px;
-            border: 1.5px solid #61B00080;
-            margin: 40px auto;
-            border-radius: 50%;
-            text-align: center;
-        }
-
-        .upload {
-            display: none;
-        }
-
-        .prev {
-            color: rgba(97, 176, 0, 1);
-            font-family: Figtree;
-            font-size: 17px;
-            font-weight: 700;
-            text-align: center;
-            border: none;
-            background: none;
-            margin-right: 70%;
-        }
-
-        .prev:hover {
-            color: white;
-            background: rgba(97, 176, 0, 1);
-            font-family: Figtree;
-            font-size: 17px;
-            font-weight: 700;
-            text-align: center;
-            padding: 5px 5px 8px 5px;
-            border-radius: 5px;
-        }
-
-        button {
-            margin-top: 40px;
-        }
-
-        .personal-details {
-            padding: 20px;
-            background-color: white;
-        }
-
-        .field {
-            font-family: Figtree;
-            font-size: 12px;
-            font-weight: 400;
-            line-height: 14.4px;
-            margin-top: 20px;
-            margin-bottom: 15px
-        }
-
-        .in {
-            width: 100%;
-            height: 45px;
-            border: 1px solid lightgray;
-            border-radius: 5px;
-            margin-bottom: 10px;
-        }
-
-        .inp {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            margin-bottom: 15px;
-        }
-
-        .fvicon {
-            display: block;
-            width: 15px;
-            position: relative;
-            left: 42%;
-            top: 23px;
-        }
-
-        .confirmation {
-            display: block;
-        }
-
-        .res {
-            width: 90%;
-        }
-
-        .resume {
-            width: 303px;
-            height: 319px;
-            border: 1px solid lightgray;
-            border-radius: 15px;
-            text-align: justify;
-        }
-
-        .conf {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-        }
-
-        /* Progress bar container */
-        .progress-bar {
-            display: flex;
-            flex: 1;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            height: 100%;
-            padding: 0;
-            position: relative;
-        }
-
-        /* Individual step container */
-        .step {
-            flex: 1;
-            text-align: center;
-            position: relative;
-            display: none;
-            /* Hide all steps by default */
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .step.active {
-            display: flex;
-            /* Show only active step */
-        }
-
-        /* Bullet (circle) styles */
-        .bullet {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 40px;
-            height: 40px;
-            border: 2px solid lightgray;
-            border-radius: 50%;
-            background: white;
-            margin-bottom: 10px;
-            position: relative;
-            z-index: 1;
-            transition: background 0.4s ease;
-        }
-
-        /* Active step styles */
-        .step.active .bullet {
-            border-color: rgba(97, 176, 0, 1);
-        }
-
-        .step.active p {
-            color: rgba(97, 176, 0, 1);
-        }
-
-        /* Completed step styles */
-        .step.completed .bullet {
-            background-color: rgba(97, 176, 0, 1);
-            border-color: rgba(97, 176, 0, 1);
-        }
-
-        .step.completed .bullet span {
-            display: none;
-        }
-
-        .step.completed .check {
-            display: block;
-            color: white;
-            font-size: 18px;
-            line-height: 40px;
-            position: relative;
-            top: 0;
-            left: 50%;
-            transform: translate(-50%, 0);
-        }
-
-        /* Adjust the checkmark size */
-        .check {
-            font-size: 18px;
-            color: white;
-            display: none;
-        }
-
-        /* Show checkmark when step is completed */
-        .step.completed .check {
-            display: block;
-        }
-    </style>
+@section('header-nav')
+    <x-layout.guest.secondary-header />
 @endsection
 
 @section('content')
@@ -380,7 +175,7 @@
         </div>
     </section>
 
-    <script>
+    <script nonce="{{ $nonce }}">
         document.addEventListener('DOMContentLoaded', function() {
             let currentStep = 1;
             const totalSteps = 3;
@@ -420,12 +215,14 @@
                     if (data.status === 'success') {
                         console.log(data.parsedData); // Log the parsed data
                         // Populate form fields
-                        document.querySelector('input[name="last_name"]').value = data.parsedData.last_name ||
+                        document.querySelector('input[name="last_name"]').value = data.parsedData
+                            .employee_name ||
                             '';
-                        document.querySelector('input[name="first_name"]').value = data.parsedData.first_name ||
+                        document.querySelector('input[name="first_name"]').value = data.parsedData
+                            .employee_name ||
                             '';
                         document.querySelector('input[name="middle_name"]').value = data.parsedData
-                            .middle_name || '';
+                            .employee_name || '';
                         document.querySelector('select[name="sex_at_birth"]').value = data.parsedData
                             .sex_at_birth || 'Select';
                         document.querySelector('input[name="birthdate"]').value = data.parsedData.birthdate ||
