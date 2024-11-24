@@ -70,7 +70,8 @@ return new class extends Migration
                 'job_title_id', 
                 'job_level_id', 
                 'job_family_id', 
-                'area_id', 'shift_id', 
+                'area_id',
+                'shift_id', 
                 'emp_status_id',
                 'application_id'
             ]);
