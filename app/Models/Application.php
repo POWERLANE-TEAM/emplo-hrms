@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class Application extends Model
 {
@@ -33,13 +34,13 @@ class Application extends Model
     }
 
     /**
-     * Get the employee that owns the job application.
+     * Get the employee associated with the job application through **EmployeeJobDetail** model.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function employee(): BelongsTo
+    public function employee(): HasOneThrough
     {
-        return $this->belongsTo(Employee::class, 'application_id', 'employee_id');
+        return $this->hasOneThrough(Employee::class, EmployeeJobDetail::class, 'application_id', 'employee_id', 'application_id', 'employee_id');
     }    
 
     /**
