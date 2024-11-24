@@ -1,9 +1,14 @@
+// CORE SCSS OF APPLICANT.
+
 @import '../utils';
+@import '../scales/icon-size';
 @import '../guest/header-nav';
 @import '../icon/lucide';
 @import '../nav-link';
 @import '../nav-tabs';
 @import '../footer';
+@import '../palette/text-colors';
+@import '../palette/start-borders';
 @import '../input/checkbox';
 
 
