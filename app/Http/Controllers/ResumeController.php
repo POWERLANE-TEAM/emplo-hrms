@@ -57,7 +57,6 @@ class ResumeController extends Controller
             );
 
             // Prepare the request payload for Document AI
-            $name = 'projects/' . '1003638908095' . '/locations/us/processors/' . $processorId . '/processorVersions/' . $processorVersion;
             $rawDocument = new RawDocument([
                 'content' => $fileContent,
                 'mime_type' => 'application/pdf',
