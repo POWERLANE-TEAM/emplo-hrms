@@ -57,26 +57,6 @@ class Employee extends Model
     }
 
     /**
-     * Get the job application associated with the employee.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function application(): HasOne
-    {
-        return $this->hasOne(Application::class, 'application_id', 'employee_id');
-    }
-
-    /**
-     * Get the employment status of the employee.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function employmentStatus(): BelongsTo
-    {
-        return $this->belongsTo(EmploymentStatus::class, 'emp_status_id', 'emp_status_id');
-    }
-
-    /**
      * Get the attendance records associated with the employee.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -99,21 +79,51 @@ class Employee extends Model
     /**
      * Get the job detail of the employee.
      * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function jobDetail(): BelongsTo
+    public function jobDetail(): HasOne
     {
-        return $this->belongsTo(JobDetail::class, 'job_detail_id', 'job_detail_id');
+        return $this->hasOne(EmployeeJobDetail::class, 'employee_id', 'employee_id');
     }
 
     /**
-     * Get the job title of the employee.
+     * Get the employment status of the employee through **EmployeeJobDetail** model.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasOneThrough
+     */
+    public function status(): HasOneThrough
+    {
+        return $this->hasOneThrough(EmploymentStatus::class, EmployeeJobDetail::class, 'employee_id', 'emp_status_id', 'employee_id', 'emp_status_id');
+    }
+
+    /**
+     * Get the job application associated with the employee through **EmployeeJobDetail** model.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasOneThrough
+     */
+    public function application(): HasOneThrough
+    {
+        return $this->hasOneThrough(Application::class, EmployeeJobDetail::class, 'employee_id', 'application_id', 'employee_id', 'application_id');
+    }
+
+    /**
+     * Get the job title of the employee through **EmployeeJobDetail** model.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\HasOneThrough
      */
     public function jobTitle(): HasOneThrough
     {
-        return $this->hasOneThrough(JobTitle::class, JobDetail::class, 'job_detail_id', 'job_title_id', 'job_detail_id', 'job_title_id');
+        return $this->hasOneThrough(JobTitle::class, EmployeeJobDetail::class, 'employee_id', 'job_title_id', 'employee_id', 'job_title_id');
+    }
+
+    /**
+     * Get the job level of the employee through **EmployeeJobDetail** model.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasOneThrough
+     */
+    public function jobLevel(): HasOneThrough
+    {
+        return $this->hasOneThrough(JobLevel::class, EmployeeJobDetail::class, 'employee_id', 'job_level_id', 'employee_id', 'job_level_id');
     }
 
     /**
@@ -123,7 +133,7 @@ class Employee extends Model
      */
     public function jobFamily(): HasOneThrough
     {
-        return $this->hasOneThrough(JobFamily::class, JobDetail::class, 'job_detail_id', 'job_family_id', 'job_detail_id', 'job_family_id');
+        return $this->hasOneThrough(JobFamily::class, EmployeeJobDetail::class, 'employee_id', 'job_family_id', 'employee_id', 'job_family_id');
     }
 
     /**
@@ -133,7 +143,17 @@ class Employee extends Model
      */
     public function specificArea(): HasOneThrough
     {
-        return $this->hasOneThrough(SpecificArea::class, JobDetail::class, 'job_detail_id', 'area_id', 'job_detail_id', 'area_id');    
+        return $this->hasOneThrough(SpecificArea::class, EmployeeJobDetail::class, 'employee_id', 'area_id', 'employee_id', 'area_id');    
+    }
+
+    /**
+     * Get the shift schedule of the employee.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasOneThrough
+     */
+    public function shift(): HasOneThrough
+    {
+        return $this->hasOneThrough(Shift::class, EmployeeJobDetail::class, 'employee_id', 'shift_id', 'employee_id', 'shift_id');
     }
 
     /**
@@ -154,16 +174,6 @@ class Employee extends Model
     public function headOf(): HasOne
     {
         return $this->hasOne(JobFamily::class, 'office_head', 'employee_id');
-    }
-
-    /**
-     * Get the shift schedule of the employee.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function shift(): BelongsTo
-    {
-        return $this->belongsTo(Shift::class, 'shift_id', 'shift_id');
     }
 
     /**
@@ -398,33 +408,23 @@ class Employee extends Model
     }
 
     /**
-     * Get the performance evaluation records where employee is the Supervisor.
+     * Get the performance evaluation records where employee is the initial approver.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function supervisedPerformances(): HasMany
+    public function initiallyApprovedPerformances(): HasMany
     {
-        return $this->hasMany(PerformanceDetail::class, 'supervisor', 'employee_id');
+        return $this->hasMany(PerformanceDetail::class, 'initial_approver', 'employee_id');
     }
 
     /**
-     * Get the performance evaluation records where employee is the Area Manager.
+     * Get the performance evaluation records where employee is the secondary approver.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function areaManagedPerformances(): HasMany
+    public function secondaryApprovedPerformances(): HasMany
     {
-        return $this->hasMany(PerformanceDetail::class, 'area_manager', 'employee_id');
-    }
-
-    /**
-     * Get the performance evaluation records where employee is the HR Manager.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function hrManagedPerformances(): HasMany
-    {
-        return $this->hasMany(PerformanceDetail::class, 'hr_manager', 'employee_id');
+        return $this->hasMany(PerformanceDetail::class, 'secondary_approver', 'employee_id');
     }
 
     /**

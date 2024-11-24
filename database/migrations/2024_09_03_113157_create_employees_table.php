@@ -1,11 +1,8 @@
 <?php
 
-use App\Models\Shift;
 use App\Models\Barangay;
 use App\Models\Employee;
-use App\Models\JobDetail;
 use App\Models\LeaveCategory;
-use App\Models\EmploymentStatus;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -30,21 +27,6 @@ return new class extends Migration
             $table->string('middle_name')->nullable();
             $table->string('last_name');
 
-            $table->foreignIdFor(JobDetail::class, 'job_detail_id')
-                ->constrained('job_details', 'job_detail_id')
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
-
-            $table->foreignIdFor(Shift::class, 'shift_id')
-                ->constrained('shifts', 'shift_id')
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
-
-            $table->foreignIdFor(EmploymentStatus::class, 'emp_status_id')
-                ->constrained('employment_statuses', 'emp_status_id')
-                ->cascadeOnUpdate()
-                ->restrictOnDelete();
-
             $table->longText('present_address');
             $table->foreignIdFor(Barangay::class, 'present_barangay')
                 ->constrained('barangays', 'id')
@@ -66,7 +48,6 @@ return new class extends Migration
             $table->binary('signature')->nullable();
             $table->jsonb('education')->nullable();
             $table->jsonb('experience')->nullable();
-            $table->integer('leave_balance')->default(0);
             $table->timestamps();
         });
 

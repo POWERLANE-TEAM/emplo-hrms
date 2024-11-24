@@ -42,39 +42,29 @@ class PerformanceDetail extends Model
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function signedEvaluator(): BelongsTo
+    public function evaluator(): BelongsTo
     {
         return $this->belongsTo(Employee::class, 'evaluator', 'employee_id');
     }
 
-    /**
-     * Get the Supervisor who approved/signed the performance evaluation.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function signedSupervisor(): BelongsTo
-    {
-        return $this->belongsTo(Employee::class, 'supervisor', 'employee_id');
-    }
-
      /**
-     * Get the Area Manager who approved/signed the performance evaluation.
+     * Get the initial approver who approved/signed the performance evaluation.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function signedAreaManager(): BelongsTo
+    public function initialApprover(): BelongsTo
     {
-        return $this->belongsTo(Employee::class, 'area_manager', 'employee_id');
+        return $this->belongsTo(Employee::class, 'initial_approver', 'employee_id');
     }
 
     /**
-     * Get the HR Manager who approved/signed the performance evaluation.
+     * Get the secondary approver who approved/signed the performance evaluation.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function signedHrManager(): BelongsTo
+    public function secondaryApprover(): BelongsTo
     {
-        return $this->belongsTo(Employee::class, 'hr_manager', 'employee_id');
+        return $this->belongsTo(Employee::class, 'secondary_approver', 'employee_id');
     }
 
     /**
