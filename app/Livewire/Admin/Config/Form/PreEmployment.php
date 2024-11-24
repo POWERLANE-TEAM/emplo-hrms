@@ -3,10 +3,12 @@
 namespace App\Livewire\Admin\Config\Form;
 
 use Livewire\Component;
+use App\Enums\UserPermission;
 use App\Models\PreempRequirement;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class PreEmployment extends Component
 {
@@ -22,12 +24,22 @@ class PreEmployment extends Component
         $this->validate();
 
         if ($this->editMode) {
+            if (! Auth::user()->hasPermissionTo(UserPermission::CREATE_PREEMPLOYMENT_REQUIREMENTS)) {
+                $this->reset();
+
+                abort(403);
+            }
             DB::transaction(function () {
                 PreempRequirement::where('preemp_req_id', $this->index)->update([
                     'preemp_req_name' => $this->requirement
                 ]);
             });
         } else {
+            if (! Auth::user()->hasPermissionTo(UserPermission::UPDATE_PREEMPLOYMENT_REQUIREMENTS)) {
+                $this->reset();
+
+                abort(403);
+            }
             DB::transaction(function () {
                 PreempRequirement::create([
                     'preemp_req_name' => $this->requirement

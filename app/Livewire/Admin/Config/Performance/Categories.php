@@ -45,12 +45,17 @@ class Categories extends Component
 
                 abort(403);
             }
-            DB::transaction(function () {
-                PerformanceCategory::where('perf_category_id', $this->index)->update([
-                    'perf_category_name' => Str::lower($this->state['title']),
-                    'perf_category_desc' => Str::lower($this->state['shortDescription']),
-                ]);
-            });
+
+            $category = PerformanceCategory::find($this->index);
+
+            is_null($category)
+                ? $feedbackMsg = __('Something went wrong.')
+                : DB::transaction(function () use ($category) {
+                    $category->update([
+                        'perf_category_name' => Str::lower($this->state['title']),
+                        'perf_category_desc' => Str::lower($this->state['shortDescription']),
+                    ]);
+                  });
             $feedbackMsg = __('Performance category was modified successfully.'); 
         } else {
             if (! Auth::user()->hasPermissionTo(UserPermission::CREATE_PERFORMANCE_CATEGORIES)) {

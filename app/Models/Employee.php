@@ -2,7 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Str;
+use App\Enums\ActivityLogName;
+use Spatie\Activitylog\LogOptions;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -16,6 +21,7 @@ use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 class Employee extends Model
 {
     use HasFactory;
+    use LogsActivity;
 
     protected $primaryKey = 'employee_id';
 
@@ -419,5 +425,26 @@ class Employee extends Model
     public function hrManagedPerformances(): HasMany
     {
         return $this->hasMany(PerformanceDetail::class, 'hr_manager', 'employee_id');
+    }
+
+    /**
+     * Override default values for more controlled logging.
+     * 
+     * @return \Spatie\Activitylog\LogOptions
+     */
+    public function getActivityLogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logUnguarded()
+            ->useLogName(ActivityLogName::EMPLOYEE->value)
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(function (string $eventName) {
+                $causerFirstName = Str::ucfirst(Auth::user()->account->first_name);
+                return match ($eventName) {
+                    'created' => __($causerFirstName.' created a new employee record.'),
+                    'updated' => __($causerFirstName.' updated an employee\'s information.'),
+                    'deleted' => __($causerFirstName.' deleted an employee.'),
+                };
+            });
     }
 }
