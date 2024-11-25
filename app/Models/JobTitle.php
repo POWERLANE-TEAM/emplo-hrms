@@ -20,11 +20,10 @@ class JobTitle extends Model
 
     protected $primaryKey = 'job_title_id';
 
-    protected $fillable = [
-        'job_title',
-        'job_desc',
-        'department_id',
-        'vacancy',
+    protected $guarded = [
+        'job_title_id',
+        'created_at',
+        'updated_at',
     ];
 
     /**
@@ -45,6 +44,36 @@ class JobTitle extends Model
     public function employees(): HasManyThrough
     {
         return $this->hasManyThrough(Employee::class, EmployeeJobDetail::class, 'job_title_id', 'employee_id', 'job_title_id', 'employee_id');
+    }
+
+    /**
+     * Get the employee job details associated with the job title.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function jobDetails(): HasMany
+    {
+        return $this->hasMany(EmployeeJobDetail::class, 'job_title_id', 'job_title_id');
+    }
+
+    /**
+     * Get the job level that owns the job title.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function jobLevel(): BelongsTo
+    {
+        return $this->belongsTo(JobLevel::class, 'job_level_id', 'job_level_id');
+    }
+
+    /**
+     * Get the job family that owns the job title.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function jobFamily(): BelongsTo
+    {
+        return $this->belongsTo(JobFamily::class, 'job_family_id', 'job_family_id');
     }
 
     /**
@@ -75,7 +104,7 @@ class JobTitle extends Model
     public function getActivityLogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logFillable()
+            ->logUnguarded()
             ->useLogName(ActivityLogName::CONFIGURATION->value)
             ->dontSubmitEmptyLogs()
             ->setDescriptionForEvent(function (string $eventName) {

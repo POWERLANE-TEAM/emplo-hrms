@@ -8,6 +8,7 @@ use Spatie\Activitylog\LogOptions;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -44,6 +45,16 @@ class JobFamily extends Model
     public function employees(): HasManyThrough
     {
         return $this->hasManyThrough(Employee::class, EmployeeJobDetail::class, 'job_family_id', 'employee_id', 'job_family_id', 'employee_id');
+    }
+
+    /**
+     * Get the job titles associated with the job family.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function jobTitles(): HasMany
+    {
+        return $this->hasMany(JobTitle::class, 'job_family_id', 'job_family_id');
     }
 
     /**
