@@ -4,9 +4,19 @@ const holidays = {
     2024: [
         { name: 'New Year\'s Day', date: 'January 1, 2024' },
         { name: 'Independence Day', date: 'July 4, 2024' },
+        { name: 'Christmas Day', date: 'December 25, 2024' },
+        { name: 'New Year\'s Day', date: 'January 1, 2024' },
+        { name: 'Independence Day', date: 'July 4, 2024' },
+        { name: 'Christmas Day', date: 'December 25, 2024' },
+        { name: 'Christmas Day', date: 'December 25, 2024' },
+        { name: 'New Year\'s Day', date: 'January 1, 2024' },
+        { name: 'Independence Day', date: 'July 4, 2024' },
         { name: 'Christmas Day', date: 'December 25, 2024' }
     ],
     2025: [
+        { name: 'New Year\'s Day', date: 'January 1, 2025' },
+        { name: 'Labor Day', date: 'May 1, 2025' },
+        { name: 'Thanksgiving Day', date: 'November 27, 2025' },
         { name: 'New Year\'s Day', date: 'January 1, 2025' },
         { name: 'Labor Day', date: 'May 1, 2025' },
         { name: 'Thanksgiving Day', date: 'November 27, 2025' }
