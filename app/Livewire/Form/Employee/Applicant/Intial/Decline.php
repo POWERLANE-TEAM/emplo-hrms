@@ -31,9 +31,9 @@ class Decline extends Component
     public function store()
     {
 
-        if (! auth()->user()->hasPermissionTo(UserPermission::UPDATE_APPLICATION_STATUS)) {
-            abort(403);
-        }
+        // if (! auth()->user()->hasPermissionTo(UserPermission::UPDATE_APPLICATION_STATUS)) {
+        //     abort(403);
+        // }
 
         $this->application->load(['vacancy.jobTitle']);
 

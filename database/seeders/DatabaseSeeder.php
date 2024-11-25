@@ -11,46 +11,49 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call(UserStatusSeeder::class);
+        activity()->withoutLogs(function () {
+            
+            $this->call(UserStatusSeeder::class);
 
-        $this->call(ApplicationStatusSeeder::class);
-
-        $this->call(RolesAndPermissionsSeeder::class);
-
-        $this->call(ShiftSeeder::class);
-
-        $this->call(PsgcSeeder::class);
-
-        $this->call(EmploymentStatusSeeder::class);
-
-        $this->call(DepartmentSeeder::class);
-
-        $this->call(JobTitleSeeder::class);
-
-        $this->call(JobLevelSeeder::class);
-
-        $this->call(SpecificAreaSeeder::class);
-
-        $this->call(JobFamilySeeder::class);
-
-        $this->call(BasicUserSeeder::class);
-
-        $this->call(IntermediateUserSeeder::class);
-
-        $this->call(AdvancedUserSeeder::class);
-
-        $this->call(JobVacancySeeder::class);
-
-        $this->call(PreempRequirementSeeder::class);
-
-        $this->call(PerformanceCategorySeeder::class);
-
-        $this->call(PerformanceRatingSeeder::class);
-
-        $this->call(PerformancePeriodSeeder::class);
-
-        $this->call(EmployeeSeeder::class, false, ['count' => env('APP_USER_SEEDING_COUNT', 30)]);
-
-        $this->call(ApplicantSeeder::class, false, ['count' => env('APP_USER_SEEDING_COUNT', 30)]);
+            $this->call(ApplicationStatusSeeder::class);
+    
+            $this->call(RolesAndPermissionsSeeder::class);
+    
+            $this->call(ShiftSeeder::class);
+    
+            $this->call(PsgcSeeder::class);
+    
+            $this->call(EmploymentStatusSeeder::class);
+    
+            $this->call(DepartmentSeeder::class);
+    
+            $this->call(JobTitleSeeder::class);
+    
+            $this->call(JobLevelSeeder::class);
+    
+            $this->call(SpecificAreaSeeder::class);
+    
+            $this->call(JobFamilySeeder::class);
+    
+            $this->call(BasicUserSeeder::class);
+    
+            $this->call(IntermediateUserSeeder::class);
+    
+            $this->call(AdvancedUserSeeder::class);
+    
+            $this->call(JobVacancySeeder::class);
+    
+            $this->call(PreempRequirementSeeder::class);
+    
+            $this->call(PerformanceCategorySeeder::class);
+    
+            $this->call(PerformanceRatingSeeder::class);
+    
+            $this->call(PerformancePeriodSeeder::class);
+    
+            // $this->call(EmployeeSeeder::class, false, ['count' => env('APP_USER_SEEDING_COUNT', 30)]);
+    
+            // $this->call(ApplicantSeeder::class, false, ['count' => env('APP_USER_SEEDING_COUNT', 30)]);    
+        });
     }
 }

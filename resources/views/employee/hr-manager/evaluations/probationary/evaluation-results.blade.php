@@ -26,7 +26,7 @@
         <x-breadcrumb :href="'#'"> <!-- REPLACE: Link to the Performance Eval tables -->
             Evaluations
         </x-breadcrumb>
-        <x-breadcrumb :active="request()->routeIs($routePrefix . '.probationary-perf-results')">
+        <x-breadcrumb :active="request()->routeIs($routePrefix . '.evaluation-results.probationary')">
             Probationary Employee
         </x-breadcrumb>
     </x-slot:breadcrumbs>
@@ -52,7 +52,7 @@
                     </div>
 
                     <!-- Overview: Navigation Tabs Content -->
-                    <livewire:hr-manager.performance.overview-eval />
+                    <livewire:hr-manager.evaluations.overview-eval />
                 </div>
             </section>
 
@@ -60,7 +60,7 @@
             <section class="col-md-7 d-flex">
                 <div class="w-100">
                     <!-- Performance Category + Ratings -->
-                    <livewire:hr-manager.performance.category-ratings />
+                    <livewire:hr-manager.evaluations.category-ratings />
                 </div>
             </section>
         </div>

@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Enums\ActivityLogName;
 use App\Enums\UserRole;
 use App\Enums\AccountType;
 use Illuminate\Support\Str;
@@ -66,6 +67,12 @@ class FortifyServiceProvider extends ServiceProvider
             public function toResponse($request)
             {
                 $authUser = Auth::user();
+
+                // sample only, not much
+                activity()
+                    ->by($authUser)
+                    ->useLog(ActivityLogName::AUTHENTICATION->value)
+                    ->log(Str::ucfirst($authUser->account->first_name).' logged in.');
 
                 // Redirection to previously visited page before being prompt to login
                 // For example you visit /employee/payslip and you are not logged in
