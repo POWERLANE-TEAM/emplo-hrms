@@ -1,12 +1,5 @@
 <div class="card border-primary mt-1 px-5 py-4 w-100 h-100">
     <section>
-
-        <style>
-            .scrollable-container {
-                max-height: 50vh;
-                overflow-y: auto;
-            }
-        </style>
         <!-- Section Title -->
         <div class="row">
             <div class="col-md-8">
@@ -28,20 +21,18 @@
             </div>
         </div>
 
-        <div class="scrollable-container visible-gray-scrollbar">
-            <div class="mt-4">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Holiday</th>
-                            <th>Date</th>
-                        </tr>
-                    </thead>
-                    <tbody id="holidaysList">
-                        <!-- Holidays will be injected here dynamically -->
-                    </tbody>
-                </table>
-            </div>
+        <div class="mt-2 scrollable-container visible-gray-scrollbar">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Holiday</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody id="holidaysList">
+                    <!-- Holidays will be injected here dynamically -->
+                </tbody>
+            </table>
         </div>
     </section>
 </div>

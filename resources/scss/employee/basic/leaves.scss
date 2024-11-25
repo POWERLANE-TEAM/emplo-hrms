@@ -24,3 +24,14 @@
 .checkbox-label {
     padding-left: clamp(1.5rem, 1rem + 1.25vw, 5vw);
 }
+
+.table {
+    tr {
+        border: none;
+    }
+
+    td, 
+    th {
+        border: none;
+    }
+}
