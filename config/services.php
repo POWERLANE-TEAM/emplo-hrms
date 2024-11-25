@@ -48,4 +48,9 @@ return [
         'redirect' => env('FACEBOOK_REDIRECT'),
     ],
 
+    'googleDocumentAI' => [
+        'processorId' => env('GOOGLE_DOCUMENT_AI_PROCESSOR_ID'),
+        'processorVer' => env('GOOGLE_DOCUMENT_AI_PROCESSOR_VER'),
+    ],
+
 ];

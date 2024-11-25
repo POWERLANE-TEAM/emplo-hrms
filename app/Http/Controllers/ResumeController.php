@@ -32,8 +32,8 @@ class ResumeController extends Controller
         putenv('GOOGLE_APPLICATION_CREDENTIALS=' . $credentialsPath);
         putenv("GOOGLE_CLOUD_PROJECT=$projectId");
 
-        $processorId = env('GOOGLE_DOCUMENT_AI_PROCESSOR_ID', '');
-        $processorVersion = env('GOOGLE_DOCUMENT_AI_PROCESSOR_VER', '');
+        $processorId = config('services.googleDocumentAI.processorId');
+        $processorVersion = config('services.googleDocumentAI.processorVer');
 
         $client = new DocumentProcessorServiceClient();
 
