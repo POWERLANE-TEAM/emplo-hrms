@@ -2,11 +2,11 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use App\Models\User;
-use Livewire\Livewire;
-use Laravel\Fortify\Features;
 use App\Livewire\Profile\TwoFactorAuthenticationForm;
+use App\Models\User;
+use Laravel\Fortify\Features;
+use Livewire\Livewire;
+use Tests\TestCase;
 
 class TwoFactorAuthenticationSettingsTest extends TestCase
 {
@@ -71,4 +71,3 @@ class TwoFactorAuthenticationSettingsTest extends TestCase
         $this->assertNull($user->fresh()->two_factor_secret);
     }
 }
-

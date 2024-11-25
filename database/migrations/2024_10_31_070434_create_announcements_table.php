@@ -1,11 +1,11 @@
 <?php
 
+use App\Models\Announcement;
 use App\Models\Employee;
 use App\Models\JobFamily;
-use App\Models\Announcement;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -24,16 +24,15 @@ return new class extends Migration
                 ->constrained('employees', 'employee_id')
                 ->cascadeOnUpdate()
                 ->nullOnDelete();
-            
+
             $table->timestamp('published_at')->nullable();
             $table->timestamp('modified_at')->nullable();
             $table->softDeletes();
         });
 
-
         Schema::create('announcement_details', function (Blueprint $table) {
             $table->id('announcement_detail_id');
-            
+
             $table->foreignIdFor(Announcement::class, 'announcement_id')
                 ->constrained('announcements', 'announcement_id')
                 ->cascadeOnUpdate()

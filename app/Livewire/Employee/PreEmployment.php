@@ -2,14 +2,13 @@
 
 namespace App\Livewire\Employee;
 
-
 use App\Models\PreempRequirement;
 use Illuminate\Support\Collection;
 use Livewire\Component;
 
 class PreEmployment extends Component
 {
-    public Collection  $pre_employment_reqs;
+    public Collection $pre_employment_reqs;
 
     public $loads = 0;
 

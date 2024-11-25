@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Str;
 use App\Enums\ActivityLogName;
-use Spatie\Activitylog\LogOptions;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class JobFamily extends Model
@@ -27,8 +29,6 @@ class JobFamily extends Model
 
     /**
      * Get the office head of the job family.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function head(): BelongsTo
     {
@@ -36,42 +36,23 @@ class JobFamily extends Model
     }
 
     /**
-     * The job titles that belong to the job family.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * Get the employees associated with the job family through **EmployeeJobDetail** model.
      */
-    public function jobTitles(): BelongsToMany
+    public function employees(): HasManyThrough
     {
-        return $this->belongsToMany(JobTitle::class, 'job_details', 'job_family_id', 'job_title_id')
-            ->withTimestamps();
+        return $this->hasManyThrough(Employee::class, EmployeeJobDetail::class, 'job_family_id', 'employee_id', 'job_family_id', 'employee_id');
     }
 
     /**
-     * The job levels that belong to the job family.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * Get the job titles associated with the job family.
      */
-    public function jobLevels(): BelongsToMany
+    public function jobTitles(): HasMany
     {
-        return $this->belongsToMany(JobLevel::class, 'job_details', 'job_family_id', 'job_level_id')
-            ->withTimestamps();
-    }
-
-    /**
-     * The specific areas that belong to the job family.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function specificAreas(): BelongsToMany
-    {
-        return $this->belongsToMany(SpecificArea::class, 'job_details', 'job_family_id', 'area_id')
-            ->withTimestamps();
+        return $this->hasMany(JobTitle::class, 'job_family_id', 'job_family_id');
     }
 
     /**
      * Get the announcements that belong/include the job family.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function announcements(): BelongsToMany
     {
@@ -80,8 +61,6 @@ class JobFamily extends Model
 
     /**
      * Override default values for more controlled logging.
-     * 
-     * @return \Spatie\Activitylog\LogOptions
      */
     public function getActivityLogOptions(): LogOptions
     {
@@ -91,10 +70,11 @@ class JobFamily extends Model
             ->dontSubmitEmptyLogs()
             ->setDescriptionForEvent(function (string $eventName) {
                 $causerFirstName = Str::ucfirst(Auth::user()->account->first_name);
+
                 return match ($eventName) {
-                    'created' => __($causerFirstName .' created a new job family record.'),
-                    'updated' => __($causerFirstName .' updated a job family information.'),
-                    'deleted' => __($causerFirstName .' deleted a job family record.'),
+                    'created' => __($causerFirstName.' created a new job family record.'),
+                    'updated' => __($causerFirstName.' updated a job family information.'),
+                    'deleted' => __($causerFirstName.' deleted a job family record.'),
                 };
             });
     }

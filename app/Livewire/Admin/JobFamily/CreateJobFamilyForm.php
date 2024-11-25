@@ -2,12 +2,12 @@
 
 namespace App\Livewire\Admin\JobFamily;
 
-use Livewire\Component;
-use App\Models\JobFamily;
 use App\Enums\UserPermission;
-use Livewire\Attributes\Validate;
-use Illuminate\Support\Facades\DB;
+use App\Models\JobFamily;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\Validate;
+use Livewire\Component;
 
 class CreateJobFamilyForm extends Component
 {
@@ -32,7 +32,7 @@ class CreateJobFamilyForm extends Component
                 'job_family_name' => $this->jobFamilyName,
                 'job_family_desc' => $this->jobFamilyDesc,
                 'office_head' => null,
-            ]);            
+            ]);
         });
 
         $this->reset();

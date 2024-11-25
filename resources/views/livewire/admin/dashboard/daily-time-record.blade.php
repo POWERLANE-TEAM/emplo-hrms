@@ -1,4 +1,4 @@
-<div class="col-md-5 flex">
+<div class="col-md-5 flex" x-cloak>
     <div class="card p-4">
         <div class="table-attendance-cont">
             <header class="fs-4 fw-bold" role="heading" aria-level="2">

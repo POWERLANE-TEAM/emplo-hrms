@@ -13,7 +13,9 @@ class ExamScheduled extends Notification implements ShouldQueue
     use Queueable;
 
     protected $sender;
+
     protected $examStart;
+
     protected $examEnd;
 
     /**
@@ -53,14 +55,13 @@ class ExamScheduled extends Notification implements ShouldQueue
 
         $userName = $notifiable->account->fullName;
 
-
         return (new MailMessage)
             ->from($this->sender['email'])
             ->subject('Exam Scheduled Notification')
-            ->greeting('Hello ' . $userName . '!')
+            ->greeting('Hello '.$userName.'!')
             ->line('Congratulations! You have been qualified for the next stage of our recruitment process.')
             ->line('An exam has been scheduled for you.')
-            ->line('The exam will start at **' . $examStartFormatted . '** and end at **' . $examEndFormatted . '** in the **' . $timezone . ' (GMT' . $timezoneOffset . ')** timezone.')
+            ->line('The exam will start at **'.$examStartFormatted.'** and end at **'.$examEndFormatted.'** in the **'.$timezone.' (GMT'.$timezoneOffset.')** timezone.')
             // ->action('View Exam Details', url('/exam-details'))
             ->line('We wish you the best of luck!')
             ->line('Thank you for your interest in joining our team!');

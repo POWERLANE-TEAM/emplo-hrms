@@ -8,7 +8,6 @@ use Livewire\Component;
 
 class Approve extends Component
 {
-
     private Application $application;
 
     #[Locked]
