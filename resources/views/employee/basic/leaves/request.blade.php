@@ -16,7 +16,7 @@
 @endPushOnce
 
 @pushOnce('styles')
-    @vite(['resources/css/employee/hr-manager/performance.css'])
+    @vite(['resources/css/employee/basic/leaves.css'])
 
 @endPushOnce
 @section('content')
