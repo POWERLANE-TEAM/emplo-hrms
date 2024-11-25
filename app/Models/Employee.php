@@ -117,26 +117,6 @@ class Employee extends Model
     }
 
     /**
-     * Get the job level of the employee through **EmployeeJobDetail** model.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasOneThrough
-     */
-    public function jobLevel(): HasOneThrough
-    {
-        return $this->hasOneThrough(JobLevel::class, EmployeeJobDetail::class, 'employee_id', 'job_level_id', 'employee_id', 'job_level_id');
-    }
-
-    /**
-     * Get the job family/office of the employee.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasOneThrough
-     */
-    public function jobFamily(): HasOneThrough
-    {
-        return $this->hasOneThrough(JobFamily::class, EmployeeJobDetail::class, 'employee_id', 'job_family_id', 'employee_id', 'job_family_id');
-    }
-
-    /**
      * Get the specific area destination of the employee.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\HasOneThrough

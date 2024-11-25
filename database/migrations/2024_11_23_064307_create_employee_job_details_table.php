@@ -2,9 +2,7 @@
 
 use App\Models\Shift;
 use App\Models\Employee;
-use App\Models\JobLevel;
 use App\Models\JobTitle;
-use App\Models\JobFamily;
 use App\Models\Application;
 use App\Models\SpecificArea;
 use App\Models\EmploymentStatus;
@@ -29,16 +27,6 @@ return new class extends Migration
 
             $table->foreignIdFor(JobTitle::class, 'job_title_id')
                 ->constrained('job_titles', 'job_title_id')
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
-
-            $table->foreignIdFor(JobLevel::class, 'job_level_id')
-                ->constrained('job_levels', 'job_level_id')
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
-
-            $table->foreignIdFor(JobFamily::class, 'job_family_id')
-                ->constrained('job_families', 'job_family_id')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
@@ -68,8 +56,6 @@ return new class extends Migration
             $table->index([
                 'employee_id', 
                 'job_title_id', 
-                'job_level_id', 
-                'job_family_id', 
                 'area_id',
                 'shift_id', 
                 'emp_status_id',

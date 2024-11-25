@@ -36,26 +36,6 @@ class EmployeeJobDetail extends Model
     }
 
     /**
-     * Get the job level that owns the job detail.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function jobLevel(): BelongsTo
-    {
-        return $this->belongsTo(JobLevel::class, 'job_level_id', 'job_level_id');
-    }
-
-    /**
-     * Get the job family that owns the job detail.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function jobFamily(): BelongsTo
-    {
-        return $this->belongsTo(JobFamily::class, 'job_family_id', 'job_family_id');
-    }
-
-    /**
      * Get the specific area that owns the job detail.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
