@@ -1,5 +1,12 @@
 <div class="card border-primary mt-1 px-5 py-4 w-100 h-100">
     <section>
+
+        <style>
+            .scrollable-container {
+                max-height: 50vh;
+                overflow-y: auto;
+            }
+        </style>
         <!-- Section Title -->
         <div class="row">
             <div class="col-md-8">
