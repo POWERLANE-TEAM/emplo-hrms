@@ -20,43 +20,32 @@ use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Activitylog\Facades\LogBatch;
 use App\Notifications\EmployeeAccountCreated;
 
 class CreateAccountForm extends Form
 {
-    /**
-     * @var string $firstName
-     */
+    /** @var string $firstName */
     #[Validate('required')]
     public $firstName;
 
-    /**
-     * @var string|null $middleName
-     */
+    /** @var string|null $middleName*/
     #[Validate('nullable')]
     public $middleName;
 
-    /**
-     * @var string $lastName
-     */
+    /** @var string $lastName */
     #[Validate('required')]
     public $lastName;
 
-    /**
-     * @var string $email
-     */
+    /** @var string $email */
     #[Validate('required|email:rfc,dns,spoof|max:320|unique:users,email')]
     public $email;
 
-    /**
-     * @var string $contactNumber
-     */
+    /** @var string $contactNumber */
     #[Validate('required|numeric|digits:11')]
     public $contactNumber;
 
-    /**
-     * @var string $presentRegion
-     */
+    /** @var string $presentRegion */
     #[Validate('required')]
     public $presentRegion;
 
@@ -68,9 +57,7 @@ class CreateAccountForm extends Form
     #[Validate('nullable')]
     public $presentProvince;
     
-    /**
-     * @var string $presentCity
-     */
+    /** @var string $presentCity */
     #[Validate('required')]
     public $presentCity;
 
@@ -82,15 +69,11 @@ class CreateAccountForm extends Form
     #[Validate('required')]
     public $presentBarangay;
 
-    /**
-     * @var string $presentAddress
-     */
+    /** @var string $presentAddress */
     #[Validate('required')]
     public $presentAddress;
 
-    /**
-     * @var string $permanentRegion
-     */
+    /** @var string $permanentRegion */
     #[Validate('required')]
     public $permanentRegion;
 
@@ -102,9 +85,7 @@ class CreateAccountForm extends Form
     #[Validate('nullable')]
     public $permanentProvince;
 
-    /**
-     * @var string $permanentCity
-     */
+    /** @var string $permanentCity */
     #[Validate('required')]
     public $permanentCity;
     
@@ -116,27 +97,19 @@ class CreateAccountForm extends Form
     #[Validate('required')]
     public $permanentBarangay;
 
-    /**
-     * @var string $permanentAddress
-     */    
+    /** @var string $permanentAddress */    
     #[Validate('required')]
     public $permanentAddress;
 
-    /**
-     * @var string $birthDate
-     */
+    /** @var string $birthDate */
     #[Validate('required')]
     public $birthDate;
 
-    /**
-     * @var string $sex
-     */
+    /** @var string $sex */
     #[Validate('required')]
     public $sex;
 
-    /**
-     * @var string $civilStatus
-     */
+    /** @var string $civilStatus */
     #[Validate('required')]
     public $civilStatus;
 
@@ -172,9 +145,7 @@ class CreateAccountForm extends Form
     #[Validate('required')]
     public $area;
 
-    /**
-     * @var string $role
-     */
+    /** @var string $role */
     #[Validate('required')]
     public $role;
 
@@ -194,33 +165,23 @@ class CreateAccountForm extends Form
     #[Validate('required')]
     public $shift;
 
-    /**
-     * @var string $sss
-     */
+    /** @var string $sss */
     #[Validate('required|digits:10|numeric')]
     public $sss;
 
-    /**
-     * @var string $philhealth
-     */
+    /** @var string $philhealth */
     #[Validate('required|digits:12|numeric')]
     public $philhealth;
 
-    /**
-     * @var string $tin
-     */
+    /** @var string $tin */
     #[Validate('required|digits:12|numeric')]
     public $tin;
 
-    /**
-     * @var string $pagibig
-     */
+    /** @var string $pagibig */
     #[Validate('required|digits:12|numeric')]
     public $pagibig;
 
-    /**
-     * @var string $password
-     */
+    /** @var string $password */
     private $password;
 
     /**
@@ -238,11 +199,13 @@ class CreateAccountForm extends Form
     public function create()
     {
         DB::transaction(function () {
+            LogBatch::startBatch();
             $jobDetail = $this->storeJobDetails();
             $employee = $this->storeEmployee($jobDetail);
             $newUser = $this->storeUser($employee);
             $this->assignRole($newUser);
             $this->newUser = $newUser;
+            LogBatch::endBatch();
         });
 
         $this->newUser->notify(new EmployeeAccountCreated($this->newUser, $this->password));

@@ -6,7 +6,7 @@
 * |--------------------------------------------------------------------------
 --}}
 
-@props(['label', 'options' => [], 'nonce', 'required' => false, 'multiple' => false])
+@props(['label' => null, 'options' => [], 'nonce', 'required' => false, 'multiple' => false])
 
 <label for="{{ $attributes->get('id') }}" class="mb-1 fw-semibold text-secondary-emphasis">
     {{ $label }}
@@ -28,7 +28,9 @@
         ]) }} 
         nonce="{{ $nonce }}"
         id="{{ $attributes->get('id') }}">
-        <option disabled>{{ $attributes->get('placeholder', 'Select an option') }}</option>
+        <option value="" @if($multiple) disabled @endif>
+            {{ $attributes->get('placeholder', 'Select an option') }}
+        </option>
         @foreach($options as $value => $optionLabel)
             <option value="{{ $value }}">{{ $optionLabel }}</option>
         @endforeach

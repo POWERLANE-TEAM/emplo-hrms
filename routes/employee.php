@@ -50,12 +50,28 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         ->name('applicant.exam.store');
 
     Route::get('profile', function () {
-            return view('employee.profile.settings');
+        return view('employee.profile.settings');
     })->name('profile');
 
-    Route::get('probationary-perf-results', function () {
-        return view('employee.hr-manager.performance.probationary.performance-results');
-    })->name('probationary-perf-results');
+    // Performance Evaluation Results
+    Route::get('evaluation-results/probationary', function () {
+        return view('/employee.hr-manager.evaluations.probationary.evaluation-results');
+    })->name('evaluation-results.probationary');
+
+    Route::get('evaluation-results/regular', function () {
+        return view('/employee.hr-manager.evaluations.regular.evaluation-results');
+    })->name('evaluation-results.regular');
+
+
+    // Performance Evaluation Scoring
+    Route::get('/assign-score/probationary', function () {
+        return view('employee.supervisor.evaluations.probationary.assign-score');
+    })->name('assign-score.probationary');
+
+    Route::get('/assign-score/regular', function () {
+        return view('employee.supervisor.evaluations.regular.assign-score');
+    })->name('assign-score.regular');
+
 
     Route::get('/index', [EmployeeController::class, 'index'])
         ->name('index');
