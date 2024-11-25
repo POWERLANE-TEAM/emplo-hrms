@@ -91,7 +91,7 @@ class CreateJobListing extends Component
     public function renderSelectedJob()
     {
         $this->jobDetails = JobTitle::where('job_title_id', $this->state['selectedJob'])
-                                ->with(['department', 'qualifications'])
+                                ->with(['department', 'qualifications', 'jobFamily', 'jobLevel'])
                                 ->get()
                                 ->map(function ($item) {
                                     return (object) [
@@ -99,6 +99,9 @@ class CreateJobListing extends Component
                                         'description'=> $item->job_title_desc,
                                         'department' => $item->department->department_name,
                                         'qualifications' => $item->qualifications,
+                                        'family' => $item->jobFamily->job_family_name,
+                                        'level' => $item->jobLevel->job_level,
+                                        'levelName' => $item->jobLevel->job_level_name
                                     ];
                                 });
     }
