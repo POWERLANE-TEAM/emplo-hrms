@@ -24,7 +24,7 @@
         {{ $attributes->merge([
             'class' => 'form-control form-select border ps-3 rounded pe-5',
             'autocomplete' => $attributes->get('autocomplete', 'off'),
-            'multiple',
+            'multiple' => true,
         ]) }} 
         nonce="{{ $nonce }}"
         id="{{ $attributes->get('id') }}">
