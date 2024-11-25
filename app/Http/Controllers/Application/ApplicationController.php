@@ -16,7 +16,7 @@ use Illuminate\Validation\Rule;
 class ApplicationController extends Controller
 {
     /* Show all resource */
-    public function index($page = null)
+    public function index($applicationStatus, $page = null)
     {
         if (empty($page) || $page == 'index') {
             return view('employee.application.index');
@@ -52,19 +52,9 @@ class ApplicationController extends Controller
 
         $user = auth()->user()->load('account.application');
 
+        // check if the user updating the application is the applicant himself
         if ($user && $user->account && $user->account->application) {
             $isTheApplicant = $user->account->application->application_id == $applicationId;
-        }
-
-
-        // Check permission to modify
-        if (!$isTheApplicant && !auth()->user()->hasPermissionTo(UserPermission::UPDATE_APPLICATION_STATUS)) {
-            abort(403);
-        }
-
-        // Check if already hired but allow admin to update hired application
-        if ($application->hired_at != null && !(auth()->user()->hasRole(UserRole::ADVANCED))) {
-            abort(403);
         }
 
         if (!$isValidated) {
@@ -84,18 +74,59 @@ class ApplicationController extends Controller
         // extract value either from form or livewire(array)
         if (is_array($request)) {
             $jobVacancyId = $request['jobVacancyId'] ?? null;
-            $applicationStatusId = $request['applicationStatusId'];
+            $applicationStatusId = $request['applicationStatusId'] ?? null;
             $hireDate = $request['hireDate'] ?? null;
+            $isPassed = $request['isPassed'] ?? null;
         } else {
             $jobVacancyId = $validated('jobVacancyId') ?? null;
-            $applicationStatusId = $validated('applicationStatusId');
+            $applicationStatusId = $validated('applicationStatusId') ?? null;
             $hireDate = $validated('hireDate') ?? null;
+            $isPassed = $validated('isPassed') ?? null;
+        }
+
+        // Check permission to modify
+        if (!$isTheApplicant) {
+
+            // Check if already hired but allow admin to update hired application
+            if ($application->hired_at != null && !(auth()->user()->hasRole(UserRole::ADVANCED))) {
+                abort(403, 'Application status can no longer be updated.');
+            }
+
+            // check if user has permission to update pending application
+            if ($application->application_status_id == ApplicationStatus::PENDING && !(auth()->user()->hasPermission(UserPermission::UPDATE_PENDING_APPLICATION_STATUS))) {
+                abort(403, 'Pending');
+            }
+
+            // check if user has permission to update application that has exam and initial interview scheduled
+            if ($application->application_status_id == ApplicationStatus::ASSESSMENT_SCHEDULED && !(auth()->user()->hasPermission(UserPermission::UPDATE_QUALIFIED_APPLICATION_STATUS))) {
+                abort(403, 'Assessment scheduled');
+            }
+
+            // check if user has permission to update pre employed application to an employee
+            if ($application->application_status_id == ApplicationStatus::PRE_EMPLOYED && !(auth()->user()->hasPermission(UserPermission::UPDATE_PRE_EMPLOYED_APPLICATION_STATUS))) {
+                abort(403, 'Pre employed');
+            }
+        } else if (!is_null($applicationStatusId) || !is_null($hireDate) || !is_null($isPassed)) {
+            // if applicant tries to update application status
+            abort(403, 'Application status cannot be updated by applicant.');
         }
 
         // If application is pending review limit the update to only allowed status
         if ($application->application_status_id == ApplicationStatus::PENDING && !in_array($applicationStatusId, ApplicationStatus::allowedPendingStatusUpdates())) {
             abort(403, 'Invalid application update process.');
         }
+
+        if ($application->application_status_id == ApplicationStatus::ASSESSMENT_SCHEDULED && !in_array($applicationStatusId, ApplicationStatus::allowedAssessedStatusUpdates())) {
+            abort(403, 'Invalid application update process.');
+        }
+
+        if ($application->application_status_id == ApplicationStatus::FINAL_INTERVIEW_SCHEDULED && !in_array($applicationStatusId, ApplicationStatus::allowedFinalInterviewStatusUpdates())) {
+            abort(403, 'Invalid application update process.');
+        }
+
+        // if ($application->application_status_id == ApplicationStatus::REJECTED) {
+        //     //   maybe  make a diff message of why rejected application is reconsidered
+        // }
 
         // update date that is present in the request
         $updateData = array_filter([

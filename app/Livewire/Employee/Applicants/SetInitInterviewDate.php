@@ -49,12 +49,10 @@ class SetInitInterviewDate extends Component
     public function setInterviewMinDate($minDate)
     {
 
-        if (! auth()->user()->hasPermissionTo(UserPermission::CREATE_APPLICANT_INIT_INTERVIEW_SCHEDULE)) {
-            abort(403);
-        }
-
         $tomorrow = date('Y-m-d', strtotime('+1 day', strtotime($minDate)));
-        $this->interview->setMinDate($minDate);
+        if (strtotime($minDate) >= strtotime(date('Y-m-d'))) {
+            $this->interview->setMinDate($minDate);
+        }
     }
 
     public function render()
