@@ -10,8 +10,6 @@ enum UserRole: string
 
     /**
      * Return user-friendly role labels.
-     *
-     * @return string
      */
     public function label(): string
     {

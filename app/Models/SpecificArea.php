@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class SpecificArea extends Model
@@ -21,8 +21,6 @@ class SpecificArea extends Model
 
     /**
      * Get the area manager of the specific area.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function areaManager(): BelongsTo
     {
@@ -31,8 +29,6 @@ class SpecificArea extends Model
 
     /**
      * Get the employees associated with the job family through **EmployeeJobDetail** model.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
     public function employees(): HasManyThrough
     {

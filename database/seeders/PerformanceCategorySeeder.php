@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Support\Str;
-use Illuminate\Database\Seeder;
 use App\Models\PerformanceCategory;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class PerformanceCategorySeeder extends Seeder
 {

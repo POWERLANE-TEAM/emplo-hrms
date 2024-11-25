@@ -2,16 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Str;
 use App\Enums\ActivityLogName;
-use Spatie\Activitylog\LogOptions;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\Traits\LogsActivity;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class JobTitle extends Model
 {
@@ -28,18 +28,14 @@ class JobTitle extends Model
 
     /**
      * Get the department that owns the job title.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function department(): BelongsTo
     {
         return $this->belongsTo(Department::class, 'department_id', 'department_id');
     }
-    
+
     /**
      * Get the employees associated with the job title through **EmployeeJobDetail** model.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
     public function employees(): HasManyThrough
     {
@@ -48,8 +44,6 @@ class JobTitle extends Model
 
     /**
      * Get the employee job details associated with the job title.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function jobDetails(): HasMany
     {
@@ -58,8 +52,6 @@ class JobTitle extends Model
 
     /**
      * Get the job level that owns the job title.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function jobLevel(): BelongsTo
     {
@@ -68,8 +60,6 @@ class JobTitle extends Model
 
     /**
      * Get the job family that owns the job title.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function jobFamily(): BelongsTo
     {
@@ -78,8 +68,6 @@ class JobTitle extends Model
 
     /**
      * Get the qualifications associated with the job title.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function qualifications(): HasMany
     {
@@ -88,8 +76,6 @@ class JobTitle extends Model
 
     /**
      * Get the vacancy associated with the job title.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function vacancies(): HasMany
     {
@@ -98,8 +84,6 @@ class JobTitle extends Model
 
     /**
      * Override default values for more controlled logging.
-     * 
-     * @return \Spatie\Activitylog\LogOptions
      */
     public function getActivityLogOptions(): LogOptions
     {
@@ -109,6 +93,7 @@ class JobTitle extends Model
             ->dontSubmitEmptyLogs()
             ->setDescriptionForEvent(function (string $eventName) {
                 $causerFirstName = Str::ucfirst(Auth::user()->account->first_name);
+
                 return match ($eventName) {
                     'created' => __($causerFirstName.' created a new job title record.'),
                     'updated' => __($causerFirstName.' updated a job title information.'),

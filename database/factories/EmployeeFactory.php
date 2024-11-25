@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Enums\Sex;
 use App\Enums\CivilStatus;
+use App\Enums\Sex;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

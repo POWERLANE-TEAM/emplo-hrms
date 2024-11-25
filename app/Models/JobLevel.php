@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
@@ -12,7 +12,7 @@ class JobLevel extends Model
     use HasFactory;
 
     protected $primaryKey = 'job_level_id';
-    
+
     public $timestamps = false;
 
     protected $fillable = [
@@ -23,8 +23,6 @@ class JobLevel extends Model
 
     /**
      * Get the employees associated with the job level through **EmployeeJobDetail** model.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
     public function employees(): HasManyThrough
     {
@@ -33,8 +31,6 @@ class JobLevel extends Model
 
     /**
      * Get the job titles associated with the job level.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function jobTitles(): HasMany
     {

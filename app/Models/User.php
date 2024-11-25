@@ -2,33 +2,33 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Str;
 use App\Enums\ActivityLogName;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Activitylog\LogOptions;
-use Illuminate\Support\Facades\Auth;
-use Spatie\Permission\Traits\HasRoles;
-use Illuminate\Notifications\Notifiable;
-use Spatie\Activitylog\Traits\LogsActivity;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Laravel\Fortify\TwoFactorAuthenticatable;
 use Spatie\Activitylog\Traits\CausesActivity;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
+    use CausesActivity;
     use HasApiTokens;
     use HasFactory;
     use HasRoles;
-    use Notifiable;
-    use TwoFactorAuthenticatable;
     use LogsActivity;
-    use CausesActivity;
+    use Notifiable;
     use SoftDeletes;
+    use TwoFactorAuthenticatable;
 
     protected $primaryKey = 'user_id';
 
@@ -75,8 +75,6 @@ class User extends Authenticatable implements MustVerifyEmail
 
     /**
      * Get the parent model (Guest, Applicant, or Employee) that the account belongs to.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
     public function account(): MorphTo
     {
@@ -85,8 +83,6 @@ class User extends Authenticatable implements MustVerifyEmail
 
     /**
      * Get the user status of the user.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function status(): BelongsTo
     {
@@ -95,8 +91,6 @@ class User extends Authenticatable implements MustVerifyEmail
 
     /**
      * Override default values for more controlled logging.
-     * 
-     * @return \Spatie\Activitylog\LogOptions
      */
     public function getActivityLogOptions(): LogOptions
     {
@@ -116,6 +110,7 @@ class User extends Authenticatable implements MustVerifyEmail
             ])
             ->setDescriptionForEvent(function (string $eventName) {
                 $causerFirstName = Str::ucfirst(Auth::user()->account->first_name);
+
                 return match ($eventName) {
                     'created' => __($causerFirstName.' created a new user.'),
                     'updated' => __($causerFirstName.' updated a user information.'),

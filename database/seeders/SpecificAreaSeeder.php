@@ -17,7 +17,7 @@ class SpecificAreaSeeder extends Seeder
             'Head Office',
             'NCR',
             'Pampanga',
-            'Ilocos'
+            'Ilocos',
         ]);
 
         $areas->each(function (string $area) {

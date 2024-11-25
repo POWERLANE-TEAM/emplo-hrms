@@ -17,7 +17,7 @@ class JobViewPane extends Component
                 'jobTitle' => [$job->jobTitle],
                 'jobFamilies' => [$job->jobTitle->jobFamilies->first()],
                 'specificAreas' => [$job->jobTitle->specificAreas->first()],
-            ]
+            ],
         ];
     }
 

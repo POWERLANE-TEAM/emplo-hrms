@@ -18,11 +18,8 @@ class ApplicationExam extends Model
         'application_exam_id',
     ];
 
-
     /**
      * Get the job application that owns the examination.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function application(): BelongsTo
     {

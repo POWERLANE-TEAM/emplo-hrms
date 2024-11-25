@@ -18,8 +18,6 @@ class PerformancePeriod extends Model
 
     /**
      * Get the performance evaluation records during the performance period.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function details(): HasMany
     {

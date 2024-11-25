@@ -17,8 +17,6 @@ class EmployeeJobDetail extends Model
 
     /**
      * Get the employee that owns the job detail.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function employee(): BelongsTo
     {
@@ -27,8 +25,6 @@ class EmployeeJobDetail extends Model
 
     /**
      * Get the job title that owns the job detail.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function jobTitle(): BelongsTo
     {
@@ -37,8 +33,6 @@ class EmployeeJobDetail extends Model
 
     /**
      * Get the specific area that owns the job detail.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function specificArea(): BelongsTo
     {
@@ -47,8 +41,6 @@ class EmployeeJobDetail extends Model
 
     /**
      * Get the shift that owns the job detail.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function shift(): BelongsTo
     {
@@ -57,8 +49,6 @@ class EmployeeJobDetail extends Model
 
     /**
      * Get the employment status that owns the job detail.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function status(): BelongsTo
     {
@@ -67,8 +57,6 @@ class EmployeeJobDetail extends Model
 
     /**
      * Get the application that owns the job detail.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function application(): BelongsTo
     {

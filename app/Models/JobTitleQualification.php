@@ -17,8 +17,6 @@ class JobTitleQualification extends Model
 
     /**
      * Get the job title that owns the qualification.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function jobTitle(): BelongsTo
     {

@@ -23,13 +23,11 @@ return new class extends Migration
             $table->longText('job_level_desc')->nullable();
         });
 
-        
         Schema::create('job_families', function (Blueprint $table) {
             $table->id('job_family_id');
             $table->string('job_family_name');
             $table->longText('job_family_desc')->nullable();
         });
-
 
         Schema::create('job_titles', function (Blueprint $table) {
             $table->id('job_title_id');
@@ -54,7 +52,6 @@ return new class extends Migration
 
             $table->timestamps();
         });
-
 
         // pivot table
         Schema::create('job_details', function (Blueprint $table) {

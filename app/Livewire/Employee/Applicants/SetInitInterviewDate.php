@@ -6,14 +6,12 @@ use App\Enums\UserPermission;
 use App\Http\Controllers\InitialInterviewController;
 use App\Livewire\Forms\ScheduleForm;
 use App\Models\Application;
-use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
 class SetInitInterviewDate extends Component
 {
     public ScheduleForm $interview;
-
 
     public Application $application;
 
@@ -34,11 +32,10 @@ class SetInitInterviewDate extends Component
 
         $validated['applicationId'] = $this->application->application_id;
 
-        $controller = new InitialInterviewController();
+        $controller = new InitialInterviewController;
 
         $controller->store($validated, true);
     }
-
 
     /**
      * Handle the Examination date must not be the same as the Interview date.

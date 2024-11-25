@@ -2,11 +2,11 @@
 
 namespace App\Livewire\Auth;
 
-use Livewire\Component;
-use Illuminate\Support\Str;
 use App\Enums\ActivityLogName;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
+use Livewire\Component;
 
 class Logout extends Component
 {
@@ -25,7 +25,7 @@ class Logout extends Component
         $this->nonce = csp_nonce();
 
         $user_session = session()->getId();
-        $this->authBroadcastId = hash('sha512', $user_session . Auth::user()->email . $user_session);
+        $this->authBroadcastId = hash('sha512', $user_session.Auth::user()->email.$user_session);
     }
 
     public function render()

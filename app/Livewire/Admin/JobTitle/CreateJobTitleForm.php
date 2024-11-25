@@ -2,18 +2,17 @@
 
 namespace App\Livewire\Admin\JobTitle;
 
-use Livewire\Component;
+use App\Enums\UserPermission;
+use App\Models\Department;
+use App\Models\JobFamily;
 use App\Models\JobLevel;
 use App\Models\JobTitle;
-use App\Models\JobFamily;
-use App\Models\Department;
-use Livewire\Attributes\On;
-use App\Enums\UserPermission;
-use Livewire\Attributes\Computed;
-use Livewire\Attributes\Validate;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use App\Livewire\Admin\JobTitle\SetQualifications;
+use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
+use Livewire\Attributes\Validate;
+use Livewire\Component;
 
 class CreateJobTitleForm extends Component
 {
@@ -53,11 +52,11 @@ class CreateJobTitleForm extends Component
                 $jobTitle->qualifications()->create([
                     'job_title_qual_desc' => $qualification['description'],
                     'job_title_id' => $jobTitle->job_title_id,
-                    'priority_level' => $qualification['priorityLevel'],                
+                    'priority_level' => $qualification['priorityLevel'],
                 ]);
             });
         });
-        
+
         $this->dispatch('job-title-created')->to(SetQualifications::class);
 
         $this->reset();
@@ -87,7 +86,7 @@ class CreateJobTitleForm extends Component
             'state.level' => 'required',
             'state.title' => 'required',
             'state.description' => 'nullable',
-            'state.baseSalary' => 'nullable|numeric|min:5'
+            'state.baseSalary' => 'nullable|numeric|min:5',
         ];
     }
 
@@ -106,7 +105,7 @@ class CreateJobTitleForm extends Component
     #[Computed]
     public function departments()
     {
-        return Department::all()->pluck('department_name', 'department_id')->toArray();   
+        return Department::all()->pluck('department_name', 'department_id')->toArray();
     }
 
     #[Computed]

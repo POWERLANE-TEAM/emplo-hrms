@@ -19,13 +19,12 @@ Route::group([], function () {
     });
 });
 
-
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/application/{page?}', [ApplicantController::class, 'index']);
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/preemploy',  [PreEmploymentController::class, 'create']);
+    Route::get('/preemploy', [PreEmploymentController::class, 'create']);
     Route::post('/preemploy', [PreEmploymentController::class, 'store']);
 });
 

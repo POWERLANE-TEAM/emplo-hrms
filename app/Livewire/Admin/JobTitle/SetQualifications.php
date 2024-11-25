@@ -2,11 +2,11 @@
 
 namespace App\Livewire\Admin\JobTitle;
 
-use Livewire\Component;
-use Livewire\Attributes\On;
-use Livewire\Attributes\Computed;
-use Livewire\Attributes\Validate;
 use App\Enums\JobQualificationPriorityLevel;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
+use Livewire\Attributes\Validate;
+use Livewire\Component;
 
 class SetQualifications extends Component
 {
@@ -42,7 +42,7 @@ class SetQualifications extends Component
 
             $this->dispatch('close-qualification-modal');
             $this->dispatch('qualification-updated',
-                $this->state['index'], 
+                $this->state['index'],
                 $this->editState['qualification'],
                 $this->editState['priority'],
             )->to(CreateJobTitleForm::class);
@@ -68,7 +68,7 @@ class SetQualifications extends Component
         $this->state['index'] = $index;
         $this->editState['qualification'] = $this->items[$index]['qualification'];
         $this->editState['priority'] = $this->items[$index]['priority'];
-        
+
         $this->dispatch('open-qualification-modal');
     }
 
@@ -86,6 +86,7 @@ class SetQualifications extends Component
                 'editState.qualification' => 'required',
             ];
         }
+
         return [
             'state.priority' => 'required',
             'state.qualification' => 'required',
@@ -107,7 +108,6 @@ class SetQualifications extends Component
     {
         return collect(JobQualificationPriorityLevel::options())->flip()->toArray();
     }
-
 
     public function render()
     {

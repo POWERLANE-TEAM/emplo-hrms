@@ -14,9 +14,11 @@ use Illuminate\Http\Request;
 class InitialInterviewController extends Controller
 {
     protected $minDate;
+
     protected $maxDate;
 
     protected $minTime;
+
     protected $maxTime;
 
     protected $date = '';
@@ -26,7 +28,6 @@ class InitialInterviewController extends Controller
     // {
     //     return view();
     // }
-
 
     /* Show form page for creating resource */
     // public function create() : ViewFactory|View
@@ -38,7 +39,7 @@ class InitialInterviewController extends Controller
     public function store(Request|array $request, bool $isValidated = false)
     {
 
-        if (!$isValidated) {
+        if (! $isValidated) {
             if (! auth()->user()->hasPermissionTo(UserPermission::CREATE_APPLICANT_INIT_INTERVIEW_SCHEDULE)) {
                 abort(403);
             }
@@ -46,12 +47,12 @@ class InitialInterviewController extends Controller
             $this->date = $request->input('examination.date');
 
             $validated = $request->validate([
-                'interview.date' => 'bail|required|' .  ScheduleDateRule::get($this->minDate, $this->maxDate),
+                'interview.date' => 'bail|required|'.ScheduleDateRule::get($this->minDate, $this->maxDate),
                 'interview.time' => (function () {
                     return [
                         'bail',
                         'required_with:date',
-                        new ScheduleTimeRule($this->date)
+                        new ScheduleTimeRule($this->date),
                     ];
                 })(),
             ]);
@@ -75,7 +76,7 @@ class InitialInterviewController extends Controller
 
         InitialInterview::create([
             'application_id' => $application->application_id,
-            'init_interview_at' => $interviewStartDate . ' ' . $interviewStartTime,
+            'init_interview_at' => $interviewStartDate.' '.$interviewStartTime,
             'init_interviewer' => auth()->user()->user_id,
             'is_init_interview_passed' => false,
         ]);
