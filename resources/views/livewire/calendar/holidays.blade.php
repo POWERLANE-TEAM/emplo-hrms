@@ -28,18 +28,20 @@
             </div>
         </div>
 
-        <div class="mt-4 scrollable-container visible-gray-scrollbar">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Holiday</th>
-                        <th>Date</th>
-                    </tr>
-                </thead>
-                <tbody id="holidaysList">
-                    <!-- Holidays will be injected here dynamically -->
-                </tbody>
-            </table>
+        <div class="scrollable-container visible-gray-scrollbar">
+            <div class="mt-4">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Holiday</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="holidaysList">
+                        <!-- Holidays will be injected here dynamically -->
+                    </tbody>
+                </table>
+            </div>
         </div>
     </section>
 </div>
