@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Contracts\View\View;
-use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
@@ -13,7 +12,6 @@ class EmployeeController extends Controller
     {
         return view('employee.index.index');
     }
-
 
     /* Show form page for creating resource */
     // public function create() : ViewFactory|View

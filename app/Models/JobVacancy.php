@@ -2,16 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Str;
 use App\Enums\ActivityLogName;
-use Spatie\Activitylog\LogOptions;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\Traits\LogsActivity;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class JobVacancy extends Model
 {
@@ -28,8 +27,6 @@ class JobVacancy extends Model
 
     /**
      * Get the job title that owns the job vacancy.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function jobTitle(): BelongsTo
     {
@@ -38,8 +35,6 @@ class JobVacancy extends Model
 
     /**
      * Get the job applications associated with the job vacancy.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function applications(): HasMany
     {
@@ -48,8 +43,6 @@ class JobVacancy extends Model
 
     /**
      * Override default values for more controlled logging.
-     * 
-     * @return \Spatie\Activitylog\LogOptions
      */
     public function getActivityLogOptions(): LogOptions
     {
@@ -59,10 +52,11 @@ class JobVacancy extends Model
             ->dontSubmitEmptyLogs()
             ->setDescriptionForEvent(function (string $eventName) {
                 $causerFirstName = Str::ucfirst(Auth::user()->account->first_name);
+
                 return match ($eventName) {
-                    'created' => __($causerFirstName .' created a new job listing.'),
-                    'updated' => __($causerFirstName .' updated a job listing\'s information.'),
-                    'deleted' => __($causerFirstName .' deleted a job listing.'),
+                    'created' => __($causerFirstName.' created a new job listing.'),
+                    'updated' => __($causerFirstName.' updated a job listing\'s information.'),
+                    'deleted' => __($causerFirstName.' deleted a job listing.'),
                 };
             });
     }

@@ -2,11 +2,11 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use App\Models\User;
-use Livewire\Livewire;
-use Illuminate\Support\Facades\Hash;
 use App\Livewire\Profile\UpdatePasswordForm;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Livewire\Livewire;
+use Tests\TestCase;
 
 class UpdatePasswordTest extends TestCase
 {

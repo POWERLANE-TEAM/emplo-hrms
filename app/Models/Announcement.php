@@ -2,22 +2,22 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Support\Str;
 use App\Enums\ActivityLogName;
-use Spatie\Activitylog\LogOptions;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\Traits\LogsActivity;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Announcement extends Model
 {
     use HasFactory;
-    use SoftDeletes;
     use LogsActivity;
+    use SoftDeletes;
 
     const CREATED_AT = 'published_at';
 
@@ -33,8 +33,6 @@ class Announcement extends Model
 
     /**
      * Get the publisher of the announcement.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function publisher(): BelongsTo
     {
@@ -43,8 +41,6 @@ class Announcement extends Model
 
     /**
      * The job families/offices that belong/tagged on the announcement.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function offices(): BelongsToMany
     {
@@ -53,8 +49,6 @@ class Announcement extends Model
 
     /**
      * Override default values for more controlled logging.
-     * 
-     * @return \Spatie\Activitylog\LogOptions
      */
     public function getActivityLogOptions(): LogOptions
     {
@@ -64,6 +58,7 @@ class Announcement extends Model
             ->dontSubmitEmptyLogs()
             ->setDescriptionForEvent(function (string $eventName) {
                 $causerFirstName = Str::ucfirst(Auth::user()->account->first_name);
+
                 return match ($eventName) {
                     'created' => __($causerFirstName.' posted a new announcement.'),
                     'updated' => __($causerFirstName.' updated an announcement'),

@@ -19,8 +19,6 @@ class LeaveCategory extends Model
 
     /**
      * Get the employee leave records associated with the leave category
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function leaves(): HasMany
     {

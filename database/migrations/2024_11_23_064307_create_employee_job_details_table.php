@@ -1,14 +1,14 @@
 <?php
 
-use App\Models\Shift;
-use App\Models\Employee;
-use App\Models\JobTitle;
 use App\Models\Application;
-use App\Models\SpecificArea;
+use App\Models\Employee;
 use App\Models\EmploymentStatus;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
+use App\Models\JobTitle;
+use App\Models\Shift;
+use App\Models\SpecificArea;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -54,12 +54,12 @@ return new class extends Migration
             $table->integer('leave_balance')->default(0);
 
             $table->index([
-                'employee_id', 
-                'job_title_id', 
+                'employee_id',
+                'job_title_id',
                 'area_id',
-                'shift_id', 
+                'shift_id',
                 'emp_status_id',
-                'application_id'
+                'application_id',
             ]);
         });
     }

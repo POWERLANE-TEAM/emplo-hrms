@@ -122,8 +122,9 @@ class CspPolicy extends CustomSpatiePolicy
                     if ($unicast['family'] === AF_INET) {
                         foreach ($wifiKeywords as $keyword) {
                             if (stripos($details['description'], $keyword) !== false) {
-                                if ($this->hasInternetConnection($unicast['address']) && !str_ends_with($unicast['address'], '.1')) {
+                                if ($this->hasInternetConnection($unicast['address']) && ! str_ends_with($unicast['address'], '.1')) {
                                     Cache::put($cacheKey, $unicast['address'], $cacheDuration);
+
                                     return $unicast['address'];
                                 }
                                 $activeIps[] = ['type' => 'wifi', 'address' => $unicast['address']];
@@ -139,8 +140,9 @@ class CspPolicy extends CustomSpatiePolicy
             if (isset($details['description']) && isset($details['unicast']) && isset($details['up']) && $details['up']) {
                 foreach ($details['unicast'] as $unicast) {
                     if ($unicast['family'] === AF_INET) {
-                        if ($this->hasInternetConnection($unicast['address']) && !str_ends_with($unicast['address'], '.1')) {
+                        if ($this->hasInternetConnection($unicast['address']) && ! str_ends_with($unicast['address'], '.1')) {
                             Cache::put($cacheKey, $unicast['address'], $cacheDuration);
+
                             return $unicast['address'];
                         }
                         $activeIps[] = ['type' => 'other', 'address' => $unicast['address']];
@@ -151,15 +153,17 @@ class CspPolicy extends CustomSpatiePolicy
 
         // If no IP address with internet connectivity is found, fallback to any active IP address, prioritizing Wi-Fi
         foreach ($activeIps as $ip) {
-            if ($ip['type'] === 'wifi' && !str_ends_with($ip['address'], '.1')) {
+            if ($ip['type'] === 'wifi' && ! str_ends_with($ip['address'], '.1')) {
                 Cache::put($cacheKey, $ip['address'], $cacheDuration);
+
                 return $ip['address'];
             }
         }
 
         // If no Wi-Fi IP is found, return any active IP
-        $fallbackIp = $activeIps[0]['address'] ?? "localhost";
+        $fallbackIp = $activeIps[0]['address'] ?? 'localhost';
         Cache::put($cacheKey, $fallbackIp, $cacheDuration);
+
         return $fallbackIp;
     }
 
@@ -173,7 +177,7 @@ class CspPolicy extends CustomSpatiePolicy
             return Cache::get($cacheKey);
         }
 
-        $servers = ["8.8.8.8", "1.1.1.1", "208.67.222.222"]; // Google's DNS, Cloudflare's DNS, OpenDNS
+        $servers = ['8.8.8.8', '1.1.1.1', '208.67.222.222']; // Google's DNS, Cloudflare's DNS, OpenDNS
         $connected = false;
 
         foreach ($servers as $server) {

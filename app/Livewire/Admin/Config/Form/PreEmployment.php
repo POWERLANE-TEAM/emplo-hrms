@@ -2,13 +2,13 @@
 
 namespace App\Livewire\Admin\Config\Form;
 
-use Livewire\Component;
 use App\Enums\UserPermission;
 use App\Models\PreempRequirement;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Validate;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 
 class PreEmployment extends Component
 {
@@ -18,7 +18,7 @@ class PreEmployment extends Component
     public $index;
 
     public $editMode = false;
-    
+
     public function save()
     {
         if ($this->editMode) {
@@ -32,10 +32,10 @@ class PreEmployment extends Component
 
             $requirement = PreempRequirement::find($this->index);
 
-            if($requirement) {
+            if ($requirement) {
                 DB::transaction(function () use ($requirement) {
                     $requirement->update([
-                      'preemp_req_name' => $this->requirement
+                        'preemp_req_name' => $this->requirement,
                     ]);
                 });
             }
@@ -50,7 +50,7 @@ class PreEmployment extends Component
 
             DB::transaction(function () {
                 PreempRequirement::create([
-                    'preemp_req_name' => $this->requirement
+                    'preemp_req_name' => $this->requirement,
                 ]);
             });
         }
@@ -95,7 +95,7 @@ class PreEmployment extends Component
                     'name' => $item['preemp_req_name'],
                 ];
             }
-        );
+            );
     }
 
     public function render()

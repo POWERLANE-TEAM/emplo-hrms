@@ -8,7 +8,6 @@ use Livewire\Component;
 
 class Show extends Component
 {
-
     private Application $application;
 
     #[Locked]

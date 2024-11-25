@@ -2,17 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Str;
 use App\Enums\ActivityLogName;
-use Spatie\Activitylog\LogOptions;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\Traits\LogsActivity;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class JobFamily extends Model
 {
@@ -29,8 +29,6 @@ class JobFamily extends Model
 
     /**
      * Get the office head of the job family.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function head(): BelongsTo
     {
@@ -39,8 +37,6 @@ class JobFamily extends Model
 
     /**
      * Get the employees associated with the job family through **EmployeeJobDetail** model.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
     public function employees(): HasManyThrough
     {
@@ -49,8 +45,6 @@ class JobFamily extends Model
 
     /**
      * Get the job titles associated with the job family.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function jobTitles(): HasMany
     {
@@ -59,8 +53,6 @@ class JobFamily extends Model
 
     /**
      * Get the announcements that belong/include the job family.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function announcements(): BelongsToMany
     {
@@ -69,8 +61,6 @@ class JobFamily extends Model
 
     /**
      * Override default values for more controlled logging.
-     * 
-     * @return \Spatie\Activitylog\LogOptions
      */
     public function getActivityLogOptions(): LogOptions
     {
@@ -80,10 +70,11 @@ class JobFamily extends Model
             ->dontSubmitEmptyLogs()
             ->setDescriptionForEvent(function (string $eventName) {
                 $causerFirstName = Str::ucfirst(Auth::user()->account->first_name);
+
                 return match ($eventName) {
-                    'created' => __($causerFirstName .' created a new job family record.'),
-                    'updated' => __($causerFirstName .' updated a job family information.'),
-                    'deleted' => __($causerFirstName .' deleted a job family record.'),
+                    'created' => __($causerFirstName.' created a new job family record.'),
+                    'updated' => __($causerFirstName.' updated a job family information.'),
+                    'deleted' => __($causerFirstName.' deleted a job family record.'),
                 };
             });
     }

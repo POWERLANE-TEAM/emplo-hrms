@@ -15,7 +15,6 @@ class Login extends Component
 
     public $remember = false;
 
-
     public function render()
     {
         return view('livewire.auth.employee.login');

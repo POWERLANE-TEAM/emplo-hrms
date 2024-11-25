@@ -2,14 +2,14 @@
 
 namespace App\Livewire\Admin\Config\Performance;
 
-use Livewire\Component;
-use Illuminate\Support\Str;
 use App\Enums\UserPermission;
-use Livewire\Attributes\Computed;
-use Illuminate\Support\Facades\DB;
 use App\Models\PerformanceCategory;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+use Livewire\Attributes\Computed;
+use Livewire\Component;
 
 class Categories extends Component
 {
@@ -22,12 +22,12 @@ class Categories extends Component
     public $editMode = false;
 
     /**
-     * Handle validation, authorization, and transaction before 
+     * Handle validation, authorization, and transaction before
      * persisting changes in the performance_categories table.
      * Dispatch event if changes were persisted.
-     * Reset each prop to their original state. 
+     * Reset each prop to their original state.
      * Remove displayed error messages.
-     * 
+     *
      * @return void
      */
     public function save()
@@ -55,8 +55,8 @@ class Categories extends Component
                         'perf_category_name' => Str::lower($this->state['title']),
                         'perf_category_desc' => Str::lower($this->state['shortDescription']),
                     ]);
-                  });
-            $feedbackMsg = __('Performance category was modified successfully.'); 
+                });
+            $feedbackMsg = __('Performance category was modified successfully.');
         } else {
             if (! Auth::user()->hasPermissionTo(UserPermission::CREATE_PERFORMANCE_CATEGORIES)) {
                 $this->reset();
@@ -69,7 +69,7 @@ class Categories extends Component
                     'perf_category_desc' => Str::lower($this->state['shortDescription']),
                 ]);
             });
-            $feedbackMsg = __('"'.Str::upper($this->state['title']).'" was added successfully.');             
+            $feedbackMsg = __('"'.Str::upper($this->state['title']).'" was added successfully.');
         }
         $this->dispatch('changes-saved', compact('feedbackMsg'));
 
@@ -78,16 +78,16 @@ class Categories extends Component
     }
 
     /**
-     * @param int $id Use for primary key lookup on `performance_categories` table
+     * @param  int  $id  Use for primary key lookup on `performance_categories` table
      * @return void
      */
     public function openEditMode(int $id)
-    {      
+    {
         $category = PerformanceCategory::find($id);
 
         if (! $category) {
             $this->dispatch('not-found', [
-                'feedbackMsg' => __('Sorry, it seems like this record has been removed.')
+                'feedbackMsg' => __('Sorry, it seems like this record has been removed.'),
             ]);
         } else {
             $this->title = __('Edit Category');
@@ -95,14 +95,14 @@ class Categories extends Component
             $this->index = $category->perf_category_id;
             $this->state['title'] = Str::upper($category->perf_category_name);
             $this->state['shortDescription'] = Str::ucfirst($category->perf_category_desc);
-            
+
             $this->dispatch('open-category-modal');
         }
     }
 
     /**
      * Reset all properties.
-     * 
+     *
      * @return void
      */
     public function restart()
@@ -126,7 +126,7 @@ class Categories extends Component
                     'description' => Str::ucfirst($item['perf_category_desc']),
                 ];
             }
-        );
+            );
     }
 
     public function render()

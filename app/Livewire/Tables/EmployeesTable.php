@@ -2,19 +2,20 @@
 
 namespace App\Livewire\Tables;
 
-use Rappasoft\LaravelLivewireTables\DataTableComponent;
-use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Employee;
 use App\Models\EmploymentStatus;
 use App\Models\JobTitle;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\View\ComponentAttributeBag;
+use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateFilter;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 /**
  * Implemented Methods:
+ *
  * @method  configure(): void
  * @method  columns(): array
  * @method  builder(): Builder
@@ -25,7 +26,7 @@ class EmployeesTable extends DataTableComponent
     protected $model = Employee::class;
 
     /**
-     * @var array $customFilterOptions contains the dropdown values and keys.
+     * @var array contains the dropdown values and keys.
      */
     protected $departments;
 
@@ -115,28 +116,27 @@ class EmployeesTable extends DataTableComponent
     public function columns(): array
     {
         return [
-            Column::make("Full Name")
-                ->label(fn($row) => $row->fullname)
+            Column::make('Full Name')
+                ->label(fn ($row) => $row->fullname)
                 ->sortable(function ($query, $direction) {
                     return $query->orderBy('last_name', $direction)
                         ->orderBy('first_name', $direction)
-                        ->orderBy('middle_name', $direction)
-                    ;
+                        ->orderBy('middle_name', $direction);
                 })
                 ->searchable(function (Builder $query, $searchTerm) {
                     $this->applyFullNameSearch($query, $searchTerm);
                 })
                 ->excludeFromColumnSelect(),
-            Column::make("Job Title")
-                ->label(fn($row) => $row->jobTitle->job_title)
+            Column::make('Job Title')
+                ->label(fn ($row) => $row->jobTitle->job_title)
                 ->searchable(function (Builder $query, $searchTerm) {
                     return $this->applyJobPositionSearch($query, $searchTerm);
                 }),
-            Column::make("Department")
-                ->label(fn($row) => $row->jobTitle->department->department_name),
+            Column::make('Department')
+                ->label(fn ($row) => $row->jobTitle->department->department_name),
 
-            Column::make("Employment")
-                ->label(fn($row) => $row->employmentStatus->emp_status_name),
+            Column::make('Employment')
+                ->label(fn ($row) => $row->employmentStatus->emp_status_name),
 
             /**
              * |--------------------------------------------------------------------------
@@ -144,19 +144,17 @@ class EmployeesTable extends DataTableComponent
              * |--------------------------------------------------------------------------
              * Description
              */
-
-            Column::make("Shift")
-                ->label(fn($row) => $row->shift->shift_name)
+            Column::make('Shift')
+                ->label(fn ($row) => $row->shift->shift_name)
                 ->deselected(),
 
-            Column::make("Hired Date")
-                ->label(fn($row) => Carbon::parse($row->application->hired_at)->format('F j, Y') ?? 'No recorded.')
+            Column::make('Hired Date')
+                ->label(fn ($row) => Carbon::parse($row->application->hired_at)->format('F j, Y') ?? 'No recorded.')
                 /*                 ->setSortingPillDirections('Oldest first', 'Latest first')
                 ->sortable(function ($query, $direction) {
                     return $query->orderBy('applications.hired_at', $direction);
                 }) */
                 ->deselected(),
-
 
         ];
     }
@@ -199,24 +197,19 @@ class EmployeesTable extends DataTableComponent
                     'pillFormat' => 'd M Y',
                     'placeholder' => 'Enter Date',
                 ])
-                ->filter(function (Builder $builder, string $value) {
-                    return;
-                }),
-
-
+                ->filter(function (Builder $builder, string $value) {}),
 
             SelectFilter::make('Job Title', 'job-title')
                 ->options($this->jobTitles)
                 ->filter(function (Builder $builder, string $value) {
-                    return $query = $builder->where('job_titles.job_title_id',  $value);
+                    return $query = $builder->where('job_titles.job_title_id', $value);
                 }),
 
             SelectFilter::make('Employment Status', 'emp-status')
                 ->options($this->employmentStatuses)
                 ->filter(function (Builder $builder, string $value) {
-                    return $query = $builder->where('employment_statuses.emp_status_id',  $value);
+                    return $query = $builder->where('employment_statuses.emp_status_id', $value);
                 }),
-
 
         ];
     }
@@ -227,7 +220,6 @@ class EmployeesTable extends DataTableComponent
      * |--------------------------------------------------------------------------
      * Description
      */
-
     public function applyFullNameSearch(Builder $query, $searchTerm): Builder
     {
         $terms = explode(' ', $searchTerm);
@@ -246,8 +238,8 @@ class EmployeesTable extends DataTableComponent
     /**
      * Apply a case-insensitive search using the 'ILIKE' operator on the 'job_title' field in the query.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query The query builder instance.
-     * @param string $searchTerm The term to search for in the job titles.
+     * @param  \Illuminate\Database\Eloquent\Builder  $query  The query builder instance.
+     * @param  string  $searchTerm  The term to search for in the job titles.
      * @return \Illuminate\Database\Eloquent\Builder The modified query builder instance with the search filter applied.
      */
     public function applyJobPositionSearch(Builder $query, $searchTerm): Builder
@@ -274,8 +266,8 @@ class EmployeesTable extends DataTableComponent
      * - 'DD-MM-YYYY'
      * - 'DD/MM/YYYY'
      *
-     * @param \Illuminate\Database\Query\Builder $query The query builder instance.
-     * @param string $searchTerm The search term to filter by.
+     * @param  \Illuminate\Database\Query\Builder  $query  The query builder instance.
+     * @param  string  $searchTerm  The search term to filter by.
      * @return \Illuminate\Database\Query\Builder The modified query builder instance.
      */
     // public function applyDateSearch(Builder $query, $searchTerm)

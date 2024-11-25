@@ -19,8 +19,6 @@ class PerformanceDetail extends Model
 
     /**
      * Get the performance period whe the performance evaluation occured.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function period(): BelongsTo
     {
@@ -29,8 +27,6 @@ class PerformanceDetail extends Model
 
     /**
      * Get the employee who is being evaluated on the perfomance evaluation.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function evaluatee(): BelongsTo
     {
@@ -39,18 +35,14 @@ class PerformanceDetail extends Model
 
     /**
      * Get the evaluator who approved/signed the performance evaluation.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function evaluator(): BelongsTo
     {
         return $this->belongsTo(Employee::class, 'evaluator', 'employee_id');
     }
 
-     /**
+    /**
      * Get the initial approver who approved/signed the performance evaluation.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function initialApprover(): BelongsTo
     {
@@ -59,8 +51,6 @@ class PerformanceDetail extends Model
 
     /**
      * Get the secondary approver who approved/signed the performance evaluation.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function secondaryApprover(): BelongsTo
     {
@@ -69,8 +59,6 @@ class PerformanceDetail extends Model
 
     /**
      * Get the scored/rated categories of the performance evaluation.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function categoryRatings(): HasMany
     {

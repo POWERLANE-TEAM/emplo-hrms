@@ -2,10 +2,10 @@
 
 namespace App\Livewire\Admin\Dashboard;
 
-use Livewire\Component;
 use App\Models\Announcement;
 use Illuminate\Support\Carbon;
 use Livewire\Attributes\Computed;
+use Livewire\Component;
 use Livewire\WithPagination;
 
 class LatestAnnouncements extends Component
@@ -14,8 +14,6 @@ class LatestAnnouncements extends Component
 
     /**
      * Use to measure how long "latest" is
-     * 
-     * @var $weekInterval
      */
     protected $weekInterval;
 
@@ -27,7 +25,7 @@ class LatestAnnouncements extends Component
     #[Computed]
     public function announcements()
     {
-        return Announcement::where(function ( $query) {
+        return Announcement::where(function ($query) {
             $query->where('published_at', '>=', $this->weekInterval)
                 ->orWhere('modified_at', '>=', $this->weekInterval);
         })

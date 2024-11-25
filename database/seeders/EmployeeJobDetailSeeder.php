@@ -2,13 +2,13 @@
 
 namespace Database\Seeders;
 
-use App\Models\Shift;
 use App\Models\Employee;
+use App\Models\EmployeeJobDetail;
+use App\Models\EmploymentStatus;
 use App\Models\JobTitle;
+use App\Models\Shift;
 use App\Models\SpecificArea;
 use Illuminate\Database\Seeder;
-use App\Models\EmploymentStatus;
-use App\Models\EmployeeJobDetail;
 
 class EmployeeJobDetailSeeder extends Seeder
 {
@@ -24,7 +24,7 @@ class EmployeeJobDetailSeeder extends Seeder
                 'area_id' => SpecificArea::inRandomOrder()->first()->area_id,
                 'shift_id' => Shift::inRandomOrder()->first()->shift_id,
                 'emp_status_id' => EmploymentStatus::inRandomOrder()->first()->emp_status_id,
-            ]);            
+            ]);
         });
     }
 }

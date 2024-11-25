@@ -20,8 +20,6 @@ class InitialInterview extends Model
 
     /**
      * Get the job application that owns the initial interview.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function application(): BelongsTo
     {
@@ -30,8 +28,6 @@ class InitialInterview extends Model
 
     /**
      * Get the employee who is the interviewer of the initial interview.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function interviewer(): BelongsTo
     {
