@@ -2,10 +2,8 @@
 
 use App\Models\Applicant;
 use App\Models\Application;
-use App\Models\ApplicationExam;
 use App\Models\ApplicationStatus;
 use App\Models\Employee;
-use App\Models\Exam;
 use App\Models\JobVacancy;
 use App\Models\PreempRequirement;
 use Illuminate\Database\Migrations\Migration;

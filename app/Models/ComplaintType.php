@@ -19,8 +19,6 @@ class ComplaintType extends Model
 
     /**
      * Get the employee complaints associated with the complaint type.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function complaints(): HasMany
     {

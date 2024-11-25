@@ -4,9 +4,9 @@ namespace Database\Seeders;
 
 use App\Enums\AccountType;
 use App\Enums\UserRole;
+use App\Enums\UserStatus as EnumUserStatus;
 use App\Models\Employee;
 use App\Models\User;
-use App\Enums\UserStatus as EnumUserStatus;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 

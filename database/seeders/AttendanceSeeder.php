@@ -5,11 +5,9 @@ namespace Database\Seeders;
 use App\Models\Attendance;
 use App\Models\Employee;
 use Carbon\Carbon;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Concurrency;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 function createAttendances(array $employeeIds, int $partitionIndex, Carbon $currentDate): void
 {
@@ -30,7 +28,6 @@ function createAttendances(array $employeeIds, int $partitionIndex, Carbon $curr
             $timeOut = Carbon::parse($shiftEnd)->addMinutes($randomMinutes)->addHours(8)->setDateFrom($currentDate);
         }
 
-
         DB::table('attendances')->insert([
             'employee_id' => $employee->employee_id,
             'time_in' => $timeIn,
@@ -38,7 +35,6 @@ function createAttendances(array $employeeIds, int $partitionIndex, Carbon $curr
         ]);
     }
 }
-
 
 class AttendanceSeeder extends Seeder
 {
@@ -66,7 +62,7 @@ class AttendanceSeeder extends Seeder
             $dateForClosure = $currentDate->copy();
 
             foreach ($partitions as $partitionIndex => $partition) {
-                $tasks[] = fn() => createAttendances($partition, $partitionIndex, $dateForClosure);
+                $tasks[] = fn () => createAttendances($partition, $partitionIndex, $dateForClosure);
             }
 
             Concurrency::run($tasks);

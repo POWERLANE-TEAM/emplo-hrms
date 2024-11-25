@@ -16,15 +16,15 @@ class UserStatusSeeder extends Seeder
         $userStatuses = collect([
             [
                 AccountStatus::ACTIVE->value,
-                AccountStatus::ACTIVE->label()
+                AccountStatus::ACTIVE->label(),
             ],
             [
                 AccountStatus::SUSPENDED->value,
-                AccountStatus::SUSPENDED->label()
+                AccountStatus::SUSPENDED->label(),
             ],
             [
                 AccountStatus::NOT_VERIFIED->value,
-                AccountStatus::NOT_VERIFIED->label()
+                AccountStatus::NOT_VERIFIED->label(),
             ],
         ]);
 

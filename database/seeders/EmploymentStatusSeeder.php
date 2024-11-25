@@ -17,7 +17,7 @@ class EmploymentStatusSeeder extends Seeder
             'Regular',
             'Resigned',
             'Retired',
-            'Terminated'
+            'Terminated',
         ]);
 
         $statuses->each(function (string $status) {

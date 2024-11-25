@@ -13,6 +13,7 @@ class ResumeRejected extends Notification implements ShouldQueue
     use Queueable;
 
     protected $sender;
+
     protected Application $application;
 
     /**
@@ -46,8 +47,8 @@ class ResumeRejected extends Notification implements ShouldQueue
         return (new MailMessage)
             ->from($this->sender['email'])
             ->subject('Application Rejected')
-            ->greeting('Hello ' . $userName . '!')
-            ->line('We regret to inform you that your application for the position of ' . $jobTitle . ' submitted on ' . $applicationDate . ' has been rejected.')
+            ->greeting('Hello '.$userName.'!')
+            ->line('We regret to inform you that your application for the position of '.$jobTitle.' submitted on '.$applicationDate.' has been rejected.')
             ->line('Thank you for your interest in our company.');
     }
 

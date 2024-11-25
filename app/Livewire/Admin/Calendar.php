@@ -8,7 +8,6 @@ use Omnia\LivewireCalendar\LivewireCalendar;
 
 class Calendar extends LivewireCalendar
 {
-
     public function events(): Collection
     {
         return collect([

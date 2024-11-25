@@ -4,9 +4,7 @@ namespace App\Http\Controllers\Employee;
 
 use App\Enums\UserPermission;
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 
 class DashboardController extends Controller
 {

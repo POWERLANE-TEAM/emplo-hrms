@@ -5,7 +5,6 @@ namespace App\Console\Commands\Datatable;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Livewire\Features\SupportConsoleCommands\Commands\ComponentParser;
@@ -78,7 +77,7 @@ class MakeCommand extends Command implements PromptsForMissingInput
 
         $this->createClass($force);
 
-        $this->info("<bg=green;fg=white;options=bold> CLASS PATH </> Livewire Datatable {$this->parser->className()} Created: file://" . base_path() . '/' . $this->parser->relativeClassPath());
+        $this->info("<bg=green;fg=white;options=bold> CLASS PATH </> Livewire Datatable {$this->parser->className()} Created: file://".base_path().'/'.$this->parser->relativeClassPath());
 
         $relativeClassPath = $this->parser->relativeClassPath();
         $processedPath = $this->getTableIncludePath($relativeClassPath);
@@ -115,22 +114,22 @@ class MakeCommand extends Command implements PromptsForMissingInput
         return str_replace(
             ['[namespace]', '[class]', '[model]', '[model_import]', '[columns]'],
             [$this->parser->classNamespace(), $this->parser->className(), $this->model, $this->getModelImport(), $this->generateColumns($this->getModelImport())],
-            file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'table.stub')
+            file_get_contents(__DIR__.DIRECTORY_SEPARATOR.'table.stub')
         );
     }
 
     public function getModelImport(): string
     {
-        if (File::exists(app_path('Models/' . $this->model . '.php'))) {
-            return 'App\Models\\' . $this->model;
+        if (File::exists(app_path('Models/'.$this->model.'.php'))) {
+            return 'App\Models\\'.$this->model;
         }
 
-        if (File::exists(app_path($this->model . '.php'))) {
-            return 'App\\' . $this->model;
+        if (File::exists(app_path($this->model.'.php'))) {
+            return 'App\\'.$this->model;
         }
 
         if (isset($this->modelPath)) {
-            $filename = rtrim($this->modelPath, '/') . '/' . $this->model . '.php';
+            $filename = rtrim($this->modelPath, '/').'/'.$this->model.'.php';
             if (File::exists($filename)) {
                 //In case the file has more than one class which is highly unlikely but still possible
                 $classes = array_filter($this->getClassesList($filename), function ($class) {
@@ -144,7 +143,7 @@ class MakeCommand extends Command implements PromptsForMissingInput
 
         $this->error('Could not find path to model.');
 
-        return 'App\Models\\' . $this->model;
+        return 'App\Models\\'.$this->model;
     }
 
     /*
@@ -173,7 +172,7 @@ class MakeCommand extends Command implements PromptsForMissingInput
                     }
 
                     if ($tokens[$j]->getTokenName() === 'T_STRING') {
-                        $classes[] = $namespace . '\\' . $tokens[$j]->text;
+                        $classes[] = $namespace.'\\'.$tokens[$j]->text;
                     } else {
                         break;
                     }
@@ -210,7 +209,7 @@ class MakeCommand extends Command implements PromptsForMissingInput
 
             $title = Str::of($field)->replace('_', ' ')->ucfirst();
 
-            $columns .= '            Column::make("' . $title . '", "' . $field . '")' . "\n" . '                ->sortable(),' . "\n";
+            $columns .= '            Column::make("'.$title.'", "'.$field.'")'."\n".'                ->sortable(),'."\n";
         }
 
         $columns .= '        ]';
@@ -223,7 +222,7 @@ class MakeCommand extends Command implements PromptsForMissingInput
         $modelPath = is_dir(app_path('Models')) ? app_path('Models') : app_path();
 
         return collect(Finder::create()->files()->depth(0)->in($modelPath))
-            ->map(fn($file) => $file->getBasename('.php'))
+            ->map(fn ($file) => $file->getBasename('.php'))
             ->sort()
             ->values()
             ->all();
@@ -281,7 +280,7 @@ class MakeCommand extends Command implements PromptsForMissingInput
 
         // Step 4: Replace the last segment's PascalCase with kebab case
         $processedPath = preg_replace_callback('/\.(\w+)$/', function ($matches) {
-            return '.' . preg_replace('/([a-z])([A-Z])/', '$1-$2', $matches[1]);
+            return '.'.preg_replace('/([a-z])([A-Z])/', '$1-$2', $matches[1]);
         }, $processedPath);
 
         // Step 5: Convert to lowercase
