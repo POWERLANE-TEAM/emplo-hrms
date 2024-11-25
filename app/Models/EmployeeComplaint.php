@@ -21,8 +21,6 @@ class EmployeeComplaint extends Model
 
     /**
      * Get the complainant associated with the complaint record.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function complainant(): BelongsTo
     {
@@ -31,8 +29,6 @@ class EmployeeComplaint extends Model
 
     /**
      * The complainees that belong to the complaint record.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function complainees(): BelongsToMany
     {
@@ -42,8 +38,6 @@ class EmployeeComplaint extends Model
 
     /**
      * Get the complaint name/type of the complaint record.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function type(): BelongsTo
     {
@@ -52,8 +46,6 @@ class EmployeeComplaint extends Model
 
     /**
      * Get the confidentiality preference of the complaint record.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function confidentiality(): BelongsTo
     {
@@ -62,8 +54,6 @@ class EmployeeComplaint extends Model
 
     /**
      * Get the current status of the complaint.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function status(): BelongsTo
     {

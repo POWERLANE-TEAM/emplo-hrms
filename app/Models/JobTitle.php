@@ -2,16 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Str;
 use App\Enums\ActivityLogName;
-use Spatie\Activitylog\LogOptions;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\Traits\LogsActivity;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class JobTitle extends Model
 {
@@ -20,17 +20,14 @@ class JobTitle extends Model
 
     protected $primaryKey = 'job_title_id';
 
-    protected $fillable = [
-        'job_title',
-        'job_desc',
-        'department_id',
-        'vacancy',
+    protected $guarded = [
+        'job_title_id',
+        'created_at',
+        'updated_at',
     ];
 
     /**
      * Get the department that owns the job title.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function department(): BelongsTo
     {
@@ -38,42 +35,39 @@ class JobTitle extends Model
     }
 
     /**
-     * The job levels that belong to the job title.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * Get the employees associated with the job title through **EmployeeJobDetail** model.
      */
-    public function jobLevels(): BelongsToMany
+    public function employees(): HasManyThrough
     {
-        return $this->belongsToMany(JobLevel::class, 'job_details', 'job_title_id', 'job_level_id')
-            ->withTimestamps();
+        return $this->hasManyThrough(Employee::class, EmployeeJobDetail::class, 'job_title_id', 'employee_id', 'job_title_id', 'employee_id');
     }
 
     /**
-     * The job families that belong to the job title.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * Get the employee job details associated with the job title.
      */
-    public function jobFamilies(): BelongsToMany
+    public function jobDetails(): HasMany
     {
-        return $this->belongsToMany(JobFamily::class, 'job_details', 'job_title_id', 'job_family_id')
-            ->withTimestamps();
+        return $this->hasMany(EmployeeJobDetail::class, 'job_title_id', 'job_title_id');
     }
 
     /**
-     * The specific areas that belong to the job title.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * Get the job level that owns the job title.
      */
-    public function specificAreas(): BelongsToMany
+    public function jobLevel(): BelongsTo
     {
-        return $this->belongsToMany(SpecificArea::class, 'job_details', 'job_title_id', 'area_id')
-            ->withTimestamps();
+        return $this->belongsTo(JobLevel::class, 'job_level_id', 'job_level_id');
+    }
+
+    /**
+     * Get the job family that owns the job title.
+     */
+    public function jobFamily(): BelongsTo
+    {
+        return $this->belongsTo(JobFamily::class, 'job_family_id', 'job_family_id');
     }
 
     /**
      * Get the qualifications associated with the job title.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function qualifications(): HasMany
     {
@@ -81,18 +75,25 @@ class JobTitle extends Model
     }
 
     /**
+     * Get the vacancy associated with the job title.
+     */
+    public function vacancies(): HasMany
+    {
+        return $this->hasMany(JobVacancy::class, 'job_title_id', 'job_title_id');
+    }
+
+    /**
      * Override default values for more controlled logging.
-     * 
-     * @return \Spatie\Activitylog\LogOptions
      */
     public function getActivityLogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logFillable()
+            ->logUnguarded()
             ->useLogName(ActivityLogName::CONFIGURATION->value)
             ->dontSubmitEmptyLogs()
             ->setDescriptionForEvent(function (string $eventName) {
                 $causerFirstName = Str::ucfirst(Auth::user()->account->first_name);
+
                 return match ($eventName) {
                     'created' => __($causerFirstName.' created a new job title record.'),
                     'updated' => __($causerFirstName.' updated a job title information.'),

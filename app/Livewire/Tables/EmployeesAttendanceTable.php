@@ -1,22 +1,22 @@
 <?php
 
-
 namespace App\Livewire\Tables;
 
-use Rappasoft\LaravelLivewireTables\DataTableComponent;
-use Rappasoft\LaravelLivewireTables\Views\Column;
+use App\Livewire\Tables\Defaults as DefaultTableConfig;
 use App\Models\Employee;
 use App\Models\EmploymentStatus;
 use App\Models\JobTitle;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\View\ComponentAttributeBag;
+use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateFilter;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
-use App\Livewire\Tables\Defaults as DefaultTableConfig;
 
 /**
  * Implemented Methods:
+ *
  * @method  configure(): void
  * @method  columns(): array
  * @method  builder(): Builder
@@ -29,7 +29,7 @@ class EmployeesAttendanceTable extends DataTableComponent
     protected $model = Employee::class;
 
     /**
-     * @var array $customFilterOptions contains the dropdown values and keys.
+     * @var array contains the dropdown values and keys.
      */
     protected $departments;
 
@@ -75,7 +75,6 @@ class EmployeesAttendanceTable extends DataTableComponent
             ],
         ]);
 
-
         $this->jobTitles = JobTitle::select('job_title_id', 'job_title')->orderBy('job_title', 'ASC')->get()
             ->mapWithKeys(function ($jobTitle) {
                 return [$jobTitle->job_title_id => $jobTitle->job_title];
@@ -90,34 +89,31 @@ class EmployeesAttendanceTable extends DataTableComponent
             ->prepend('Select All Employee Status', '')
             ->toArray();
 
-
-
         $this->oldestDate = Employee::has('attendances')->join('attendances', 'employees.employee_id', '=', 'attendances.employee_id')->min('attendances.time_in');
     }
 
     public function columns(): array
     {
         return [
-            Column::make("Full Name")
-                ->label(fn($row) => $row->fullname)
+            Column::make('Full Name')
+                ->label(fn ($row) => $row->fullname)
                 ->sortable(function ($query, $direction) {
                     return $query->orderBy('last_name', $direction)
                         ->orderBy('first_name', $direction)
-                        ->orderBy('middle_name', $direction)
-                    ;
+                        ->orderBy('middle_name', $direction);
                 })
                 ->searchable(function (Builder $query, $searchTerm) {
                     $this->applyFullNameSearch($query, $searchTerm);
                 })
                 ->excludeFromColumnSelect(),
 
-            Column::make("Time In")
-                ->label(fn($row) => optional($row->attendances->first())->time_in ? Carbon::parse($row->attendances->first()->time_in)->format('h:i A') : '-'),
+            Column::make('Time In')
+                ->label(fn ($row) => optional($row->attendances->first())->time_in ? Carbon::parse($row->attendances->first()->time_in)->format('h:i A') : '-'),
 
-            Column::make("Time Out")
-                ->label(fn($row) => optional($row->attendances->first())->time_out ? Carbon::parse($row->attendances->first()->time_out)->format('h:i A') : '-'),
+            Column::make('Time Out')
+                ->label(fn ($row) => optional($row->attendances->first())->time_out ? Carbon::parse($row->attendances->first()->time_out)->format('h:i A') : '-'),
 
-            Column::make("Arrival")
+            Column::make('Arrival')
                 ->label(function ($row) {
                     $attendance = optional($row->attendances->first())->time_in;
                     $shiftStartTime = Carbon::parse($row->shift->start_time);
@@ -127,11 +123,12 @@ class EmployeesAttendanceTable extends DataTableComponent
                         return $now->lessThan($shiftStartTime) ? 'arriving' : 'running late';
                     } else {
                         $attendanceTime = Carbon::parse($attendance);
+
                         return $attendanceTime->lessThan($shiftStartTime) ? 'on time' : 'late';
                     }
                 }),
 
-            Column::make("Status")
+            Column::make('Status')
                 ->label(function ($row) {
                     $attendance = optional($row->attendances->first());
                     $timeIn = $attendance->time_in;
@@ -153,34 +150,31 @@ class EmployeesAttendanceTable extends DataTableComponent
                     }
                 }),
 
-
             /**
              * |--------------------------------------------------------------------------
              * | Start of Additional Columns
              * |--------------------------------------------------------------------------
              * Description
              */
-
-            Column::make("Shift")
-                ->label(fn($row) => $row->shift->shift_name)
+            Column::make('Shift')
+                ->label(fn ($row) => $row->shift->shift_name)
                 ->deselected(),
 
-            Column::make("Job Title")
-                ->label(fn($row) => $row->jobTitle->job_title)
+            Column::make('Job Title')
+                ->label(fn ($row) => $row->jobTitle->job_title)
                 ->deselected(),
 
-            Column::make("Department")
-                ->label(fn($row) => $row->jobTitle->department->department_name)
+            Column::make('Department')
+                ->label(fn ($row) => $row->jobTitle->department->department_name)
                 ->deselected(),
 
-            Column::make("Employment")
-                ->label(fn($row) => $row->employmentStatus->emp_status_name)
+            Column::make('Employment')
+                ->label(fn ($row) => $row->employmentStatus->emp_status_name)
                 ->deselected(),
 
-            Column::make("Hired Date")
-                ->label(fn($row) => Carbon::parse($row->application->hired_at)->format('F j, Y') ?? 'No recorded.')
+            Column::make('Hired Date')
+                ->label(fn ($row) => Carbon::parse($row->application->hired_at)->format('F j, Y') ?? 'No recorded.')
                 ->deselected(),
-
 
         ];
     }
@@ -188,7 +182,6 @@ class EmployeesAttendanceTable extends DataTableComponent
     public function builder(): Builder
     {
         $query = Employee::query()->with(['attendances', 'employmentStatus', 'jobTitle.department', 'jobTitle.specificAreas', 'jobTitle.jobLevels', 'application', 'shift'])
-
 
             // Without this I got SQLSTATE[42P01]: Undefined table: 7 ERROR: missing FROM-clause entry for table
             ->join('attendances', 'employees.employee_id', '=', 'attendances.employee_id')
@@ -211,12 +204,11 @@ class EmployeesAttendanceTable extends DataTableComponent
             $query->where('specific_areas.area_id', $areaId);
         }
 
-        if (!$this->getAppliedFilterWithValue('attendance-date')) {
+        if (! $this->getAppliedFilterWithValue('attendance-date')) {
             $query->with(['attendances' => function ($query) {
                 $query->whereDate('time_in', now()->format('Y-m-d'));
             }]);
         }
-
 
         return $query;
     }
@@ -231,6 +223,7 @@ class EmployeesAttendanceTable extends DataTableComponent
                 ->config([
                     'min' => (function () {
                         $minDate = $this->oldestDate;
+
                         return $minDate ? Carbon::parse($minDate)->format('Y-m-d') : now()->format('Y-m-d');
                     })(),
                     'max' => now()->format('Y-m-d'),
@@ -239,6 +232,7 @@ class EmployeesAttendanceTable extends DataTableComponent
                 ])
                 ->filter(function (Builder $builder, $value) {
                     $this->attendanceDate = $value;
+
                     return $builder->with(['attendances' => function ($builder) use ($value) {
                         $builder->whereDate('time_in', $value);
                     }]);
@@ -247,9 +241,8 @@ class EmployeesAttendanceTable extends DataTableComponent
             SelectFilter::make('Employment Status', 'emp-status')
                 ->options($this->employmentStatuses)
                 ->filter(function (Builder $builder, string $value) {
-                    return $query = $builder->where('employment_statuses.emp_status_id',  $value);
+                    return $query = $builder->where('employment_statuses.emp_status_id', $value);
                 }),
-
 
         ];
     }
@@ -267,7 +260,6 @@ class EmployeesAttendanceTable extends DataTableComponent
      * |--------------------------------------------------------------------------
      * Description
      */
-
     public function applyFullNameSearch(Builder $query, $searchTerm): Builder
     {
         $terms = explode(' ', $searchTerm);

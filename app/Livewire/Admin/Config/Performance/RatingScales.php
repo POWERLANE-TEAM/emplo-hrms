@@ -2,14 +2,14 @@
 
 namespace App\Livewire\Admin\Config\Performance;
 
-use Livewire\Component;
-use Illuminate\Support\Str;
 use App\Enums\UserPermission;
 use App\Models\PerformanceRating;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Validate;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 
 class RatingScales extends Component
 {
@@ -17,7 +17,7 @@ class RatingScales extends Component
 
     #[Validate([
         'state.scale' => 'required|unique:performance_ratings,perf_rating|numeric|min:0',
-        'state.name' => 'required',        
+        'state.name' => 'required',
     ])]
     public $state = [
         'scale' => null,
@@ -32,10 +32,8 @@ class RatingScales extends Component
     {
         $feedbackMsg = null;
 
-        // $ratingName = Str::of($this->state['name'])->trim()->lower();
-
         if ($this->editMode) {
-            if(! Auth::user()->hasPermissionTo(UserPermission::UPDATE_PERFORMANCE_RATING_SCALES)) {
+            if (! Auth::user()->hasPermissionTo(UserPermission::UPDATE_PERFORMANCE_RATING_SCALES)) {
                 $this->reset();
 
                 abort(403);
@@ -43,15 +41,19 @@ class RatingScales extends Component
 
             $this->validateOnly('state.name');
 
-            DB::transaction(function () {
-                PerformanceRating::where('perf_rating_id', $this->index)->update([
-                    'perf_rating' => $this->state['scale'],
-                    'perf_rating_name' => Str::lower($this->state['name']),
-                ]);                
-            });
+            $ratingScale = PerformanceRating::find($this->index);
+
+            is_null($ratingScale)
+                ? $feedbackMsg = __('Something went wrong.')
+                : DB::transaction(function () use ($ratingScale) {
+                    $ratingScale->update([
+                        'perf_rating' => $this->state['scale'],
+                        'perf_rating_name' => Str::lower($this->state['name']),
+                    ]);
+                });
             $feedbackMsg = __('Performance rating scale was modified successfully.');
         } else {
-            if(! Auth::user()->hasPermissionTo(UserPermission::CREATE_PERFORMANCE_RATING_SCALES)) {
+            if (! Auth::user()->hasPermissionTo(UserPermission::CREATE_PERFORMANCE_RATING_SCALES)) {
                 $this->reset();
 
                 abort(403);
@@ -63,9 +65,9 @@ class RatingScales extends Component
                 PerformanceRating::create([
                     'perf_rating' => $this->state['scale'],
                     'perf_rating_name' => Str::lower($this->state['name']),
-                ]);                
+                ]);
             });
-            $feedbackMsg = __('"'.$this->state['scale'].' = '.ucwords($this->state['name']).'" was added successfully.');  
+            $feedbackMsg = __('"'.$this->state['scale'].' = '.ucwords($this->state['name']).'" was added successfully.');
         }
         $this->dispatch('changes-saved', compact('feedbackMsg'));
 
@@ -79,7 +81,7 @@ class RatingScales extends Component
 
         if (! $rating) {
             $this->dispatch('not-found', [
-                'feedbackMsg' => __('Sorry, it seems like this record has been removed.')
+                'feedbackMsg' => __('Sorry, it seems like this record has been removed.'),
             ]);
         } else {
             $this->title = __('Edit Rating Scale');
@@ -113,7 +115,7 @@ class RatingScales extends Component
                     'name' => ucwords($item['perf_rating_name']),
                 ];
             }
-        );
+            );
     }
 
     public function render()

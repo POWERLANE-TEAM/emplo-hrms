@@ -2,14 +2,13 @@
 
 namespace App\Livewire\Admin\JobBoard;
 
-use Livewire\Component;
-use App\Models\JobTitle;
-use App\Models\JobDetail;
 use App\Enums\UserPermission;
+use App\Models\JobTitle;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Validate;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 
 class CreateJobListing extends Component
 {
@@ -25,7 +24,7 @@ class CreateJobListing extends Component
     public $jobDetails;
 
     public $feedback = [
-        'success'=> false,
+        'success' => false,
         'message' => '',
     ];
 
@@ -33,7 +32,7 @@ class CreateJobListing extends Component
     {
         if ($property === 'state.selectedJob') {
             $this->isJobSelected = true;
-            $this->renderSelectedJob();            
+            $this->renderSelectedJob();
         }
     }
 
@@ -47,15 +46,15 @@ class CreateJobListing extends Component
 
         $this->validate();
 
-        $jobDetail = JobDetail::find($this->state['selectedJob']);
+        $jobTitle = JobTitle::find($this->state['selectedJob']);
 
-        if (! $jobDetail) {
+        if (! $jobTitle) {
             $this->feedback = [
                 'message' => __('Something went wrong.'),
             ];
         } else {
-            DB::transaction(function () use ($jobDetail) {
-                $jobDetail->vacancies()->create([
+            DB::transaction(function () use ($jobTitle) {
+                $jobTitle->vacancies()->create([
                     'vacancy_count' => $this->state['vacancyCount'],
                     'application_deadline_at' => $this->state['applicationDeadline'],
                 ]);
@@ -92,16 +91,19 @@ class CreateJobListing extends Component
     public function renderSelectedJob()
     {
         $this->jobDetails = JobTitle::where('job_title_id', $this->state['selectedJob'])
-                                ->with(['department', 'qualifications'])
-                                ->get()
-                                ->map(function ($item) {
-                                    return (object) [
-                                        'title' => $item->job_title,
-                                        'description'=> $item->job_title_desc,
-                                        'department' => $item->department->department_name,
-                                        'qualifications' => $item->qualifications,
-                                    ];
-                                });
+            ->with(['department', 'qualifications', 'jobFamily', 'jobLevel'])
+            ->get()
+            ->map(function ($item) {
+                return (object) [
+                    'title' => $item->job_title,
+                    'description' => $item->job_title_desc,
+                    'department' => $item->department->department_name,
+                    'qualifications' => $item->qualifications,
+                    'family' => $item->jobFamily->job_family_name,
+                    'level' => $item->jobLevel->job_level,
+                    'levelName' => $item->jobLevel->job_level_name,
+                ];
+            });
     }
 
     #[Computed]
@@ -111,7 +113,7 @@ class CreateJobListing extends Component
             return (object) [
                 'id' => $item->job_title_id,
                 'title' => $item->job_title,
-                'description'=> $item->job_title_desc,
+                'description' => $item->job_title_desc,
             ];
         });
     }

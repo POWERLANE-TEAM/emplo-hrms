@@ -4,14 +4,11 @@ namespace App\Providers;
 
 use App\Http\Helpers\RoutePrefix;
 use App\View\Composers\AuthenticatedUserComposer;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class ComposerServiceProvider extends ServiceProvider
 {
-
-
     /**
      * Views that require user data.
      *
@@ -22,7 +19,6 @@ class ComposerServiceProvider extends ServiceProvider
         'components.layout.applicant.layout',
         'components.layout.app',
     ];
-
 
     /**
      * Register services.
@@ -45,8 +41,6 @@ class ComposerServiceProvider extends ServiceProvider
      * - `nonce`: A Content Security Policy nonce for security.
      *
      * Update the list as needed.
-     *
-     * @return void
      */
     public function boot(): void
     {

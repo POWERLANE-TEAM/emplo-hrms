@@ -2,34 +2,33 @@
 
 namespace App\Livewire\Employee\Tables\HRManager;
 
-use App\Http\Helpers\RoutePrefix;
 use App\Models\Applicant;
 use App\Models\Application;
-use Rappasoft\LaravelLivewireTables\DataTableComponent;
-use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\JobVacancy;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateFilter;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
-
 /**
  * Implemented Methods:
+ *
  * @method  configure(): void
  * @method  columns(): array
  * @method  builder(): Builder
  * @method  filters(): array
  * @method  applyFullNameSearch(Builder $query, $searchTerm): Builder
  * @method  applyJobPositionSearch(Builder $query, $searchTerm): Builder
- * @method  applyDateSearch(Builder $query, $searchTerm)
+ * @method applyDateSearch(Builder $query, $searchTerm)
  */
 class ApplicantsTable extends DataTableComponent
 {
     protected $model = Application::class;
 
     /**
-     * @var array $customFilterOptions contains the dropdown values and keys.
+     * @var array contains the dropdown values and keys.
      */
     protected $customFilterOptions;
 
@@ -39,7 +38,7 @@ class ApplicantsTable extends DataTableComponent
 
         $this->setPrimaryKey('application_id')
             ->setTableRowUrl(function ($row) use ($routePrefix) {
-                return route($routePrefix . '.application.show', $row);
+                return route($routePrefix.'.application.show', $row);
             });
 
         $this->setEagerLoadAllRelationsEnabled();
@@ -101,7 +100,6 @@ class ApplicantsTable extends DataTableComponent
                             })
                             ->toArray();
 
-
                         $this->customFilterOptions = [
                             '' => 'Select All Job Positions',
                         ] + $withApplications;
@@ -144,29 +142,28 @@ class ApplicantsTable extends DataTableComponent
     public function columns(): array
     {
         return [
-            Column::make("Full Name")
-                ->label(fn($row) => $row->applicant->fullName)
+            Column::make('Full Name')
+                ->label(fn ($row) => $row->applicant->fullName)
                 ->sortable(function ($query, $direction) {
                     return $query->orderBy('last_name', $direction)
                         ->orderBy('first_name', $direction)
-                        ->orderBy('middle_name', $direction)
-                    ;
+                        ->orderBy('middle_name', $direction);
                 })
                 ->searchable(function (Builder $query, $searchTerm) {
                     $this->applyFullNameSearch($query, $searchTerm);
                 })
                 ->excludeFromColumnSelect(),
 
-            Column::make("Job Position", /* 'vacancy.jobTitle.job_title' */)
-                ->label(fn($row) => $row->vacancy->jobTitle->job_title)
+            Column::make('Job Position'/* 'vacancy.jobTitle.job_title' */)
+                ->label(fn ($row) => $row->vacancy->jobTitle->job_title)
                 ->sortable(function ($query, $direction) {
                     return $query->orderBy('job_title', $direction);
                 })->searchable(function (Builder $query, $searchTerm) {
                     return $this->applyJobPositionSearch($query, $searchTerm);
                 }),
 
-            Column::make("Date Applied",)
-                ->label(fn($row) => $row->applicant->created_at->format('F j, Y') ?? 'An error occured.')
+            Column::make('Date Applied')
+                ->label(fn ($row) => $row->applicant->created_at->format('F j, Y') ?? 'An error occured.')
                 ->setSortingPillDirections('Oldest first', 'Latest first')
                 ->sortable(function ($query, $direction) {
                     return $query->orderBy('applicants.created_at', $direction);
@@ -181,17 +178,16 @@ class ApplicantsTable extends DataTableComponent
              * |--------------------------------------------------------------------------
              * Description
              */
-
-            Column::make("Department")
-                ->label(fn($row) => $row->vacancy->jobTitle->department->department_name)
+            Column::make('Department')
+                ->label(fn ($row) => $row->vacancy->jobTitle->department->department_name)
                 ->deselected(),
 
-            Column::make("Job Area")
-                ->label(fn($row) => $row->vacancy->jobTitle->specificAreas->pluck('area_name')->join(', '))
+            Column::make('Job Area')
+                ->label(fn ($row) => $row->vacancy->jobTitle->specificAreas->pluck('area_name')->join(', '))
                 ->deselected(),
 
-            Column::make("Job Level")
-                ->label(fn($row) => $row->vacancy->jobTitle->jobLevels->pluck('job_level_name')->join(', '))
+            Column::make('Job Level')
+                ->label(fn ($row) => $row->vacancy->jobTitle->jobLevels->pluck('job_level_name')->join(', '))
                 ->deselected(),
         ];
     }
@@ -208,7 +204,7 @@ class ApplicantsTable extends DataTableComponent
             ->join('departments', 'job_titles.department_id', '=', 'departments.department_id')
             ->join('specific_areas', 'job_details.area_id', '=', 'specific_areas.area_id')
             ->join('job_levels', 'job_details.job_level_id', '=', 'job_levels.job_level_id')
-            ->where('hired_at', NULL);
+            ->where('hired_at', null);
 
         return $query;
     }
@@ -221,6 +217,7 @@ class ApplicantsTable extends DataTableComponent
                 ->config([
                     'min' => (function () {
                         $minDate = Applicant::has('application')->min('created_at');
+
                         return $minDate ? Carbon::parse($minDate)->format('Y-m-d') : now()->format('Y-m-d');
                     })(),
                     'max' => now()->format('Y-m-d'),
@@ -234,12 +231,11 @@ class ApplicantsTable extends DataTableComponent
             SelectFilter::make('Job Position', 'jobPosition')
                 ->options($this->customFilterOptions)
                 ->filter(function (Builder $builder, string $value) {
-                    return $query = $builder->where('job_titles.job_title_id',  $value);
+                    return $query = $builder->where('job_titles.job_title_id', $value);
                 })->hiddenFromMenus(),
 
         ];
     }
-
 
     /**
      * |--------------------------------------------------------------------------
@@ -254,13 +250,14 @@ class ApplicantsTable extends DataTableComponent
      * This method splits the search term into individual words and applies a case-insensitive
      * search on the first name, middle name, and last name of the applicant.
      *
-     * @param \Illuminate\Database\Query\Builder $query The query builder instance.
-     * @param string $searchTerm The search term to filter applicants by full name.
+     * @param  \Illuminate\Database\Query\Builder  $query  The query builder instance.
+     * @param  string  $searchTerm  The search term to filter applicants by full name.
      * @return \Illuminate\Database\Query\Builder The modified query builder instance.
      */
     public function applyFullNameSearch(Builder $query, $searchTerm): Builder
     {
         $terms = explode(' ', $searchTerm);
+
         return $query->orWhereHas('applicant', function ($query) use ($terms) {
             foreach ($terms as $term) {
                 $query->where(function ($query) use ($term) {
@@ -275,8 +272,8 @@ class ApplicantsTable extends DataTableComponent
     /**
      * Apply a case-insensitive search using the 'ILIKE' operator on the 'job_title' field in the query.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query The query builder instance.
-     * @param string $searchTerm The term to search for in the job titles.
+     * @param  \Illuminate\Database\Eloquent\Builder  $query  The query builder instance.
+     * @param  string  $searchTerm  The term to search for in the job titles.
      * @return \Illuminate\Database\Eloquent\Builder The modified query builder instance with the search filter applied.
      */
     public function applyJobPositionSearch(Builder $query, $searchTerm): Builder
@@ -303,13 +300,14 @@ class ApplicantsTable extends DataTableComponent
      * - 'DD-MM-YYYY'
      * - 'DD/MM/YYYY'
      *
-     * @param \Illuminate\Database\Query\Builder $query The query builder instance.
-     * @param string $searchTerm The search term to filter by.
+     * @param  \Illuminate\Database\Query\Builder  $query  The query builder instance.
+     * @param  string  $searchTerm  The search term to filter by.
      * @return \Illuminate\Database\Query\Builder The modified query builder instance.
      */
     public function applyDateSearch(Builder $query, $searchTerm)
     {
         $normalizedSearchTerm = str_replace(' ', '', $searchTerm);
+
         return $query->orWhereRaw("replace(to_char(applicants.created_at, 'YYYY-MM-DD'), ' ', '') ILIKE ?", ["%{$normalizedSearchTerm}%"])
             ->orWhereRaw("replace(to_char(applicants.created_at, 'MM/DD/YYYY'), ' ', '') ILIKE ?", ["%{$normalizedSearchTerm}%"])
             ->orWhereRaw("replace(to_char(applicants.created_at, 'MM-DD-YYYY'), ' ', '') ILIKE ?", ["%{$normalizedSearchTerm}%"])

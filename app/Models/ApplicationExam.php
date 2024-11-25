@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class ApplicationExam extends Model
 {
@@ -19,11 +18,8 @@ class ApplicationExam extends Model
         'application_exam_id',
     ];
 
-
     /**
      * Get the job application that owns the examination.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function application(): BelongsTo
     {

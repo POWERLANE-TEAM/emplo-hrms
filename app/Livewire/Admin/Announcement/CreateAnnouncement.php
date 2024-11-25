@@ -1,27 +1,27 @@
 <?php
 
-
 namespace App\Livewire\Admin\Announcement;
 
-use Livewire\Component;
-use App\Models\JobFamily;
-use App\Models\Announcement;
 use App\Enums\UserPermission;
+use App\Models\Announcement;
+use App\Models\JobFamily;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Validate;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
+
 class CreateAnnouncement extends Component
 {
     #[Validate]
     public $state = [
         'title' => '',
         'visibleTo' => [],
-        'description' => ''
+        'description' => '',
     ];
 
     public function save()
-    {        
+    {
         if (! Auth::user()->hasPermissionTo(UserPermission::CREATE_ANNOUNCEMENT)) {
             $this->reset();
 
@@ -40,7 +40,7 @@ class CreateAnnouncement extends Component
         });
         $this->reset();
         $this->resetErrorBag();
-        
+
         $this->dispatch('changes-saved');
     }
 
@@ -68,7 +68,7 @@ class CreateAnnouncement extends Component
     {
         return JobFamily::all()->pluck('job_family_name', 'job_family_id')->toArray();
     }
-    
+
     public function render()
     {
         return view('livewire.admin.announcement.create-announcement');

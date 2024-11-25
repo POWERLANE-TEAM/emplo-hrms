@@ -2,12 +2,12 @@
 
 namespace App\Notifications;
 
-use App\Models\User;
 use App\Enums\UserRole;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
 
 class EmployeeAccountCreated extends Notification implements ShouldQueue
 {
@@ -22,7 +22,7 @@ class EmployeeAccountCreated extends Notification implements ShouldQueue
      */
     public function __construct(private User $user, private string $password)
     {
-        $role =  $user->getRoleNames()->first();
+        $role = $user->getRoleNames()->first();
 
         $this->url = match ($role) {
             'basic', 'intermediate' => 'employee',
@@ -54,11 +54,11 @@ class EmployeeAccountCreated extends Notification implements ShouldQueue
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-                    ->subject('Account Created')
-                    ->line('We are writing to inform that Powerlane has created your online account.')
-                    ->line('Password: '.$this->password)
-                    ->line('You can use these email and password to login to your account')
-                    ->action('Login now', url($this->url.'/login'));
+            ->subject('Account Created')
+            ->line('We are writing to inform that Powerlane has created your online account.')
+            ->line('Password: '.$this->password)
+            ->line('You can use these email and password to login to your account')
+            ->action('Login now', url($this->url.'/login'));
     }
 
     /**
@@ -75,8 +75,6 @@ class EmployeeAccountCreated extends Notification implements ShouldQueue
 
     /**
      * Get the notification's database type.
-     *
-     * @return string
      */
     public function databaseType(): string
     {

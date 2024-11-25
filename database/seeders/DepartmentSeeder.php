@@ -24,12 +24,12 @@ class DepartmentSeeder extends Seeder
                 'function' => 'Cover overall operations',
             ],
         ]);
-        
+
         $departments->each(function ($department) {
             Department::create([
                 'department_id' => $department['id'],
                 'department_name' => $department['name'],
-                'department_function' => $department['function']
+                'department_function' => $department['function'],
             ]);
         });
     }

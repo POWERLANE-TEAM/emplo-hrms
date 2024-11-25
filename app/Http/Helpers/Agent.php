@@ -128,7 +128,6 @@ class Agent extends MobileDetect
     /**
      * Retrieve from the given key from the cache or resolve the value.
      *
-     * @param  string  $key
      * @param  \Closure():mixed  $callback
      * @return mixed
      */

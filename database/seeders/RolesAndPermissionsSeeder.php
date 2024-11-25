@@ -54,6 +54,7 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::VIEW_ISSUES->value,
         ];
     }
+
     public static function intermediatePermissions()
     {
         return [
@@ -82,7 +83,6 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::VIEW_TALENT_EVALUATOR->value,
             UserPermission::VIEW_PLAN_GENERATOR->value,
 
-
             // Create cases goes here
             UserPermission::CREATE_APPLICANT_EXAM_SCHEDULE->value,
             UserPermission::CREATE_APPLICANT_INIT_INTERVIEW_SCHEDULE->value,
@@ -91,7 +91,6 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::CREATE_EMPLOYEE_ASSIGNED_SUPERVISOR->value,
             UserPermission::CREATE_PAYSLIPS->value,
             UserPermission::CREATE_BULK_PAYSLIPS->value,
-
 
             // Update cases goes here
             UserPermission::UPDATE_PENDING_APPLICATION_STATUS->value,
@@ -108,7 +107,6 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::UPDATE_APPROVED_OVERTIME_REQUEST_STATUS->value,
             UserPermission::UPDATE_ISSUE_COMPLAINT_CLOSED->value,
             UserPermission::UPDATE_ISSUE_COMPLAINT_RESOLVED->value,
-
 
             // Delete cases goes here
         ];

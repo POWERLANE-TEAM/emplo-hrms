@@ -15,11 +15,13 @@ class JobTitleSeeder extends Seeder
     {
         $jobTitles = collect(Storage::json('public/utils/job-titles.json'));
 
-        $jobTitles->each(function ($jobTitle) {
+        $jobTitles->each(function ($item) {
             JobTitle::create([
-                'job_title' => $jobTitle['title'],
+                'job_title' => $item['title'],
                 'job_desc' => fake()->boolean ? fake()->paragraph() : fake()->paragraph(500),
-                'department_id' => $jobTitle['department'],
+                'department_id' => $item['department'],
+                'job_level_id' => $item['level'],
+                'job_family_id' => $item['family'],
             ]);
         });
     }

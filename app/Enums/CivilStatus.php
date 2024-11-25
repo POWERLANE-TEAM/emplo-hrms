@@ -21,13 +21,12 @@ enum CivilStatus: string
 
     /**
      * Return array of each cases and scalar values.
-     * 
-     * @return array
      */
     public static function options(): array
     {
         return array_reduce(self::cases(), function ($carry, $case) {
             $carry[$case->value] = $case->label();
+
             return $carry;
         }, []);
     }

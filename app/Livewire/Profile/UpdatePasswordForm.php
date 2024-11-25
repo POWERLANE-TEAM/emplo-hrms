@@ -2,9 +2,9 @@
 
 namespace App\Livewire\Profile;
 
-use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Fortify\Contracts\UpdatesUserPasswords;
+use Livewire\Component;
 
 class UpdatePasswordForm extends Component
 {
@@ -22,7 +22,6 @@ class UpdatePasswordForm extends Component
     /**
      * Update the user's password.
      *
-     * @param  \Laravel\Fortify\Contracts\UpdatesUserPasswords  $updater
      * @return void
      */
     public function updatePassword(UpdatesUserPasswords $updater)

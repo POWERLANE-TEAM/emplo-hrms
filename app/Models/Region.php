@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Region extends Model
@@ -16,8 +16,6 @@ class Region extends Model
 
     /**
      * Get the provinces associated with the region.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function provinces(): HasMany
     {
@@ -26,8 +24,6 @@ class Region extends Model
 
     /**
      * Get the cities associated with the region.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function cities(): HasMany
     {
@@ -36,8 +32,6 @@ class Region extends Model
 
     /**
      * Get the barangays associated with the region.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function barangays(): HasMany
     {

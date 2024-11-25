@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Barangay extends Model
 {
@@ -17,8 +17,6 @@ class Barangay extends Model
 
     /**
      * Get the city of the barangay.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function city(): BelongsTo
     {
@@ -27,8 +25,6 @@ class Barangay extends Model
 
     /**
      * Get the province of the barangay.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function province(): BelongsTo
     {
@@ -37,8 +33,6 @@ class Barangay extends Model
 
     /**
      * Get the region of the barangay.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function region(): BelongsTo
     {
@@ -47,8 +41,6 @@ class Barangay extends Model
 
     /**
      * Get the employees who are permanent residents of the barangay.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function permanentEmployeeResidents(): HasMany
     {
@@ -57,8 +49,6 @@ class Barangay extends Model
 
     /**
      * Get the applicants who are permanent residents of the barangay.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function permanentApplicantResidents(): HasMany
     {
@@ -67,8 +57,6 @@ class Barangay extends Model
 
     /**
      * Get the employees who are present residents of the barangay.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function presentEmployeeResidents(): HasMany
     {
@@ -77,8 +65,6 @@ class Barangay extends Model
 
     /**
      * Get the applicants who are present residents of the barangay.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function presentApplicantResidents(): HasMany
     {

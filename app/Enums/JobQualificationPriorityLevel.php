@@ -10,7 +10,7 @@ enum JobQualificationPriorityLevel: string
 
     public function label(): string
     {
-        return match($this) {
+        return match ($this) {
             self::HP => 'High Priority',
             self::MP => 'Medium Priority',
             self::LP => 'Low Priority',
@@ -19,13 +19,12 @@ enum JobQualificationPriorityLevel: string
 
     /**
      * Return array of each cases and scalar values.
-     * 
-     * @return array
      */
     public static function options(): array
     {
         return array_reduce(self::cases(), function ($carry, $case) {
             $carry[$case->value] = $case->label();
+
             return $carry;
         }, []);
     }

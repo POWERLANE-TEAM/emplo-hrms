@@ -7,18 +7,10 @@ use App\Enums\UserPermission;
 use App\Http\Controllers\Application\ApplicationController;
 use App\Models\Application;
 use App\Notifications\applicant\ResumeRejected;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Validation\Rule;
-use Livewire\Attributes\On;
-use Livewire\Attributes\Validate;
 use Livewire\Component;
-use PhpParser\Node\Stmt\TryCatch;
 
 class Decline extends Component
 {
-
-
     public Application $application;
 
     public $applicationStatusId;
@@ -40,7 +32,7 @@ class Decline extends Component
         $update['applicationId'] = $this->application->application_id;
         $update['applicationStatusId'] = ApplicationStatus::REJECTED->value;
 
-        $controller = new ApplicationController();
+        $controller = new ApplicationController;
 
         $controller->update($update, true);
 
@@ -53,7 +45,6 @@ class Decline extends Component
 
         $user->notify($notification);
     }
-
 
     public function render()
     {

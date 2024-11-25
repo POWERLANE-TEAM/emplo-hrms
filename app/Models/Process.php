@@ -25,8 +25,6 @@ class Process extends Model
 
     /**
      * Get the Supervisor who approved/signed the process(e.g.: overtime, leave)
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function supervisor(): BelongsTo
     {
@@ -35,8 +33,6 @@ class Process extends Model
 
     /**
      * Get the Area Manager who approved/signed the process(e.g.: overtime, leave)
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function areaManager(): BelongsTo
     {
@@ -45,8 +41,6 @@ class Process extends Model
 
     /**
      * Get the HR Manager who approved/signed the process(e.g.: overtime, leave)
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function hrManager(): BelongsTo
     {
@@ -55,8 +49,6 @@ class Process extends Model
 
     /**
      * Get the parent model (Overtime or Leave) that the process belongs to.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
     public function processable(): MorphTo
     {

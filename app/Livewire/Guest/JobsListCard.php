@@ -13,7 +13,6 @@ class JobsListCard extends Component
 
     private $is_filtered = false;
 
-
     /**
      * Constructs the base query for fetching job vacancies.
      *
@@ -36,14 +35,13 @@ class JobsListCard extends Component
     /**
      * Highlights the search term within the given text by wrapping it in <mark> tags.
      *
-     * @param string $text The text to search within.
-     * @param string $search The term to highlight in the text.
-     *
+     * @param  string  $text  The text to search within.
+     * @param  string  $search  The term to highlight in the text.
      * @return string The text with the search term highlighted.
      */
     private function highlightText($text, $search)
     {
-        return preg_replace_callback('/(' . preg_quote($search, '/') . ')/i', function ($matches) {
+        return preg_replace_callback('/('.preg_quote($search, '/').')/i', function ($matches) {
             return "<mark>{$matches[1]}</mark>";
         }, $text);
     }
@@ -51,22 +49,22 @@ class JobsListCard extends Component
     /**
      * Applies search conditions to the query based on the provided search term.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query The query builder instance.
-     * @param string $search The search term to apply to the query.
+     * @param  \Illuminate\Database\Eloquent\Builder  $query  The query builder instance.
+     * @param  string  $search  The search term to apply to the query.
      * @return void
      */
     private function applySearchConditions($query, $search)
     {
         $query->where(function ($query) use ($search) {
             $query->WhereHas('jobTitle', function ($query) use ($search) {
-                $query->where('job_title', 'ilike', '%' . $search . '%')
-                    ->orWhere('job_desc', 'ilike', '%' . $search . '%');
+                $query->where('job_title', 'ilike', '%'.$search.'%')
+                    ->orWhere('job_desc', 'ilike', '%'.$search.'%');
             })
                 ->orWhereHas('jobTitle.specificAreas', function ($query) use ($search) {
-                    $query->where('area_name', 'ilike', '%' . $search . '%');
+                    $query->where('area_name', 'ilike', '%'.$search.'%');
                 })
                 ->orWhereHas('jobTitle.jobFamilies', function ($query) use ($search) {
-                    $query->where('job_family_name', 'ilike', '%' . $search . '%');
+                    $query->where('job_family_name', 'ilike', '%'.$search.'%');
                 });
         });
     }
@@ -74,8 +72,8 @@ class JobsListCard extends Component
     /**
      * Highlights the search term in the job vacancies' titles, descriptions, specific areas, and job families.
      *
-     * @param \Illuminate\Support\Collection $job_vacancies The collection of job vacancies.
-     * @param string $search The search term to highlight.
+     * @param  \Illuminate\Support\Collection  $job_vacancies  The collection of job vacancies.
+     * @param  string  $search  The search term to highlight.
      * @return \Illuminate\Support\Collection The collection of job vacancies with highlighted search terms.
      */
     private function highlightJobVacancies($job_vacancies, $search)
@@ -103,7 +101,6 @@ class JobsListCard extends Component
         });
     }
 
-
     public function getJobVacancies()
     {
         return $this->baseJobVacancyQuery()
@@ -119,14 +116,15 @@ class JobsListCard extends Component
      * based on the provided search term. If the search term is null or empty, it resets the
      * filter flag.
      *
-     * @param string|null $search The search term to filter job vacancies. If null or empty, retrieves all job vacancies.
+     * @param  string|null  $search  The search term to filter job vacancies. If null or empty, retrieves all job vacancies.
      * @return void
      *
      *  Properties Modified:
+     *
      * @property bool $is_filtered A boolean flag indicating whether the job vacancies list is filtered based on the search term.
      */
     #[On('job-searched')]
-    public function updateOnSearch(?String $search)
+    public function updateOnSearch(?string $search)
     {
         if (strlen(trim($search)) >= 1) {
             $query = $this->baseJobVacancyQuery()->with([
@@ -190,6 +188,7 @@ class JobsListCard extends Component
         }
 
         $this->dispatch('job-vacancies-fetched', ['count' => $this->job_vacancies->count()]);
+
         return view('livewire.guest.jobs-list-card');
     }
 }
