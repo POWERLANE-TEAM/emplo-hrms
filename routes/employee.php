@@ -18,7 +18,8 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth'/* , 'verified' */)->group(function () {
     Route::get('/dashboard', DashboardController::class)
-        ->can(UserPermission::VIEW_HR_MANAGER_DASHBOARD)
+        ->middleware(['permission:' . UserPermission::VIEW_HR_MANAGER_DASHBOARD->value
+            . '|' . UserPermission::VIEW_EMPLOYEE_DASHBOARD->value])
         ->name('dashboard');
 
     Route::get('/applicants/{applicationStatus}/{page?}', [ApplicationController::class, 'index'])
