@@ -4,7 +4,6 @@ namespace App\Livewire\Admin\JobBoard;
 
 use Livewire\Component;
 use App\Models\JobTitle;
-use App\Models\JobDetail;
 use App\Enums\UserPermission;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Validate;
@@ -47,15 +46,15 @@ class CreateJobListing extends Component
 
         $this->validate();
 
-        $jobDetail = JobDetail::find($this->state['selectedJob']);
+        $jobTitle = JobTitle::find($this->state['selectedJob']);
 
-        if (! $jobDetail) {
+        if (! $jobTitle) {
             $this->feedback = [
                 'message' => __('Something went wrong.'),
             ];
         } else {
-            DB::transaction(function () use ($jobDetail) {
-                $jobDetail->vacancies()->create([
+            DB::transaction(function () use ($jobTitle) {
+                $jobTitle->vacancies()->create([
                     'vacancy_count' => $this->state['vacancyCount'],
                     'application_deadline_at' => $this->state['applicationDeadline'],
                 ]);
