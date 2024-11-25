@@ -2,7 +2,7 @@
 <div>
     <div class="row px-3 mb-4">
 
-        <!-- Type of Leave -->
+        <!-- Input Field: Type of Leave -->
         <div class="row">
             <div class="col">
                 <x-form.boxed-dropdown id="leave_type" label="{{ __('Type of Leave') }}" name="leave_type"
@@ -10,7 +10,7 @@
             </div>
         </div>
 
-        <!-- Start Date & End Date -->
+        <!-- Calendar Pick: Start Date & End Date -->
         <div class="row">
             <div class="col">
                 <x-form.boxed-date id="start_date" label="{{ __('Start Date') }}" name="start_date" :nonce="$nonce"
@@ -23,14 +23,15 @@
             </div>
         </div>
 
-        <!-- Reason for Leave -->
+        <!-- Textarea Field: Reason for Leave -->
         <div class="row">
             <div class="col">
                 <x-form.boxed-textarea id="reason_leave" label="Reason for leave" name="reason_leave" :nonce="$nonce"
-                    :rows="6" :required="true" />
+                    :rows="7" :required="true" />
             </div>
         </div>
 
+        <!-- Reason for Leave -->
         <div class="pe-4 my-2">
             <div class="col-md-12 pe-2">
                 <div class="callout callout-success bg-body-tertiary">
