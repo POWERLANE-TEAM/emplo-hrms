@@ -24,8 +24,9 @@
         $navAttendanceOrder = $user->hasPermissionTo(UserPermission::VIEW_ALL_DAILY_ATTENDANCE) ? 4 : 2;
         $navAttendanceRoute = $user->hasPermissionTo(UserPermission::VIEW_ALL_DAILY_ATTENDANCE)
             ? $routePrefix . '.attendance.index'
-            : $routePrefix . '.attendance.show';
+            : $routePrefix . '.attendance.index'; /* $routePrefix . '.attendance.show' */
     @endphp
+
     @canAny([UserPermission::VIEW_DAILY_ATTENDANCE, UserPermission::VIEW_ALL_DAILY_ATTENDANCE])
         <x-layout.employee.nav.sidebar.nav-item :href="route($navAttendanceRoute)" :active="request()->routeIs($navAttendanceRoute)"
             class="tw-order-[{{ $navAttendanceOrder }}]" nav_txt="Attendance" :defaultIcon="['src' => 'attendance', 'alt' => '']" :activeIcon="['src' => 'attendance', 'alt' => '']">
@@ -75,8 +76,8 @@
 
     {{-- Employee, Supervisor --}}
     @can(UserPermission::VIEW_ISSUES)
-        <x-layout.employee.nav.sidebar.nav-item href="#" :active="request()->routeIs($routePrefix . '.issues')" class="tw-order-[8]" nav_txt="Issues"
-            :defaultIcon="['src' => 'issues', 'alt' => '']" activeIcon="['src' => 'issues', 'alt' => '']">
+        <x-layout.employee.nav.sidebar.nav-item href="#" {{-- :active="request()->routeIs($routePrefix . '.issues')" --}} class="tw-order-[8]" nav_txt="Issues"
+            :defaultIcon="['src' => 'issues', 'alt' => '']" :activeIcon="['src' => 'issues', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan
 
