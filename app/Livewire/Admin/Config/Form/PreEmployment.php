@@ -22,7 +22,7 @@ class PreEmployment extends Component
     public function save()
     {
         if ($this->editMode) {
-            if (! Auth::user()->hasPermissionTo(UserPermission::CREATE_PREEMPLOYMENT_REQUIREMENTS)) {
+            if (! Auth::user()->hasPermissionTo(UserPermission::UPDATE_PREEMPLOYMENT_REQUIREMENTS)) {
                 $this->reset();
 
                 abort(403);
@@ -40,7 +40,7 @@ class PreEmployment extends Component
                 });
             }
         } else {
-            if (! Auth::user()->hasPermissionTo(UserPermission::UPDATE_PREEMPLOYMENT_REQUIREMENTS)) {
+            if (! Auth::user()->hasPermissionTo(UserPermission::CREATE_PREEMPLOYMENT_REQUIREMENTS)) {
                 $this->reset();
 
                 abort(403);
