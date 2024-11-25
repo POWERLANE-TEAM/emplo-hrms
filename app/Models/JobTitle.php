@@ -58,6 +58,16 @@ class JobTitle extends Model
     }
 
     /**
+     * Get the vacancy associated with the job title.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function vacancies(): HasMany
+    {
+        return $this->hasMany(JobVacancy::class, 'job_title_id', 'job_title_id');
+    }
+
+    /**
      * Override default values for more controlled logging.
      * 
      * @return \Spatie\Activitylog\LogOptions

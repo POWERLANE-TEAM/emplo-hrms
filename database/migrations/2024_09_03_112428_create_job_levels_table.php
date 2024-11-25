@@ -73,8 +73,8 @@ return new class extends Migration
         Schema::create('job_vacancies', function (Blueprint $table) {
             $table->id('job_vacancy_id');
 
-            $table->foreignIdFor(JobDetail::class, 'job_detail_id')
-                ->constrained('job_details', 'job_detail_id')
+            $table->foreignIdFor(JobTitle::class, 'job_title_id')
+                ->constrained('job_titles', 'job_title_id')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
