@@ -16,8 +16,8 @@ class DashboardController extends Controller
 
         $dashboard = match (true) {
             $user->hasPermissionTo(UserPermission::VIEW_HR_MANAGER_DASHBOARD->value) => 'employee.hr-manager.index',
-            $user->hasPermissionTo(UserPermission::VIEW_EMPLOYEE_DASHBOARD->value) => 'employee.supervisor.index',
             $user->hasPermissionTo(UserPermission::VIEW_EMPLOYEE_DASHBOARD->value) => 'employee.basic.index',
+            $user->hasPermissionTo(UserPermission::VIEW_EMPLOYEE_DASHBOARD->value) => 'employee.supervisor.index',
 
             default => abort(403, 'Unauthorized')
         };
