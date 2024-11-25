@@ -30,9 +30,9 @@
 
 @include('components.includes.tab_navs.job-tab-navs')
 
-{{-- <x-info_panels.callout type="info"
+<x-info_panels.callout type="info"
     description="{{ __('Ensure the job family is added before assigning a position, otherwise it will not appear.') }}" note="true">
-</x-info_panels.callout> --}}
+</x-info_panels.callout>
 
 <section class="mx-2">
 
