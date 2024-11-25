@@ -2,13 +2,19 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Str;
+use App\Enums\ActivityLogName;
+use Spatie\Activitylog\LogOptions;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class PreempRequirement extends Model
 {
     use HasFactory;
+    use LogsActivity;
 
     protected $primaryKey = 'preemp_req_id';
 
@@ -25,5 +31,21 @@ class PreempRequirement extends Model
     public function applicationDocs(): HasMany
     {
         return $this->hasMany(ApplicationDoc::class, 'preemp_req_id', 'preemp_req_id');
+    }
+
+    public function getActivityLogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logFillable()
+            ->useLogName(ActivityLogName::CONFIGURATION->value)
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(function (string $eventName) {
+                $causerFirstName = Str::ucfirst(Auth::user()->account->first_name);
+                return match ($eventName) {
+                    'created' => __($causerFirstName.' created a new pre-employment requirement.'),
+                    'updated' => __($causerFirstName.' updated a pre-employment requirement\'s information.'),
+                    'deleted' => __($causerFirstName.' deleted a pre-employment requirement.'),
+                };
+            });
     }
 }

@@ -4,7 +4,6 @@ namespace App\Livewire\Admin\JobBoard;
 
 use Livewire\Component;
 use App\Models\JobTitle;
-use App\Models\JobDetail;
 use App\Enums\UserPermission;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Validate;
@@ -47,15 +46,15 @@ class CreateJobListing extends Component
 
         $this->validate();
 
-        $jobDetail = JobDetail::find($this->state['selectedJob']);
+        $jobTitle = JobTitle::find($this->state['selectedJob']);
 
-        if (! $jobDetail) {
+        if (! $jobTitle) {
             $this->feedback = [
                 'message' => __('Something went wrong.'),
             ];
         } else {
-            DB::transaction(function () use ($jobDetail) {
-                $jobDetail->vacancies()->create([
+            DB::transaction(function () use ($jobTitle) {
+                $jobTitle->vacancies()->create([
                     'vacancy_count' => $this->state['vacancyCount'],
                     'application_deadline_at' => $this->state['applicationDeadline'],
                 ]);
@@ -92,7 +91,7 @@ class CreateJobListing extends Component
     public function renderSelectedJob()
     {
         $this->jobDetails = JobTitle::where('job_title_id', $this->state['selectedJob'])
-                                ->with(['department', 'qualifications'])
+                                ->with(['department', 'qualifications', 'jobFamily', 'jobLevel'])
                                 ->get()
                                 ->map(function ($item) {
                                     return (object) [
@@ -100,6 +99,9 @@ class CreateJobListing extends Component
                                         'description'=> $item->job_title_desc,
                                         'department' => $item->department->department_name,
                                         'qualifications' => $item->qualifications,
+                                        'family' => $item->jobFamily->job_family_name,
+                                        'level' => $item->jobLevel->job_level,
+                                        'levelName' => $item->jobLevel->job_level_name
                                     ];
                                 });
     }

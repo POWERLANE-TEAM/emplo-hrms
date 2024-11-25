@@ -5,18 +5,45 @@
 
 <section>
     <div>
-        {{-- Department --}}
         <div class="row">
             <div class="col">
                 <x-form.boxed-dropdown 
+                    id="family" label="{{ __('Job Family') }}" 
+                    wire:model="state.family" 
+                    :nonce="$nonce" 
+                    :required="true"
+                    :options="$this->jobFamilies"
+                >
+                </x-form.boxed-dropdown>
+                @error('state.family')
+                    <div class="invalid-feedback" role="alert">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="col">
+                <x-form.boxed-dropdown 
+                    id="level" label="{{ __('Job Level') }}" 
+                    wire:model="state.level" 
+                    :nonce="$nonce" 
+                    :required="true"
+                    :options="$this->jobLevels"
+                >
+                </x-form.boxed-dropdown>
+                @error('state.level')
+                    <div class="invalid-feedback" role="alert">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="col">
+                <x-form.boxed-dropdown 
                     id="dept" label="{{ __('Department') }}" 
-                    wire:model="department" 
+                    wire:model="state.department" 
                     :nonce="$nonce" 
                     :required="true"
                     :options="$this->departments"
                 >
                 </x-form.boxed-dropdown>
-                @error('department')
+                @error('state.department')
                     <div class="invalid-feedback" role="alert">{{ $message }}</div>
                 @enderror
             </div>
@@ -24,15 +51,26 @@
 
         {{-- Job Title --}}
         <div class="row">
-            <div class="col">
+            <div class="col-7">
                 <x-form.boxed-input-text 
                     id="job_position" label="{{ __('Job Title') }}" 
-                    name="jobTitleName" 
+                    name="state.title" 
                     :nonce="$nonce"
                     :required="true" 
-                    placeholder="Enter job position" 
+                    placeholder="Enter job title" 
                 />
-                @error('jobTitleName')
+                @error('state.title')
+                    <div class="invalid-feedback" role="alert">{{ $message }}</div>
+                @enderror
+            </div>
+            <div class="col-5">
+                <x-form.boxed-input-text 
+                    id="salary" label="{{ __('Base Salary') }}" 
+                    name="state.baseSalary" 
+                    :nonce="$nonce"
+                    placeholder="Enter base salary" 
+                />
+                @error('state.baseSalary')
                     <div class="invalid-feedback" role="alert">{{ $message }}</div>
                 @enderror
             </div>
@@ -42,12 +80,12 @@
         <x-form.boxed-textarea 
             id="job_desc" 
             label="{{ __('Job Title Description') }}" 
-            name="jobTitleDesc" 
+            name="state.description" 
             :nonce="$nonce" 
             :rows="6"
             placeholder="Enter description for the job position..." 
         />
-        @error('jobTitleDesc')
+        @error('state.description')
             <div class="invalid-feedback" role="alert">{{ $message }}</div>
         @enderror
     </div>
@@ -61,9 +99,7 @@
 
         </x-headings.form-snippet-intro>
 
-        <livewire:blocks.dragdrop.show-qualifications />
-
-        <livewire:blocks.inputs.qualification-input />
+        <livewire:admin.job-title.set-qualifications />
     </div>
 
     {{-- Submit Button --}}

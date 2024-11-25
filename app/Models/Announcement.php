@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Str;
 use App\Enums\ActivityLogName;
 use Spatie\Activitylog\LogOptions;
@@ -14,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Announcement extends Model
 {
+    use HasFactory;
     use SoftDeletes;
     use LogsActivity;
 
@@ -65,7 +67,9 @@ class Announcement extends Model
                 return match ($eventName) {
                     'created' => __($causerFirstName.' posted a new announcement.'),
                     'updated' => __($causerFirstName.' updated an announcement'),
-                    'deleted' => __($causerFirstName.' deleted an announcement.'),
+                    'deleted' => $this->deleted_at
+                                ? __($causerFirstName.' temporarily removed an announcement.')
+                                : __($causerFirstName.' permanently deleted an announcement.'),
                 };
             });
     }

@@ -104,6 +104,16 @@ class User extends Authenticatable implements MustVerifyEmail
             ->logUnguarded()
             ->useLogName(ActivityLogName::USER_MANAGEMENT->value)
             ->dontSubmitEmptyLogs()
+            ->logExcept([
+                'password',
+                'google_id',
+                'facebook_id',
+                'remember_token',
+                'two_factor_secret',
+                'two_factory_recovery_codes',
+                'two_factor_confimed_at',
+                'deleted_at',
+            ])
             ->setDescriptionForEvent(function (string $eventName) {
                 $causerFirstName = Str::ucfirst(Auth::user()->account->first_name);
                 return match ($eventName) {

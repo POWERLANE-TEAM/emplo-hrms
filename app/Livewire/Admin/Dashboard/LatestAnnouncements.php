@@ -32,13 +32,16 @@ class LatestAnnouncements extends Component
                 ->orWhere('modified_at', '>=', $this->weekInterval);
         })
             ->latest()
-            ->with('offices')
+            ->with(['offices', 'publisher'])
             ->simplePaginate(3)
             ->through(function ($item) {
                 return (object) [
                     'id' => $item->announcement_id,
                     'title' => $item->announcement_title,
                     'description' => $item->announcement_description,
+                    'published_at' => $item->published_at->diffForHumans(),
+                    'modified_at' => $item->modified_at->diffForHumans(),
+                    'publisher' => $item->publisher->first_name,
                     'offices' => $item->offices->map(function ($item) {
                         return (object) [
                             'id' => $item->job_family_name,

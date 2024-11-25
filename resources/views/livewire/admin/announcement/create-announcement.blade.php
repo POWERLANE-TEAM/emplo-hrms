@@ -14,16 +14,16 @@
         @enderror
 
         {{-- Multiselect Dropwdown for: Job Family --}}
-        <x-form.boxed-dropdown 
+        <x-form.multi-select-dropdown
+            x-cloak 
             id="job_fam" 
             label="Job Family" 
             name="state.visibleTo" 
             :nonce="$nonce" 
             :required="true" 
             :options="$this->jobFamilies" 
-            :multiple="true"
         >
-        </x-form.boxed-dropdown>
+        </x-form.multi-select-dropdown>
         @error('state.visibleTo')
             <div class="invalid-feedback" role="alert"> {{ $message }} </div>
         @enderror

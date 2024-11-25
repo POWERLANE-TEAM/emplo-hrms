@@ -27,13 +27,13 @@ class DatabaseSeeder extends Seeder
     
             $this->call(DepartmentSeeder::class);
     
-            $this->call(JobTitleSeeder::class);
-    
             $this->call(JobLevelSeeder::class);
     
             $this->call(SpecificAreaSeeder::class);
     
             $this->call(JobFamilySeeder::class);
+
+            $this->call(JobTitleSeeder::class);
     
             $this->call(BasicUserSeeder::class);
     

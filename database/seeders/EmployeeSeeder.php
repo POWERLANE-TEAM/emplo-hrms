@@ -11,7 +11,6 @@ use App\Models\Application;
 use App\Models\Employee;
 use App\Models\JobVacancy;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Concurrency;

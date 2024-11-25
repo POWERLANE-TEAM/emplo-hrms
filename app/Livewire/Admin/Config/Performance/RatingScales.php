@@ -32,8 +32,6 @@ class RatingScales extends Component
     {
         $feedbackMsg = null;
 
-        // $ratingName = Str::of($this->state['name'])->trim()->lower();
-
         if ($this->editMode) {
             if(! Auth::user()->hasPermissionTo(UserPermission::UPDATE_PERFORMANCE_RATING_SCALES)) {
                 $this->reset();
@@ -43,11 +41,15 @@ class RatingScales extends Component
 
             $this->validateOnly('state.name');
 
-            DB::transaction(function () {
-                PerformanceRating::where('perf_rating_id', $this->index)->update([
-                    'perf_rating' => $this->state['scale'],
-                    'perf_rating_name' => Str::lower($this->state['name']),
-                ]);                
+            $ratingScale = PerformanceRating::find($this->index);
+
+            is_null($ratingScale)
+                ? $feedbackMsg = __('Something went wrong.')
+                : DB::transaction(function () use ($ratingScale) {
+                    $ratingScale->update([
+                        'perf_rating' => $this->state['scale'],
+                        'perf_rating_name' => Str::lower($this->state['name']),
+                  ]);                
             });
             $feedbackMsg = __('Performance rating scale was modified successfully.');
         } else {

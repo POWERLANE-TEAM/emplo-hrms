@@ -13,7 +13,7 @@ class PerformancePeriodSeeder extends Seeder
      */
     public function run(): void
     {
-        $periods = ['third month', 'fifth month', 'final month'];
+        $periods = ['third month', 'fifth month', 'final month', 'annual'];
 
         Arr::map($periods, function (string $period) {
             PerformancePeriod::create([

@@ -21,25 +21,33 @@ class PreEmployment extends Component
     
     public function save()
     {
-        $this->validate();
-
         if ($this->editMode) {
-            if (! Auth::user()->hasPermissionTo(UserPermission::CREATE_PREEMPLOYMENT_REQUIREMENTS)) {
-                $this->reset();
-
-                abort(403);
-            }
-            DB::transaction(function () {
-                PreempRequirement::where('preemp_req_id', $this->index)->update([
-                    'preemp_req_name' => $this->requirement
-                ]);
-            });
-        } else {
             if (! Auth::user()->hasPermissionTo(UserPermission::UPDATE_PREEMPLOYMENT_REQUIREMENTS)) {
                 $this->reset();
 
                 abort(403);
             }
+
+            $this->validate();
+
+            $requirement = PreempRequirement::find($this->index);
+
+            if($requirement) {
+                DB::transaction(function () use ($requirement) {
+                    $requirement->update([
+                      'preemp_req_name' => $this->requirement
+                    ]);
+                });
+            }
+        } else {
+            if (! Auth::user()->hasPermissionTo(UserPermission::CREATE_PREEMPLOYMENT_REQUIREMENTS)) {
+                $this->reset();
+
+                abort(403);
+            }
+
+            $this->validate();
+
             DB::transaction(function () {
                 PreempRequirement::create([
                     'preemp_req_name' => $this->requirement

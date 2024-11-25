@@ -27,13 +27,13 @@ class JobVacancy extends Model
     ];
 
     /**
-     * Get the job detail that owns the job vacancy.
+     * Get the job title that owns the job vacancy.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function jobDetail(): BelongsTo
+    public function jobTitle(): BelongsTo
     {
-        return $this->belongsTo(JobDetail::class, 'job_detail_id', 'job_detail_id');
+        return $this->belongsTo(JobTitle::class, 'job_title_id', 'job_title_id');
     }
 
     /**
@@ -44,16 +44,6 @@ class JobVacancy extends Model
     public function applications(): HasMany
     {
         return $this->hasMany(Application::class, 'job_vacancy_id', 'job_vacancy_id');
-    }
-
-    /**
-     * Get the job title through the job detail.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasOneThrough
-     */
-    public function jobTitle(): HasOneThrough
-    {
-        return $this->hasOneThrough(JobTitle::class, JobDetail::class, 'job_detail_id', 'job_title_id', 'job_detail_id', 'job_title_id');
     }
 
     /**
