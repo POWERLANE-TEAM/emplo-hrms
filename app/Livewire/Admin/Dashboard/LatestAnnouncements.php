@@ -39,8 +39,8 @@ class LatestAnnouncements extends Component
                     'id' => $item->announcement_id,
                     'title' => $item->announcement_title,
                     'description' => $item->announcement_description,
-                    'published_at' => $item->published_at,
-                    'modified_at' => $item->modified_at,
+                    'published_at' => $item->published_at->diffForHumans(),
+                    'modified_at' => $item->modified_at->diffForHumans(),
                     'publisher' => $item->publisher->first_name,
                     'offices' => $item->offices->map(function ($item) {
                         return (object) [

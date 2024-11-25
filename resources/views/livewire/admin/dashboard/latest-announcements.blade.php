@@ -1,5 +1,3 @@
-@use(Illuminate\Support\Carbon)
-
 <div class="col-md-7 flex announcement-box" x-cloak>
     <!-- Header -->
     <div class="px-4 pb-4">
@@ -55,12 +53,12 @@
                         {{ __('Published by ').$announcement->publisher }}
                     </small>                            
                     <small class="text-muted">
-                        {{ Carbon::parse($announcement->published_at)->diffForHumans() }}
+                        {{ $announcement->published_at }}
                     </small>
                     @if ($announcement->modified_at)
                         @if ($announcement->modified_at > $announcement->published_at)
                             <small class="text-muted">
-                                {{ __('Modified ').Carbon::parse($announcement->modified_at)->diffForHumans() }}
+                                {{ __('Modified ').$announcement->modified_at }}
                             </small>                                 
                         @endif
                     @endif                            
