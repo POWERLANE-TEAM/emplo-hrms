@@ -21,17 +21,24 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         ->can(UserPermission::VIEW_HR_MANAGER_DASHBOARD)
         ->name('dashboard');
 
-    Route::get('/applicants/{page?}', [ApplicationController::class, 'index'])
+    Route::get('/applicants/{applicationStatus}/{page?}', [ApplicationController::class, 'index'])
+        ->where('applicationStatus', 'pending|qualified|preemployed')
         ->where('page', 'index|')
-        ->can(UserPermission::VIEW_ALL_APPLICANTS)
+        ->middleware(['permission:' . UserPermission::VIEW_ALL_PENDING_APPLICATIONS->value
+            . '|' . UserPermission::VIEW_ALL_QUALIFIED_APPLICATIONS->value
+            . '|' . UserPermission::VIEW_ALL_PRE_EMPLOYED_APPLICATIONS->value])
         ->name('applications');
 
     Route::get('/applicant/{application}', [ApplicationController::class, 'show'])
-        ->middleware(['permission:' . UserPermission::VIEW_APPLICANT_INFORMATION->value . '|' . UserPermission::VIEW_ALL_APPLICANTS->value])
+        ->middleware(['permission:' . UserPermission::VIEW_APPLICATION_INFORMATION->value . '&(' . UserPermission::VIEW_ALL_PENDING_APPLICATIONS->value
+            . '|' . UserPermission::VIEW_ALL_QUALIFIED_APPLICATIONS->value
+            . '|' . UserPermission::VIEW_ALL_PRE_EMPLOYED_APPLICATIONS->value . ')'])
         ->name('application.show');
 
     Route::patch('/applicant/{application}', [ApplicationController::class, 'update'])
-        ->middleware(['permission:' . UserPermission::UPDATE_APPLICATION_STATUS->value])
+        ->middleware(['permission:' . UserPermission::UPDATE_PENDING_APPLICATION_STATUS->value
+            . '|' . UserPermission::UPDATE_QUALIFIED_APPLICATION_STATUS->value
+            . '|' . UserPermission::UPDATE_PRE_EMPLOYED_APPLICATION_STATUS->value])
         ->name('application.update');
 
     Route::post('/applicant/interview/initial/{application}', [InitialInterviewController::class, 'store'])
@@ -78,7 +85,3 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         echo 'sample';
     });
 });
-
-Route::get('profile', function () {
-    return view('employee.admin.profile');
-})->name('profile'); // Still temporary.

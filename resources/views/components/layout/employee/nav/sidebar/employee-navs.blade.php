@@ -21,12 +21,12 @@
 
     {{-- Employee, HR Manager, Supervisor --}}
     @php
-        $navAttendanceOrder = $user->hasPermissionTo(UserPermission::VIEW_ALL_ATTENDANCE) ? 4 : 2;
-        $navAttendanceRoute = $user->hasPermissionTo(UserPermission::VIEW_ALL_ATTENDANCE)
+        $navAttendanceOrder = $user->hasPermissionTo(UserPermission::VIEW_ALL_DAILY_ATTENDANCE) ? 4 : 2;
+        $navAttendanceRoute = $user->hasPermissionTo(UserPermission::VIEW_ALL_DAILY_ATTENDANCE)
             ? $routePrefix . '.attendance.index'
             : $routePrefix . '.attendance.show';
     @endphp
-    @canAny([UserPermission::VIEW_ATTENDANCE, UserPermission::VIEW_ALL_ATTENDANCE])
+    @canAny([UserPermission::VIEW_DAILY_ATTENDANCE, UserPermission::VIEW_ALL_DAILY_ATTENDANCE])
         <x-layout.employee.nav.sidebar.nav-item :href="route($navAttendanceRoute)" :active="request()->routeIs($navAttendanceRoute)"
             class="tw-order-[{{ $navAttendanceOrder }}]" nav_txt="Attendance" :defaultIcon="['src' => 'attendance', 'alt' => '']" :activeIcon="['src' => 'attendance', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
@@ -44,9 +44,9 @@
 
     {{-- Employee, HR Manager, Supervisor --}}
     @php
-        $navPerformanceOrder = $user->hasPermissionTo(UserPermission::VIEW_ALL_LEAVES) ? 8 : 4;
+        $navPerformanceOrder = $user->hasPermissionTo(UserPermission::VIEW_ALL_EMP_PERFORMANCE_EVAL) ? 8 : 4;
     @endphp
-    @canAny([UserPermission::VIEW_PERFORMANCE, UserPermission::VIEW_ALL_PERFORMANCE])
+    @canAny([UserPermission::VIEW_EMP_PERFORMANCE_EVAL, UserPermission::VIEW_ALL_EMP_PERFORMANCE_EVAL])
         <x-layout.employee.nav.sidebar.nav-item href="#" :active="request()->routeIs($routePrefix . '.performances')"
             class="tw-order-[{{ $navPerformanceOrder }}]" nav_txt="Performance" :defaultIcon="['src' => 'performances', 'alt' => '']" :activeIcon="['src' => 'performances', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
@@ -81,8 +81,9 @@
     @endcan
 
     {{-- HR Manager --}}
-    @can(UserPermission::VIEW_ALL_APPLICANTS)
-        <x-layout.employee.nav.sidebar.nav-item href="{{ route($routePrefix . '.applications') }}" :active="request()->routeIs($routePrefix . '.applications')"
+    @can(UserPermission::VIEW_ALL_PENDING_APPLICATIONS)
+        <x-layout.employee.nav.sidebar.nav-item
+            href="{{ route($routePrefix . '.applications', ['applicationStatus' => 'pending']) }}" :active="request()->routeIs($routePrefix . '.applications', ['applicationStatus' => 'pending'])"
             class="tw-order-[2]" nav_txt="Applicants" :defaultIcon="['src' => 'applicants', 'alt' => '']" :activeIcon="['src' => 'applicants', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan
