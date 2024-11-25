@@ -23,7 +23,7 @@ class ResumeController extends Controller
 
         // Add anti virus check here found free here https://github.com/sunspikes/clamav-validator
 
-        $credentialsPath = storage_path('app/services/credentials/emplo-ocr-5fa22df3c01d.json');
+        $credentialsPath = storage_path('app/services/credentials/doc-ocr.json');
 
         $credentials = json_decode(file_get_contents($credentialsPath), true);
 
