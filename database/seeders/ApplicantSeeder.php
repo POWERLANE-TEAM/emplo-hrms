@@ -93,8 +93,7 @@ class ApplicantSeeder extends Seeder
 
         $permissions = [
             UserPermission::CREATE_PRE_EMPLOYMENT_DOCUMENT,
-            UserPermission::UPDATE_OWNED_PRE_EMPLOYMENT_DOCUMENT,
-            UserPermission::DELETE_OWNED_PRE_EMPLOYMENT_DOCUMENT,
+            UserPermission::DELETE_PRE_EMPLOYMENT_DOCUMENT,
         ];
 
         Application::unguard();
