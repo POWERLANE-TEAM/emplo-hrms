@@ -1,3 +1,5 @@
+<!-- BACK-END REPLACE NOTE: The client-side handling of the calendar is handled at list-calendar.js  -->
+
 <div class="card border-primary mt-1 px-5 py-4 w-100 h-100">
     <section>
         <!-- Section Title -->
