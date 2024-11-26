@@ -11,9 +11,11 @@ class Holiday extends Model
 
     protected $primaryKey = 'holiday_id';
 
-    protected $guarded = [
-        'holiday_id',
-        'created_at',
-        'updated_at',
+    protected $fillable = [
+        'event',
+        'date',
+        'type',
     ];
+
+    // date accessor
 }
