@@ -25,6 +25,9 @@ class Holiday extends Model
 
     // date accessor
 
+    /**
+     * Override default values for more controlled logging.
+     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
