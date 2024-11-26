@@ -1,18 +1,16 @@
+// CORE SCSS OF APPLICANT.
+
 @import '../utils';
+@import '../scales/icon-size';
 @import '../guest/header-nav';
 @import '../icon/lucide';
 @import '../nav-link';
 @import '../nav-tabs';
 @import '../footer';
+@import '../palette/text-colors';
+@import '../palette/start-borders';
 @import '../input/checkbox';
 
-
-
-
-main.container {
-    // margin-left: calc(4rem + 12vw);
-    // margin-right: calc(3rem + 4vw);
-}
 
 :has(.checkbox-label) {
 
@@ -27,11 +25,11 @@ main.container {
 
 }
 
-@media screen and (min-width:1400px) {
-    .margin-right-n-book {
-        margin-right: calc((1rem + 7vw) * -1);
-    }
-}
+// @media screen and (min-width:1400px) {
+//     .margin-right-n-book {
+//         margin-right: calc((1rem + 7vw) * -1);
+//     }
+// }
 
 table.table {
     border-collapse: separate;
@@ -43,6 +41,24 @@ table.table {
 
     &.table-hover {
         tbody {
+            tr:hover {
+                background-color: var(--bs-body-bg);
+
+                td button {
+                    transition: all 0.3s ease;
+
+                    &:first-child {
+                        color: white;
+                        background-color: transparent;
+                    }
+
+                    &:last-child {
+                        color: var(--bs-white);
+                        border-color: var(--bs-white);
+                    }
+                }
+            }
+
             tr.no-hover:hover {
                 // pointer-events: none;
                 background-color: var(--bs-body-bg);
@@ -51,13 +67,13 @@ table.table {
                 &>* {
                     background-color: var(--bs-body-bg);
                     --bs-table-bg-state: var(--bs-body-bg);
+                    color: var(--bs-black);
                 }
 
             }
         }
     }
-
-}
+}   
 
 .modal-header {
     text-wrap-style: pretty;

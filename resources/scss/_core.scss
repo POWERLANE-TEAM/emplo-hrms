@@ -527,3 +527,18 @@ body {
 .d-contents {
     display: contents;
 }
+
+.or-text-divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #555;
+}
+
+.or-text-divider::before,
+.or-text-divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #ccc;
+    margin: 0 10px;
+}
