@@ -5,7 +5,7 @@
         -ms-user-select: none;
         -webkit-appearance: none;
         background-color: WHITE;
-        border: 1px solid #747775;
+        border: 1.3px solid #d9d9d9;
         border-radius: 4px;
         box-sizing: border-box;
         color: #1f1f1f;
@@ -16,9 +16,9 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 500px;
+        width: 100%
         transition: background-color 0.218s, border-color 0.218s, box-shadow 0.218s;
-        max-width: 500px;
+        max-width: 100%
         min-width: min-content;
     }
 
@@ -71,7 +71,6 @@
     .fb-material-button:hover {
         color: #000;
         background-color: #f1f1f1;
-        border-color: #d1d1d1;
         -webkit-box-shadow: 0 1px 3px 0 rgba(60, 64, 67, .15), 0 1px 2px 0 rgba(60, 64, 67, .30);
         box-shadow: 0 1px 3px 0 rgba(60, 64, 67, .15), 0 1px 2px 0 rgba(60, 64, 67, .30);
     }
@@ -88,7 +87,7 @@
     }
 </style>
 
-<div class="pt-2 row justify-content-center align-items-center">
+<div class="pt-2 col-md-12 row justify-content-center align-items-center w-100 ms-1">
     <a href= {{ route('auth.facebook.redirect') }}
         class="fb-material-button btn btn-lg w-100 link-offset-2 link-underline link-underline-opacity-0" role="button">
         <div class="fb-material-button-icon">
