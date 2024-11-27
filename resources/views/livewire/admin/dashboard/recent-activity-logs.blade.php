@@ -1,5 +1,3 @@
-@use(Illuminate\Support\Carbon)
-
 <div class="col-md-7">
     <div class="card h-100">
         <div class="card-header w-100 px-4 pt-3 pb-2">
@@ -22,7 +20,7 @@
                             <li class="fs-6">{{ $log->description }}</li>
                         </div>
                         <div class="ms-auto">
-                            <small class="text-muted">{{ Carbon::parse($log->created_at)->diffForHumans() }}</small>
+                            <small class="text-muted">{{ $log->created_at }}</small>
                         </div>
                     </div>
                     <hr />
