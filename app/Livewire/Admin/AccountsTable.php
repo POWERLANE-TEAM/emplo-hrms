@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Enums\UserRole;
 use App\Enums\UserStatus;
 use App\Enums\AccountType;
+use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
@@ -65,7 +66,7 @@ class AccountsTable extends DataTableComponent
         return [
             Column::make(__('Full Name'))
                 ->label(function ($row) {
-                    $fullName = $row->account->full_name;
+                    $fullName = Str::headline($row->account->full_name);
                     $photo = $row->photo ?? Storage::url('icons/default-avatar.png');
             
                     // this is disgusting. Change this somehow
