@@ -46,9 +46,10 @@ Route::middleware('auth')->group(function () {
      */
     Route::prefix('accounts')->name('accounts.')->group(function () {
         Route::get('/', function () {
-            // dd(Auth::user()->permissions());
             return view('employee.admin.accounts.index');
-        })->name('index');
+        })
+            ->can(UserPermission::VIEW_ALL_ACCOUNTS)
+            ->name('index');
         
         Route::get('create', function () {
             return view('employee.admin.accounts.create');
