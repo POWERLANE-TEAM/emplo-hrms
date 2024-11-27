@@ -22,7 +22,7 @@
                         src="{{ Vite::asset('resources/images/illus/dashboard/online-users.webp') }}" alt="">
                 </div>
                 <div class="col-md-7 mx-2">
-                    <p class="fw-medium fs-7 text-opacity-25">{{ __('Online Users') }}</p>
+                    <p class="fw-medium fs-7 text-opacity-25">{{ __('Active Sessions') }}</p>
                     <p class="fw-semibold fs-3" x-text="$store.onlineUsers.list.length"></p>
                 </div>
             </div>
