@@ -76,10 +76,6 @@ class AccountsTable extends DataTableComponent
                             </div>';
                 })
                 ->html(),
-
-            // Column::make(__('First Name'), 'first_name')
-            //     ->sortable()
-            //     ->searchable(),
         
             Column::make(__('Email Address'), 'email')
                 ->sortable()
