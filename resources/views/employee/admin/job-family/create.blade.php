@@ -1,6 +1,5 @@
 {{-- Extends layout --}}
-@extends('components.layout.employee.layout', ['description' => 'Admin Dashboard', 'nonce' => $nonce])
-
+@extends('components.layout.employee.layout', ['description' => 'Job Family', 'nonce' => $nonce])
 
 {{-- Head Section: Title, Scripts, & Styles --}}
 @section('head')
@@ -24,13 +23,11 @@
 @endPushOnce
 {{-- END OF Head Section: Title, Scripts, & Styles --}}
 
-
-
 {{-- Body/Content Section --}}
 @section('content')
 
 <x-headings.header-link heading="{{ __('Create Job Family') }}" description="{{ __('Kindly fill-in the fields below.') }}"
-    label="Bulk Creation" nonce="{{ $nonce }}" href="{{ route($routePrefix . '.accounts') }}" />
+    label="Bulk Creation" nonce="{{ $nonce }}" href="#" />
 
     @include('components.includes.tab_navs.job-tab-navs')
 
