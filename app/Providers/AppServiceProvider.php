@@ -88,6 +88,7 @@ class AppServiceProvider extends ServiceProvider
             'job_title' => 'App\Models\JobTitle',
             'performance_category' => 'App\Models\PerformanceCategory',
             'performance_rating' => 'App\Models\PerformanceRating',
+            'holiday' => 'App\Models\Holiday',
         ]);
 
         BroadcastServiceProvider::class;
