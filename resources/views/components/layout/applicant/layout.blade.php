@@ -85,6 +85,8 @@
     @endonce
 
     @yield('footer')
+
+    @stack('scripts')
 </body>
 
 </html>
