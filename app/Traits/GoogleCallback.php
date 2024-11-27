@@ -2,27 +2,52 @@
 
 namespace App\Traits;
 
-use App\Enums\AccountType;
-use App\Enums\PlaceholderString;
-use App\Enums\UserStatus;
+use App\Models\User;
 use App\Models\Guest;
-use Illuminate\Support\Facades\Hash;
+use App\Enums\UserStatus;
+use App\Enums\AccountType;
 use Illuminate\Support\Str;
+use App\Enums\ActivityLogName;
+use App\Enums\PlaceholderString;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 trait GoogleCallback
 {
+    private User $newUser;
+
+    /**
+     * Save Google user payload into the database.
+     * 
+     * @param array<string, null> $payload
+     * @return \App\Models\User
+     */
     public function saveGooglePayload(array $payload)
     {
-        $payload = collect($payload);
+        DB::transaction(function () use ($payload) {
+            activity()->withoutLogs(function () use ($payload) {
+                $payload = collect($payload);
+                $guest = $this->createGuest($payload);
+                $this->newUser = $this->createUserAccount($guest, $payload);                
+            });
+        });
 
-        $guest = $this->createGuest($payload);
+        activity()
+            ->useLog(ActivityLogName::AUTHENTICATION->value)
+            ->withProperties(['user' => $this->newUser])
+            ->event('created')
+            ->log(__('A new guest user has registered via Google'));            
 
-        $newUser = $this->createUserAccount($guest, $payload);
-
-        return $newUser;
+        return $this->newUser;
     }
 
-    private function createGuest($payload)
+    /**
+     * Create a new guest type of user.
+     * 
+     * @param  \Illuminate\Support\Collection $payload
+     * @return \App\Models\Guest
+     */
+    private function createGuest(Collection $payload)
     {
         return Guest::create([
             'first_name' => $payload->get('given_name') ?? PlaceholderString::NOT_PROVIDED,
@@ -31,13 +56,20 @@ trait GoogleCallback
         ]);
     }
 
-    private function createUserAccount(Guest $guest, $payload)
+    /**
+     * Create the user account from Google payload.
+     * 
+     * @param \App\Models\Guest $guest
+     * @param \Illuminate\Support\Collection $payload
+     * @return \App\Models\User
+     */
+    private function createUserAccount(Guest $guest, Collection $payload)
     {
         return $guest->account()->create([
             'email' => $payload->get('email'),
             'account_type' => AccountType::GUEST,
             'account_id' => $guest->guest_id,
-            'password' => Hash::make(Str::random()),
+            'password' => Str::password(),
             'photo' => $payload->get('picture') ?? null,
             'google_id' => $payload->get('sub'),
             'user_status_id' => UserStatus::ACTIVE,

@@ -2,13 +2,14 @@
 
 namespace App\Livewire\Auth;
 
-use App\Models\User;
-use App\Traits\GoogleCallback;
 use Exception;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+use App\Models\User;
 use Livewire\Component;
+use Illuminate\Http\Request;
+use App\Traits\GoogleCallback;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Laravel\Fortify\Contracts\LoginResponse;
 
 class GoogleOneTap extends Component
 {
@@ -21,52 +22,31 @@ class GoogleOneTap extends Component
 
     public function handleCallback(Request $request)
     {
-        try {
 
-            $client = new \Google_Client(['client_id' => config('services.google.client_id')]);
+        $client = new \Google_Client(['client_id' => config('services.google.client_id')]);
+        $credential = $request->input('credential');
+        $payload = $client->verifyIdToken($credential);
+        if ($payload) {
+            $user = User::where('google_id', $payload['sub'])
+                ->orWhere('email', $payload['email'])
+                ->first();
 
-            $credential = $request->input('credential');
-
-            $payload = $client->verifyIdToken($credential);
-
-            if ($payload) {
-
-                $user = User::where('google_id', $payload['sub'])
-                    ->orWhere('email', $payload['email'])
-                    ->first();
-
-                if ($user) {
-
-                    Auth::login($user);
-
-                    return redirect('hiring');
-                }
-
-                DB::beginTransaction();
-
-                $newUser = $this->saveGooglePayload($payload);
-
-                DB::commit();
-
-                if (! $newUser) {
-
-                    session()->flash('error', 'Something went wrong.');
-
-                    return redirect('/');
-                }
-
-                Auth::login($newUser);
-
-                return redirect('hiring');
+            if ($user) {
+                Auth::login($user);
+                
+                return app(LoginResponse::class);
             }
 
-        } catch (Exception $e) {
+            $newUser = $this->saveGooglePayload($payload);
 
-            DB::rollBack();
+            if (! $newUser) {
+                session()->flash('error', 'Something went wrong.');
 
-            report($e);
+                return redirect('/');
+            }
+            Auth::login($newUser);
 
-            return redirect()->intended('/hiring');
+            return app(LoginResponse::class);
         }
     }
 }
