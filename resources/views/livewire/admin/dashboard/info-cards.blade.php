@@ -8,7 +8,7 @@
                 </div>
                 <div class="col-md-7 mx-2">
                     <p class="fw-medium fs-7 text-opacity-25">{{ __('Active Users') }}</p>
-                    <p class="fw-semibold fs-3">{{ $activeUsersCount }}</p>
+                    <p class="fw-semibold fs-3">{{ $activeUsers }}</p>
                 </div>
             </div>
         </div>
@@ -22,7 +22,7 @@
                         src="{{ Vite::asset('resources/images/illus/dashboard/online-users.webp') }}" alt="">
                 </div>
                 <div class="col-md-7 mx-2">
-                    <p class="fw-medium fs-7 text-opacity-25">Online Users</p>
+                    <p class="fw-medium fs-7 text-opacity-25">{{ __('Active Sessions') }}</p>
                     <p class="fw-semibold fs-3" x-text="$store.onlineUsers.list.length"></p>
                 </div>
             </div>
@@ -39,7 +39,7 @@
                 </div>
                 <div class="col-md-7 mx-2">
                     <p class="fw-medium fs-7 text-opacity-25">{{ __('Total Users') }}</p>
-                    <p class="fw-semibold fs-3">{{ $totalUsersCount }}</p>
+                    <p class="fw-semibold fs-3">{{ $totalUsers }}</p>
                 </div>
             </div>
         </div>
@@ -55,7 +55,7 @@
                 </div>
                 <div class="col-md-7 mx-2">
                     <p class="fw-medium fs-7 text-opacity-25">{{ __('Logins in 24h') }}</p>
-                    <p class="fw-semibold fs-3">40</p>
+                    <p class="fw-semibold fs-3"> {{ $recentLogins }} </p>
                 </div>
             </div>
         </div>
