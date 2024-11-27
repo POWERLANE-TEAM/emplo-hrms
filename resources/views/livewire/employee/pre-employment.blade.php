@@ -299,7 +299,7 @@
                 <td>
                     <x-status-badge color="danger">Invalid</x-status-badge>
                 </td>
-                <td><button class="btn bg-transparent text-decoration-underline text-capitalize text-nowrap">View
+                <td><button class="btn bg-transparent border-0 text-decoration-underline text-capitalize text-nowrap">View
                         Attachment</button></td>
                 <td><button class="btn btn-primary">Upload</button></td>
             </tr>
@@ -311,7 +311,7 @@
                 <td>
                     <x-status-badge color="danger">Invalid</x-status-badge>
                 </td>
-                <td><button class="btn bg-transparent text-decoration-underline text-capitalize text-nowrap">View
+                <td><button class="btn bg-transparent border-0 text-decoration-underline text-capitalize text-nowrap">View
                         Attachment</button></td>
                 <td><button class="btn btn-primary">Upload</button></td>
             </tr>
