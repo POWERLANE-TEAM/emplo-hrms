@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Admin;
+namespace App\Livewire\Admin\Accounts;
 
 use App\Models\User;
 use App\Enums\UserRole;
@@ -22,6 +22,7 @@ class AccountsTable extends DataTableComponent
         $this->setPrimaryKey('user_id');
         $this->setPageName('accounts');
         $this->setEagerLoadAllRelationsEnabled();
+        $this->setSingleSortingDisabled();
         $this->setQueryStringEnabled();
         $this->setOfflineIndicatorEnabled();
         $this->setDefaultSort('created_at', 'desc');
