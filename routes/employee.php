@@ -130,11 +130,6 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     })->name('leaves.view');
 
     
-    Route::get('/sample', function () {
-        dd(request());
-        echo 'sample';
-    });
-
     // Overtime Management
     // -------------------------------
     Route::get('/overtime/request', function () {
@@ -144,4 +139,9 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     Route::get('/overtime/summary-form', function () {
         return view('employee.basic.leaves.summary-form');
     })->name('leaves.view');
+
+    Route::get('/sample', function () {
+        dd(request());
+        echo 'sample';
+    });
 });
