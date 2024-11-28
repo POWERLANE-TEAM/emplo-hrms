@@ -120,4 +120,14 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         dd(request());
         echo 'sample';
     });
+
+    // Overtime Management
+    // -------------------------------
+    Route::get('/overtime/request', function () {
+        return view('employee.basic.overtime.request');
+    })->name('overtime.request');
+
+    Route::get('/overtime/summary-form', function () {
+        return view('employee.basic.leaves.summary-form');
+    })->name('leaves.view');
 });
