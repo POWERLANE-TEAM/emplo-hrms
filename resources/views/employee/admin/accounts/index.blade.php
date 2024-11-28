@@ -6,15 +6,11 @@
     <title>Accounts</title>
     <script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
     <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
-@endsection
-
-@pushOnce('scripts')
-@vite(['resources/js/employee/hr-manager/dashboard.js'])
     @rappasoftTableStyles
     @rappasoftTableThirdPartyStyles
     @rappasoftTableScripts
     @rappasoftTableThirdPartyScripts
-@endPushOnce
+@endsection
 
 @pushOnce('styles')
     @vite(['resources/css/employee/hr-manager/dashboard.css'])
@@ -23,6 +19,7 @@
 
 {{-- Body/Content Section --}}
 @section('content')
+<section x-data>
     <x-headings.main-heading :isHeading="true">
         <x-slot:heading>
             {{__('Accounts')}}
@@ -33,6 +30,6 @@
         </x-slot:description>
     </x-headings.main-heading>
 
-    <livewire:admin.accounts-table />
-
+    <livewire:admin.accounts.accounts-table />
+</section>
 @endsection
