@@ -25,7 +25,7 @@
 @section('content')
 
 <x-headings.header-link heading="{{ __('Create Job Title') }}" description="{{ __('Kindly fill-in the fields below.') }}" label="Bulk Creation"
-    nonce="{{ $nonce }}" href="{{ route($routePrefix . '.accounts') }}">
+    nonce="{{ $nonce }}" href="#">
 </x-headings.header-link>
 
 @include('components.includes.tab_navs.job-tab-navs')

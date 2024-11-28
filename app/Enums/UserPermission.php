@@ -82,7 +82,7 @@ enum UserPermission: string
     case VIEW_TALENT_EVALUATOR = 'view talent evaluator';
     case VIEW_PLAN_GENERATOR = 'view plan generator';
     case VIEW_ADMIN_DASHBOARD = 'view admin dashboard';
-    case VIEW_ACCOUNT_MANAGER = 'view account manager';
+    case VIEW_ALL_ACCOUNTS = 'view accounts';
     case VIEW_EMPLOYEE_MANAGER = 'view employee manager';
     case VIEW_CALENDAR_MANAGER = 'view calendar manager';
     case VIEW_JOB_LISTING_MANAGER = 'view job listing manager';
@@ -202,7 +202,7 @@ enum UserPermission: string
             self::VIEW_TALENT_EVALUATOR => 'View talent evaluator',
             self::VIEW_PLAN_GENERATOR => 'View plan generator',
             self::VIEW_ADMIN_DASHBOARD => 'View admin dashboard',
-            self::VIEW_ACCOUNT_MANAGER => 'View account manager',
+            self::VIEW_ALL_ACCOUNTS => 'View accounts',
             self::VIEW_EMPLOYEE_MANAGER => 'View employee manager',
             self::VIEW_CALENDAR_MANAGER => 'View calendar manager',
             self::VIEW_JOB_LISTING_MANAGER => 'View job listing manager',

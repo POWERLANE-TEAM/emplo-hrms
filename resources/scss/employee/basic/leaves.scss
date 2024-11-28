@@ -13,24 +13,9 @@
 @import '../../input/checkbox';
 
 .scrollable-container {
-    max-height: 88vh;
-    overflow-y: auto; 
-    overflow-x: hidden; 
-    padding-right: 10px; 
+    max-height: 50vh;
+    overflow-y: auto;
 }
-
-.tab-section {
-    display: none;
-}
-
-.tab-section.active-section {
-    display: block;
-}
-
-.tab-section p {
-    margin-bottom: 0 !important;
-}
-
 
 .checkbox-primary {
     @include custom-checkbox(var(--bs-black), var(--bs-primary));
@@ -38,4 +23,15 @@
 
 .checkbox-label {
     padding-left: clamp(1.5rem, 1rem + 1.25vw, 5vw);
+}
+
+.table {
+    tr {
+        border: none;
+    }
+
+    td, 
+    th {
+        border: none;
+    }
 }

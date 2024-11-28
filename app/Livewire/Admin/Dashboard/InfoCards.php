@@ -4,19 +4,37 @@ namespace App\Livewire\Admin\Dashboard;
 
 use App\Models\User;
 use Livewire\Component;
+use Illuminate\Support\Carbon;
+use Livewire\Attributes\Locked;
+use Illuminate\Support\Facades\DB;
 
 class InfoCards extends Component
 {
+    #[Locked]
+    public $totalUsers;
+
+    #[Locked]
+    public $activeUsers;
+
+    #[Locked]
+    public $recentLogins;
+
+    #[Locked]
+    public $loginInterval;
+
+    public function mount()
+    {
+        $this->loginInterval = Carbon::now()->subDay()->unix();
+
+        $this->totalUsers = User::count();
+
+        $this->activeUsers = User::whereNotNull('email_verified_at')->count();
+
+        $this->recentLogins = DB::table('sessions')->where('last_activity', '>=', $this->loginInterval)->count();
+    }
+
     public function render()
     {
-        $count = User::selectRaw(
-            'COUNT(*) AS total,
-            SUM(CASE WHEN email_verified_at IS NOT NULL THEN 1 ELSE 0 END) AS active'
-        )->first();
-
-        return view('livewire.admin.dashboard.info-cards', [
-            'activeUsersCount' => $count->active,
-            'totalUsersCount' => $count->total,
-        ]);
+        return view('livewire.admin.dashboard.info-cards');
     }
 }

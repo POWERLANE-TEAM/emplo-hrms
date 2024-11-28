@@ -11,8 +11,10 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call(BasicUserSeeder::class);
-        $this->call(IntermediateUserSeeder::class);
-        $this->call(AdvancedUserSeeder::class);
+        activity()->withoutLogs(function () {
+            $this->call(BasicUserSeeder::class);
+            $this->call(IntermediateUserSeeder::class);
+            $this->call(AdvancedUserSeeder::class);
+        });
     }
 }
