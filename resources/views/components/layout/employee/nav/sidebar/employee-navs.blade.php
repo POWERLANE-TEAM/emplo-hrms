@@ -104,8 +104,8 @@
     @endcan
 
     {{-- Head Admin --}}
-    @can(UserPermission::VIEW_ACCOUNT_MANAGER)
-        <x-layout.employee.nav.sidebar.nav-item href="{{ route($routePrefix . '.account.create') }}" :active="request()->routeIs($routePrefix . '.account.create')"
+    @can(UserPermission::VIEW_ALL_ACCOUNTS)
+        <x-layout.employee.nav.sidebar.nav-item href="{{ route($routePrefix . '.accounts.index') }}" :active="request()->routeIs($routePrefix . '.accounts.index')"
             class="" nav_txt="Accounts" :defaultIcon="['src' => 'accounts', 'alt' => '']" :activeIcon="['src' => 'accounts', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan

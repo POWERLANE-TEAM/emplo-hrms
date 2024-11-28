@@ -159,17 +159,15 @@ class CreateAccountForm extends Component
                 ->pluck('name', 'id')
                 ->toArray();
         }
-        if (! collect([
-            $this->form->presentRegion,
-            $this->form->presentCity,
-            $this->form->presentBarangay,
-            $this->form->presentAddress,
-        ])->contains(null)) {
 
-            $this->samePresentAddressChckBox['shown'] = true;
-        } else {
-            $this->samePresentAddressChckBox['shown'] = false;
-        }
+        isset(
+            $this->form->presentRegion, 
+            $this->form->presentCity, 
+            $this->form->presentBarangay, 
+            $this->form->presentAddress
+        )
+            ? $this->samePresentAddressChckBox['shown'] = true
+            : $this->samePresentAddressChckBox['shown'] = false;
     }
 
     public function useSameAsPresentAddress()

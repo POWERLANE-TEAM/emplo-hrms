@@ -51,7 +51,7 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->nullOnDelete();
 
-            $table->integer('leave_balance')->default(0);
+            $table->integer('leave_balance')->default(10);
 
             $table->index([
                 'employee_id',

@@ -1,33 +1,35 @@
 {{-- Extends layout --}}
-@extends('components.layout.employee.layout', ['description' => 'Admin Dashboard', 'nonce' => $nonce])
-
+@extends('components.layout.employee.layout', ['description' => 'User Accounts', 'nonce' => $nonce])
 
 {{-- Head Section: Title, Scripts, & Styles --}}
 @section('head')
-    <title>Home Page</title>
+    <title>Accounts</title>
     <script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
     <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    @rappasoftTableStyles
+    @rappasoftTableThirdPartyStyles
+    @rappasoftTableScripts
+    @rappasoftTableThirdPartyScripts
 @endsection
-
-@pushOnce('pre-scripts')
-    <script src="https://cdn.jsdelivr.net/npm/chart.js" nonce="{{ $nonce }}"></script>
-@endPushOnce
-
-@pushOnce('scripts')
-    @vite(['resources/js/employee/hr-manager/dashboard.js'])
-@endPushOnce
 
 @pushOnce('styles')
     @vite(['resources/css/employee/hr-manager/dashboard.css'])
 @endPushOnce
 {{-- END OF Head Section: Title, Scripts, & Styles --}}
 
-
-
 {{-- Body/Content Section --}}
 @section('content')
-    
-{{-- TABLES FOR ACCOUNTS--}}
+<section x-data>
+    <x-headings.main-heading :isHeading="true">
+        <x-slot:heading>
+            {{__('Accounts')}}
+        </x-slot:heading>
 
+        <x-slot:description>
+            <p>{{ __('You can manage existing accounts here.') }}</p>
+        </x-slot:description>
+    </x-headings.main-heading>
+
+    <livewire:admin.accounts.accounts-table />
+</section>
 @endsection
