@@ -129,16 +129,16 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         return view('employee.basic.leaves.view');
     })->name('leaves.view');
 
-    
+
     // Overtime Management
     // -------------------------------
-    Route::get('/overtime/request', function () {
-        return view('employee.basic.overtime.request');
-    })->name('overtime.request');
+    Route::get('/overtime/all-summary-forms', function () {
+        return view('employee.basic.overtime.all-summary-forms');
+    })->name('overtime.all-summary-forms');
 
     Route::get('/overtime/summary-form', function () {
-        return view('employee.basic.leaves.summary-form');
-    })->name('leaves.view');
+        return view('employee.basic.overtime.summary-form');
+    })->name('overtime.summary-form');
 
     Route::get('/sample', function () {
         dd(request());
