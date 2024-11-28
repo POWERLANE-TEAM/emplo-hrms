@@ -140,6 +140,10 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         return view('employee.basic.overtime.summary-form');
     })->name('overtime.summary-form');
 
+    Route::get('/overtime/requests', function () {
+        return view('employee.basic.overtime.requests');
+    })->name('overtime.requests');
+
     Route::get('/sample', function () {
         dd(request());
         echo 'sample';
