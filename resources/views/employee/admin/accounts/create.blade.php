@@ -18,7 +18,7 @@
 @section('content')
 
 <x-headings.header-link heading="{{ __('Create an account') }}" description="{{ __('Kindly fill up the following information.') }}"
-    label="Bulk Creation" nonce="{{ $nonce }}" href="{{ route($routePrefix.'.accounts') }}" />
+    label="Bulk Creation" nonce="{{ $nonce }}" href="#" />
 
 <livewire:admin.accounts.create-account-form />
 
