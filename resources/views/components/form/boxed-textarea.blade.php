@@ -1,10 +1,10 @@
-{{--
-* |--------------------------------------------------------------------------
-* | Boxied: Text Area
-* |--------------------------------------------------------------------------
+{{-- 
+* |-------------------------------------------------------------------------- 
+* | Boxed: Text Area 
+* |-------------------------------------------------------------------------- 
 --}}
 
-@props(['label', 'nonce', 'required' => false, 'rows' => 3])
+@props(['label', 'nonce', 'required' => false, 'rows' => 3, 'description' => null])
 
 <label for="{{ $attributes->get('id') }}" class="mb-1 fw-semibold">
     {{ $label }}
@@ -13,6 +13,12 @@
         <span class="text-danger">*</span>
     @endif
 </label>
+
+{{-- Optional description below the label --}}
+@if($description)
+<p class="fs-7 mb-3">{!! $description !!}</p>
+@endif
+
 <div class="input-group mb-3 position-relative">
     <textarea @if($attributes->has('name')) wire:model="{{ $attributes->get('name') }}" @endif
               {{ $attributes->merge([
@@ -22,6 +28,3 @@
               ]) }}
               nonce="{{ $nonce }}"></textarea>
 </div>
-
-
-
