@@ -43,3 +43,4 @@
     </div>
 </div>
 
+<!-- FRONT-END NOTE REVISIT: The introduction and note should be hidden if it's the HR. -->
