@@ -14,7 +14,6 @@
     @endif
 </label>
 <div class="input-group mb-3 position-relative">
-    <!-- Dropdown input with boxed styling -->
     <select @if($attributes->has('name')) wire:model="{{ $attributes->get('name') }}" @endif {{ $attributes->merge([
     'class' => 'form-control form-select border ps-3 rounded pe-5 selectpicker',
     'autocomplete' => $attributes->get('autocomplete', 'off'),
@@ -28,7 +27,7 @@
 
 <script>
 
-document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function () {
         const selectElements = document.querySelectorAll('.selectpicker');
 
         selectElements.forEach(function (selectElement) {
@@ -36,8 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (selectElement.getAttribute('data-choices-initialized') === 'true') {
                 return; // Skip initialization if already done
             }
-
-            // Initialize Choices.js
+            
             new Choices(selectElement, {
                 searchEnabled: true,
                 itemSelectText: '',
