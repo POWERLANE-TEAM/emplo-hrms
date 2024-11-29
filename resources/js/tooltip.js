@@ -22,3 +22,26 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+
+/* 
+ * FUNCTION: For dynamic elements
+ */
+
+export function initializeTooltipsOnDynamicElements() {
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    
+    tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+        if (!tooltipTriggerEl.__tooltip) {  
+            const tooltip = new bootstrap.Tooltip(tooltipTriggerEl, {
+                container: tooltipTriggerEl.parentElement 
+            });
+            tooltipTriggerEl.__tooltip = tooltip; 
+            
+            tooltipTriggerEl.addEventListener('click', function () {
+                tooltip.hide();
+            });
+        }
+    });
+}
+
+window.initializeTooltipsOnDynamicElements = initializeTooltipsOnDynamicElements;
