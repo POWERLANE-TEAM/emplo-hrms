@@ -231,6 +231,16 @@ a.unstyled {
     --bs-btn-color: var(--bs-gray-dark) !important;
 }
 
+.btn-primary {
+    --bs-btn-color: var(--main-white) !important;
+}
+
+.btn-primary:hover {
+    background-color: rgba(97, 176, 0, 0.8) !important;
+    border-color: rgba(97, 176, 0, 0.8) !important;
+    color: rgba(255, 255, 255, 0.8);
+}
+
 .btn[class*="btn-"] {
     --bs-btn-color: #f5f5f5;
 
