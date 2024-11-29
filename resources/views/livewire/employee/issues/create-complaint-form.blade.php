@@ -53,7 +53,7 @@
         <div class="row pt-2">
             <div class="col">
                 <!-- BACK-END REPLACE: Processing of the issue's detailed description. -->
-                <x-form.boxed-textarea id="detailed_desc" label="Detailed Description" :nonce="$nonce"
+                <x-form.boxed-textarea id="desired_resolution" label="Detailed Description" :nonce="$nonce"
                     :required="true" :rows="6" 
                     description="Kindly provide the desire resolution to the complaint.">
                 </x-form.boxed-textarea>
