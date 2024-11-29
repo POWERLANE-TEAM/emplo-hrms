@@ -1,0 +1,19 @@
+.filepond--credits {
+    display: none;
+}
+
+
+
+.filepond--file {
+    button.filepond--file-action-button {
+        // paadjust nlang gano  kababa ung buttons sa taas
+        transform: translateY(5%) !important;
+        width: 2em;
+        height: auto;
+
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+    }
+}
