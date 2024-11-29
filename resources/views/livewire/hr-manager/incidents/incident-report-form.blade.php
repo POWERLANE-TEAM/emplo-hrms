@@ -17,24 +17,24 @@
         <div class="row">
             <div class="col">
                 <!-- BACK-END REPLACE: Incident Type options -->
-                <x-form.boxed-dropdown id="incident_type" label="{{ __('Incident Type') }}" :nonce="$nonce"
+                <x-form.boxed-selectpicker id="incident_type" label="{{ __('Incident Type') }}" :nonce="$nonce"
                     :required="true" :options="['equipment_malfunction' => 'Equipment Malfunction', 'issue' => 'Issue']"
                     placeholder="Select type">
-                </x-form.boxed-dropdown>
+                </x-form.boxed-selectpicker>
             </div>
 
             <div class="col">
                 <!-- BACK-END REPLACE: Reported By who. The dropdown items are the employees. -->
-                <x-form.boxed-dropdown id="reported_by" label="{{ __('Reported By') }}" :nonce="$nonce" :required="true"
+                <x-form.boxed-selectpicker id="reported_by" label="{{ __('Reported By') }}" :nonce="$nonce" :required="true"
                     :options="['employee_1' => 'Employee 1', 'employee_2' => 'Employee 2']" placeholder="Select employee">
-                </x-form.boxed-dropdown>
+                </x-form.boxed-selectpicker>
             </div>
 
             <div class="col">
                 <!-- BACK-END REPLACE: Assigned to in HR. The dropdown items are the members of the HR job family. -->
-                <x-form.boxed-dropdown id="assigned_hr" label="{{ __('Assigned HR') }}" :nonce="$nonce" :required="true"
+                <x-form.boxed-selectpicker id="assigned_hr" label="{{ __('Assigned HR') }}" :nonce="$nonce" :required="true"
                     :options="['hr_1' => 'HR Staff 1', 'hr_2' => 'HR Staff 2']" placeholder="Select HR member">
-                </x-form.boxed-dropdown>
+                </x-form.boxed-selectpicker>
             </div>
         </div>
 
