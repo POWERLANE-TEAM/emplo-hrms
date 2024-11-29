@@ -8,7 +8,6 @@ use Illuminate\Contracts\View\View;
 use Spatie\LivewireWizard\Components\StepComponent;
 use App\Livewire\Forms\FileForm;
 use App\Traits\HasObjectForm;
-use App\Traits\RehydrateFileObj;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Locked;
@@ -16,7 +15,7 @@ use Spatie\LivewireFilepond\WithFilePond;
 
 class ResumeUploadStep extends StepComponent
 {
-    use WithFilePond, HasObjectForm, RehydrateFileObj;
+    use WithFilePond, HasObjectForm;
 
     public $resume;
 
