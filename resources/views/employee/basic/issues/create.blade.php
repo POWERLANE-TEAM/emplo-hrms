@@ -14,7 +14,7 @@
 @endPushOnce
 
 @pushOnce('scripts')
-    @vite(['resources/js/employee/hr-manager/incident.js'])
+    @vite(['resources/js/employee/hr-manager/issue.js'])
 
 @endPushOnce
 
