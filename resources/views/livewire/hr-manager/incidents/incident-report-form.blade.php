@@ -64,18 +64,20 @@
         <!-- SECTION: Detailed Description -->
         <div class="row pt-2">
             <div class="col">
-                <x-form.boxed-textarea id="detailed_desc" label="Detailed Description" :nonce="$nonce" :required="true"
+                <!-- BACK-END REPLACE: Processing of description and attachments. -->
+                <x-form.boxed-textarea-attachment id="detailed_desc" label="Detailed Description" :nonce="$nonce" :required="true"
                 description="Kindly provide a detailed description and details of the incident report.<br><span class='fw-medium text-info'>For attachments:</span> Please ensure that the title of the attached file(s) clearly reflects its content for easy reference.">
-                </x-form.boxed-textarea>
+                </x-form.boxed-textarea-attachment>
             </div>
         </div>
 
         <!-- SECTION: Resolution Details -->
         <div class="row pt-2" id="resolutionDetailsField">
             <div class="col">
-                <x-form.boxed-textarea id="resolution_details" label="Resolution Details" :nonce="$nonce" :required="true"
+                <!-- BACK-END REPLACE: Processing of description and attachments. -->
+                <x-form.boxed-textarea-attachment id="resolution_details" label="Resolution Details" :nonce="$nonce" :required="true"
                 description="If the incident has already been resolved, kindly provide the details.<br><span class='fw-medium text-info'>For attachments:</span> Please ensure that the title of the attached file(s) clearly reflects its content for easy reference.">
-                </x-form.boxed-textarea>
+                </x-form.boxed-textarea-attachment>
             </div>
         </div>
 
