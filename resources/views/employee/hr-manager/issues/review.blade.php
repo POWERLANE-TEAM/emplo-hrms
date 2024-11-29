@@ -29,7 +29,7 @@
         <x-breadcrumb :href="'#'"> <!-- REPLACE: Link to the All Issues table -->
             Issues
         </x-breadcrumb>
-        <x-breadcrumb :active="request()->routeIs($routePrefix . '.issues.create')">
+        <x-breadcrumb :active="request()->routeIs($routePrefix . '.issues.review')">
             Submitted Complaint
         </x-breadcrumb>
     </x-slot:breadcrumbs>
