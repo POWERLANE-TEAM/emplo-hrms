@@ -387,10 +387,10 @@ button {
 }
 
 .vertical-line {
-    width: 2.3px; 
-    background-color: #D9D9D9; 
-    height: 100%; 
-    margin: 0 auto; 
+    width: 2.3px;
+    background-color: #D9D9D9;
+    height: 100%;
+    margin: 0 auto;
 }
 
 .underline {
@@ -417,11 +417,11 @@ body {
     }
 
     .breadcrumb-item {
-        display: flex; 
+        display: flex;
         align-items: center;
     }
 
-    .breadcrumb-item + .breadcrumb-item::before {
+    .breadcrumb-item+.breadcrumb-item::before {
         float: none;
         display: inline-block;
         vertical-align: middle;
@@ -526,4 +526,18 @@ body {
 
 .d-contents {
     display: contents;
+}
+
+[class^="flex-1"] {
+    flex: 1;
+
+    // make flex basis auto on small screens and on medium screen will be reset to 0
+    // this class can be use as flex-1-sm-grow
+    &[class$="sm-grow"] {
+        flex-basis: auto;
+
+        @media (min-width: 576px) {
+            flex-basis: 0;
+        }
+    }
 }
