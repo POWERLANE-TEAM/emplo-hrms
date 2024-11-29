@@ -144,7 +144,21 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         return view('employee.basic.leaves.view');
     })->name('leaves.view');
 
-    
+
+    // Overtime Management
+    // -------------------------------
+    Route::get('/overtime/all-summary-forms', function () {
+        return view('employee.basic.overtime.all-summary-forms');
+    })->name('overtime.all-summary-forms');
+
+    Route::get('/overtime/summary-form', function () {
+        return view('employee.basic.overtime.summary-form');
+    })->name('overtime.summary-form');
+
+    Route::get('/overtime/requests', function () {
+        return view('employee.basic.overtime.requests');
+    })->name('overtime.requests');
+
     Route::get('/sample', function () {
         dd(request());
         echo 'sample';

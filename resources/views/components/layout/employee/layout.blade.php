@@ -16,12 +16,10 @@
 
     <x-fav-icon />
 
-    {{ Vite::useScriptTagAttributes(['onerror' => 'handleError(error)']) }}
+    {{-- {{ Vite::useScriptTagAttributes(['onerror' => 'handleError(error)']) }}
     @php
         Debugbar::getJavascriptRenderer()->setCspNonce($nonce);
-    @endphp
-
-    {{-- {!! RecaptchaV3::initJs() !!} --}}
+    @endphp --}}
 
     <x-global-debug />
 
@@ -43,10 +41,7 @@
     {{-- livewire.js?id=cc800bf4:9932 Detected multiple instances of Alpine running --}}
     {{-- @livewireStyles(['nonce' => $nonce])
     @livewireScripts(['nonce' => $nonce]) --}}
-    @once
-        @livewireStyles()
-    @endonce
-
+    @livewireStyles
 </head>
 
 <body class="employee-main" data-bs-theme>
@@ -89,9 +84,7 @@
 
     @stack('scripts')
 
-    @once
-        @livewireScripts()
-    @endonce
+    @livewireScripts
 </body>
 
 </html>
