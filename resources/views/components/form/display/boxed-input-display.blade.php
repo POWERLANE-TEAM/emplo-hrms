@@ -6,7 +6,8 @@
 
 @props([
     'label' => '',
-    'data' => '',  
+    'data' => '',
+    'description' => null,
     'tooltip' => null
 ])
 
@@ -14,6 +15,11 @@
     <label class="mb-1 fw-semibold text-secondary-emphasis">
         {{ $label }}
     </label>
+
+    {{-- Optional description below the label --}}
+    @if($description)
+        <p class="fs-7 mb-3">{!! $description !!}</p>
+    @endif
 
     {{-- Conditionally display the tooltip icon beside the label if tooltip and modalId are provided --}}
     @if($tooltip && isset($tooltip['modalId']))
