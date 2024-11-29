@@ -11,6 +11,9 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
+    <style nonce="{{ $nonce }}">
+        {!! Vite::content('resources/css/input/disable-submit.css') !!}
+    </style>
     <x-html.meta />
     <x-html.meta-seo />
 
@@ -33,7 +36,7 @@
     <!-- Scripts -->
     <x-authenticated-broadcast-id />
     <x-livewire-listener />
-    
+
     @vite(['resources/js/listeners/online-users.js'])
 
     @once
@@ -51,11 +54,13 @@
     @stack('pre-styles')
     @stack('styles')
 
-    @if (!View::hasSection('bootstrap-script'))
+    @env('local')
         @vite(['node_modules/bootstrap/dist/js/bootstrap.bundle.min.js'])
-    @else
-        @yield('bootstrap-script')
-    @endif
+    @endenv
+
+    @env('production')
+        @vite(['node_modules/bootstrap/dist/js/bootstrap.bundle.min.js?commonjs-entry'])
+    @endenv
 
     @stack('pre-scripts')
     @stack('scripts')
@@ -83,6 +88,8 @@
     @endonce
 
     @yield('footer')
+
+    @stack('scripts')
 </body>
 
 </html>

@@ -118,7 +118,7 @@ class RolesAndPermissionsSeeder extends Seeder
             // View cases goes here
             UserPermission::VIEW_ADMIN_DASHBOARD->value,
             UserPermission::VIEW_CALENDAR_MANAGER->value,
-            UserPermission::VIEW_ACCOUNT_MANAGER->value,
+            UserPermission::VIEW_ALL_ACCOUNTS->value,
             UserPermission::VIEW_EMPLOYEE_MANAGER->value,
             UserPermission::VIEW_JOB_LISTING_MANAGER->value,
             UserPermission::VIEW_POLICY_MANAGER->value,

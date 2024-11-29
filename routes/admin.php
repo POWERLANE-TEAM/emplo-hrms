@@ -13,38 +13,44 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
 
-    // Dashboard
-    // ----------------------------------
+    /**
+     * Dashboard
+     */
     Route::get('dashboard', DashboardController::class)
         ->can(UserPermission::VIEW_ADMIN_DASHBOARD)
         ->name('dashboard');
 
-    // Employee Profile
-    // ----------------------------------
+    /**
+     * Profile
+     */
     Route::get('profile', function () {
         return view('employee.admin.profile');
     })->name('profile');
 
-    // Log Out
-    // ----------------------------------
+    /**
+     * Log out
+     */
     Route::post('logout', [Logout::class, 'destroy'])
         ->name('logout');
 
-    // Laravel Pulse
-    // ----------------------------------
+
+    /**
+     * Laravel Pulse
+     */
     Route::get('system/pulse', function () {
         return view('vendor.pulse.dashboard');
     })->name('system.pulse');
 
-    // View Accounts
-    // ----------------------------------
-    Route::get('accounts', function () {
-        return view('employee.admin.accounts.accounts');
-    })->name('accounts');
-
-    // Create Accounts
-    // ----------------------------------
-    Route::prefix('account')->name('account.')->group(function () {
+    /**
+     * Accounts
+     */
+    Route::prefix('accounts')->name('accounts.')->group(function () {
+        Route::get('/', function () {
+            return view('employee.admin.accounts.index');
+        })
+            ->can(UserPermission::VIEW_ALL_ACCOUNTS)
+            ->name('index');
+        
         Route::get('create', function () {
             return view('employee.admin.accounts.create');
         })
@@ -52,8 +58,9 @@ Route::middleware('auth')->group(function () {
             ->name('create');
     });
 
-    // Create Job Family
-    // ----------------------------------
+    /**
+     * Job Family
+     */
     Route::prefix('job-family')->name('job-family.')->group(function () {
         Route::get('create', function () {
             return view('employee.admin.job-family.create');
@@ -62,8 +69,9 @@ Route::middleware('auth')->group(function () {
             ->name('create');
     });
 
-    // Create Job Title
-    // ----------------------------------
+    /**
+     * Job Title
+     */
     Route::prefix('job-title')->name('job-title.')->group(function () {
         Route::get('create', function () {
             return view('employee.admin.job-title.create');
@@ -72,22 +80,27 @@ Route::middleware('auth')->group(function () {
             ->name('create');
     });
 
-    // Calendar
-    // ----------------------------------
+    /**
+     * Calendar
+     */
     Route::get('calendar', function () {
         return view('employee.admin.calendar');
     })->name('calendar');
 
-    // Create Open Job Title
-    // ----------------------------------
+
+    /**
+     * Job Listings
+     */
     Route::prefix('job-board')->name('job-board.')->group(function () {
         Route::get('create', function () {
             return view('employee.admin.job-board.create');
         })->name('create');
     });
 
-    // Create Announcement
-    // ----------------------------------
+
+    /**
+     * Announcement
+     */
     Route::prefix('announcement')->name('announcement.')->group(function () {
         Route::get('create', function () {
             return view('employee.admin.announcements.create');
@@ -96,16 +109,15 @@ Route::middleware('auth')->group(function () {
             ->name('create');
     });
 
-    // =========================================
-    // CONFIGURATION: PERF. & FORMS
-    // ==========================================
-
+    /**
+     * Configuration
+     * 
+     * Performance & Forms
+     */
     Route::prefix('config')->name('config.')->group(function () {
-
-        // Performance Eval. Configuration
-        // ----------------------------------
-        // Categories, rating and scores config.
-
+        /**
+         * Performance Config
+         */
         Route::prefix('performance')->name('performance.')->group(function () {
 
             // Categories
@@ -124,10 +136,9 @@ Route::middleware('auth')->group(function () {
             })->name('scorings');
         });
 
-        // Forms Configuration
-        // --------------------------
-        // All forms of the system.
-
+        /**
+         * Forms Config
+         */
         Route::prefix('form')->name('form.')->group(function () {
 
             // Pre-Employment

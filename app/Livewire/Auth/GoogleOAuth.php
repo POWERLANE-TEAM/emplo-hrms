@@ -21,46 +21,28 @@ class GoogleOAuth extends Component
 
     public function googleCallback()
     {
-        try {
+        $googleUser = Socialite::driver('google')->stateless()->user();
 
-            $googleUser = Socialite::driver('google')->stateless()->user();
+        $user = User::where('google_id', $googleUser->id)
+            ->orWhere('email', $googleUser->getEmail())
+            ->first();
 
-            $user = User::where('google_id', $googleUser->id)
-                ->orWhere('email', $googleUser->getEmail())
-                ->first();
-
-            if ($user) {
-
-                Auth::login($user);
-
-                return redirect('/hiring');
-            }
-
-            DB::beginTransaction();
-
-            $newUser = $this->saveGooglePayload($googleUser->user);
-
-            DB::commit();
-
-            if (! $newUser) {
-
-                session()->flash('error', 'Something went wrong.');
-
-                return redirect('/');
-            }
-
-            Auth::login($newUser);
+        if ($user) {
+            Auth::login($user);
 
             return redirect('/hiring');
-
-        } catch (Exception $e) {
-
-            DB::rollBack();
-
-            report($e);
-
-            return redirect()->intended('/');
         }
+
+        $newUser = $this->saveGooglePayload($googleUser->user);
+
+        if (! $newUser) {
+            session()->flash('error', 'Something went wrong.');
+
+            return redirect('/');
+        }
+        Auth::login($newUser);
+
+        return redirect('/hiring');
     }
 
     public function render()

@@ -6,7 +6,7 @@
         -webkit-appearance: none;
         background-color: WHITE;
         background-image: none;
-        border: 1px solid #747775;
+        border: 1.3px solid #d9d9d9;
         -webkit-border-radius: 4px;
         border-radius: 4px;
         -webkit-box-sizing: border-box;
@@ -25,8 +25,8 @@
         transition: background-color .218s, border-color .218s, box-shadow .218s;
         vertical-align: middle;
         white-space: nowrap;
-        width: auto;
-        max-width: 500px;
+        width: 100% !important;
+        max-width: 100%;
         min-width: min-content;
     }
 
@@ -104,7 +104,7 @@
 </style>
 
 
-<div class="pt-3 row justify-content-center align-items-center ">
+<div class="pt-3  col-md-12 row justify-content-center align-items-center w-100 ms-1">
     <a href= {{ route('auth.google.redirect') }}
         class="gsi-material-button btn btn-lg w-100 link-offset-2 link-underline link-underline-opacity-0"
         style="width:500px" role="button">

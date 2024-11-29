@@ -104,15 +104,15 @@
     @endcan
 
     {{-- Head Admin --}}
-    @can(UserPermission::VIEW_ACCOUNT_MANAGER)
-        <x-layout.employee.nav.sidebar.nav-item href="{{ route($routePrefix . '.account.create') }}" :active="request()->routeIs($routePrefix . '.account.create')"
+    @can(UserPermission::VIEW_ALL_ACCOUNTS)
+        <x-layout.employee.nav.sidebar.nav-item href="{{ route($routePrefix . '.accounts.index') }}" :active="request()->routeIs($routePrefix . '.accounts.index')"
             class="" nav_txt="Accounts" :defaultIcon="['src' => 'accounts', 'alt' => '']" :activeIcon="['src' => 'accounts', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan
 
     {{-- Head Admin --}}
     @can(UserPermission::VIEW_EMPLOYEE_MANAGER)
-        <x-layout.employee.nav.sidebar.nav-item href="{{ route($routePrefix . '.job-family.create') }}" :active="request()->routeIs($routePrefix . '.job-family.create')"
+        <x-layout.employee.nav.sidebar.nav-item href="{{ route($routePrefix . '.job-family.create') }}" :active="request()->routeIs([$routePrefix . '.job-family.create', $routePrefix . '.job-title.create'])"
             class="" nav_txt="Employees" :defaultIcon="['src' => 'employee', 'alt' => '']" :activeIcon="['src' => 'employee', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan

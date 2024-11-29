@@ -2,10 +2,11 @@
 
 namespace App\Livewire\Admin\Dashboard;
 
-use Illuminate\Support\Carbon;
-use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Illuminate\Support\Carbon;
+use Livewire\Attributes\Computed;
+use Illuminate\Support\Facades\Auth;
 use Spatie\Activitylog\Models\Activity;
 
 class RecentActivityLogs extends Component
@@ -24,7 +25,16 @@ class RecentActivityLogs extends Component
     {
         return Activity::where('created_at', '>=', $this->interval)
             ->latest()
-            ->simplePaginate(10);
+            ->simplePaginate(10)
+            ->through(function ($item) {
+                return (object) [
+                    'id' => $item->id,
+                    'description' => Auth::id() === $item->causer_id
+                                        ? __("(You) $item->description")
+                                        : $item->description,
+                    'created_at' => Carbon::parse($item->created_at)->diffForHumans(),
+                ];
+            });
     }
 
     public function render()

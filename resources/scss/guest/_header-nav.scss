@@ -1,10 +1,10 @@
 header {
-    --v-offset: clamp(1rem, 0.5rem + 0.5vw + 0.75vh, 5rem);
+    --v-offset: clamp(0.8rem, 0.20rem + 0.20vw + 0.35vh, 2rem);
     transition: background-color 0.5s ease;
     // animation: bgSwipeDown 0.75s ease forwards;
 
     nav {
-        padding: var(--v-offset) clamp(2rem, 1rem + 6vw, 10rem);
+        padding: var(--v-offset) clamp(1rem, 0.8rem + 2vw, 8rem) !important;
         color: var(--main-white);
 
         div,
@@ -26,4 +26,16 @@ header {
             }
         }
     }
+}
+
+img.icon {
+    width: calc(0.2rem + 1vw) !important;
+}
+
+.nav-link {
+    padding: 0 0 0 .5em !important;
+}
+
+button:hover {
+    background-color: transparent !important;
 }

@@ -13,10 +13,9 @@ return new class extends Migration
     {
         Schema::create('holidays', function (Blueprint $table) {
             $table->id('holiday_id');
-            $table->dateTime('date');
-            $table->string('holiday_type'); // regular and special, etc.
-            $table->string('holiday_name');
-            $table->longText('holiday_desc')->nullable();
+            $table->string('type')->index(); // regular and special, etc.
+            $table->string('event');
+            $table->date('date');
             $table->timestamps();
         });
     }

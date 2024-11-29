@@ -24,8 +24,10 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     // Dashboard
     // ----------
     Route::get('/dashboard', DashboardController::class)
-        ->middleware(['permission:'.UserPermission::VIEW_HR_MANAGER_DASHBOARD->value
-            .'|'.UserPermission::VIEW_EMPLOYEE_DASHBOARD->value])
+        ->middleware([
+            'permission:' . UserPermission::VIEW_HR_MANAGER_DASHBOARD->value
+            . '|' . UserPermission::VIEW_EMPLOYEE_DASHBOARD->value
+        ])
         ->name('dashboard');
 
     // List Applications Based on Status
@@ -115,6 +117,32 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
     Route::get('/attendance/index', [AttendanceController::class, 'index'])
         ->name('attendance.index');
+
+
+    // Leaves Management
+    // -------------------------------
+    Route::get('/leaves/request', function () {
+        return view('employee.basic.leaves.request');
+    })->name('leaves.request');
+
+    Route::get('/leaves/view', function () {
+        return view('employee.basic.leaves.view');
+    })->name('leaves.view');
+
+
+    // Overtime Management
+    // -------------------------------
+    Route::get('/overtime/all-summary-forms', function () {
+        return view('employee.basic.overtime.all-summary-forms');
+    })->name('overtime.all-summary-forms');
+
+    Route::get('/overtime/summary-form', function () {
+        return view('employee.basic.overtime.summary-form');
+    })->name('overtime.summary-form');
+
+    Route::get('/overtime/requests', function () {
+        return view('employee.basic.overtime.requests');
+    })->name('overtime.requests');
 
     Route::get('/sample', function () {
         dd(request());

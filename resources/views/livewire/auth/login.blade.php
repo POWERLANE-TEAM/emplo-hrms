@@ -1,5 +1,5 @@
 <section nonce="{{ $nonce }}" class="auth-form px-md-4 py-md-3 mx-auto">
-    <hgroup class="d-flex flex-column text-center mb-5 mt-md-n4">
+    <hgroup class="d-flex flex-column text-center mt-md-n4">
         <header class="display-5 fw-semibold text-primary mb-3 d-none d-md-block">
             Welcome Back
         </header>
@@ -29,9 +29,9 @@
 
             <x-slot:feedback>
                 @include('components.form.input-feedback', [
-                    'feedback_id' => 'userLogin-email-feedback',
-                    'message' => $errors->first('email'),
-                ])
+    'feedback_id' => 'userLogin-email-feedback',
+    'message' => $errors->first('email'),
+])
             </x-slot:feedback>
         </x-form.email>
 
@@ -40,16 +40,16 @@
 
             <x-slot:toggle_password>
                 @include('components.form.toggle-password', [
-                    'toggler_id' => 'toggle-psw',
-                    'controls' => 'userLogin-password',
-                ])
+    'toggler_id' => 'toggle-psw',
+    'controls' => 'userLogin-password',
+])
             </x-slot:toggle_password>
 
             <x-slot:feedback>
                 @include('components.form.input-feedback', [
-                    'feedback_id' => 'userLogin-password-feedback',
-                    'message' => $errors->first('password'),
-                ])
+    'feedback_id' => 'userLogin-password-feedback',
+    'message' => $errors->first('password'),
+])
             </x-slot:feedback>
         </x-form.password>
 
@@ -69,9 +69,13 @@
             </div>
 
             <button type="submit" nonce="{{ $nonce }}" id="userLoginBtn"
-                class="btn btn-primary btn-lg col-12 order-1 order-md-2" disabled>
+                class="btn btn-primary btn-lg col-12 order-1 order-md-2">
                 Sign In
             </button>
+        </div>
+
+        <div class="col-md-12 pt-3 or-text-divider">
+            <span>OR</span>
         </div>
 
         @livewire('auth.google-o-auth')
