@@ -101,6 +101,11 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         return view('employee.hr-manager.incidents.create');
     })->name('incidents.create');
 
+    // Issue Management
+    // -------------------------------
+    Route::get('/issues/review', function () {
+        return view('employee.hr-manager.issues.review');
+    })->name('issues.review');
 
 
     // =========================================
