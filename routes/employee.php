@@ -134,4 +134,10 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         dd(request());
         echo 'sample';
     });
+
+    // Incidents Management
+    // -------------------------------
+    Route::get('/incidents/create', function () {
+        return view('employee.hr-manager.incidents.create');
+    })->name('incidents.create');
 });
