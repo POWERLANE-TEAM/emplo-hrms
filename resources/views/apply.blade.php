@@ -1,28 +1,27 @@
-@php
-    $nonce = csp_nonce();
-@endphp
-
 @extends('components.layout.app', ['description' => 'Guest Layout', 'nonce' => $nonce])
+@use ('Illuminate\View\ComponentAttributeBag')
+
+
 @section('head')
     <title>Apply</title>
 @endsection
 
 @pushOnce('pre-scripts')
     <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js"></script>
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/filepond-plugin-pdf-preview/dist/filepond-plugin-pdf-preview.min.js"></script>
 @endPushOnce
 
 @pushOnce('scripts')
-    @vite(['resources/js/applicant/apply.js', 'resources/js/dropzone.config.js', 'resources/js/progress-bar.js'])
+    @filepondScripts
+    @vite(['resources/js/applicant/apply.js', 'resources/js/progress-bar.js'])
 @endPushOnce
 
 @section('critical-styles')
-    @vite(['resources/css/guest/primary-bg.css'])
+    @vite('resources/css/guest/secondary-bg.css')
 @endsection
 
 @pushOnce('pre-styles')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.css">
+    <link href="https://unpkg.com/filepond-plugin-pdf-preview/dist/filepond-plugin-pdf-preview.min.css" rel="stylesheet">
 @endPushOnce
 
 @pushOnce('styles')
@@ -37,272 +36,30 @@
     <x-layout.guest.secondary-header />
 @endsection
 
+@php
+    $jobTitle = 'Software Engineer';
+    // should be get from sewsion
+@endphp
+
 @section('content')
-    <section class="first-section">
-        <div class="container">
-            <div class="row d-flex justify-content-center align-items-center">
-                <div class="col-xl-7 col-lg-8 col-md-10 col-sm-12">
-                    <div class="card border-0 shadow-sm rounded-4 my-5">
-                        <div class="card-body p-4 p-sm-5">
-                            <div class="text-center mb-4">
-                                <h1 class="h3 mb-3 fw-normal" style="color: rgba(97, 176, 0, 1);">Applying for:</h1>
-                                <p class="mb-0">Please upload and fill in the necessary details</p>
-                            </div>
-                            <div class="progress-bar">
-                                <div class="step active">
-                                    <div class="check fas fa-check"></div>
-                                    <div class="bullet">
-                                        <span>1</span>
-                                    </div>
-                                    <p class="bob">Upload Resume</p>
-                                </div>
-                                <div class="step">
-                                    <div class="check fas fa-check"></div>
-                                    <div class="bullet">
-                                        <span>2</span>
-                                    </div>
-                                    <p class="bob">Personal Details</p>
-                                </div>
-                                <div class="step">
-                                    <div class="check fas fa-check"></div>
-                                    <div class="bullet">
-                                        <span>3</span>
-                                    </div>
-                                    <p class="bob">Final Information</p>
-                                </div>
-                            </div>
-                            <div class="check fas fa-check"></div>
-                        </div>
-                    </div>
-                    <form class="needs-validation" novalidate="" id="upload-form">
-                        <!-- Step 1: Upload Resume -->
-                        <div class="form-step active" id="step-1">
-                            <div class="form-group mb-3 dropzone-container">
-                                <label for="drop-box" id="dropzone" class="dropzone clickable-area">
-                                    <img style="width= 15px" src="{{ Vite::asset('resources/images/icons/adddocs.png') }}"
-                                        alt="adddocs">
-                                    <div class="dz-default dz-message">
-                                        <span>Drag and drop or <strong>Choose a file</strong> to upload</span>
-                                        <span class="pdf-50">PDF File Only | Max size is 50mb</span>
-                                    </div>
-                                </label>
-                                <input class="upload" type="file" accept="application/pdf" accept="application/pdf"
-                                    id="drop-box" onchange="validateFile()" />
-                                <span id="error-message" style="color: red; display: none;">File must be a PDF and less than
-                                    3MB</span>
-                            </div>
-                            <div>
-                                <button type="button" class="btn btn-primary next-btn">Next</button>
-                            </div>
-                        </div>
+    <div class=" mt-4 mb-3 my-lg-5">
+        <x-headings.main-heading :isHeading="true" :containerAttributes="new ComponentAttributeBag(['class' => 'text-center fs-5'])" :overrideClass="true"
+            class="text-primary fs-3 fw-bold mb-2">
+            <x-slot:heading>
+                {{ __('Applying for: ') . $jobTitle }}
+            </x-slot:heading>
 
-                        <!-- Step 2: User Information -->
-                        <div class="form-step" id="step-2">
-                            <label for="input-file" class="profile-pic">
-                                <img src="{{ Vite::asset('resources/images/icons/li_camera.png') }}" alt="Upload Pic"
-                                    class="profpic">
-                                <p2> Upload a Photo </p2>
-                            </label>
-                            <input class="upload" type="file" accept="image/jpeg, image/png, image/jpg" id="input-file">
+            <x-slot:description>
+                {{ __('Please upload and fill in the necessary details.') }}
+            </x-slot:description>
+        </x-headings.main-heading>
+    </div>
 
-                            <div class="personal-details">
-                                <div class="field">Last Name</div>
-                                <input class="in" type="text" name="last_name">
+    <form {{-- wire:submit.prevent="save" --}} {{-- x-ref="resume-file" --}}>
+        <livewire:form.applicant.application-wizard />
+    </form>
+@endsection
 
-                                <div class="d-flex">
-                                    <div class="me-2" style="flex: 1;">
-                                        <div class="field">First Name</div>
-                                        <input class="inp" type="text" name="first_name">
-                                    </div>
-                                    <div style="flex: 1;">
-                                        <div class="field">Middle Name</div>
-                                        <input class="inp" type="text" name="middle_name">
-                                    </div>
-                                </div>
-
-                                <div class="d-flex mt-2">
-                                    <div class="me-2" style="flex: 1;">
-                                        <div class="field">Sex at Birth</div>
-                                        <select class="inp" name="sex_at_birth">
-                                            <option value="Select">Select</option>
-                                            <option value="Male">Male</option>
-                                            <option value="Female">Female</option>
-                                        </select>
-                                    </div>
-                                    <div style="flex: 1;">
-                                        <div class="field">Birthdate</div>
-                                        <input type="date" class="inp" name="birthdate">
-                                    </div>
-                                </div>
-
-                                <div class="confirmation mt-3">
-                                    <button type="button" class="prev prev-btn">← Previous</button>
-                                    <button type="button" class="btn btn-primary next-btn">Next</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Step 3: Overview -->
-                        <div class="form-step" id="step-3">
-                            <div class="res">
-                                <img src="{{ Vite::asset('resources/images/icons/fullscreenicon.png') }}" alt="fsicon"
-                                    class="fvicon">
-                                <img src="{{ Vite::asset('resources/images/illus/spoofimg.avif') }}" alt="spoofimg"
-                                    class="resume">
-                            </div>
-                            <div class="conf">
-                                <div class="field">Email Address</div>
-                                <!-- User email output -->
-                                <div class="field">Full Name</div>
-                                <!-- User full name output -->
-                                <div class="field">Birthdate</div>
-                                <!-- User birthdate output -->
-                                <div class="field">Sex at Birth</div>
-                                <!-- User sex at birth output -->
-                            </div>
-
-                            <div class="confirmation mt-3">
-                                <button type="button" class="prev prev-btn">← Previous</button>
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </div>
-                        </div>
-                    </form>
-
-                </div>
-            </div>
-        </div>
-        </div>
-        </div>
-    </section>
-
-    <script nonce="{{ $nonce }}">
-        document.addEventListener('DOMContentLoaded', function() {
-            let currentStep = 1;
-            const totalSteps = 3;
-
-            const formSteps = document.querySelectorAll('.form-step');
-            const nextBtns = document.querySelectorAll('.next-btn');
-            const prevBtns = document.querySelectorAll('.prev-btn');
-
-            // Inputs
-            const uploadInput = document.getElementById('drop-box');
-            const lastNameInput = document.querySelector('input[name="last_name"]');
-            const firstNameInput = document.querySelector('input[name="first_name"]');
-            const middleNameInput = document.querySelector('input[name="middle_name"]');
-            const sexAtBirth = document.querySelector('select[name="sex_at_birth"]');
-            const birthdate = document.querySelector('input[name="birthdate"]');
-
-            // Function to handle file upload and populate fields
-            async function processResume(file) {
-                const formData = new FormData();
-                formData.append('resume', file);
-
-                try {
-                    const response = await fetch('/resume/process', {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                        },
-                        body: formData,
-                    });
-
-                    if (!response.ok) {
-                        throw new Error('Failed to process resume.');
-                    }
-
-                    const data = await response.json();
-
-                    if (data.status === 'success') {
-                        console.log(data.parsedData); // Log the parsed data
-                        // Populate form fields
-                        document.querySelector('input[name="last_name"]').value = data.parsedData
-                            .employee_name ||
-                            '';
-                        document.querySelector('input[name="first_name"]').value = data.parsedData
-                            .employee_name ||
-                            '';
-                        document.querySelector('input[name="middle_name"]').value = data.parsedData
-                            .employee_name || '';
-                        document.querySelector('select[name="sex_at_birth"]').value = data.parsedData
-                            .sex_at_birth || 'Select';
-                        document.querySelector('input[name="birthdate"]').value = data.parsedData.birthdate ||
-                            '';
-                    } else {
-                        console.error(data.message || 'An error occurred while processing the resume.');
-                    }
-                } catch (error) {
-                    console.error(error);
-                    // alert('Failed to upload and process the resume. Please try again.');
-                }
-            }
-
-            // File upload validation and processing
-            uploadInput.addEventListener('change', function() {
-                const file = uploadInput.files[0];
-                if (file) {
-                    processResume(file);
-                }
-            });
-
-            // Step navigation and validation
-            function validateStep(step) {
-                if (step === 1) {
-                    return uploadInput.files.length > 0;
-                } else if (step === 2) {
-                    return (
-                        lastNameInput.value.trim() !== '' &&
-                        firstNameInput.value.trim() !== '' &&
-                        middleNameInput.value.trim() !== '' &&
-                        sexAtBirth.value !== 'Select' &&
-                        birthdate.value.trim() !== ''
-                    );
-                }
-                return true;
-            }
-
-            function updateButtonState(step) {
-                if (validateStep(step)) {
-                    nextBtns[step - 1].style.visibility = 'visible';
-                } else {
-                    nextBtns[step - 1].style.visibility = 'hidden';
-                }
-            }
-
-            // Enable step navigation
-            nextBtns.forEach((btn, index) => {
-                btn.addEventListener('click', function() {
-                    if (currentStep < totalSteps && validateStep(currentStep)) {
-                        formSteps[currentStep - 1].classList.remove('active');
-                        formSteps[currentStep].classList.add('active');
-                        currentStep++;
-                        updateButtonState(currentStep);
-                    }
-                });
-            });
-
-            prevBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    if (currentStep > 1) {
-                        formSteps[currentStep - 1].classList.remove('active');
-                        formSteps[currentStep - 2].classList.add('active');
-                        currentStep--;
-                        updateButtonState(currentStep);
-                    }
-                });
-            });
-        });
-
-
-        // Validation for name fields (disallow symbols and numbers)
-        function validateTextField(field) {
-            field.addEventListener('input', function() {
-                this.value = this.value.replace(/[^a-zA-Z\s]/g, ''); // Allow only letters and spaces
-            });
-        }
-
-        // Apply the text field validation to name inputs
-        validateTextField(lastNameInput);
-        validateTextField(firstNameInput);
-        validateTextField(middleNameInput);
-    </script>
+@section('footer')
+    <x-guest.footer />
 @endsection
