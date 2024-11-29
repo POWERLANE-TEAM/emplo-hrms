@@ -10,9 +10,7 @@
             <div class="modal-body">
                 <div class="mb-3">
                     <label for="resolutionDesc" class="col-form-label">Resolution:</label>
-                    <textarea id="resolutionDesc" rows="6" class="form-control">
-                </div>
-                    </textarea>
+                    <textarea id="resolutionDesc" rows="6" class="form-control"></textarea>
                 </div>
                 <div class="modal-footer">
                     <button onclick="" class="btn btn-primary">Mark as Resolved</button>
