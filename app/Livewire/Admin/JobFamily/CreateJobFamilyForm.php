@@ -2,20 +2,83 @@
 
 namespace App\Livewire\Admin\JobFamily;
 
-use App\Enums\UserPermission;
-use App\Models\JobFamily;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Livewire\Attributes\Validate;
 use Livewire\Component;
+use App\Models\Employee;
+use App\Models\JobFamily;
+use App\Enums\UserPermission;
+use Livewire\Attributes\Validate;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class CreateJobFamilyForm extends Component
 {
-    #[Validate('required')]
-    public $jobFamilyName;
+    #[Validate]
+    public $state = [
+        'name' => '',
+        'description' => '',
+        'head' => null,
+    ];
 
-    #[Validate('nullable')]
-    public $jobFamilyDesc;
+    public $query;
+
+    public Collection $employees;
+
+    public function mount()
+    {
+        $this->reset();
+    }
+
+    public function resetQuery()
+    {
+        $this->resetExcept('state');
+    }
+
+    public function rules()
+    {
+        return [
+            'state.name' => 'required',
+            'state.description' => 'nullable',
+            'state.head' => 'required|integer|exists:job_families,job_family_id',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'state.name' => __('Job family name is required.'),
+            'state.description' => __('Whatever'),
+            'state.head' => __('Office head is required.'),
+        ];
+    }
+
+    public function updatedQuery()
+    {
+        // there must be a better way to do this but i couldn't care less.
+        $this->employees = Employee::where('first_name', 'ilike', "%{$this->query}%")
+                                ->orWhere('middle_name', 'ilike', "%{$this->query}%")
+                                ->orWhere('last_name', 'ilike', "%{$this->query}%")
+                                ->get()
+                                ->map(function ($item) {
+                                    return (object) [
+                                        'id' => $item->employee_id,
+                                        'fullName' => $item->full_name 
+                                    ];
+                                });
+    }
+
+    public function selectEmployee(int $id)
+    {
+        $employee = Employee::find($id);
+
+        if (! $employee) {
+            // do smth, error msgs
+        } else {
+            $this->state['head'] = $employee->employee_id;
+            $this->query = $employee->full_name;
+        }
+        $this->resetErrorBag();
+    }
 
     public function save()
     {
@@ -29,9 +92,9 @@ class CreateJobFamilyForm extends Component
 
         DB::transaction(function () {
             JobFamily::create([
-                'job_family_name' => $this->jobFamilyName,
-                'job_family_desc' => $this->jobFamilyDesc,
-                'office_head' => null,
+                'job_family_name' => $this->state['name'],
+                'job_family_desc' => $this->state['description'],
+                'office_head' => $this->state['head'],
             ]);
         });
 
