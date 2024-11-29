@@ -4,7 +4,7 @@
 * |--------------------------------------------------------------------------
 --}}
 
-@props(['label', 'nonce', 'required' => false, 'description' => null])
+@props(['label', 'nonce', 'required' => false, 'description' => null, 'readonly' => false])
 
 <label for="{{ $attributes->get('id') }}" class="mb-1 fw-semibold">
     {{ $label }}
@@ -21,22 +21,23 @@
 
 <div class="input-group mb-3 position-relative" id="custom-textarea-container">
     {{-- Editable Content Area Styled Like a Textarea --}}
-    <div id="{{ $attributes->get('id') }}" contenteditable="true" class="form-control border ps-3 rounded text-start"
-        style="min-height: 150px; overflow-y: auto; padding-bottom: 40px;" nonce="{{ $nonce }}"></div>
+    <div id="{{ $attributes->get('id') }}" contenteditable="{{ $readonly ? 'false' : 'true' }}" class="form-control border ps-3 rounded text-start"
+        style="min-height: 150px; overflow-y: auto; padding-bottom: 40px;" nonce="{{ $nonce }}" {{ $readonly ? 'disabled' : '' }}></div>
 
     {{-- Attachments Section --}}
     <div id="attachments-container" class="attachments-wrapper rounded-bottom">
         {{-- Attachments List --}}
         <div class="attachments-list flex-grow-1" id="attachments-list">
-            {{-- Dynamically added attachment links with remove buttons will appear here --}}
+            {{-- Dynamically added attachment links will appear here --}}
         </div>
 
-        {{-- Attach Files Button --}}
-        <label
-            class="btn no-hover-border btn-sm hover-opacity d-inline-flex align-items-center justify-content-center attach-files-button">
-            <i data-lucide="paperclip" class="icon text-primary icon-large"></i>
-            <input type="file" class="d-none" multiple onchange="handleAttachments(this)">
-        </label>
+        {{-- Attach Files Button (Only visible if not in readonly mode) --}}
+        @if(!$readonly)
+            <label class="btn no-hover-border btn-sm hover-opacity d-inline-flex align-items-center justify-content-center attach-files-button">
+                <i data-lucide="paperclip" class="icon text-primary icon-large"></i>
+                <input type="file" class="d-none" multiple onchange="handleAttachments(this)">
+            </label>
+        @endif
     </div>
 </div>
 
