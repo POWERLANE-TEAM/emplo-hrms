@@ -95,6 +95,14 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         return view('/employee.hr-manager.evaluations.regular.evaluation-results');
     })->name('evaluation-results.regular');
 
+    // Incidents Management
+    // -------------------------------
+    Route::get('/incidents/create', function () {
+        return view('employee.hr-manager.incidents.create');
+    })->name('incidents.create');
+
+
+
     // =========================================
     // SUPERVISOR ROUTES
     // ==========================================
@@ -108,6 +116,8 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     Route::get('/assign-score/regular', function () {
         return view('employee.supervisor.evaluations.regular.assign-score');
     })->name('assign-score.regular');
+
+
 
     // =========================================
     // BASIC EMPLOYEE ROUTES
@@ -135,9 +145,9 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         echo 'sample';
     });
 
-    // Incidents Management
+    // Issues Management
     // -------------------------------
-    Route::get('/incidents/create', function () {
-        return view('employee.hr-manager.incidents.create');
-    })->name('incidents.create');
+    Route::get('/issues/create', function () {
+        return view('employee.basic.issues.create');
+    })->name('issues.create');
 });
