@@ -11,7 +11,10 @@
                     </div>
 
                     <div class="col-md-3">
-                        <x-form.boxed-dropdown id="leave_type" name="leave_type" :nonce="$nonce" :options="['Sick' => 'Sick', 'Annual' => 'Annual', 'Weekly' => 'Weekly']" placeholder="Select type" />
+                        <x-form.boxed-selectpicker id="selected_position" :nonce="$nonce" :required="true"
+                            :options="['1' => 'Data Analyst', '2' => 'HR Manager', '3' => 'Accountant']"
+                            placeholder="Select Job Position" @change="filterApplicants($event.target.value)">
+                        </x-form.boxed-selectpicker>
                     </div>
 
                     <div class="col-md-6">
@@ -23,30 +26,28 @@
         </div>
     </section>
 
-    <div>
-    <table class="table-auto w-full border-collapse border border-gray-300">
-    <thead>
-        <tr>
-            <th class="border border-gray-300 px-4 py-2 text-left">Percentage (%)</th>
-            <th class="border border-gray-300 px-4 py-2 text-left">Applicant Name</th>
-            <th class="border border-gray-300 px-4 py-2 text-left">Qualification(s) Met</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach ($applicantsData as $applicant)
-            <tr>
-                <td class="border border-gray-300 px-4 py-2">{{ $applicant['percentage'] }}%</td>
-                <td class="border border-gray-300 px-4 py-2">{{ $applicant['name'] }}</td>
-                <td class="border border-gray-300 px-4 py-2">{{ $applicant['qualifications_met'] }} - {{ $applicant['qualifications_list'] }}</td>
-            </tr>
-        @endforeach
-    </tbody>
-</table>
-    </div>
-
-    
-
-    
-
-
+    <section>
+        <div class="col-md-12">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Percentage (%)</th>
+                        <th>Applicant Name</th>
+                        <th>Qualification(s) Met</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($applicantsData as $applicant)
+                        <tr>
+                            <td class="border border-gray-300 px-4 py-2">{{ $applicant['percentage'] }}%</td>
+                            <td class="border border-gray-300 px-4 py-2">{{ $applicant['name'] }}</td>
+                            <td class="border border-gray-300 px-4 py-2">{{ $applicant['qualifications_met'] }} -
+                                {{ $applicant['qualifications_list'] }}
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </section>
 </div>
