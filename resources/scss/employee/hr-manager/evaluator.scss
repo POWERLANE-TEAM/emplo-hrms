@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import '../../utils';
+@import '../../scrollbar';
+@import '../../scales/icon-size';
+@import '../../icon/lucide';
+@import '../side-top-bar';
+@import '../../palette/text-colors';
+@import '../../palette/start-borders';
+@import '../../footer';
+@import '../../input/checkbox';
