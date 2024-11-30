@@ -7,24 +7,24 @@ use Livewire\Component;
 class ShowRankings extends Component
 {
 
-/*
- * BACK-END REPLACE / REQUIREMENTS:
- * 
- * 1. Fetch selected job position from the dropdown,
- * 2. Fetch all job positions with:
- *    - ID, Name, Required Education, Experience, and Skills (with priorities).
- * 3. Fetch all applicants for the selected job position with:
- *    - ID, Name, Position, Education, Experience, and Skills.
- * 4. Ensure API supports filtering applicants by job_position_id.
- * 
- * 
- * ADDITIONAL NOTES
- * ► Ctrl+f "Debug" and uncomment those lines to see the breakdown of the calculation.
- * ► Only replace the variables. Have a mount function if needed. But if changes are needed
- *   to be made in the calculateScore and render functions, make sure it's still working properly. :)
- */
+    /*
+     * BACK-END REPLACE / REQUIREMENTS:
+     * 
+     * 1. Fetch selected job position from the dropdown,
+     * 2. Fetch all job positions with:
+     *    - ID, Name, Required Education, Experience, and Skills (with priorities).
+     * 3. Fetch all applicants for the selected job position with:
+     *    - ID, Name, Position, Education, Experience, and Skills.
+     * 4. Ensure API supports filtering applicants by job_position_id.
+     * 
+     * 
+     * ADDITIONAL NOTES
+     * ► Ctrl+f "Debug" and uncomment those lines to see the breakdown of the calculation.
+     * ► Only replace the variables. Have a mount function if needed. But if changes are needed
+     *   to be made in the calculateScore and render functions, make sure it's still working properly. :)
+     */
 
-    public $selectedJobPosition = 2;
+    public $selectedJobPosition;
 
     public $job_positions = [
         [
@@ -151,6 +151,12 @@ class ShowRankings extends Component
         ],
     ];
 
+    public function mount()
+    {
+        // Optionally set a default value or perform any necessary initialization
+        $this->selectedJobPosition = null;
+    }
+
     public function calculateScore($jobQualifications, $applicant)
     {
         // Priority weights
@@ -249,10 +255,17 @@ class ShowRankings extends Component
         return ($totalPointsEarned / 100) * 100;
     }
 
-    public function render()
+
+    public function generateRankings()
     {
+
+        if (!$this->selectedJobPosition) {
+            return [];  // Return an empty array or handle the case when no job position is selected
+        }
+
         // Filter the job positions based on the selected job position
-        $selectedJobPosition = collect($this->job_positions)->firstWhere('job_position_id', $this->selectedJobPosition);
+        $selectedJobPosition = collect($this->job_positions)
+            ->firstWhere('job_position_id', (int) $this->selectedJobPosition);
 
         // Qualifications based on the selected positions
         $jobQualifications = $selectedJobPosition ? [
@@ -307,13 +320,20 @@ class ShowRankings extends Component
                     'qualifications_list' => implode(', ', $metQualifications),
                 ];
             }
-
         }
 
         // Sort applicants by percentage in descending order
         usort($applicantsData, function ($a, $b) {
             return $b['percentage'] <=> $a['percentage']; // Descending order
         });
+
+        return $applicantsData;
+    }
+
+    public function render()
+    {
+        // Call the new method to generate rankings
+        $applicantsData = $this->generateRankings();
 
         return view('livewire.hr-manager.resume-evaluator.show-rankings', [
             'applicantsData' => $applicantsData,
