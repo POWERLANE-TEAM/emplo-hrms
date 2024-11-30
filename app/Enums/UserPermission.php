@@ -118,6 +118,7 @@ enum UserPermission: string
     case UPDATE_ISSUE_COMPLAINT_STATUS = 'update issue complaint status';
     case UPDATE_ISSUE_COMPLAINT_CLOSED = 'update issue complaint to closed';
     case UPDATE_ISSUE_COMPLAINT_RESOLVED = 'update issue complaint to resolved';
+    case UPDATE_BIOMETRIC_ATTENDANCE_DEVICE_CONFIG = 'update biometric attendance device configuration';
 
     // Delete cases goes here
     case DELETE_JOB_LISTING = 'delete job listing';
@@ -238,6 +239,7 @@ enum UserPermission: string
             self::UPDATE_ISSUE_COMPLAINT_STATUS => 'Update issue complaint status',
             self::UPDATE_ISSUE_COMPLAINT_CLOSED => 'Close an issue complaint',
             self::UPDATE_ISSUE_COMPLAINT_RESOLVED => 'Mark an issue complaint as resolved',
+            self::UPDATE_BIOMETRIC_ATTENDANCE_DEVICE_CONFIG => 'Update biometric attendance device configuration',
 
             // Delete labels goes here
             self::DELETE_JOB_LISTING => 'Delete job listing/s',
