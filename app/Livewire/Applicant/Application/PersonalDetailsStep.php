@@ -94,19 +94,25 @@ class PersonalDetailsStep extends StepComponent
         // add check if user approves consent to parse resume
         if (true &&  empty($this->parsedResume) && isset($this->resumePath)) {
             try {
-                // Preconnect to documentai.googleapis.com
-                $resumeParser = new DocumentController();
 
-                $resumeFile = new \Illuminate\Http\UploadedFile(
-                    $this->resumePath,
-                    basename($this->resumePath),
-                    null,
-                    null,
-                    true
-                );
+                $resumePath = $this->resumePath;
+                $parsedResume = &$this->parsedResume;
+                $self = $this;
 
+                defer(function () use ($resumePath, &$parsedResume, $self) {
+                    $resumeParser = new DocumentController();
 
-                $this->parsedResume = $resumeParser->recognizeText($resumeFile, 'array');
+                    $resumeFile = new \Illuminate\Http\UploadedFile(
+                        $resumePath,
+                        basename($resumePath),
+                        null,
+                        null,
+                        true
+                    );
+
+                    $parsedResume = $resumeParser->recognizeText($resumeFile, 'array');
+                    $self->updateParsedNameSegment();
+                });
 
 
                 dump($this->parsedResume);
