@@ -47,6 +47,8 @@ class PersonalDetailsStep extends StepComponent
 
     public ?array $parsedResume = null;
 
+    public $parsedNameSegment;
+
     public bool $isValid = false;
 
     public function mount(?array $parsedResume = null)
@@ -92,6 +94,7 @@ class PersonalDetailsStep extends StepComponent
         // add check if user approves consent to parse resume
         if (true &&  empty($this->parsedResume) && isset($this->resumePath)) {
             try {
+                // Preconnect to documentai.googleapis.com
                 $resumeParser = new DocumentController();
 
                 $resumeFile = new \Illuminate\Http\UploadedFile(
@@ -102,7 +105,9 @@ class PersonalDetailsStep extends StepComponent
                     true
                 );
 
+
                 $this->parsedResume = $resumeParser->recognizeText($resumeFile, 'array');
+
 
                 dump($this->parsedResume);
             } catch (\Throwable $th) {
@@ -115,7 +120,7 @@ class PersonalDetailsStep extends StepComponent
             $this->parsedResume = [
                 'employee_education' => 'Bachelor of Arts in Communication, Ateneo de Manila University',
                 'employee_contact' => '+63-961-5719',
-                'employee_email' => 'fernando.poe.jr.@samplemail.com',
+                'employee_email' => 'fernando.poe.jrs@gmail.com',
                 'employee_experience' => 'Globe Telecom - 3 years as Project Manager\nRobinsons Land - 5 years as Marketing Specialist',
                 'employee_name' => 'Grace, Fernando Poe Jr.',
                 'employee_skills' => 'Project Management, Customer Service, Problem Solving',
@@ -123,6 +128,8 @@ class PersonalDetailsStep extends StepComponent
         }
 
         // dump($resumeState);
+
+        $this->updateParsedNameSegment();
     }
 
     public function boot()
@@ -236,6 +243,13 @@ class PersonalDetailsStep extends StepComponent
         }
     }
 
+    public function updateParsedNameSegment()
+    {
+        if (!empty($this->parsedResume['employee_name'])) {
+            $parsedFullName = preg_replace('/[^\p{L}\s.-]/u', '', $this->parsedResume['employee_name']);
+            $this->parsedNameSegment = explode(' ', $parsedFullName);
+        }
+    }
 
     /**
      * Accessor for sexes, returning key / value pairs of enum cases and labels.
