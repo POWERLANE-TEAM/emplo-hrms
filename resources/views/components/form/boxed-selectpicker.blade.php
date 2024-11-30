@@ -6,13 +6,15 @@
 
 @props(['label' => null, 'options' => [], 'nonce', 'required' => false])
 
-<label for="{{ $attributes->get('id') }}" class="mb-1 fw-semibold text-secondary-emphasis">
-    {{ $label }}
-    {{-- Conditionally display the red asterisk for required fields --}}
-    @if($required)
-        <span class="text-danger">*</span>
-    @endif
-</label>
+@if($label)
+    <label for="{{ $attributes->get('id') }}" class="mb-1 fw-semibold text-secondary-emphasis">
+        {{ $label }}
+        {{-- Conditionally display the red asterisk for required fields --}}
+        @if($required)
+            <span class="text-danger">*</span>
+        @endif
+    </label>
+@endif
 <div class="input-group mb-3 position-relative">
     <select @if($attributes->has('name')) wire:model="{{ $attributes->get('name') }}" @endif {{ $attributes->merge([
     'class' => 'form-control form-select border ps-3 rounded pe-5 selectpicker',
