@@ -1,20 +1,28 @@
 <?php
 
-
-
-
 namespace App\Livewire\HrManager\ResumeEvaluator;
-
-
-
 
 use Livewire\Component;
 
-
-
-
 class ShowRankings extends Component
 {
+
+/*
+ * BACK-END REPLACE / REQUIREMENTS:
+ * 
+ * 1. Fetch selected job position from the dropdown,
+ * 2. Fetch all job positions with:
+ *    - ID, Name, Required Education, Experience, and Skills (with priorities).
+ * 3. Fetch all applicants for the selected job position with:
+ *    - ID, Name, Position, Education, Experience, and Skills.
+ * 4. Ensure API supports filtering applicants by job_position_id.
+ * 
+ * 
+ * ADDITIONAL NOTES
+ * ► Ctrl+f "Debug" and uncomment those lines to see the breakdown of the calculation.
+ * ► Only replace the variables. Have a mount function if needed. But if changes are needed
+ *   to be made in the calculateScore and render functions, make sure it's still working properly. :)
+ */
 
     public $selectedJobPosition = 2;
 
@@ -27,8 +35,8 @@ class ShowRankings extends Component
                 ['degree' => 'Diploma in Data Analytics', 'priority' => 'High'],
             ],
             'job_experience' => [
-                ['role' => 'Junior Data Analyst', 'years' => 2, 'priority' => 'Medium'],
-                ['role' => 'Data Analyst Intern', 'years' => 1, 'priority' => 'Low'],
+                ['role' => 'Junior Data Analyst', 'priority' => 'Medium'],
+                ['role' => 'Data Analyst Intern', 'priority' => 'Low'],
             ],
             'job_skills' => [
                 ['skill' => 'Excel', 'priority' => 'Low'],
@@ -44,8 +52,8 @@ class ShowRankings extends Component
                 ['degree' => 'MBA in Human Resources', 'priority' => 'High'],
             ],
             'job_experience' => [
-                ['role' => 'HR Officer', 'years' => 3, 'priority' => 'Medium'],
-                ['role' => 'HR Assistant', 'years' => 1, 'priority' => 'Low'],
+                ['role' => 'HR Officer', 'priority' => 'Medium'],
+                ['role' => 'HR Assistant', 'priority' => 'Low'],
             ],
             'job_skills' => [
                 ['skill' => 'People Management', 'priority' => 'High'],
@@ -60,8 +68,8 @@ class ShowRankings extends Component
                 ['degree' => 'Certified Public Accountant (CPA)', 'priority' => 'High'],
             ],
             'job_experience' => [
-                ['role' => 'Junior Accountant', 'years' => 2, 'priority' => 'Medium'],
-                ['role' => 'Accounting Intern', 'years' => 1, 'priority' => 'Low'],
+                ['role' => 'Junior Accountant', 'priority' => 'Medium'],
+                ['role' => 'Accounting Intern', 'priority' => 'Low'],
             ],
             'job_skills' => [
                 ['skill' => 'QuickBooks', 'priority' => 'Medium'],
@@ -143,9 +151,6 @@ class ShowRankings extends Component
         ],
     ];
 
-
-
-
     public function calculateScore($jobQualifications, $applicant)
     {
         // Priority weights
@@ -170,8 +175,8 @@ class ShowRankings extends Component
             'Low' => 0,
         ];
 
-        // DEBUG: Initialize a string to store the points for each priority
-        // $pointsMetString = '';
+        /* CALCULATION DEBUG: Initialize a string to store the points for each priority
+            $pointsMetString = ''; */
 
         // Loop over each category (job_education, job_experience, job_skills)
         foreach ($jobQualifications as $category => $qualifications) {
@@ -244,10 +249,8 @@ class ShowRankings extends Component
         return ($totalPointsEarned / 100) * 100;
     }
 
-
     public function render()
     {
-
         // Filter the job positions based on the selected job position
         $selectedJobPosition = collect($this->job_positions)->firstWhere('job_position_id', $this->selectedJobPosition);
 
