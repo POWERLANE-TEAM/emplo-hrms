@@ -18,44 +18,46 @@ use Illuminate\Support\Facades\Log;
 
 function createApplicants($chunkStart, $chunk, $permissions)
 {
-    try {
-        $chunkEnd = $chunkStart + $chunk;
+    activity()->withoutLogs(function () use ($chunkStart, $chunk) {
+        try {
+            $chunkEnd = $chunkStart + $chunk;
 
-        for ($i = $chunkStart; $i < $chunkEnd; $i++) {
-            DB::transaction(function () use ($i) {
-                try {
-                    $applicant = Applicant::factory()->create([
-                        'created_at' => fake()->dateTimeBetween('-5 years', 'now'),
-                    ]);
+            for ($i = $chunkStart; $i < $chunkEnd; $i++) {
+                DB::transaction(function () use ($i) {
+                    try {
+                        $applicant = Applicant::factory()->create([
+                            'created_at' => fake()->dateTimeBetween('-5 years', 'now'),
+                        ]);
 
-                    $users_data = [
-                        'account_type' => AccountType::APPLICANT,
-                        'account_id' => $applicant->applicant_id,
-                        'email' => 'applicant.'.str_pad($i, 3, '0', STR_PAD_LEFT).'@gmail.com',
-                        'password' => Hash::make('UniqP@ssw0rd'),
-                        'user_status_id' => EnumUserStatus::ACTIVE,
-                        'email_verified_at' => fake()->dateTimeBetween('-10 days', 'now'),
-                    ];
+                        $users_data = [
+                            'account_type' => AccountType::APPLICANT,
+                            'account_id' => $applicant->applicant_id,
+                            'email' => 'applicant.' . str_pad($i, 3, '0', STR_PAD_LEFT) . '@gmail.com',
+                            'password' => Hash::make('UniqP@ssw0rd'),
+                            'user_status_id' => EnumUserStatus::ACTIVE,
+                            'email_verified_at' => fake()->dateTimeBetween('-10 days', 'now'),
+                        ];
 
-                    $applicant_user = User::factory()->create($users_data);
+                        $applicant_user = User::factory()->create($users_data);
 
-                    Application::create([
-                        'applicant_id' => $applicant->applicant_id,
-                        'job_vacancy_id' => JobVacancy::inRandomOrder()->first()->job_vacancy_id,
-                        'application_status_id' => ApplicationStatus::APPROVED,
-                    ]);
+                        Application::create([
+                            'applicant_id' => $applicant->applicant_id,
+                            'job_vacancy_id' => JobVacancy::inRandomOrder()->first()->job_vacancy_id,
+                            'application_status_id' => ApplicationStatus::APPROVED,
+                        ]);
 
-                    // $applicant_user->givePermissionTo($permissions);
-                } catch (\Exception $e) {
-                    Log::error('Exception: '.$e->getMessage().' in '.$e->getFile().' on line '.$e->getLine());
-                }
-            });
+                        // $applicant_user->givePermissionTo($permissions);
+                    } catch (\Exception $e) {
+                        Log::error('Exception: ' . $e->getMessage() . ' in ' . $e->getFile() . ' on line ' . $e->getLine());
+                    }
+                });
+            }
+        } catch (\Throwable $th) {
+            Log::error('Exception: ' . $th->getMessage() . ' in ' . $th->getFile() . ' on line ' . $th->getLine());
         }
-    } catch (\Throwable $th) {
-        Log::error('Exception: '.$th->getMessage().' in '.$th->getFile().' on line '.$th->getLine());
-    }
 
-    return ['result' => true];
+        return ['result' => true];
+    });
 }
 
 /**
@@ -80,8 +82,12 @@ class ApplicantSeeder extends Seeder
      * @param  int|null  $start  The starting point for seeding. Default is 0.
      * @param  int|null  $concurrencyCount  The number of concurrent processes. Default is 10.
      */
-    public function run(?int $count = 1, ?int $start = 0, ?int $concurrencyCount = null): void
+    public function run(?int $count = null, ?int $start = null, ?int $concurrencyCount = null): void
     {
+        $count = $count ?? env('APP_USER_SEEDING_COUNT', 30);
+
+        $start = $start ?? Applicant::max('applicant_id') + 1;
+
         $concurrencyCount = $concurrencyCount ?? env('APP_MAX_CONCURRENT_COUNT', 10);
         $chunkCount = ceil($count / $concurrencyCount);
 
@@ -95,7 +101,7 @@ class ApplicantSeeder extends Seeder
         $tasks = [];
         for ($i = 0; $i < $concurrencyCount; $i++) {
             $chunkStart = $start + ($chunkCount * $i);
-            $tasks[] = fn () => createApplicants($chunkStart, $chunkCount, $permissions);
+            $tasks[] = fn() => createApplicants($chunkStart, $chunkCount, $permissions);
         }
 
         Concurrency::run($tasks);

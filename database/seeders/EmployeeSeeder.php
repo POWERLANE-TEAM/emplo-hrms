@@ -21,54 +21,57 @@ use Illuminate\Support\Facades\Log;
 
 function createEmployee($chunkStart, $chunk, $freeEmailDomain)
 {
-    try {
-        $chunkEnd = $chunkStart + $chunk;
-        Log::info("Creating applicants from $chunkStart to $chunkEnd\n");
-        for ($i = $chunkStart; $i < $chunkEnd; $i++) {
-            DB::transaction(function () use ($i, $freeEmailDomain) {
-                try {
 
-                    $applicant = Applicant::factory()->create([
-                        'created_at' => fake()->dateTimeBetween('-5 years', 'now'),
-                    ]);
+    activity()->withoutLogs(function () use ($chunkStart, $chunk, $freeEmailDomain) {
+        try {
+            $chunkEnd = $chunkStart + $chunk;
+            Log::info("Creating applicants from $chunkStart to $chunkEnd\n");
+            for ($i = $chunkStart; $i < $chunkEnd; $i++) {
+                DB::transaction(function () use ($i, $freeEmailDomain) {
+                    try {
 
-                    $employee = Employee::factory()->create();
+                        $applicant = Applicant::factory()->create([
+                            'created_at' => fake()->dateTimeBetween('-5 years', 'now'),
+                        ]);
 
-                    $validDomains = Arr::random($freeEmailDomain);
+                        $employee = Employee::factory()->create();
 
-                    $timestamp = fake()->dateTimeBetween('-5 years', 'now');
+                        $validDomains = Arr::random($freeEmailDomain);
 
-                    $userData = [
-                        'account_type' => AccountType::EMPLOYEE,
-                        'account_id' => $employee->employee_id,
-                        'email' => fake()->randomElement(UserRole::values()).'.'.str_pad($i, 3, '0', STR_PAD_LEFT).'@'.$validDomains,
-                        'password' => Hash::make('UniqP@ssw0rd'),
-                        'user_status_id' => UserStatus::ACTIVE,
-                        'email_verified_at' => $timestamp->modify('+'.rand(1, 7).' days'),
-                        'created_at' => $timestamp,
-                    ];
+                        $timestamp = fake()->dateTimeBetween('-5 years', 'now');
 
-                    $employeeUser = User::factory()->create($userData);
+                        $userData = [
+                            'account_type' => AccountType::EMPLOYEE,
+                            'account_id' => $employee->employee_id,
+                            'email' => fake()->randomElement(UserRole::values()) . '.' . str_pad($i, 3, '0', STR_PAD_LEFT) . '@' . $validDomains,
+                            'password' => Hash::make('UniqP@ssw0rd'),
+                            'user_status_id' => UserStatus::ACTIVE,
+                            'email_verified_at' => $timestamp->modify('+' . rand(1, 7) . ' days'),
+                            'created_at' => $timestamp,
+                        ];
 
-                    $employeeUser->assignRole(fake()->randomElement(UserRole::values()));
+                        $employeeUser = User::factory()->create($userData);
 
-                    Application::create([
-                        'applicant_id' => $applicant->applicant_id,
-                        'job_vacancy_id' => JobVacancy::inRandomOrder()->first()->job_vacancy_id,
-                        'application_status_id' => ApplicationStatus::APPROVED,
-                        'is_passed' => true,
-                        'hired_at' => $timestamp->modify('+'.rand(3, 14).' days'),
-                    ]);
-                } catch (\Exception $e) {
-                    Log::error('Exception: '.$e->getMessage().' in '.$e->getFile().' on line '.$e->getLine());
-                }
-            });
+                        $employeeUser->assignRole(fake()->randomElement(UserRole::values()));
+
+                        Application::create([
+                            'applicant_id' => $applicant->applicant_id,
+                            'job_vacancy_id' => JobVacancy::inRandomOrder()->first()->job_vacancy_id,
+                            'application_status_id' => ApplicationStatus::APPROVED,
+                            'is_passed' => true,
+                            'hired_at' => $timestamp->modify('+' . rand(3, 14) . ' days'),
+                        ]);
+                    } catch (\Exception $e) {
+                        Log::error('Exception: ' . $e->getMessage() . ' in ' . $e->getFile() . ' on line ' . $e->getLine());
+                    }
+                });
+            }
+        } catch (\Throwable $th) {
+            Log::error('Exception: ' . $th->getMessage() . ' in ' . $th->getFile() . ' on line ' . $th->getLine());
         }
-    } catch (\Throwable $th) {
-        Log::error('Exception: '.$th->getMessage().' in '.$th->getFile().' on line '.$th->getLine());
-    }
 
-    return ['result' => true];
+        return ['result' => true];
+    });
 }
 
 class EmployeeSeeder extends Seeder
@@ -76,8 +79,11 @@ class EmployeeSeeder extends Seeder
     /**
      * Run the database seeds.
      */
-    public function run(?int $count = 1, ?int $start = 0, ?int $concurrencyCount = null): void
+    public function run(?int $count = null, ?int $start = null, ?int $concurrencyCount = null): void
     {
+        $count = $count ?? env('APP_USER_SEEDING_COUNT', 30);
+
+        $start = $start ?? Employee::max('employee_id') + 1;
 
         $file = File::json(base_path('resources/js/email-domain-list.json'));
         $freeEmailDomain = $file['valid_email'];
@@ -93,7 +99,7 @@ class EmployeeSeeder extends Seeder
         $tasks = [];
         for ($i = 0; $i < $concurrencyCount; $i++) {
             $chunkStart = $start + ($chunkCount * $i);
-            $tasks[] = fn () => createEmployee($chunkStart, $chunkCount, $freeEmailDomain);
+            $tasks[] = fn() => createEmployee($chunkStart, $chunkCount, $freeEmailDomain);
         }
 
         Concurrency::run($tasks);
