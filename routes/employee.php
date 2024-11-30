@@ -85,6 +85,12 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         return view('employee.profile.settings');
     })->name('profile');
 
+    // Resume Evaluator
+    // --------------------------
+    Route::get('resume-evaluator/rankings', function () {
+        return view('/employee.hr-manager.resume-evaluator.rankings');
+    })->name('resume-evaluator.rankings');
+
     // Performance Evaluation Results
     // -------------------------------
     Route::get('evaluation-results/probationary', function () {
