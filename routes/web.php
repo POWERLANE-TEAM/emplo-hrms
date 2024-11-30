@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Application\ApplicantController;
 use App\Http\Controllers\DocumentController;
-use App\Http\Controllers\PreEmploymentController;
+use App\Http\Controllers\ApplicationDocController;
 use App\Http\Controllers\ResumeController;
 use App\Livewire\Auth\FacebookOAuth;
 use App\Livewire\Auth\GoogleOAuth;
@@ -21,8 +21,8 @@ Route::group([], function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/application/{page?}', [ApplicantController::class, 'index']);
 
-    Route::get('/preemploy', [PreEmploymentController::class, 'create']);
-    Route::post('/preemploy', [PreEmploymentController::class, 'store']);
+    Route::get('/preemploy', [ApplicationDocController::class, 'create']);
+    Route::post('/preemploy', [ApplicationDocController::class, 'store']);
 });
 
 Route::get('/apply', [ApplicantController::class, 'create']);
