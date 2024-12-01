@@ -19,7 +19,6 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
     public function update(User $user, array $input): void
     {
 
-
         Validator::make($input, [
             'email' => [
                 'nullable',
@@ -67,11 +66,14 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                 'email' => $input['email'] ?? null,
                 'account_type' => $input['accountType'] ?? null,
                 'account_id' => $input['accountId'] ?? null,
-                'photo' => $input['photo'] ?? null,
                 'user_status_id' => $input['userStatusId'] ?? null,
             ], function ($value) {
                 return !is_null($value);
-            }))->save();
+            }))
+                ->fill([
+                    'photo' => $input['photo'] ?? null,
+                ])
+                ->save();
         }
     }
 
@@ -86,11 +88,14 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             'email' => $input['email'],
             'account_type' => $input['accountType'] ?? null,
             'account_id' => $input['accountId'] ?? null,
-            'photo' => $input['photo'] ?? null,
+
             'user_status_id' => $input['userStatusId'] ?? null,
         ], function ($value) {
             return !is_null($value);
         }))
+            ->fill([
+                'photo' => $input['photo'] ?? null,
+            ])
 
             // force resetting email_verified_at as it is guarded
             ->forceFill([
