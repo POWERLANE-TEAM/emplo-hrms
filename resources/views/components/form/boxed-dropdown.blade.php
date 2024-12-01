@@ -15,7 +15,7 @@
     'options' => [],
     'nonce',
     'required' => false,
-    'tooltip' => null
+    'tooltip' => null,
     'overrideContainerClass' => false,
     'containerAttributes' => new ComponentAttributeBag(),
 ])
@@ -37,7 +37,7 @@
     @endif
 
     {{-- Conditionally display the tooltip icon beside the label if tooltip and modalId are provided --}}
-    @if($tooltip && isset($tooltip['modalId']))
+    @if ($tooltip && isset($tooltip['modalId']))
         <x-tooltips.modal-tooltip icon="help-circle" color="text-info" modalId="{{ $tooltip['modalId'] }}" class="ms-2" />
     @endif
 
