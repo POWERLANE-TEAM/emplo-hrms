@@ -1,4 +1,4 @@
-<div class="mt-2">
+<div class="mt-1">
 
     <!-- Selection of the Job Position -->
     <section>
@@ -6,19 +6,19 @@
             <div class="card bg-body-secondary border-0 py-4 px-4">
 
                 <div class="row">
-                    <div class="col-md-3">
-                        <p>Please select first the job position: </p>
+                    <div class="col-md-3 d-flex align-items-center">
+                        <div><i data-lucide="briefcase-business" class="icon icon-slarge me-2 text-"> </i>Please select first the job position: </div>
                     </div>
 
-                    <div class="col-md-3">
+                    <div class="col-md-5 d-flex align-items-center">
                         <!-- Selectpicker -->
-                        <x-form.boxed-selectpicker id="selected_position" :nonce="$nonce" :required="true"
+                        <x-form.boxed-selectpicker id="selected_position" :nonce="$nonce" class="mb-0" :required="true"
                             :options="['1' => 'Data Analyst', '2' => 'HR Manager', '3' => 'Accountant', '4' => 'IT']"
                             placeholder="Select Job Position" wire:model="selectedJobPosition">
                         </x-form.boxed-selectpicker>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-4 d-flex align-items-center">
                         <!-- Submit Button: Trigger the 'generate rankings' action when clicked -->
                         <x-buttons.main-btn label="Generate Rankings" :nonce="$nonce" class="w-50"
                             :loading="'Submitting...'" wire:click="generateRankings" :disabled="false" />
@@ -28,15 +28,15 @@
         </div>
     </section>
 
+    <!-- Rankings Table -->
     <section>
-
         <div class="col-md-12">
-
             @if ($selectedJobPosition !== null)
-
                 @if (count($applicantsData) > 0)
 
                     <section wire:loading.remove>
+
+                        <!-- Callout: Total applicants & Job Position -->
                         <x-headings.sparkle-callout>
                             <x-slot:description>
                                 Found <span class="fw-bold text-primary">{{ $totalApplicants }}</span> candidates who are
@@ -47,6 +47,7 @@
                             </x-slot:description>
                         </x-headings.sparkle-callout>
 
+                        <!-- Table: Rankings of Applicants -->
                         <section class="mt-2">
                             <div class="table-wrapper">
                                 <table class="col-md-12">
@@ -73,8 +74,8 @@
 
                                                 <!-- Qualification(s) Met -->
                                                 <td class="qualifications pe-4">
-                                                    <span class="qualifications-text">{{ $applicant['qualifications_met'] }}
-                                                        -{{ $applicant['qualifications_list'] }}
+                                                    <span class="qualifications-text"><!--  {{ $applicant['qualifications_met'] }} Count of total qualifications passed. Temporarily commented this out.-->
+                                                        {{ $applicant['qualifications_list'] }}
                                                     </span>
                                                     <span class="see-more hover-opacity" onclick="toggleText(this)">See More</span>
                                                 </td>
@@ -86,6 +87,7 @@
                         </section>
                     </section>
                 @else
+                    <!-- Empty State: No Applicants -->
                     <div wire:loading.remove>
                         <div class="empty-state d-flex justify-content-center align-items-center text-center w-100 h-100 py-5">
                             <div class="mt-4">
@@ -97,6 +99,7 @@
                     </div>
                 @endif
 
+            <!-- Default Empty State -->
             @else
                 <div wire:loading.remove>
                     <div class="empty-state d-flex justify-content-center align-items-center text-center w-100 h-100 py-5">
@@ -109,6 +112,7 @@
                 </div>
             @endif
 
+            <!-- Skeleton Loading -->
             <div wire:loading>
                 @include('livewire.placeholder.evaluator')
             </div>
