@@ -72,6 +72,9 @@ class ShowRankings extends Component
             'job_skills' => [
                 ['skill' => 'QuickBooks', 'priority' => 'Medium'],
                 ['skill' => 'Financial Reporting', 'priority' => 'High'],
+                ['skill' => 'Good Communicator', 'priority' => 'Low'],
+                ['skill' => 'Very good at adapting to situation where help is needed', 'priority' => 'Low'],
+                ['skill' => 'Extremely polite and well-mannered and skillful', 'priority' => 'Low'],
             ],
         ],
         [
@@ -164,6 +167,9 @@ class ShowRankings extends Component
             'applicant_skills' => [
                 ['skill' => 'QuickBooks'],
                 ['skill' => 'Financial Reporting'],
+                ['skill' => 'Good Communicator'],
+                ['skill' => 'Very good at adapting to situation where help is needed'],
+                ['skill' => 'Extremely polite and well-mannered and skillful'],
             ],
         ],
     ];
