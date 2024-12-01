@@ -52,8 +52,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($applicantsData as $applicant)
-                                    <tr class="pb-5 active">
+                                @foreach ($applicantsData as $index => $applicant)
+                                    <tr class="pb-5 {{ $index === 0 ? 'active' : '' }}">
                                         <!-- Score -->
                                         <td class="text-center"><span
                                                 class="resume-score-circle">{{ $applicant['percentage'] }}%</span></td>
@@ -63,7 +63,7 @@
                                             <span class="fs-5 fw-bold">{{ $applicant['name'] }}
                                             </span><br>
                                             <span>
-                                                {{ $applicant['email'] }}
+                                            {{ $applicant['email'] }}
                                             </span>
                                         </td>
 
