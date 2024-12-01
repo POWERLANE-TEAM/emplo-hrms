@@ -15,7 +15,7 @@
         @endif
     </label>
 @endif
-<div wire:ignore class="input-group mb-3 position-relative">
+<div wire:ignore class="input-group position-relative">
     <select @if($attributes->has('name')) wire:model="{{ $attributes->get('name') }}" @endif {{ $attributes->merge([
     'class' => 'form-control form-select border ps-3 rounded pe-5 selectpicker',
     'autocomplete' => $attributes->get('autocomplete', 'off'),

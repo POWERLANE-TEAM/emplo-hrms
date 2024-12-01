@@ -16,7 +16,7 @@
     'target' => null
 ])
 
-<div class="bottom-0 pt-1 pb-md-3 z-3 w-100">
+<div class="bottom-0 pt-1 z-3 w-100">
     <button wire:loading.attr="disabled" type="submit" nonce="{{ $nonce }}"
             id="{{ $id }}"
             {{ $attributes->merge(['class' => 'btn btn-primary btn-lg']) }}
