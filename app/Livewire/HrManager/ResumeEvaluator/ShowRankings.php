@@ -266,8 +266,11 @@ class ShowRankings extends Component
         }
 
         // Filter the job positions based on the selected job position
+
+        $selectedValue = $this->selectedJobPosition['value'];
+
         $selectedJobPosition = collect($this->job_positions)
-            ->firstWhere('job_position_id', (int) $this->selectedJobPosition);
+            ->firstWhere('job_position_id', (int) $selectedValue);
 
         // Qualifications based on the selected positions
         $jobQualifications = $selectedJobPosition ? [
@@ -280,9 +283,6 @@ class ShowRankings extends Component
 
         // Loop through all applicants to process them
         foreach ($this->applicants as $applicant) {
-            // Debug: Check applicant position id and selected position id
-
-            // Check if applicant's position matches the selected job position
             if ($applicant['applicant_position_id'] == $selectedJobPosition['job_position_id']) {
 
                 $matchPercentage = $this->calculateScore($jobQualifications, $applicant);
@@ -342,12 +342,16 @@ class ShowRankings extends Component
         $this->totalApplicants = count($applicantsData);
 
         // Get the selected job position name
-        $selectedPositionName = collect($this->job_positions)
-            ->firstWhere('job_position_id', (int) $this->selectedJobPosition)['job_position'] ?? 'N/A';
+        $selectedValue = $this->selectedJobPosition['value'] ?? null; // Safely access 'value'
 
-        $this->selectedPositionName = $selectedPositionName;
+        if ($selectedValue !== null) {
+            $selectedPositionName = collect($this->job_positions)
+                ->firstWhere('job_position_id', (int) $selectedValue)['job_position'] ?? 'N/A';
 
-
+            $this->selectedPositionName = $selectedPositionName;
+        } else {
+            $this->selectedPositionName = 'N/A';
+        }
 
         return view('livewire.hr-manager.resume-evaluator.show-rankings', [
             'applicantsData' => $applicantsData,
