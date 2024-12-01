@@ -31,57 +31,62 @@
     <section>
 
         <div class="col-md-12">
+
             @if ($selectedJobPosition !== null)
 
                 @if (count($applicantsData) > 0)
 
-                    <x-headings.sparkle-callout>
-                        <x-slot:description>
-                            Found <span class="fw-bold text-primary">{{ $totalApplicants }}</span> candidates who are applying
-                            for the job position of <span class="fw-bold text-primary">{{ $selectedPositionName }}</span>. Check
-                            out their scores below!
-                        </x-slot:description>
-                    </x-headings.sparkle-callout>
+                    <section wire:loading.remove>
+                        <x-headings.sparkle-callout>
+                            <x-slot:description>
+                                Found <span class="fw-bold text-primary">{{ $totalApplicants }}</span> candidates who are
+                                applying
+                                for the job position of <span class="fw-bold text-primary">{{ $selectedPositionName }}</span>.
+                                Check
+                                out their scores below!
+                            </x-slot:description>
+                        </x-headings.sparkle-callout>
 
-                    <section class="mt-2">
-                        <div class="table-wrapper">
-                            <table class="col-md-12">
-                                <thead>
-                                    <tr>
-                                        <th class="text-center">Score</th>
-                                        <th class="text-center">Applicant Name</th>
-                                        <th class="text-center">Qualification(s) Met</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($applicantsData as $index => $applicant)
-                                        <tr class="pb-5 {{ $index === 0 ? 'active' : '' }}">
-                                            <!-- Score -->
-                                            <td class="text-center">
-                                                <span class="resume-score-circle">{{ $applicant['percentage'] }}%</span>
-                                            </td>
-
-                                            <!-- Name & Email -->
-                                            <td class="text-center">
-                                                <span class="fs-5 fw-bold">{{ $applicant['name'] }}</span><br>
-                                                <span>{{ $applicant['email'] }}</span>
-                                            </td>
-
-                                            <!-- Qualification(s) Met -->
-                                            <td class="qualifications pe-4">
-                                                <span class="qualifications-text">{{ $applicant['qualifications_met'] }}
-                                                    -{{ $applicant['qualifications_list'] }}
-                                                </span>
-                                                <span class="see-more hover-opacity" onclick="toggleText(this)">See More</span>
-                                            </td>
+                        <section class="mt-2">
+                            <div class="table-wrapper">
+                                <table class="col-md-12">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">Score</th>
+                                            <th class="text-center">Applicant Name</th>
+                                            <th class="text-center">Qualification(s) Met</th>
                                         </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($applicantsData as $index => $applicant)
+                                            <tr class="pb-5 {{ $index === 0 ? 'active' : '' }}">
+                                                <!-- Score -->
+                                                <td class="text-center">
+                                                    <span class="resume-score-circle">{{ $applicant['percentage'] }}%</span>
+                                                </td>
+
+                                                <!-- Name & Email -->
+                                                <td class="text-center">
+                                                    <span class="fs-5 fw-bold">{{ $applicant['name'] }}</span><br>
+                                                    <span>{{ $applicant['email'] }}</span>
+                                                </td>
+
+                                                <!-- Qualification(s) Met -->
+                                                <td class="qualifications pe-4">
+                                                    <span class="qualifications-text">{{ $applicant['qualifications_met'] }}
+                                                        -{{ $applicant['qualifications_list'] }}
+                                                    </span>
+                                                    <span class="see-more hover-opacity" onclick="toggleText(this)">See More</span>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
                     </section>
                 @else
-                    <div>
+                    <div wire:loading.remove>
                         <div class="empty-state d-flex justify-content-center align-items-center text-center w-100 h-100 py-5">
                             <div class="mt-4">
                                 <img class="img-size-20 img-responsive"
@@ -93,7 +98,7 @@
                 @endif
 
             @else
-                <div>
+                <div wire:loading.remove>
                     <div class="empty-state d-flex justify-content-center align-items-center text-center w-100 h-100 py-5">
                         <div>
                             <img class="img-size-20 img-responsive"
@@ -103,7 +108,12 @@
                     </div>
                 </div>
             @endif
+
+            <div wire:loading>
+                @include('livewire.placeholder.evaluator')
+            </div>
         </div>
+
 
     </section>
 </div>
@@ -116,7 +126,7 @@
 
     Livewire.hook('morph.added', ({ el }) => {
         console.log('Morph added hook triggered');
-        
+
         setTimeout(() => {
             console.log("Checking overflow...");
             checkOverflow();
