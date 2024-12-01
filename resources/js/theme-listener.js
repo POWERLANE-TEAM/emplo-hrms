@@ -94,7 +94,7 @@ export function initPageTheme(themeManager, themeToggle = false) {
 
 // Dynamic storage of theme for exteral libraries
 function updateTheme(theme) {
-    const selectElements = document.querySelectorAll('.choices-custom, select, .choices__input, .choices__inner, .choices__list--dropdown, .choices__item, .choices__item--disabled');
+    const selectElements = document.querySelectorAll('.choices, .choices-custom, select, .choices__input, .choices__inner, .choices__list--dropdown, .choices__item, .choices__item--disabled');
     selectElements.forEach(select => {
         if (theme === 'dark') {
             select.classList.add('dark'); 

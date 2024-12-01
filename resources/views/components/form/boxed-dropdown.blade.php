@@ -2,6 +2,10 @@
 * |--------------------------------------------------------------------------
 * | Boxed: Dropdown Input Field
 * |--------------------------------------------------------------------------
+{{--
+* |--------------------------------------------------------------------------
+* | Boxed: Dropdown Input Field
+* |--------------------------------------------------------------------------
 --}}
 
 @use ('Illuminate\View\ComponentAttributeBag')
@@ -11,6 +15,7 @@
     'options' => [],
     'nonce',
     'required' => false,
+    'tooltip' => null
     'overrideContainerClass' => false,
     'containerAttributes' => new ComponentAttributeBag(),
 ])
@@ -30,6 +35,12 @@
     @if ($required || $attributes->has('required'))
         <span class="text-danger">*</span>
     @endif
+
+    {{-- Conditionally display the tooltip icon beside the label if tooltip and modalId are provided --}}
+    @if($tooltip && isset($tooltip['modalId']))
+        <x-tooltips.modal-tooltip icon="help-circle" color="text-info" modalId="{{ $tooltip['modalId'] }}" class="ms-2" />
+    @endif
+
 </label>
 <div {{ $containerAttributes }}>
     <!-- Dropdown input with boxed styling -->
