@@ -11,7 +11,7 @@
                     </div>
 
                     <div class="col-md-3">
-                        <!-- Bind the selected position to Livewire component -->
+                        <!-- Selectpicker -->
                         <x-form.boxed-selectpicker id="selected_position" :nonce="$nonce" :required="true"
                             :options="['1' => 'Data Analyst', '2' => 'HR Manager', '3' => 'Accountant']"
                             placeholder="Select Job Position" wire:model="selectedJobPosition">
@@ -19,7 +19,7 @@
                     </div>
 
                     <div class="col-md-6">
-                        <!-- Trigger the 'generate rankings' action when clicked -->
+                        <!-- Submit Button: Trigger the 'generate rankings' action when clicked -->
                         <x-buttons.main-btn label="Generate Rankings" :nonce="$nonce" class="w-50"
                             :loading="'Submitting...'" wire:click="generateRankings" :disabled="false" />
                     </div>

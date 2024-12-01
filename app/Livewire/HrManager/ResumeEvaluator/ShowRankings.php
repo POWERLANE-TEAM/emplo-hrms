@@ -10,18 +10,16 @@ class ShowRankings extends Component
     /*
      * BACK-END REPLACE / REQUIREMENTS:
      * 
-     * 1. Fetch selected job position from the dropdown,
-     * 2. Fetch all job positions with:
+     * 1. Fetch all job positions with:
      *    - ID, Name, Required Education, Experience, and Skills (with priorities).
-     * 3. Fetch all applicants for the selected job position with:
+     * 2. Fetch all applicants for the selected job position with:
      *    - ID, Name, Position, Education, Experience, and Skills.
-     * 4. Ensure API supports filtering applicants by job_position_id.
-     * 
      * 
      * ADDITIONAL NOTES
+     * ► The filtering of the selectedJobPosition is already binded.
      * ► Ctrl+f "Debug" and uncomment those lines to see the breakdown of the calculation.
-     * ► Only replace the variables. Have a mount function if needed. But if changes are needed
-     *   to be made in the calculateScore and render functions, make sure it's still working properly. :)
+     * ► Only replace the fetching of the arrays of job_positions & applicants.
+     *   But if changes are needed to be made in the calculateScore and render functions, make sure it's still working properly.
      */
 
     public $selectedJobPosition;
