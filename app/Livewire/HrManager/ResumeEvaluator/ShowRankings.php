@@ -13,7 +13,7 @@ class ShowRankings extends Component
      * 1. Fetch all job positions with:
      *    - ID, Name, Required Education, Experience, and Skills (with priorities).
      * 2. Fetch all applicants for the selected job position with:
-     *    - ID, Name, Position, Education, Experience, and Skills.
+     *    - ID, Name, Email, Position, Education, Experience, and Skills.
      * 
      * ADDITIONAL NOTES
      * ► The filtering of the selectedJobPosition is already binded.
