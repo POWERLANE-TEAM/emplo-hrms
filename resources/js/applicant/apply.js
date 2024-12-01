@@ -10,6 +10,7 @@ import PasswordValidator from '../forms/password-validation.js';
 import initPasswordConfirmValidation, { validateConfirmPassword } from '../forms/password-confirm-validation.js';
 import debounce from '../debounce-fn.js';
 import initIframeFullScreener from 'iframe-full-screener-script';
+import 'websocket-script';
 // import './livewire.js'
 
 
@@ -30,6 +31,19 @@ initIframeFullScreener('apply-resume-preview');
 
 
 
+
+let hasUnsavedChanges = false;
+let logoutCallback = null;
+
+try {
+    Echo.private(`applicant.applying.${AUTH_BROADCAST_ID}`)
+        //  I think livewire is already hnadling the listener for this event
+        .listen('Guest.ResumeParsed', (event) => {
+            // maybe show a toast message
+        })
+} catch (error) {
+
+}
 
 
 
