@@ -54,10 +54,9 @@ class CreateJobFamilyForm extends Component
 
     public function updatedQuery()
     {
-        // there must be a better way to do this but i couldn't care less.
-        $this->employees = Employee::where('first_name', 'ilike', "%{$this->query}%")
-                                ->orWhere('middle_name', 'ilike', "%{$this->query}%")
-                                ->orWhere('last_name', 'ilike', "%{$this->query}%")
+        $this->employees = Employee::whereLike('first_name', "%{$this->query}%")
+                                ->orWhereLike('middle_name', "%{$this->query}%")
+                                ->orWhereLike('last_name', "%{$this->query}%")
                                 ->get()
                                 ->map(function ($item) {
                                     return (object) [
