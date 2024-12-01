@@ -1,12 +1,5 @@
 <?php
 
-use Illuminate\Foundation\Inspiring;
-use Illuminate\Support\Facades\Artisan;
-
-Artisan::command('inspire', function () {
-    $this->comment(Inspiring::quote());
-})->purpose('Display an inspiring quote')->hourly();
-
-Schedule::call(function () {
-    // save attendance to database once every day.
-})->timezone('Asia/Manila')->daily();
+Schedule::command('sync-attlogs-from-biometric-device')
+    ->timezone('Asia/Manila')
+    ->daily();
