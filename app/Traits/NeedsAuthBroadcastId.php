@@ -14,8 +14,10 @@ trait NeedsAuthBroadcastId
      */
     public static function generateAuthId()
     {
-        $userSession = session()->getId();
-        $userIdentity = Auth::user()->email ?? Auth::id();
-        return hash('sha512', $userSession . $userIdentity . $userSession);
+        if (Auth::check()) {
+            $userSession = session()->getId();
+            $userIdentity = Auth::user()->email ?? Auth::id();
+            return hash('sha512', $userSession . $userIdentity . $userSession);
+        } else abort(401);
     }
 }
