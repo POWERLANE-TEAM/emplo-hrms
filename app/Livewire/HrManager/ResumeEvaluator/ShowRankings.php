@@ -333,9 +333,22 @@ class ShowRankings extends Component
         // Call the new method to generate rankings
         $applicantsData = $this->generateRankings();
 
+        // Calculate the total number of applicants
+        $this->totalApplicants = count($applicantsData);
+
+        // Get the selected job position name
+        $selectedPositionName = collect($this->job_positions)
+            ->firstWhere('job_position_id', (int) $this->selectedJobPosition)['job_position'] ?? 'N/A';
+
+        $this->selectedPositionName = $selectedPositionName;
+
+
+
         return view('livewire.hr-manager.resume-evaluator.show-rankings', [
             'applicantsData' => $applicantsData,
             'selectedJobPosition' => $this->selectedJobPosition, // Pass selected job position to the view
+            'totalApplicants' => $this->totalApplicants, // Pass total applicants to the view
+            'selectedPositionName' => $this->selectedPositionName, // Pass selected position name to the view
         ]);
     }
 }
