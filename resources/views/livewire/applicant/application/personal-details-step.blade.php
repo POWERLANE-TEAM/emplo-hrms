@@ -18,7 +18,8 @@
 
                     <div>
                         <x-filepond::upload wire:model="form.displayProfile" instant-upload="false" {{-- name="resume.file" --}}
-                            allow-image-edit="true" {{-- image-edit-allow-edit="true" --}} image-edit-instant-edit :accept="$accepted" />
+                            allow-image-edit="true" {{-- image-edit-allow-edit="true" --}} image-edit-instant-edit :accept="$accepted"
+                            :required="true" />
                         @include('components.form.input-feedback', [
                             'feedback_id' => 'displayProfile',
                             'message' => $errors->first('displayProfile.file'),

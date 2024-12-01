@@ -13,7 +13,7 @@
                 <div class="boxed">
                     {{-- <livewire:form.applicant.application.resume-upload /> --}}
                     <x-filepond::upload wire:model="resumeFile" {{-- name="resume.file" --}} instant-upload="false"
-                        {{--   max-file-size="{{ $this->fileMaxSize * 1024 }}" --}} accept="application/pdf" />
+                        {{--   max-file-size="{{ $this->fileMaxSize * 1024 }}" --}} accept="application/pdf" :required="true" />
                 </div>
                 @include('components.form.input-feedback', [
                     'feedback_id' => 'resumeFile',

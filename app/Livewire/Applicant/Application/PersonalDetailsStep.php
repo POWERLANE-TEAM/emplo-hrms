@@ -150,10 +150,10 @@ class PersonalDetailsStep extends StepComponent
         $this->displayProfile->setRequired($required);
 
         // atleast 18 years old
-        $this->applicantBirth->setMinDate(Carbon::now()->subYears(18));
+        $this->applicantBirth->setMaxDate(Carbon::now()->subYears(18)->toDateString());
 
         // at most 65 years old
-        $this->applicantBirth->setMaxDate(Carbon::now()->addYears(65));
+        $this->applicantBirth->setMinDate(Carbon::now()->subYears(65)->endOfYear()->toDateString());
     }
 
     #[Computed]
@@ -217,17 +217,14 @@ class PersonalDetailsStep extends StepComponent
         ];
     }
 
-
-    public function updated()
+    public function updating()
     {
-
         // Capitalize each word in applicant name
         $this->form['applicantName']['firstName'] = ucwords(strtolower($this->form['applicantName']['firstName']));
         $this->form['applicantName']['middleName'] = ucfirst(strtolower($this->form['applicantName']['middleName']));
         $this->form['applicantName']['lastName'] = ucwords(strtolower($this->form['applicantName']['lastName']));
 
-        // save the file properties needed that is persistent when rehydrating
-        if (isset($this->form['displayProfile']) && $this->form['displayProfile'] instanceof \Illuminate\Http\UploadedFile) {
+        if (isset($this->form['displayProfile']) && $this->form['displayProfile'] instanceof \Illuminate\Http\UploadedFile && !$this->isValid) {
             try {
                 $this->displayProfileUrl = $this->form['displayProfile']->temporaryUrl();
                 $this->displayProfilePath = $this->form['displayProfile']->getRealPath();
@@ -236,6 +233,24 @@ class PersonalDetailsStep extends StepComponent
             }
         }
     }
+
+    // fixes missing file when going back and forth with steps but
+    // this also cause error Livewire encountered corrupt data when trying to hydrate a component. Ensure that the [name, id, data] of the Livewire component wasn't tampered with between requests.
+    // Livewire rehydration sucks
+    // public function updated()
+    // {
+
+    //     // save the file properties needed that is persistent when rehydrating
+    //     // if (isset($this->form['displayProfile']) && $this->form['displayProfile'] instanceof \Illuminate\Http\UploadedFile && !$this->isValid) {
+    //     //     try {
+    //     //         $this->displayProfileUrl = $this->form['displayProfile']->temporaryUrl();
+    //     //         $this->displayProfilePath = $this->form['displayProfile']->getRealPath();
+    //     //     } catch (\Exception $e) {
+    //     //         report($e->getMessage());
+    //     //     }
+    //     // }
+    // }
+
 
 
     public function getListeners()
