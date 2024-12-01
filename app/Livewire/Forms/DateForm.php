@@ -27,12 +27,10 @@ class DateForm extends Form
     public function setMinDate($minDate = null)
     {
         $this->minDate = $minDate;
-        Log::info('Setting min date to ' . $minDate);
     }
 
     public function setMaxDate($maxDate = null)
     {
         $this->maxDate = $maxDate;
-        Log::info('Setting max date to ' . $maxDate);
     }
 }
