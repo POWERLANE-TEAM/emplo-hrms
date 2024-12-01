@@ -20,7 +20,7 @@ export function toggleText(span) {
     }
 }
 
-function checkOverflow() {
+export function checkOverflow() {
     const qualificationTextElements = document.querySelectorAll('.qualifications-text');
     
     qualificationTextElements.forEach((element) => {
@@ -38,3 +38,4 @@ function checkOverflow() {
 window.addEventListener('load', checkOverflow); // Run check on page load
 window.addEventListener('resize', checkOverflow); // Recheck on window resize
 window.toggleText = toggleText;
+window.checkOverflow = checkOverflow;
