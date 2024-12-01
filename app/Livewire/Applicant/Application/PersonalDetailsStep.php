@@ -28,7 +28,9 @@ function parseResume($resumeParser, $resumeFile)
 
         $parsedResume = $resumeParser->recognizeText($resumeFile, 'array');
 
-        ResumeParsed::dispatch($parsedResume, $this->getBroadcastId());
+        ResumeParsed::dispatch($parsedResume, (new class {
+            use NeedsAuthBroadcastId;
+        })::generateAuthId());
     } catch (\Throwable $th) {
         // add user information here
         report("Parsing resume error "  . $th->getMessage());
@@ -283,9 +285,9 @@ class PersonalDetailsStep extends StepComponent
     }
 
     #[Computed]
-    public function getBroadcastId()
+    public static function getBroadcastId()
     {
-        return $this->generateAuthId();
+        return self::generateAuthId();
     }
 
     public function updateParsedResume($event)
