@@ -4,24 +4,41 @@ namespace App\Livewire\Applicant\Application;
 
 use App\Enums\AccountType;
 use App\Enums\Sex;
+use App\Events\Guest\ResumeParsed;
 use App\Http\Controllers\DocumentController;
 use App\Livewire\Forms\DateForm;
 use App\Livewire\Forms\FileForm;
 use App\Livewire\Forms\PersonNameForm;
 use App\Traits\HasObjectForm;
+use App\Traits\NeedsAuthBroadcastId;
 use Carbon\Carbon;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
 use Spatie\LivewireFilepond\WithFilePond;
 use Spatie\LivewireWizard\Components\StepComponent;
+use function Illuminate\Support\defer;
+
+function parseResume($resumeParser, $resumeFile)
+{
+    try {
+
+        $parsedResume = $resumeParser->recognizeText($resumeFile, 'array');
+
+        ResumeParsed::dispatch($parsedResume, $this->getBroadcastId());
+    } catch (\Throwable $th) {
+        // add user information here
+        report("Parsing resume error "  . $th->getMessage());
+    }
+};
 
 class PersonalDetailsStep extends StepComponent
 {
 
-    use WithFilePond, HasObjectForm;
+    use WithFilePond, HasObjectForm, NeedsAuthBroadcastId;
 
     public $displayProfile;
 
@@ -93,45 +110,46 @@ class PersonalDetailsStep extends StepComponent
 
         // add check if user approves consent to parse resume
         if (true &&  empty($this->parsedResume) && isset($this->resumePath)) {
-            try {
 
-                $resumePath = $this->resumePath;
-                $parsedResume = &$this->parsedResume;
-                $self = $this;
+            $resumePath = $this->resumePath;
+            $resumeParser = new DocumentController();
 
-                defer(function () use ($resumePath, &$parsedResume, $self) {
-                    $resumeParser = new DocumentController();
+            $resumeFile = new \Illuminate\Http\UploadedFile(
+                $resumePath,
+                basename($resumePath),
+                null,
+                null,
+                true
+            );
 
-                    $resumeFile = new \Illuminate\Http\UploadedFile(
-                        $resumePath,
-                        basename($resumePath),
-                        null,
-                        null,
-                        true
-                    );
+            //
+            defer(fn() => parseResume($resumeParser, $resumeFile));
 
-                    $parsedResume = $resumeParser->recognizeText($resumeFile, 'array');
-                    $self->updateParsedNameSegment();
-                });
-
-
-                dump($this->parsedResume);
-            } catch (\Throwable $th) {
-                report($th);
-            }
+            // dump($this->parsedResume);
         }
 
+        // defer(function () {
+        //     ResumeParsed::dispatch([
+        //         'employee_education' => 'Bachelor of Arts in Communication, Ateneo de Manila University',
+        //         'employee_contact' => '+63-961-5719',
+        //         'employee_email' => 'fernando.poe.jrs@gmail.com',
+        //         'employee_experience' => 'Globe Telecom - 3 years as Project Manager\nRobinsons Land - 5 years as Marketing Specialist',
+        //         'employee_name' => 'Grace, Fernando Poe Jr.',
+        //         'employee_skills' => 'Project Management, Customer Service, Problem Solving',
+        //     ], $this->getBroadcastId());
+        // });
 
-        if (empty($this->parsedResume)) {
-            $this->parsedResume = [
-                'employee_education' => 'Bachelor of Arts in Communication, Ateneo de Manila University',
-                'employee_contact' => '+63-961-5719',
-                'employee_email' => 'fernando.poe.jrs@gmail.com',
-                'employee_experience' => 'Globe Telecom - 3 years as Project Manager\nRobinsons Land - 5 years as Marketing Specialist',
-                'employee_name' => 'Grace, Fernando Poe Jr.',
-                'employee_skills' => 'Project Management, Customer Service, Problem Solving',
-            ];
-        }
+
+        // if (empty($this->parsedResume)) {
+        //     $this->parsedResume = [
+        //         'employee_education' => 'Bachelor of Arts in Communication, Ateneo de Manila University',
+        //         'employee_contact' => '+63-961-5719',
+        //         'employee_email' => 'fernando.poe.jrs@gmail.com',
+        //         'employee_experience' => 'Globe Telecom - 3 years as Project Manager\nRobinsons Land - 5 years as Marketing Specialist',
+        //         'employee_name' => 'Grace, Fernando Poe Jr.',
+        //         'employee_skills' => 'Project Management, Customer Service, Problem Solving',
+        //     ];
+        // }
 
         // dump($resumeState);
 
@@ -246,6 +264,36 @@ class PersonalDetailsStep extends StepComponent
             } catch (\Exception $e) {
                 Log::error($e->getMessage());
             }
+        }
+    }
+
+
+    public function getListeners()
+    {
+
+        $authBroadcastId = $this->getBroadcastId();
+
+        // dump('listen', $authBroadcastId);
+        Log::info('Registering listener for authBroadcastId', ['authBroadcastId' => $authBroadcastId]);
+
+
+        return [
+            "echo-private:applicant.applying.{$authBroadcastId},Guest.ResumeParsed" => 'updateParsedResume',
+        ];
+    }
+
+    #[Computed]
+    public function getBroadcastId()
+    {
+        return $this->generateAuthId();
+    }
+
+    public function updateParsedResume($event)
+    {
+        Log::info('PersonalDetailsStep updateParsedResume', ['event' => $event]);
+        if ($event) {
+            $this->parsedResume = $event['parsedResume'];
+            $this->updateParsedNameSegment();
         }
     }
 
