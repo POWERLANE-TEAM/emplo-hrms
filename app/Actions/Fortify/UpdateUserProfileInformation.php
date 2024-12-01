@@ -23,7 +23,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             'email' => [
                 'nullable',
                 'string',
-                // 'email',
+                'email:rfc,dns,spoof',
                 'max:320',
                 Rule::unique('users')->ignore($user->user_id, 'user_id'),
             ],
