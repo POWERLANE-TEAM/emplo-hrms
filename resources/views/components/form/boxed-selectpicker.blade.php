@@ -37,12 +37,26 @@
             if (selectElement.getAttribute('data-choices-initialized') === 'true') {
                 return; // Skip initialization if already done
             }
-            
+
             new Choices(selectElement, {
                 searchEnabled: true,
                 itemSelectText: '',
+                maxItemCount: 2,
+                renderSelectedChoices: 'always',
+                shouldSort: false, // Optional, can be changed :) Disables sorting if you want to retain original order
             });
+
             selectElement.setAttribute('data-choices-initialized', 'true');
+
+            // Add custom scrollbar class after initialization
+            // Use a small timeout to ensure the dropdown is fully initialized
+            setTimeout(() => {
+                // Directly select the .choices__list--dropdown element
+                const dropdownList = document.querySelector('.choices__list--dropdown');
+                if (dropdownList) {
+                    dropdownList.classList.add('visible-gray-scrollbar');
+                }
+            }, 100);  // Adjust the timeout duration as necessary
         });
     });
 </script>
