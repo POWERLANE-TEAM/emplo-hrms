@@ -74,6 +74,21 @@ class ShowRankings extends Component
                 ['skill' => 'Financial Reporting', 'priority' => 'High'],
             ],
         ],
+        [
+            'job_position_id' => 4,
+            'job_position' => 'IT',
+            'job_education' => [
+                ['degree' => 'B.Sc. in Information Technology', 'priority' => 'High'],
+                ['degree' => 'Certified Public Accountant (CPA)', 'priority' => 'High'],
+            ],
+            'job_experience' => [
+                ['role' => 'Junior Accountant', 'priority' => 'Medium'],
+                ['role' => 'Accounting Intern', 'priority' => 'Low'],
+            ],
+            'job_skills' => [
+                ['skill' => 'Financial Reporting', 'priority' => 'High'],
+            ],
+        ],
     ];
 
     public $applicants = [
