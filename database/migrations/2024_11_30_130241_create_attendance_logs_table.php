@@ -13,15 +13,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('attendance_logs', function (Blueprint $table) {
-            $table->id('attlog_id');
-            
+            $table->unsignedInteger('uid');
             $table->foreignIdFor(Employee::class, 'employee_id')
                 ->constrained('employees', 'employee_id')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-
-            $table->timestamp('time_in')->nullable();
-            $table->timestamp('time_out')->nullable();
+            $table->tinyInteger('state');
+            $table->tinyInteger('type');
+            $table->timestamp('timestamp');
+            $table->primary(['uid', 'employee_id']);
         });
     }
 

@@ -7,10 +7,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class AttendanceLog extends Model
 {
-    protected $primaryKey = 'attlog_id';
+    public $timestamps = false;
+    
+    public $incrementing = false;
 
-    protected $guarded = [
-        'attlog_id'
+    protected $fillable = [
+        'uid',
+        'employee_id',
+        'state',
+        'type',
+        'timestamp',
     ];
 
     public function employee(): BelongsTo
