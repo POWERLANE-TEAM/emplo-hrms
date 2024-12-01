@@ -2,6 +2,7 @@
 
 namespace App\View\Composers;
 
+use App\Actions\GenerateRandomUserAvatar;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
@@ -20,7 +21,7 @@ class AuthenticatedUserComposer
             $user = Auth::user();
 
             $userPhoto = $user->photo ? Storage::url($user->photo) : null;
-            $defaultAvatar = Storage::url('icons/default-avatar.png');
+            $defaultAvatar = app(GenerateRandomUserAvatar::class)($user->account->full_name);
 
             $view->with([
                 'user' => $user,
