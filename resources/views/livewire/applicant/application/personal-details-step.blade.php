@@ -25,17 +25,9 @@
                         ])
                     </div>
 
-                    @php
-                        if (!empty($this->parsedResume['employee_name'])) {
-                            $parsedFullName = preg_replace('/[^\p{L}\s.-]/u', '', $this->parsedResume['employee_name']);
-                            $nameParts = explode(' ', $parsedFullName);
-                        }
-
-                    @endphp
-
-                    <datalist id="applicant-names">
-                        @if (!empty($nameParts))
-                            @foreach ($nameParts as $namePart)
+                    <datalist id="applicant-names" wire:model="parsedNameSegment">
+                        @if (!empty($this->parsedNameSegment))
+                            @foreach ($this->parsedNameSegment as $namePart)
                                 <option value="{{ $namePart }}">{{ $namePart }}</option>
                             @endforeach
                         @endif

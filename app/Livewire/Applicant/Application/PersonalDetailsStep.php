@@ -4,11 +4,13 @@ namespace App\Livewire\Applicant\Application;
 
 use App\Enums\AccountType;
 use App\Enums\Sex;
+use App\Enums\UserPermission;
 use App\Events\Guest\ResumeParsed;
-use App\Http\Controllers\DocumentController;
+use App\Jobs\Guest\ParseResumeJob;
 use App\Livewire\Forms\DateForm;
 use App\Livewire\Forms\FileForm;
 use App\Livewire\Forms\PersonNameForm;
+use App\Traits\Applicant;
 use App\Traits\HasObjectForm;
 use App\Traits\NeedsAuthBroadcastId;
 use Carbon\Carbon;
@@ -17,30 +19,13 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Computed;
-use Livewire\Attributes\On;
 use Spatie\LivewireFilepond\WithFilePond;
 use Spatie\LivewireWizard\Components\StepComponent;
-use function Illuminate\Support\defer;
-
-function parseResume($resumeParser, $resumeFile)
-{
-    try {
-
-        $parsedResume = $resumeParser->recognizeText($resumeFile, 'array');
-
-        ResumeParsed::dispatch($parsedResume, (new class {
-            use NeedsAuthBroadcastId;
-        })::generateAuthId());
-    } catch (\Throwable $th) {
-        // add user information here
-        report("Parsing resume error "  . $th->getMessage());
-    }
-};
 
 class PersonalDetailsStep extends StepComponent
 {
 
-    use WithFilePond, HasObjectForm, NeedsAuthBroadcastId;
+    use WithFilePond, HasObjectForm, NeedsAuthBroadcastId, Applicant;
 
     public $displayProfile;
 
@@ -70,17 +55,14 @@ class PersonalDetailsStep extends StepComponent
 
     public bool $isValid = false;
 
-    public function mount(?array $parsedResume = null)
+    public function mount()
     {
 
         if (Auth::check()) {
-            if (Auth::user()->account_type == AccountType::EMPLOYEE->value) {
-                abort(403);
-            }
-        } else {
-            // abort(401);
-        }
-        // $this->parsedResume = $parsedResume;
+            if (self::applicantOrYet(!Auth::user()->hasPermissionTo(UserPermission::VIEW_JOB_APPLICATION_FORM->value), true));
+            else self::hasApplication(true);
+        } else abort(401);
+
 
         $resumeState = $this->state()->forStep('form.applicant.resume-upload-step');
 
@@ -107,40 +89,24 @@ class PersonalDetailsStep extends StepComponent
             $this->resumePath = $resumeState['resumePath'];
         }
 
-        // dump($this->parsedResume);
-        // dump($this->resumePath);
-
         // add check if user approves consent to parse resume
-        if (true &&  empty($this->parsedResume) && isset($this->resumePath)) {
+        if (true && empty($this->parsedResume) && isset($this->resumePath)) {
 
             $resumePath = $this->resumePath;
-            $resumeParser = new DocumentController();
-
-            $resumeFile = new \Illuminate\Http\UploadedFile(
-                $resumePath,
-                basename($resumePath),
-                null,
-                null,
-                true
-            );
-
-            //
-            defer(fn() => parseResume($resumeParser, $resumeFile));
-
-            // dump($this->parsedResume);
+            ParseResumeJob::dispatch($this->resumePath, self::getBroadcastId());
         }
 
-        // defer(function () {
-        //     ResumeParsed::dispatch([
-        //         'employee_education' => 'Bachelor of Arts in Communication, Ateneo de Manila University',
-        //         'employee_contact' => '+63-961-5719',
-        //         'employee_email' => 'fernando.poe.jrs@gmail.com',
-        //         'employee_experience' => 'Globe Telecom - 3 years as Project Manager\nRobinsons Land - 5 years as Marketing Specialist',
-        //         'employee_name' => 'Grace, Fernando Poe Jr.',
-        //         'employee_skills' => 'Project Management, Customer Service, Problem Solving',
-        //     ], $this->getBroadcastId());
-        // });
 
+        // For testing purposes not relying on Document AI API
+
+        // ResumeParsed::dispatch([
+        //     'employee_education' => 'Bachelor of Arts in Communication, Ateneo de Manila University',
+        //     'employee_contact' => '+63-961-5719',
+        //     'employee_email' => 'fernando.poe.jrs@gmail.com',
+        //     'employee_experience' => 'Globe Telecom - 3 years as Project Manager\nRobinsons Land - 5 years as Marketing Specialist',
+        //     'employee_name' => 'Grace, Fernando Poe Jr.',
+        //     'employee_skills' => 'Project Management, Customer Service, Problem Solving',
+        // ], self::getBroadcastId());
 
         // if (empty($this->parsedResume)) {
         //     $this->parsedResume = [
@@ -153,15 +119,12 @@ class PersonalDetailsStep extends StepComponent
         //     ];
         // }
 
-        // dump($resumeState);
-
-        $this->updateParsedNameSegment();
+        // $this->updateParsedNameSegment();
     }
 
     public function boot()
     {
 
-        // Log::info('PersonalDetailsStep boot', ['state' => $this->state()->all()]);
         // Copied fix here  https://github.com/spatie/laravel-livewire-wizard/discussions/100#discussioncomment-10125903
         // still broken
         $this->mountWithObjectForm(FileForm::class, 'displayProfile');
@@ -207,31 +170,33 @@ class PersonalDetailsStep extends StepComponent
         // Make a file object first
         if (isset($this->displayProfilePath)) {
 
-            if (file_exists($this->displayProfilePath)) {
+            try {
 
-                $tempFile = new \Illuminate\Http\UploadedFile(
-                    $this->displayProfilePath,
-                    basename($this->displayProfilePath),
-                    null,
-                    null,
-                    true
-                );
-
-
-                $this->form['displayProfile'] = $tempFile;
-            } else {
-                Log::error("File does not exist: " . $this->displayProfilePath);
-
+                if (file_exists($this->displayProfilePath)) {
+                    $tempFile = new \Illuminate\Http\UploadedFile(
+                        $this->displayProfilePath,
+                        basename($this->displayProfilePath),
+                        null,
+                        null,
+                        true
+                    );
+                    $this->form['displayProfile'] = $tempFile;
+                } else throw new \Exception($this->displayProfilePath . " not found");
+            } catch (\Throwable $th) {
                 $this->form['displayProfile'] = null;
+                report("Profile photo is lost while applicant is filling form" . $th);
             }
         }
 
+        // Rehydate the file form object
         $this->displayProfile->file = $this->form['displayProfile'];
 
+        // Rehydrate the PersonName form object
         $this->applicantName->firstName = $this->form['applicantName']['firstName'];
         $this->applicantName->middleName = $this->form['applicantName']['middleName'];
         $this->applicantName->lastName = $this->form['applicantName']['lastName'];
 
+        // Rehydrate the Date form object
         $this->applicantBirth->date = $this->form['applicantBirth'];
 
         $this->isValid = false;
@@ -241,7 +206,6 @@ class PersonalDetailsStep extends StepComponent
         $this->isValid = true;
 
         $this->nextStep();
-        // dump($this->applicantName);
     }
 
     public function stepInfo(): array
@@ -256,15 +220,19 @@ class PersonalDetailsStep extends StepComponent
 
     public function updated()
     {
+
+        // Capitalize each word in applicant name
+        $this->form['applicantName']['firstName'] = ucwords(strtolower($this->form['applicantName']['firstName']));
+        $this->form['applicantName']['middleName'] = ucfirst(strtolower($this->form['applicantName']['middleName']));
+        $this->form['applicantName']['lastName'] = ucwords(strtolower($this->form['applicantName']['lastName']));
+
         // save the file properties needed that is persistent when rehydrating
         if (isset($this->form['displayProfile']) && $this->form['displayProfile'] instanceof \Illuminate\Http\UploadedFile) {
             try {
                 $this->displayProfileUrl = $this->form['displayProfile']->temporaryUrl();
                 $this->displayProfilePath = $this->form['displayProfile']->getRealPath();
-
-                // Log::info('Display Profile Path', ['path' => $this->displayProfilePath]);
             } catch (\Exception $e) {
-                Log::error($e->getMessage());
+                report($e->getMessage());
             }
         }
     }
@@ -272,12 +240,7 @@ class PersonalDetailsStep extends StepComponent
 
     public function getListeners()
     {
-
-        $authBroadcastId = $this->getBroadcastId();
-
-        // dump('listen', $authBroadcastId);
-        Log::info('Registering listener for authBroadcastId', ['authBroadcastId' => $authBroadcastId]);
-
+        $authBroadcastId = self::getBroadcastId();
 
         return [
             "echo-private:applicant.applying.{$authBroadcastId},Guest.ResumeParsed" => 'updateParsedResume',
@@ -292,10 +255,11 @@ class PersonalDetailsStep extends StepComponent
 
     public function updateParsedResume($event)
     {
-        Log::info('PersonalDetailsStep updateParsedResume', ['event' => $event]);
-        if ($event) {
+        try {
             $this->parsedResume = $event['parsedResume'];
             $this->updateParsedNameSegment();
+        } catch (\Throwable $th) {
+            report($th);
         }
     }
 
@@ -303,6 +267,7 @@ class PersonalDetailsStep extends StepComponent
     {
         if (!empty($this->parsedResume['employee_name'])) {
             $parsedFullName = preg_replace('/[^\p{L}\s.-]/u', '', $this->parsedResume['employee_name']);
+            $parsedFullName = ucwords(strtolower($parsedFullName));
             $this->parsedNameSegment = explode(' ', $parsedFullName);
         }
     }

@@ -3,10 +3,12 @@
 namespace App\Livewire\Applicant\Application;
 
 use App\Enums\AccountType;
+use App\Enums\UserPermission;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Spatie\LivewireWizard\Components\StepComponent;
 use App\Livewire\Forms\FileForm;
+use App\Traits\Applicant;
 use App\Traits\HasObjectForm;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -15,7 +17,7 @@ use Spatie\LivewireFilepond\WithFilePond;
 
 class ResumeUploadStep extends StepComponent
 {
-    use WithFilePond, HasObjectForm;
+    use WithFilePond, HasObjectForm, Applicant;
 
     public $resume;
 
@@ -34,22 +36,11 @@ class ResumeUploadStep extends StepComponent
     public function boot()
     {
         if (Auth::check()) {
+            // check if applicant or guest and if employee has permission to view job application form
+            if (self::applicantOrYet(!Auth::user()->hasPermissionTo(UserPermission::VIEW_JOB_APPLICATION_FORM->value), true));
+            else self::hasApplication(true);
+        } else abort(401);
 
-            if (Auth::user()->account_type == AccountType::EMPLOYEE->value) {
-                abort(403);
-            }
-        } else {
-            // abort(401);
-        }
-
-        // https://github.com/spatie/laravel-livewire-wizard/discussions/85 but this is not applicable to my case
-        // My work around as $resume is not being rehydrated properly by Livewire
-        // For example if the user goes back to the previous step and then comes back to this step
-        // public FileForm $resume;
-        //  it will throw Cannot assign array to property App\View\Components\Applicant\Application\ResumeUploadStep::$resume of type App\Livewire\Forms
-        // $this->resume = new FileForm($this, $this->getName());
-
-        // Log::info('ResumeUploadStep boot', ['state' => $this->state()->all()]);
 
         $this->mountWithObjectForm(FileForm::class, 'resume');
 
@@ -69,21 +60,22 @@ class ResumeUploadStep extends StepComponent
     public function validateNow()
     {
 
-        // $this->rehydrateFile($this->resumePath, $this->resumeFile);
-
         if (isset($this->resumePath)) {
-            if (file_exists($this->resumePath)) {
-                $tempFile = new \Illuminate\Http\UploadedFile(
-                    $this->resumePath,
-                    basename($this->resumePath),
-                    null,
-                    null,
-                    true
-                );
 
-                $this->resumeFile = $tempFile;
-            } else {
-                Log::error("File does not exist: " . $this->resumePath);
+            try {
+                if (file_exists($this->resumePath)) {
+                    $tempFile = new \Illuminate\Http\UploadedFile(
+                        $this->resumePath,
+                        basename($this->resumePath),
+                        null,
+                        null,
+                        true
+                    );
+
+                    $this->resumeFile = $tempFile;
+                } else throw new \Exception($this->resumeFile . " not found");
+            } catch (\Throwable $th) {
+                report("Resume is lost while applicant is filling form" . $th);
                 $this->resumeFile = null;
             }
         }
@@ -111,16 +103,12 @@ class ResumeUploadStep extends StepComponent
     public function updated()
     {
 
-        // $this->rehydrateFileLink($this->resumeFile, $this->resumeUrl, $this->resumePath);
-
         if (isset($this->resumeFile) && $this->resumeFile instanceof \Illuminate\Http\UploadedFile) {
             try {
                 $this->resumeUrl = $this->resumeFile->temporaryUrl();
                 $this->resumePath = $this->resumeFile->getRealPath();
-
-                // Log::info('Display Profile Path', ['path' => $this->resumePath]);
             } catch (\Exception $e) {
-                Log::error($e->getMessage());
+                report($e->getMessage());
             }
         }
     }

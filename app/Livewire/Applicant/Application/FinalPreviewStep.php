@@ -3,6 +3,11 @@
 namespace App\Livewire\Applicant\Application;
 
 use App\Enums\AccountType;
+use App\Enums\CivilStatus;
+use App\Enums\UserPermission;
+use App\Http\Controllers\Application\ApplicantController;
+use App\Models\JobVacancy;
+use App\Traits\Applicant;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
@@ -11,6 +16,7 @@ use Spatie\LivewireWizard\Components\StepComponent;
 
 class FinalPreviewStep extends StepComponent
 {
+    use Applicant;
 
     public bool $isSubmitted = false;
 
@@ -19,27 +25,21 @@ class FinalPreviewStep extends StepComponent
     public function mount()
     {
         if (Auth::check()) {
-
-            if (Auth::user()->account_type == AccountType::EMPLOYEE->value) {
-                abort(403);
-            }
-        } else {
-            // abort(401);
-        }
+            if (self::applicantOrYet(!Auth::user()->hasPermissionTo(UserPermission::VIEW_JOB_APPLICATION_FORM->value), true));
+            else self::hasApplication(true);
+        } else abort(401);
     }
 
 
     public function boot()
     {
 
-        Log::info('FinalPreviewStep boot', ['state' => $this->state()->all()]);
+        // Get all form wizard steps states
         $this->formState = $this->state()->all();
     }
 
     public function save()
     {
-        $stateAll = $this->state()->all();
-        dump($stateAll);
 
         $resumePreviewSrc = $this->formState['form.applicant.resume-upload-step']['resumePath'] ?? null;
         $dPPreviewSrc = $this->formState['form.applicant.personal-details-step']['displayProfilePath'] ?? null;
@@ -47,37 +47,40 @@ class FinalPreviewStep extends StepComponent
 
         $applicantName = $personalDetails['form']['applicantName'];
 
-        dump($personalDetails);
+        $parsedResumeData = $personalDetails['parsedResume'];
+
 
         $tempResumeFile = $this->transfromToFile($resumePreviewSrc);
         $tempDPFile = $this->transfromToFile($dPPreviewSrc);
 
         $applicant = $applicantName;
 
-        dump($applicant);
         $applicant =  array_merge($applicant, [
             'user' => [
-                'photo' => $tempDPFile
+                'photo' => $tempDPFile,
+                'email' => $parsedResumeData['employee_email'] ?? null
             ],
             'application' => [
-                'applicantId' => null,
-                'jobVacancyId' => null
+                'jobVacancyId' => JobVacancy::first()->job_vacancy_id,
             ],
             'resumeFile' => $tempResumeFile,
-            'presentBarangay' => null,
-            'presentAddress' => null,
-            'permanentBarangay' => null,
-            'permanentAddress' => null,
-            'contactNumber' => null,
+            'presentBarangay' => 14104,
+            'presentAddress' => fake()->streetName(),
+            'permanentBarangay' => 14104,
+            'permanentAddress' => fake()->streetName(),
+            'contactNumber' => $parsedResumeData['employee_contact'] ?? 'Not Set',
             'sex' => $personalDetails['sexAtBirth'],
-            'civilStatus' => null,
+            'civilStatus' => CivilStatus::SINGLE->value,
             'dateOfBirth' => $personalDetails['form']['applicantBirth'],
-            'education' => null,
-            'experience' => null,
+            'education' => $parsedResumeData['employee_education'],
+            'experience' => $parsedResumeData['employee_experience'],
+            'skills' => $parsedResumeData['employee_skills'],
         ]);
 
+        $applcantController = new ApplicantController();
 
-        dump($applicant);
+
+        $applcantController->store($applicant, true);
     }
 
     public function stepInfo(): array
