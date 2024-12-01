@@ -28,12 +28,19 @@
         </div>
     </section>
 
-
-
-
     <section>
+
         <div class="col-md-12">
             @if($selectedJobPosition !== null)
+
+                <x-headings.sparkle-callout>
+                    <x-slot:description>
+                        Found <span class="fw-bold text-primary">{{ $totalApplicants }}</span> candidates who are applying
+                        for the job position of <span
+                            class="fw-bold text-primary">{{ $selectedPositionName }}</span>. Check out their scores below!
+                    </x-slot:description>
+                </x-headings.sparkle-callout>
+
                 <table>
                     <thead>
                         <tr>
@@ -59,5 +66,12 @@
             @endif
         </div>
     </section>
-
 </div>
+
+@script
+<script>
+    Livewire.hook('morph.added',  ({ el }) => {
+        lucide.createIcons();
+    });
+</script>
+@endscript
