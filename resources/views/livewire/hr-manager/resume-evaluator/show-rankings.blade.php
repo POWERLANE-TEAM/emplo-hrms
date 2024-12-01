@@ -36,31 +36,50 @@
                 <x-headings.sparkle-callout>
                     <x-slot:description>
                         Found <span class="fw-bold text-primary">{{ $totalApplicants }}</span> candidates who are applying
-                        for the job position of <span
-                            class="fw-bold text-primary">{{ $selectedPositionName }}</span>. Check out their scores below!
+                        for the job position of <span class="fw-bold text-primary">{{ $selectedPositionName }}</span>. Check
+                        out their scores below!
                     </x-slot:description>
                 </x-headings.sparkle-callout>
 
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Percentage (%)</th>
-                            <th>Applicant Name</th>
-                            <th>Qualification(s) Met</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($applicantsData as $applicant)
-                            <tr>
-                                <td class="border border-gray-300 px-4 py-2">{{ $applicant['percentage'] }}%</td>
-                                <td class="border border-gray-300 px-4 py-2">{{ $applicant['name'] }}</td>
-                                <td class="border border-gray-300 px-4 py-2">{{ $applicant['qualifications_met'] }} -
-                                    {{ $applicant['qualifications_list'] }}
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                <section class="mt-2">
+                    <div class="table-wrapper">
+                        <table class="col-md-12">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">Score</th>
+                                    <th class="text-center">Applicant Name</th>
+                                    <th class="text-center">Qualification(s) Met</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($applicantsData as $applicant)
+                                    <tr class="pb-5 active">
+                                        <!-- Score -->
+                                        <td class="text-center"><span
+                                                class="resume-score-circle">{{ $applicant['percentage'] }}%</span></td>
+
+                                        <!-- Name & Email -->
+                                        <td class="text-center">
+                                            <span class="fs-5 fw-bold">{{ $applicant['name'] }}
+                                            </span><br>
+                                            <span>
+                                                {{ $applicant['email'] }}
+                                            </span>
+                                        </td>
+
+                                        <!-- Qualification(s) Met -->
+                                        <td wire:ignore class="qualifications pe-4">
+                                            <span class="qualifications-text">{{ $applicant['qualifications_met'] }}
+                                                -{{ $applicant['qualifications_list'] }}
+                                            </span>
+                                            <span class="see-more hover-opacity" onclick="toggleText(this)">See More</span>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
             @else
                 <p>Please select a job position.</p>
             @endif
@@ -70,7 +89,7 @@
 
 @script
 <script>
-    Livewire.hook('morph.added',  ({ el }) => {
+    Livewire.hook('morph.added', ({ el }) => {
         lucide.createIcons();
     });
 </script>
