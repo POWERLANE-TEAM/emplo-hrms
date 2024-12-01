@@ -79,6 +79,7 @@ class ShowRankings extends Component
     public $applicants = [
         [
             'applicant_name' => 'John Doe',
+            'applicant_email' => 'johndoe@gmail.com',
             'applicant_position' => 'Data Analyst',
             'applicant_position_id' => 1,
             'applicant_education' => [
@@ -98,6 +99,7 @@ class ShowRankings extends Component
         [
             'applicant_name' => 'Jane Smith',
             'applicant_position' => 'Data Analyst',
+            'applicant_email' => 'johnsmith@gmail.com',
             'applicant_position_id' => 1,
             'applicant_education' => [
                 ['degree' => 'B.Sc. in Statistics'],
@@ -116,6 +118,7 @@ class ShowRankings extends Component
         [
             'applicant_name' => 'Alice Johnson',
             'applicant_position' => 'HR Manager',
+            'applicant_email' => 'alicejohnson@gmail.com',
             'applicant_position_id' => 2,
             'applicant_education' => [
                 ['degree' => 'MBA in Human Resources'],
@@ -132,6 +135,7 @@ class ShowRankings extends Component
         ],
         [
             'applicant_name' => 'Michael Brown',
+            'applicant_email' => 'michaelbrown@gmail.com',
             'applicant_position' => 'Accountant',
             'applicant_position_id' => 3,
             'applicant_education' => [
@@ -313,6 +317,7 @@ class ShowRankings extends Component
                 // Add to the applicants data
                 $applicantsData[] = [
                     'name' => $applicant['applicant_name'],
+                    'email' => $applicant['applicant_email'],
                     'percentage' => round($matchPercentage, 2),
                     'qualifications_met' => $metCount . '/' . $totalQualifications, // Display qualifications met vs total
                     'qualifications_list' => implode(', ', $metQualifications),
