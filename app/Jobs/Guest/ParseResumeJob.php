@@ -39,8 +39,11 @@ class ParseResumeJob implements ShouldQueue
 
             $parsedResume = $resumeParser->recognizeText($resumeFile, 'array');
 
-            // Broadcast event
-            ResumeParsed::dispatch($parsedResume, $this->authId);
+            if (!empty($parsedResume)) {
+
+                // Broadcast event
+                ResumeParsed::dispatch($parsedResume, $this->authId);
+            }
         } catch (\Throwable $th) {
 
             report("Parsing resume error: " . $th->getMessage());

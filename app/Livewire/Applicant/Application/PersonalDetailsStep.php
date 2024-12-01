@@ -91,8 +91,6 @@ class PersonalDetailsStep extends StepComponent
 
         // add check if user approves consent to parse resume
         if (true && empty($this->parsedResume) && isset($this->resumePath)) {
-
-            $resumePath = $this->resumePath;
             ParseResumeJob::dispatch($this->resumePath, self::getBroadcastId());
         }
 
@@ -180,6 +178,7 @@ class PersonalDetailsStep extends StepComponent
                         null,
                         true
                     );
+
                     $this->form['displayProfile'] = $tempFile;
                 } else throw new \Exception($this->displayProfilePath . " not found");
             } catch (\Throwable $th) {
@@ -223,33 +222,22 @@ class PersonalDetailsStep extends StepComponent
         $this->form['applicantName']['firstName'] = ucwords(strtolower($this->form['applicantName']['firstName']));
         $this->form['applicantName']['middleName'] = ucfirst(strtolower($this->form['applicantName']['middleName']));
         $this->form['applicantName']['lastName'] = ucwords(strtolower($this->form['applicantName']['lastName']));
-
-        if (isset($this->form['displayProfile']) && $this->form['displayProfile'] instanceof \Illuminate\Http\UploadedFile && !$this->isValid) {
-            try {
-                $this->displayProfileUrl = $this->form['displayProfile']->temporaryUrl();
-                $this->displayProfilePath = $this->form['displayProfile']->getRealPath();
-            } catch (\Exception $e) {
-                report($e->getMessage());
-            }
-        }
     }
 
-    // fixes missing file when going back and forth with steps but
-    // this also cause error Livewire encountered corrupt data when trying to hydrate a component. Ensure that the [name, id, data] of the Livewire component wasn't tampered with between requests.
-    // Livewire rehydration sucks
-    // public function updated()
-    // {
+    public function updated()
+    {
 
-    //     // save the file properties needed that is persistent when rehydrating
-    //     // if (isset($this->form['displayProfile']) && $this->form['displayProfile'] instanceof \Illuminate\Http\UploadedFile && !$this->isValid) {
-    //     //     try {
-    //     //         $this->displayProfileUrl = $this->form['displayProfile']->temporaryUrl();
-    //     //         $this->displayProfilePath = $this->form['displayProfile']->getRealPath();
-    //     //     } catch (\Exception $e) {
-    //     //         report($e->getMessage());
-    //     //     }
-    //     // }
-    // }
+        // save the file properties needed that is persistent when rehydrating
+        // if (isset($this->form['displayProfile']) && $this->form['displayProfile'] instanceof \Illuminate\Http\UploadedFile) {
+
+        //     try {
+        //         $this->displayProfileUrl = $this->form['displayProfile']->temporaryUrl();
+        //         $this->displayProfilePath = $this->form['displayProfile']->getRealPath();
+        //     } catch (\Exception $e) {
+        //         report($e->getMessage());
+        //     }
+        // }
+    }
 
 
 
