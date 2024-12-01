@@ -1,5 +1,4 @@
-<div class="mt-1">
-
+<div>
     <!-- Selection of the Job Position -->
     <section>
         <div class="col-md-12">
