@@ -68,7 +68,7 @@
                                             </td>
 
                                             <!-- Qualification(s) Met -->
-                                            <td wire:ignore class="qualifications pe-4">
+                                            <td class="qualifications pe-4">
                                                 <span class="qualifications-text">{{ $applicant['qualifications_met'] }}
                                                     -{{ $applicant['qualifications_list'] }}
                                                 </span>
@@ -113,5 +113,15 @@
     Livewire.hook('morph.added', ({ el }) => {
         lucide.createIcons();
     });
+
+    Livewire.hook('morph.added', ({ el }) => {
+        console.log('Morph added hook triggered');
+        
+        setTimeout(() => {
+            console.log("Checking overflow...");
+            checkOverflow();
+        }, 200);
+    });
+
 </script>
 @endscript
