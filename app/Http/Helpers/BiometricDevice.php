@@ -34,10 +34,10 @@ class BiometricDevice
 
     private $device;
 
-    public function __construct()
+    public function __construct(?string $ip = null)
     {
         $this->device = Device::first();
-        $this->ip = $this->device->device_ip_address;
+        $this->ip = $this->device->device_ip_address ?? $ip;
 
         $this->zk = new ZKTeco($this->ip);
         $this->zk->connect();
@@ -143,7 +143,7 @@ class BiometricDevice
         }, $specs);
     }
 
-    public function getAttendanceLogs()
+    public function getRawAttendanceLogs()
     {
         return collect($this->zk->getAttendance())
             ->map(function ($item) {
@@ -238,5 +238,10 @@ class BiometricDevice
         } else {
             return Str::of($params[0])->chopStart('~')->trim()->toString();
         }
+    }
+
+    protected function getCleanedAttendanceLogs()
+    {
+        //
     }
 }
