@@ -56,9 +56,9 @@ class Employee extends Model
     /**
      * Get the attendance records associated with the employee.
      */
-    public function attendances(): HasMany
+    public function attendanceLogs(): HasMany
     {
-        return $this->hasMany(Attendance::class, 'employee_id', 'employee_id');
+        return $this->hasMany(AttendanceLog::class, 'employee_id', 'employee_id');
     }
 
     /**
