@@ -19,6 +19,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Computed;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Spatie\LivewireFilepond\WithFilePond;
 use Spatie\LivewireWizard\Components\StepComponent;
 
@@ -27,6 +28,11 @@ class PersonalDetailsStep extends StepComponent
 
     use WithFilePond, HasObjectForm, NeedsAuthBroadcastId, Applicant;
 
+    /**
+     * |--------------------------------------------------------------------------
+     * | Wire model properties
+     * |--------------------------------------------------------------------------
+     */
     public $displayProfile;
 
     public $applicantName;
@@ -36,23 +42,40 @@ class PersonalDetailsStep extends StepComponent
     public ?string $sexAtBirth;
 
     public $form = [
-        'displayProfile' => null,
         'applicantName' => ['firstName' => '', 'middleName' => '', 'lastName' => ''],
         'applicantBirth' => '',
     ];
 
-    public $displayProfileUrl;
+    /**
+     * |--------------------------------------------------------------------------
+     * | END Wire model properties
+     * |--------------------------------------------------------------------------
+     */
 
+    // persistent file url
+    // it is fetched from resume upload step state
     public $resumeUrl;
 
+    // persistent resume file path on the server temp directory
+    // it is fetched from resume upload step state
     public $resumePath;
 
+    // persistent file url
+    public $displayProfileUrl;
+
+    // persistent file path on the server temp directory
+    // used to retrieve file object when rehydrating and also saving the file object permanently to user records
     public $displayProfilePath;
 
+    // parsed resume from document ai
     public ?array $parsedResume = null;
 
+    // this hold the name segments from the parsed resume
+    // this is used to suggest in the name fields
     public $parsedNameSegment;
 
+    // used to tag the step is complete
+    // has no actual use yet
     public bool $isValid = false;
 
     public function mount()
@@ -63,7 +86,7 @@ class PersonalDetailsStep extends StepComponent
             else self::hasApplication(true);
         } else abort(401);
 
-
+        // get the resume file property state from the resume upload step
         $resumeState = $this->state()->forStep('form.applicant.resume-upload-step');
 
         // reset parsed resume if the resume uploaded is changed
@@ -125,70 +148,84 @@ class PersonalDetailsStep extends StepComponent
 
         // Copied fix here  https://github.com/spatie/laravel-livewire-wizard/discussions/100#discussioncomment-10125903
         // still broken
-        $this->mountWithObjectForm(FileForm::class, 'displayProfile');
         $this->mountWithObjectForm(PersonNameForm::class, 'applicantName');
         $this->mountWithObjectForm(DateForm::class, 'applicantBirth');
 
-        if (isset($this->displayProfileUrl)) {
+        if (isset($this->displayProfile) && !is_array($this->displayProfile) && $this->displayProfile instanceof \Illuminate\Http\UploadedFile) {
 
-            // I cant rehydrate the file object properly
-            // it become blank array
-            $this->form['displayProfile'] = $this->displayProfileUrl;
+            // save persistent file properties that is needed when rehydrating
+            try {
+                $this->displayProfileUrl = $this->displayProfile->temporaryUrl();
+                $this->displayProfilePath = $this->displayProfile->getRealPath();
+            } catch (\Exception $e) {
+                report($e->getMessage());
+            }
+        } else if (isset($this->displayProfilePath) && empty($this->displayProfile)) {
+
+            // rehydrate the file object
+            // however the file object is not readable by the filepond
+            if (file_exists($this->displayProfilePath)) {
+                $tempFile = new \Illuminate\Http\UploadedFile(
+                    $this->displayProfilePath,
+                    basename($this->displayProfilePath),
+                    null,
+                    null,
+                    true
+                );
+
+                $livewireTempFile = TemporaryUploadedFile::createFromLivewire($tempFile);
+                $this->displayProfile = $livewireTempFile;
+            }
         }
 
+        // Rehydrate the PersonName form object
         $this->applicantName->firstName = $this->form['applicantName']['firstName'];
         $this->applicantName->middleName = $this->form['applicantName']['middleName'];
         $this->applicantName->lastName = $this->form['applicantName']['lastName'];
 
-        $maxSize = 'xs';
-        $required = true;
+        // Rehydrate the Date form object
+        $this->applicantBirth->date = $this->form['applicantBirth'];
 
-        $this->displayProfile->setToImageMode();
-        $this->displayProfile->setMaxSize($maxSize);
-        $this->displayProfile->setRequired($required);
-
+        // Rehydrate the Date form object validation rules
         // atleast 18 years old
         $this->applicantBirth->setMaxDate(Carbon::now()->subYears(18)->toDateString());
 
         // at most 65 years old
         $this->applicantBirth->setMinDate(Carbon::now()->subYears(65)->endOfYear()->toDateString());
+
+
+        if (!empty($this->displayProfileUrl)) {
+            // this supposed to be the fix for the filepond issue
+            // but will cause validation to throw must be of file type
+            // $this->displayProfile = $this->displayProfileUrl;
+        }
     }
 
     #[Computed]
     protected function rules()
     {
+        // use file form object to generate the file validation rules
+        $displayProfile = new FileForm($this, 'displayProfile');
+
+        $maxSize = 'xs';
+        $required = true;
+
+        $displayProfile->setToImageMode();
+        $displayProfile->setMaxSize($maxSize);
+        $maxFileSize = $displayProfile->getMaxFileSize();
+        $fileTypes = $displayProfile->getAcceptedFileTypes();
+        $displayProfile->setRequired($required);
+
+        $displayProfileRules = $displayProfile->rules();
+
         return [
             'sexAtBirth' => 'required|in:' . implode(',', array_keys(Sex::options())),
+            'displayProfile' => 'bail|required|file|max:' . $maxFileSize . '|mimes:' . $fileTypes,
         ];
     }
 
     public function validateNow()
     {
-
-        // Make a file object first
-        if (isset($this->displayProfilePath)) {
-
-            try {
-
-                if (file_exists($this->displayProfilePath)) {
-                    $tempFile = new \Illuminate\Http\UploadedFile(
-                        $this->displayProfilePath,
-                        basename($this->displayProfilePath),
-                        null,
-                        null,
-                        true
-                    );
-
-                    $this->form['displayProfile'] = $tempFile;
-                } else throw new \Exception($this->displayProfilePath . " not found");
-            } catch (\Throwable $th) {
-                $this->form['displayProfile'] = null;
-                report("Profile photo is lost while applicant is filling form" . $th);
-            }
-        }
-
-        // Rehydate the file form object
-        $this->displayProfile->file = $this->form['displayProfile'];
 
         // Rehydrate the PersonName form object
         $this->applicantName->firstName = $this->form['applicantName']['firstName'];
@@ -216,6 +253,7 @@ class PersonalDetailsStep extends StepComponent
         ];
     }
 
+    // post process the form data
     public function updating()
     {
         // Capitalize each word in applicant name
@@ -224,23 +262,7 @@ class PersonalDetailsStep extends StepComponent
         $this->form['applicantName']['lastName'] = ucwords(strtolower($this->form['applicantName']['lastName']));
     }
 
-    public function updated()
-    {
-
-        // save the file properties needed that is persistent when rehydrating
-        // if (isset($this->form['displayProfile']) && $this->form['displayProfile'] instanceof \Illuminate\Http\UploadedFile) {
-
-        //     try {
-        //         $this->displayProfileUrl = $this->form['displayProfile']->temporaryUrl();
-        //         $this->displayProfilePath = $this->form['displayProfile']->getRealPath();
-        //     } catch (\Exception $e) {
-        //         report($e->getMessage());
-        //     }
-        // }
-    }
-
-
-
+    // websocket stuffs
     public function getListeners()
     {
         $authBroadcastId = self::getBroadcastId();
@@ -266,6 +288,9 @@ class PersonalDetailsStep extends StepComponent
         }
     }
 
+    // segment the parsed resume applicant name
+    // this is not the solution to know which is first name etc
+    // but this will be used as name field suggestions
     public function updateParsedNameSegment()
     {
         if (!empty($this->parsedResume['employee_name'])) {

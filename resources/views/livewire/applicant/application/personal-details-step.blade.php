@@ -17,12 +17,11 @@
                     @endphp
 
                     <div>
-                        <x-filepond::upload wire:model="form.displayProfile" instant-upload="false" {{-- name="resume.file" --}}
-                            allow-image-edit="true" {{-- image-edit-allow-edit="true" --}} image-edit-instant-edit :accept="$accepted"
-                            :required="true" />
+                        <x-filepond::upload wire:model="displayProfile" instant-upload="false" {{-- name="resume.file" --}}
+                            :accept="$accepted" :required="true" />
                         @include('components.form.input-feedback', [
                             'feedback_id' => 'displayProfile',
-                            'message' => $errors->first('displayProfile.file'),
+                            'message' => $errors->first('displayProfile'),
                         ])
                     </div>
 
