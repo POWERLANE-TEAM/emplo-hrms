@@ -13,7 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('attendance_logs', function (Blueprint $table) {
-            $table->unsignedInteger('uid');
+            $table->id('uid');
             $table->foreignIdFor(Employee::class, 'employee_id')
                 ->constrained('employees', 'employee_id')
                 ->cascadeOnUpdate()
@@ -21,7 +21,6 @@ return new class extends Migration
             $table->tinyInteger('state');
             $table->tinyInteger('type');
             $table->timestamp('timestamp');
-            $table->primary(['uid', 'employee_id']);
         });
     }
 
