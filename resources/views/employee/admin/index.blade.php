@@ -31,8 +31,8 @@
 
 {{-- Latest Announcements & DTR --}}
 <x-section-wrapper>
-    <livewire:admin.dashboard.latest-announcements />
-    <livewire:admin.dashboard.daily-time-record />    
+    <livewire:admin.dashboard.daily-time-record /> 
+    <livewire:admin.dashboard.latest-announcements />   
 </x-section-wrapper>
 
 {{-- Recent Activity Logs & Online Users --}}
