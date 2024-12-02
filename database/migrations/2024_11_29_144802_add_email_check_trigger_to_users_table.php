@@ -21,7 +21,7 @@ class AddEmailCheckTriggerToUsersTable extends Migration
             $$ LANGUAGE plpgsql;
 
             CREATE TRIGGER check_email_not_null_trigger
-            BEFORE INSERT ON users
+            BEFORE INSERT OR UPDATE ON users
             FOR EACH ROW
             EXECUTE FUNCTION check_email_not_null();
         ');
