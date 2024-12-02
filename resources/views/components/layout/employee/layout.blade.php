@@ -16,12 +16,10 @@
 
     <x-fav-icon />
 
-    {{ Vite::useScriptTagAttributes(['onerror' => 'handleError(error)']) }}
+    {{-- {{ Vite::useScriptTagAttributes(['onerror' => 'handleError(error)']) }}
     @php
         Debugbar::getJavascriptRenderer()->setCspNonce($nonce);
-    @endphp
-
-    {{-- {!! RecaptchaV3::initJs() !!} --}}
+    @endphp --}}
 
     <x-global-debug />
 
@@ -32,17 +30,18 @@
     <x-authenticated-broadcast-id />
     <x-livewire-listener />
 
-    @vite(['resources/js/listeners/online-users.js', 'resources/css/style.css'])
+    @vite([
+        'resources/js/listeners/online-users.js',
+        'resources/js/app.js',
+        'resources/css/style.css'
+    ])
 
     {{-- Waiting for this fix in livewire https://github.com/livewire/livewire/pull/8793 --}}
     {{-- livewire.js?id=cc800bf4:9932 Detected multiple instances of Livewire running --}}
     {{-- livewire.js?id=cc800bf4:9932 Detected multiple instances of Alpine running --}}
     {{-- @livewireStyles(['nonce' => $nonce])
     @livewireScripts(['nonce' => $nonce]) --}}
-    @once
-        @livewireStyles()
-    @endonce
-
+    @livewireStyles
 </head>
 
 <body class="employee-main" data-bs-theme>
@@ -59,8 +58,6 @@
     @env('production')
         @vite(['node_modules/bootstrap/dist/js/bootstrap.bundle.min.js?commonjs-entry'])
     @endenv
-
-    @vite(['resources/js/app.js'])
 
     @stack('pre-scripts')
 
@@ -83,13 +80,11 @@
 
     @yield('after-main')
 
-    @once
-        @livewireScripts()
-    @endonce
-
     @yield('footer')
 
     @stack('scripts')
+
+    @livewireScripts
 </body>
 
 </html>

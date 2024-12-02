@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class JobDetail extends Model
@@ -22,8 +22,6 @@ class JobDetail extends Model
 
     /**
      * Get the employee associated with the job detail.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function employee(): HasOne
     {
@@ -32,8 +30,6 @@ class JobDetail extends Model
 
     /**
      * Get the job vacancies associated with the job detail.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function vacancies(): HasMany
     {
@@ -42,8 +38,6 @@ class JobDetail extends Model
 
     /**
      * Get the job title the job belongs to.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function jobTitle(): BelongsTo
     {
@@ -52,8 +46,6 @@ class JobDetail extends Model
 
     /**
      * Get the job level the job belongs to.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function jobLevel(): BelongsTo
     {
@@ -62,8 +54,6 @@ class JobDetail extends Model
 
     /**
      * Get the job family the job belongs to.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function jobFamily(): BelongsTo
     {
@@ -72,8 +62,6 @@ class JobDetail extends Model
 
     /**
      * Get the specific area of the job.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function specificArea(): BelongsTo
     {

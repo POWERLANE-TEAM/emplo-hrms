@@ -2,15 +2,20 @@
 
 namespace App\Models;
 
+use App\Enums\ActivityLogName;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class JobVacancy extends Model
 {
     use HasFactory;
+    use LogsActivity;
 
     protected $primaryKey = 'job_vacancy_id';
 
@@ -21,19 +26,15 @@ class JobVacancy extends Model
     ];
 
     /**
-     * Get the job detail that owns the job vacancy.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * Get the job title that owns the job vacancy.
      */
-    public function jobDetail(): BelongsTo
+    public function jobTitle(): BelongsTo
     {
-        return $this->belongsTo(JobDetail::class, 'job_detail_id', 'job_detail_id');
+        return $this->belongsTo(JobTitle::class, 'job_title_id', 'job_title_id');
     }
 
     /**
      * Get the job applications associated with the job vacancy.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function applications(): HasMany
     {
@@ -41,12 +42,22 @@ class JobVacancy extends Model
     }
 
     /**
-     * Get the job title through the job detail.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasOneThrough
+     * Override default values for more controlled logging.
      */
-    public function jobTitle(): HasOneThrough
+    public function getActivityLogOptions(): LogOptions
     {
-        return $this->hasOneThrough(JobTitle::class, JobDetail::class, 'job_detail_id', 'job_title_id', 'job_detail_id', 'job_title_id');
+        return LogOptions::defaults()
+            ->logUnguarded()
+            ->useLogName(ActivityLogName::RECRUITMENT->value)
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(function (string $eventName) {
+                $causerFirstName = Str::ucfirst(Auth::user()->account->first_name);
+
+                return match ($eventName) {
+                    'created' => __($causerFirstName.' created a new job listing.'),
+                    'updated' => __($causerFirstName.' updated a job listing\'s information.'),
+                    'deleted' => __($causerFirstName.' deleted a job listing.'),
+                };
+            });
     }
 }

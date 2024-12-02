@@ -2,75 +2,83 @@
 
 namespace App\Livewire\Admin\Accounts;
 
+use App\Enums\CivilStatus;
 use App\Enums\Sex;
-use App\Models\City;
-use App\Models\Shift;
-use App\Models\Region;
+use App\Enums\UserPermission;
 use App\Enums\UserRole;
-use Livewire\Component;
+use App\Livewire\Forms\CreateAccountForm as CreateAccountFormObject;
 use App\Models\Barangay;
+use App\Models\City;
+use App\Models\EmploymentStatus;
+use App\Models\JobFamily;
 use App\Models\JobLevel;
 use App\Models\JobTitle;
 use App\Models\Province;
-use App\Models\JobFamily;
-use App\Enums\CivilStatus;
+use App\Models\Region;
+use App\Models\Shift;
 use App\Models\SpecificArea;
-use App\Enums\UserPermission;
-use App\Models\EmploymentStatus;
-use Livewire\Attributes\Computed;
-use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
-use App\Livewire\Forms\CreateAccountForm as CreateAccountFormObject;
+use Livewire\Attributes\Computed;
+use Livewire\Component;
+use Spatie\Permission\Models\Role;
 
 class CreateAccountForm extends Component
 {
     /**
      * Create new instance of livewire form object.
-     *
-     * @var \App\Livewire\Forms\CreateAccountForm $form
      */
     public CreateAccountFormObject $form;
-    
+
     /**
      * Populate addresses for present regions, provinces, cities, and barangays.
-     * 
+     *
      * @var array<string, int>
      */
     public $presentFields = [
-        'regions' => null, 
-        'provinces' => null,
-        'cities' => null,
-        'barangays' => null,
+        'regions' => [],
+        'provinces' => [],
+        'cities' => [],
+        'barangays' => [],
     ];
 
     /**
      * Populate addresses for permanent regions, provinces, cities, and barangays.
-     * 
+     *
      * @var array<string, int, null>
      */
     public $permanentFields = [
-        'regions' => null, 
-        'provinces' => null,
-        'cities' => null,
-        'barangays' => null,
+        'regions' => [],
+        'provinces' => [],
+        'cities' => [],
+        'barangays' => [],
     ];
 
     /**
      * Set the initial state/code of region and province.
-     * 
-     * I would assume that most of the applicants are based within the 
+     *
+     * I would assume that most of the applicants are based within the
      * Region IV-A Calabarzon (04), specifically in Laguna (04034).
-     * 
+     *
      * @var array<string>
      */
     private $initialState = [
         'region' => '04',
-        'province' => '04034'
+        'province' => '04034',
+    ];
+
+    /**
+     * Should show if required present fields have values.
+     *
+     * @var array<bool>
+     */
+    public $samePresentAddressChckBox = [
+        'shown' => false,
+        'checked' => false,
     ];
 
     /**
      * Use computed props for populating regions, provinces, and cities dropdowns.
-     * 
+     *
      * @return void
      */
     public function mount()
@@ -78,19 +86,13 @@ class CreateAccountForm extends Component
         $this->presentFields['regions'] = $this->regions;
         $this->permanentFields['regions'] = $this->regions;
         $this->presentFields['provinces'] = $this->provinces;
-        $this->permanentFields['provinces'] =$this->provinces;
-        $this->presentFields['cities'] =$this->cities;
-        $this->permanentFields['cities'] = $this->cities;
 
         $this->form->presentRegion = $this->initialState['region'];
-        $this->form->permanentRegion = $this->initialState['region'];
-        $this->form->presentProvince = $this->initialState['province'];
-        $this->form->permanentProvince = $this->initialState['province'];
     }
 
     /**
      * Handle authorization, validation, creation, and dispatching of account creation event.
-     * 
+     *
      * @return void
      */
     public function save()
@@ -109,94 +111,124 @@ class CreateAccountForm extends Component
 
     /**
      * Handle automatic dropdown options for provinces, cities, and barangays.
-     * 
-     * @param mixed $property
+     *
+     * @param  mixed  $property
      * @return void
      */
     public function updated($property)
     {
         if ($property === 'form.presentRegion') {
             $this->presentFields['provinces'] = Province::where('region_code', $this->form->presentRegion)
-                                                        ->pluck('name', 'province_code')
-                                                        ->toArray();
-        
+                ->pluck('name', 'province_code')
+                ->toArray();
+
             if ($this->form->presentRegion === '13') {
                 $this->presentFields['cities'] = City::where('region_code', $this->form->presentRegion)
-                                                    ->pluck('name', 'city_code')
-                                                    ->toArray();
+                    ->pluck('name', 'city_code')
+                    ->toArray();
             }
         }
         if ($property === 'form.permanentRegion') {
             $this->permanentFields['provinces'] = Province::where('region_code', $this->form->permanentRegion)
-                                                        ->pluck('name', 'province_code')
-                                                        ->toArray();
+                ->pluck('name', 'province_code')
+                ->toArray();
 
             if ($this->form->permanentRegion === '13') {
                 $this->permanentFields['cities'] = City::where('region_code', $this->form->permanentRegion)
-                                                        ->pluck('name', 'city_code')
-                                                        ->toArray();
+                    ->pluck('name', 'city_code')
+                    ->toArray();
             }
         }
         if ($property === 'form.presentProvince') {
             $this->presentFields['cities'] = City::where('province_code', $this->form->presentProvince)
-                                                ->pluck('name', 'city_code')
-                                                ->toArray();
+                ->pluck('name', 'city_code')
+                ->toArray();
         }
         if ($property === 'form.permanentProvince') {
             $this->permanentFields['cities'] = City::where('province_code', $this->form->permanentProvince)
-                                                    ->pluck('name', 'city_code')
-                                                    ->toArray();
+                ->pluck('name', 'city_code')
+                ->toArray();
         }
         if ($property === 'form.presentCity') {
             $this->presentFields['barangays'] = Barangay::where('city_code', $this->form->presentCity)
-                                                        ->pluck('name', 'id')
-                                                        ->toArray();
+                ->pluck('name', 'id')
+                ->toArray();
         }
         if ($property === 'form.permanentCity') {
             $this->permanentFields['barangays'] = Barangay::where('city_code', $this->form->permanentCity)
-                                                        ->pluck('name', 'id')
-                                                        ->toArray();
+                ->pluck('name', 'id')
+                ->toArray();
+        }
+
+        isset(
+            $this->form->presentRegion, 
+            $this->form->presentCity, 
+            $this->form->presentBarangay, 
+            $this->form->presentAddress
+        )
+            ? $this->samePresentAddressChckBox['shown'] = true
+            : $this->samePresentAddressChckBox['shown'] = false;
+    }
+
+    public function useSameAsPresentAddress()
+    {
+        if ($this->samePresentAddressChckBox['checked']) {
+            $this->permanentFields['provinces'] = Province::where('region_code', $this->form->presentRegion)
+                ->pluck('name', 'province_code')
+                ->toArray();
+
+            $this->permanentFields['cities'] = City::where('province_code', $this->form->presentProvince)
+                ->pluck('name', 'city_code')
+                ->toArray();
+
+            $this->permanentFields['barangays'] = Barangay::where('city_code', $this->form->presentCity)
+                ->pluck('name', 'id')
+                ->toArray();
+
+            $this->form->permanentRegion ??= $this->form->presentRegion;
+            $this->form->permanentProvince ??= $this->form->presentProvince;
+            $this->form->permanentCity ??= $this->form->presentCity;
+            $this->form->permanentBarangay ??= $this->form->presentBarangay;
+            $this->form->permanentAddress ??= $this->form->presentAddress;
+        } else {
+            $this->reset([
+                'form.permanentRegion',
+                'form.permanentProvince',
+                'form.permanentCity',
+                'form.permanentBarangay',
+                'form.permanentAddress',
+            ]);
+
         }
     }
-    
+
     /**
      * Accessor for regions, returning key / value pairs name and region_code.
-     * 
+     *
      * @return array
      */
     #[Computed]
     public function regions()
     {
-        return Region::all()->pluck('name','region_code')->toArray();
+        return Region::all()->pluck('name', 'region_code')->toArray();
     }
 
     /**
      * Accessor for provinces, returning key / value pairs name and province_code.
-     * 
+     *
      * @return array
      */
     #[Computed]
     public function provinces()
     {
-        return Province::all()->pluck('name', 'province_code')->toArray();
-    }
-
-    /**
-     * Accessor for provinces, returning key / value pairs name and city_code.
-     * 
-     * @return array
-     */
-    #[Computed]
-    public function cities()
-    {
-        return City::where('province_code', $this->initialState['province'])
-                ->pluck('name', 'city_code')
-                ->toArray();
+        return Province::where('region_code', $this->initialState['region'])
+            ->pluck('name', 'province_code')
+            ->toArray();
     }
 
     /**
      * Accessor for shifts, returning key / value pairs shift_name and shift_id.
-     * 
+     *
      * @return array
      */
     #[Computed]
@@ -207,7 +239,7 @@ class CreateAccountForm extends Component
 
     /**
      * Accessor for job families, returning key / value pairs job_family_name and job_family_id.
-     * 
+     *
      * @return array
      */
     #[Computed]
@@ -218,7 +250,7 @@ class CreateAccountForm extends Component
 
     /**
      * Accessor for job titles, returning key / value pairs job_title and job_title_id.
-     * 
+     *
      * @return array
      */
     #[Computed]
@@ -229,7 +261,7 @@ class CreateAccountForm extends Component
 
     /**
      * Accessor for job levels, returning key / value pairs job_level_name and job_level_id.
-     * 
+     *
      * @return array
      */
     #[Computed]
@@ -240,7 +272,7 @@ class CreateAccountForm extends Component
 
     /**
      * Accessor for areas / branches, returning key / value pairs area_name and area_id.
-     * 
+     *
      * @return array
      */
     #[Computed]
@@ -251,7 +283,7 @@ class CreateAccountForm extends Component
 
     /**
      * Accessor for role names, returning a collection of keys and labels.
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection
      */
     #[Computed]
@@ -259,6 +291,7 @@ class CreateAccountForm extends Component
     {
         return Role::all()->mapWithKeys(function ($role) {
             $userRole = UserRole::tryFrom($role->name);
+
             return [
                 $role->name => $userRole ? $userRole->label() : $role->name,
             ];
@@ -267,7 +300,7 @@ class CreateAccountForm extends Component
 
     /**
      * Accessor for employment statuses, returning key / value pairs emp_status_name and emp_status_id.
-     * 
+     *
      * @return array
      */
     #[Computed]
@@ -278,7 +311,7 @@ class CreateAccountForm extends Component
 
     /**
      * Accessor for civil statuses, returning key / value pairs of enum cases and labels.
-     * 
+     *
      * @return array
      */
     #[Computed]
@@ -289,7 +322,7 @@ class CreateAccountForm extends Component
 
     /**
      * Accessor for sexes, returning key / value pairs of enum cases and labels.
-     * 
+     *
      * @return array
      */
     #[Computed]

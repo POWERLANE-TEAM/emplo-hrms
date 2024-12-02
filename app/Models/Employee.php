@@ -2,20 +2,26 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Enums\ActivityLogName;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Employee extends Model
 {
     use HasFactory;
+    use LogsActivity;
 
     protected $primaryKey = 'employee_id';
 
@@ -27,14 +33,13 @@ class Employee extends Model
 
     /**
      * Get the employee's full name.
-     * 
+     *
      * @return string
      */
     public function fullName(): Attribute
     {
         return Attribute::make(
-            get: fn (mixed $value, array $attributes) => 
-                $attributes['last_name'].', '.
+            get: fn (mixed $value, array $attributes) => $attributes['last_name'].', '.
                 $attributes['first_name'].' '.
                 $attributes['middle_name'],
         );
@@ -42,8 +47,6 @@ class Employee extends Model
 
     /**
      * Get the account associated with the employee.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
      */
     public function account(): MorphOne
     {
@@ -51,39 +54,15 @@ class Employee extends Model
     }
 
     /**
-     * Get the job application associated with the employee.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function application(): HasOne
-    {
-        return $this->hasOne(Application::class, 'application_id', 'employee_id');
-    }
-
-    /**
-     * Get the employment status of the employee.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function employmentStatus(): BelongsTo
-    {
-        return $this->belongsTo(EmploymentStatus::class, 'emp_status_id', 'emp_status_id');
-    }
-
-    /**
      * Get the attendance records associated with the employee.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function attendances(): HasMany
+    public function attendanceLogs(): HasMany
     {
-        return $this->hasMany(Attendance::class, 'employee_id', 'employee_id');
+        return $this->hasMany(AttendanceLog::class, 'employee_id', 'employee_id');
     }
 
     /**
      * Get the announcements where employee is the publisher.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function publishedAnnouncements(): HasMany
     {
@@ -92,48 +71,54 @@ class Employee extends Model
 
     /**
      * Get the job detail of the employee.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function jobDetail(): BelongsTo
+    public function jobDetail(): HasOne
     {
-        return $this->belongsTo(JobDetail::class, 'job_detail_id', 'job_detail_id');
+        return $this->hasOne(EmployeeJobDetail::class, 'employee_id', 'employee_id');
     }
 
     /**
-     * Get the job title of the employee.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasOneThrough
+     * Get the employment status of the employee through **EmployeeJobDetail** model.
+     */
+    public function status(): HasOneThrough
+    {
+        return $this->hasOneThrough(EmploymentStatus::class, EmployeeJobDetail::class, 'employee_id', 'emp_status_id', 'employee_id', 'emp_status_id');
+    }
+
+    /**
+     * Get the job application associated with the employee through **EmployeeJobDetail** model.
+     */
+    public function application(): HasOneThrough
+    {
+        return $this->hasOneThrough(Application::class, EmployeeJobDetail::class, 'employee_id', 'application_id', 'employee_id', 'application_id');
+    }
+
+    /**
+     * Get the job title of the employee through **EmployeeJobDetail** model.
      */
     public function jobTitle(): HasOneThrough
     {
-        return $this->hasOneThrough(JobTitle::class, JobDetail::class, 'job_detail_id', 'job_title_id', 'job_detail_id', 'job_title_id');
-    }
-
-    /**
-     * Get the job family/office of the employee.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasOneThrough
-     */
-    public function jobFamily(): HasOneThrough
-    {
-        return $this->hasOneThrough(JobFamily::class, JobDetail::class, 'job_detail_id', 'job_family_id', 'job_detail_id', 'job_family_id');
+        return $this->hasOneThrough(JobTitle::class, EmployeeJobDetail::class, 'employee_id', 'job_title_id', 'employee_id', 'job_title_id');
     }
 
     /**
      * Get the specific area destination of the employee.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasOneThrough
      */
     public function specificArea(): HasOneThrough
     {
-        return $this->hasOneThrough(SpecificArea::class, JobDetail::class, 'job_detail_id', 'area_id', 'job_detail_id', 'area_id');    
+        return $this->hasOneThrough(SpecificArea::class, EmployeeJobDetail::class, 'employee_id', 'area_id', 'employee_id', 'area_id');
+    }
+
+    /**
+     * Get the shift schedule of the employee.
+     */
+    public function shift(): HasOneThrough
+    {
+        return $this->hasOneThrough(Shift::class, EmployeeJobDetail::class, 'employee_id', 'shift_id', 'employee_id', 'shift_id');
     }
 
     /**
      * Get the area name where employee is the Area Manager.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function areaManagerOf(): HasOne
     {
@@ -142,8 +127,6 @@ class Employee extends Model
 
     /**
      * Get the office name where employee is the office head.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function headOf(): HasOne
     {
@@ -151,19 +134,7 @@ class Employee extends Model
     }
 
     /**
-     * Get the shift schedule of the employee.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function shift(): BelongsTo
-    {
-        return $this->belongsTo(Shift::class, 'shift_id', 'shift_id');
-    }
-
-    /**
      * Get the documents associated with the employee.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function documents(): HasMany
     {
@@ -172,8 +143,6 @@ class Employee extends Model
 
     /**
      * Get the overtime records associated with the employee
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function overtimes(): HasMany
     {
@@ -182,8 +151,6 @@ class Employee extends Model
 
     /**
      * Get the leave records associated with the employee.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function leaves(): HasMany
     {
@@ -192,8 +159,6 @@ class Employee extends Model
 
     /**
      * Get the permanent barangay of the employee.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function permanentBarangay(): BelongsTo
     {
@@ -202,8 +167,6 @@ class Employee extends Model
 
     /**
      * Get the present barangay of the employee.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function presentBarangay(): BelongsTo
     {
@@ -218,8 +181,6 @@ class Employee extends Model
 
     /**
      * Get the initial interviews where employee is the initial interviewer.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function asInitInterviewer(): HasMany
     {
@@ -228,8 +189,6 @@ class Employee extends Model
 
     /**
      * Get the final interviews where employee is the final interviewer.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function asFinalInterviewer(): HasMany
     {
@@ -238,8 +197,6 @@ class Employee extends Model
 
     /**
      * Get the application documents where employee is the evaluator.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function asApplicationDocsEvaluator(): HasMany
     {
@@ -254,8 +211,6 @@ class Employee extends Model
 
     /**
      * Get the training records associated with the employee.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function trainings(): HasMany
     {
@@ -264,8 +219,6 @@ class Employee extends Model
 
     /**
      * Get the training records where employee is the trainer.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
     public function trainingsAsTrainer(): MorphMany
     {
@@ -274,8 +227,6 @@ class Employee extends Model
 
     /**
      * Get the training comments where employee is the trainer.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
     public function commentsAsTrainer(): MorphMany
     {
@@ -284,8 +235,6 @@ class Employee extends Model
 
     /**
      * Get the prepared training records where employee is an HR Personnel.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function preparedTrainings(): HasMany
     {
@@ -294,8 +243,6 @@ class Employee extends Model
 
     /**
      * Get the reviewed/approved training records where employee is the HR Manager.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function reviewedTrainings(): HasMany
     {
@@ -310,8 +257,6 @@ class Employee extends Model
 
     /**
      * Get the complaint records where employee is the complainant.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function complaintsAsComplainant(): HasMany
     {
@@ -320,8 +265,6 @@ class Employee extends Model
 
     /**
      * The complaint records that belong to the complainee(employee).
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function complaintsAsComplainee(): BelongsToMany
     {
@@ -337,8 +280,6 @@ class Employee extends Model
 
     /**
      * Get the processes(e.g., overtimes, leaves) where employee is the supervisor.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function supervisedProcesses(): HasMany
     {
@@ -347,8 +288,6 @@ class Employee extends Model
 
     /**
      * Get the processes(e.g., overtimes, leaves) where employee is the Area Manager.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function areaManagedProcesses(): HasMany
     {
@@ -357,8 +296,6 @@ class Employee extends Model
 
     /**
      * Get the processes(e.g., overtimes, leaves) where employee is the HR Manager.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function hrManagedProcesses(): HasMany
     {
@@ -373,8 +310,6 @@ class Employee extends Model
 
     /**
      * Get the performance evaluation records associated with the employee.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function performances(): HasMany
     {
@@ -383,8 +318,6 @@ class Employee extends Model
 
     /**
      * Get the performance evalation records where employee is the evaluator.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function evaluatedPerformances(): HasMany
     {
@@ -392,32 +325,38 @@ class Employee extends Model
     }
 
     /**
-     * Get the performance evaluation records where employee is the Supervisor.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * Get the performance evaluation records where employee is the initial approver.
      */
-    public function supervisedPerformances(): HasMany
+    public function initiallyApprovedPerformances(): HasMany
     {
-        return $this->hasMany(PerformanceDetail::class, 'supervisor', 'employee_id');
+        return $this->hasMany(PerformanceDetail::class, 'initial_approver', 'employee_id');
     }
 
     /**
-     * Get the performance evaluation records where employee is the Area Manager.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * Get the performance evaluation records where employee is the secondary approver.
      */
-    public function areaManagedPerformances(): HasMany
+    public function secondaryApprovedPerformances(): HasMany
     {
-        return $this->hasMany(PerformanceDetail::class, 'area_manager', 'employee_id');
+        return $this->hasMany(PerformanceDetail::class, 'secondary_approver', 'employee_id');
     }
 
     /**
-     * Get the performance evaluation records where employee is the HR Manager.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * Override default values for more controlled logging.
      */
-    public function hrManagedPerformances(): HasMany
+    public function getActivityLogOptions(): LogOptions
     {
-        return $this->hasMany(PerformanceDetail::class, 'hr_manager', 'employee_id');
+        return LogOptions::defaults()
+            ->logUnguarded()
+            ->useLogName(ActivityLogName::EMPLOYEE->value)
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(function (string $eventName) {
+                $causerFirstName = Str::ucfirst(Auth::user()->account->first_name);
+
+                return match ($eventName) {
+                    'created' => __($causerFirstName.' created a new employee record.'),
+                    'updated' => __($causerFirstName.' updated an employee\'s information.'),
+                    'deleted' => __($causerFirstName.' deleted an employee.'),
+                };
+            });
     }
 }

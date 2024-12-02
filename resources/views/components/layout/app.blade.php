@@ -56,11 +56,13 @@
     @stack('pre-styles')
     @stack('styles')
 
-    @if (!View::hasSection('bootstrap-script'))
+    @env('local')
         @vite(['node_modules/bootstrap/dist/js/bootstrap.bundle.min.js'])
-    @else
-        @yield('bootstrap-script')
-    @endif
+    @endenv
+
+    @env('production')
+        @vite(['node_modules/bootstrap/dist/js/bootstrap.bundle.min.js?commonjs-entry'])
+    @endenv
 
     @stack('pre-scripts')
     @stack('scripts')

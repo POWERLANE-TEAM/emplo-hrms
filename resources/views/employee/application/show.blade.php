@@ -30,7 +30,7 @@
 @section('content')
     <x-breadcrumbs>
         <x-slot:breadcrumbs>
-            <x-breadcrumb :href="route($routePrefix . '.applications')">
+            <x-breadcrumb :href="route($routePrefix . '.applications', ['applicationStatus' => 'pending'])">
                 Applicants
             </x-breadcrumb>
             <x-breadcrumb :active="request()->routeIs($routePrefix . '.application.*')">

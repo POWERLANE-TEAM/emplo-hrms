@@ -1,0 +1,40 @@
+/* ==========================================================================
+   Additional Styles for BS' placeholder utils
+   ========================================================================== */
+
+.placeholder-container {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+}
+
+.placeholder-glow .placeholder {
+    background: linear-gradient(to right,
+            #e0e0e0 0%,
+            #f5f5f5 50%,
+            #e0e0e0 100%);
+    border-radius: 4px;
+    animation: shimmer 1.5s infinite linear;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200px 0;
+    }
+
+    100% {
+        background-position: 200px 0;
+    }
+}
+
+@keyframes icon-bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
+}

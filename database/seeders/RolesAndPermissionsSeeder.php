@@ -45,41 +45,68 @@ class RolesAndPermissionsSeeder extends Seeder
     {
         return [
             UserPermission::VIEW_EMPLOYEE_DASHBOARD->value,
-            UserPermission::VIEW_ATTENDANCE->value,
+            UserPermission::VIEW_DAILY_ATTENDANCE->value,
             UserPermission::VIEW_PAYSLIPS->value,
-            UserPermission::VIEW_PERFORMANCE->value,
+            UserPermission::VIEW_EMP_PERFORMANCE_EVAL->value,
             UserPermission::VIEW_LEAVES->value,
             UserPermission::VIEW_OVERTIME->value,
             UserPermission::VIEW_DOCUMENTS->value,
             UserPermission::VIEW_ISSUES->value,
         ];
     }
+
     public static function intermediatePermissions()
     {
         return [
             // View cases goes here
             UserPermission::VIEW_HR_MANAGER_DASHBOARD->value,
-            UserPermission::VIEW_ALL_APPLICANTS->value,
+            UserPermission::VIEW_ALL_PENDING_APPLICATIONS->value,
+            UserPermission::VIEW_ALL_QUALIFIED_APPLICATIONS->value,
+            UserPermission::VIEW_ALL_PRE_EMPLOYED_APPLICATIONS->value,
             UserPermission::VIEW_ALL_EMPLOYEES->value,
-            UserPermission::VIEW_ALL_ATTENDANCE->value,
+            UserPermission::VIEW_ALL_DAILY_ATTENDANCE->value,
+            UserPermission::VIEW_ALL_ATTENDANCE_TRACKING->value,
+            UserPermission::VIEW_ALL_ATTENDANCE_WORKDAYS->value,
+            UserPermission::VIEW_ALL_ATTENDANCE_WORKHOURS->value,
+            UserPermission::VIEW_ALL_ATTENDANCE_SUMMARY->value,
+            UserPermission::VIEW_DOWNLOAD_ALL_ATTENDANCE->value,
+            UserPermission::VIEW_DOWNLOAD_PAYROLL_SUMMARY->value,
             UserPermission::VIEW_ALL_LEAVES->value,
             UserPermission::VIEW_ALL_OVERTIME->value,
             UserPermission::VIEW_ALL_PAYSLIPS->value,
-            UserPermission::VIEW_ALL_PERFORMANCE->value,
+            UserPermission::VIEW_ALL_EMP_PERFORMANCE_EVAL->value,
+            UserPermission::VIEW_ALL_EMP_PERFORMANCE_EVAL_GRADE_FORM->value,
+            UserPermission::VIEW_ALL_EMP_PERFORMANCE_EVAL_APPROVAL_FORM->value,
+            UserPermission::VIEW_ALL_EMP_PERFORMANCE_EVAL_FINAL_APPROVAL_FORM->value,
             UserPermission::VIEW_ALL_RELATIONS->value,
             UserPermission::VIEW_MATRIX_PROJECTOR->value,
             UserPermission::VIEW_TALENT_EVALUATOR->value,
             UserPermission::VIEW_PLAN_GENERATOR->value,
 
-
             // Create cases goes here
             UserPermission::CREATE_APPLICANT_EXAM_SCHEDULE->value,
             UserPermission::CREATE_APPLICANT_INIT_INTERVIEW_SCHEDULE->value,
-
+            UserPermission::CREATE_APPLICANT_FINAL_INTERVIEW_SCHEDULE->value,
+            UserPermission::CREATE_EMPLOYEE_ASSIGNED_SALARY->value,
+            UserPermission::CREATE_EMPLOYEE_ASSIGNED_SUPERVISOR->value,
+            UserPermission::CREATE_PAYSLIPS->value,
+            UserPermission::CREATE_BULK_PAYSLIPS->value,
 
             // Update cases goes here
-            UserPermission::UPDATE_APPLICATION_STATUS->value,
-
+            UserPermission::UPDATE_PENDING_APPLICATION_STATUS->value,
+            UserPermission::UPDATE_QUALIFIED_APPLICATION_STATUS->value,
+            UserPermission::UPDATE_PRE_EMPLOYED_APPLICATION_STATUS->value,
+            UserPermission::UPDATE_PENDING_APPLICATION_STATUS->value,
+            UserPermission::UPDATE_EMP_PERFORMANCE_EVAL_GRADE_FORM->value,
+            UserPermission::UPDATE_EMP_PERFORMANCE_EVAL_APPROVAL_FORM->value,
+            UserPermission::UPDATE_EMP_PERFORMANCE_EVAL_FINAL_APPROVAL_FORM->value,
+            UserPermission::UPDATE_PENDING_LEAVE_REQUEST->value,
+            UserPermission::UPDATE_APPROVED_LEAVE_REQUEST->value,
+            UserPermission::UPDATE_LEAVE_BALANCE->value,
+            UserPermission::UPDATE_PENDING_OVERTIME_REQUEST_STATUS->value,
+            UserPermission::UPDATE_APPROVED_OVERTIME_REQUEST_STATUS->value,
+            UserPermission::UPDATE_ISSUE_COMPLAINT_CLOSED->value,
+            UserPermission::UPDATE_ISSUE_COMPLAINT_RESOLVED->value,
 
             // Delete cases goes here
         ];
@@ -91,7 +118,7 @@ class RolesAndPermissionsSeeder extends Seeder
             // View cases goes here
             UserPermission::VIEW_ADMIN_DASHBOARD->value,
             UserPermission::VIEW_CALENDAR_MANAGER->value,
-            UserPermission::VIEW_ACCOUNT_MANAGER->value,
+            UserPermission::VIEW_ALL_ACCOUNTS->value,
             UserPermission::VIEW_EMPLOYEE_MANAGER->value,
             UserPermission::VIEW_JOB_LISTING_MANAGER->value,
             UserPermission::VIEW_POLICY_MANAGER->value,
@@ -115,6 +142,7 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::UPDATE_PERFORMANCE_CATEGORIES->value,
             UserPermission::UPDATE_PERFORMANCE_RATING_SCALES->value,
             UserPermission::UPDATE_PREEMPLOYMENT_REQUIREMENTS->value,
+            UserPermission::UPDATE_BIOMETRIC_ATTENDANCE_DEVICE_CONFIG->value,
 
             // Delete cases goes here
         ];

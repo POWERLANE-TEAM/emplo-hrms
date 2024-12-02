@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class City extends Model
 {
@@ -19,18 +19,14 @@ class City extends Model
 
     /**
      * Get the barangays associated with the city.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function barangays(): HasMany
     {
         return $this->hasMany(Barangay::class, 'city_code', 'city_code');
-    } 
+    }
 
     /**
      * Get the province of the city.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function province(): BelongsTo
     {
@@ -39,12 +35,9 @@ class City extends Model
 
     /**
      * Get the region of the city.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function region(): BelongsTo
     {
         return $this->belongsTo(Region::class, 'region_code', 'region_code');
     }
-
 }

@@ -25,8 +25,6 @@ class ApplicationDoc extends Model
 
     /**
      * Get the pre-employment requirements the application document belongs to.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function preempRequirement(): BelongsTo
     {
@@ -35,8 +33,6 @@ class ApplicationDoc extends Model
 
     /**
      * Get the job application that owns the application documents.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function application(): BelongsTo
     {
@@ -45,8 +41,6 @@ class ApplicationDoc extends Model
 
     /**
      * Get the employee who is the evaluator of the application document.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function evaluatedBy(): BelongsTo
     {

@@ -6,13 +6,11 @@ use App\Enums\UserPermission;
 use App\Http\Controllers\ApplicationExamController;
 use App\Livewire\Forms\ScheduleForm;
 use App\Models\Application;
-use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
 class SetExaminationDate extends Component
 {
-
     public ScheduleForm $examination;
 
     public Application $application;
@@ -33,7 +31,7 @@ class SetExaminationDate extends Component
 
         $validated['applicationId'] = $this->application->application_id;
 
-        $controller = new ApplicationExamController();
+        $controller = new ApplicationExamController;
 
         $controller->store($validated, true);
     }

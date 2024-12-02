@@ -4,18 +4,16 @@ namespace App\Livewire\Forms;
 
 use App\Rules\ScheduleDateRule;
 use App\Rules\ScheduleTimeRule;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Validator;
-use Livewire\Attributes\Validate;
 use Livewire\Form;
 
 class ScheduleForm extends Form
 {
-
     public $minDate;
+
     public $maxDate;
 
     public $minTime;
+
     public $maxTime;
 
     public $date = '';
@@ -27,14 +25,14 @@ class ScheduleForm extends Form
         return [
             'date' => (function () {
 
-                return 'bail|required|' .  ScheduleDateRule::get($this->minDate, $this->maxDate);
+                return 'bail|required|'.ScheduleDateRule::get($this->minDate, $this->maxDate);
             })(),
 
             'time' => (function () {
                 return [
                     'bail',
                     'required_with:date',
-                    new ScheduleTimeRule($this->date)
+                    new ScheduleTimeRule($this->date),
                 ];
             })(),
 

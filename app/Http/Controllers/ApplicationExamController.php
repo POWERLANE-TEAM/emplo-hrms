@@ -15,24 +15,23 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-
 class ApplicationExamController extends Controller
 {
     protected $minDate;
+
     protected $maxDate;
 
     protected $minTime;
+
     protected $maxTime;
 
     protected $date = '';
-
 
     /* Show all resource */
     // public function index(): ViewFactory|View
     // {
     //     return view();
     // }
-
 
     /* Show form page for creating resource */
     // public function create() : ViewFactory|View
@@ -46,7 +45,7 @@ class ApplicationExamController extends Controller
 
         $validated = null;
 
-        if (!$isValidated) {
+        if (! $isValidated) {
 
             if (! auth()->user()->hasPermissionTo(UserPermission::CREATE_APPLICANT_EXAM_SCHEDULE)) {
                 abort(403);
@@ -55,12 +54,12 @@ class ApplicationExamController extends Controller
             $this->date = $request->input('examination.date');
 
             $validated = $request->validate([
-                'examination.date' => 'bail|required|' .  ScheduleDateRule::get($this->minDate, $this->maxDate),
+                'examination.date' => 'bail|required|'.ScheduleDateRule::get($this->minDate, $this->maxDate),
                 'examination.time' => (function () {
                     return [
                         'bail',
                         'required_with:date',
-                        new ScheduleTimeRule($this->date)
+                        new ScheduleTimeRule($this->date),
                     ];
                 })(),
             ]);
@@ -83,12 +82,12 @@ class ApplicationExamController extends Controller
                 $examStartTime = $validated('examination.time');
             }
 
-            $examStart = $examStartDate . ' ' . $examStartTime;
+            $examStart = $examStartDate.' '.$examStartTime;
 
-            $examDuration =  '00:30:00';
-            list($hours, $minutes, $seconds) = explode(':', $examDuration);
+            $examDuration = '00:30:00';
+            [$hours, $minutes, $seconds] = explode(':', $examDuration);
             $totalMinutes = ($hours * 60) + $minutes + ($seconds / 60);
-            $examEnd = date('Y-m-d H:i:s', strtotime($examStart . ' + ' . $hours . ' hours ' . $minutes . ' minutes ' . $seconds . ' seconds'));
+            $examEnd = date('Y-m-d H:i:s', strtotime($examStart.' + '.$hours.' hours '.$minutes.' minutes '.$seconds.' seconds'));
 
             ApplicationExam::create([
                 'application_id' => $applicationId,
@@ -96,7 +95,7 @@ class ApplicationExamController extends Controller
                 'end_time' => $examEnd,
             ]);
 
-            $applicationController = new ApplicationController();
+            $applicationController = new ApplicationController;
 
             $applicationUpdate = [
                 'applicationId' => $applicationId,

@@ -1,7 +1,7 @@
-@extends('components.layout.applicant.layout', ['description' => 'Guest Layout', 'nonce' => $nonce, 'main_content_class' => 'container'])
+@extends('components.layout.applicant.layout', ['description' => 'Guest Layout', 'nonce' => $nonce])
 
 @section('head')
-    <title>Applicant</title>
+<title>Submit Requirements</title>
 @endsection
 
 @pushOnce('pre-scripts')
@@ -23,29 +23,29 @@
 
 
 @section('content')
-    <div class="margin-right-n-book">
-        <nav aria-label="breadcrumb" class="mb-3 ms-n4">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Pre-employment Requirements</li>
-            </ol>
-        </nav>
+<div class="margin-right-n-book">
+    <nav aria-label="breadcrumb" class="mb-3 ms-n4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/application/index">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Pre-employment Requirements</li>
+        </ol>
+    </nav>
 
-        <hgroup class="mb-5">
-            <h1 class="fw-bold">Pre-Employment Requirements</h1>
-            <div>
-                <b id="h-pre-employment-status">Status: </b> <span aria-labelledby="h-pre-employment-status"> in Progress of
-                    Submission</span>
-            </div>
-        </hgroup>
+    <hgroup class="mb-5">
+        <h1 class="fw-bold">Pre-Employment Requirements</h1>
+        <div>
+            <b id="h-pre-employment-status">Status: </b> <span aria-labelledby="h-pre-employment-status"> in
+                Progress of
+                Submission</span>
+        </div>
+    </hgroup>
 
-        @livewire('employee.pre-employment')
-
-    </div>
+    @livewire('employee.pre-employment')
+</div>
 @endsection
 
 @section('after-main')
-    <td colspan="4" class=" d-flex">
+<td colspan="4" class=" d-flex">
 
-    </td>
+</td>
 @endsection

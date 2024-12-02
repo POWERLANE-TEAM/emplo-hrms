@@ -21,8 +21,6 @@ class Overtime extends Model
 
     /**
      * Get the employee that owns the overtime records.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function employee(): BelongsTo
     {
@@ -31,8 +29,6 @@ class Overtime extends Model
 
     /**
      * Get all of the overtime records' processes.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
     public function processes(): MorphMany
     {

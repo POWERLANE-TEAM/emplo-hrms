@@ -6,14 +6,12 @@ use App\Enums\UserPermission;
 use App\Http\Controllers\InitialInterviewController;
 use App\Livewire\Forms\ScheduleForm;
 use App\Models\Application;
-use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
 class SetInitInterviewDate extends Component
 {
     public ScheduleForm $interview;
-
 
     public Application $application;
 
@@ -34,11 +32,10 @@ class SetInitInterviewDate extends Component
 
         $validated['applicationId'] = $this->application->application_id;
 
-        $controller = new InitialInterviewController();
+        $controller = new InitialInterviewController;
 
         $controller->store($validated, true);
     }
-
 
     /**
      * Handle the Examination date must not be the same as the Interview date.
@@ -49,12 +46,10 @@ class SetInitInterviewDate extends Component
     public function setInterviewMinDate($minDate)
     {
 
-        if (! auth()->user()->hasPermissionTo(UserPermission::CREATE_APPLICANT_INIT_INTERVIEW_SCHEDULE)) {
-            abort(403);
-        }
-
         $tomorrow = date('Y-m-d', strtotime('+1 day', strtotime($minDate)));
-        $this->interview->setMinDate($minDate);
+        if (strtotime($minDate) >= strtotime(date('Y-m-d'))) {
+            $this->interview->setMinDate($minDate);
+        }
     }
 
     public function render()

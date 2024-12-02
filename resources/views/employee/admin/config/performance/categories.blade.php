@@ -6,7 +6,6 @@
 <title>Category</title>
 <script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
-{{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script> --}}
 @endsection
 
 @pushOnce('scripts')

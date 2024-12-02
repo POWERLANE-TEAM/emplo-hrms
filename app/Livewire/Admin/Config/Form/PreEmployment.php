@@ -2,11 +2,13 @@
 
 namespace App\Livewire\Admin\Config\Form;
 
-use Livewire\Component;
+use App\Enums\UserPermission;
 use App\Models\PreempRequirement;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Validate;
-use Illuminate\Support\Facades\DB;
+use Livewire\Component;
 
 class PreEmployment extends Component
 {
@@ -16,21 +18,39 @@ class PreEmployment extends Component
     public $index;
 
     public $editMode = false;
-    
+
     public function save()
     {
-        $this->validate();
-
         if ($this->editMode) {
-            DB::transaction(function () {
-                PreempRequirement::where('preemp_req_id', $this->index)->update([
-                    'preemp_req_name' => $this->requirement
-                ]);
-            });
+            if (! Auth::user()->hasPermissionTo(UserPermission::UPDATE_PREEMPLOYMENT_REQUIREMENTS)) {
+                $this->reset();
+
+                abort(403);
+            }
+
+            $this->validate();
+
+            $requirement = PreempRequirement::find($this->index);
+
+            if ($requirement) {
+                DB::transaction(function () use ($requirement) {
+                    $requirement->update([
+                        'preemp_req_name' => $this->requirement,
+                    ]);
+                });
+            }
         } else {
+            if (! Auth::user()->hasPermissionTo(UserPermission::CREATE_PREEMPLOYMENT_REQUIREMENTS)) {
+                $this->reset();
+
+                abort(403);
+            }
+
+            $this->validate();
+
             DB::transaction(function () {
                 PreempRequirement::create([
-                    'preemp_req_name' => $this->requirement
+                    'preemp_req_name' => $this->requirement,
                 ]);
             });
         }
@@ -75,7 +95,7 @@ class PreEmployment extends Component
                     'name' => $item['preemp_req_name'],
                 ];
             }
-        );
+            );
     }
 
     public function render()

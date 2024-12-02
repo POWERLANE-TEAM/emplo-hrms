@@ -2,155 +2,128 @@
 
 namespace App\Livewire\Forms;
 
-use Livewire\Form;
-use App\Models\User;
-use App\Models\Shift;
+use App\Enums\AccountType;
+use App\Enums\UserStatus;
 use App\Models\Barangay;
 use App\Models\Employee;
-use App\Models\JobLevel;
-use App\Models\JobTitle;
-use App\Enums\UserStatus;
+use App\Models\EmploymentStatus;
 use App\Models\JobDetail;
 use App\Models\JobFamily;
-use App\Enums\AccountType;
-use Illuminate\Support\Str;
+use App\Models\JobLevel;
+use App\Models\JobTitle;
+use App\Models\Shift;
 use App\Models\SpecificArea;
-use App\Models\EmploymentStatus;
-use Livewire\Attributes\Validate;
-use Illuminate\Support\Facades\DB;
-use Spatie\Permission\Models\Role;
-use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 use App\Notifications\EmployeeAccountCreated;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+use Livewire\Attributes\Validate;
+use Livewire\Form;
+use Spatie\Activitylog\Facades\LogBatch;
+use Spatie\Permission\Models\Role;
 
 class CreateAccountForm extends Form
 {
-    /**
-     * @var string $firstName
-     */
+    /** @var string $firstName */
     #[Validate('required')]
     public $firstName;
 
-    /**
-     * @var string|null $middleName
-     */
+    /** @var string|null $middleName */
     #[Validate('nullable')]
     public $middleName;
 
-    /**
-     * @var string $lastName
-     */
+    /** @var string $lastName */
     #[Validate('required')]
     public $lastName;
 
-    /**
-     * @var string $email
-     */
+    /** @var string $email */
     #[Validate('required|email:rfc,dns,spoof|max:320|unique:users,email')]
     public $email;
 
-    /**
-     * @var string $contactNumber
-     */
+    /** @var string $contactNumber */
     #[Validate('required|numeric|digits:11')]
     public $contactNumber;
 
-    /**
-     * @var string $presentRegion
-     */
+    /** @var string $presentRegion */
     #[Validate('required')]
     public $presentRegion;
 
     /**
      * Some regions don't have provinces, like NCR.
-     * 
+     *
      * @var string|null $presentProvince
      */
     #[Validate('nullable')]
     public $presentProvince;
-    
-    /**
-     * @var string $presentCity
-     */
+
+    /** @var string $presentCity */
     #[Validate('required')]
     public $presentCity;
 
     /**
      * Hold the primary key(id) of the barangay.
-     * 
+     *
      * @var int $presentBarangay
      */
     #[Validate('required')]
     public $presentBarangay;
 
-    /**
-     * @var string $presentAddress
-     */
+    /** @var string $presentAddress */
     #[Validate('required')]
     public $presentAddress;
 
-    /**
-     * @var string $permanentRegion
-     */
+    /** @var string $permanentRegion */
     #[Validate('required')]
     public $permanentRegion;
 
     /**
      * Some regions don't have provinces, like NCR.
-     * 
+     *
      * @var string|null $permanentProvince
      */
     #[Validate('nullable')]
     public $permanentProvince;
 
-    /**
-     * @var string $permanentCity
-     */
+    /** @var string $permanentCity */
     #[Validate('required')]
     public $permanentCity;
-    
+
     /**
      * Hold the primary key(id) of the barangay.
-     * 
+     *
      * @var int $permanentBarangay
      */
     #[Validate('required')]
     public $permanentBarangay;
 
-    /**
-     * @var string $permanentAddress
-     */    
+    /** @var string $permanentAddress */
     #[Validate('required')]
     public $permanentAddress;
 
-    /**
-     * @var string $birthDate
-     */
+    /** @var string $birthDate */
     #[Validate('required')]
     public $birthDate;
 
-    /**
-     * @var string $sex
-     */
+    /** @var string $sex */
     #[Validate('required')]
     public $sex;
 
-    /**
-     * @var string $civilStatus
-     */
+    /** @var string $civilStatus */
     #[Validate('required')]
     public $civilStatus;
 
     /**
      * Hold the primary key(job_family_id) of the job family.
-     * 
+     *
      * @var int $jobFamily
      */
     #[Validate('required')]
     public $jobFamily;
-    
+
     /**
      * Hold the primary key(job_title_id) of the job title.
-     * 
+     *
      * @var int $jobTitle
      */
     #[Validate('required')]
@@ -158,7 +131,7 @@ class CreateAccountForm extends Form
 
     /**
      * Hold the primary key(job_level_id) of the job level.
-     * 
+     *
      * @var int $jobLevel
      */
     #[Validate('required')]
@@ -166,21 +139,19 @@ class CreateAccountForm extends Form
 
     /**
      * Hold the primary key(area_id) of the specific area/branch.
-     * 
+     *
      * @var int $area
      */
     #[Validate('required')]
     public $area;
 
-    /**
-     * @var string $role
-     */
+    /** @var string $role */
     #[Validate('required')]
     public $role;
 
     /**
      * Hold the primary key(emp_status_id) of the employment status.
-     * 
+     *
      * @var int $employmentStatus
      */
     #[Validate('required')]
@@ -188,61 +159,51 @@ class CreateAccountForm extends Form
 
     /**
      * Hold the primary key(shift_id) of the shift/schedule
-     * 
+     *
      * @var int $shift
      */
     #[Validate('required')]
     public $shift;
 
-    /**
-     * @var string $sss
-     */
+    /** @var string $sss */
     #[Validate('required|digits:10|numeric')]
     public $sss;
 
-    /**
-     * @var string $philhealth
-     */
+    /** @var string $philhealth */
     #[Validate('required|digits:12|numeric')]
     public $philhealth;
 
-    /**
-     * @var string $tin
-     */
+    /** @var string $tin */
     #[Validate('required|digits:12|numeric')]
     public $tin;
 
-    /**
-     * @var string $pagibig
-     */
+    /** @var string $pagibig */
     #[Validate('required|digits:12|numeric')]
     public $pagibig;
 
-    /**
-     * @var string $password
-     */
+    /** @var string */
     private $password;
 
     /**
      * For storing instance of a new User model.
-     * 
-     * @var User $newUser
      */
     private User $newUser;
 
     /**
      * Begin db transaction and perform insertions and stuff.
-     * 
+     *
      * @return void
      */
     public function create()
     {
         DB::transaction(function () {
+            LogBatch::startBatch();
             $jobDetail = $this->storeJobDetails();
             $employee = $this->storeEmployee($jobDetail);
             $newUser = $this->storeUser($employee);
             $this->assignRole($newUser);
             $this->newUser = $newUser;
+            LogBatch::endBatch();
         });
 
         $this->newUser->notify(new EmployeeAccountCreated($this->newUser, $this->password));
@@ -250,8 +211,7 @@ class CreateAccountForm extends Form
 
     /**
      * Store and create new user account.
-     * 
-     * @param \App\Models\Employee $employee
+     *
      * @return \App\Models\User
      */
     private function storeUser(Employee $employee)
@@ -269,8 +229,8 @@ class CreateAccountForm extends Form
 
     /**
      * Assign role to the newly created user.
-     * 
-     * @param \App\Models\User $user
+     *
+     * @param  \App\Models\User  $user
      * @return void
      */
     private function assignRole(User $newUser)
@@ -281,8 +241,7 @@ class CreateAccountForm extends Form
 
     /**
      * Store employee information and job detail id.
-     * 
-     * @param \App\Models\JobDetail $jobDetail
+     *
      * @return \App\Models\Employee
      */
     private function storeEmployee(JobDetail $jobDetail)
@@ -312,7 +271,7 @@ class CreateAccountForm extends Form
 
     /**
      * Map and store IDs for each foreign columns of job titles, levels, families, and areas/branches.
-     * 
+     *
      * @return \App\Models\JobDetail
      */
     private function storeJobDetails()

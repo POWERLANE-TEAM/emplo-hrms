@@ -1,6 +1,6 @@
 <footer class="external shadow-lg z-0 ">
-    <div class="d-flex footer-info row py-3 py-md-4 mx-1 mx-md-5">
-        <section class="col-12 col-md-4 order-0 px-3 py-3  ">
+    <div class="d-flex footer-info row py-3 py-md-4 ps-5 ms-md-5">
+        <section class="col-12 col-md-6 order-0 px-3 py-3  ">
             <header class="align-middle text-primary fs-4 fw-bold p-3 mb-3">
                 <span class="bg-white p-2 ms-n4">
                     <x-html.pri-sm-logo></x-html.pri-sm-logo>
@@ -28,7 +28,7 @@
                 <x-nav-link href="#" class="small d-block unstyled" :active="request()->is('#')">Privacy Policy</x-nav-link>
             </nav>
         </section>
-        <section class=" d-grid flex-column col-12 col-md-4 order-1 order-md-4 px-3 py-3   gap-3">
+        <section class="col-2 d-grid flex-column order-1 order-md-4 px-3 py-3   gap-3">
             <div>
                 <label for="language-selector" class="text-primary mb-1">Language</label>
                 <select id="language-selector" class="form-select w-auto">

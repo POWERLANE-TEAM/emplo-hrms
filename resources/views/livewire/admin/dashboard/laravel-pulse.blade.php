@@ -1,5 +1,5 @@
 <div class="col-md-6 d-flex">
-    <x-nav-link href="{{ route('admin.system.pulse') }}" class="unstyled w-100">
+    <a target="_blank" href="{{ route('admin.system.pulse') }}" class="unstyled w-100">
         <div class="card p-4 pulse-card h-100">
             <div class="row">
                 <div class="col-md-7">
@@ -19,5 +19,5 @@
                 </div>
             </div>
         </div>
-    </x-nav-link>
+    </a>
 </div>

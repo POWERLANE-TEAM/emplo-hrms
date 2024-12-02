@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\PerformancePeriod;
-use Illuminate\Support\Arr;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Arr;
 
 class PerformancePeriodSeeder extends Seeder
 {
@@ -13,7 +13,7 @@ class PerformancePeriodSeeder extends Seeder
      */
     public function run(): void
     {
-        $periods = ['third month', 'fifth month', 'final month'];
+        $periods = ['third month', 'fifth month', 'final month', 'annual'];
 
         Arr::map($periods, function (string $period) {
             PerformancePeriod::create([

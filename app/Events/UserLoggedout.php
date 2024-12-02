@@ -2,7 +2,6 @@
 
 namespace App\Events;
 
-use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
@@ -28,7 +27,7 @@ class UserLoggedout implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('user_auth.' . $this->authBroadcastId);
+        return new PrivateChannel('user_auth.'.$this->authBroadcastId);
     }
 
     public function broadcastWith()

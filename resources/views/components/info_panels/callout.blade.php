@@ -29,10 +29,12 @@
 
         {{-- Display the description --}}
         <span>
-        @if($note)
-            <strong>NOTE: </strong>
-        @endif
-        {{ $description ?? 'Default description text if none provided.' }}</span>
+            @if($note)
+                <strong>NOTE: </strong>
+            @endif
+            {!! $description ?? 'Default description text if none provided.' !!}
+        </span>
     </div>
 </div>
+
 

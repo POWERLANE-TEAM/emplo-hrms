@@ -2,8 +2,8 @@
 
 namespace App\Livewire\Auth\Admin;
 
-use Livewire\Component;
 use Livewire\Attributes\Validate;
+use Livewire\Component;
 
 class Login extends Component
 {

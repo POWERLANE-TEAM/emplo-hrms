@@ -50,7 +50,9 @@
 
         @if ($jobDetails)
             @foreach ($jobDetails as $jobDetail)
-                <p><strong>{{ __('Department: ') }}</strong> {{ $jobDetail->department }} </p>
+                <p><strong>{{ __('Department: ') }}</strong>{{ $jobDetail->department }}</p>
+                <p><strong>{{ __('Job Family: ') }}</strong>{{ $jobDetail->family }}</p>
+                <p><strong>{{ __('Job Level: ') }}</strong>{{ $jobDetail->levelName.' (Level '.$jobDetail->level.')' }}</p>
                 <p><strong>{{ __('Job Description: ') }}</strong>{{ $jobDetail->description ?? __('Not specified') }}</p>
                 <p><strong>{{ __('Qualifications: ') }}</strong></p>
                 <ul>

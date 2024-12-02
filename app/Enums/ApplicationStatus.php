@@ -6,20 +6,20 @@ enum ApplicationStatus: int
 {
     case PENDING = 1;
     case ASSESSMENT_SCHEDULED = 2;
-    case PRE_EMPLOYED = 3;
-    case APPROVED = 4;
-    case REJECTED = 5;
+    case FINAL_INTERVIEW_SCHEDULED = 3;
+    case PRE_EMPLOYED = 4;
+    case APPROVED = 5;
+    case REJECTED = 6;
 
     /**
      * Return user-friendly application status labels.
-     *
-     * @return string
      */
     public function label(): string
     {
         return match ($this) {
             self::PENDING => 'Pending review',
             self::ASSESSMENT_SCHEDULED => 'Assessment scheduled',
+            self::FINAL_INTERVIEW_SCHEDULED => 'Final interview scheduled',
             self::PRE_EMPLOYED => 'Pre employed',
             self::APPROVED => 'Approved',
             self::REJECTED => 'Rejected',
@@ -45,7 +45,33 @@ enum ApplicationStatus: int
     {
         return [
             self::ASSESSMENT_SCHEDULED,
-            self::REJECTED => 'Rejected',
+            self::REJECTED,
+        ];
+    }
+
+    /**
+     * Get an array of allowed status updates for pending applications.
+     *
+     * @return array An array of allowed status updates.
+     */
+    public static function allowedAssessedStatusUpdates(): array
+    {
+        return [
+            self::FINAL_INTERVIEW_SCHEDULED,
+            self::REJECTED,
+        ];
+    }
+
+    /**
+     * Get an array of allowed status updates for pending applications.
+     *
+     * @return array An array of allowed status updates.
+     */
+    public static function allowedFinalInterviewStatusUpdates(): array
+    {
+        return [
+            self::PRE_EMPLOYED,
+            self::REJECTED,
         ];
     }
 }

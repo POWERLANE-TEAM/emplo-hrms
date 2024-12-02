@@ -1,4 +1,4 @@
-@props(['iconSize' => '31', 'iconRatio' => '1/1'])
+@props(['iconSize' => '25', 'iconRatio' => '1/1'])
 
 
 <header class="top-nav sticky-md-top bg-primary">
@@ -10,13 +10,14 @@
                 </div>
             </div>
 
-            <x-nav-link href="/" :active="request()->is('/')" class="no-hover ps-0 fw-semibold nav-link">
-                <h1 class="fs-2 fw-bolder text-white">Powerlane</h1>
+            <x-nav-link href="/" :active="request()->is('/')"
+                class="no-hover ps-0 fw-semibold nav-link d-flex align-items-center">
+                <h1 class="fs-2 fw-bolder text-white mb-0">Powerlane</h1>
             </x-nav-link>
         </div>
         <div class="d-flex align-items-center fw-bold ">
             <section class="desktop-topnav d-none d-md-flex">
-                <aside>
+                <aside class="d-flex align-items-center">
                     <div class="dropdown ">
                         <button id="theme-toggle-btn" class="bg-transparent border-0 dropdown-toggle" type="button"
                             aria-label="Toggle light/dark theme" data-bs-toggle="dropdown">
@@ -28,8 +29,7 @@
 
                                 <img class="icon" width="{{ $iconSize }}" height="{{ $iconSize }}"
                                     aspect-ratio="{{ $iconRatio }}"
-                                    src="{{ Vite::asset('resources/images/icons/moon-and-stars-35x35.webp') }}"
-                                    alt="">
+                                    src="{{ Vite::asset('resources/images/icons/moon-and-stars-35x35.webp') }}" alt="">
                             </picture>
                         </button>
                         <ul class="dropdown-menu">
@@ -40,11 +40,13 @@
                     </div>
                 </aside>
 
-                <x-notif-dropdown>
-                    <li class="dropdown-item">Notif 1</li>
-                    <li class="dropdown-item">Notif 1</li>
-                    <li class="dropdown-item">Notif 1</li>
-                </x-notif-dropdown>
+                <div class="d-flex align-items-center">
+                    <x-notif-dropdown>
+                        <li class="dropdown-item">Notif 1</li>
+                        <li class="dropdown-item">Notif 1</li>
+                        <li class="dropdown-item">Notif 1</li>
+                    </x-notif-dropdown>
+                </div>
 
                 <div class="dropdown user-menu">
                     <button class=" bg-transparent border-0 dropdown-toggle" type="button" data-bs-toggle="dropdown"

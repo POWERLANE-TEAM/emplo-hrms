@@ -2,31 +2,32 @@
 
 namespace App\Providers;
 
-use App\Enums\UserRole;
-use App\Enums\AccountType;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use Laravel\Fortify\Fortify;
-use App\Enums\UserPermission;
-use App\Events\UserLoggedout;
-use App\Http\Helpers\RoutePrefix;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
 use App\Actions\Fortify\CreateNewUser;
-use App\Livewire\Auth\UnverifiedEmail;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Cache\RateLimiting\Limit;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
-use Illuminate\Support\Facades\RateLimiter;
-use Laravel\Fortify\Contracts\LoginResponse;
-use Laravel\Fortify\Contracts\LogoutResponse;
 use App\Actions\Fortify\UpdateUserProfileInformation;
+use App\Enums\AccountType;
+use App\Enums\ActivityLogName;
 use App\Enums\RoutePrefix as EnumsRoutePrefix;
+use App\Enums\UserPermission;
+use App\Enums\UserRole;
+use App\Events\UserLoggedout;
+use App\Http\Helpers\RoutePrefix;
+use App\Livewire\Auth\UnverifiedEmail;
 use App\Models\User;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
+use Laravel\Fortify\Contracts\LoginResponse;
+use Laravel\Fortify\Contracts\LogoutResponse;
+use Laravel\Fortify\Fortify;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -54,7 +55,7 @@ class FortifyServiceProvider extends ServiceProvider
                     // avoid Pusher error: cURL error 7: Failed to connect to localhost port 8080 after 2209 ms: Couldn't connect to server
                     /* when websocket server is not started */
 
-                    Log::error('Broadcast error: ' . $th);
+                    Log::error('Broadcast error: '.$th);
                 } finally {
                     return redirect($redirectUrl);
                 }
@@ -66,6 +67,12 @@ class FortifyServiceProvider extends ServiceProvider
             public function toResponse($request)
             {
                 $authUser = Auth::user();
+
+                // sample only, not much
+                activity()
+                    ->by($authUser)
+                    ->useLog(ActivityLogName::AUTHENTICATION->value)
+                    ->log(Str::ucfirst($authUser->account->first_name).' logged in.');
 
                 // Redirection to previously visited page before being prompt to login
                 // For example you visit /employee/payslip and you are not logged in
@@ -133,7 +140,7 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
 
-        Fortify::verifyEmailView(fn() => app(UnverifiedEmail::class)->render());
+        Fortify::verifyEmailView(fn () => app(UnverifiedEmail::class)->render());
 
         Fortify::authenticateUsing(function (Request $request) {
 
@@ -143,7 +150,7 @@ class FortifyServiceProvider extends ServiceProvider
 
             if ($this->isUnauthorized($user, $routePrefix)) {
                 $redirectPrefix = $this->getRedirectPrefix($user, $routePrefix);
-                $routePrefixWithDot = !empty($redirectPrefix) ? "{$redirectPrefix}." : $redirectPrefix;
+                $routePrefixWithDot = ! empty($redirectPrefix) ? "{$redirectPrefix}." : $redirectPrefix;
                 $routeName = "{$routePrefixWithDot}login";
                 $redirectUrl = url(route($routeName));
 
@@ -169,7 +176,7 @@ class FortifyServiceProvider extends ServiceProvider
         });
 
         RateLimiter::for('login', function (Request $request) {
-            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())) . '|' . $request->ip());
+            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
 
             return Limit::perMinute(5)->by($throttleKey);
         });
@@ -181,7 +188,7 @@ class FortifyServiceProvider extends ServiceProvider
 
     private function isUnauthorized($user, $routePrefix): bool
     {
-        if (!$user) {
+        if (! $user) {
             return false;
         }
 

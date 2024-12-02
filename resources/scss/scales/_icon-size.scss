@@ -2,6 +2,7 @@
 $icon-small: 0.75em;   // Small icon size
 $icon-medium: 1em;     // Default icon size
 $icon-large: 1.25em;   // Large icon size
+$icon-slarge: 1.50em;   // Large icon size
 $icon-xlarge: 2em;     // Extra large icon size
 $icon-xxlarge: 3em;    // Extra-extra large icon size
 $icon-xxxlarge: 4em;   // Extra-extra-extra large icon size
@@ -20,6 +21,11 @@ $icon-xxxlarge: 4em;   // Extra-extra-extra large icon size
 .icon-large {
     width: $icon-large !important;
     height: $icon-large !important;
+}
+
+.icon-slarge {
+    width: $icon-slarge !important;
+    height: $icon-slarge !important;
 }
 
 .icon-xlarge {

@@ -6,7 +6,7 @@
 ])
 
 <button 
-    class="ms-1 btn btn-link p-0" 
+    class="ms-1 btn btn-link p-0 hover-opacity" 
     data-bs-toggle="modal" 
     data-bs-target="#{{ $modalId }}"
     aria-haspopup="dialog"
