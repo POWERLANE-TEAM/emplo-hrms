@@ -21,11 +21,12 @@ Route::group([], function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/application/{page?}', [ApplicantController::class, 'index']);
 
+    Route::get('/apply', [ApplicantController::class, 'create']);
+
     Route::get('/preemploy', [ApplicationDocController::class, 'create']);
     Route::post('/preemploy', [ApplicationDocController::class, 'store']);
 });
 
-Route::get('/apply', [ApplicantController::class, 'create']);
 
 Route::post('/resume/process', [DocumentController::class, 'recognizeText'])
     ->name('resume.process');

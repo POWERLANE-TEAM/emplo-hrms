@@ -4,17 +4,22 @@ namespace App\Http\Controllers\Application;
 
 use App\Actions\Fortify\UpdateUserProfileInformation;
 use App\Enums\AccountType;
+use App\Enums\UserPermission;
 use App\Enums\UserStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Applicant;
 use App\Models\JobVacancy;
 use App\Models\User;
+use App\Traits\Applicant as ApplicantTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Propaganistas\LaravelPhone\PhoneNumber;
 
 class ApplicantController extends Controller
 {
+    use ApplicantTrait;
+
     /* Show all resource */
     public function index($page = null)
     {
@@ -27,7 +32,7 @@ class ApplicantController extends Controller
     public function create()
     {
         // add check if authenticated is guest or applicant
-        if (true) {
+        if ($this->canApply()) {
             return view('apply');
         }
     }
@@ -35,6 +40,7 @@ class ApplicantController extends Controller
     /* store a new resource */
     public function store(Request|array $request, bool $isValidated = false)
     {
+        if ($this->canApply(true));
 
         $jobVacancyId = is_array($request) ? $request['application']['jobVacancyId'] : $request->input('jobVacancyId');
 
@@ -109,9 +115,7 @@ class ApplicantController extends Controller
         $userToApplicantController  = new UpdateUserProfileInformation();
 
         $errors = session()->get('errors');
-        Log::info('ApplicantController@store', ['applicantUser' => $applicantUser, 'errors' => $errors ? $errors->getBag('updateProfileInformation') : null]);
         $userToApplicantController->update($user, $applicantUser);
-
 
         // add save resume file
 
@@ -134,5 +138,10 @@ class ApplicantController extends Controller
     public function destroy()
     {
         //
+    }
+
+    private function canApply(?bool $isTerminate = false)
+    {
+        return !self::applicantOrYet(!Auth::user()->hasPermissionTo(UserPermission::VIEW_JOB_APPLICATION_FORM->value), $isTerminate) || !self::hasApplication($isTerminate);
     }
 }
