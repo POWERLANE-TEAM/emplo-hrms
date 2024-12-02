@@ -2,20 +2,21 @@
 
 namespace App\Providers;
 
-use App\Enums\UserRole;
 use App\Models\User;
-use App\Providers\Form\FormWizardServiceProvider;
-use Illuminate\Auth\Notifications\VerifyEmail;
-use Illuminate\Broadcasting\BroadcastServiceProvider;
-use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Vite;
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Validation\Rules\Password;
+use App\Enums\UserRole;
 use Laravel\Pulse\Facades\Pulse;
+use App\Providers\Form\FormWizardServiceProvider;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Vite;
+use App\Http\Helpers\BiometricDevice;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules\Password;
+use Illuminate\Auth\Notifications\VerifyEmail;
+use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Broadcasting\BroadcastServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -28,6 +29,10 @@ class AppServiceProvider extends ServiceProvider
          * Includes similar data without repeating code.
          */
         $this->app->register(ComposerServiceProvider::class);
+
+        $this->app->singleton(BiometricDevice::class, function () {
+            return new BiometricDevice();
+        });
         $this->app->register(FormWizardServiceProvider::class);
     }
 
@@ -91,6 +96,7 @@ class AppServiceProvider extends ServiceProvider
             'performance_category' => 'App\Models\PerformanceCategory',
             'performance_rating' => 'App\Models\PerformanceRating',
             'holiday' => 'App\Models\Holiday',
+            'attendance_log' => 'App\Models\AttendanceLog',
         ]);
 
         BroadcastServiceProvider::class;

@@ -13,45 +13,28 @@ class DatabaseSeeder extends Seeder
     {
         activity()->withoutLogs(function () {
 
-            $this->call(UserStatusSeeder::class);
-
-            $this->call(ApplicationStatusSeeder::class);
-
-            $this->call(RolesAndPermissionsSeeder::class);
-
-            $this->call(ShiftSeeder::class);
-
-            $this->call(PsgcSeeder::class);
-
-            $this->call(EmploymentStatusSeeder::class);
-
-            $this->call(DepartmentSeeder::class);
-
-            $this->call(JobLevelSeeder::class);
-
-            $this->call(SpecificAreaSeeder::class);
-
-            $this->call(JobFamilySeeder::class);
-
-            $this->call(JobTitleSeeder::class);
-
-            $this->call(BasicUserSeeder::class);
-
-            $this->call(IntermediateUserSeeder::class);
-
-            $this->call(AdvancedUserSeeder::class);
-
-            $this->call(JobVacancySeeder::class);
-
-            $this->call(PreempRequirementSeeder::class);
-
-            $this->call(PerformanceCategorySeeder::class);
-
-            $this->call(PerformanceRatingSeeder::class);
-
-            $this->call(PerformancePeriodSeeder::class);
-
-            $this->call(HolidaySeeder::class);
+            $this->call([
+                PsgcSeeder::class,
+                UserStatusSeeder::class,
+                ApplicationStatusSeeder::class,
+                RolesAndPermissionsSeeder::class,
+                ShiftSeeder::class,
+                EmploymentStatusSeeder::class,
+                DepartmentSeeder::class,
+                JobLevelSeeder::class,
+                SpecificAreaSeeder::class,
+                JobFamilySeeder::class,
+                JobTitleSeeder::class,
+                BasicUserSeeder::class,
+                IntermediateUserSeeder::class,
+                AdvancedUserSeeder::class,
+                JobVacancySeeder::class,
+                PreempRequirementSeeder::class,
+                PerformanceCategorySeeder::class,
+                PerformanceRatingSeeder::class,
+                PerformancePeriodSeeder::class,
+                HolidaySeeder::class,
+            ]);
         });
     }
 }

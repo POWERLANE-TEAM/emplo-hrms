@@ -148,4 +148,20 @@ Route::middleware('auth')->group(function () {
         });
     });
 
+    /**
+     * Attendance
+     */
+    Route::middleware('can:'.UserPermission::UPDATE_BIOMETRIC_ATTENDANCE_DEVICE_CONFIG->value)
+        ->prefix('attendance')->name('attendance.')->group(function () {
+
+        // Biometric Device Manager
+        Route::get('biometric-device', function () {
+            return view('employee.admin.attendance.biometric-device');
+        })->name('biometric-device');
+
+        // Attendance Logs
+        Route::get('logs', function () {
+            return view('employee.admin.attendance.index');
+        })->name('logs');
+    });
 });

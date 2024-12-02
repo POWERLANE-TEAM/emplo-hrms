@@ -407,6 +407,13 @@ button {
     text-decoration: underline !important;
 }
 
+.sparkle-callout {
+    background-color: transparent;
+    border-left: 4px solid var(--main-green);
+    width: 100%;
+    padding: 0.8em 1.5em;
+}
+
 body {
     &:not([data-bs-theme]) {
         @media screen and (prefers-color-scheme: dark) {
