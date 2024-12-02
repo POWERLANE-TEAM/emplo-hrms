@@ -66,17 +66,74 @@
                 </div>
 
                 <div class="text-center pt-3">
-                    <x-buttons.link-btn label="View Attendance" href="#"
-                        class="btn-primary" />
+                    <x-buttons.link-btn label="View Attendance" href="#" class="btn-primary" />
                 </div>
             </div>
         </div>
 
-
-        <!-- SECTION: Announcements -->
-        <div class="col-md-7 border">
+        <!-- SECTION: Latest Announcement -->
+        <div class="col-md-7 ">
             <div class="h-100">
-                Section 2
+                <div class="flex announcement-box">
+                    <!-- Header -->
+                    <div class="px-4 pb-4">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center">
+                                <img class="img-size-10 img-responsive"
+                                    src="{{ Vite::asset('resources/images/illus/dashboard/megaphone.png') }}" alt="">
+
+                                <span class="ms-3 green-highlight">
+                                    Latest Announcement
+                                </span>
+                            </div>
+
+                            <!-- Button Link to Create Announcement -->
+                            <div class="ps-1 me-1">
+                                <x-buttons.view-link-btn link="#" text="View All Announcements" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mock Data Only for color mapping. Remove once data is fetched dynamically. -->
+                    @php
+                        $announcements = [
+                            [
+                                'title' => 'New Policy Implementation',
+                                'description' => 'Effective next month, we will be implementing a new remote work policy. Please review the details in the policy section of the portal!',
+                                'roles' => ['Technical', 'Employee']
+                            ],
+
+                        ];
+
+                        // Bound to change.
+                        $colorMapping = [
+                            'HR' => 'blue',
+                            'Employee' => 'teal',
+                            'Accountant' => 'green',
+                            'Relations' => 'purple',
+                            'Technical' => 'orange',
+                            'default' => 'purple',
+                        ];
+                    @endphp
+
+                    <!-- The fetching section. ONLY SHOW THE LATEST ANNOUNCEMENT!-->
+                    @foreach ($announcements as $announcement)
+                        <div class="card mb-3 bg-body-secondary border-0 p-4">
+                            <div class="w-100">
+                                <div>
+                                    <header class="fs-5 fw-bold d-inline-block me-2">{{ $announcement['title'] }}
+                                        @foreach ($announcement['roles'] as $role)
+                                            <x-status-badge :color="$colorMapping[$role] ?? $colorMapping['default']">{{ $role }}</x-status-badge>
+                                        @endforeach
+                                    </header>
+
+                                    <p class="fs-7">{{ $announcement['description'] }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+
+                </div>
             </div>
         </div>
     </div>
