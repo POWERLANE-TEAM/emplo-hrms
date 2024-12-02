@@ -86,17 +86,17 @@ class FileForm extends Form
         $this->required = $required;
     }
 
-    protected function getMinFileSize()
+    public function getMinFileSize()
     {
         return $this->validateFileSize(self::FILE_SIZES[$this->minSize] ?? $this->minSize);
     }
 
-    protected function getMaxFileSize()
+    public function getMaxFileSize()
     {
         return self::FILE_SIZES[$this->maxSize] ?? self::FILE_SIZES['sm'];
     }
 
-    protected function getAcceptedFileTypes()
+    public function getAcceptedFileTypes()
     {
         return implode(',', $this->accepted);
     }
