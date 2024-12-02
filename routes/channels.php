@@ -1,8 +1,8 @@
 <?php
 
+use App\Actions\GenerateRandomUserAvatar;
 use App\Models\User;
 use Illuminate\Support\Facades\Broadcast;
-use Illuminate\Support\Facades\Storage;
 
 Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
@@ -18,9 +18,9 @@ Broadcast::channel('user_auth.{userBroadcastId}', function ($user, string $userB
 
 Broadcast::channel('online-users', function (User $user) {
     if (Auth::check()) {
-        $userPhoto = $user->photo ?? Storage::url('icons/default-avatar.png');
-        $user->load('account');
         $fullName = $user->account->full_name;
+        $userPhoto = $user->photo ?? app(GenerateRandomUserAvatar::class)($fullName);
+        $user->load('account');
 
         return array_merge(
             $user->only(['user_id', 'email']),
