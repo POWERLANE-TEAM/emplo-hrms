@@ -151,7 +151,7 @@ Route::middleware('auth')->group(function () {
     /**
      * Attendance
      */
-    Route::middleware('can:'.UserPermission::UPDATE_BIOMETRIC_ATTENDANCE_DEVICE_CONFIG->value)
+    Route::middleware('can:'.UserPermission::UPDATE_BIOMETRIC_DEVICE->value)
         ->prefix('attendance')->name('attendance.')->group(function () {
 
         // Biometric Device Manager
