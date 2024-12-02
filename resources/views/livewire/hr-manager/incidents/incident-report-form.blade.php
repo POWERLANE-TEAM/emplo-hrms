@@ -14,7 +14,7 @@
 <div class="mx-3">
     <form>
         <!-- SECTION: Incident Type, Reported By, Assigned HR -->
-        <div class="row">
+        <div class="row mb-3">
             <div class="col">
                 <!-- BACK-END REPLACE: Incident Type options -->
                 <x-form.boxed-selectpicker id="incident_type" label="{{ __('Incident Type') }}" :nonce="$nonce"

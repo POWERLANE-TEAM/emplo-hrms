@@ -6,14 +6,16 @@
 
 @props(['label' => null, 'options' => [], 'nonce', 'required' => false])
 
-<label for="{{ $attributes->get('id') }}" class="mb-1 fw-semibold text-secondary-emphasis">
-    {{ $label }}
-    {{-- Conditionally display the red asterisk for required fields --}}
-    @if($required)
-        <span class="text-danger">*</span>
-    @endif
-</label>
-<div class="input-group mb-3 position-relative">
+@if($label)
+    <label for="{{ $attributes->get('id') }}" class="mb-1 fw-semibold text-secondary-emphasis">
+        {{ $label }}
+        {{-- Conditionally display the red asterisk for required fields --}}
+        @if($required)
+            <span class="text-danger">*</span>
+        @endif
+    </label>
+@endif
+<div wire:ignore class="input-group position-relative">
     <select @if($attributes->has('name')) wire:model="{{ $attributes->get('name') }}" @endif {{ $attributes->merge([
     'class' => 'form-control form-select border ps-3 rounded pe-5 selectpicker',
     'autocomplete' => $attributes->get('autocomplete', 'off'),
@@ -35,12 +37,26 @@
             if (selectElement.getAttribute('data-choices-initialized') === 'true') {
                 return; // Skip initialization if already done
             }
-            
+
             new Choices(selectElement, {
                 searchEnabled: true,
                 itemSelectText: '',
+                maxItemCount: 2,
+                renderSelectedChoices: 'always',
+                shouldSort: false, // Optional, can be changed :) Disables sorting if you want to retain original order
             });
+
             selectElement.setAttribute('data-choices-initialized', 'true');
+
+            // Add custom scrollbar class after initialization
+            // Use a small timeout to ensure the dropdown is fully initialized
+            setTimeout(() => {
+                // Directly select the .choices__list--dropdown element
+                const dropdownList = document.querySelector('.choices__list--dropdown');
+                if (dropdownList) {
+                    dropdownList.classList.add('visible-gray-scrollbar');
+                }
+            }, 100);  // Adjust the timeout duration as necessary
         });
     });
 </script>

@@ -92,7 +92,7 @@ select:focus {
     font-size: 0.5rem;
     box-shadow: 0 4px 8px $shadow-color;
     max-height: 200px;
-    overflow-y: auto;
+    overflow-y: auto !important;
     background: #fff !important;
     color: black; 
     transition: background-color 0.3s ease;
