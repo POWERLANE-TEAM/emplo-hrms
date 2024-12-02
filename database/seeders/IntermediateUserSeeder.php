@@ -24,23 +24,25 @@ class IntermediateUserSeeder extends Seeder
      */
     public function run(): void
     {
-        $employee = Employee::factory()->create();
+        activity()->withoutLogs(function () {
+            $employee = Employee::factory()->create();
 
-        $file = File::json(base_path('resources/js/email-domain-list.json'));
-        self::$freeEmailDomain = $file['valid_email'];
-        $validDomains = Arr::random(self::$freeEmailDomain);
-
-        $userData = [
-            'account_type' => AccountType::EMPLOYEE,
-            'account_id' => $employee->employee_id,
-            'email' => 'intermediate'.fake()->unique()->userName().'@'.$validDomains,
-            'password' => Hash::make('UniqP@ssw0rd'),
-            'user_status_id' => EnumUserStatus::ACTIVE,
-            'email_verified_at' => fake()->dateTimeBetween('-10 days', 'now'),
-        ];
-
-        $employeeUser = User::factory()->create($userData);
-
-        $employeeUser->assignRole(UserRole::INTERMEDIATE);
+            $file = File::json(base_path('resources/js/email-domain-list.json'));
+            self::$freeEmailDomain = $file['valid_email'];
+            $validDomains = Arr::random(self::$freeEmailDomain);
+    
+            $userData = [
+                'account_type' => AccountType::EMPLOYEE,
+                'account_id' => $employee->employee_id,
+                'email' => 'intermediate'.fake()->unique()->userName().'@'.$validDomains,
+                'password' => Hash::make('UniqP@ssw0rd'),
+                'user_status_id' => EnumUserStatus::ACTIVE,
+                'email_verified_at' => fake()->dateTimeBetween('-10 days', 'now'),
+            ];
+    
+            $employeeUser = User::factory()->create($userData);
+    
+            $employeeUser->assignRole(UserRole::INTERMEDIATE);
+        });
     }
 }

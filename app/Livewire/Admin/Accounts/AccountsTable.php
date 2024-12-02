@@ -2,13 +2,13 @@
 
 namespace App\Livewire\Admin\Accounts;
 
+use App\Actions\GenerateRandomUserAvatar;
 use App\Models\User;
 use App\Enums\UserRole;
 use App\Enums\UserStatus;
 use App\Enums\AccountType;
 use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
@@ -24,6 +24,8 @@ class AccountsTable extends DataTableComponent
         $this->setEagerLoadAllRelationsEnabled();
         $this->setSingleSortingDisabled();
         $this->setQueryStringEnabled();
+        $this->setSearchDebounce(1000);
+        $this->setTrimSearchStringEnabled();
         $this->setOfflineIndicatorEnabled();
         $this->setDefaultSort('created_at', 'desc');
         $this->setEmptyMessage(__('No results found.'));
@@ -51,15 +53,15 @@ class AccountsTable extends DataTableComponent
         $this->setThAttributes(function (Column $column) {
             return [
                 'default' => true,
-                'class' => 'text-center fw-medium',
+                'class' => 'text-start fw-medium',
             ];
         });
 
-        $this->setTdAttributes(function (Column $column, $row, $columnIndex, $rowIndex) {
-            return [
-                'class' => 'text-md-center',
-            ];
-        });
+        // $this->setTdAttributes(function (Column $column, $row, $columnIndex, $rowIndex) {
+        //     return [
+        //         'class' => 'text-md-center',
+        //     ];
+        // });
     }
 
     public function columns(): array
@@ -67,20 +69,32 @@ class AccountsTable extends DataTableComponent
         return [
             Column::make(__('Full Name'))
                 ->label(function ($row) {
-                    $fullName = Str::headline($row->account->full_name);
-                    $photo = $row->photo ?? Storage::url('icons/default-avatar.png');
+                    $name = Str::headline($row->account->full_name);
+                    $photo = $row->photo ?? app(GenerateRandomUserAvatar::class)($name);
+                    $email = $row->email;
             
                     // this is disgusting. Change this somehow
-                    return '<div style="display: flex; align-items: center;">
-                                <img src="' . e($photo) . '" alt="User Picture" style="width: 33px; height: 33px; border-radius: 50%; margin-right: 10px;">
-                                <span>' . e($fullName) . '</span>
+                    return '<div class="d-flex align-items-center">
+                                <img src="' . e($photo) . '" alt="User Picture" class="rounded-circle me-3" style="width: 38px; height: 38px;">
+                                <div>
+                                    <div class="fw-bold">' . e($name) . '</div>
+                                    <div class="text-muted" style="font-size: 0.9em;">' . e($email) . '</div>
+                                </div>
                             </div>';
                 })
-                ->html(),
-        
-            Column::make(__('Email Address'), 'email')
-                ->sortable()
-                ->searchable(),
+                ->html()
+                ->sortable(function (Builder $query, $direction) {
+                    return $query->whereHas('account', function ($subquery) use ($direction) {
+                        $subquery->orderBy('last_name', $direction);
+                    });
+                })
+                ->searchable(function (Builder $query, $searchTerm) {
+                    return $query->whereHas('account', function ($subquery) use ($searchTerm) {
+                        $subquery->whereLike('first_name', "%{$searchTerm}%")
+                            ->orWhereLike('middle_name', "%{$searchTerm}%")
+                            ->orWhereLike('last_name', "%{$searchTerm}%");
+                    })->orWhereLike('email', "%{$searchTerm}%");
+                }),
 
             Column::make(__('Role'))
                 ->label(function ($row) {
@@ -102,7 +116,8 @@ class AccountsTable extends DataTableComponent
 
             Column::make(__('Registered Date'), 'created_at')
                 ->format(fn ($value, $row, Column $column) => Carbon::parse($row->created_at)->diffForHumans())
-                ->sortable(),
+                ->sortable()
+                ->searchable(),
                 
             Column::make(__('2FA'), 'two_factor_confirmed_at')
                 ->format(fn ($value, $row, Column $column)
