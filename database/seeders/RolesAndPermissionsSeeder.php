@@ -143,7 +143,7 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::UPDATE_PERFORMANCE_CATEGORIES->value,
             UserPermission::UPDATE_PERFORMANCE_RATING_SCALES->value,
             UserPermission::UPDATE_PREEMPLOYMENT_REQUIREMENTS->value,
-            UserPermission::UPDATE_BIOMETRIC_ATTENDANCE_DEVICE_CONFIG->value,
+            UserPermission::UPDATE_BIOMETRIC_DEVICE->value,
 
             // Delete cases goes here
         ];
