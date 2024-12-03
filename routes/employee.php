@@ -123,6 +123,12 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         return view('employee.hr-manager.training.records');
     })->name('training.records');
 
+    // Employees Information
+    // -------------------------------
+    Route::get('/employees/information', function () {
+        return view('employee.hr-manager.employees.information');
+    })->name('employees.information');
+
 
     // =========================================
     // SUPERVISOR ROUTES
