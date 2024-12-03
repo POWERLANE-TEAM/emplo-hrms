@@ -85,6 +85,12 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         return view('employee.profile.settings');
     })->name('profile');
 
+    // Resume Evaluator
+    // --------------------------
+    Route::get('resume-evaluator/rankings', function () {
+        return view('/employee.hr-manager.resume-evaluator.rankings');
+    })->name('resume-evaluator.rankings');
+
     // Performance Evaluation Results
     // -------------------------------
     Route::get('evaluation-results/probationary', function () {
@@ -94,6 +100,19 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     Route::get('evaluation-results/regular', function () {
         return view('/employee.hr-manager.evaluations.regular.evaluation-results');
     })->name('evaluation-results.regular');
+
+    // Incidents Management
+    // -------------------------------
+    Route::get('/incidents/create', function () {
+        return view('employee.hr-manager.incidents.create');
+    })->name('incidents.create');
+
+    // Issue Management
+    // -------------------------------
+    Route::get('/issues/review', function () {
+        return view('employee.hr-manager.issues.review');
+    })->name('issues.review');
+
 
     // =========================================
     // SUPERVISOR ROUTES
@@ -108,6 +127,8 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     Route::get('/assign-score/regular', function () {
         return view('employee.supervisor.evaluations.regular.assign-score');
     })->name('assign-score.regular');
+
+
 
     // =========================================
     // BASIC EMPLOYEE ROUTES
@@ -129,9 +150,29 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         return view('employee.basic.leaves.view');
     })->name('leaves.view');
 
-    
+
+    // Overtime Management
+    // -------------------------------
+    Route::get('/overtime/all-summary-forms', function () {
+        return view('employee.basic.overtime.all-summary-forms');
+    })->name('overtime.all-summary-forms');
+
+    Route::get('/overtime/summary-form', function () {
+        return view('employee.basic.overtime.summary-form');
+    })->name('overtime.summary-form');
+
+    Route::get('/overtime/requests', function () {
+        return view('employee.basic.overtime.requests');
+    })->name('overtime.requests');
+
     Route::get('/sample', function () {
         dd(request());
         echo 'sample';
     });
+
+    // Issues Management
+    // -------------------------------
+    Route::get('/issues/create', function () {
+        return view('employee.basic.issues.create');
+    })->name('issues.create');
 });

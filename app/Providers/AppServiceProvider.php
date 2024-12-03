@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\User;
 use App\Enums\UserRole;
 use Laravel\Pulse\Facades\Pulse;
+use App\Providers\Form\FormWizardServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Vite;
 use App\Http\Helpers\BiometricDevice;
@@ -32,6 +33,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(BiometricDevice::class, function () {
             return new BiometricDevice();
         });
+        $this->app->register(FormWizardServiceProvider::class);
     }
 
     /**
@@ -44,11 +46,11 @@ class AppServiceProvider extends ServiceProvider
 
             return
                 $rule->letters()
-                    ->mixedCase()
-                    ->numbers()
-                    ->symbols()
-                    ->uncompromised()
-                    ->rules(['not_regex:/\s/']); // No spaces allowed
+                ->mixedCase()
+                ->numbers()
+                ->symbols()
+                ->uncompromised()
+                ->rules(['not_regex:/\s/']); // No spaces allowed
         });
 
         Validator::extend('valid_email_dns', function ($attributes, $value, $parameters, $validator) {
@@ -107,7 +109,7 @@ class AppServiceProvider extends ServiceProvider
          *
          * @see https://laravel.com/docs/11.x/pulse#dashboard-resolving-users
          */
-        Pulse::user(fn ($user) => [
+        Pulse::user(fn($user) => [
             'name' => $user->account->full_name,
             'extra' => $user->email,
             'avatar' => $user->photo ?? Storage::url('icons/default-avatar.png'),

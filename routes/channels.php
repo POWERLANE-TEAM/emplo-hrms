@@ -1,17 +1,20 @@
 <?php
 
-use App\Actions\GenerateRandomUserAvatar;
 use App\Models\User;
+use App\Enums\AccountType;
+use Illuminate\Support\Facades\Auth;
+use App\Actions\GenerateRandomUserAvatar;
 use Illuminate\Support\Facades\Broadcast;
 
 Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
 
-Broadcast::channel('user_auth.{userBroadcastId}', function ($user, string $userBroadcastId) {
+Broadcast::channel('user-auth.{userBroadcastId}', function ($user, string $userBroadcastId) {
 
-    $user_session = session()->getId();
-    $thisAuthBroadcastId = hash('sha512', $user_session.$user->email.$user_session);
+    $userSession = session()->getId();
+    $userIdentity = $user->email ?? Auth::id();
+    $thisAuthBroadcastId = hash('sha512', $userSession . $userIdentity . $userSession);
 
     return $thisAuthBroadcastId == $userBroadcastId;
 });
@@ -29,4 +32,13 @@ Broadcast::channel('online-users', function (User $user) {
     }
 
     return false;
+});
+
+Broadcast::channel('applicant.applying.{userBroadcastId}', function ($user, string $userBroadcastId) {
+
+    $userSession = session()->getId();
+    $userIdentity = $user->email ?? Auth::id();
+    $thisAuthBroadcastId = hash('sha512', $userSession . $userIdentity . $userSession);
+
+    return $thisAuthBroadcastId == $userBroadcastId && $user->account_type != AccountType::EMPLOYEE->value;
 });

@@ -12,6 +12,8 @@ class JobVacancySeeder extends Seeder
      */
     public function run(): void
     {
-        JobVacancy::factory(25);
+        activity()->withoutLogs(function () {
+            JobVacancy::factory(25)->create();
+        });
     }
 }

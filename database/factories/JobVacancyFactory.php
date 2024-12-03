@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\JobDetail;
+use App\Models\JobTitle;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,7 +18,7 @@ class JobVacancyFactory extends Factory
     public function definition(): array
     {
         return [
-            'job_detail_id' => JobDetail::factory(),
+            'job_title_id' => JobTitle::inRandomOrder()->first()->job_title_id,
             'vacancy_count' => fake()->numberBetween(1, 10),
             'application_deadline_at' => fake()->optional()->dateTimeBetween('now', '+1 year'),
         ];

@@ -9,6 +9,9 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
+    <style nonce="{{ $nonce }}">
+        {!! Vite::content('resources/css/input/disable-submit.css') !!}
+    </style>
     <x-html.meta />
     <x-html.meta-seo />
 
@@ -52,11 +55,11 @@
     @stack('styles')
 
     @env('local')
-        @vite(['node_modules/bootstrap/dist/js/bootstrap.bundle.min.js'])
+    @vite(['node_modules/bootstrap/dist/js/bootstrap.bundle.min.js'])
     @endenv
 
     @env('production')
-        @vite(['node_modules/bootstrap/dist/js/bootstrap.bundle.min.js?commonjs-entry'])
+    @vite(['node_modules/bootstrap/dist/js/bootstrap.bundle.min.js?commonjs-entry'])
     @endenv
 
     @stack('pre-scripts')

@@ -9,7 +9,9 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-
+    <style nonce="{{ $nonce }}">
+        {!! Vite::content('resources/css/input/disable-submit.css') !!}
+    </style>
     <x-html.meta />
     <x-html.meta-seo />
 
@@ -34,7 +36,9 @@
     <x-authenticated-broadcast-id />
     <x-livewire-listener />
 
-    @vite(['resources/js/listeners/online-users.js'])
+    @auth
+        @vite(['resources/js/listeners/online-users.js'])
+    @endauth
 
     {{--  Waiting for this fix in livewire https://github.com/livewire/livewire/pull/8793  --}}
     {{-- livewire.js?id=cc800bf4:9932 Detected multiple instances of Livewire running --}}

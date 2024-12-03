@@ -22,7 +22,7 @@ $shadow-color: rgba(0, 0, 0, 0.1);
       Default Styles (Light Theme)
       ========================================================================== */
 
-.choices-custom,
+.choices-custom, .choices,
 select {
     width: 100% !important;
     border-radius: 6px;
@@ -32,8 +32,19 @@ select {
     transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
+
+.choices:not(.choices-custom) {
+    height: 5vh;
+}
+
+.choices:not(.choices-custom) .choices__inner {
+    padding: 3.3px 10px 0px;
+}
+
 .choices-custom:focus,
 .choices-custom.is-focused,
+.choices:focus,
+.choices:is-focused,
 select:focus {
     border-color: $border-color-focus;
     outline: 0;
@@ -81,7 +92,7 @@ select:focus {
     font-size: 0.5rem;
     box-shadow: 0 4px 8px $shadow-color;
     max-height: 200px;
-    overflow-y: auto;
+    overflow-y: auto !important;
     background: #fff !important;
     color: black; 
     transition: background-color 0.3s ease;
@@ -147,7 +158,7 @@ select:focus {
 /* ==========================================================================
       Dark Theme Styles (Applied Dynamically)
       ========================================================================== */
-.choices-custom.dark,
+.choices-custom.dark, .choices.dark,
 select.dark {
     background-color: #212429 !important;
     color: white !important;

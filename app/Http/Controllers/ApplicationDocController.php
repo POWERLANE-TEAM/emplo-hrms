@@ -9,7 +9,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class PreEmploymentController extends Controller
+class ApplicationDocController extends Controller
 {
     /* Show all resource */
     public function index($page = null)
@@ -30,7 +30,8 @@ class PreEmploymentController extends Controller
     /* store a new resource */
     public function store(Request $request)
     {
-        $prefix = 'pre_emp_doc';
+        $prefix = 'applicationDoc';
+        $prefix = $request->hasFile('resumeFile') ? 'resumeFile' : $prefix;
 
         if ($request->hasFile($prefix)) {
 
@@ -41,11 +42,11 @@ class PreEmploymentController extends Controller
             // This need a third party clam anti virus (https://docs.clamav.net/) but I think this should be done in docker or other containerized environment
             // As it may conflict with the default av on the dev machine
 
-            // Get user account
+            // Get user accounts
 
             // Make Folder for user
 
-            $file = $request->file('pre_emp_doc');
+            $file = $request->file($prefix);
             $file_name = $file->getClientOriginalName();
             echo $file_name;
 
@@ -54,7 +55,7 @@ class PreEmploymentController extends Controller
             $doc_id = $request->input('doc_id');
             echo $doc_id;
 
-            $hashed_name = $prefix.'_'.dechex($doc_id).'_'.$file->hashName();
+            $hashed_name = $prefix . '_' . dechex($doc_id) . '_' . $file->hashName();
             echo $hashed_name;
 
             $user = Auth::user();
@@ -69,7 +70,7 @@ class PreEmploymentController extends Controller
             $first_name = $preemployed_user->account->first_name;
             $last_name = $preemployed_user->account->last_name;
 
-            $user_folder = $first_name.'_'.$last_name.'_'.dechex($user_id);
+            $user_folder = $first_name . '_' . $last_name . '_' . dechex($user_id);
 
             $application_id = $preemployed_user->account->application->application_id;
 
