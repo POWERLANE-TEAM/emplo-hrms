@@ -43,6 +43,8 @@
     @endif
 
 </label>
+@endif
+
 <div {{ $containerAttributes }}>
     <!-- Dropdown input with boxed styling -->
     <select @if ($attributes->has('name')) wire:model="{{ $attributes->get('name') }}" @endif
