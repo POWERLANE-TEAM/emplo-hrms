@@ -11,6 +11,9 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
+    <style nonce="{{ $nonce }}">
+        {!! Vite::content('resources/css/input/disable-submit.css') !!}
+    </style>
     <x-html.meta />
     <x-html.meta-seo />
 
@@ -33,7 +36,7 @@
     <!-- Scripts -->
     <x-authenticated-broadcast-id />
     <x-livewire-listener />
-    
+
     @vite(['resources/js/listeners/online-users.js'])
 
     @once

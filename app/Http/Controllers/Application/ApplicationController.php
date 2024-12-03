@@ -7,6 +7,7 @@ use App\Enums\UserPermission;
 use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
 use App\Models\Application;
+use App\Models\JobVacancy;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -22,9 +23,25 @@ class ApplicationController extends Controller
     }
 
     /* Show form page for creating resource */
-    public function create()
+    public function create(Request|array $request, bool $isValidated = false)
     {
-        //
+        $jobVacancyId = is_array($request) ? $request['jobVacancyId'] : $request->input('jobVacancyId');
+        $applicantId = is_array($request) ? $request['applicantId'] : $request->input('applicantId');
+
+        if (! $isValidated) {
+            // $validated = $request->validate([
+            // //
+            // ]);
+
+            $jobVacancy = JobVacancy::findOrFail($jobVacancyId);
+            $applicant = JobVacancy::findOrFail($applicantId);
+        }
+
+        Application::create([
+            'job_vacancy_id' => $jobVacancyId,
+            'applicant_id' => $applicantId ?? auth()->user()->account->applicant_id,
+            'application_status_id' => ApplicationStatus::PENDING,
+        ]);
     }
 
     /* store a new resource */
@@ -59,7 +76,7 @@ class ApplicationController extends Controller
 
             $validated = $request->validate([
                 'jobVacancyId' => 'bail|nullable|integer|exists:job_vacancies,job_vacancy_id',
-                'applicationStatusId' => 'bail|nullable|integer|in:'.implode(',', ApplicationStatus::values()),
+                'applicationStatusId' => 'bail|nullable|integer|in:' . implode(',', ApplicationStatus::values()),
                 'hireDate' => [
                     'nullable',
                     'bail',

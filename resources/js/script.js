@@ -1,4 +1,18 @@
 
+
+function disableSubmit() {
+    document.querySelectorAll('button[type="submit"], button:not([type])').forEach(button => {
+        if (!button.closest('form[action*="logout"]')) {
+            button.disabled = true;
+        }
+    });
+
+    // Disable elements based on the style selector
+    document.querySelectorAll('.submit, .submit-link, [wire\\:click*="validate"]').forEach(element => {
+        element.disabled = true;
+    });
+}
+
 try {
     const currentWebpage = window.location.href;
     const prevWebpage = sessionStorage.getItem('currentWebpage');
@@ -20,21 +34,15 @@ try {
     console.error(error)
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+    disableSubmit();
+});
 
 try {
     document.addEventListener('livewire:navigate', () => {
-        // Remove any existing internal styles in the head
-        document.querySelectorAll('style[data-livewire]').forEach(el => el.remove());
-
-        // Add new styles from the currently loaded page
-        const styles = document.querySelectorAll('style');
-        styles.forEach(style => {
-            const newStyle = document.createElement('style');
-            newStyle.setAttribute('data-livewire', 'true');
-            newStyle.innerHTML = style.innerHTML;
-            document.head.appendChild(newStyle);
-        });
+        disableSubmit();
     });
+
 } catch (error) {
     console.error(error)
 }
@@ -47,7 +55,7 @@ document.querySelectorAll('.hidden-until-load').forEach(element => {
 // Truncates announcement items
 document.querySelectorAll('.announcement-item').forEach(element => {
     const words = element.innerText.split(' ');
-    
+
     if (words.length > 20) {
         element.innerText = words.slice(0, 15).join(' ') + '...';
     }
