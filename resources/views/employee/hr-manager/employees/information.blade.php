@@ -26,16 +26,16 @@
 <x-breadcrumbs>
     <x-slot:breadcrumbs>
         <x-breadcrumb :href="'#'"> <!-- REPLACE: Link to the All Training Records table -->
-            Training Records
+            Employees
         </x-breadcrumb>
-        <x-breadcrumb :active="request()->routeIs($routePrefix . '.training.records')">
-            Employee Training Records
+        <x-breadcrumb :active="request()->routeIs($routePrefix . '.employees.information')">
+            Employee Information
         </x-breadcrumb>
     </x-slot:breadcrumbs>
 </x-breadcrumbs>
 
 <section class="row pt-4">
-    <label class="ps-1 mb-2 fw-semibold text-primary fs-5"> Employee Name </label>
+    <label class="ps-3 mb-2 fw-semibold text-primary fs-5"> Employee Name </label>
 
     <div class="col-md-4">
         <!-- BACK-END REPLACE: All Employees -->
@@ -48,8 +48,8 @@
     </div>
 </section>
 
-<section>
-    <div class="card border-primary mt-1 px-5 py-4 w-100">
+<section class="mt-3">
+    <div class="mt-1 px-3 py-4 w-100">
 
         <!-- Information Tab Section-->
         <livewire:hr-manager.employees.information />
