@@ -1,6 +1,14 @@
 <section id="information" class="tab-section">
-    <!-- Section Title -->
-    <div class="text-primary fs-3 fw-bold text-center">
-        Information
+    <div class="row">
+        <div class="col-md-6 border">
+
+            <div>
+                
+            </div>
+        </div>
+
+        <div class="col-md-6 border">
+
+        </div>
     </div>
 </section>
