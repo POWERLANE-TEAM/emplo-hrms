@@ -4,8 +4,9 @@
 * |--------------------------------------------------------------------------
 --}}
 
-@props(['label' => null, 'options' => [], 'nonce', 'required' => false, 'tooltip' => null])
+@props(['label' => null, 'options' => [], 'nonce', 'label' => null, 'required' => false, 'tooltip' => null])
 
+@if($label)
 <label for="{{ $attributes->get('id') }}" class="mb-1 fw-semibold text-secondary-emphasis">
     {{ $label }}
     {{-- Conditionally display the red asterisk for required fields --}}
@@ -19,6 +20,8 @@
     @endif
 
 </label>
+@endif
+
 <div class="input-group mb-3 position-relative">
     <!-- Dropdown input with boxed styling -->
     <select @if($attributes->has('name')) wire:model="{{ $attributes->get('name') }}" @endif {{ $attributes->merge([
