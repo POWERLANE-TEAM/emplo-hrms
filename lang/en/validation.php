@@ -178,6 +178,7 @@ return [
         ],
     ],
     'valid_email_dns' => 'The :attribute service provider is not allowed.',
+    'phone' => 'The :attribute field must be a valid number.',
 
     /*
     |--------------------------------------------------------------------------

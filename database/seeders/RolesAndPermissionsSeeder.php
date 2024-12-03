@@ -60,6 +60,7 @@ class RolesAndPermissionsSeeder extends Seeder
         return [
             // View cases goes here
             UserPermission::VIEW_HR_MANAGER_DASHBOARD->value,
+            UserPermission::VIEW_JOB_APPLICATION_FORM->value,
             UserPermission::VIEW_ALL_PENDING_APPLICATIONS->value,
             UserPermission::VIEW_ALL_QUALIFIED_APPLICATIONS->value,
             UserPermission::VIEW_ALL_PRE_EMPLOYED_APPLICATIONS->value,
@@ -142,7 +143,7 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::UPDATE_PERFORMANCE_CATEGORIES->value,
             UserPermission::UPDATE_PERFORMANCE_RATING_SCALES->value,
             UserPermission::UPDATE_PREEMPLOYMENT_REQUIREMENTS->value,
-            UserPermission::UPDATE_BIOMETRIC_ATTENDANCE_DEVICE_CONFIG->value,
+            UserPermission::UPDATE_BIOMETRIC_DEVICE->value,
 
             // Delete cases goes here
         ];

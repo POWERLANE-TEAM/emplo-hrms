@@ -67,6 +67,8 @@ export default defineConfig({
             'theme-listener-script': "/resources/js/theme-listener.js",
             'employee-page-script': "/resources/js/employee/employee.js",
             'globalListener-script': "/resources/js/utils/global-event-listener.js",
+            'iframe-full-screener-script': "/resources/js/utils/iframe-full-screener.js",
+            'websocket-script': "/resources/js/websocket.js",
             'datatable': "/vendor/rappasoft/laravel-livewire-tables/resources/imports/laravel-livewire-tables-all.js",
         },
     },

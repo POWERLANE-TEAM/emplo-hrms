@@ -1,0 +1,35 @@
+%disable-styles {
+    pointer-events: none !important;
+    cursor: not-allowed !important;
+    // background-color: var(--bs-danger) !important;
+
+    &>* {
+        pointer-events: none !important;
+        cursor: not-allowed !important;
+    }
+}
+
+// Act like disable button even the javascript is unavailable or is disabled in browser settings
+form:has(*:invalid, *:out-of-range) {
+
+    button[type="submit"],
+    // button without type attribute is considered as submit button by default
+    button:not([type]) {
+
+        @extend %disable-styles;
+
+    }
+}
+
+:root:has(*:invalid, *:out-of-range) {
+
+    .submit,
+    .submit-link,
+    // [wire\:click="nextStep"],
+    [wire\:click*="validate"] {
+
+        @extend %disable-styles;
+        opacity: var(--bs-btn-disabled-opacity);
+
+    }
+}

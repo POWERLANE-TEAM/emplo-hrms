@@ -1,54 +1,57 @@
 {
-  "private": false,
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "start": "php artisan optimize:clear && npm run build && concurrently \"php artisan serve\" \"php artisan reverb:start --debug\" \"php artisan queue:work\" \"npm run dev\" ",
-    "prod":" npm run build && concurrently \"php artisan serve\" \"php artisan reverb:start --debug\" \"php artisan queue:work\" "
-  },
-  "devDependencies": {
-    "@semantic-release/commit-analyzer": "^13.0.0",
-    "@semantic-release/github": "^10.1.4",
-    "@semantic-release/npm": "^12.0.1",
-    "@semantic-release/release-notes-generator": "^14.0.1",
-    "axios": "^1.7.4",
-    "laravel-vite-plugin": "^1.0",
-    "semantic-release": "^24.0.0",
-    "vite": "^5.4",
-    "vite-plugin-static-copy": "^1.0.6",
-    "@eslint/js": "^9.9.0",
-    "autoprefixer": "^10.4.20",
-    "eslint": "^9.9.0",
-    "globals": "^15.9.0",
-    "postcss": "^8.4.41",
-    "sass": "^1.77.8"
-  },
-  "dependencies": {
-    "bootstrap": "^5.3.3",
-    "chartjs-plugin-annotation": "^3.0.1",
-    "laravel-echo": "^1.16.1",
-    "pusher-js": "^8.4.0-rc2",
-    "tailwindcss": "^3.4.10"
-  },
-  "name": "emplo-hrms",
-  "description": "<p align=\"center\"><a href=\"https://laravel.com\" target=\"_blank\"><img src=\"https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg\" width=\"400\" alt=\"Laravel Logo\"></a></p>",
-  "version": "0.0.0",
-  "main": "index.js",
-  "directories": {
-    "test": "tests"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/POWERLANE-TEAM/emplo-hrms.git"
-  },
-  "files": [
-    "index.js"
-  ],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/POWERLANE-TEAM/emplo-hrms/issues"
-  },
-  "homepage": "https://github.com/POWERLANE-TEAM/emplo-hrms#readme"
+    "private": false,
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "start": "php artisan optimize:clear && npm run build && concurrently \"php artisan serve\" \"php artisan reverb:start --debug\" \"php artisan queue:work\" \"npm run dev\" ",
+        "start-bandilla-1": "php artisan optimize:clear && php artisan optimize && php artisan config:clear && php artisan route:clear && npm run build && concurrently \"php artisan reverb:start --debug\" \"npm run dev\" ",
+        "start-bandilla-2": "concurrently \"php artisan serve --host 0.0.0.0\" \"php artisan queue:work\" ",
+        "db-seed-bandilla": " php artisan migrate:fresh --seed && php artisan db:seed GuestSeeder && php artisan db:seed EmployeeSeeder && php artisan db:seed ApplicantSeeder",
+        "prod": " npm run build && concurrently \"php artisan serve\" \"php artisan reverb:start --debug\" \"php artisan queue:work\" "
+    },
+    "devDependencies": {
+        "@semantic-release/commit-analyzer": "^13.0.0",
+        "@semantic-release/github": "^10.1.4",
+        "@semantic-release/npm": "^12.0.1",
+        "@semantic-release/release-notes-generator": "^14.0.1",
+        "axios": "^1.7.4",
+        "laravel-vite-plugin": "^1.0",
+        "semantic-release": "^24.0.0",
+        "vite": "^5.4",
+        "vite-plugin-static-copy": "^1.0.6",
+        "@eslint/js": "^9.9.0",
+        "autoprefixer": "^10.4.20",
+        "eslint": "^9.9.0",
+        "globals": "^15.9.0",
+        "postcss": "^8.4.41",
+        "sass": "^1.77.8"
+    },
+    "dependencies": {
+        "bootstrap": "^5.3.3",
+        "chartjs-plugin-annotation": "^3.0.1",
+        "laravel-echo": "^1.16.1",
+        "pusher-js": "^8.4.0-rc2",
+        "tailwindcss": "^3.4.10"
+    },
+    "name": "emplo-hrms",
+    "description": "<p align=\"center\"><a href=\"https://laravel.com\" target=\"_blank\"><img src=\"https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg\" width=\"400\" alt=\"Laravel Logo\"></a></p>",
+    "version": "0.0.0",
+    "main": "index.js",
+    "directories": {
+        "test": "tests"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/POWERLANE-TEAM/emplo-hrms.git"
+    },
+    "files": [
+        "index.js"
+    ],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/POWERLANE-TEAM/emplo-hrms/issues"
+    },
+    "homepage": "https://github.com/POWERLANE-TEAM/emplo-hrms#readme"
 }

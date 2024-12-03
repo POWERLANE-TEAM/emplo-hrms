@@ -70,7 +70,7 @@
             </div>
 
             <button type="submit" nonce="{{ $nonce }}" id="userLoginBtn"
-                class="btn btn-primary btn-lg col-12 order-1 order-md-2" disabled>
+                class="btn btn-primary btn-lg col-12 order-1 order-md-2">
                 Sign In
             </button>
         </div>

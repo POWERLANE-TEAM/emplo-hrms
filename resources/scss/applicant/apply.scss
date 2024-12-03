@@ -7,236 +7,55 @@
 @import '../footer';
 @import '../btn-toggle-psw';
 @import '../input/checkbox';
+@import '../filepond';
+@import '../guest/main';
 
-footer {
-    background-color: #fafcf7;
+.boxed {
+    .filepond--root {
+        min-height: clamp(150px, 25dvh + 7.5vw, 10rem + 500px + 2.5vw);
+
+        div.filepond--drop-label {
+
+            min-height: 100%;
+        }
+
+        border-radius: calc(0.1rem + 0.15vw);
+        border: calc(0.063rem + 0.1vw) dashed var(--bs-primary);
+
+        div.filepond--panel {
+
+            [class^="filepond--panel-"] {
+                // This is buggy it affects the upload status bg
+                // background-color: color-mix(in srgb, var(--bs-primary-bg-subtle) 45%, white);
+            }
+
+        }
+    }
 }
 
+.d-profile.rounded {
+    .filepond--root {
+        --filepond-radius: 45px;
+        min-height: var(--filepond-radius);
+        height: var(--filepond-radius);
+        min-width: var(--filepond-radius);
+        width: var(--filepond-radius);
 
-/* General Styles */
-.dropzone-container {
-    position: relative;
-    display: inline-block;
-    width: 100%;
-    height: 250px;
-}
 
-.dropzone {
-    width: 100%;
-    height: 100%;
-    border: 2px dashed #007bff;
-    position: relative;
-    top: 0;
-    left: 0;
-    z-index: 1;
-    text-align: center;
-    flex-direction: column;
-    background: rgba(97, 176, 0, 0.05);
-}
+        div.filepond--drop-label {
+            min-height: 100%;
+        }
 
-.dz-message {
-    position: relative;
-    z-index: 2;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-}
+        // border-radius: calc(0.1rem + 0.15vw);
+        // border: calc(0.063rem + 0.1vw) dashed var(--bs-primary);
 
-/* Hide all sections by default */
-.form-step {
-    display: none;
-}
+        div.filepond--panel {
 
-/* Show the first step by default */
-.form-step.active {
-    display: block;
-}
+            [class^="filepond--panel-"] {
+                // This is buggy it affects the upload status bg
+                // background-color: color-mix(in srgb, var(--bs-primary-bg-subtle) 45%, white);
+            }
 
-/* Specific Styles for Labels, Form, and Buttons */
-.profile-pic {
-    display: block;
-    width: 126px;
-    height: 126px;
-    background: #F6F6F6;
-    padding: 20px;
-    border: 1.5px solid #61B00080;
-    margin: 40px auto;
-    border-radius: 50%;
-    text-align: center;
-}
-
-.upload {
-    display: none;
-}
-
-.prev {
-    color: rgba(97, 176, 0, 1);
-    font-family: Figtree;
-    font-size: 17px;
-    font-weight: 700;
-    text-align: center;
-    border: none;
-    background: none;
-    margin-right: 70%;
-}
-
-.prev:hover {
-    color: white;
-    background: rgba(97, 176, 0, 1);
-    font-family: Figtree;
-    font-size: 17px;
-    font-weight: 700;
-    text-align: center;
-    padding: 5px 5px 8px 5px;
-    border-radius: 5px;
-}
-
-button {
-    margin-top: 40px;
-}
-
-.personal-details {
-    padding: 20px;
-    background-color: white;
-}
-
-.field {
-    font-family: Figtree;
-    font-size: 12px;
-    font-weight: 400;
-    line-height: 14.4px;
-    margin-top: 20px;
-    margin-bottom: 15px
-}
-
-.in {
-    width: 100%;
-    height: 45px;
-    border: 1px solid lightgray;
-    border-radius: 5px;
-    margin-bottom: 10px;
-}
-
-.inp {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-bottom: 15px;
-}
-
-.fvicon {
-    display: block;
-    width: 15px;
-    position: relative;
-    left: 42%;
-    top: 23px;
-}
-
-.confirmation {
-    display: block;
-}
-
-.res {
-    width: 90%;
-}
-
-.resume {
-    width: 303px;
-    height: 319px;
-    border: 1px solid lightgray;
-    border-radius: 15px;
-    text-align: justify;
-}
-
-.conf {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-}
-
-/* Progress bar container */
-.progress-bar {
-    display: flex;
-    flex: 1;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    height: 100%;
-    padding: 0;
-    position: relative;
-}
-
-/* Individual step container */
-.step {
-    flex: 1;
-    text-align: center;
-    position: relative;
-    display: none;
-    /* Hide all steps by default */
-    flex-direction: column;
-    align-items: center;
-}
-
-.step.active {
-    display: flex;
-    /* Show only active step */
-}
-
-/* Bullet (circle) styles */
-.bullet {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 40px;
-    height: 40px;
-    border: 2px solid lightgray;
-    border-radius: 50%;
-    background: white;
-    margin-bottom: 10px;
-    position: relative;
-    z-index: 1;
-    transition: background 0.4s ease;
-}
-
-/* Active step styles */
-.step.active .bullet {
-    border-color: rgba(97, 176, 0, 1);
-}
-
-.step.active p {
-    color: rgba(97, 176, 0, 1);
-}
-
-/* Completed step styles */
-.step.completed .bullet {
-    background-color: rgba(97, 176, 0, 1);
-    border-color: rgba(97, 176, 0, 1);
-}
-
-.step.completed .bullet span {
-    display: none;
-}
-
-.step.completed .check {
-    display: block;
-    color: white;
-    font-size: 18px;
-    line-height: 40px;
-    position: relative;
-    top: 0;
-    left: 50%;
-    transform: translate(-50%, 0);
-}
-
-/* Adjust the checkmark size */
-.check {
-    font-size: 18px;
-    color: white;
-    display: none;
-}
-
-/* Show checkmark when step is completed */
-.step.completed .check {
-    display: block;
+        }
+    }
 }
