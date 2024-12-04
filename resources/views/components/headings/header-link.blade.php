@@ -18,7 +18,7 @@
         </div>
 
         <div class="col-2 d-flex align-items-center justify-content-end"> {{-- Flex to align the button --}}
-            <x-buttons.link-btn :label="$label" class="btn-outline-primary":nonce="$nonce" href="{{ $attributes->get('href') }}" />
+            <x-buttons.link-btn :label="$label" class="btn-outline-primary" nonce="$nonce" href="{{ $attributes->get('href') }}" />
         </div>
     </div>
 </div>
