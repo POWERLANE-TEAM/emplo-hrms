@@ -2,14 +2,20 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Str;
+use App\Enums\ActivityLogName;
+use Spatie\Activitylog\LogOptions;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class EmployeeLeave extends Model
 {
     use HasFactory;
+    use LogsActivity;
 
     protected $primaryKey = 'emp_leave_id';
 
@@ -41,5 +47,25 @@ class EmployeeLeave extends Model
     public function processes(): MorphMany
     {
         return $this->morphMany(Process::class, 'processable');
+    }
+
+    /**
+     * Override default values for more controlled logging.
+     */
+    public function getActivityLogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logUnguarded()
+            ->useLogName(ActivityLogName::LEAVE->value)
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(function (string $eventName) {
+                $causerFirstName = Str::ucfirst(Auth::user()->account->first_name);
+
+                return match ($eventName) {
+                    'created' => __($causerFirstName.' submitted a request for leave.'),
+                    'updated' => __($causerFirstName.' updated his/her request for leave.'),
+                    'deleted' => __($causerFirstName.' deleted his/her request for leave.'),
+                };
+            });
     }
 }
