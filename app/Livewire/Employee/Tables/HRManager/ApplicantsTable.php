@@ -2,11 +2,13 @@
 
 namespace App\Livewire\Employee\Tables\HRManager;
 
+use App\Livewire\Tables\Defaults as DefaultTableConfig;
 use App\Models\Applicant;
 use App\Models\Application;
 use App\Models\JobVacancy;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Livewire\Attributes\Computed;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateFilter;
@@ -25,6 +27,8 @@ use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
  */
 class ApplicantsTable extends DataTableComponent
 {
+    use DefaultTableConfig;
+
     protected $model = Application::class;
 
     /**
@@ -32,50 +36,50 @@ class ApplicantsTable extends DataTableComponent
      */
     protected $customFilterOptions;
 
+    #[Computed]
+    private function getJobVacancies(): Builder
+    {
+        return JobVacancy::select('job_vacancy_id', 'job_title_id')
+            ->with(['jobTitle' => function ($query) {
+                $query->select('job_titles.job_title_id', 'job_titles.job_title');
+            }])
+        ;
+    }
+
+    private function getJobVacanciesWithApplications()
+    {
+        return $this->getJobVacancies()
+            ->withCount('applications')
+            ->get();
+    }
+
+    private function getJobVacanciesWithApplicationsArray()
+    {
+        return $this->getJobVacanciesWithApplications()
+            ->where('applications_count', '>', 0)
+            ->mapWithKeys(function ($vacancy) {
+                return [$vacancy->jobTitle->job_title_id => $vacancy->jobTitle->job_title];
+            })
+            ->toArray();
+    }
+
     public function configure(): void
     {
         $routePrefix = auth()->user()->account_type;
 
         $this->setPrimaryKey('application_id')
             ->setTableRowUrl(function ($row) use ($routePrefix) {
-                return route($routePrefix.'.application.show', $row);
+                return route($routePrefix . '.application.show', $row);
             });
 
-        $this->setEagerLoadAllRelationsEnabled();
+        $this->configuringStandardTableMethods();
+
 
         // $this->setSingleSortingDisabled();
         $this->setDefaultSort('applicants.created_at', 'desc');
 
         $this->setDefaultReorderSort('applicants.created_at', 'desc');
 
-        $this->setTableAttributes([
-            'default' => true,
-            'class' => 'table-hover px-1 no-transition',
-        ]);
-
-        $this->setTheadAttributes([
-            'default' => true,
-            'class' => '',
-        ]);
-
-        $this->setTbodyAttributes([
-            'default' => true,
-            'class' => '',
-        ]);
-
-        $this->setTrAttributes(function ($row, $index) {
-            return [
-                'default' => true,
-                'class' => 'border-1 rounded-2 outline no-transition',
-            ];
-        });
-
-        $this->setSearchFieldAttributes([
-            'type' => 'search',
-            'class' => 'form-control rounded-pill search text-body body-bg',
-        ]);
-
-        $this->setTrimSearchStringEnabled();
 
         $this->setConfigurableAreas([
             'toolbar-left-start' => [
@@ -87,18 +91,7 @@ class ApplicantsTable extends DataTableComponent
                         // Although this is a duplicate the livewire table has not yet executed
                         // its builder method at this point of lifecycle
                         // I think this method is also called twice
-                        $jobVacancies = JobVacancy::select('job_vacancy_id', 'job_detail_id')
-                            ->with(['jobTitle' => function ($query) {
-                                $query->select('job_titles.job_title_id', 'job_titles.job_title');
-                            }])
-                            ->withCount('applications')
-                            ->get();
-
-                        $withApplications = $jobVacancies->where('applications_count', '>', 0)
-                            ->mapWithKeys(function ($vacancy) {
-                                return [$vacancy->jobTitle->job_title_id => $vacancy->jobTitle->job_title];
-                            })
-                            ->toArray();
+                        $withApplications = $this->getJobVacanciesWithApplicationsArray();
 
                         $this->customFilterOptions = [
                             '' => 'Select All Job Positions',
@@ -117,37 +110,28 @@ class ApplicantsTable extends DataTableComponent
             ],
         ]);
 
-        $this->setToolsAttributes(['class' => ' bg-body-secondary border-0 rounded-3 px-5 py-3']);
-
-        $this->setToolBarAttributes(['class' => ' d-md-flex my-md-2']);
-
         $this->setPageName('job_application');
-        $this->setPerPageAccepted([10, 25, 50, 100, -1]);
-
-        $this->setThAttributes(function (Column $column) {
-
-            return [
-                'default' => true,
-                'class' => 'text-center fw-normal',
-            ];
-        });
-
-        $this->setTdAttributes(function (Column $column, $row, $columnIndex, $rowIndex) {
-            return [
-                'class' => 'text-md-center',
-            ];
-        });
     }
 
     public function columns(): array
     {
         return [
             Column::make('Full Name')
-                ->label(fn ($row) => $row->applicant->fullName)
+                ->label(function ($row) {
+                    return $row->applicant->full_name;
+                })
                 ->sortable(function ($query, $direction) {
-                    return $query->orderBy('last_name', $direction)
+                    $query->orderBy('last_name', $direction)
                         ->orderBy('first_name', $direction)
                         ->orderBy('middle_name', $direction);
+
+                    // $query->with(['applicant' => function ($query) use ($direction) {
+                    //     $query->orderBy('last_name', $direction)
+                    //         ->orderBy('first_name', $direction)
+                    //         ->orderBy('middle_name', $direction);
+                    // }]);
+
+                    return $query;
                 })
                 ->searchable(function (Builder $query, $searchTerm) {
                     $this->applyFullNameSearch($query, $searchTerm);
@@ -155,7 +139,7 @@ class ApplicantsTable extends DataTableComponent
                 ->excludeFromColumnSelect(),
 
             Column::make('Job Position'/* 'vacancy.jobTitle.job_title' */)
-                ->label(fn ($row) => $row->vacancy->jobTitle->job_title)
+                ->label(fn($row) => $row->vacancy->jobTitle->job_title)
                 ->sortable(function ($query, $direction) {
                     return $query->orderBy('job_title', $direction);
                 })->searchable(function (Builder $query, $searchTerm) {
@@ -163,7 +147,7 @@ class ApplicantsTable extends DataTableComponent
                 }),
 
             Column::make('Date Applied')
-                ->label(fn ($row) => $row->applicant->created_at->format('F j, Y') ?? 'An error occured.')
+                ->label(fn($row) => $row->applicant->created_at->format('F j, Y') ?? 'An error occured.')
                 ->setSortingPillDirections('Oldest first', 'Latest first')
                 ->sortable(function ($query, $direction) {
                     return $query->orderBy('applicants.created_at', $direction);
@@ -179,31 +163,30 @@ class ApplicantsTable extends DataTableComponent
              * Description
              */
             Column::make('Department')
-                ->label(fn ($row) => $row->vacancy->jobTitle->department->department_name)
+                ->label(fn($row) => $row->vacancy->jobTitle->department->department_name)
                 ->deselected(),
 
-            Column::make('Job Area')
-                ->label(fn ($row) => $row->vacancy->jobTitle->specificAreas->pluck('area_name')->join(', '))
-                ->deselected(),
+            // // I dunno how to know which area applicant has applied for
+            // Column::make('Job Area')
+            //     ->label(fn ($row) => $row->vacancy->jobTitle->specificArea->area_name)
+            //     ->deselected(),
 
             Column::make('Job Level')
-                ->label(fn ($row) => $row->vacancy->jobTitle->jobLevels->pluck('job_level_name')->join(', '))
+                ->label(fn($row) => $row->vacancy->jobTitle->jobLevel->job_level_name)
                 ->deselected(),
         ];
     }
 
     public function builder(): Builder
     {
-        $query = Application::query()->with(['applicant', 'vacancy', 'vacancy.jobTitle.department', 'vacancy.jobTitle.specificAreas', 'vacancy.jobTitle.jobLevels'])
+        $query = Application::query()->with(['applicant', 'vacancy', 'vacancy.jobTitle.department',  'vacancy.jobTitle.jobLevel'])
 
             // Without this I got SQLSTATE[42P01]: Undefined table: 7 ERROR: missing FROM-clause entry for table
+            // I now know that I need to join the table to be able for the sort acually work
+            // using with() alone does not do any sorting
             ->join('applicants', 'applications.applicant_id', '=', 'applicants.applicant_id')
             ->join('job_vacancies', 'applications.job_vacancy_id', '=', 'job_vacancies.job_vacancy_id')
-            ->join('job_details', 'job_vacancies.job_detail_id', '=', 'job_details.job_detail_id')
-            ->join('job_titles', 'job_details.job_title_id', '=', 'job_titles.job_title_id')
-            ->join('departments', 'job_titles.department_id', '=', 'departments.department_id')
-            ->join('specific_areas', 'job_details.area_id', '=', 'specific_areas.area_id')
-            ->join('job_levels', 'job_details.job_level_id', '=', 'job_levels.job_level_id')
+            ->join('job_titles', 'job_vacancies.job_title_id', '=', 'job_titles.job_title_id')
             ->where('hired_at', null);
 
         return $query;
@@ -254,20 +237,7 @@ class ApplicantsTable extends DataTableComponent
      * @param  string  $searchTerm  The search term to filter applicants by full name.
      * @return \Illuminate\Database\Query\Builder The modified query builder instance.
      */
-    public function applyFullNameSearch(Builder $query, $searchTerm): Builder
-    {
-        $terms = explode(' ', $searchTerm);
 
-        return $query->orWhereHas('applicant', function ($query) use ($terms) {
-            foreach ($terms as $term) {
-                $query->where(function ($query) use ($term) {
-                    $query->where('first_name', 'ILIKE', "%{$term}%")
-                        ->orWhere('middle_name', 'ILIKE', "%{$term}%")
-                        ->orWhere('last_name', 'ILIKE', "%{$term}%");
-                });
-            }
-        });
-    }
 
     /**
      * Apply a case-insensitive search using the 'ILIKE' operator on the 'job_title' field in the query.
