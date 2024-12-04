@@ -6,7 +6,7 @@
             <section class="text-center">
                 <!-- BACK-END REPLACE: Replace with Default Avatar / Employee photo -->
                 <img class="img-size-30 img-responsive rounded-circle w-100 h-auto object-fit-cover aspect-ratio--square"
-                    src="{{ Vite::asset('resources/images/illus/placeholder-avatar.webp') }}" alt="">
+                    src="https://ui-avatars.com/api/?name=Blackwell+Kelly" alt="">
 
                 <div class="pt-2">
                     <!-- BACK-END REPLACE: Name, Job Title, Level -->
