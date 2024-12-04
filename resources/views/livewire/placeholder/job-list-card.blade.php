@@ -4,7 +4,7 @@
         <li class="card nav-item ps-0 " role="presentation">
             <button class="nav-link d-flex flex-row px-md-5 py-md-4" role="tab" aria-busy="true"
                 aria-label="Loading job list" aria>
-                <div class="col-10 text-start">
+                <div class="col-10 px-4 text-start">
                     <header>
                         <hgroup class="placeholder-glow d-flex flex-column mb-1">
                             <div class=" text-black placeholder-glow">

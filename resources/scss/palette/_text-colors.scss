@@ -44,6 +44,10 @@
   .hover-opacity:hover {
     opacity: 0.5 !important;
   }
+
+  .text-blue-info {
+    color: var(--info-blue);
+  }
   
   a.text-link-blue {
     color: var(--info-blue);
