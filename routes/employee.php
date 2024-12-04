@@ -1,13 +1,14 @@
 <?php
 
+use App\Models\Employee;
 use App\Enums\UserPermission;
-use App\Http\Controllers\Application\ApplicationController;
-use App\Http\Controllers\ApplicationExamController;
-use App\Http\Controllers\AttendanceController;
-use App\Http\Controllers\Employee\DashboardController;
-use App\Http\Controllers\EmployeeController;
-use App\Http\Controllers\InitialInterviewController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\ApplicationExamController;
+use App\Http\Controllers\InitialInterviewController;
+use App\Http\Controllers\Employee\DashboardController;
+use App\Http\Controllers\Application\ApplicationController;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 
 Route::middleware('guest')->group(function () {
@@ -120,9 +121,14 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
     // Performance Evaluation Scoring
     // -------------------------------
-    Route::get('/assign-score/probationary', function () {
-        return view('employee.supervisor.evaluations.probationary.assign-score');
-    })->name('assign-score.probationary');
+    Route::get('{employee}/performances/create', function (Employee $employee) {
+        $employee->with(['performances, jobTitle', 'status']);
+        return view('employee.supervisor.performance-evaluations.create', compact('employee'));
+    })->name('performances.create');
+
+    // Route::get('/performance/{employeeId}', function () {
+    //     return view('employee.supervisor.evaluations.probationary.assign-score');
+    // })->name('assign-score.probationary');
 
     Route::get('/assign-score/regular', function () {
         return view('employee.supervisor.evaluations.regular.assign-score');
