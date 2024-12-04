@@ -34,6 +34,7 @@ class DatabaseSeeder extends Seeder
                 PerformanceRatingSeeder::class,
                 PerformancePeriodSeeder::class,
                 HolidaySeeder::class,
+                LeaveCategorySeeder::class,
             ]);
         });
     }
