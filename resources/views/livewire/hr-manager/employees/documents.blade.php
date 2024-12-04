@@ -13,7 +13,7 @@
         <section class="row pt-3">
             <div class="col border">
                 <!-- BACK-END Replace: Employee's Documents Table. Remove the border class from the parent div. -->
-                Table here. Refer to Figma.
+                Table of employee's documents here. Refer to Figma.
             </div>
         </section>
     </div>
