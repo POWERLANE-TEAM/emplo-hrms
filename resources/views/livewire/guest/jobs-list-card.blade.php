@@ -27,7 +27,7 @@
                     class="nav-link d-flex flex-row px-md-5 py-md-4 {{ $index === 0 ? 'active' : '' }}"
                     id="{{ $job_vacancy->jobTitle->job_title_id }}-tab" data-bs-toggle="tab" role="tab"
                     aria-controls="job-view-pane" aria-label="{{ strip_tags($job_vacancy->jobTitle->job_title) }}">
-                    <div class="col-12 text-start">
+                    <div class="col-12 px-4 text-start">
                         <header>
                             <hgroup>
                                 <div class="card-title fs-3 fw-bold text-body mb-0">
