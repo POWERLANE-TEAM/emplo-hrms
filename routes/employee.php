@@ -84,7 +84,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     // --------------------------
     Route::prefix('performance')->name('performance.')->group(function () {
         Route::prefix('evaluation')->name('evaluation.')->group(function () {
-            Route::get('/{employeeStatus}/index', [PerformanceDetailController::class, 'index'])
+            Route::get('/{employeeStatus}', [PerformanceDetailController::class, 'index'])
                 ->where('employeeStatus', 'probationary|regular')
                 ->name('index');
         });

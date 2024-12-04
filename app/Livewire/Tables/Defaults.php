@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Tables;
 
+use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 
 trait Defaults
@@ -31,6 +32,10 @@ trait Defaults
 
         $this->setTrimSearchStringEnabled();
 
+        // $this->setSearchDebounce(1000);
+
+        $this->setEmptyMessage(__('No results found.'));
+
         $this->setToolsAttributes(['class' => ' bg-body-secondary border-0 rounded-3 px-5 py-3']);
 
         $this->setToolBarAttributes(['class' => ' d-md-flex my-md-2']);
@@ -57,5 +62,36 @@ trait Defaults
         // Your standard configure() options go here, anything set here will override those set in the configure() method
         // For Example
         // $this->setColumnSelectDisabled();
+    }
+
+
+    public function applyFullNameSearch(Builder $query, $searchTerm): Builder
+    {
+        $terms = explode(' ', $searchTerm);
+
+        foreach ($terms as $term) {
+            $query->orWhere(function ($query) use ($term) {
+                $query->where('first_name', 'ILIKE', "%{$term}%")
+                    ->orWhere('middle_name', 'ILIKE', "%{$term}%")
+                    ->orWhere('last_name', 'ILIKE', "%{$term}%");
+            });
+        }
+
+        return $query;
+    }
+
+    protected function limitSpecificArea($query)
+    {
+        $account = auth()->user()->account;
+
+        if ($account && $account->specificArea) {
+            $area = $account->specificArea->first();
+
+            if ($area && $area->area_id != 2) {
+                $query->where('specificArea.area_id', $area->area_id);
+            }
+        } else {
+            report(new \Exception("User ID: auth()->user()->user_id  User  $account->fullName ; has no Specific Area Assigned"));
+        }
     }
 }

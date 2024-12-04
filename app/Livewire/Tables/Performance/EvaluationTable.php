@@ -112,7 +112,6 @@ class EvaluationTable extends DataTableComponent
                 ],
             ],
 
-
             'before-pagination' => [
                 'components.buttons.download-btn',
                 ['slot' => 'Download', 'attributes' => new ComponentAttributeBag(['class' => 'btn-primary'])],
@@ -125,7 +124,8 @@ class EvaluationTable extends DataTableComponent
         return [
             LinkColumn::make("Full Name")
                 ->title(fn($row) => $row->fullname)
-                ->location(fn($row) => route($this->routePrefix . '.performance.evaluation.index', ['employeeStatus' => 'probationary']))
+                // route link should be changed to the correct route
+                ->location(fn($row) => route($this->routePrefix . '.performance.evaluation.index', ['employeeStatus' => $this->employeeStatus]))
                 ->attributes(fn($row) => [
                     'class' => 'fw-bold',
                     'style' => 'color: inherit',
@@ -167,30 +167,20 @@ class EvaluationTable extends DataTableComponent
 
     public function builder(): Builder
     {
-        $query = Employee::query()->with(['performances.categoryRatings', 'jobTitle.department', 'jobTitle.specificAreas'])
-
-
-            // Without this I got SQLSTATE[42P01]: Undefined table: 7 ERROR: missing FROM-clause entry for table
-            // ->leftJoin('performance_details', 'employees.employee_id', '=', 'performance_details.evaluatee')
-            ->join('job_details', 'employees.job_detail_id', '=', 'job_details.job_detail_id')
-            ->join('job_titles', 'job_details.job_title_id', '=', 'job_titles.job_title_id')
-            ->join('departments', 'job_titles.department_id', '=', 'departments.department_id')
-            ->join('specific_areas', 'job_details.area_id', '=', 'specific_areas.area_id')
+        $query = Employee::query()->with(['performances.categoryRatings', 'status', 'jobTitle.department', 'specificArea'])
 
             ->when($this->employeeStatus, function ($query) {
-                $query->where('emp_status_id', '=', EmploymentStatus::findByLabel($this->employeeStatus));
+                $query->whereHas('status', function ($query) {
+                    $query->where('employment_statuses.emp_status_id', '=', EmploymentStatus::findByLabel($this->employeeStatus));
+                });
             })
 
             // prevent duplicate rows (workaround)
-            ->distinct('employees.employee_id');
+            ->distinct('employee_id');
 
         // Maybe add specific area restriction based on permission?
 
-        $areaId = auth()->user()->account->jobTitle->specificAreas->first()->area_id;
-
-        if ($areaId != 2) {
-            $query->where('specific_areas.area_id', $areaId);
-        }
+        $this->limitSpecificArea($query);
 
         if (!$this->getAppliedFilterWithValue('attendance-date')) {
             //
@@ -232,20 +222,6 @@ class EvaluationTable extends DataTableComponent
      * |--------------------------------------------------------------------------
      * Description
      */
-    public function applyFullNameSearch(Builder $query, $searchTerm): Builder
-    {
-        $terms = explode(' ', $searchTerm);
-
-        foreach ($terms as $term) {
-            $query->orWhere(function ($query) use ($term) {
-                $query->where('first_name', 'ILIKE', "%{$term}%")
-                    ->orWhere('middle_name', 'ILIKE', "%{$term}%")
-                    ->orWhere('last_name', 'ILIKE', "%{$term}%");
-            });
-        }
-
-        return $query;
-    }
 
     /**
      * Apply a date search filter to the query.
