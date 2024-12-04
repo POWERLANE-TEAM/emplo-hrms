@@ -20,10 +20,7 @@
                                             {{ $job_vacancy->jobTitle }}
                                         ],
                                         jobFamilies: [
-                                           {{ $job_vacancy->jobTitle->jobFamilies->first() }}
-                                        ],
-                                        specificAreas: [
-                                            {{ $job_vacancy->jobTitle->specificAreas->first() }}
+                                           {{ $job_vacancy->jobTitle->jobFamily }}
                                         ],
                                     }
                                     } })"
@@ -37,7 +34,7 @@
                                     {!! $job_vacancy->jobTitle->job_title !!}
                                 </div>
                                 <p class="fs-4 text-primary">
-                                    {!! $job_vacancy->jobTitle->jobFamilies->first()->job_family_name !!}
+                                    {!! $job_vacancy->jobTitle->jobFamily->job_family_name !!}
                                 </p>
                             </hgroup>
                         </header>
