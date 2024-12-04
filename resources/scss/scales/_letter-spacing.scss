@@ -1,0 +1,15 @@
+// Partial: Letter Spacing Utils
+
+$letter-spacings: (
+  0: 0,            // Default
+  1: 0.5px,        // Slight spacing
+  2: 1px,          // Medium spacing
+  3: 1.5px         // Larger spacing
+);
+
+
+@each $key, $value in $letter-spacings {
+  .letter-spacing-#{$key} {
+    letter-spacing: $value;
+  }
+}

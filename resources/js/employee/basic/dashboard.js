@@ -8,6 +8,9 @@ import initLucideIcons from '../../icons/lucide.js';
 import addGlobalListener from 'globalListener-script';
 import ThemeManager, { initPageTheme, handleThemeBtn } from '../../theme-listener.js';
 import '../../auth-listener.js';
+import "employee-page-script";
+import "../../modals.js";
+import "../../tooltip.js";
 
 const themeManager = new ThemeManager();
 const themeToggle = document.getElementById(`theme-toggle-btn`).closest('.dropdown');
