@@ -69,12 +69,17 @@ class RequestLeave extends Component
         }
 
         DB::transaction(function () {
-            EmployeeLeave::create([
+            $leave = EmployeeLeave::create([
                 'employee_id' => Auth::id(),
                 'leave_id' => $this->state['leaveType'],
                 'reason' => $this->state['reason'],
                 'start_date' => $this->state['startDate'],
                 'end_date' => $this->state['endDate'],
+            ]);
+
+            $leave->processes()->create([
+                'processable_type' => 'employee_leave',
+                'processable_id' => $leave->emp_leave_id,
             ]);
         });
         
