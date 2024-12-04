@@ -2,10 +2,13 @@
     appearance: none;
     letter-spacing: calc(0.15rem + 0.01vw);
     padding: calc(0.5rem + 0.1vw);
+    z-index: 20;
+    cursor: pointer;
 
     &:not(:checked) {
 
         &::before {
+
             content: "Show";
         }
     }
@@ -14,6 +17,7 @@
         padding: calc(0.5rem + 0.1vw) calc(0.71rem + 0.1vw);
 
         &::before {
+            // z-index: 500;
             content: "Hide";
         }
 
