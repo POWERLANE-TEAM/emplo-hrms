@@ -8,7 +8,7 @@
 
     <div class="d-flex site-name home ">
 
-        <button class="d-flex  main-menu fw-semibold">
+        <button type="button" class="d-flex  main-menu fw-semibold">
             <div class="align-content-center">
                 <div class="">
                     <x-html.pri-sm-logo></x-html.pri-sm-logo>
