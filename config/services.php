@@ -40,6 +40,15 @@ return [
         'client_secret' => env('GOOGLE_SECRET_ID'),
         'redirect' => env('GOOGLE_REDIRECT'),
         'one_tap_redirect' => env('GOOGLE_ONE_TAP_URI'),
+
+        'document_ai' => [
+            'enabled' => env('GOOGLE_DOCUMENT_AI_TOGGLE', false),
+            'credential_path' => env('GOOGLE_DOCUMENT_AI_CREDENTIALS_PATH'),
+            'processor_id' => env('GOOGLE_DOCUMENT_AI_PROCESSOR_ID'),
+            'processor_ver' => env('GOOGLE_DOCUMENT_AI_PROCESSOR_VER'),
+            'processor_loc' => env('GOOGLE_DOCUMENT_AI_PROCESSOR_LOCATION'),
+        ],
+
     ],
 
     'facebook' => [

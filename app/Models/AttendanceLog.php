@@ -11,6 +11,8 @@ class AttendanceLog extends Model
     
     public $incrementing = false;
 
+    protected $primaryKey = 'uid';
+
     protected $fillable = [
         'uid',
         'employee_id',

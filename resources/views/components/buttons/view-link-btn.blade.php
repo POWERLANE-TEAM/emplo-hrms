@@ -10,7 +10,7 @@
 ])
 
 <div class="d-flex justify-content-end">
-    <a href="{{ $link }}" {{ $attributes->merge(['class' => 'text-link-blue text-decoration-underline hover-opacity']) }}>
+    <a href="{{ $link }}" {{ $attributes->merge(['class' => 'text-decoration-underline hover-opacity']) }}>
         {{ $text }}
     </a>
 </div>

@@ -35,10 +35,6 @@ class DatabaseSeeder extends Seeder
                 PerformancePeriodSeeder::class,
                 HolidaySeeder::class,
             ]);
-            
-            // $this->call(EmployeeSeeder::class, false, ['count' => env('APP_USER_SEEDING_COUNT', 30)]);
-
-            // $this->call(ApplicantSeeder::class, false, ['count' => env('APP_USER_SEEDING_COUNT', 30)]);
         });
     }
 }

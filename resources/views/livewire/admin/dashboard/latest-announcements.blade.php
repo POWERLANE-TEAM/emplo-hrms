@@ -1,4 +1,4 @@
-<div class="col-md-7 flex announcement-box" x-cloak>
+<div class="col-md-5 flex announcement-box">
     <!-- Header -->
     <div class="px-4 pb-4">
         <div class="d-flex align-items-center justify-content-between">
