@@ -1,4 +1,4 @@
-@extends('components.layout.employee.layout', ['description' => 'Employee Dashboard', 'nonce' => $nonce])
+@extends('components.layout.employee.layout', ['description' => 'Leave Request', 'nonce' => $nonce])
 @use ('Illuminate\View\ComponentAttributeBag')
 
 @section('head')
@@ -23,7 +23,7 @@
 
 <x-breadcrumbs>
     <x-slot:breadcrumbs>
-        <x-breadcrumb :href="'#'"> <!-- REPLACE: Link to the Employee's Leaves table -->
+        <x-breadcrumb :href="'#'">
             Leaves
         </x-breadcrumb>
         <x-breadcrumb :active="request()->routeIs($routePrefix . '.leaves.request')">
@@ -47,7 +47,7 @@
         <!-- Main Section -->
         <div class="d-flex mb-5 row align-items-stretch">
             <!-- Left Section: Holidays -->
-            <section class="col-md-5 d-flex">
+            <section wire:ignore class="col-md-5 d-flex">
                 <div class="w-100">
                     <livewire:calendar.holidays />
                 </div>
