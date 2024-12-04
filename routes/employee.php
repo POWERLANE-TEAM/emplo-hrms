@@ -129,6 +129,12 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         return view('employee.hr-manager.employees.information');
     })->name('employees.information');
 
+    // Payslips
+    // -------------------------------
+    Route::get('/payslips/upload', function () {
+        return view('employee.hr-manager.payslips.upload');
+    })->name('payslips.upload');
+
 
     // =========================================
     // SUPERVISOR ROUTES
