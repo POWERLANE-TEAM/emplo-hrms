@@ -13,12 +13,12 @@
 @endPushOnce
 
 @pushOnce('scripts')
-    @vite(['resources/js/employee/hr-manager/performance.js'])
+    @vite(['resources/js/employee/hr-manager/employee-info.js'])
 
 @endPushOnce
 
 @pushOnce('styles')
-    @vite(['resources/css/employee/hr-manager/performance.css'])
+    @vite(['resources/css/employee/hr-manager/employee-info.css'])
 
 @endPushOnce
 @section('content')
@@ -52,7 +52,11 @@
     <div class="mt-1 px-3 py-4 w-100">
 
         <!-- Information Tab Section-->
+
+        <!-- Sub-section: Employee Information -->
         <livewire:hr-manager.employees.information />
+        <!-- Sub-section: Documents -->
+        <livewire:hr-manager.employees.documents />
 
         <!-- Attendance Tab Section -->
         <livewire:hr-manager.employees.attendance />
