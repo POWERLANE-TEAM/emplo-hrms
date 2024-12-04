@@ -17,8 +17,7 @@
 
                         <div class="col-8">
                             <!-- BACK-END Replace: Payroll periods. Default is the current period. -->
-                            <x-form.boxed-dropdown :nonce="$nonce" :required="true"
-                                :options="['1' => 'Sep 02, 2024 - Sep 27, 2024', '2' => 'Oct 28, 2024 - Nov 27, 2024']" placeholder="Select payroll period" />
+                            <x-form.boxed-dropdown :nonce="$nonce" :required="true" :options="['1' => 'Sep 02, 2024 - Sep 27, 2024', '2' => 'Oct 28, 2024 - Nov 27, 2024']" placeholder="Select payroll period" />
                         </div>
                     </div>
                 </div>
@@ -77,3 +76,4 @@
             </div>
         </div>
     </section>
+</section>
