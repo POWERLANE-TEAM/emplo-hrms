@@ -41,7 +41,12 @@ class JobsListCard extends Component
      */
     private function highlightText($text, $search)
     {
-        return preg_replace_callback('/('.preg_quote($search, '/').')/i', function ($matches) {
+        // Quick fix that a search term is higlighted 3 times must check the output of the query
+        if (strpos($text, '<mark>') !== false) {
+            return $text;
+        }
+
+        return preg_replace_callback('/(' . preg_quote($search, '/') . ')/i', function ($matches) {
             return "<mark>{$matches[1]}</mark>";
         }, $text);
     }
@@ -57,14 +62,14 @@ class JobsListCard extends Component
     {
         $query->where(function ($query) use ($search) {
             $query->WhereHas('jobTitle', function ($query) use ($search) {
-                $query->where('job_title', 'ilike', '%'.$search.'%')
-                    ->orWhere('job_desc', 'ilike', '%'.$search.'%');
+                $query->where('job_title', 'ilike', '%' . $search . '%')
+                    ->orWhere('job_desc', 'ilike', '%' . $search . '%');
             })
-                ->orWhereHas('jobTitle.specificAreas', function ($query) use ($search) {
-                    $query->where('area_name', 'ilike', '%'.$search.'%');
-                })
-                ->orWhereHas('jobTitle.jobFamilies', function ($query) use ($search) {
-                    $query->where('job_family_name', 'ilike', '%'.$search.'%');
+                // ->orWhereHas('jobTitle.specificAreas', function ($query) use ($search) {
+                //     $query->where('area_name', 'ilike', '%' . $search . '%');
+                // })
+                ->orWhereHas('jobTitle.jobFamily', function ($query) use ($search) {
+                    $query->where('job_family_name', 'ilike', '%' . $search . '%');
                 });
         });
     }
@@ -85,17 +90,17 @@ class JobsListCard extends Component
                 $job_vacancy->jobTitle->job_desc = $this->highlightText($job_vacancy->jobTitle->job_desc, $search);
             }
 
-            if ($job_vacancy->jobTitle->specificAreas) {
-                foreach ($job_vacancy->jobTitle->specificAreas as $specific_area) {
-                    $specific_area->area_name = $this->highlightText($specific_area->area_name, $search);
-                }
-            }
+            // if ($job_vacancy->jobTitle->specificAreas) {
+            //     foreach ($job_vacancy->jobTitle->specificAreas as $specific_area) {
+            //         $specific_area->area_name = $this->highlightText($specific_area->area_name, $search);
+            //     }
+            // }
 
-            if ($job_vacancy->jobTitle->jobFamilies) {
-                foreach ($job_vacancy->jobTitle->jobFamilies as $job_family) {
-                    $job_family->job_family_name = $this->highlightText($job_family->job_family_name, $search);
-                }
-            }
+            // if ($job_vacancy->jobTitle->jobFamily) {
+            //     foreach ($job_vacancy->jobTitle->jobFamily as $job_family) {
+            $job_vacancy->jobTitle->jobFamily->job_family_name = $this->highlightText($job_vacancy->jobTitle->jobFamily->job_family_name, $search);
+            //     }
+            // }
 
             return $job_vacancy;
         });
@@ -104,7 +109,7 @@ class JobsListCard extends Component
     public function getJobVacancies()
     {
         return $this->baseJobVacancyQuery()
-            ->with(['jobDetail', 'jobTitle.jobFamilies', 'jobTitle.specificAreas'])
+            ->with(['jobTitle.jobFamily'])
             ->latest()
             ->get();
     }
@@ -127,11 +132,7 @@ class JobsListCard extends Component
     public function updateOnSearch(?string $search)
     {
         if (strlen(trim($search)) >= 1) {
-            $query = $this->baseJobVacancyQuery()->with([
-                'jobDetail',
-                'jobTitle.specificAreas',
-                'jobTitle.jobFamilies',
-            ]);
+            $query = $this->baseJobVacancyQuery()->with(['jobTitle.jobFamily']);
             $this->applySearchConditions($query, $search);
 
             $result = $query->latest()->get();
@@ -171,20 +172,15 @@ class JobsListCard extends Component
          * This ensures that certain sensitive or unnecessary attributes are not exposed in the output.
          */
         foreach ($this->job_vacancies as $job_vacancy) {
-            $job_details = $job_vacancy->jobDetails;
             $job_title = $job_vacancy->jobTitle;
+
+            // dd($job_vacancy);
 
             if ($job_title) {
                 $job_title->makeHidden(['job_title_id']);
-
-                foreach ($job_title->specificAreas as $specific_area) {
-                    $specific_area->makeHidden(['area_id']);
-                }
-
-                foreach ($job_title->jobFamilies as $job_family) {
-                    $job_family->makeHidden(['job_family_id', 'office_head']);
-                }
             }
+
+            $job_vacancy->jobTitle->jobFamily->makeHidden(['job_family_id', 'office_head']);
         }
 
         $this->dispatch('job-vacancies-fetched', ['count' => $this->job_vacancies->count()]);
