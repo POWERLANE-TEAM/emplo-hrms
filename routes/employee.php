@@ -131,9 +131,9 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
     // Payslips
     // -------------------------------
-    Route::get('/payslips/upload', function () {
-        return view('employee.hr-manager.payslips.upload');
-    })->name('payslips.upload');
+    Route::get('/payslips/bulk-upload', function () {
+        return view('employee.hr-manager.payslips.bulk-upload');
+    })->name('payslips.bulk-upload');
 
 
     // =========================================
