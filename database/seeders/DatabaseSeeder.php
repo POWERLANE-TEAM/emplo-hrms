@@ -35,6 +35,7 @@ class DatabaseSeeder extends Seeder
                 PerformancePeriodSeeder::class,
                 HolidaySeeder::class,
                 LeaveCategorySeeder::class,
+                AttendanceLogSeeder::class,
             ]);
         });
     }
