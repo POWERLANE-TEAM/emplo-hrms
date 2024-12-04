@@ -26,7 +26,7 @@
 
 <x-breadcrumbs>
     <x-slot:breadcrumbs>
-        <x-breadcrumb :href="'#'"> <!-- REPLACE: Link to the All Training Records table -->
+        <x-breadcrumb :href="'#'"> <!-- REPLACE: Link to the All Employee List table -->
             Employees List
         </x-breadcrumb>
         <x-breadcrumb :active="request()->routeIs($routePrefix . '.employees.information')">
