@@ -2,11 +2,12 @@
 
 namespace App\Livewire\Employee\Leaves;
 
-use App\Models\EmployeeLeave;
 use Livewire\Component;
 use App\Enums\UserPermission;
+use App\Models\EmployeeLeave;
 use App\Models\LeaveCategory;
 use Illuminate\Support\Carbon;
+use Livewire\Attributes\Locked;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\DB;
@@ -22,7 +23,8 @@ class RequestLeave extends Component
         'reason' => '',
     ];
 
-    public $totalDaysLeave;
+    #[Locked]
+    public $totalDaysLeave = 0;
 
     public function updated($prop)
     {
