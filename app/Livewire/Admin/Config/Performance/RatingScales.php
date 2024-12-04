@@ -6,7 +6,6 @@ use App\Enums\UserPermission;
 use App\Models\PerformanceRating;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -48,7 +47,7 @@ class RatingScales extends Component
                 : DB::transaction(function () use ($ratingScale) {
                     $ratingScale->update([
                         'perf_rating' => $this->state['scale'],
-                        'perf_rating_name' => Str::lower($this->state['name']),
+                        'perf_rating_name' => $this->state['name'],
                     ]);
                 });
             $feedbackMsg = __('Performance rating scale was modified successfully.');
@@ -64,7 +63,7 @@ class RatingScales extends Component
             DB::transaction(function () {
                 PerformanceRating::create([
                     'perf_rating' => $this->state['scale'],
-                    'perf_rating_name' => Str::lower($this->state['name']),
+                    'perf_rating_name' => $this->state['name'],
                 ]);
             });
             $feedbackMsg = __('"'.$this->state['scale'].' = '.ucwords($this->state['name']).'" was added successfully.');
@@ -88,7 +87,7 @@ class RatingScales extends Component
             $this->editMode = true;
             $this->index = $rating->perf_rating_id;
             $this->state['scale'] = $rating->perf_rating;
-            $this->state['name'] = ucwords($rating->perf_rating_name);
+            $this->state['name'] = $rating->perf_rating_name;
 
             $this->dispatch('open-rating-scale-modal');
         }
@@ -112,7 +111,7 @@ class RatingScales extends Component
                 return (object) [
                     'id' => $item['perf_rating_id'],
                     'scale' => $item['perf_rating'],
-                    'name' => ucwords($item['perf_rating_name']),
+                    'name' => $item['perf_rating_name'],
                 ];
             }
             );
