@@ -58,14 +58,14 @@
                     <p class="pb-3">
                         <i class="bi bi-circle-fill fs-5 text-warning me-2"></i>
                         <b>1</b> day(s) documented <!-- BACK-END REPLACE: Total count of documented leave. -->
-                        <span class="text-info">leave</span> day
+                        <span class="text-warning">leave</span> day
                     </p>
 
                     <!-- Absents -->
                     <p class="pb-3">
-                        <i class="bi bi-circle-fill fs-5 text-warning me-2"></i>
+                        <i class="bi bi-circle-fill fs-5 text-danger me-2"></i>
                         <b>1</b> <!-- BACK-END REPLACE: Total count of absents. -->
-                        <span class="text-info">absents</span>(undocumented leave day)
+                        <span class="text-danger">absents</span>(undocumented leave day)
                     </p>
                 </div>
             </div>
