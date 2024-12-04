@@ -11,6 +11,8 @@ class PerformanceDetail extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     protected $primaryKey = 'perf_detail_id';
 
     protected $guarded = [
