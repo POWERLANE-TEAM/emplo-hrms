@@ -20,7 +20,7 @@ class ManageBiometricDevice extends Component
 
     public function updateDeviceIp()
     {
-        if (! Auth::user()->hasPermissionTo(UserPermission::UPDATE_BIOMETRIC_ATTENDANCE_DEVICE_CONFIG)) {
+        if (! Auth::user()->hasPermissionTo(UserPermission::UPDATE_BIOMETRIC_DEVICE)) {
             abort (403);
         }
 
