@@ -7,7 +7,7 @@
         font-size: 0.995em;
     }
 
-    padding: clamp(0.25rem, 0.1rem + 0.15vw + 0.2vh, 5rem) clamp(0.5rem, 0.25rem + 1.5vw + 1vh, 10rem);
+    padding: clamp(0.25rem, 0.1rem + 0.15vw + 0.2vh, 5rem) clamp(0.5rem, 0.25rem + 1.5vw + 1vh, 10rem) !important;
     border-radius: 8px;
 
 }

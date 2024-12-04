@@ -36,6 +36,7 @@ class DatabaseSeeder extends Seeder
                 HolidaySeeder::class,
                 LeaveCategorySeeder::class,
                 AttendanceLogSeeder::class,
+                EmployeeJobDetailSeeder::class,
             ]);
         });
     }

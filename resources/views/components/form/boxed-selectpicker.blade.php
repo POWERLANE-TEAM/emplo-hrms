@@ -27,6 +27,12 @@
     </select>
 </div>
 
+<style>
+    .choices__placeholder {
+        font-style: normal;
+    }
+</style>
+
 <script>
 
     document.addEventListener('DOMContentLoaded', function () {
