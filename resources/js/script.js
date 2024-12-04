@@ -1,10 +1,11 @@
 
 
 function disableSubmit() {
-    document.querySelectorAll('button[type="submit"], button:not([type])').forEach(button => {
+    document.querySelectorAll('form:has(:invalid) button[type="submit"],form:has(:invalid) button:not([type])').forEach(button => {
         if (!button.closest('form[action*="logout"]')) {
             button.disabled = true;
         }
+
     });
 
     // Disable elements based on the style selector
@@ -39,9 +40,21 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 try {
-    document.addEventListener('livewire:navigate', () => {
-        disableSubmit();
-    });
+
+    document.addEventListener('livewire:initialized', () => {
+        document.addEventListener('livewire:navigate', () => {
+            disableSubmit();
+        });
+
+        Livewire.hook('request', ({ el, component }) => {
+
+            setTimeout(() => {
+                disableSubmit();
+            }, 400);
+
+        })
+    })
+
 
 } catch (error) {
     console.error(error)
