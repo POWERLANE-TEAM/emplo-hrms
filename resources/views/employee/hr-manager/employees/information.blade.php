@@ -2,7 +2,7 @@
 @use ('Illuminate\View\ComponentAttributeBag')
 
 @section('head')
-<title>Employee's Training Records</title>
+<title>Employee Information</title>
 <script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
@@ -27,7 +27,7 @@
 <x-breadcrumbs>
     <x-slot:breadcrumbs>
         <x-breadcrumb :href="'#'"> <!-- REPLACE: Link to the All Training Records table -->
-            Employees
+            Employees List
         </x-breadcrumb>
         <x-breadcrumb :active="request()->routeIs($routePrefix . '.employees.information')">
             Employee Information
