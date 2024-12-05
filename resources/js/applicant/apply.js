@@ -23,7 +23,7 @@ document.addEventListener('livewire:navigate', () => {
     }, 0);
 });
 
-document.addEventListener('livewire:init', () => {
+document.addEventListener('livewire:initialize', () => {
     LivewireFilePond.registerPlugin(FilePondPluginPdfPreview);
 });
 

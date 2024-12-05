@@ -8,10 +8,10 @@
 
 @pushOnce('pre-scripts')
     <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://unpkg.com/filepond-plugin-pdf-preview/dist/filepond-plugin-pdf-preview.min.js"></script>
 @endPushOnce
 
 @pushOnce('scripts')
+    <script src="https://unpkg.com/filepond-plugin-pdf-preview/dist/filepond-plugin-pdf-preview.min.js"></script>
     @filepondScripts
     @vite(['resources/js/applicant/apply.js', 'resources/js/progress-bar.js'])
 @endPushOnce

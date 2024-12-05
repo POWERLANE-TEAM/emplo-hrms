@@ -61,15 +61,14 @@
     @stack('styles')
 
     @env('local')
-        @vite(['node_modules/bootstrap/dist/js/bootstrap.bundle.min.js'])
+    @vite(['node_modules/bootstrap/dist/js/bootstrap.bundle.min.js'])
     @endenv
 
     @env('production')
-        @vite(['node_modules/bootstrap/dist/js/bootstrap.bundle.min.js?commonjs-entry'])
+    @vite(['node_modules/bootstrap/dist/js/bootstrap.bundle.min.js?commonjs-entry'])
     @endenv
 
     @stack('pre-scripts')
-    @stack('scripts')
 
     @yield('before-nav')
 
@@ -86,6 +85,8 @@
     @once
         @livewireScripts()
     @endonce
+
+    @stack('scripts')
 
     @yield('footer')
 </body>
