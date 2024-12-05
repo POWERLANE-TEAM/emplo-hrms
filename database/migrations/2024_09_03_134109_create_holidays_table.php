@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('holidays', function (Blueprint $table) {
-            $table->id('holiday_id');
+            $table->id();
             $table->string('type')->index(); // regular and special, etc.
             $table->string('event');
             $table->date('date');

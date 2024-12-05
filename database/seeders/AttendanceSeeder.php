@@ -2,7 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Attendance;
+use App\Enums\BiometricPunchType;
+use App\Models\AttendanceLog;
 use App\Models\Employee;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
@@ -13,27 +14,61 @@ function createAttendances(array $employeeIds, int $partitionIndex, Carbon $curr
 {
     $employees = Employee::with('shift')->whereIn('employee_id', $employeeIds)->get();
 
-    foreach ($employees as $employee) {
-        $shift = $employee->shift;
-        $shiftStart = $shift->start_time;
-        $shiftEnd = $shift->end_time;
+    activity()->withoutLogs(function () use ($employees, $partitionIndex, $currentDate) {
+        static $uid = 0;
 
-        $randomMinutes = rand(-10, 30);
-        $timeIn = Carbon::parse($shiftStart)->addMinutes($randomMinutes)->setDateFrom($currentDate);
+        foreach ($employees as $employee) {
+            $shift = $employee->shift;
+            $shiftStart = $shift->start_time;
+            $shiftEnd = $shift->end_time;
 
-        if (rand(0, 1)) {
-            $timeOut = Carbon::parse($shiftEnd)->addMinutes($randomMinutes)->setDateFrom($currentDate);
-        } else {
-            // Overtime
-            $timeOut = Carbon::parse($shiftEnd)->addMinutes($randomMinutes)->addHours(8)->setDateFrom($currentDate);
+            $randomMinutes = rand(-10, 30);
+            $timeIn = Carbon::parse($shiftStart)->addMinutes($randomMinutes)->setDateFrom($currentDate);
+
+
+
+            DB::table('attendance_logs')->insert([
+                // 'uid' => $uid++,
+                'employee_id' => $employee->employee_id,
+                'state' => 3,
+                'type' => BiometricPunchType::CHECK_IN->value,
+                'timestamp' => $timeIn,
+            ]);
+
+            if (rand(0, 1)) {
+                $timeOut = Carbon::parse($shiftEnd)->addMinutes($randomMinutes)->setDateFrom($currentDate);
+
+                DB::table('attendance_logs')->insert([
+                    // 'uid' => $uid++,
+                    'employee_id' => $employee->employee_id,
+                    'state' => 3,
+                    'type' => BiometricPunchType::CHECK_OUT->value,
+                    'timestamp' => $timeOut,
+                ]);
+            } else {
+                // Overtime
+
+                $timeOut = Carbon::parse($shiftEnd)->addMinutes($randomMinutes);
+
+                DB::table('attendance_logs')->insert([
+                    // 'uid' => $uid++,
+                    'employee_id' => $employee->employee_id,
+                    'state' => 3,
+                    'type' => BiometricPunchType::OVERTIME_IN->value,
+                    'timestamp' => $timeOut
+                ]);
+
+
+                DB::table('attendance_logs')->insert([
+                    // 'uid' => $uid++,
+                    'employee_id' => $employee->employee_id,
+                    'state' => 3,
+                    'type' => BiometricPunchType::OVERTIME_OUT->value,
+                    'timestamp' => $timeOut->copy()->addHours(8)->setDateFrom($currentDate),
+                ]);
+            }
         }
-
-        DB::table('attendances')->insert([
-            'employee_id' => $employee->employee_id,
-            'time_in' => $timeIn,
-            'time_out' => $timeOut,
-        ]);
-    }
+    });
 }
 
 class AttendanceSeeder extends Seeder
@@ -49,20 +84,20 @@ class AttendanceSeeder extends Seeder
         $currentDate = Carbon::parse($startDate);
 
         // Get employee IDs instead of full models
-        $employeeIds = Employee::pluck('employee_id')->toArray();
+        $employeeIds = Employee::has('jobDetail')->pluck('employee_id')->toArray();
 
         $concurrencyCount = env('APP_MAX_CONCURRENT_COUNT', 10);
 
         $partitions = array_chunk($employeeIds, ceil(count($employeeIds) / $concurrencyCount));
 
-        Attendance::unguard();
+        AttendanceLog::unguard();
 
         while ($currentDate->lte($endDate)) {
             $tasks = [];
             $dateForClosure = $currentDate->copy();
 
             foreach ($partitions as $partitionIndex => $partition) {
-                $tasks[] = fn () => createAttendances($partition, $partitionIndex, $dateForClosure);
+                $tasks[] = fn() => createAttendances($partition, $partitionIndex, $dateForClosure);
             }
 
             Concurrency::run($tasks);
@@ -70,6 +105,6 @@ class AttendanceSeeder extends Seeder
             $currentDate->addDay();
         }
 
-        Attendance::reguard();
+        AttendanceLog::reguard();
     }
 }

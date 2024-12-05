@@ -1,4 +1,4 @@
-<header class="top-nav sticky-md-top no-drag" draggable="false" ondragstart="return;">
+<header class="top-nav sticky-md-top no-drag my-3" draggable="false" ondragstart="return;">
     <nav class="d-flex justify-content-between align-items-center">
         <div class="d-flex site-name home ms-md-5">
             <div class="align-content-center">

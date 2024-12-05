@@ -15,8 +15,6 @@ class Holiday extends Model
     use HasFactory;
     use LogsActivity;
 
-    protected $primaryKey = 'holiday_id';
-
     protected $fillable = [
         'event',
         'date',

@@ -7,6 +7,6 @@
 @props(['note'])
 
 <p class="fs-6 fw-medium py-3">
-    <b>Note</b>: {{ $note }}
+    <b>Note</b>: {!! $note !!}
 </p>
 

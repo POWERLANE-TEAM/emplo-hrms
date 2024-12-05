@@ -2,14 +2,15 @@
 
 namespace App\Models;
 
-use App\Enums\ActivityLogName;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use App\Enums\ActivityLogName;
 use Spatie\Activitylog\LogOptions;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class PerformanceCategory extends Model
 {
@@ -22,6 +23,28 @@ class PerformanceCategory extends Model
         'perf_category_name',
         'perf_category_desc',
     ];
+
+    /**
+     * Accessor / mutator for category name.
+     */
+    protected function perfCategoryName(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value) => Str::upper($value),
+            set: fn (string $value) => Str::lower($value),
+        );
+    }
+
+    /**
+     * Accessor / mutator for category description.
+     */
+    protected function perfCategoryDesc(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value) => Str::ucfirst($value),
+            set: fn (string $value) => Str::lower($value),
+        );
+    }
 
     /**
      * The performance ratings that belong to the performance category.

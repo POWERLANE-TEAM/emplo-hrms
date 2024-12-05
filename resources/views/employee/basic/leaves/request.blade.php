@@ -1,4 +1,4 @@
-@extends('components.layout.employee.layout', ['description' => 'Employee Dashboard', 'nonce' => $nonce])
+@extends('components.layout.employee.layout', ['description' => 'Leave Request', 'nonce' => $nonce])
 @use ('Illuminate\View\ComponentAttributeBag')
 
 @section('head')
@@ -44,7 +44,7 @@
         <!-- Main Section -->
         <div class="d-flex mb-5 row align-items-stretch">
             <!-- Left Section: Holidays -->
-            <section class="col-md-5 d-flex">
+            <section wire:ignore class="col-md-5 d-flex">
                 <div class="w-100">
                     <livewire:calendar.holidays />
                 </div>

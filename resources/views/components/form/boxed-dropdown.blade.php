@@ -29,6 +29,7 @@
     }
 @endphp
 
+@if($label)
 <label for="{{ $attributes->get('id') }}" class="mb-1 fw-semibold text-secondary-emphasis">
     {{ $label }}
     {{-- Conditionally display the red asterisk for required fields --}}
@@ -42,6 +43,8 @@
     @endif
 
 </label>
+@endif
+
 <div {{ $containerAttributes }}>
     <!-- Dropdown input with boxed styling -->
     <select @if ($attributes->has('name')) wire:model="{{ $attributes->get('name') }}" @endif

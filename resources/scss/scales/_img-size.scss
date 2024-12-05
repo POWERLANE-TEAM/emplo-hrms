@@ -3,6 +3,8 @@
 // Image size variables
 $img-size-5: 7%;
 $img-size-10: 10%;
+$img-size-15: 10%;
+$img-size-13: 13%;
 $img-size-20: 20%;
 $img-size-30: 30%;
 $img-size-40: 40%;
@@ -21,6 +23,10 @@ $img-size-100: 100%;
 
 .img-size-10 {
     width: $img-size-10;
+}
+
+.img-size-13 {
+    width: $img-size-13
 }
 
 .img-size-20 {

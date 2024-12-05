@@ -158,8 +158,8 @@
         <x-form.checkbox-terms-condition :nonce="$nonce" />
 
         <div class="bottom-0 pt-1 pb-md-3 bg-body position-sticky z-3 w-100">
-            <button type="submit" nonce="{{ $nonce }}" id="signUpBtn" class="btn btn-primary btn-lg w-100 "
-                disabled> Sign up
+            <button type="submit" nonce="{{ $nonce }}" id="signUpBtn" class="btn btn-primary btn-lg w-100 ">
+                Sign up
                 <span class="spinner-border spinner-border-sm text-light" aria-hidden="true" wire:loading></span>
                 <span class="visually-hidden" role="status" wire:loading>Processing...</span>
             </button>

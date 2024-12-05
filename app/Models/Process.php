@@ -11,6 +11,8 @@ class Process extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     protected $primaryKey = 'process_id';
 
     protected $guarded = [

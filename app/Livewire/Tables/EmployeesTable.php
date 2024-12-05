@@ -6,6 +6,7 @@ use App\Models\Employee;
 use App\Models\EmploymentStatus;
 use App\Models\JobTitle;
 use Carbon\Carbon;
+use App\Livewire\Tables\Defaults as DefaultTableConfig;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\View\ComponentAttributeBag;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
@@ -23,6 +24,8 @@ use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
  */
 class EmployeesTable extends DataTableComponent
 {
+    use DefaultTableConfig;
+
     protected $model = Employee::class;
 
     /**
@@ -40,28 +43,10 @@ class EmployeesTable extends DataTableComponent
     {
         $this->setPrimaryKey('application_id');
 
-        $this->setEagerLoadAllRelationsEnabled();
+        $this->configuringStandardTableMethods();
 
         // $this->setDefaultSort('applications.hired_at', 'desc');
 
-        $this->setTableAttributes([
-            'default' => true,
-            'class' => 'table-hover px-1',
-        ]);
-
-        $this->setTrAttributes(function ($row, $index) {
-            return [
-                'default' => true,
-                'class' => 'border-1 rounded-2 outline',
-            ];
-        });
-
-        $this->setSearchFieldAttributes([
-            'type' => 'search',
-            'class' => 'form-control rounded-pill search text-body body-bg',
-        ]);
-
-        $this->setTrimSearchStringEnabled();
 
         $this->setConfigurableAreas([
             'toolbar-left-start' => [
@@ -75,26 +60,6 @@ class EmployeesTable extends DataTableComponent
                 ],
             ],
         ]);
-
-        $this->setToolsAttributes(['class' => ' bg-body-secondary border-0 rounded-3 px-5 py-3']);
-
-        $this->setToolBarAttributes(['class' => ' d-md-flex my-md-2']);
-
-        $this->setPerPageAccepted([10, 25, 50, 100, -1]);
-
-        $this->setThAttributes(function (Column $column) {
-
-            return [
-                'default' => true,
-                'class' => 'text-center fw-normal',
-            ];
-        });
-
-        $this->setTdAttributes(function (Column $column, $row, $columnIndex, $rowIndex) {
-            return [
-                'class' => 'text-md-center',
-            ];
-        });
 
         $this->jobTitles = JobTitle::select('job_title_id', 'job_title')->orderBy('job_title', 'ASC')->get()
             ->mapWithKeys(function ($jobTitle) {
@@ -110,33 +75,35 @@ class EmployeesTable extends DataTableComponent
             ->prepend('Select All Employee Status', '')
             ->toArray();
 
-        $this->oldestDate = Employee::has('application')->join('applications', 'employees.application_id', '=', 'applications.application_id')->min('applications.hired_at');
+        $this->oldestDate = Employee::whereHas('application')->with('application')->get()->min(function ($employee) {
+            return $employee->application->hired_at;
+        });
     }
 
     public function columns(): array
     {
         return [
             Column::make('Full Name')
-                ->label(fn ($row) => $row->fullname)
+                ->label(fn($row) => $row->fullname)
                 ->sortable(function ($query, $direction) {
                     return $query->orderBy('last_name', $direction)
                         ->orderBy('first_name', $direction)
                         ->orderBy('middle_name', $direction);
                 })
                 ->searchable(function (Builder $query, $searchTerm) {
-                    $this->applyFullNameSearch($query, $searchTerm);
+                    // $this->applyFullNameSearch($query, $searchTerm);
                 })
                 ->excludeFromColumnSelect(),
             Column::make('Job Title')
-                ->label(fn ($row) => $row->jobTitle->job_title)
+                ->label(fn($row) => $row->jobTitle->job_title)
                 ->searchable(function (Builder $query, $searchTerm) {
                     return $this->applyJobPositionSearch($query, $searchTerm);
                 }),
             Column::make('Department')
-                ->label(fn ($row) => $row->jobTitle->department->department_name),
+                ->label(fn($row) => $row->jobTitle->department->department_name),
 
             Column::make('Employment')
-                ->label(fn ($row) => $row->employmentStatus->emp_status_name),
+                ->label(fn($row) => $row->status->emp_status_name),
 
             /**
              * |--------------------------------------------------------------------------
@@ -145,15 +112,15 @@ class EmployeesTable extends DataTableComponent
              * Description
              */
             Column::make('Shift')
-                ->label(fn ($row) => $row->shift->shift_name)
+                ->label(fn($row) => $row->shift->shift_name)
                 ->deselected(),
 
             Column::make('Hired Date')
-                ->label(fn ($row) => Carbon::parse($row->application->hired_at)->format('F j, Y') ?? 'No recorded.')
-                /*                 ->setSortingPillDirections('Oldest first', 'Latest first')
+                ->label(fn($row) => $row->application ? Carbon::parse($row->application->hired_at)->format('F j, Y') : 'No recorded.')
+                ->setSortingPillDirections('Oldest first', 'Latest first')
                 ->sortable(function ($query, $direction) {
                     return $query->orderBy('applications.hired_at', $direction);
-                }) */
+                })
                 ->deselected(),
 
         ];
@@ -161,25 +128,20 @@ class EmployeesTable extends DataTableComponent
 
     public function builder(): Builder
     {
-        $query = Employee::query()->with(['employmentStatus', 'jobTitle.department', 'jobTitle.specificAreas', 'jobTitle.jobLevels', 'application', 'shift'])
+        $query = Employee::query()->with(['status', 'jobTitle.department', 'specificArea', 'jobTitle.jobLevel', 'application', 'shift'])
 
             // Without this I got SQLSTATE[42P01]: Undefined table: 7 ERROR: missing FROM-clause entry for table
-            ->join('employment_statuses', 'employees.emp_status_id', '=', 'employment_statuses.emp_status_id')
-            ->join('job_details', 'employees.job_detail_id', '=', 'job_details.job_detail_id')
-            ->join('job_titles', 'job_details.job_title_id', '=', 'job_titles.job_title_id')
+            // some joins are not currently in use but may be needed in sorting and filtering.
+            ->leftJoin('employee_job_details', 'employees.employee_id', '=', 'employee_job_details.employee_id')
+            ->leftJoin('employment_statuses', 'employee_job_details.emp_status_id', '=', 'employment_statuses.emp_status_id')
+            ->leftJoin('job_titles', 'employee_job_details.job_title_id', '=', 'job_titles.job_title_id')
             ->join('departments', 'job_titles.department_id', '=', 'departments.department_id')
-            ->join('specific_areas', 'job_details.area_id', '=', 'specific_areas.area_id')
-            ->join('job_levels', 'job_details.job_level_id', '=', 'job_levels.job_level_id')
-            ->join('applications', 'employees.application_id', '=', 'applications.application_id')
-            ->join('shifts', 'employees.shift_id', '=', 'shifts.shift_id');
+            ->leftJoin('specific_areas', 'employee_job_details.area_id', '=', 'specific_areas.area_id')
+            ->join('job_levels', 'job_titles.job_level_id', '=', 'job_levels.job_level_id')
+            ->leftJoin('applications', 'employee_job_details.application_id', '=', 'applications.application_id')
+            ->leftJoin('shifts', 'employee_job_details.shift_id', '=', 'shifts.shift_id');
 
-        // Maybe add specific area restriction based on permission?
-
-        $areaId = auth()->user()->account->jobTitle->specificAreas->first()->area_id;
-
-        if ($areaId != 2) {
-            $query->where('specific_areas.area_id', $areaId);
-        }
+        // $this->limitSpecificArea($query);
 
         return $query;
     }
@@ -187,17 +149,17 @@ class EmployeesTable extends DataTableComponent
     public function filters(): array
     {
         return [
-            DateFilter::make('Hire Date', 'hired-date')
-                ->setPillsLocale(in_array(session('locale'), explode(',', env('APP_SUPPORTED_LOCALES', 'en'))) ? session('locale') : env('APP_LOCALE', 'en'))
-                ->config([
-                    'min' => (function () {
-                        return $this->oldestDate ? Carbon::parse($this->oldestDate)->format('Y-m-d') : now()->format('Y-m-d');
-                    })(),
-                    'max' => now()->format('Y-m-d'),
-                    'pillFormat' => 'd M Y',
-                    'placeholder' => 'Enter Date',
-                ])
-                ->filter(function (Builder $builder, string $value) {}),
+            // DateFilter::make('Hire Date', 'hired-date')
+            //     ->setPillsLocale(in_array(session('locale'), explode(',', env('APP_SUPPORTED_LOCALES', 'en'))) ? session('locale') : env('APP_LOCALE', 'en'))
+            //     ->config([
+            //         'min' => (function () {
+            //             return $this->oldestDate ? Carbon::parse($this->oldestDate)->format('Y-m-d') : now()->format('Y-m-d');
+            //         })(),
+            //         'max' => now()->format('Y-m-d'),
+            //         'pillFormat' => 'd M Y',
+            //         'placeholder' => 'Enter Date',
+            //     ])
+            //     ->filter(function (Builder $builder, string $value) {}),
 
             SelectFilter::make('Job Title', 'job-title')
                 ->options($this->jobTitles)
@@ -220,20 +182,7 @@ class EmployeesTable extends DataTableComponent
      * |--------------------------------------------------------------------------
      * Description
      */
-    public function applyFullNameSearch(Builder $query, $searchTerm): Builder
-    {
-        $terms = explode(' ', $searchTerm);
 
-        foreach ($terms as $term) {
-            $query->orWhere(function ($query) use ($term) {
-                $query->where('first_name', 'ILIKE', "%{$term}%")
-                    ->orWhere('middle_name', 'ILIKE', "%{$term}%")
-                    ->orWhere('last_name', 'ILIKE', "%{$term}%");
-            });
-        }
-
-        return $query;
-    }
 
     /**
      * Apply a case-insensitive search using the 'ILIKE' operator on the 'job_title' field in the query.

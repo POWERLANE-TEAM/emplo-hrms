@@ -52,6 +52,10 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::VIEW_OVERTIME->value,
             UserPermission::VIEW_DOCUMENTS->value,
             UserPermission::VIEW_ISSUES->value,
+
+            UserPermission::CREATE_LEAVE_REQUEST->value,
+            UserPermission::CREATE_OVERTIME_REQUEST->value,
+            UserPermission::CREATE_ISSUE_COMPLAINT->value,
         ];
     }
 
