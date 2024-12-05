@@ -53,7 +53,7 @@ class DailyTimeRecord extends Component
                         return (object) [
                             'id' => $puncher->employee_id,
                             'name' => $puncher->full_name,
-                            'photo' => app(GenerateRandomUserAvatar::class)($puncher->full_name),
+                            'photo' => $puncher->photo ?? app(GenerateRandomUserAvatar::class)($puncher->full_name),
                         ];
                     }),
                 ];

@@ -1,0 +1,62 @@
+.filepond--root {
+    margin-bottom: 0 !important;
+    font-family: "Figtree", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important
+}
+
+.filepond--file {
+    max-height: 150px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.filepond--image-preview {
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.filepond--file-info {
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.filepond--file-info span {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.filepond--credits {
+    display: none !important;
+}
+
+.filepond--list {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.custom-filepond-style {
+    border: 2px dashed #66bb6a;
+    border-radius: 10px;
+    background-color: #f9fff7;
+    padding: 20px;
+}
+
+.custom-filepond-style input[type="file"] {
+    display: none;
+}
+
+.filepond--data {
+    display: none;
+}
+
+.filepond--credits {
+    display: none;
+}
+
+.filepond--panel-root {
+    background-color: #f9fff7 !important;
+}
+
+.filepond--item-panel {
+    background-color: #68ba03;
+}

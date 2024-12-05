@@ -1,14 +1,15 @@
 <?php
 
+use App\Models\Employee;
 use App\Enums\UserPermission;
-use App\Http\Controllers\Application\ApplicationController;
-use App\Http\Controllers\ApplicationExamController;
-use App\Http\Controllers\AttendanceController;
-use App\Http\Controllers\Employee\DashboardController;
-use App\Http\Controllers\EmployeeController;
-use App\Http\Controllers\InitialInterviewController;
-use App\Http\Controllers\PerformanceDetailController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\ApplicationExamController;
+use App\Http\Controllers\InitialInterviewController;
+use App\Http\Controllers\Employee\DashboardController;
+use App\Http\Controllers\Application\ApplicationController;
+use App\Http\Controllers\PerformanceDetailController;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 
 Route::middleware('guest')->group(function () {
@@ -71,12 +72,14 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     // Creates a schedule for the applicant's initial interview
     Route::post('/applicant/interview/initial/{application}', [InitialInterviewController::class, 'store'])
         ->middleware(['permission:' . UserPermission::CREATE_APPLICANT_INIT_INTERVIEW_SCHEDULE->value])
+        ->middleware(['permission:' . UserPermission::CREATE_APPLICANT_INIT_INTERVIEW_SCHEDULE->value])
         ->name('applicant.initial-inteview.store');
 
     // Schedule Exam for Applicant
     // ----------------------------
     // Creates a schedule for the applicant's exam
     Route::post('/applicant/exam/{application}', [ApplicationExamController::class, 'store'])
+        ->middleware(['permission:' . UserPermission::CREATE_APPLICANT_EXAM_SCHEDULE->value])
         ->middleware(['permission:' . UserPermission::CREATE_APPLICANT_EXAM_SCHEDULE->value])
         ->name('applicant.exam.store');
 
@@ -122,6 +125,28 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         return view('employee.hr-manager.issues.review');
     })->name('issues.review');
 
+    // Training Management
+    // -------------------------------
+    Route::get('/training/all-records', function () {
+        return view('employee.hr-manager.training.all-records');
+    })->name('training.all-records');
+
+    Route::get('/training/records', function () {
+        return view('employee.hr-manager.training.records');
+    })->name('training.records');
+
+    // Employees Information
+    // -------------------------------
+    Route::get('/employees/information', function () {
+        return view('employee.hr-manager.employees.information');
+    })->name('employees.information');
+
+    // Payslips
+    // -------------------------------
+    Route::get('/payslips/bulk-upload', function () {
+        return view('employee.hr-manager.payslips.bulk-upload');
+    })->name('payslips.bulk-upload');
+
 
     // =========================================
     // SUPERVISOR ROUTES
@@ -129,9 +154,14 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
     // Performance Evaluation Scoring
     // -------------------------------
-    Route::get('/assign-score/probationary', function () {
-        return view('employee.supervisor.evaluations.probationary.assign-score');
-    })->name('assign-score.probationary');
+    Route::get('{employee}/performances/create', function (Employee $employee) {
+        $employee->with(['performances, jobTitle', 'status']);
+        return view('employee.supervisor.performance-evaluations.create', compact('employee'));
+    })->name('performances.create');
+
+    // Route::get('/performance/{employeeId}', function () {
+    //     return view('employee.supervisor.evaluations.probationary.assign-score');
+    // })->name('assign-score.probationary');
 
     Route::get('/assign-score/regular', function () {
         return view('employee.supervisor.evaluations.regular.assign-score');

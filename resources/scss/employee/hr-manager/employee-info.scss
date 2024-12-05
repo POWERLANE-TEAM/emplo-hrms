@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import '../../utils';
+@import '../../scrollbar';
+@import '../../scales/icon-size';
+@import '../../scales/letter-spacing';
+@import '../../icon/lucide';
+@import '../side-top-bar';
+@import '../../palette/text-colors';
+@import '../../palette/start-borders';
+@import '../../footer';
+@import '../../input/checkbox';
+
+.scrollable-container {
+    max-height: 88vh;
+    overflow-y: auto; 
+    overflow-x: hidden; 
+    padding-right: 10px; 
+}
+
+.tab-section {
+    display: none;
+}
+
+.tab-section.active-section {
+    display: block;
+}
+
+.tab-section p {
+    margin-bottom: 0 !important;
+}
+
+.input-group {
+    margin-bottom: 0 !important;
+}
+
+.in-page-tab-nav .tabs {
+    margin-bottom: 0 !important;
+}
