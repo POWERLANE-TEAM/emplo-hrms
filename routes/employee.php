@@ -7,6 +7,9 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\Employee\DashboardController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\InitialInterviewController;
+use App\Http\Controllers\IssueController;
+use App\Http\Controllers\LeaveController;
+use App\Http\Controllers\OvertimeController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 
@@ -26,20 +29,19 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     Route::get('/dashboard', DashboardController::class)
         ->middleware([
             'permission:' . UserPermission::VIEW_HR_MANAGER_DASHBOARD->value
-            . '|' . UserPermission::VIEW_EMPLOYEE_DASHBOARD->value
+                . '|' . UserPermission::VIEW_EMPLOYEE_DASHBOARD->value
         ])
         ->name('dashboard');
 
     // List Applications Based on Status
     // ----------------------------------
     // Handles the listing of applications filtered by status (pending, qualified, or pre-employed)
-    Route::get('/applicants/{applicationStatus}/{page?}', [ApplicationController::class, 'index'])
+    Route::get('/applicants/{applicationStatus}', [ApplicationController::class, 'index'])
         ->where('applicationStatus', 'pending|qualified|preemployed')
-        ->where('page', 'index|')
         ->middleware([
-            'permission:'.UserPermission::VIEW_ALL_PENDING_APPLICATIONS->value
-            .'|'.UserPermission::VIEW_ALL_QUALIFIED_APPLICATIONS->value
-            .'|'.UserPermission::VIEW_ALL_PRE_EMPLOYED_APPLICATIONS->value,
+            'permission:' . UserPermission::VIEW_ALL_PENDING_APPLICATIONS->value
+                . '|' . UserPermission::VIEW_ALL_QUALIFIED_APPLICATIONS->value
+                . '|' . UserPermission::VIEW_ALL_PRE_EMPLOYED_APPLICATIONS->value,
         ])
         ->name('applications');
 
@@ -48,9 +50,9 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     // Displays detailed information for a specific application
     Route::get('/applicant/{application}', [ApplicationController::class, 'show'])
         ->middleware([
-            'permission:'.UserPermission::VIEW_APPLICATION_INFORMATION->value.'&('.UserPermission::VIEW_ALL_PENDING_APPLICATIONS->value
-            .'|'.UserPermission::VIEW_ALL_QUALIFIED_APPLICATIONS->value
-            .'|'.UserPermission::VIEW_ALL_PRE_EMPLOYED_APPLICATIONS->value.')',
+            'permission:' . UserPermission::VIEW_APPLICATION_INFORMATION->value . '&(' . UserPermission::VIEW_ALL_PENDING_APPLICATIONS->value
+                . '|' . UserPermission::VIEW_ALL_QUALIFIED_APPLICATIONS->value
+                . '|' . UserPermission::VIEW_ALL_PRE_EMPLOYED_APPLICATIONS->value . ')',
         ])
         ->name('application.show');
 
@@ -59,9 +61,9 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     // Updates the status of an application (pending, qualified, or pre-employed)
     Route::patch('/applicant/{application}', [ApplicationController::class, 'update'])
         ->middleware([
-            'permission:'.UserPermission::UPDATE_PENDING_APPLICATION_STATUS->value
-            .'|'.UserPermission::UPDATE_QUALIFIED_APPLICATION_STATUS->value
-            .'|'.UserPermission::UPDATE_PRE_EMPLOYED_APPLICATION_STATUS->value,
+            'permission:' . UserPermission::UPDATE_PENDING_APPLICATION_STATUS->value
+                . '|' . UserPermission::UPDATE_QUALIFIED_APPLICATION_STATUS->value
+                . '|' . UserPermission::UPDATE_PRE_EMPLOYED_APPLICATION_STATUS->value,
         ])
         ->name('application.update');
 
@@ -69,14 +71,14 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     // ---------------------------
     // Creates a schedule for the applicant's initial interview
     Route::post('/applicant/interview/initial/{application}', [InitialInterviewController::class, 'store'])
-        ->middleware(['permission:'.UserPermission::CREATE_APPLICANT_INIT_INTERVIEW_SCHEDULE->value])
+        ->middleware(['permission:' . UserPermission::CREATE_APPLICANT_INIT_INTERVIEW_SCHEDULE->value])
         ->name('applicant.initial-inteview.store');
 
     // Schedule Exam for Applicant
     // ----------------------------
     // Creates a schedule for the applicant's exam
     Route::post('/applicant/exam/{application}', [ApplicationExamController::class, 'store'])
-        ->middleware(['permission:'.UserPermission::CREATE_APPLICANT_EXAM_SCHEDULE->value])
+        ->middleware(['permission:' . UserPermission::CREATE_APPLICANT_EXAM_SCHEDULE->value])
         ->name('applicant.exam.store');
 
     // Employee Profile Settings
@@ -139,40 +141,31 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     Route::get('/attendance/index', [AttendanceController::class, 'index'])
         ->name('attendance.index');
 
-
     // Leaves Management
     // -------------------------------
-    Route::get('/leaves/request', function () {
-        return view('employee.basic.leaves.request');
-    })->name('leaves.request');
+    Route::get('/leaves', [LeaveController::class, 'index'])
+        ->middleware(['permission:' . UserPermission::VIEW_ALL_LEAVES->value])
+        ->name('leaves.index');
 
-    Route::get('/leaves/view', function () {
-        return view('employee.basic.leaves.view');
-    })->name('leaves.view');
+    Route::get('/leaves/request', [LeaveController::class, 'create'])
+        ->middleware(['permission:' . UserPermission::CREATE_LEAVE_REQUEST->value])
+        ->name('leaves.create');
 
 
     // Overtime Management
     // -------------------------------
-    Route::get('/overtime/all-summary-forms', function () {
-        return view('employee.basic.overtime.all-summary-forms');
-    })->name('overtime.all-summary-forms');
+    Route::get('/overtime', [OvertimeController::class, 'index'])
+        ->middleware(['permission:' . UserPermission::VIEW_ALL_OVERTIME->value])
+        ->name('overtime.all-summary-forms');
 
-    Route::get('/overtime/summary-form', function () {
-        return view('employee.basic.overtime.summary-form');
-    })->name('overtime.summary-form');
-
-    Route::get('/overtime/requests', function () {
-        return view('employee.basic.overtime.requests');
-    })->name('overtime.requests');
-
-    Route::get('/sample', function () {
-        dd(request());
-        echo 'sample';
-    });
+    Route::get('{employee}/overtime/form/{view}', [OvertimeController::class, 'show'])
+        ->where('view', 'summary|requests')
+        // ->middleware(['permission:' . UserPermission::CREATE_OVERTIME_REQUEST->value])
+        ->name('overtime.form');
 
     // Issues Management
     // -------------------------------
-    Route::get('/issues/create', function () {
-        return view('employee.basic.issues.create');
-    })->name('issues.create');
+    Route::get('/issues/create', [IssueController::class, 'create'])
+        ->middleware(['permission:' . UserPermission::CREATE_ISSUE_COMPLAINT->value])
+        ->name('issues.create');
 });

@@ -15,11 +15,10 @@ use Illuminate\Validation\Rule;
 class ApplicationController extends Controller
 {
     /* Show all resource */
-    public function index($applicationStatus, $page = null)
+    public function index($applicationStatus)
     {
-        if (empty($page) || $page == 'index') {
-            return view('employee.application.index');
-        }
+
+        return view('employee.application.index');
     }
 
     /* Show form page for creating resource */

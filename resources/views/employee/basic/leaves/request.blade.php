@@ -2,9 +2,9 @@
 @use ('Illuminate\View\ComponentAttributeBag')
 
 @section('head')
-<title>Request Leave</title>
-<script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
-<script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
+    <title>Request Leave</title>
+    <script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
+    <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 @endsection
 
 @pushOnce('pre-scripts')
@@ -12,35 +12,32 @@
 
 @pushOnce('scripts')
     @vite(['resources/js/employee/basic/leaves.js'])
-
 @endPushOnce
 
 @pushOnce('styles')
     @vite(['resources/css/employee/basic/leaves.css'])
-
 @endPushOnce
 @section('content')
+    <x-breadcrumbs>
+        <x-slot:breadcrumbs>
+            <x-breadcrumb :href="'#'"> <!-- REPLACE: Link to the Employee's Leaves table -->
+                Leaves
+            </x-breadcrumb>
+            <x-breadcrumb :active="request()->routeIs($routePrefix . '.leaves.create')">
+                Request Leave
+            </x-breadcrumb>
+        </x-slot:breadcrumbs>
+    </x-breadcrumbs>
 
-<x-breadcrumbs>
-    <x-slot:breadcrumbs>
-        <x-breadcrumb :href="'#'"> <!-- REPLACE: Link to the Employee's Leaves table -->
-            Leaves
-        </x-breadcrumb>
-        <x-breadcrumb :active="request()->routeIs($routePrefix . '.leaves.request')">
-            Request Leave
-        </x-breadcrumb>
-    </x-slot:breadcrumbs>
-</x-breadcrumbs>
+    <x-headings.main-heading :isHeading="true">
+        <x-slot:heading>
+            {{ __('Request Leave') }}
+        </x-slot:heading>
 
-<x-headings.main-heading :isHeading="true">
-    <x-slot:heading>
-        {{ __('Request Leave') }}
-    </x-slot:heading>
-
-    <x-slot:description>
-        {{ __('Kindly fill up the following information.') }}
-    </x-slot:description>
-</x-headings.main-heading>
+        <x-slot:description>
+            {{ __('Kindly fill up the following information.') }}
+        </x-slot:description>
+    </x-headings.main-heading>
 
 
     <section class="mb-5 mt-3">
@@ -62,4 +59,4 @@
         </div>
 
     </section>
-    @endsection
+@endsection
