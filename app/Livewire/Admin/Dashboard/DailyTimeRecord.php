@@ -9,7 +9,6 @@ use Livewire\Attributes\Locked;
 use App\Enums\BiometricPunchType;
 use Illuminate\Support\Collection;
 use App\Http\Helpers\BiometricDevice;
-use App\Actions\GenerateRandomUserAvatar;
 
 class DailyTimeRecord extends Component
 {
@@ -23,10 +22,10 @@ class DailyTimeRecord extends Component
         $this->dateToday = Carbon::today();
     }
 
-    public function boot()
-    {
-        $this->zkInstance = new BiometricDevice();
-    }
+    // public function boot()
+    // {
+    //     $this->zkInstance = new BiometricDevice();
+    // }
 
     private function getTodayDtr()
     {   
@@ -53,7 +52,7 @@ class DailyTimeRecord extends Component
                         return (object) [
                             'id' => $puncher->employee_id,
                             'name' => $puncher->full_name,
-                            'photo' => $puncher->photo ?? app(GenerateRandomUserAvatar::class)($puncher->full_name),
+                            'photo' => $puncher->photo,
                         ];
                     }),
                 ];
@@ -103,9 +102,39 @@ class DailyTimeRecord extends Component
         ]);
     }
 
+    private function generateFakeData()
+    {
+        return AttendanceLog::with('employee')
+            ->get()
+            ->groupBy('employee_id')
+            ->map(function ($group) {
+                $type = $this->getPunchesTime($group);
+                $punch = $group->first();
+                $employee = $punch->employee;
+
+                return (object) [
+                    'uid' => $punch->uid,
+                    'state' => $punch->state,
+                    'checkIn' => $type->checkIn,
+                    'checkOut' => $type->checkOut,
+                    'overtimeIn' => $type->overtimeIn,
+                    'overtimeOut' => $type->overtimeOut,
+                    'employee' => optional($employee, function ($puncher) {
+                        return (object) [
+                            'id' => $puncher->employee_id,
+                            'name' => $puncher->full_name,
+                            'photo' => $puncher->photo,
+                        ];
+                    }),
+                ];
+            });
+    }
+
     public function render()
     {
-        $dtrLogs = $this->getTodayDtr();
+        // $dtrLogs = $this->getTodayDtr();
+        // $totalDtr = $dtrLogs->count();
+        $dtrLogs = $this->generateFakeData();
         $totalDtr = $dtrLogs->count();
         
         return view('livewire.admin.dashboard.daily-time-record', [

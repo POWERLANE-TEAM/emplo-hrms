@@ -2,7 +2,7 @@
 @use ('Illuminate\View\ComponentAttributeBag')
 
 @section('head')
-<title>Employee Information</title>
+<title> {{ $employee->last_name }} | Employee Information</title>
 <script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
@@ -27,17 +27,15 @@
 <x-breadcrumbs>
     <x-slot:breadcrumbs>
         <x-breadcrumb :href="'#'"> <!-- REPLACE: Link to the All Employee List table -->
-            Employees List
+            {{ __('Employee Masterlist') }}
         </x-breadcrumb>
         <x-breadcrumb :active="request()->routeIs($routePrefix . '.employees.information')">
-            Employee Information
+            {{ $employee->last_name.__('\'s Information') }}
         </x-breadcrumb>
     </x-slot:breadcrumbs>
 </x-breadcrumbs>
 
-<section class="row pt-4">
-    <label class="ps-3 mb-2 fw-semibold text-primary fs-5"> Employee Name </label>
-
+<section class="row pt-2">
     <div class="col-md-4">
         <!-- BACK-END REPLACE: All Employees -->
         <x-form.boxed-selectpicker id="incident_type" :nonce="$nonce" :required="true" :options="['employee_1' => 'Cristian Manalang', 'employee_2' => 'Jobert Owen']" placeholder="Select employee">
@@ -50,12 +48,12 @@
 </section>
 
 <section class="mt-3">
-    <div class="mt-1 px-3 py-4 w-100">
+    <div class="mt-1 px-3 py-3 w-100">
 
         <!-- Information Tab Section-->
 
         <!-- Sub-section: Employee Information -->
-        <livewire:hr-manager.employees.information />
+        <livewire:hr-manager.employees.information :employee="$employee" />
         <!-- Sub-section: Documents -->
         <livewire:hr-manager.employees.documents />
 
