@@ -9,6 +9,7 @@ use App\Http\Controllers\ApplicationExamController;
 use App\Http\Controllers\InitialInterviewController;
 use App\Http\Controllers\Employee\DashboardController;
 use App\Http\Controllers\Application\ApplicationController;
+use App\Http\Controllers\PerformanceDetailController;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 
 Route::middleware('guest')->group(function () {
@@ -27,7 +28,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     Route::get('/dashboard', DashboardController::class)
         ->middleware([
             'permission:' . UserPermission::VIEW_HR_MANAGER_DASHBOARD->value
-            . '|' . UserPermission::VIEW_EMPLOYEE_DASHBOARD->value
+                . '|' . UserPermission::VIEW_EMPLOYEE_DASHBOARD->value
         ])
         ->name('dashboard');
 
@@ -39,8 +40,8 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         ->where('page', 'index|')
         ->middleware([
             'permission:' . UserPermission::VIEW_ALL_PENDING_APPLICATIONS->value
-            . '|' . UserPermission::VIEW_ALL_QUALIFIED_APPLICATIONS->value
-            . '|' . UserPermission::VIEW_ALL_PRE_EMPLOYED_APPLICATIONS->value,
+                . '|' . UserPermission::VIEW_ALL_QUALIFIED_APPLICATIONS->value
+                . '|' . UserPermission::VIEW_ALL_PRE_EMPLOYED_APPLICATIONS->value,
         ])
         ->name('applications');
 
@@ -50,8 +51,8 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     Route::get('/applicant/{application}', [ApplicationController::class, 'show'])
         ->middleware([
             'permission:' . UserPermission::VIEW_APPLICATION_INFORMATION->value . '&(' . UserPermission::VIEW_ALL_PENDING_APPLICATIONS->value
-            . '|' . UserPermission::VIEW_ALL_QUALIFIED_APPLICATIONS->value
-            . '|' . UserPermission::VIEW_ALL_PRE_EMPLOYED_APPLICATIONS->value . ')',
+                . '|' . UserPermission::VIEW_ALL_QUALIFIED_APPLICATIONS->value
+                . '|' . UserPermission::VIEW_ALL_PRE_EMPLOYED_APPLICATIONS->value . ')',
         ])
         ->name('application.show');
 
@@ -61,8 +62,8 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     Route::patch('/applicant/{application}', [ApplicationController::class, 'update'])
         ->middleware([
             'permission:' . UserPermission::UPDATE_PENDING_APPLICATION_STATUS->value
-            . '|' . UserPermission::UPDATE_QUALIFIED_APPLICATION_STATUS->value
-            . '|' . UserPermission::UPDATE_PRE_EMPLOYED_APPLICATION_STATUS->value,
+                . '|' . UserPermission::UPDATE_QUALIFIED_APPLICATION_STATUS->value
+                . '|' . UserPermission::UPDATE_PRE_EMPLOYED_APPLICATION_STATUS->value,
         ])
         ->name('application.update');
 
@@ -71,6 +72,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     // Creates a schedule for the applicant's initial interview
     Route::post('/applicant/interview/initial/{application}', [InitialInterviewController::class, 'store'])
         ->middleware(['permission:' . UserPermission::CREATE_APPLICANT_INIT_INTERVIEW_SCHEDULE->value])
+        ->middleware(['permission:' . UserPermission::CREATE_APPLICANT_INIT_INTERVIEW_SCHEDULE->value])
         ->name('applicant.initial-inteview.store');
 
     // Schedule Exam for Applicant
@@ -78,10 +80,19 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     // Creates a schedule for the applicant's exam
     Route::post('/applicant/exam/{application}', [ApplicationExamController::class, 'store'])
         ->middleware(['permission:' . UserPermission::CREATE_APPLICANT_EXAM_SCHEDULE->value])
+        ->middleware(['permission:' . UserPermission::CREATE_APPLICANT_EXAM_SCHEDULE->value])
         ->name('applicant.exam.store');
 
     // Employee Profile Settings
     // --------------------------
+    Route::prefix('performance')->name('performance.')->group(function () {
+        Route::prefix('evaluation')->name('evaluation.')->group(function () {
+            Route::get('/{employeeStatus}', [PerformanceDetailController::class, 'index'])
+                ->where('employeeStatus', 'probationary|regular')
+                ->name('index');
+        });
+    });
+
     Route::get('profile', function () {
         return view('employee.profile.settings');
     })->name('profile');

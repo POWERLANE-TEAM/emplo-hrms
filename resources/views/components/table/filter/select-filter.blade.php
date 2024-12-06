@@ -1,5 +1,6 @@
 {{-- https://rappasoft.com/docs/laravel-livewire-tables/v3/datatable/configurable-areas#content-example-view --}}
 
+@props(['label' => ''])
 @aware(['component'])
 
 @php
@@ -25,7 +26,7 @@
         <x-form.select groupClass="" :wire:model.live="$wireMethod" :wire:key="$wireKey" :id="$inputId"
             class="form-select">
             <x-slot:labelContent class="d-flex align-content-center flex-wrap align-middle">
-                <span class="text-nowrap">Applicants for:</span>
+                <span class="text-nowrap">{{ $label }}</span>
             </x-slot>
             @foreach ($filter->getOptions() as $key => $value)
                 @if (is_iterable($value))
