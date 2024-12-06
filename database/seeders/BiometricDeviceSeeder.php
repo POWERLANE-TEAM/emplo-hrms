@@ -13,8 +13,7 @@ class BiometricDeviceSeeder extends Seeder
      */
     public function run(): void
     {
-        $zk = new Device();
-        $zk->setIp('XXX.XXX.XX.XX');
+        $zk = new Device('###.###.##.##');
 
         BiometricDevice::updateOrCreate([
             'device_name' => $zk->getDeviceName(),

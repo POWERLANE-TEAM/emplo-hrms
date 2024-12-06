@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Actions\GenerateRandomUserAvatar;
 use App\Enums\ActivityLogName;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -71,6 +73,18 @@ class User extends Authenticatable implements MustVerifyEmail
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Accessor for photo attribute.
+     * 
+     * If null, generate a random user avatar based on full name.
+     */
+    protected function photo(): Attribute
+    {
+        return Attribute::make(
+            get: fn (mixed $value) => $value ?? app(GenerateRandomUserAvatar::class)($this->account->full_name),
+        );
     }
 
     /**
