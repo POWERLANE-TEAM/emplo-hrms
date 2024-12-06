@@ -9,7 +9,6 @@ use Livewire\Attributes\Locked;
 use App\Enums\BiometricPunchType;
 use Illuminate\Support\Collection;
 use App\Http\Helpers\BiometricDevice;
-use App\Actions\GenerateRandomUserAvatar;
 
 class DailyTimeRecord extends Component
 {
@@ -53,7 +52,7 @@ class DailyTimeRecord extends Component
                         return (object) [
                             'id' => $puncher->employee_id,
                             'name' => $puncher->full_name,
-                            'photo' => $puncher->photo ?? app(GenerateRandomUserAvatar::class)($puncher->full_name),
+                            'photo' => $puncher->photo,
                         ];
                     }),
                 ];
@@ -124,7 +123,7 @@ class DailyTimeRecord extends Component
                         return (object) [
                             'id' => $puncher->employee_id,
                             'name' => $puncher->full_name,
-                            'photo' => app(GenerateRandomUserAvatar::class)($puncher->full_name),
+                            'photo' => $puncher->photo,
                         ];
                     }),
                 ];

@@ -2,14 +2,11 @@
 
 namespace App\Livewire\Admin;
 
-use App\Models\Employee;
 use Illuminate\Support\Str;
 use App\Models\AttendanceLog;
 use Illuminate\Support\Carbon;
 use App\Enums\BiometricPunchType;
 use App\Http\Helpers\BiometricDevice;
-use Illuminate\Support\Facades\Storage;
-use App\Actions\GenerateRandomUserAvatar;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
@@ -95,7 +92,7 @@ class AttendanceLogsTable extends DataTableComponent
             Column::make(__('Employee Name'))
                 ->label(function ($row) {
                     $name = Str::headline($row->employee->full_name);
-                    $photo = $row->photo ?? app(GenerateRandomUserAvatar::class)($name);
+                    $photo = $row->photo;
             
                     return '<div class="d-flex justify-content-center align-items-center">
                                 <img src="' . e($photo) . '" alt="User Picture" style="width: 33px; height: 33px; border-radius: 50%; margin-right: 10px;">
