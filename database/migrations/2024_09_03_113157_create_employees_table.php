@@ -37,7 +37,7 @@ return new class extends Migration
                 ->constrained('barangays', 'id')
                 ->cascadeOnDelete();
 
-            $table->string('contact_number', 11)->unique();
+            $table->string('contact_number', 15)->unique();
             $table->string('sex');
             $table->string('civil_status');
             $table->date('date_of_birth')->nullable();

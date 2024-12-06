@@ -18,13 +18,18 @@ class EmployeeFactory extends Factory
      */
     public function definition(): array
     {
-        $educationCount = fake()->numberBetween(1, 3); // Random count between 1 and 5
-        $experienceCount = fake()->numberBetween(1, 5); // Random count between 1 and 5
+        $educationCount = fake()->numberBetween(1, 3);
+        $experienceCount = fake()->numberBetween(1, 5);
 
         $education = [];
         for ($i = 0; $i < $educationCount; $i++) {
             $education[] = [
-                'degree' => fake()->word,
+                'degree' => fake()->randomElement([
+                    'Bachelor of ' . fake()->word . ' Studies',
+                    'Bachelor of ' . fake()->word . ' Science',
+                    'Bachelor of ' . fake()->word . ' Engineering',
+                    'Master of ' . fake()->word . ' Science',
+                ]),
                 'institution' => fake()->company,
                 'year' => fake()->year,
             ];
@@ -47,7 +52,7 @@ class EmployeeFactory extends Factory
             'permanent_barangay' => fake()->randomNumber(1, 9),
             'present_address' => fake()->streetName(),
             'permanent_address' => fake()->streetName(),
-            'contact_number' => fake()->unique()->numerify('+63########'),
+            'contact_number' => fake()->unique()->numerify('09#########'),
             'date_of_birth' => fake()->date,
             'sex' => fake()->randomElement(array_map(fn ($case) => $case->value, Sex::cases())),
             'civil_status' => fake()->randomElement(array_map(fn ($case) => $case->value, CivilStatus::cases())),

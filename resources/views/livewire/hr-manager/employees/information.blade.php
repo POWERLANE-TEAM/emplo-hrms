@@ -1,39 +1,67 @@
 <section id="information" class="tab-section">
     <div class="row">
         <!-- Left Column: Work / Personal Information -->
-        <div class="col-md-6">
+        <div class="col-md-6 text-secondary-emphasis">
             <!-- SECTION: Image & Name, Job Title, Level -->
             <section class="text-center">
-                <!-- BACK-END REPLACE: Replace with Default Avatar / Employee photo -->
                 <img class="img-size-30 img-responsive rounded-circle w-100 h-auto object-fit-cover aspect-ratio--square"
-                    src="https://ui-avatars.com/api/?name=Blackwell+Kelly" alt="">
+                    src="{{ $employee->photo }}" alt="">
 
                 <div class="pt-2">
-                    <!-- BACK-END REPLACE: Name, Job Title, Level -->
-                    <p class="fw-bold fs-3">Blackwell, Kelly Princess J.</p>
-                    <p class="fs-5">Associate / Assistant Manager</p>
-                    <p class="fs-6 fw-normal text-primary">Level 2: Associate</p>
+                    <p class="fw-bold fs-3">{{ $employee->name }}</p>
+                    <p class="fs-5">{{ $employee->jobTitle }}</p>
+                    <p class="fs-6 fw-medium text-primary">{{ 'Level '.$employee->jobLevel.': '.$employee->jobLevelName }}</p>
                 </div>
             </section>
 
+            <style>
+                .left-col {
+                    display: grid;
+                    grid-template-columns: 130px 1fr;
+                    column-gap: 20px;
+                    row-gap:5px;
+                }
+
+                .right-col {
+                    display: grid;
+                    grid-template-columns: max-content 1fr;
+                    column-gap: 20px;
+                    row-gap: 5px;
+                }
+            </style>
             <!-- SECTION: Work Details -->
             <section class="pt-4 px-4">
-                <div>
-                    <!-- BACK-END REPLACE: Department, Employment Status, Shift, Hired Date -->
-                    <p class="pb-2"><b>Department:</b> Human Resources</p>
-                    <p class="pb-2"><b>Employment Status:</b> Regular</p>
-                    <p class="pb-2"><b>Shift:</b> Day Shift</p>
-                    <p class="pb-2"><b>Hired Date:</b> September 01, 2023</p>
+                <div class="d-flex align-items-center">
+                    <i class="icon icon-slarge text-primary me-2" data-lucide="briefcase-business"></i>
+                    <x-headings.section-title title="{{ __('Work Information') }}" />
+                </div>              
+
+                <div class="left-col pt-2 align-items-center">
+                    <div class="fw-bold">{{ __('Job Family: ') }}</div>
+                    <p>{{ $employee->jobFamily }}</p>
+                    <div class="fw-bold">{{ __('Employment Status: ') }}</div>
+                    <p>{{ $employee->employmentStatus }}</p>
+                    <div class="fw-bold">{{ __('Shift Schedule: ') }}</div>
+                    <p>{{ $employee->shift.' ('.$employee->shiftSched.')' }}</p>
+                    <div class="fw-bold">{{ __('Date Hired: ') }}</div>
+                    <p>{{ $employee->hiredAt ?? __('No record found.') }}</p>
                 </div>
 
                 <div class="mt-3">
-                    <x-headings.section-title title="{{ __('Personal Details') }}" />
-
-                    <!-- BACK-END REPLACE: Birthday, Sex, Cvil Status, Educational Attaintment -->
-                    <p class="pt-2 pb-2"><b>Birthdate:</b> December 29, 1998</p>
-                    <p class="pb-2"><b>Sex at birth:</b> Female</p>
-                    <p class="pb-2"><b>Civil Status:</b> Married</p>
-                    <p class="pb-2"><b>Educational Attainment:</b> College</p>
+                    <div class="d-flex align-items-center">
+                        <i class="icon icon-slarge text-primary me-2" data-lucide="user-cog"></i>
+                        <x-headings.section-title title="{{ __('Personal Information') }}" />
+                    </div>
+                    <div class="pt-2 left-col align-items-center">
+                        <div class="fw-bold">{{ __('Date of Birth: ') }}</div>
+                        <p>{{ $employee->dob }}</p>
+                        <div class="fw-bold">{{ __('Sex: ') }}</div>
+                        <p>{{ $employee->sex }}</p>
+                        <div class="fw-bold">{{ __('Civil Status: ') }}</div>
+                        <p>{{ $employee->civilStatus }}</p>
+                        <div class="fw-bold">{{ __('Education: ') }}</div>
+                        <p>{{ $employee->education[0]['degree'] }}</p>
+                    </div>
                 </div>
 
             </section>
@@ -45,13 +73,17 @@
             <!-- SECTION: Contact Information -->
             <section class="row">
                 <div class="col mb-3">
-                    <div class="card bg-body-secondary border-0 py-4 px-5">
-                        <x-headings.section-title title="{{ __('Contact Information') }}" />
+                    <div class="card bg-body-secondary border-0 py-4 px-5 text-secondary-emphasis">
+                        <div class="d-flex align-items-center">
+                            <i class="icon icon-slarge text-primary me-2" data-lucide="send"></i>
+                            <x-headings.section-title title="{{ __('Contact Information') }}" />
+                        </div>
 
-                        <div class="px-2">
-                            <!-- BACK-END REPLACE: Email, Contact Number -->
-                            <p class="pt-3 pb-2"><b>Email:</b> blackwell.kpj@gmail.com</p>
-                            <p class="pb-2"><b>Contact Number:</b> +63 912 345 6789</p>
+                        <div class="right-col pt-3 px-2">
+                            <div class="fw-bold">{{ __('Email Address: ') }}</div>
+                            <a class="text-decoration-none" href="mailto:{{ $employee->email }}">{{ $employee->email }}</a>
+                            <div class="fw-bold">{{ __('Contact No: ') }}</div>
+                            <a class="text-decoration-none" href="tel:{{ $employee->contactNo }}">{{ $employee->contactNo }}</a>
                         </div>
                     </div>
                 </div>
@@ -60,15 +92,17 @@
             <!-- SECTION: Addresses -->
             <section class="row">
                 <div class="col mb-3">
-                    <div class="card bg-body-secondary border-0 py-4 px-5">
-                        <x-headings.section-title title="{{ __('Addresses') }}" />
+                    <div class="card bg-body-secondary border-0 py-4 px-5 text-secondary-emphasis">
+                        <div class="d-flex align-items-center">
+                            <i class="icon icon-slarge text-primary me-2" data-lucide="map-pin"></i>
+                            <x-headings.section-title title="{{ __('Address') }}" />
+                        </div>
 
-                        <div class="px-2">
-                            <!-- BACK-END REPLACE: Preset & Permanent Address -->
-                            <p class="pt-3 pb-2"><b>Present Address:</b> Block 7, Lot 14, Barangay Mabuhay, Taguig City,
-                                Metro Manila</p>
-                            <p class="pb-2"><b>Permanent Address:</b> Block 15, Lot 7, Barangay Moonwalk, Parañaque
-                                City, Metro Manila</p>
+                        <div class="right-col px-2 pt-3">
+                            <div class="fw-bold">{{ __('Present: ') }}</div>
+                            <p>{{ $employee->fullPresentAddress }}</p>
+                            <div class="fw-bold">{{ __('Permanent: ') }}</div>
+                            <p>{{ $employee->fullPermanentAddress }}</p>
                         </div>
                     </div>
                 </div>
@@ -77,16 +111,21 @@
             <!-- SECTION: Identification Numbers -->
             <section class="row">
                 <div class="col mb-3">
-                    <div class="card bg-body-secondary border-0 py-4 px-5">
-                        <x-headings.section-title title="{{ __('Addresses') }}" />
+                    <div class="card bg-body-secondary border-0 py-4 px-5 text-secondary-emphasis">
+                        <div class="d-flex align-items-center">
+                            <i class="icon icon-slarge text-primary me-2" data-lucide="id-card"></i>
+                            <x-headings.section-title title="{{ __('Mandatory Contribution Ids') }}" />
+                        </div>
 
-                        <div class="px-2">
-                            <!-- BACK-END REPLACE: SSS, Cedula/CTC, PhilHealth, TIN, Pag-IBIG -->
-                            <p class="pt-3 pb-2"><b>Present Address:</b> 43-1294876-1</p>
-                            <p class="pb-2"><b>Cedula/CTC: </b> 87654321</p>
-                            <p class="pb-2"><b>PhilHealth: </b> 11-234567890-3</p>
-                            <p class="pb-2"><b>TIN: </b> 954-672-809-321</p>
-                            <p class="pb-2"><b>Pag-IBIG: </b> 987654321098</p>
+                        <div class="right-col pt-3 px-2 align-items-center">
+                            <div class="fw-bold">{{ __('SS Number: ') }}</div>
+                            <p>{{ $employee->sss }}</p>
+                            <div class="fw-bold">{{ __('PhilHealth ID No: ') }}</div>
+                            <p>{{ $employee->philHealth }}</p>
+                            <div class="fw-bold">{{ __('Taxpayer ID No: ') }}</div>
+                            <p>{{ $employee->tin }}</p>
+                            <div class="fw-bold">{{ __('Pag-IBIG MID No: ') }}</div>
+                            <p>{{ $employee->pagIbig }}</p>
                         </div>
                     </div>
                 </div>

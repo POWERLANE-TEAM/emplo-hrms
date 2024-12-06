@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Admin\Accounts;
 
-use App\Actions\GenerateRandomUserAvatar;
 use App\Models\User;
 use App\Enums\UserRole;
 use App\Enums\UserStatus;
@@ -70,7 +69,7 @@ class AccountsTable extends DataTableComponent
             Column::make(__('Full Name'))
                 ->label(function ($row) {
                     $name = Str::headline($row->account->full_name);
-                    $photo = $row->photo ?? app(GenerateRandomUserAvatar::class)($name);
+                    $photo = $row->photo;
                     $email = $row->email;
             
                     // this is disgusting. Change this somehow

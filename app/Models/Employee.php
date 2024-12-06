@@ -2,21 +2,25 @@
 
 namespace App\Models;
 
-use App\Enums\ActivityLogName;
-use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasOneThrough;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
-use Illuminate\Support\Facades\Auth;
+use App\Enums\Sex;
+use App\Enums\CivilStatus;
 use Illuminate\Support\Str;
+use App\Enums\ActivityLogName;
+use Illuminate\Support\Carbon;
 use Spatie\Activitylog\LogOptions;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use App\Http\Helpers\GovernmentMandateContributionsIdFormat;
 
 class Employee extends Model
 {
@@ -36,13 +40,127 @@ class Employee extends Model
      *
      * @return string
      */
-    public function fullName(): Attribute
+    protected function fullName(): Attribute
     {
         return Attribute::make(
             get: fn (mixed $value, array $attributes) => $attributes['last_name'].', '.
                 $attributes['first_name'].' '.
                 $attributes['middle_name'],
         );
+    }
+
+    /**
+     * Accessor for contact number
+     */
+    protected function contactNumber(): Attribute
+    {
+        return Attribute::make(
+            get: fn (mixed $value) => '+63-' . substr($value, 1, 3) . '-' . 
+                substr($value, 4, 3) . '-' . 
+                substr($value, 7, 4),
+        );
+    }
+
+    /**
+     * Accessor for sex attribute.
+     */
+    protected function sex(): Attribute
+    {
+        return Attribute::make(
+            get: function (string $value) {
+                $sex = Sex::tryFrom($value);
+                return $sex ? $sex->label() : ucwords($sex);
+            }
+        );
+    }
+    /**
+     * Accessor for civil status attribute.
+     */
+    protected function civilStatus(): Attribute
+    {
+        return Attribute::make(
+            get: function (string $value) {
+                $civilStatus = CivilStatus::tryFrom($value);
+                return $civilStatus ? $civilStatus->label() : ucwords($civilStatus);
+            }
+        );
+    }
+
+    /**
+     * Accessor for SS number.
+     */
+    protected function sssNo(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value) => GovernmentMandateContributionsIdFormat::formatSsNumber($value),
+        );
+    }
+
+    /**
+     * Accessor for PhilHealth Id.
+     */
+    protected function philhealthNo(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value) => GovernmentMandateContributionsIdFormat::formatPhilhealthId($value),
+        );
+    }
+
+    /**
+     * Accessor for PagIbig MID.
+     */
+    protected function pagIbigNo(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value) => GovernmentMandateContributionsIdFormat::formatPagibigMid($value),
+        );
+    }
+
+    /**
+     * Accessor for TIN.
+     */
+    protected function tinNo(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value) => GovernmentMandateContributionsIdFormat::formatTin($value),
+        );
+    }
+
+    /**
+     * Accessor for employee's full present address.
+     */
+    protected function getFullPresentAddressAttribute()
+    {
+        $barangay = $this->presentBarangay->name;
+        $city = $this->presentBarangay->city->name ?? '';
+        $province = $this->presentBarangay->province->name ?? '';
+        $region = $this->presentBarangay->region->name ?? '';
+
+        return "{$this->present_address}, {$barangay}, {$city}, {$province} {$region}";
+    }
+
+    /**
+     * Accessor for employee's full permanent address.
+     */
+    protected function getFullPermanentAddressAttribute()
+    {
+        $barangay = $this->permanentBarangay->name;
+        $city = $this->permanentBarangay->city->name ?? '';
+        $province = $this->permanentBarangay->province->name ?? '';
+        $region = $this->permanentBarangay->region->name ?? '';
+
+        return "{$this->permanent_address}, {$barangay}, {$city}, {$province} {$region}";
+    }
+
+    /**
+     * Accessor for shift schedule attribute of start and end time.
+     */
+    protected function getShiftScheduleAttribute()
+    {
+        $start = Carbon::parse($this->shift->start_time)->format('g:i A');
+        $end = Carbon::parse($this->shift->end_time)->format('g:i A');
+
+        return "{$start} - {$end}";
     }
 
     /**
