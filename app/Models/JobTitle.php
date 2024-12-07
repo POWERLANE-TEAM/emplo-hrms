@@ -67,19 +67,35 @@ class JobTitle extends Model
     }
 
     /**
-     * Get the qualifications associated with the job title.
-     */
-    public function qualifications(): HasMany
-    {
-        return $this->hasMany(JobTitleQualification::class, 'job_title_id', 'job_title_id');
-    }
-
-    /**
      * Get the vacancy associated with the job title.
      */
     public function vacancies(): HasMany
     {
         return $this->hasMany(JobVacancy::class, 'job_title_id', 'job_title_id');
+    }
+
+    /**
+     * Get the skills required / associated with the job title.
+     */
+    public function skills(): HasMany
+    {
+        return $this->hasMany(JobSkillKeyword::class, 'job_title_id', 'job_title_id');
+    }
+    
+    /**
+     * Get the educations required / associated with the job title.
+     */
+    public function educations(): HasMany
+    {
+        return $this->hasMany(JobEducationKeyword::class, 'job_title_id', 'job_title_id');
+    }
+
+    /**
+     * Get the experiences required / associated with the job title.
+     */
+    public function experiences(): HasMany
+    {
+        return $this->hasMany(JobExperienceKeyword::class, 'job_title_id', 'job_title_id');
     }
 
     /**
