@@ -2,9 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\Application;
 use Illuminate\Database\Seeder;
 
-class UserSeeder extends Seeder
+class ApplicationSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,9 +13,7 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         activity()->withoutLogs(function () {
-            $this->call(BasicUserSeeder::class);
-            $this->call(IntermediateUserSeeder::class); 
-            // $this->call(AdvancedUserSeeder::class);               
+            Application::factory(30)->create();
         });
     }
 }
