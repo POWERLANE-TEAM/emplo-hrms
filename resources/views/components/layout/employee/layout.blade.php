@@ -33,18 +33,18 @@
     <x-authenticated-broadcast-id />
     <x-livewire-listener />
 
-    @vite([
-        'resources/js/listeners/online-users.js',
-        'resources/js/app.js',
-        'resources/css/style.css'
-    ])
-
     {{-- Waiting for this fix in livewire https://github.com/livewire/livewire/pull/8793 --}}
     {{-- livewire.js?id=cc800bf4:9932 Detected multiple instances of Livewire running --}}
     {{-- livewire.js?id=cc800bf4:9932 Detected multiple instances of Alpine running --}}
     {{-- @livewireStyles(['nonce' => $nonce])
     @livewireScripts(['nonce' => $nonce]) --}}
     @livewireStyles
+
+    @vite([
+        'resources/js/listeners/online-users.js',
+        'resources/js/app.js',
+        'resources/css/style.css'
+    ])
 </head>
 
 <body class="employee-main" data-bs-theme>
@@ -67,8 +67,7 @@
     @yield('before-nav')
 
     @if (!View::hasSection('header-nav'))
-        <x-layout.employee.nav.main-menu class="position-sticky top-0 start-0" :user="$user" :userPhoto="$userPhoto"
-            :defaultAvatar="$defaultAvatar"></x-layout.employee.nav.main-menu>
+        <x-layout.employee.nav.main-menu class="position-sticky top-0 start-0" :user="$user" :userPhoto="$userPhoto"></x-layout.employee.nav.main-menu>
     @else
         @yield('header-nav')
     @endif
