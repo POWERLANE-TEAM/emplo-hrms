@@ -3,382 +3,341 @@
 namespace App\Livewire\HrManager\ResumeEvaluator;
 
 use Livewire\Component;
+use App\Models\JobVacancy;
+use Illuminate\Support\Carbon;
+use Livewire\Attributes\Locked;
+use App\Enums\ApplicationStatus;
+use Livewire\Attributes\Computed;
+use App\Enums\JobQualificationPriorityLevel;
 
 class ShowRankings extends Component
 {
+    public $selectedJob;
 
-    /*
-     * BACK-END REPLACE / REQUIREMENTS:
-     * 
-     * 1. Fetch all job positions with:
-     *    - ID, Name, Required Education, Experience, and Skills (with priorities).
-     * 2. Fetch all applicants for the selected job position with:
-     *    - ID, Name, Email, Position, Education, Experience, and Skills.
-     * 
-     * ADDITIONAL NOTES
-     * ► The filtering of the selectedJobPosition is already binded.
-     * ► Ctrl+f "Debug" and uncomment those lines to see the breakdown of the calculation.
-     * ► Only replace the fetching of the arrays of job_positions & applicants.
-     *   But if changes are needed to be made in the calculateScore and render functions, make sure it's still working properly.
-     */
+    #[Locked]
+    private $priorityWeights = [];
 
-    public $selectedJobPosition;
+    #[Locked]
+    private $hp;
 
-    public $job_positions = [
-        [
-            'job_position_id' => 1,
-            'job_position' => 'Data Analyst',
-            'job_education' => [
-                ['degree' => 'B.Sc. in Statistics', 'priority' => 'High'],
-                ['degree' => 'Diploma in Data Analytics', 'priority' => 'High'],
-            ],
-            'job_experience' => [
-                ['role' => 'Junior Data Analyst', 'priority' => 'Medium'],
-                ['role' => 'Data Analyst Intern', 'priority' => 'Low'],
-            ],
-            'job_skills' => [
-                ['skill' => 'Excel', 'priority' => 'Low'],
-                ['skill' => 'R Programming', 'priority' => 'Low'],
-                ['skill' => 'SQL', 'priority' => 'Low'],
-            ],
-        ],
-        [
-            'job_position_id' => 2,
-            'job_position' => 'HR Manager',
-            'job_education' => [
-                ['degree' => 'B.Sc. in Business Administration', 'priority' => 'High'],
-                ['degree' => 'MBA in Human Resources', 'priority' => 'High'],
-            ],
-            'job_experience' => [
-                ['role' => 'HR Officer', 'priority' => 'Medium'],
-                ['role' => 'HR Assistant', 'priority' => 'Low'],
-            ],
-            'job_skills' => [
-                ['skill' => 'People Management', 'priority' => 'High'],
-                ['skill' => 'Conflict Resolution', 'priority' => 'Medium'],
-            ],
-        ],
-        [
-            'job_position_id' => 3,
-            'job_position' => 'Accountant',
-            'job_education' => [
-                ['degree' => 'B.Sc. in Accountancy', 'priority' => 'High'],
-                ['degree' => 'Certified Public Accountant (CPA)', 'priority' => 'High'],
-            ],
-            'job_experience' => [
-                ['role' => 'Junior Accountant', 'priority' => 'Medium'],
-                ['role' => 'Accounting Intern', 'priority' => 'Low'],
-            ],
-            'job_skills' => [
-                ['skill' => 'QuickBooks', 'priority' => 'Medium'],
-                ['skill' => 'Financial Reporting', 'priority' => 'High'],
-                ['skill' => 'Good Communicator', 'priority' => 'Low'],
-                ['skill' => 'Very good at adapting to situation where help is needed', 'priority' => 'Low'],
-                ['skill' => 'Extremely polite and well-mannered and skillful', 'priority' => 'Low'],
-            ],
-        ],
-        [
-            'job_position_id' => 4,
-            'job_position' => 'IT',
-            'job_education' => [
-                ['degree' => 'B.Sc. in Information Technology', 'priority' => 'High'],
-                ['degree' => 'Certified Public Accountant (CPA)', 'priority' => 'High'],
-            ],
-            'job_experience' => [
-                ['role' => 'Junior Accountant', 'priority' => 'Medium'],
-                ['role' => 'Accounting Intern', 'priority' => 'Low'],
-            ],
-            'job_skills' => [
-                ['skill' => 'Financial Reporting', 'priority' => 'High'],
-            ],
-        ],
-    ];
+    #[Locked]
+    private $mp;
 
-    public $applicants = [
-        [
-            'applicant_name' => 'John Doe',
-            'applicant_email' => 'johndoe@gmail.com',
-            'applicant_position' => 'Data Analyst',
-            'applicant_position_id' => 1,
-            'applicant_education' => [
-                ['degree' => 'B.Sc. in Computer Science'],
-                ['degree' => 'Certification in AI/ML'],
-            ],
-            'applicant_experience' => [
-                ['role' => '1 year Frontend Developer'],
-                ['role' => '2 year Backend Developer'],
-            ],
-            'applicant_skills' => [
-                ['skill' => 'JavaScript'],
-                ['skill' => 'Python'],
-                ['skill' => 'SQL'],
-            ],
-        ],
-        [
-            'applicant_name' => 'Jane Smith',
-            'applicant_position' => 'Data Analyst',
-            'applicant_email' => 'johnsmith@gmail.com',
-            'applicant_position_id' => 1,
-            'applicant_education' => [
-                ['degree' => 'B.Sc. in Statistics'],
-                ['degree' => 'Diploma in Data Analytics'],
-            ],
-            'applicant_experience' => [
-                ['role' => 'Data Analyst Intern'],
-                ['role' => 'Junior Data Analyst'],
-            ],
-            'applicant_skills' => [
-                ['skill' => 'Excel'],
-                ['skill' => 'R Programming'],
-                ['skill' => 'Tableau'],
-            ],
-        ],
-        [
-            'applicant_name' => 'Alice Johnson',
-            'applicant_position' => 'HR Manager',
-            'applicant_email' => 'alicejohnson@gmail.com',
-            'applicant_position_id' => 2,
-            'applicant_education' => [
-                ['degree' => 'MBA in Human Resources'],
-                ['degree' => 'B.Sc. in Business Administration'],
-            ],
-            'applicant_experience' => [
-                ['role' => 'HR Officer'],
-                ['role' => 'HR Assistant'],
-            ],
-            'applicant_skills' => [
-                ['skill' => 'People Management'],
-                ['skill' => 'Conflict Resolution'],
-            ],
-        ],
-        [
-            'applicant_name' => 'Michael Brown',
-            'applicant_email' => 'michaelbrown@gmail.com',
-            'applicant_position' => 'Accountant',
-            'applicant_position_id' => 3,
-            'applicant_education' => [
-                ['degree' => 'B.Sc. in Accountancy'],
-                ['degree' => 'Certified Public Accountant (CPA)'],
-            ],
-            'applicant_experience' => [
-                ['role' => 'Junior Accountant'],
-                ['role' => 'Accounting Intern'],
-            ],
-            'applicant_skills' => [
-                ['skill' => 'QuickBooks'],
-                ['skill' => 'Financial Reporting'],
-                ['skill' => 'Good Communicator'],
-                ['skill' => 'Very good at adapting to situation where help is needed'],
-                ['skill' => 'Extremely polite and well-mannered and skillful'],
-            ],
-        ],
-    ];
+    #[Locked]
+    private $lp;
 
-    public function mount()
+    public $routePrefix;
+
+    public function mount($routePrefix) {
+        $this->routePrefix = $routePrefix;
+    }
+
+    public function boot()
     {
-        // Optionally set a default value or perform any necessary initialization
-        $this->selectedJobPosition = null;
+        $this->hp = JobQualificationPriorityLevel::HP->value;
+        $this->mp = JobQualificationPriorityLevel::MP->value;
+        $this->lp = JobQualificationPriorityLevel::LP->value;
+
+        $priorityCases = JobQualificationPriorityLevel::cases();
+
+        foreach ($priorityCases as $case) {
+            $this->priorityWeights[$case->value] = $case->getWeight();
+        }
     }
 
     public function calculateScore($jobQualifications, $applicant)
     {
-        // Priority weights
-        $priorityWeights = [
-            'High' => 50,
-            'Medium' => 30,
-            'Low' => 20,
-        ];
-
         $totalPointsEarned = 0;
 
-        // Count the total number of qualifications for each priority across all categories
         $priorityCounts = [
-            'High' => 0,
-            'Medium' => 0,
-            'Low' => 0,
+            $this->hp => 0,
+            $this->mp => 0,
+            $this->lp => 0,
         ];
 
         $matchedCounts = [
-            'High' => 0,
-            'Medium' => 0,
-            'Low' => 0,
+            $this->hp => 0,
+            $this->mp => 0,
+            $this->lp => 0,
         ];
 
-        /* CALCULATION DEBUG: Initialize a string to store the points for each priority
-            $pointsMetString = ''; */
-
-        // Loop over each category (job_education, job_experience, job_skills)
         foreach ($jobQualifications as $category => $qualifications) {
-            // Ensure $qualifications is an array before processing
-            if (is_array($qualifications)) {
-                // Separate qualifications by priority
-                $highQualifications = array_filter($qualifications, fn($item) => $item['priority'] === 'High');
-                $mediumQualifications = array_filter($qualifications, fn($item) => $item['priority'] === 'Medium');
-                $lowQualifications = array_filter($qualifications, fn($item) => $item['priority'] === 'Low');
+            if (! empty($qualifications)) {
+                $highQualifications = array_filter($qualifications, 
+                    fn($item) => $item['priority'] === $this->hp
+                );
 
-                // Count the number of qualifications per priority for this category
-                $priorityCounts['High'] += count($highQualifications);
-                $priorityCounts['Medium'] += count($mediumQualifications);
-                $priorityCounts['Low'] += count($lowQualifications);
+                $mediumQualifications = array_filter($qualifications, 
+                    fn($item) => $item['priority'] === $this->mp
+                );
 
-                // Count the number of matches per priority for this category
-                $matchedCounts['High'] += count(array_uintersect(
+                $lowQualifications = array_filter($qualifications, 
+                    fn($item) => $item['priority'] === $this->lp
+                );
+
+                $priorityCounts[$this->hp] += count($highQualifications);
+                $priorityCounts[$this->mp] += count($mediumQualifications);
+                $priorityCounts[$this->lp] += count($lowQualifications);
+
+                $matchedCounts[$this->hp] += count(array_uintersect(
                     $highQualifications,
-                    $applicant['applicant_' . str_replace('job_', '', $category)],
-                    fn($job, $applicant) => strcmp($job['degree'] ?? $job['role'] ?? $job['skill'], $applicant['degree'] ?? $applicant['role'] ?? $applicant['skill'])
+                    $applicant[$category],
+                    fn($job, $applicant) => strcasecmp(
+                        $job['degree'] ?? $job['role'] ?? $job['skill'], 
+                        $applicant['degree'] ?? $applicant['role'] ?? $applicant['skill']
+                    )
                 ));
 
                 $matchedCounts['Medium'] += count(array_uintersect(
                     $mediumQualifications,
-                    $applicant['applicant_' . str_replace('job_', '', $category)],
-                    fn($job, $applicant) => strcmp($job['degree'] ?? $job['role'] ?? $job['skill'], $applicant['degree'] ?? $applicant['role'] ?? $applicant['skill'])
+                    $applicant[$category],
+                    fn($job, $applicant) => strcasecmp(
+                        $job['degree'] ?? $job['role'] ?? $job['skill'], 
+                        $applicant['degree'] ?? $applicant['role'] ?? $applicant['skill']
+                    )
                 ));
 
                 $matchedCounts['Low'] += count(array_uintersect(
                     $lowQualifications,
-                    $applicant['applicant_' . str_replace('job_', '', $category)],
-                    fn($job, $applicant) => strcmp($job['degree'] ?? $job['role'] ?? $job['skill'], $applicant['degree'] ?? $applicant['role'] ?? $applicant['skill'])
+                    $applicant[$category],
+                    fn($job, $applicant) => strcasecmp(
+                        $job['degree'] ?? $job['role'] ?? $job['skill'],
+                        $applicant['degree'] ?? $applicant['role'] ?? $applicant['skill']
+                    )
                 ));
             }
-        }
+        }            
 
-        // Calculate the points for each priority
         $totalPointsEarned = 0;
 
-        foreach (['High', 'Medium', 'Low'] as $priority) {
+        foreach ([$this->hp, $this->mp, $this->lp] as $priority) {
             $priorityQualificationCount = $priorityCounts[$priority];
             $matchedQualificationCount = $matchedCounts[$priority];
 
-            /* CALCULATION DEBUG
-                echo "Total {$priority} Qualifications Count: {$priorityQualificationCount}<br>";
-                echo "Total Points for {$priority} Quality: {$priorityWeights[$priority]}<br>";
-                echo "Total Points per {$priority} Quality: " . ($priorityQualificationCount > 0 ? $priorityWeights[$priority] / $priorityQualificationCount : 0) . "<br>";
-                echo "Total {$priority} Qualifications Met: {$matchedQualificationCount}<br>";
-                echo "Total Points per {$priority} Quality that has been met: " . ($priorityQualificationCount > 0 ? ($priorityWeights[$priority] / $priorityQualificationCount) * $matchedQualificationCount : 0) . "<br><br>"; */
-
+            // CALCULATION DEBUG
+            // dump([
+            //     "Total {$priority} Qualifications Count" => $priorityQualificationCount,
+            //     "Total Points for {$priority} Quality" => $$this->priorityWeights[$priority],
+            //     "Total Points per {$priority} Quality" => $priorityQualificationCount > 0 ? $$this->priorityWeights[$priority] / $priorityQualificationCount : 0,
+            //     "Total {$priority} Qualifications Met" => $matchedQualificationCount,
+            //     "Total Points per {$priority} Quality that has been met" => $priorityQualificationCount > 0 ? ($$this->priorityWeights[$priority] / $priorityQualificationCount) * $matchedQualificationCount : 0
+            // ]);
+                
             if ($priorityQualificationCount > 0) {
-                // Points per qualification for this priority
-                $pointsPerQualification = $priorityWeights[$priority] / $priorityQualificationCount;
+                $pointsPerQualification = $this->priorityWeights[$priority] / $priorityQualificationCount;
 
-                // Calculate the earned points for this priority
                 $earnedPointsForPriority = $pointsPerQualification * $matchedQualificationCount;
                 $totalPointsEarned += $earnedPointsForPriority;
 
-                /* CALCULATION DEBUG: Add this priority's earned points to the pointsMetString
-                $pointsMetString .= ($earnedPointsForPriority > 0 ? number_format($earnedPointsForPriority, 2) : '0') . ' + '; */
+                // CALCULATION DEBUG: Add this priority's earned points to the pointsMetString
+                // $pointsMetString .= ($earnedPointsForPriority > 0 ? number_format($earnedPointsForPriority, 2) : '0') . ' + ';
             }
         }
 
-        /* CALCULATION DEBUG.
-        Remove the last " + " and echo the summary of total points for qualifications that have been met
-        $pointsMetString = rtrim($pointsMetString, ' + '); // Remove trailing plus sign
-        echo "<br>Total Points for Qualifications that have been met: " . $pointsMetString . "<br>"; */
+        // CALCULATION DEBUG.
+        // $pointsMetString = rtrim($pointsMetString);
+        // dump("Total Points for Qualifications that have been met: {$pointsMetString}.");
 
-        // Return the percentage of points earned out of 100
         return ($totalPointsEarned / 100) * 100;
     }
 
 
     public function generateRankings()
     {
-
-        if (!$this->selectedJobPosition) {
-            return [];  // Return an empty array or handle the case when no job position is selected
+        if (! $this->selectedJob) {
+            return [];
         }
 
-        // Filter the job positions based on the selected job position
+        $selectedValue = $this->selectedJob['value'];
 
-        $selectedValue = $this->selectedJobPosition['value'];
+        $selectedJob = collect($this->vacantJobs)
+            ->firstWhere('id', (int) $selectedValue);
 
-        $selectedJobPosition = collect($this->job_positions)
-            ->firstWhere('job_position_id', (int) $selectedValue);
-
-        // Qualifications based on the selected positions
-        $jobQualifications = $selectedJobPosition ? [
-            'job_education' => $selectedJobPosition['job_education'],
-            'job_experience' => $selectedJobPosition['job_experience'],
-            'job_skills' => $selectedJobPosition['job_skills'],
+        $jobQualifications = $selectedJob ? [
+            'education' => $selectedJob['education'] ?? [],
+            'experience' => $selectedJob['experience'] ?? [],
+            'skills' => $selectedJob['skills'] ?? [],
         ] : [];
 
         $applicantsData = [];
 
-        // Loop through all applicants to process them
         foreach ($this->applicants as $applicant) {
-            if ($applicant['applicant_position_id'] == $selectedJobPosition['job_position_id']) {
+            if ($applicant['jobTitleId'] === $selectedJob['id']) {
 
                 $matchPercentage = $this->calculateScore($jobQualifications, $applicant);
 
-                // Qualifications met and total qualifications count
                 $metQualifications = [];
-                $totalQualifications = 0;  // Total number of qualifications across all categories
-                $metCount = 0;  // Count of qualifications the applicant met
+                $totalQualifications = 0;
+                $metCount = 0;
 
-                $categories = ['job_education', 'job_experience', 'job_skills'];
+                $categories = ['education', 'experience', 'skills'];
 
                 foreach ($categories as $category) {
-                    $jobCategory = $jobQualifications[$category];
-                    $applicantCategory = $applicant['applicant_' . str_replace('job_', '', $category)];
+                    if (isset($jobQualifications[$category]) && isset($applicant[$category])) {
+                        $jobCategory = $jobQualifications[$category];
+                        $applicantCategory = $applicant[$category];
+                
+                        if (! empty($jobCategory) && ! empty($applicantCategory)) {
+                            $totalQualifications += count($jobCategory);
+                            $matched = array_uintersect(
+                                $jobCategory,
+                                $applicantCategory,
+                                fn($job, $applicant) => strcasecmp(
+                                    $job['degree'] ?? $job['role'] ?? $job['skill'] ?? '',
+                                    $applicant['degree'] ?? $applicant['role'] ?? $applicant['skill'] ?? '')
+                            );
+                
+                            $metCount += count($matched);
+                
+                            $metQualifications = array_merge($metQualifications, array_column(
+                                $matched,
+                                $category === 'skills' ? 'skill' : ($category === 'education' ? 'degree' : 'role')
+                            ));
+                        }
+                    }
+                }                
 
-                    $totalQualifications += count($jobCategory);  // Add the total qualifications for this category
-                    $matched = array_uintersect(
-                        $jobCategory,
-                        $applicantCategory,
-                        fn($job, $applicant) => strcmp(
-                            $job['degree'] ?? $job['role'] ?? $job['skill'],
-                            $applicant['degree'] ?? $applicant['role'] ?? $applicant['skill']
-                        )
-                    );
-
-                    $metCount += count($matched);  // Add the number of qualifications met in this category
-
-                    // Merge matched qualifications for display
-                    $metQualifications = array_merge($metQualifications, array_column($matched, $category === 'job_skills' ? 'skill' : ($category === 'job_education' ? 'degree' : 'role')));
-                }
-
-                // Add to the applicants data
                 $applicantsData[] = [
-                    'name' => $applicant['applicant_name'],
-                    'email' => $applicant['applicant_email'],
+                    'application_id' => $applicant['applicationId'],
+                    'name' => $applicant['name'],
+                    'email' => $applicant['email'],
                     'percentage' => round($matchPercentage, 2),
-                    'qualifications_met' => $metCount . '/' . $totalQualifications, // Display qualifications met vs total
+                    'qualifications_met' => "{$metCount}/{$totalQualifications}",
                     'qualifications_list' => implode(', ', $metQualifications),
                 ];
             }
         }
 
-        // Sort applicants by percentage in descending order
         usort($applicantsData, function ($a, $b) {
-            return $b['percentage'] <=> $a['percentage']; // Descending order
+            return $b['percentage'] <=> $a['percentage'];
         });
 
         return $applicantsData;
     }
 
+    #[Computed]
+    public function vacancies()
+    {
+        return JobVacancy::with([
+            'jobTitle',
+            'applications.applicant.educations',
+            'applications.applicant.experiences',
+            'applications.applicant.skills',
+            'jobTitle.educations',
+            'jobTitle.experiences',
+            'jobTitle.skills',    
+        ])
+        ->get()
+        ->reject(function ($item) {
+            return (
+                ($item->vacancy_count <= 0 &&
+                (Carbon::parse($item->application_deadline_at)->isPast() || 
+                    ! is_null($item->application_deadline_at))) &&
+                $item->applications->every(function ($item) {
+                    return (
+                        ! is_null($item->hired_at) ||
+                        $item->is_passed === 1 ||
+                        $item->application_status_id !== ApplicationStatus::PENDING->value
+                    );
+                })
+            );
+        });
+    }
+
+    #[Computed]
+    public function listOfOpenJobs()
+    {
+        return $this->vacancies->mapWithKeys(function ($item) {
+                return [
+                    $item->jobTitle->job_title_id => $item->jobTitle->job_title,
+                ];
+            })->toArray();
+    }
+
+    #[Computed]
+    public function applicants()
+    {
+        return $this->vacancies->flatMap(function ($item) {
+            return $item->applications
+                ->map(function ($application) use ($item) {
+                    return [
+                        'applicationId' => $application->application_id,
+                        'name' => $application->applicant->full_name,
+                        'email' => $application->applicant->email,
+                        'applyingFor' => $item->jobTitle->job_title,
+                        'jobTitleId' => $item->jobTitle->job_title_id,
+                        'education' => $application->applicant->educations->map(function ($education) {
+                            return [
+                                'degree' => $education->education,
+                            ];
+                        })->toArray(),
+                        'experience' => $application->applicant->experiences->map(function ($experience) {
+                            return [
+                                'role' => $experience->experience_desc,
+                            ];
+                        })->toArray(),
+                        'skills' => $application->applicant->skills->map(function ($skill) {
+                            return [
+                                'skill' => $skill->skill,
+                            ];
+                        })->toArray(),
+                    ];
+                });
+            })->toArray();
+    }
+    
+    
+    #[Computed]
+    public function vacantJobs()
+    {
+        return $this->vacancies->map(function ($item) {
+            return [
+                'id' => $item->jobTitle->job_title_id,
+                'title' => $item->jobTitle->job_title,
+                'education' => $item->jobTitle->educations->map(function ($item) {
+                    return [
+                        'degree' => $item->keyword,
+                        'priority' => $item->priority,
+                    ];
+                })->toArray(),
+                'experience' => $item->jobTitle->experiences->map(function ($item) {
+                    return [
+                        'role' => $item->keyword,
+                        'priority' => $item->priority,
+                    ];
+                })->toArray(),
+                'skills' => $item->jobTitle->skills->map(function ($item) {
+                    return [
+                        'skill' => $item->keyword,
+                        'priority' => $item->priority,
+                    ];
+                })->toArray(),
+            ];
+        })
+        ->unique('id')
+        ->toArray();
+    }
+
     public function render()
     {
-        // Call the new method to generate rankings
         $applicantsData = $this->generateRankings();
+        $totalApplicants = count($applicantsData);
+        $selectedValue = $this->selectedJob['value'] ?? null;
+        $selectedJobName = null;
 
-        // Calculate the total number of applicants
-        $this->totalApplicants = count($applicantsData);
+        if ($selectedValue) {
+            $selectedPositionName = collect($this->vacantJobs)
+                ->firstWhere('id', (int) $selectedValue)['title'] ?? 'N/A';
 
-        // Get the selected job position name
-        $selectedValue = $this->selectedJobPosition['value'] ?? null; // Safely access 'value'
-
-        if ($selectedValue !== null) {
-            $selectedPositionName = collect($this->job_positions)
-                ->firstWhere('job_position_id', (int) $selectedValue)['job_position'] ?? 'N/A';
-
-            $this->selectedPositionName = $selectedPositionName;
-        } else {
-            $this->selectedPositionName = 'N/A';
+            $selectedJobName = $selectedPositionName;
         }
 
-        return view('livewire.hr-manager.resume-evaluator.show-rankings', [
-            'applicantsData' => $applicantsData,
-            'selectedJobPosition' => $this->selectedJobPosition, // Pass selected job position to the view
-            'totalApplicants' => $this->totalApplicants, // Pass total applicants to the view
-            'selectedPositionName' => $this->selectedPositionName, // Pass selected position name to the view
-        ]);
+        return view('livewire.hr-manager.resume-evaluator.show-rankings', 
+            compact(
+                'applicantsData', 
+                'totalApplicants', 
+                'selectedJobName'
+            )
+        );
     }
 }

@@ -6,14 +6,15 @@
 
                 <div class="row">
                     <div class="col-md-3 d-flex align-items-center">
-                        <div><i data-lucide="briefcase-business" class="icon icon-slarge me-2 text-"> </i>Please select first the job position: </div>
+                        <div><i data-lucide="briefcase-business" class="icon icon-slarge me-2 text-"> </i>
+                            {{ __('Please select first the job position: ') }}</div>
                     </div>
 
                     <div class="col-md-5 d-flex align-items-center">
                         <!-- Selectpicker -->
                         <x-form.boxed-selectpicker id="selected_position" :nonce="$nonce" class="mb-0" :required="true"
-                            :options="['1' => 'Data Analyst', '2' => 'HR Manager', '3' => 'Accountant', '4' => 'IT']"
-                            placeholder="Select Job Position" wire:model="selectedJobPosition">
+                            :options="$this->listOfOpenJobs"
+                            placeholder="Select Job Position" wire:model="selectedJob">
                         </x-form.boxed-selectpicker>
                     </div>
 
@@ -30,7 +31,7 @@
     <!-- Rankings Table -->
     <section>
         <div class="col-md-12">
-            @if ($selectedJobPosition !== null)
+            @if ($selectedJob)
                 @if (count($applicantsData) > 0)
 
                     <section wire:loading.remove>
@@ -38,9 +39,9 @@
                         <!-- Callout: Total applicants & Job Position -->
                         <x-headings.sparkle-callout>
                             <x-slot:description>
-                                Found <span class="fw-bold text-primary">{{ $totalApplicants }}</span> candidates who are
+                                Found <span class="fw-bold text-primary">{{ $totalApplicants }}</span> candidate(s) who are
                                 applying
-                                for the job position of <span class="fw-bold text-primary">{{ $selectedPositionName }}</span>.
+                                for the job position of <span class="fw-bold text-primary">{{ $selectedJobName }}</span>.
                                 Check
                                 out their scores below!
                             </x-slot:description>
@@ -52,14 +53,16 @@
                                 <table class="col-md-12">
                                     <thead>
                                         <tr>
-                                            <th class="text-center">Score</th>
-                                            <th class="text-center">Applicant Name</th>
-                                            <th class="text-center">Qualification(s) Met</th>
+                                            <th class="text-center">{{ __('Score') }}</th>
+                                            <th class="text-center">{{ __('Applicant Name') }}</th>
+                                            <th class="text-center">{{ __('Qualification(s) Met') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($applicantsData as $index => $applicant)
-                                            <tr class="pb-5 {{ $index === 0 ? 'active' : '' }}">
+                                            <tr wire:key="{{ $applicant['application_id'] }}" 
+                                                class="pb-5 {{ $index === 0 ? 'active' : '' }}"
+                                            >
                                                 <!-- Score -->
                                                 <td class="text-center">
                                                     <span class="resume-score-circle">{{ $applicant['percentage'] }}%</span>
@@ -67,8 +70,12 @@
 
                                                 <!-- Name & Email -->
                                                 <td class="text-center">
-                                                    <span class="fs-5 fw-bold">{{ $applicant['name'] }}</span><br>
-                                                    <span>{{ $applicant['email'] }}</span>
+                                                    <a wire:navigate href="{{ route($this->routePrefix.'.application.show', ['application' => $applicant['application_id']]) }}"
+                                                        class="text-decoration-none"
+                                                    >
+                                                        <span class="fs-5 fw-bold">{{ $applicant['name'] }}</span><br>
+                                                        <span>{{ $applicant['email'] }}</span>                                                         
+                                                    </a>
                                                 </td>
 
                                                 <!-- Qualification(s) Met -->
@@ -76,7 +83,7 @@
                                                     <span class="qualifications-text"><!--  {{ $applicant['qualifications_met'] }} Count of total qualifications passed. Temporarily commented this out.-->
                                                         {{ $applicant['qualifications_list'] }}
                                                     </span>
-                                                    <span class="see-more hover-opacity" onclick="toggleText(this)">See More</span>
+                                                    <span class="see-more hover-opacity" onclick="toggleText(this)">{{ __('See More') }}</span>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -92,7 +99,7 @@
                             <div class="mt-4">
                                 <img class="img-size-20 img-responsive"
                                     src="{{ Vite::asset('resources/images/illus/empty-states/no-docs-found.gif') }}" alt="">
-                                <p class="fs-7 pt-4">No applicants yet for this job position.</p>
+                                <p class="fs-7 pt-4">{{ __('No applicants yet for this job position.') }}</p>
                             </div>
                         </div>
                     </div>
@@ -105,7 +112,7 @@
                         <div>
                             <img class="img-size-20 img-responsive"
                                 src="{{ Vite::asset('resources/images/illus/empty-states/personal-data.webp') }}" alt="">
-                            <p class="fs-7 pt-4">Rankings of applicants will be displayed here once generated.</p>
+                            <p class="fs-7 pt-4">{{ __('Rankings of applicants will be displayed here once generated.') }}</p>
                         </div>
                     </div>
                 </div>
