@@ -7,11 +7,9 @@
 @endsection
 
 @pushOnce('pre-scripts')
-    <script src="https://cdn.jsdelivr.net/npm/chart.js" nonce="{{ $nonce }}"></script>
 @endPushOnce
 
 @pushOnce('scripts')
-    <script src="{{ Vite::asset('resources/js/forms/nbp.min.js') }}" defer></script>
     @vite(['resources/js/employee/hr/dashboard.js'])
 @endPushOnce
 

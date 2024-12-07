@@ -1,29 +1,26 @@
-
 <div
     ondragenter="onLivewireCalendarEventDragEnter(event, '{{ $componentId }}', '{{ $day }}', '{{ $dragAndDropClasses }}');"
     ondragleave="onLivewireCalendarEventDragLeave(event, '{{ $componentId }}', '{{ $day }}', '{{ $dragAndDropClasses }}');"
     ondragover="onLivewireCalendarEventDragOver(event);"
     ondrop="onLivewireCalendarEventDrop(event, '{{ $componentId }}', '{{ $day }}', {{ $day->year }}, {{ $day->month }}, {{ $day->day }}, '{{ $dragAndDropClasses }}');"
-    class="flex-1 h-40 lg:h-48 border border-gray-200 -mt-px -ml-px"
-    style="min-width: 10rem;">
+    class="flex-grow-1 border position-relative"
+    style="min-width: 10rem; height: 10rem;"> 
 
     {{-- Wrapper for Drag and Drop --}}
-    <div
-        class="w-full h-full"
-        id="{{ $componentId }}-{{ $day }}">
+    <div class="w-100 h-100" id="{{ $componentId }}-{{ $day }}">
 
         <div
             @if($dayClickEnabled)
                 wire:click="onDayClick({{ $day->year }}, {{ $day->month }}, {{ $day->day }})"
             @endif
-            class="w-full h-full p-2 {{ $dayInMonth ? $isToday ? 'bg-yellow-100' : ' bg-white ' : 'bg-gray-100' }} flex flex-col">
+            class="w-100 h-100 p-2 d-flex flex-column {{ $dayInMonth ? ($isToday ? 'bg-warning' : 'bg-white') : 'bg-light' }}">
 
             {{-- Number of Day --}}
-            <div class="flex items-center">
-                <p class="text-sm {{ $dayInMonth ? ' font-medium ' : '' }}">
+            <div class="d-flex align-items-center">
+                <p class="small {{ $dayInMonth ? 'fw-medium' : '' }} mb-0">
                     {{ $day->format('j') }}
                 </p>
-                <p class="text-xs text-gray-600 ml-4">
+                <p class="text-muted ms-2 mb-0 small">
                     @if($events->isNotEmpty())
                         {{ $events->count() }} {{ Str::plural('event', $events->count()) }}
                     @endif
@@ -31,8 +28,8 @@
             </div>
 
             {{-- Events --}}
-            <div class="p-2 my-2 flex-1 overflow-y-auto">
-                <div class="grid grid-cols-1 grid-flow-row gap-2">
+            <div class="p-2 my-2 flex-grow-1 overflow-auto">
+                <div class="d-grid gap-2">
                     @foreach($events as $event)
                         <div
                             @if($dragAndDropEnabled)
