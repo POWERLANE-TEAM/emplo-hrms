@@ -146,3 +146,6 @@ table {
   cursor: pointer;
 }
 
+.choices__list--dropdown .choices__list, .choices__list[aria-expanded] .choices__list {
+  overflow: hidden;
+}
