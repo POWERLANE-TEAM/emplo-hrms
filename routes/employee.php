@@ -23,8 +23,9 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     // HR MANAGER ROUTES
     // ==========================================
 
-    // Dashboard
-    // ----------
+    /**
+     * Dashboard
+     */
     Route::get('/dashboard', DashboardController::class)
         ->middleware([
             'permission:' . UserPermission::VIEW_HR_MANAGER_DASHBOARD->value
@@ -32,9 +33,10 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         ])
         ->name('dashboard');
 
-    // List Applications Based on Status
-    // ----------------------------------
-    // Handles the listing of applications filtered by status (pending, qualified, or pre-employed)
+
+    /**
+     * List of Applicants
+     */
     Route::get('/applicants/{applicationStatus}/{page?}', [ApplicationController::class, 'index'])
         ->where('applicationStatus', 'pending|qualified|preemployed')
         ->where('page', 'index|')
@@ -45,9 +47,10 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         ])
         ->name('applications');
 
-    // View Specific Application Details
-    // ----------------------------------
-    // Displays detailed information for a specific application
+
+    /**
+     * View Specific Application Details
+     */
     Route::get('/applicant/{application}', [ApplicationController::class, 'show'])
         ->middleware([
             'permission:' . UserPermission::VIEW_APPLICATION_INFORMATION->value . '&(' . UserPermission::VIEW_ALL_PENDING_APPLICATIONS->value
@@ -56,9 +59,10 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         ])
         ->name('application.show');
 
-    // Update Application Status
-    // --------------------------
-    // Updates the status of an application (pending, qualified, or pre-employed)
+
+    /**
+     * Update Application Status
+     */
     Route::patch('/applicant/{application}', [ApplicationController::class, 'update'])
         ->middleware([
             'permission:' . UserPermission::UPDATE_PENDING_APPLICATION_STATUS->value
@@ -67,24 +71,28 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         ])
         ->name('application.update');
 
-    // Schedule Initial Interview
-    // ---------------------------
-    // Creates a schedule for the applicant's initial interview
+
+    /**
+     * Schedule Initial Interview
+     */
     Route::post('/applicant/interview/initial/{application}', [InitialInterviewController::class, 'store'])
         ->middleware(['permission:' . UserPermission::CREATE_APPLICANT_INIT_INTERVIEW_SCHEDULE->value])
         ->middleware(['permission:' . UserPermission::CREATE_APPLICANT_INIT_INTERVIEW_SCHEDULE->value])
         ->name('applicant.initial-inteview.store');
 
-    // Schedule Exam for Applicant
-    // ----------------------------
-    // Creates a schedule for the applicant's exam
+
+    /**
+     * Schedule Exam for Applicant
+     */
     Route::post('/applicant/exam/{application}', [ApplicationExamController::class, 'store'])
         ->middleware(['permission:' . UserPermission::CREATE_APPLICANT_EXAM_SCHEDULE->value])
         ->middleware(['permission:' . UserPermission::CREATE_APPLICANT_EXAM_SCHEDULE->value])
         ->name('applicant.exam.store');
 
-    // Employee Profile Settings
-    // --------------------------
+
+    /**
+     * Performances
+     */
     Route::prefix('performance')->name('performance.')->group(function () {
         Route::prefix('evaluation')->name('evaluation.')->group(function () {
             Route::get('/{employeeStatus}', [PerformanceDetailController::class, 'index'])
@@ -93,18 +101,25 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         });
     });
 
+    /**
+     * Profile
+     */
     Route::get('profile', function () {
         return view('employee.profile.settings');
     })->name('profile');
 
-    // Resume Evaluator
-    // --------------------------
+
+    /**
+     * Evaluator 
+     */
     Route::get('resume-evaluator/rankings', function () {
         return view('/employee.hr-manager.resume-evaluator.rankings');
     })->name('resume-evaluator.rankings');
 
-    // Performance Evaluation Results
-    // -------------------------------
+
+    /**
+     * Performance Evaluation Results
+     */
     Route::get('evaluation-results/probationary', function () {
         return view('/employee.hr-manager.evaluations.probationary.evaluation-results');
     })->name('evaluation-results.probationary');
@@ -113,20 +128,26 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         return view('/employee.hr-manager.evaluations.regular.evaluation-results');
     })->name('evaluation-results.regular');
 
-    // Incidents Management
-    // -------------------------------
+
+    /**
+     * Relations: Incidents Management
+     */
     Route::get('/incidents/create', function () {
         return view('employee.hr-manager.incidents.create');
-    })->name('incidents.create');
+    })->name('relations.incidents.create');
 
-    // Issue Management
-    // -------------------------------
+
+    /**
+     * Relations: Issues
+     */
     Route::get('/issues/review', function () {
         return view('employee.hr-manager.issues.review');
-    })->name('issues.review');
+    })->name('relations.issues.review');
 
-    // Training Management
-    // -------------------------------
+
+    /**
+     * Training
+     */
     Route::get('/training/all-records', function () {
         return view('employee.hr-manager.training.all-records');
     })->name('training.all-records');
@@ -135,33 +156,38 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         return view('employee.hr-manager.training.records');
     })->name('training.records');
 
-    // Employees Information
-    // -------------------------------
+
+    /**
+     * Employees Information
+     */
+
     Route::get('{employee}', function (Employee $employee) {
         return view('employee.hr-manager.employees.information', compact('employee'));
     })->name('employees.information');
 
-    // Payslips
-    // -------------------------------
+
+    /**
+     * Payslips
+     */
     Route::get('/payslips/bulk-upload', function () {
         return view('employee.hr-manager.payslips.bulk-upload');
     })->name('payslips.bulk-upload');
+
+
 
 
     // =========================================
     // SUPERVISOR ROUTES
     // ==========================================
 
-    // Performance Evaluation Scoring
-    // -------------------------------
+    /**
+     * Assign Score
+     */
     Route::get('{employee}/performances/create', function (Employee $employee) {
         $employee->with(['performances, jobTitle', 'status']);
         return view('employee.supervisor.performance-evaluations.create', compact('employee'));
     })->name('performances.create');
 
-    // Route::get('/performance/{employeeId}', function () {
-    //     return view('employee.supervisor.evaluations.probationary.assign-score');
-    // })->name('assign-score.probationary');
 
     Route::get('/assign-score/regular', function () {
         return view('employee.supervisor.evaluations.regular.assign-score');
@@ -172,45 +198,64 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     // =========================================
     // BASIC EMPLOYEE ROUTES
     // ==========================================
+
+
+    /**
+     * Index
+     */
     Route::get('/index', [EmployeeController::class, 'index'])
         ->name('index');
 
+    /**
+     * Attendance
+     */
     Route::get('/attendance/index', [AttendanceController::class, 'index'])
         ->name('attendance.index');
 
 
-    // Leaves Management
-    // -------------------------------
+    /**
+     * Leaves: Request
+     */
     Route::get('/leaves/request', function () {
         return view('employee.basic.leaves.request');
     })->name('leaves.request');
 
+
+    /**
+     * Leaves: View all Leaves
+     */
     Route::get('/leaves/view', function () {
         return view('employee.basic.leaves.view');
     })->name('leaves.view');
 
 
-    // Overtime Management
-    // -------------------------------
+    /**
+     * Overtime: Table of Summary Forms
+     */
     Route::get('/overtime/all-summary-forms', function () {
         return view('employee.basic.overtime.all-summary-forms');
     })->name('overtime.all-summary-forms');
 
+
+    /**
+     * Overtime: Summary form per payroll period
+     */
     Route::get('/overtime/summary-form', function () {
         return view('employee.basic.overtime.summary-form');
     })->name('overtime.summary-form');
 
+
+    /**
+     * Overtime: Request
+     */
     Route::get('/overtime/requests', function () {
         return view('employee.basic.overtime.requests');
     })->name('overtime.requests');
 
-    Route::get('/sample', function () {
-        dd(request());
-        echo 'sample';
-    });
 
-    // Issues Management
-    // -------------------------------
+    /**
+     * Issues: Create
+     */
     Route::get('/issues/create', function () {
         return view('employee.basic.issues.create');
     })->name('issues.create');
