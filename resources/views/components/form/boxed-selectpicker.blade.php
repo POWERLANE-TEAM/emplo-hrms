@@ -9,7 +9,7 @@
 @if($label)
     <label for="{{ $attributes->get('id') }}" class="mb-1 fw-semibold text-secondary-emphasis">
         {{ $label }}
-        {{-- Conditionally display the red asterisk for required fields --}}
+
         @if($required)
             <span class="text-danger">*</span>
         @endif
@@ -33,15 +33,14 @@
     }
 </style>
 
+@script
 <script>
-
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('livewire:navigated', () => {
         const selectElements = document.querySelectorAll('.selectpicker');
 
         selectElements.forEach(function (selectElement) {
-            // Check if the element has already been initialized using a data attribute
             if (selectElement.getAttribute('data-choices-initialized') === 'true') {
-                return; // Skip initialization if already done
+                return;
             }
 
             new Choices(selectElement, {
@@ -54,15 +53,13 @@
 
             selectElement.setAttribute('data-choices-initialized', 'true');
 
-            // Add custom scrollbar class after initialization
-            // Use a small timeout to ensure the dropdown is fully initialized
             setTimeout(() => {
-                // Directly select the .choices__list--dropdown element
                 const dropdownList = document.querySelector('.choices__list--dropdown');
                 if (dropdownList) {
                     dropdownList.classList.add('visible-gray-scrollbar');
                 }
-            }, 100);  // Adjust the timeout duration as necessary
+            }, 100);
         });
     });
 </script>
+@endscript

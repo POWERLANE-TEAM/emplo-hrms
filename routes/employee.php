@@ -137,8 +137,8 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
     // Employees Information
     // -------------------------------
-    Route::get('/employees/information', function () {
-        return view('employee.hr-manager.employees.information');
+    Route::get('{employee}', function (Employee $employee) {
+        return view('employee.hr-manager.employees.information', compact('employee'));
     })->name('employees.information');
 
     // Payslips

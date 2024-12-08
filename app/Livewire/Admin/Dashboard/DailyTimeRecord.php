@@ -32,7 +32,7 @@ class DailyTimeRecord extends Component
         $this->upsertTodayDtr();
 
         return AttendanceLog::whereDate('timestamp', $this->dateToday)
-            ->with('employee')
+            ->with(['employee', 'employee.account'])
             // ->orderByDesc('timestamp')
             ->get()
             ->groupBy('employee_id')
@@ -52,7 +52,7 @@ class DailyTimeRecord extends Component
                         return (object) [
                             'id' => $puncher->employee_id,
                             'name' => $puncher->full_name,
-                            'photo' => $puncher->photo,
+                            'photo' => $puncher->account->photo,
                         ];
                     }),
                 ];
@@ -104,7 +104,7 @@ class DailyTimeRecord extends Component
 
     private function generateFakeData()
     {
-        return AttendanceLog::with('employee')
+        return AttendanceLog::with(['employee', 'employee.account'])
             ->get()
             ->groupBy('employee_id')
             ->map(function ($group) {
@@ -123,7 +123,7 @@ class DailyTimeRecord extends Component
                         return (object) [
                             'id' => $puncher->employee_id,
                             'name' => $puncher->full_name,
-                            'photo' => $puncher->photo,
+                            'photo' => $puncher->account->photo,
                         ];
                     }),
                 ];

@@ -33,6 +33,7 @@ return new class extends Migration
             $table->id('job_title_id');
             $table->string('job_title');
             $table->text('job_desc')->nullable();
+            $table->longText('qualification_desc')->nullable();
             $table->decimal('base_salary')->nullable();
 
             $table->foreignIdFor(Department::class, 'department_id')
@@ -89,7 +90,6 @@ return new class extends Migration
                 ->cascadeOnDelete();
 
             $table->integer('vacancy_count')->default(0);
-            $table->decimal('expected_salary')->nullable();
             $table->dateTime('application_deadline_at')->nullable();
             $table->timestamps();
         });

@@ -83,9 +83,9 @@
 @script
 <script>
     const modalEl = document.getElementById('{{ $modalId }}');
-    const categoryModal = new bootstrap.Modal(modalEl);
+    const categoryModal = bootstrap.Modal.getOrCreateInstance(modalEl);
     const toastEl = document.getElementById('{{ $toastId }}');
-    const toast = new bootstrap.Toast(toastEl);
+    const toast = bootstrap.Toast.getOrCreateInstance(toastEl);
 
     Livewire.hook('morph.added', ({ el }) => {
         lucide.createIcons();

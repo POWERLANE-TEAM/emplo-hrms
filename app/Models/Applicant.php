@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
@@ -65,5 +66,29 @@ class Applicant extends Model
     public function presentBarangay(): BelongsTo
     {
         return $this->belongsTo(Barangay::class, 'present_barangay');
+    }
+
+    /**
+     * Get the skills of the applicant.
+     */
+    public function skills(): HasMany
+    {
+        return $this->hasMany(ApplicantSkill::class, 'applicant_id', 'applicant_id');
+    }
+    
+    /**
+     * Get the educational attainments of the applicant.
+     */
+    public function educations(): HasMany
+    {
+        return $this->hasMany(ApplicantEducation::class, 'applicant_id', 'applicant_id');
+    }
+
+    /**
+     * Get the work experiences of the applicant.
+     */
+    public function experiences(): HasMany
+    {
+        return $this->hasMany(ApplicantExperience::class, 'applicant_id', 'applicant_id');
     }
 }

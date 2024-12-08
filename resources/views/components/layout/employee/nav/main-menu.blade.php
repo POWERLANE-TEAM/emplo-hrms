@@ -5,7 +5,6 @@
     'iconRatio' => '1/1',
     'user',
     'userPhoto',
-    'defaultAvatar',
 ])
 
 
@@ -52,7 +51,7 @@
                     <button id="user-prof-btn" class="bg-transparent border-0" type="button" aria-label="User Menu"
                         onclick="toggleUserDropdown()" data-bs-toggle="dropdown">
                         <img class="rounded-circle" width="{{ $iconSize * 1.25 }}" height="{{ $iconSize * 1.25 }}"
-                            aspect-ratio="{{ $iconRatio }}" src="{{ $userPhoto ?? $defaultAvatar }}"
+                            aspect-ratio="{{ $iconRatio }}" src="{{ $userPhoto }}"
                             onerror="this.onerror=null;this.src='http://placehold.it/45/45';" alt="">
                     </button>
                     <ul id="dropdown-menu" class="dropdown-menu dropdown-menu-end" role="menu">

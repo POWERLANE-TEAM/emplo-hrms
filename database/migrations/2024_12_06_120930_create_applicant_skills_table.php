@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\JobTitle;
+use App\Models\Applicant;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,17 +12,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('job_title_qualifications', function (Blueprint $table) {
-            $table->id('job_title_qual_id');
-            $table->longText('job_title_qual_desc');
+        Schema::create('applicant_skills', function (Blueprint $table) {
+            $table->id('applicant_skill_id');
 
-            $table->foreignIdFor(JobTitle::class, 'job_title_id')
-                ->constrained('job_titles', 'job_title_id')
+            $table->foreignIdFor(Applicant::class, 'applicant_id')
+                ->constrained('applicants', 'applicant_id')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
-            $table->string('priority_level');
+            $table->longText('skill');
             $table->timestamps();
+            $table->index(['skill']);
         });
     }
 
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('job_title_qualifications');
+        Schema::dropIfExists('applicant_skills');
     }
 };
