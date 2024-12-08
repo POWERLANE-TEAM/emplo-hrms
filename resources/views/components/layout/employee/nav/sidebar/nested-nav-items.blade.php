@@ -12,7 +12,7 @@
 @aware(['iconSize' => '23px', 'iconRatio' => '1/1'])
 
 <li role="none" {{ $attributes->merge(['class' => 'my-1 sidebar-item']) }}>
-    <x-nav-link href="{{ $href }}" active="{{ $active }}" rel="" class="d-flex align-items-center nav-link"
+    <x-nav-link href="{{ $href }}" active="{{ $active }}" rel="" class="d-flex align-items-center nav-link pe-none"
         role="menuitem">
         <div class="nav-icon">
             @if (!empty($defaultIcon))
