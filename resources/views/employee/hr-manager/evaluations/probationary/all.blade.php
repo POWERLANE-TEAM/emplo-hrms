@@ -23,7 +23,7 @@
 
 <x-headings.main-heading :isHeading="true">
     <x-slot:heading>
-        {{ __('Regular Table') }}
+        {{ __('Probationary Employees Performance Evals Table') }}
     </x-slot:heading>
 
     <x-slot:description>

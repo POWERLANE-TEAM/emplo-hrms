@@ -2,7 +2,7 @@
 @use ('Illuminate\View\ComponentAttributeBag')
 
 @section('head')
-<title>Employee Name's Performance Evaluation Results</title><!-- Replace with Employee Name -->
+<title>View Requested Leave</title>
 <script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 @endsection
@@ -11,19 +11,19 @@
 @endPushOnce
 
 @pushOnce('scripts')
-    @vite(['resources/js/employee/hr-manager/performance.js'])
+    @vite(['resources/js/employee/basic/leaves.js'])
 
 @endPushOnce
 
 @pushOnce('styles')
-    @vite(['resources/css/employee/hr-manager/performance.css'])
+    @vite(['resources/css/employee/basic/leaves.css'])
 
 @endPushOnce
 @section('content')
 
 <x-headings.main-heading :isHeading="true">
     <x-slot:heading>
-        {{ __('Regular Table') }}
+        {{ __('All Leaves Table') }}
     </x-slot:heading>
 
     <x-slot:description>
@@ -31,4 +31,4 @@
     </x-slot:description>
 </x-headings.main-heading>
 
-    @endsection
+@endsection

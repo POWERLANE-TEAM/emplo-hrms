@@ -23,7 +23,7 @@
 
 <x-headings.main-heading :isHeading="true">
     <x-slot:heading>
-        {{ __('Regular Table') }}
+        {{ __('Requested Leaves Table') }}
     </x-slot:heading>
 
     <x-slot:description>

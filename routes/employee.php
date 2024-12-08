@@ -118,24 +118,55 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
 
     /**
-     * Performance Evaluation Results
+     * Performance Evaluation Results: Probationay
      */
+
+    Route::get('hr/evaluation-results/probationary/all', function () {
+        return view('/employee.hr-manager.evaluations.probationary.all');
+    })->name('hr.evaluation-results.probationary.all');
+
     Route::get('evaluation-results/probationary', function () {
         return view('/employee.hr-manager.evaluations.probationary.evaluation-results');
     })->name('evaluation-results.probationary');
 
+    /**
+     * Performance Evaluation Results: Regular
+     */
+
+    Route::get('hr/evaluation-results/regular/all', function () {
+        return view('/employee.hr-manager.evaluations.regular.all');
+    })->name('hr.evaluation-results.regular.all');
+    
     Route::get('evaluation-results/regular', function () {
         return view('/employee.hr-manager.evaluations.regular.evaluation-results');
     })->name('evaluation-results.regular');
 
 
     /**
+     * Leaves
+     */
+
+     Route::get('hr/leaves/all', function () {
+        return view('employee.hr-manager.leaves.all');
+    })->name('hr.leaves.all');
+
+
+    /**
+     * Overtime
+     */
+
+     Route::get('hr/overtime/all', function () {
+        return view('employee.hr-manager.overtime.all');
+    })->name('hr.overtime.all');
+
+
+    /**
      * Relations: Incidents Management
      */
 
-    Route::get('/relations/incidents/all', function () {
+    Route::get('hr/relations/incidents/all', function () {
         return view('employee.hr-manager.relations.incidents.all');
-    })->name('relations.incidents.all');
+    })->name('hr.relations.incidents.all');
 
     Route::get('/relations/incidents/create', function () {
         return view('employee.hr-manager.relations.incidents.create');
@@ -145,9 +176,9 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     /**
      * Relations: Issues
      */
-    Route::get('relations/issues/all', function () {
+    Route::get('hr/relations/issues/all', function () {
         return view('employee.hr-manager.relations.issues.all');
-    })->name('relations.issues.all');
+    })->name('hr.relations.issues.all');
 
     Route::get('relations/issues/review', function () {
         return view('employee.hr-manager.relations.issues.review');
@@ -157,9 +188,9 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     /**
      * Training
      */
-    Route::get('/training/all-records', function () {
-        return view('employee.hr-manager.training.all-records');
-    })->name('training.all-records');
+    Route::get('/training/all', function () {
+        return view('employee.hr-manager.training.all');
+    })->name('training.all');
 
     Route::get('/training/records', function () {
         return view('employee.hr-manager.training.records');
@@ -167,8 +198,12 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
 
     /**
-     * Employees Information
+     * Employees
      */
+
+    Route::get('/employees/all', function () {
+        return view('employee.hr-manager.employees.all');
+    })->name('employees.all');
 
     Route::get('{employee}', function (Employee $employee) {
         return view('employee.hr-manager.employees.information', compact('employee'));
@@ -178,6 +213,11 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     /**
      * Payslips
      */
+
+    Route::get('hr/payslips/all', function () {
+        return view('employee.hr-manager.payslips.all');
+    })->name('hr.payslips.all');
+
     Route::get('/payslips/bulk-upload', function () {
         return view('employee.hr-manager.payslips.bulk-upload');
     })->name('payslips.bulk-upload');
@@ -223,27 +263,29 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
 
     /**
-     * Leaves: Request
+     * Leaves
      */
+
+    Route::get('general/leaves/all', function () {
+        return view('employee.basic.leaves.all');
+    })->name('general.leaves.all');
+
     Route::get('/leaves/request', function () {
         return view('employee.basic.leaves.request');
     })->name('leaves.request');
 
 
-    /**
-     * Leaves: View all Leaves
-     */
-    Route::get('/leaves/view', function () {
+    Route::get('general/leaves/view', function () {
         return view('employee.basic.leaves.view');
-    })->name('leaves.view');
+    })->name('general.leaves.view');
 
 
     /**
      * Overtime: Table of Summary Forms
      */
-    Route::get('/overtime/all-summary-forms', function () {
-        return view('employee.basic.overtime.all-summary-forms');
-    })->name('overtime.all-summary-forms');
+    Route::get('general/overtime/all', function () {
+        return view('employee.basic.overtime.all');
+    })->name('general.overtime.all');
 
 
     /**
