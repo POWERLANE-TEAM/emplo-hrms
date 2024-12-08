@@ -6,7 +6,7 @@
         <div class="card-header w-100 px-3">
             <header class="p-1 fs-4 fw-bold" role="heading" aria-level="2">
                 <span class="fs-4 fw-bold text-primary pe-2" x-text="online.list.length"></span>
-                {{ __('Online Users') }}
+                {{ __('Active Sessions') }}
             </header>
         </div>
 
