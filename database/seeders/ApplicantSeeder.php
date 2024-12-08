@@ -84,11 +84,11 @@ class ApplicantSeeder extends Seeder
      */
     public function run(?int $count = null, ?int $start = null, ?int $concurrencyCount = null): void
     {
-        $count = $count ?? env('APP_USER_SEEDING_COUNT', 30);
+        $count ??= env('APP_USER_SEEDING_COUNT', 30);
 
-        $start = $start ?? Applicant::max('applicant_id') + 1;
+        $start ??= Applicant::max('applicant_id') + 1;
 
-        $concurrencyCount = $concurrencyCount ?? env('APP_MAX_CONCURRENT_COUNT', 10);
+        $concurrencyCount ??= env('APP_MAX_CONCURRENT_COUNT', 10);
         $chunkCount = ceil($count / $concurrencyCount);
 
         $permissions = [

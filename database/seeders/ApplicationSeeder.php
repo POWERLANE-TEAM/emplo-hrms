@@ -13,7 +13,7 @@ class ApplicationSeeder extends Seeder
     public function run(): void
     {
         activity()->withoutLogs(function () {
-            Application::factory(30)->create();
+            Application::factory(env('APP_USER_SEEDING_COUNT'))->create();
         });
     }
 }
