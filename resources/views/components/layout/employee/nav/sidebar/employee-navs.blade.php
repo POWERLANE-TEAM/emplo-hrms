@@ -43,35 +43,70 @@
         $navPayslipOrder = $user->hasPermissionTo(UserPermission::VIEW_ALL_PAYSLIPS) ? 7 : 3;
     @endphp
     @canAny([UserPermission::VIEW_PAYSLIPS, UserPermission::VIEW_ALL_PAYSLIPS])
-    <x-layout.employee.nav.sidebar.nav-item href="#" :active="request()->routeIs($routePrefix . '.payslips')"
-        class="tw-order-[{{ $navPayslipOrder }}]" nav_txt="Payslips" :defaultIcon="['src' => 'payslips', 'alt' => '']"
-        :activeIcon="['src' => 'payslips', 'alt' => '']">
+    <x-layout.employee.nav.sidebar.nav-item href="{{ route($routePrefix . '.hr.payslips.all') }}"
+        :active="request()->routeIs($routePrefix . '.hr.payslips.all')" class="tw-order-[{{ $navPayslipOrder }}]"
+        nav_txt="Payslips" :defaultIcon="['src' => 'payslips', 'alt' => '']" :activeIcon="['src' => 'payslips', 'alt' => '']">
     </x-layout.employee.nav.sidebar.nav-item>
     @endcan
 
     {{-- Employee, HR Manager, Supervisor --}}
-    @php
+    <!-- @php
         $navPerformanceOrder = $user->hasPermissionTo(UserPermission::VIEW_ALL_EMP_PERFORMANCE_EVAL) ? 8 : 4;
     @endphp
     @canAny([UserPermission::VIEW_EMP_PERFORMANCE_EVAL, UserPermission::VIEW_ALL_EMP_PERFORMANCE_EVAL])
     <x-layout.employee.nav.sidebar.nav-item :href="route($routePrefix . '.performance.evaluation.index', ['employeeStatus' => 'probationary'])" :active="request()->routeIs($routePrefix . '.performance.evaluation.index')" class="tw-order-[{{ $navPerformanceOrder }}]" nav_txt="Performance"
         :defaultIcon="['src' => 'performances', 'alt' => '']" :activeIcon="['src' => 'performances', 'alt' => '']">
     </x-layout.employee.nav.sidebar.nav-item>
+    @endcan -->
+
+    {{-- HR Manager / HR Staff --}}
+    @can(UserPermission::VIEW_ALL_EMP_PERFORMANCE_EVAL)
+        <x-layout.employee.nav.sidebar.nested-nav-items nav_txt="Performance" :active="request()->routeIs($routePrefix . 'evaluations.*')" class="tw-order-[11]" :defaultIcon="['src' => 'performances', 'alt' => 'Performance']"
+            :activeIcon="['src' => 'performances', 'alt' => 'Relations']" :children="[
+                ['href' => route($routePrefix . '.hr.evaluation-results.probationary.all'), 'active' => request()->routeIs($routePrefix . '.hr.evaluation-results.probationary.all'), 'nav_txt' => 'Probationary'],
+                ['href' => route($routePrefix . '.hr.evaluation-results.regular.all'), 'active' => request()->routeIs($routePrefix . '.hr.evaluation-results.regular.all'), 'nav_txt' => 'Regular'],
+            ]">
+        </x-layout.employee.nav.sidebar.nested-nav-items>
     @endcan
 
-    {{-- Employee, HR Manager, Supervisor --}}
-    @canAny([UserPermission::VIEW_LEAVES, UserPermission::VIEW_ALL_LEAVES])
+    {{-- Employee --}}
+    @canAny([UserPermission::VIEW_EMP_PERFORMANCE_EVAL])
     <x-layout.employee.nav.sidebar.nav-item href="#" :active="request()->routeIs($routePrefix . '.leaves')"
-        class="tw-order-[5]" nav_txt="Leaves" :defaultIcon="['src' => 'leaves', 'alt' => '']" :activeIcon="['src' => 'leaves', 'alt' => '']">
+        class="tw-order-[4]" nav_txt="Performance" :defaultIcon="['src' => 'performances', 'alt' => '']"
+        :activeIcon="['src' => 'performances', 'alt' => '']">
     </x-layout.employee.nav.sidebar.nav-item>
     @endcan
 
     {{-- Employee, HR Manager, Supervisor --}}
-    @canAny([UserPermission::VIEW_OVERTIME, UserPermission::VIEW_ALL_OVERTIME])
-    <x-layout.employee.nav.sidebar.nav-item href="#" :active="request()->routeIs($routePrefix . '.overtimes')"
-        class="tw-order-[6]" nav_txt="Overtime" :defaultIcon="['src' => 'overtime', 'alt' => '']" :activeIcon="['src' => 'overtime', 'alt' => '']">
+    @php
+        $navLeavesOrder = $user->hasPermissionTo(UserPermission::VIEW_ALL_LEAVES) ? 5 : 3; // Adjust order as needed
+        $navLeavesRoute = $user->hasPermissionTo(UserPermission::VIEW_ALL_LEAVES)
+            ? $routePrefix . '.hr.leaves.all'
+            : $routePrefix . '.general.leaves.all'; /* Adjust routes as required */
+    @endphp
+
+    @canAny([UserPermission::VIEW_LEAVES, UserPermission::VIEW_ALL_LEAVES])
+    <x-layout.employee.nav.sidebar.nav-item :href="route($navLeavesRoute)" :active="request()->routeIs($navLeavesRoute)"
+        class="tw-order-[{{ $navLeavesOrder }}]" nav_txt="Leaves" :defaultIcon="['src' => 'leaves', 'alt' => '']"
+        :activeIcon="['src' => 'leaves', 'alt' => '']">
     </x-layout.employee.nav.sidebar.nav-item>
     @endcan
+
+    {{-- Employee, HR Manager, Supervisor --}}
+    @php
+        $navOvertimeOrder = $user->hasPermissionTo(UserPermission::VIEW_ALL_OVERTIME) ? 6 : 4; // Adjust order as needed
+        $navOvertimeRoute = $user->hasPermissionTo(UserPermission::VIEW_ALL_OVERTIME)
+            ? $routePrefix . '.hr.overtime.all'
+            : $routePrefix . '.general.overtime.all'; /* Adjust routes as required */
+    @endphp
+
+    @canAny([UserPermission::VIEW_OVERTIME, UserPermission::VIEW_ALL_OVERTIME])
+    <x-layout.employee.nav.sidebar.nav-item :href="route($navOvertimeRoute)"
+        :active="request()->routeIs($navOvertimeRoute)" class="tw-order-[{{ $navOvertimeOrder }}]" nav_txt="Overtime"
+        :defaultIcon="['src' => 'overtime', 'alt' => '']" :activeIcon="['src' => 'overtime', 'alt' => '']">
+    </x-layout.employee.nav.sidebar.nav-item>
+    @endcan
+
 
     {{-- Employee, Supervisor --}}
     @canAny([UserPermission::VIEW_DOCUMENTS])
@@ -108,10 +143,10 @@
     {{-- HR Manager --}}
 
     @can(UserPermission::VIEW_ALL_RELATIONS)
-        <x-layout.employee.nav.sidebar.nested-nav-items nav_txt="Relations" :active="request()->routeIs($routePrefix . 'relations.*')"  class="tw-order-[11]" 
-            :defaultIcon="['src' => 'relations', 'alt' => 'Relations']" :activeIcon="['src' => 'relations', 'alt' => 'Relations']" :children="[
-                ['href' => route($routePrefix . '.relations.incidents.all'), 'active' => request()->routeIs($routePrefix . '.relations.incidents.all'), 'nav_txt' => 'Incidents'],
-                ['href' => route($routePrefix . '.relations.issues.all'), 'active' => request()->routeIs($routePrefix . '.relations.issues.all'), 'nav_txt' => 'Issues'],
+        <x-layout.employee.nav.sidebar.nested-nav-items nav_txt="Relations" :active="request()->routeIs($routePrefix . 'relations.*')" class="tw-order-[11]" :defaultIcon="['src' => 'relations', 'alt' => 'Relations']"
+            :activeIcon="['src' => 'relations', 'alt' => 'Relations']" :children="[
+                ['href' => route($routePrefix . '.hr.relations.incidents.all'), 'active' => request()->routeIs($routePrefix . '.hr.relations.incidents.all'), 'nav_txt' => 'Incidents'],
+                ['href' => route($routePrefix . '.hr.relations.issues.all'), 'active' => request()->routeIs($routePrefix . '.hr.relations.issues.all'), 'nav_txt' => 'Issues'],
             ]">
         </x-layout.employee.nav.sidebar.nested-nav-items>
     @endcan
