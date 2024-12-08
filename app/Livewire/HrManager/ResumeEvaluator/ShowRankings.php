@@ -88,7 +88,7 @@ class ShowRankings extends Component
                     )
                 ));
 
-                $matchedCounts['Medium'] += count(array_uintersect(
+                $matchedCounts[$this->mp] += count(array_uintersect(
                     $mediumQualifications,
                     $applicant[$category],
                     fn($job, $applicant) => strcasecmp(
@@ -97,7 +97,7 @@ class ShowRankings extends Component
                     )
                 ));
 
-                $matchedCounts['Low'] += count(array_uintersect(
+                $matchedCounts[$this->lp] += count(array_uintersect(
                     $lowQualifications,
                     $applicant[$category],
                     fn($job, $applicant) => strcasecmp(
