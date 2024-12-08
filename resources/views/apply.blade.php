@@ -21,10 +21,10 @@
 @endsection
 
 @pushOnce('pre-styles')
-    <link href="https://unpkg.com/filepond-plugin-pdf-preview/dist/filepond-plugin-pdf-preview.min.css" rel="stylesheet">
 @endPushOnce
 
 @pushOnce('styles')
+    <link href="https://unpkg.com/filepond-plugin-pdf-preview/dist/filepond-plugin-pdf-preview.min.css" rel="stylesheet">
     @vite(['resources/css/applicant/apply.css'])
 @endPushOnce
 
