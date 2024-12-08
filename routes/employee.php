@@ -132,16 +132,25 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     /**
      * Relations: Incidents Management
      */
-    Route::get('/incidents/create', function () {
-        return view('employee.hr-manager.incidents.create');
+
+    Route::get('/relations/incidents/all', function () {
+        return view('employee.hr-manager.relations.incidents.all');
+    })->name('relations.incidents.all');
+
+    Route::get('/relations/incidents/create', function () {
+        return view('employee.hr-manager.relations.incidents.create');
     })->name('relations.incidents.create');
 
 
     /**
      * Relations: Issues
      */
-    Route::get('/issues/review', function () {
-        return view('employee.hr-manager.issues.review');
+    Route::get('relations/issues/all', function () {
+        return view('employee.hr-manager.relations.issues.all');
+    })->name('relations.issues.all');
+
+    Route::get('relations/issues/review', function () {
+        return view('employee.hr-manager.relations.issues.review');
     })->name('relations.issues.review');
 
 
