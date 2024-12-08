@@ -125,4 +125,23 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Regional Settings
+    |--------------------------------------------------------------------------
+    | This value is used for setting data format and etc.
+    | Supported: "local", "international"
+    */
+    'region_mode' => env('APP_REGION_MODE', 'local'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Server Timezone
+    |--------------------------------------------------------------------------
+    | This value is the timezone of the server where the application is hosted.
+    | Used in validation rules format and etc.
+    |
+    */
+    'server_timezone' => env('SERVER_TIMEZONE', 'Asia/Manila'),
+
 ];
