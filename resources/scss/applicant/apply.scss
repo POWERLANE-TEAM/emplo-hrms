@@ -59,3 +59,19 @@
         }
     }
 }
+
+div:has(>.form-display-profile) {
+    --img-size: clamp(4rem, 2rem + 5vw, 10rem + 2.5vw);
+    padding: 0.1rem;
+    aspect-ratio: 1/1;
+    height: var(--img-size);
+    width: var(--img-size);
+    overflow: clip;
+
+    .form-display-profile {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1/1;
+
+    }
+}
