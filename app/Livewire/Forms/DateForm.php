@@ -33,4 +33,15 @@ class DateForm extends Form
     {
         $this->maxDate = $maxDate;
     }
+
+
+    public function getMinDate()
+    {
+        return $this->minDate;
+    }
+
+    public function getMaxDate()
+    {
+        return $this->maxDate;
+    }
 }
