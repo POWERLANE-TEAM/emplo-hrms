@@ -12,6 +12,6 @@ class JobSkillKeywordSeeder extends Seeder
      */
     public function run(): void
     {
-        JobSkillKeyword::factory(20)->create();
+        JobSkillKeyword::factory(50)->create();
     }
 }

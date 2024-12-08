@@ -12,6 +12,6 @@ class ApplicantSkillSeeder extends Seeder
      */
     public function run(): void
     {
-        ApplicantSkill::factory(100)->create();
+        ApplicantSkill::factory(300)->create();
     }
 }

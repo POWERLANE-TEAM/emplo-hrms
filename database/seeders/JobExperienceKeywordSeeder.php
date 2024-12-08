@@ -12,6 +12,6 @@ class JobExperienceKeywordSeeder extends Seeder
      */
     public function run(): void
     {
-        JobExperienceKeyword::factory(20)->create();
+        JobExperienceKeyword::factory(50)->create();
     }
 }

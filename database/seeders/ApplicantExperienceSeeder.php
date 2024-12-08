@@ -12,6 +12,6 @@ class ApplicantExperienceSeeder extends Seeder
      */
     public function run(): void
     {
-        ApplicantExperience::factory(100)->create();
+        ApplicantExperience::factory(300)->create();
     }
 }
