@@ -38,6 +38,7 @@ class DatabaseSeeder extends Seeder
                 AttendanceLogSeeder::class,
                 EmployeeJobDetailSeeder::class,
                 // UserSeeder::class,
+                ApplicantSeeder::class,
                 ApplicationSeeder::class,
                 ApplicantEducationSeeder::class,
                 ApplicantExperienceSeeder::class,
