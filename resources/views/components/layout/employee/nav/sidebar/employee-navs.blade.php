@@ -23,16 +23,6 @@
     </x-layout.employee.nav.sidebar.nav-item>
     @endcan
 
-
-    @can(UserPermission::VIEW_ALL_RELATIONS)
-        <x-layout.employee.nav.sidebar.nested-nav-items nav_txt="Relations" :active="request()->routeIs($routePrefix . 'relations.*')"
-            :defaultIcon="['src' => 'attendance', 'alt' => 'Attendance']" :activeIcon="['src' => 'attendance', 'alt' => 'Attendance']" :children="[
-                ['href' => route($routePrefix . '.relations.incidents.create'), 'active' => request()->routeIs($routePrefix . '.relations.incidents.create'), 'nav_txt' => 'Daily Time Log'],
-                ['href' => route($routePrefix . '.relations.issues.review'), 'active' => request()->routeIs($routePrefix . '.relations.issues.review'), 'nav_txt' => 'Records'],
-            ]">
-        </x-layout.employee.nav.sidebar.nested-nav-items>
-    @endcan
-
     {{-- Employee, HR Manager, Supervisor --}}
     @php
         $navAttendanceOrder = $user->hasPermissionTo(UserPermission::VIEW_ALL_DAILY_ATTENDANCE) ? 4 : 2;
@@ -116,10 +106,14 @@
     @endcan
 
     {{-- HR Manager --}}
+
     @can(UserPermission::VIEW_ALL_RELATIONS)
-        <x-layout.employee.nav.sidebar.nav-item href="#" :active="request()->routeIs($routePrefix . '.relations')"
-            class="tw-order-[11]" nav_txt="Relations" :defaultIcon="['src' => 'relations', 'alt' => '']" :activeIcon="['src' => 'relations', 'alt' => '']">
-        </x-layout.employee.nav.sidebar.nav-item>
+        <x-layout.employee.nav.sidebar.nested-nav-items nav_txt="Relations" :active="request()->routeIs($routePrefix . 'relations.*')"  class="tw-order-[11]" 
+            :defaultIcon="['src' => 'relations', 'alt' => 'Relations']" :activeIcon="['src' => 'relations', 'alt' => 'Relations']" :children="[
+                ['href' => route($routePrefix . '.relations.incidents.all'), 'active' => request()->routeIs($routePrefix . '.relations.incidents.all'), 'nav_txt' => 'Incidents'],
+                ['href' => route($routePrefix . '.relations.issues.all'), 'active' => request()->routeIs($routePrefix . '.relations.issues.all'), 'nav_txt' => 'Issues'],
+            ]">
+        </x-layout.employee.nav.sidebar.nested-nav-items>
     @endcan
 
     {{-- Head Admin --}}
@@ -161,14 +155,6 @@
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan
 
-    {{-- HR Manager --}}
-    @can(UserPermission::VIEW_TALENT_EVALUATOR)
-        <x-layout.employee.nav.sidebar.nav-item href="{{ route($routePrefix . '.resume-evaluator.rankings') }}"
-            :active="request()->routeIs($routePrefix . '.resume-evaluator.rankings')" class="" nav_txt="Resume Evaluator"
-            :defaultIcon="['src' => 'resume-evaluator', 'alt' => '']" :activeIcon="['src' => 'resume-evaluator', 'alt' => '']">
-        </x-layout.employee.nav.sidebar.nav-item>
-    @endcan
-
 </x-layout.employee.nav.sidebar.nav-group>
 
 
@@ -207,6 +193,15 @@
 
 <x-layout.employee.nav.sidebar.nav-group :sidebar_expanded="$sidebar_expanded" class="" txt_collapsed="AI Tools"
     txt_expanded="">
+
+    {{-- HR Manager --}}
+    @can(UserPermission::VIEW_TALENT_EVALUATOR)
+        <x-layout.employee.nav.sidebar.nav-item href="{{ route($routePrefix . '.resume-evaluator.rankings') }}"
+            :active="request()->routeIs($routePrefix . '.resume-evaluator.rankings')" class="" nav_txt="Resume Evaluator"
+            :defaultIcon="['src' => 'resume-evaluator', 'alt' => '']" :activeIcon="['src' => 'resume-evaluator', 'alt' => '']">
+        </x-layout.employee.nav.sidebar.nav-item>
+    @endcan
+
     {{-- HR Manager --}}
     @can(UserPermission::VIEW_PLAN_GENERATOR)
         <x-layout.employee.nav.sidebar.nav-item href="#" :active="request()->is('#')" class="" nav_txt="Plan Generator"
