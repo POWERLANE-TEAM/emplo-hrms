@@ -46,6 +46,7 @@ class DatabaseSeeder extends Seeder
                 JobEducationKeywordSeeder::class,
                 JobExperienceKeywordSeeder::class,
                 JobSkillKeywordSeeder::class,
+                ManagerialSeeder::class,
             ]);
         });
     }

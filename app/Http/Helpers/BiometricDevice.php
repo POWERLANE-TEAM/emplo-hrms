@@ -221,6 +221,22 @@ class BiometricDevice
         $this->zk->testVoice();
     }
 
+    /**
+     * Register user to the biometric machine.
+     * 
+     * @param int $uid
+     * @param int|string $userid
+     * @param string $name
+     * @param int|string $password
+     * @param int $role
+     * @param int $cardno
+     * @return void
+     */
+    public function createUser($uid, $userid, $name, $password = '', $role = 0, $cardno = 0)
+    {
+        $this->zk->setUser($uid, $userid, $name, $password, $role, $cardno);
+    }
+
     public function __destruct()
     {
         $this->zk->enableDevice();
@@ -238,10 +254,5 @@ class BiometricDevice
         } else {
             return Str::of($params[0])->chopStart('~')->trim()->toString();
         }
-    }
-
-    protected function getCleanedAttendanceLogs()
-    {
-        //
     }
 }
