@@ -1,6 +1,6 @@
 import addGlobalListener from 'globalListener-script';
 import InputValidator, { setInvalidMessage } from './input-validator.js';
-import debounce from '../debounce-fn.js';
+import debounce from 'debounce-script';
 
 let validEmailDomains;
 let emailDomainResouurces = `/build/assets/email-domain-list.json`;

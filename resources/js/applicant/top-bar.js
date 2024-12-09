@@ -1,4 +1,4 @@
-import addGlobalScrollListener, { documentScrollPosY } from '../global-scroll-fn.js';
+import addGlobalScrollListener, { documentScrollPosY } from 'global-scroll-script';
 
 function toggleHeaderNavBg() {
     const scrollPosition = documentScrollPosY();
