@@ -67,5 +67,6 @@
     </section>
 </div>
 
-<!-- BACK-END REPLACE: Employee's leaves table. -->
+<!-- BACK-END REPLACE: Employee's leaves table. 
+    The employee id should be passed to: leaves/view.blade.php -->
 @endsection
