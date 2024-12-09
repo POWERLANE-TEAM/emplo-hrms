@@ -17,22 +17,22 @@ class PhoneNumber implements CastsAttributes
      */
     public function get(Model $model, string $key, mixed $value, array $attributes): mixed
     {
-        $phoneObj = null;
-        $contactNumber = null;
-        $regionMode = config('app.region_mode');
+        // $phoneObj = null;
+        // $contactNumber = null;
+        // $regionMode = config('app.region_mode');
 
-        if ($regionMode == 'local') {
-            $phoneObj = new FormatPhoneNumber($value, 'PH');
-            $contactNumber = $phoneObj->formatE164();
-        } else {
-            // $phoneObj->formatInternational();
-        }
+        // if ($regionMode == 'local') {
+        //     $phoneObj = new FormatPhoneNumber($value, 'PH');
+        //     $contactNumber = $phoneObj->formatE164();
+        // } else {
+        //     // $phoneObj->formatInternational();
+        // }
 
-        if ($phoneObj === null) {
-            $this->reportFormattingError($model, $value, $regionMode);
-        }
+        // if ($phoneObj === null) {
+        //     $this->reportFormattingError($model, $value, $regionMode);
+        // }
 
-        return ($contactNumber ?? $value);
+        return  $value;
     }
 
     /**
