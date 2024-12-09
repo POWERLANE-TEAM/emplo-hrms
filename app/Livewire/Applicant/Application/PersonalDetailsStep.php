@@ -295,23 +295,32 @@ class PersonalDetailsStep extends StepComponent
 
             // Log::info('employee_contact', ['employee_contact' => $event['parsedResume']['employee_contact']]);
 
-            $contacts = is_array($event['parsedResume']['employee_contact']) ? $event['parsedResume']['employee_contact'] : [$event['parsedResume']['employee_contact']];
-            if ($regionMode == 'local') {
+            if (isset($event['parsedResume']['employee_contact'])) {
+                $contacts = is_array($event['parsedResume']['employee_contact']) ? $event['parsedResume']['employee_contact'] : [$event['parsedResume']['employee_contact']];
+                if ($regionMode == 'local') {
 
-                foreach ($contacts as $contact) {
-                    $phoneObj = new PhoneNumber($contact, 'PH');
-                    $formattedContact = $phoneObj->formatNational();
-                    $cleanedContact = preg_replace('/\D/', '', $formattedContact) ?? $contact;
-                    $contactNumbers[] = $cleanedContact;
+                    foreach ($contacts as $contact) {
+                        try {
+                            $phoneObj = new PhoneNumber($contact, 'PH');
+                            $formattedContact = $phoneObj->formatNational();
+                        } catch (\Exception $e) {
+                            $formattedContact = $contact;
+                        } finally {
+                            $cleanedContact = preg_replace('/\D/', '', $formattedContact);
+                            $contactNumbers[] = $cleanedContact;
+                        }
+                    }
                 }
-            }
 
-            $this->parsedResume['employee_contact'] = $contactNumbers;
+                $this->parsedResume['employee_contact'] = $contactNumbers;
+                $this->applicant['mobileNumber'] = is_array($this->parsedResume['employee_contact']) ? end($this->parsedResume['employee_contact']) : $this->parsedResume['employee_contact'];
+            }
 
             $this->updateParsedNameSegment();
 
-            $this->applicant['mobileNumber'] = end($this->parsedResume['employee_contact']);
-            $this->applicant['email'] = end($this->parsedResume['employee_email']);
+            if (isset($event['parsedResume']['employee_email'])) {
+                $this->applicant['email'] = is_array($this->parsedResume['employee_email']) ? end($this->parsedResume['employee_email']) : $this->parsedResume['employee_email'];
+            }
         } catch (\Throwable $th) {
             report($th);
         }

@@ -16,11 +16,38 @@
                         ];
                     @endphp
 
-                    <div>
-                        <x-filepond::upload wire:model="displayProfile" instant-upload="false" {{-- name="resume.file" --}}
-                            :accept="$accepted" :required="true" />
+                    @if (!is_null($displayProfileUrl) && filter_var($displayProfileUrl, FILTER_VALIDATE_URL))
+                        <div>
+                            <div class="rounded-circle border mx-auto">
+                                <img class="form-display-profile rounded-circle" src="{{ $displayProfileUrl }}"
+                                    alt="">
+                            </div>
+                        </div>
+                    @endif
+
+                    @php
+                        $allowImagePreview =
+                            !is_null($displayProfileUrl) && filter_var($displayProfileUrl, FILTER_VALIDATE_URL)
+                                ? 'false'
+                                : 'true';
+                    @endphp
+
+                    @include('components.form.input-feedback', [
+                        'feedback_id' => 'sample-profile-feedback',
+                        'message' => $errors->first(),
+                    ])
+
+                    {{-- Hide Preview for now --}}
+                    <div
+                        class="{{ !is_null($displayProfileUrl) && filter_var($displayProfileUrl, FILTER_VALIDATE_URL) ? 'd-none' : '' }}">
+                        {{-- Image size client validation not working --}}
+                        <x-filepond::upload id="display-profile" image-validate-size-min-width="160"
+                            image-validate-size-min-height="160" image-validate-size-max-width="2160"
+                            image-validate-size-max-height="2160" allow-image-validate-size="true"
+                            image-validate-size-max-resolution="2160" wire:model="displayProfile" :accept="$accepted"
+                            allow-image-preview="{{ $allowImagePreview }}" instant-upload="false" :required="true" />
                         @include('components.form.input-feedback', [
-                            'feedback_id' => 'displayProfile',
+                            'feedback_id' => 'display-profile-feedback',
                             'message' => $errors->first('displayProfile'),
                         ])
                     </div>
@@ -33,15 +60,28 @@
                         @endif
                     </datalist>
 
+                    <datalist id="applicant-contact-list">
+                        @if (!empty($this->parsedResume['employee_contact']))
+                            @if (is_array($this->parsedResume['employee_contact']))
+                                @foreach ($this->parsedResume['employee_contact'] as $contact)
+                                    <option value="{{ $contact }}">{{ $contact }}</option>
+                                @endforeach
+                            @else
+                                <option value="{{ $this->parsedResume['employee_contact'] }}">
+                                    {{ $this->parsedResume['employee_contact'] }}</option>
+                            @endif
+                        @endif
+                    </datalist>
+
                     <x-form.boxed-input-text id="applicant-last-name" label="{{ __('Last Name') }}" type="list"
-                        list="applicant-names" name="form.applicantName.lastName"
-                        class=" {{ $errors->has('applicantName.lastName') ? 'is-invalid' : '' }}" :nonce="$nonce"
+                        list="applicant-names" name="applicant.name.lastName" autocomplete="family-name"
+                        class=" {{ $errors->has('applicant.name.lastName') ? 'is-invalid' : '' }}" :nonce="$nonce"
                         required placeholder="Smith">
 
                         <x-slot:feedback>
                             @include('components.form.input-feedback', [
-                                'feedback_id' => 'applicant-last-name',
-                                'message' => $errors->first('applicantName.lastName'),
+                                'feedback_id' => 'applicant-last-name-feedback',
+                                'message' => $errors->first('applicant.name.lastName'),
                             ])
                         </x-slot:feedback>
 
@@ -50,14 +90,15 @@
                     <div class="input-group column-gap-3 column-gap-md-4  flex-wrap flex-md-nowrap">
                         <div class="flex-1-sm-grow">
                             <x-form.boxed-input-text id="applicant-first-name" label="{{ __('First Name') }}"
-                                name="form.applicantName.firstName" type="list" list="applicant-names"
-                                class=" {{ $errors->has('applicantName.firstName') ? 'is-invalid' : '' }}"
+                                name="applicant.name.firstName" type="list" list="applicant-names"
+                                autocomplete="given-name"
+                                class=" {{ $errors->has('applicant.name.firstName') ? 'is-invalid' : '' }}"
                                 :nonce="$nonce" placeholder="Johny" required>
 
                                 <x-slot:feedback>
                                     @include('components.form.input-feedback', [
-                                        'feedback_id' => 'applicant-first-name',
-                                        'message' => $errors->first('applicantName.firstName'),
+                                        'feedback_id' => 'applicant-first-name-feedback',
+                                        'message' => $errors->first('applicant.name.firstName'),
                                     ])
                                 </x-slot:feedback>
                             </x-form.boxed-input-text>
@@ -65,14 +106,15 @@
 
                         <div class="flex-1-sm-grow">
                             <x-form.boxed-input-text id="applicant-middle-name" label="{{ __('Middle Name') }}"
-                                name="form.applicantName.middleName" type="list" list="applicant-names"
-                                class=" {{ $errors->has('applicantName.middleName') ? 'is-invalid' : '' }}"
+                                name="applicant.name.middleName" autocomplete="additional-name" type="list"
+                                list="applicant-names"
+                                class=" {{ $errors->has('applicant.name.middleName') ? 'is-invalid' : '' }}"
                                 :nonce="$nonce" placeholder="Doe">
 
                                 <x-slot:feedback>
                                     @include('components.form.input-feedback', [
-                                        'feedback_id' => 'applicant-middle-name',
-                                        'message' => $errors->first('applicantName.middleName'),
+                                        'feedback_id' => 'applicant-middle-name-feedback',
+                                        'message' => $errors->first('applicant.name.middleName'),
                                     ])
                                 </x-slot:feedback>
                             </x-form.boxed-input-text>
@@ -83,37 +125,70 @@
                     <div class="input-group column-gap-3 column-gap-md-4  flex-wrap flex-md-nowrap">
                         <div class="flex-1">
                             <x-form.boxed-dropdown id="sex-at-birth" label="{{ __('Sex at birth') }}" name="sexAtBirth"
-                                class=" {{ $errors->has('sexAtBirth') ? 'is-invalid' : '' }}" :nonce="$nonce" required
-                                :options="$this->sexes" placeholder="Select type">
+                                class=" {{ $errors->has('sexAtBirth') ? 'is-invalid' : '' }}" :nonce="$nonce"
+                                required :options="$this->sexes" placeholder="Select type">
 
                                 <x-slot:feedback>
                                     @include('components.form.input-feedback', [
-                                        'feedback_id' => 'sex-at-birth',
+                                        'feedback_id' => 'sex-at-birth-feedback',
                                         'message' => $errors->first('sexAtBirth'),
                                     ])
                                 </x-slot:feedback>
                             </x-form.boxed-dropdown>
                         </div>
+
+                        @php
+                            $ageRule = new App\Rules\WorkAgeRule();
+                        @endphp
                         <div class="flex-1">
                             <x-form.boxed-date label="Birthdate" id="aaplicant-birth-date"
-                                class=" {{ $errors->has('applicantBirth') ? 'is-invalid' : '' }}"
-                                name="form.applicantBirth" placeholder="mm/dd/yyy" :nonce="$nonce" required>
+                                max="{{ $ageRule->getMaxDate() }}" min="{{ $ageRule->getMinDate() }}"
+                                class=" {{ $errors->has('applicant.birth') ? 'is-invalid' : '' }}"
+                                name="applicant.birth" placeholder="mm/dd/yyy" :nonce="$nonce" required>
 
                                 <x-slot:feedback>
                                     @include('components.form.input-feedback', [
-                                        'feedback_id' => 'applicant-birth-date',
-                                        'message' => $errors->first('applicantBirth.date'),
+                                        'feedback_id' => 'applicant-birth-date-feedback',
+                                        'message' => $errors->first('applicant.birth'),
                                     ])
                                 </x-slot:feedback>
                             </x-form.boxed-date>
                         </div>
                     </div>
 
+                    <div class="input-group column-gap-3 column-gap-md-4  flex-wrap flex-md-nowrap">
+                        <div class="flex-1">
+                            <x-form.boxed-email id="applicant-email" label="Email Address" name="applicant.email"
+                                autocomplete="email" :nonce="$nonce"
+                                class=" {{ $errors->has('applicant.email') ? 'is-invalid' : '' }}" required>
+
+                                <x-slot:feedback>
+                                    @include('components.form.input-feedback', [
+                                        'feedback_id' => 'applicant-email-feedback',
+                                        'message' => $errors->first('applicant.email'),
+                                    ])
+                                </x-slot:feedback>
+                                </x-form.email>
+                        </div>
+                        <div class="flex-1">
+                            <x-form.phone label="Contact Number" id="aaplicant-mobile-num" :boxed="true"
+                                list="applicant-contact-list"
+                                class=" {{ $errors->has('applicant.mobileNumber') ? 'is-invalid' : '' }}"
+                                name="applicant.mobileNumber" :nonce="$nonce" required>
+
+                                <x-slot:feedback>
+                                    @include('components.form.input-feedback', [
+                                        'feedback_id' => 'applicant-mobile-num-feedback',
+                                        'message' => $errors->first('applicant.mobileNumber'),
+                                    ])
+                                </x-slot:feedback>
+                            </x-form.phone>
+                        </div>
+                    </div>
 
                 </div>
 
             </div>
-
 
         </section>
         @include('livewire.applicant.application.application-wizard-nav-btn')
