@@ -35,7 +35,8 @@
 
 
 <section class="my-2">
-    <!-- BACK-END REPLACE: Table of all OT Summary Forms. Highlight the current paayroll period. -->
+    <!-- BACK-END REPLACE: Table of all OT Summary Forms.
+        Redirection of data when row is clicked should be in: overtime/summary-form.blade.php -->
 </section>
 
 @endsection
