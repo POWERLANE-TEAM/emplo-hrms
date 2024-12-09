@@ -158,8 +158,8 @@
     {{-- Employee, Supervisor --}}
     @canAny([UserPermission::VIEW_DOCUMENTS])
     <x-layout.employee.nav.sidebar.nav-item
-        href="#"
-        :active="request()->routeIs($routePrefix . '.documents')"
+        href="{{ route($routePrefix . '.general.documents.all') }}"
+        :active="request()->routeIs($routePrefix . '.general.documents.*')"
         class="tw-order-[7]"
         nav_txt="Documents"
         :defaultIcon="['src' => 'documents', 'alt' => '']"

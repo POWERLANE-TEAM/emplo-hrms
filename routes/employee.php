@@ -272,18 +272,19 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
 
     // =========================================
-    // BASIC EMPLOYEE ROUTES
+    // GENERAL EMPLOYEE ROUTES
     // ==========================================
 
 
     /**
-     * Index
+     * General: Dashboard
      */
     Route::get('/index', [EmployeeController::class, 'index'])
         ->name('index');
 
+
     /**
-     * Attendance
+     * General: Attendance
      */
     Route::get('/attendance/index', [AttendanceController::class, 'index'])
         ->name('attendance.index');
@@ -308,31 +309,31 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
 
     /**
-     * Overtime: Table of Summary Forms
+     * General: Overtime
      */
     Route::get('general/overtime/all', function () {
         return view('employee.basic.overtime.all');
     })->name('general.overtime.all');
 
-
-    /**
-     * Overtime: Summary form per payroll period
-     */
     Route::get('/overtime/summary-form', function () {
         return view('employee.basic.overtime.summary-form');
     })->name('overtime.summary-form');
 
-
-    /**
-     * Overtime: Request
-     */
     Route::get('/overtime/requests', function () {
         return view('employee.basic.overtime.requests');
     })->name('overtime.requests');
 
 
     /**
-     * Issues
+     * General: Documents
+     */
+    Route::get('general/documents/all', function () {
+        return view('employee.basic.documents.all');
+    })->name('general.documents.all');
+
+
+    /**
+     * General: Issues
      */
     Route::get('general/issues/all', function () {
         return view('employee.basic.issues.all');
