@@ -24,6 +24,17 @@
 @endPushOnce
 @section('content')
 
+<x-breadcrumbs>
+    <x-slot:breadcrumbs>
+        <x-breadcrumb :href="route($routePrefix . '.hr.relations.incidents.all')">
+            Incidents
+        </x-breadcrumb>
+        <x-breadcrumb :active="request()->routeIs($routePrefix . '.hr.relations.incidents.create')">
+            Create Report
+        </x-breadcrumb>
+    </x-slot:breadcrumbs>
+</x-breadcrumbs>
+
 <x-headings.main-heading :isHeading="true">
     <x-slot:heading>
         {{ __('Create an Incident Report') }}
