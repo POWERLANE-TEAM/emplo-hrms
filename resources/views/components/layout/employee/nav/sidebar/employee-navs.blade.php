@@ -206,7 +206,7 @@
 * |--------------------------------------------------------------------------
 --}}
 
-<x-layout.employee.nav.sidebar.nav-group :sidebar_expanded="$sidebar_expanded" class="" txt_collapsed="Supervision"
+<x-layout.employee.nav.sidebar.nav-group :sidebar_expanded="$sidebar_expanded" class="" txt_collapsed="Managerial"
     txt_expanded="">
 
     {{-- Supervisor / Head Dept --}}
