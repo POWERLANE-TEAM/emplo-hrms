@@ -55,7 +55,7 @@
         </x-headings.main-heading>
     </div>
 
-    <form {{-- wire:submit.prevent="save" --}} {{-- x-ref="resume-file" --}}>
+    <form id="application-wizard-form" {{-- wire:submit.prevent="save" --}} {{-- x-ref="resume-file" --}}>
         <livewire:form.applicant.application-wizard />
     </form>
 @endsection
