@@ -31,8 +31,8 @@
         <x-breadcrumb :href="'#'"> <!-- REPLACE: Link to the All Overtime Summary Form tables -->
             {{ __('Overtime Requests') }}
         </x-breadcrumb>
-        <x-breadcrumb :active="request()->routeIs($routePrefix . '.overtimes.previous')">
-            {{ __('Previous Overtime Records') }}
+        <x-breadcrumb :active="request()->routeIs($routePrefix . '.overtimes.index')">
+            {{ __('Archive Records') }}
         </x-breadcrumb>
     </x-slot:breadcrumbs>
 </x-breadcrumbs>

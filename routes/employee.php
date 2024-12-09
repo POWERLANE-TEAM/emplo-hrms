@@ -200,9 +200,9 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         return view('employee.basic.overtime.recent-records');
     })->name('overtimes.recents');
 
-    Route::get('/overtimes/previous', function () {
-        return view('employee.basic.overtime.previous-records');
-    })->name('overtimes.previous');
+    Route::get('/overtimes/archive', function () {
+        return view('employee.basic.overtime.index');
+    })->name('overtimes.index');
 
     Route::get('/sample', function () {
         dd(request());

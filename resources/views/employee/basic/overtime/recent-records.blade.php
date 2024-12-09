@@ -32,7 +32,7 @@
             {{ __('Overtime Summaries') }}
         </x-breadcrumb>
         <x-breadcrumb :active="request()->routeIs($routePrefix . '.overtimes.recents')">
-            {{ __('Recent Overtime Records') }}
+            {{ __('Recent Records') }}
         </x-breadcrumb>
     </x-slot:breadcrumbs>
 </x-breadcrumbs>
