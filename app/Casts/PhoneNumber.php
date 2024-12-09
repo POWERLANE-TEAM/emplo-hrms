@@ -46,11 +46,16 @@ class PhoneNumber implements CastsAttributes
         $contactNumber = null;
         $regionMode = config('app.region_mode');
 
-        if ($regionMode == 'local') {
-            $phoneObj = new FormatPhoneNumber($value, 'PH');
-            $contactNumber = $phoneObj->formatNational();
-        } else {
-            // $phoneObj->formatInternational();
+        try {
+            if ($regionMode == 'local') {
+                $phoneObj = new FormatPhoneNumber($value, 'PH');
+                $contactNumber = $phoneObj->formatNational();
+            } else {
+                // $phoneObj->formatInternational();
+            }
+        } catch (Exception $e) {
+            $this->reportFormattingError($model, $value, $regionMode);
+            abort(400, 'Invalid phone number format or is not allowed');
         }
 
         if ($phoneObj === null) {
