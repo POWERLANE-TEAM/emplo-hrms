@@ -2,8 +2,9 @@
 
 namespace Database\Factories;
 
-use App\Enums\CivilStatus;
 use App\Enums\Sex;
+use App\Models\Barangay;
+use App\Enums\CivilStatus;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -48,8 +49,8 @@ class EmployeeFactory extends Factory
             'first_name' => fake()->firstName,
             'middle_name' => fake()->firstName,
             'last_name' => fake()->lastName,
-            'present_barangay' => fake()->randomNumber(1, 9),
-            'permanent_barangay' => fake()->randomNumber(1, 9),
+            'present_barangay' => Barangay::inRandomOrder()->first()->id,
+            'permanent_barangay' => Barangay::inRandomOrder()->first()->id,
             'present_address' => fake()->streetName(),
             'permanent_address' => fake()->streetName(),
             'contact_number' => fake()->unique()->numerify('09#########'),
