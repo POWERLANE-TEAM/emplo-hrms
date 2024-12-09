@@ -33,4 +33,6 @@
     </x-slot:description>
 </x-headings.main-heading>
 
+<!-- BACK-END TABLE NOTE:
+    The employee id should be passed to: training/records.blade.php -->
 @endsection
