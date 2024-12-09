@@ -160,17 +160,19 @@
 
     {{-- Head Admin --}}
     @can(UserPermission::VIEW_ALL_ACCOUNTS)
-        <x-layout.employee.nav.sidebar.nav-item href="{{ route($routePrefix . '.accounts.index') }}"
-            :active="request()->routeIs($routePrefix . '.accounts.index')" class="" nav_txt="Accounts"
-            :defaultIcon="['src' => 'accounts', 'alt' => '']" :activeIcon="['src' => 'accounts', 'alt' => '']">
-        </x-layout.employee.nav.sidebar.nav-item>
+    <x-layout.employee.nav.sidebar.nested-nav-items nav_txt="Accounts" :active="request()->routeIs($routePrefix . 'accounts.*')" class="tw-order-[11]" :defaultIcon="['src' => 'accounts', 'alt' => 'Accounts']"
+            :activeIcon="['src' => 'accounts', 'alt' => 'Relations']" :children="[
+                ['href' => route($routePrefix . '.accounts.index'), 'active' => request()->routeIs($routePrefix . '.accounts.index'), 'nav_txt' => 'List'],
+                ['href' => route($routePrefix . '.accounts.create'), 'active' => request()->routeIs($routePrefix . '.accounts.create'), 'nav_txt' => 'Add New'],
+            ]">
+        </x-layout.employee.nav.sidebar.nested-nav-items>
     @endcan
 
     {{-- Head Admin --}}
     @can(UserPermission::VIEW_EMPLOYEE_MANAGER)
         <x-layout.employee.nav.sidebar.nav-item href="{{ route($routePrefix . '.job-family.create') }}"
             :active="request()->routeIs([$routePrefix . '.job-family.create', $routePrefix . '.job-title.create'])" class=""
-            nav_txt="Employees" :defaultIcon="['src' => 'employee', 'alt' => '']" :activeIcon="['src' => 'employee', 'alt' => '']">
+            nav_txt="Organization" :defaultIcon="['src' => 'employee', 'alt' => '']" :activeIcon="['src' => 'employee', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan
 
