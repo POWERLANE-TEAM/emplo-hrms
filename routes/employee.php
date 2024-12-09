@@ -332,9 +332,13 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
 
     /**
-     * Issues: Create
+     * Issues
      */
-    Route::get('/issues/create', function () {
+    Route::get('general/issues/all', function () {
+        return view('employee.basic.issues.all');
+    })->name('general.issues.all');
+
+    Route::get('general/issues/create', function () {
         return view('employee.basic.issues.create');
-    })->name('issues.create');
+    })->name('general.issues.create');
 });

@@ -170,7 +170,8 @@
     {{-- Employee, Supervisor --}}
     @can(UserPermission::VIEW_ISSUES)
         <x-layout.employee.nav.sidebar.nav-item
-            href="#" {{-- :active="request()->routeIs($routePrefix . '.issues')" --}}
+            href="{{ route($routePrefix . '.general.issues.all') }}"
+            :active="request()->routeIs($routePrefix . '.general.issues.*')"
             class="tw-order-[8]"
             nav_txt="Issues"
             :defaultIcon="['src' => 'issues', 'alt' => '']"
