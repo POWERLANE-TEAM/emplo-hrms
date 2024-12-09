@@ -42,6 +42,12 @@ class PhoneNumber implements CastsAttributes
      */
     public function set(Model $model, string $key, mixed $value, array $attributes): mixed
     {
+
+        // Ignore when seeding
+        if (app()->runningInConsole()) {
+            return $value;
+        }
+
         $phoneObj = null;
         $contactNumber = null;
         $regionMode = config('app.region_mode');
