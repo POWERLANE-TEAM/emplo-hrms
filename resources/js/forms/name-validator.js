@@ -34,11 +34,12 @@ export default class NameValidator {
 
             const isValid = this.validateElement(event.target);
             try {
-                resultRef = isValid;
+                if (resultRef) resultRef = isValid;
+
             } catch (error) {
 
             }
-            callback();
+            if (callback) callback();
         }, 500);
 
         addGlobalListener('input', this.parent, this.inputSelector, debouncedValidation);

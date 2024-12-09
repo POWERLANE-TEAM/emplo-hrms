@@ -2,15 +2,11 @@ import '../script.js';
 import initLucideIcons from '../icons/lucide.js';
 import addGlobalScrollListener, { documentScrollPosY } from 'global-scroll-script';
 import addGlobalListener, { GlobalListener } from 'globalListener-script';
-import togglePassword from '../toggle-password.js';
-import { initPasswordEvaluator, evalPassword } from '../forms/eval-password.js';
 import InputValidator, { setInvalidMessage } from '../forms/input-validator.js';
 import initEmailValidation, { validateEmail } from '../forms/email-validation.js';
-import PasswordValidator from '../forms/password-validation.js';
-import initPasswordConfirmValidation, { validateConfirmPassword } from '../forms/password-confirm-validation.js';
-import debounce from 'debounce-script';
 import initIframeFullScreener from 'iframe-full-screener-script';
-import '../forms/name-validator.js';
+import NameValidator from 'name-validator-script';
+import { LAST_NAME_VALIDATION, MIDDLE_NAME_VALIDATION, FIRST_NAME_VALIDATION } from 'name-validate-rule';
 import 'websocket-script';
 // import './livewire.js'
 
@@ -44,10 +40,22 @@ try {
 
 }
 
+LAST_NAME_VALIDATION.attributes.type = 'list';
+FIRST_NAME_VALIDATION.attributes.type = 'list';
+MIDDLE_NAME_VALIDATION.attributes.type = 'list';
 
+// On input client validations
+const applicationForm = 'form[id="application-wizard-form"]';
 
+const firstNameValidator = new NameValidator(`${applicationForm} input[name="applicant.name.firstName"]`, new InputValidator(FIRST_NAME_VALIDATION));
+const middleNameValidator = new NameValidator(`${applicationForm} input[name="applicant.name.middleName"]`, new InputValidator(MIDDLE_NAME_VALIDATION));
+const lastNameValidator = new NameValidator(`${applicationForm} input[name="applicant.name.lastName"]`, new InputValidator(LAST_NAME_VALIDATION));
 
+firstNameValidator.initValidation(null, null);
+middleNameValidator.initValidation(null, null);
+lastNameValidator.initValidation(null, null);
 
+initEmailValidation(`${applicationForm} input[name="applicant.email"]`, null, null);
 
 
 

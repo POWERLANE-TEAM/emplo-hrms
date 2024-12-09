@@ -76,12 +76,12 @@ export default function initEmailValidation(inputSelector, callback, result) {
         event.target.classList.add('is-dirty');
         let isValid = validateEmailElement(event.target);
         try {
-            result.isValidEmail = isValid;
+            if (resultRef) resultRef = isValid;
         } catch (error) {
 
         }
 
-        callback();
+        if (callback) callback();
     }, 500);
 
     addGlobalListener('input', document, inputSelector, debouncedValidation);
