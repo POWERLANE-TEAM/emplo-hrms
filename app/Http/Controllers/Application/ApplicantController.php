@@ -74,8 +74,9 @@ class ApplicantController extends Controller
             $sex = $request['sex'];
             $civilStatus = $request['civilStatus'];
             $dateOfBirth = $request['dateOfBirth'] ?? null;
-            $education = is_string($request['education']) ? json_decode($request['education'], true) : $request['education'];
-            $experience = is_string($request['experience']) ? json_decode($request['experience'], true) : $request['experience'];
+            $education = $request['education'] ?? 'null';
+            $experience = $request['experience'] ?? 'null';
+            // $skills = $request['skills'] ?? 'null';
         } else {
             // $jobVacancyId = $validated('jobVacancyId') ?? null;
         }
