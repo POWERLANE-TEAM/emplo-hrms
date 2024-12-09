@@ -44,7 +44,10 @@
     $navLeavesOrder = $user->hasPermissionTo(UserPermission::VIEW_ALL_LEAVES) ? 5 : 3; // Adjust order as needed
     $navLeavesRoute = $user->hasPermissionTo(UserPermission::VIEW_ALL_LEAVES)
         ? $routePrefix . '.hr.leaves.all'
-        : $routePrefix . '.general.leaves.all'; 
+        : $routePrefix . '.general.leaves.all';
+    $navLeavesActivePattern = $user->hasPermissionTo(UserPermission::VIEW_ALL_LEAVES)
+        ? $routePrefix . '.hr.leaves.*'
+        : $routePrefix . '.general.leaves.*';
 @endphp
 
 
@@ -132,7 +135,7 @@
 
     @canAny([UserPermission::VIEW_LEAVES, UserPermission::VIEW_ALL_LEAVES])
     <x-layout.employee.nav.sidebar.nav-item :href="route($navLeavesRoute)"
-        :active="request()->routeIs($navLeavesRoute)"
+        :active="request()->routeIs($navLeavesActivePattern)"
         class="tw-order-[{{ $navLeavesOrder }}]"
         nav_txt="Leaves"
         :defaultIcon="['src' => 'leaves', 'alt' => '']"

@@ -143,7 +143,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
 
     /**
-     * Leaves
+     * HR: Leaves
      */
 
      Route::get('hr/leaves/all', function () {
@@ -290,16 +290,16 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
 
     /**
-     * Leaves
+     * General: Leaves
      */
 
     Route::get('general/leaves/all', function () {
         return view('employee.basic.leaves.all');
     })->name('general.leaves.all');
 
-    Route::get('/leaves/request', function () {
+    Route::get('general/leaves/request', function () {
         return view('employee.basic.leaves.request');
-    })->name('leaves.request');
+    })->name('general.leaves.request');
 
 
     Route::get('general/leaves/view', function () {
