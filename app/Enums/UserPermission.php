@@ -93,6 +93,9 @@ enum UserPermission: string
     case VIEW_PERFORMANCE_CONFIG = 'view performance configurator';
     case VIEW_FORM_CONFIG = 'view form configurator';
     case VIEW_ONLINE_USERS = 'view online users';
+    case VIEW_SUBORDINATE_PERFORMANCE_EVAL_FORM = 'view subordinate performance evaluation form.';
+    case VIEW_SUBORDINATE_LEAVE_REQUEST = 'view subordinate leave request';
+    case VIEW_SUBORDINATE_OVERTIME_REQUEST = 'view subordinate overtime request';
 
         // Update cases goes here
     case UDPATE_JOB_LISTING = 'update job listing';
@@ -126,6 +129,9 @@ enum UserPermission: string
     case DELETE_JOB_LISTING = 'delete job listing';
     case DELETE_ANNOUNCEMENT = 'delete announcement';
     case DELETE_PRE_EMPLOYMENT_DOCUMENT = 'delete owned pre employment document';
+
+    // Others
+    case ASSIGN_PERFORMANCE_EVAL_SCORE = 'assign performance evaluation score';
 
     /**
      * Return user-friendly permission labels.
@@ -216,6 +222,9 @@ enum UserPermission: string
             self::VIEW_ONLINE_USERS => 'Monitor online users',
             self::VIEW_ALL_ISSUES => 'View all employee issues',
             self::VIEW_ALL_TRAINING => 'View all employee trainings',
+            self::VIEW_SUBORDINATE_PERFORMANCE_EVAL_FORM => 'View subordinate performance evaluation form.',
+            self::VIEW_SUBORDINATE_LEAVE_REQUEST => 'View subordinate leave request',
+            self::VIEW_SUBORDINATE_OVERTIME_REQUEST => 'View subordinate overtime request',
 
             // Update labels goes here
             self::UDPATE_JOB_LISTING => 'Update job listing/s',
@@ -249,6 +258,9 @@ enum UserPermission: string
             self::DELETE_JOB_LISTING => 'Delete job listing/s',
             self::DELETE_ANNOUNCEMENT => 'Delete announcement/s',
             self::DELETE_PRE_EMPLOYMENT_DOCUMENT => 'Delete a pre-employment document',
+
+            // Other labels goes here
+            self::ASSIGN_PERFORMANCE_EVAL_SCORE => 'Assign performance evaluation score',
         };
     }
 }

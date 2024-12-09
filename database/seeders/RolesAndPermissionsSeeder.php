@@ -21,7 +21,8 @@ class RolesAndPermissionsSeeder extends Seeder
 
         $allRoles = $permissions->concat($this->basicPermissions())
             ->concat($this->intermediatePermissions())
-            ->concat($this->advancedPermissions());
+            ->concat($this->advancedPermissions())
+            ->concat($this->managerialPermissions());
 
         $allRoles->each(function (string $name) {
             Permission::firstOrCreate([
@@ -151,6 +152,18 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::UPDATE_BIOMETRIC_DEVICE->value,
 
             // Delete cases goes here
+        ];
+    }
+
+    public static function managerialPermissions()
+    {
+        return [
+            UserPermission::UPDATE_EMP_PERFORMANCE_EVAL_GRADE_FORM->value,
+            UserPermission::ASSIGN_PERFORMANCE_EVAL_SCORE->value,
+            UserPermission::UPDATE_EMP_PERFORMANCE_EVAL_GRADE_FORM->value,
+            UserPermission::VIEW_SUBORDINATE_PERFORMANCE_EVAL_FORM->value,
+            UserPermission::VIEW_SUBORDINATE_LEAVE_REQUEST->value,
+            UserPermission::VIEW_SUBORDINATE_OVERTIME_REQUEST->value,
         ];
     }
 }
