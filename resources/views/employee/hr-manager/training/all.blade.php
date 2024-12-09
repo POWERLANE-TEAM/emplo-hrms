@@ -29,7 +29,7 @@
     </x-slot:heading>
 
     <x-slot:description>
-        {{ __('View and manage training.') }}
+        {{ __('View and manage employees’ training records.') }}
     </x-slot:description>
 </x-headings.main-heading>
 
