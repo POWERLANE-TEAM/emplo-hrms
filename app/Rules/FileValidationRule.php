@@ -47,7 +47,7 @@ class FileValidationRule implements ValidationRule
 
     public function getRule(): string
     {
-        $rule = ($this->required ? 'required|' : '') . 'bail|file|max:' . $this->getMaxFileSize() . '|mimes:' . $this->getAcceptedFileTypes();
+        $rule = ($this->required ? 'required|' : '') . 'file|max:' . $this->getMaxFileSize() . '|mimes:' . $this->getAcceptedFileTypes();
 
         if ($this->minSize) {
             $rule .= '|min:' . $this->getMinFileSize();
