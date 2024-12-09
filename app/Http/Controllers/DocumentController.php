@@ -130,7 +130,8 @@ class DocumentController extends Controller
                     $mentionText = $entity->getMentionText();
                     $confidence = $entity->getConfidence();
 
-                    $isEmail = filter_var($mentionText, FILTER_VALIDATE_EMAIL);
+                    $mentionTextTrimmed = ltrim($mentionText, '@');
+                    $isEmail = filter_var($mentionTextTrimmed, FILTER_VALIDATE_EMAIL);
 
                     // Log::info('Entity', [
                     //     'type' => $type,
