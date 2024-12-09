@@ -26,22 +26,24 @@ class Overtime extends Model
     ];
 
     /**
-     * Accessor(only) for start time attribute.
+     * Accessor / mutator for start time attribute.
      */
     protected function startTime(): Attribute
     {
         return Attribute::make(
-            get: fn (mixed $value) => Carbon::parse($value)->format('g:i A')
+            get: fn (mixed $value) => Carbon::parse($value)->format('g:i A'),
+            set: fn (mixed $value) => Carbon::parse($value)->format('Y-m-d H:i:s'),
         );
     }
     
     /**
-     * Accessor(only) for end time attribute.
+     * Accessor / mutator for end time attribute.
      */
     protected function endTime(): Attribute
     {
         return Attribute::make(
-            get: fn (mixed $value) => Carbon::parse($value)->format('g:i A')
+            get: fn (mixed $value) => Carbon::parse($value)->format('g:i A'),
+            set: fn (mixed $value) => Carbon::parse($value)->format('Y-m-d H:i:s'),
         );
     }
 
