@@ -86,14 +86,16 @@ class RecentOvertimesTable extends DataTableComponent
 
             Column::make(__('Status'))
                 ->label(function ($row) {
-                    if ($row->processes->first()->hr_manager_approved_at) {
-                        return __('Approved');
-                    }
-                    return __('Pending');
+                    return $row->processes->first()->hr_manager_approved_at
+                        ? __('Approved')
+                        : __('Pending');
                 }),
             
-            Column::make(__('Filed At'))
-                ->sortable(),
+            Column::make(__('Date Filed'))
+                ->label(fn ($row) => $row->filed_at)
+                ->sortable(function (Builder $query, $direction) {
+                    return $query->orderBy('filed_at', $direction);
+                }),
         ];
     }
 }
