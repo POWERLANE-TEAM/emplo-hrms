@@ -141,7 +141,6 @@
     @endcan
 
     {{-- HR Manager --}}
-
     @can(UserPermission::VIEW_ALL_RELATIONS)
         <x-layout.employee.nav.sidebar.nested-nav-items nav_txt="Relations" :active="request()->routeIs($routePrefix . 'relations.*')" class="tw-order-[11]" :defaultIcon="['src' => 'relations', 'alt' => 'Relations']"
             :activeIcon="['src' => 'relations', 'alt' => 'Relations']" :children="[
@@ -149,6 +148,14 @@
                 ['href' => route($routePrefix . '.hr.relations.issues.all'), 'active' => request()->routeIs($routePrefix . '.hr.relations.issues.all'), 'nav_txt' => 'Issues'],
             ]">
         </x-layout.employee.nav.sidebar.nested-nav-items>
+    @endcan
+
+    {{-- HR Manager --}}
+    @can(UserPermission::VIEW_ALL_TRAINING)
+        <x-layout.employee.nav.sidebar.nav-item href="{{ route($routePrefix . '.training.all') }}"
+            :active="request()->routeIs($routePrefix . '.training.all')" class="tw-order-[3]" nav_txt="Training"
+            :defaultIcon="['src' => 'training', 'alt' => '']" :activeIcon="['src' => 'training', 'alt' => '']">
+        </x-layout.employee.nav.sidebar.nav-item>
     @endcan
 
     {{-- Head Admin --}}
