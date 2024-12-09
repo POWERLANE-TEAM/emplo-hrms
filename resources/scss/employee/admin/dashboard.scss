@@ -114,3 +114,12 @@
 .icon-container:hover .icon-with-border {
     color: white;
 }
+
+.table {
+--bs-table-striped-bg: #fff !important;
+}
+
+table.table {
+    border-collapse: collapse !important;
+    border-spacing: 0 calc(1rem + .5vw) !important;
+}
