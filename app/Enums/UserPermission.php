@@ -73,13 +73,14 @@ enum UserPermission: string
     case VIEW_ALL_LEAVES = 'view all leave requests';
     case VIEW_ALL_OVERTIME = 'view all overtime requests';
     case VIEW_ALL_PAYSLIPS = 'view all payslips';
+    case VIEW_ALL_ISSUES = 'view all employee issues';
+    case VIEW_ALL_TRAINING = 'view all employee trainings';
     case VIEW_ALL_EMP_PERFORMANCE_EVAL = 'view all performance evaluation records';
     case VIEW_ALL_EMP_PERFORMANCE_TRAINING = 'view all performance training records';
     case VIEW_ALL_EMP_PERFORMANCE_EVAL_GRADE_FORM = 'view all performance evaluation grade form';
     case VIEW_ALL_EMP_PERFORMANCE_EVAL_APPROVAL_FORM = 'view all performance approval form';
     case VIEW_ALL_EMP_PERFORMANCE_EVAL_FINAL_APPROVAL_FORM = 'view all performance final approval form';
     case VIEW_ALL_RELATIONS = 'view all relations';
-    case VIEW_MATRIX_PROJECTOR = 'view matrix projector';
     case VIEW_TALENT_EVALUATOR = 'view talent evaluator';
     case VIEW_PLAN_GENERATOR = 'view plan generator';
     case VIEW_ADMIN_DASHBOARD = 'view admin dashboard';
@@ -201,7 +202,6 @@ enum UserPermission: string
             self::VIEW_ALL_EMP_PERFORMANCE_EVAL_APPROVAL_FORM => 'View all performance approval form',
             self::VIEW_ALL_EMP_PERFORMANCE_EVAL_FINAL_APPROVAL_FORM => 'View all performance final approval form',
             self::VIEW_ALL_RELATIONS => 'View all relations',
-            self::VIEW_MATRIX_PROJECTOR => 'View matrix projector',
             self::VIEW_TALENT_EVALUATOR => 'View talent evaluator',
             self::VIEW_PLAN_GENERATOR => 'View plan generator',
             self::VIEW_ADMIN_DASHBOARD => 'View admin dashboard',
@@ -214,6 +214,8 @@ enum UserPermission: string
             self::VIEW_PERFORMANCE_CONFIG => 'View performance configurator',
             self::VIEW_FORM_CONFIG => 'View form configurator',
             self::VIEW_ONLINE_USERS => 'Monitor online users',
+            self::VIEW_ALL_ISSUES => 'View all employee issues',
+            self::VIEW_ALL_TRAINING => 'View all employee trainings',
 
             // Update labels goes here
             self::UDPATE_JOB_LISTING => 'Update job listing/s',

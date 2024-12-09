@@ -84,7 +84,8 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::VIEW_ALL_EMP_PERFORMANCE_EVAL_APPROVAL_FORM->value,
             UserPermission::VIEW_ALL_EMP_PERFORMANCE_EVAL_FINAL_APPROVAL_FORM->value,
             UserPermission::VIEW_ALL_RELATIONS->value,
-            UserPermission::VIEW_MATRIX_PROJECTOR->value,
+            UserPermission::VIEW_ALL_ISSUES->value,
+            UserPermission::VIEW_ALL_TRAINING->value,
             UserPermission::VIEW_TALENT_EVALUATOR->value,
             UserPermission::VIEW_PLAN_GENERATOR->value,
 
