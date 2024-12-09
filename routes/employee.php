@@ -229,6 +229,33 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     // SUPERVISOR ROUTES
     // ==========================================
 
+    
+    /**
+     * Leaves
+     */
+
+    Route::get('managerial/requests/leaves/all', function () {
+        return view('employee.supervisor.requests.leaves.all');
+    })->name('managerial.requests.leaves.all');
+
+
+    /**
+     * Overtime
+     */
+
+    Route::get('managerial/requests/overtime/all', function () {
+        return view('employee.supervisor.requests.overtime.all');
+    })->name('managerial.requests.overtime.all');
+
+
+    /**
+     * Performance Evaluations
+     */
+
+     Route::get('managerial/evaluations/all', function () {
+        return view('employee.supervisor.performance-evaluations.all');
+    })->name('managerial.evaluations.all');
+
     /**
      * Assign Score
      */
