@@ -4,9 +4,9 @@ namespace App\Enums;
 
 enum JobQualificationPriorityLevel: string
 {
-    case HP = 'hp';
-    case MP = 'mp';
-    case LP = 'lp';
+    case HP = 'High';
+    case MP = 'Medium';
+    case LP = 'Low';
 
     public function label(): string
     {
@@ -14,6 +14,15 @@ enum JobQualificationPriorityLevel: string
             self::HP => 'High Priority',
             self::MP => 'Medium Priority',
             self::LP => 'Low Priority',
+        };
+    }
+
+    public function getWeight(): int
+    {
+        return match ($this) {
+            self::HP => 50,
+            self::MP => 30,
+            self::LP => 20,
         };
     }
 

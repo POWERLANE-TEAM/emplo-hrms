@@ -28,7 +28,7 @@ class AttendanceLogFactory extends Factory
         };
     
         return [
-            'uid' => fake()->randomNumber(),
+            'uid' => fake()->unique()->randomNumber(),
             'employee_id' => Employee::inRandomOrder()->first()->employee_id,
             'state' => fake()->numberBetween(1, 9),
             'type' => $type,

@@ -3,7 +3,6 @@
 use App\Models\User;
 use App\Enums\AccountType;
 use Illuminate\Support\Facades\Auth;
-use App\Actions\GenerateRandomUserAvatar;
 use Illuminate\Support\Facades\Broadcast;
 
 Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
@@ -22,7 +21,7 @@ Broadcast::channel('user-auth.{userBroadcastId}', function ($user, string $userB
 Broadcast::channel('online-users', function (User $user) {
     if (Auth::check()) {
         $fullName = $user->account->full_name;
-        $userPhoto = $user->photo ?? app(GenerateRandomUserAvatar::class)($fullName);
+        $userPhoto = $user->photo;
         $user->load('account');
 
         return array_merge(

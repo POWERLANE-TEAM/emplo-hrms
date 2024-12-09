@@ -106,6 +106,8 @@ class ApplicantsTable extends DataTableComponent
                             })
                             ->setFirstOption('All Job Positions');
                     })(),
+
+                    'label' => 'Applicants for:',
                 ],
             ],
         ]);

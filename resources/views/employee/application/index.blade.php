@@ -30,7 +30,7 @@
 @endPushOnce
 
 @pushOnce('styles')
-    @vite(['resources/css/employee/hr-manager/applicants.css'])
+    @vite(['resources/css/employee/applicants.css'])
 @endPushOnce
 @section('content')
     <x-headings.main-heading :isHeading="true">

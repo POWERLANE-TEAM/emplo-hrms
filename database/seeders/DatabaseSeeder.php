@@ -37,6 +37,16 @@ class DatabaseSeeder extends Seeder
                 LeaveCategorySeeder::class,
                 AttendanceLogSeeder::class,
                 EmployeeJobDetailSeeder::class,
+                // UserSeeder::class,
+                ApplicantSeeder::class,
+                ApplicationSeeder::class,
+                ApplicantEducationSeeder::class,
+                ApplicantExperienceSeeder::class,
+                ApplicantSkillSeeder::class,
+                JobEducationKeywordSeeder::class,
+                JobExperienceKeywordSeeder::class,
+                JobSkillKeywordSeeder::class,
+                ManagerialSeeder::class,
             ]);
         });
     }

@@ -32,8 +32,6 @@ return new class extends Migration
             $table->string('sex');
             $table->string('civil_status');
             $table->date('date_of_birth')->nullable();
-            $table->jsonb('education')->nullable();
-            $table->jsonb('experience')->nullable();
             $table->timestamps();
         });
     }

@@ -74,7 +74,6 @@ class CspPolicy extends CustomSpatiePolicy
 
         $this->addDirective(Directive::STYLE, 'unsafe-inline');
         $this->addDirective(Directive::STYLE, 'https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta2/dist/css/bootstrap-select.min.css');
-        $this->addDirective(Directive::STYLE, 'https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css');
         $this->addDirective(Directive::STYLE, 'fonts.bunny.net');
         $this->addDirective(Directive::STYLE, 'https://accounts.google.com');
 

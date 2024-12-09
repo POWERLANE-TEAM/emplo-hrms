@@ -48,7 +48,7 @@
         $navPerformanceOrder = $user->hasPermissionTo(UserPermission::VIEW_ALL_EMP_PERFORMANCE_EVAL) ? 8 : 4;
     @endphp
     @canAny([UserPermission::VIEW_EMP_PERFORMANCE_EVAL, UserPermission::VIEW_ALL_EMP_PERFORMANCE_EVAL])
-        <x-layout.employee.nav.sidebar.nav-item href="#" :active="request()->routeIs($routePrefix . '.performances')"
+        <x-layout.employee.nav.sidebar.nav-item :href="route($routePrefix . '.performance.evaluation.index', ['employeeStatus' => 'probationary'])" :active="request()->routeIs($routePrefix . '.performance.evaluation.index')"
             class="tw-order-[{{ $navPerformanceOrder }}]" nav_txt="Performance" :defaultIcon="['src' => 'performances', 'alt' => '']" :activeIcon="['src' => 'performances', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan
@@ -137,6 +137,13 @@
             :active="request()->routeIs($routePrefix . '.announcement.create')" class="" nav_txt="Announcements" :defaultIcon="['src' => 'announcements', 'alt' => '']" :activeIcon="['src' => 'announcements', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan
+    
+    {{-- HR Manager --}}
+    @can(UserPermission::VIEW_TALENT_EVALUATOR)
+        <x-layout.employee.nav.sidebar.nav-item href="{{ route($routePrefix . '.resume-evaluator.rankings') }}" :active="request()->routeIs($routePrefix . '.resume-evaluator.rankings')" class="" nav_txt="Resume Evaluator"
+            :defaultIcon="['src' => 'resume-evaluator', 'alt' => '']" :activeIcon="['src' => 'resume-evaluator', 'alt' => '']">
+        </x-layout.employee.nav.sidebar.nav-item>
+    @endcan
 
 </x-layout.employee.nav.sidebar.nav-group>
 
@@ -174,14 +181,6 @@
 --}}
 
 <x-layout.employee.nav.sidebar.nav-group :sidebar_expanded="$sidebar_expanded" class="" txt_collapsed="AI Tools" txt_expanded="">
-
-    {{-- HR Manager --}}
-    @can(UserPermission::VIEW_TALENT_EVALUATOR)
-        <x-layout.employee.nav.sidebar.nav-item href="#" :active="request()->is('#')" class="" nav_txt="Resume Evaluator"
-            :defaultIcon="['src' => 'resume-evaluator', 'alt' => '']" :activeIcon="['src' => 'resume-evaluator', 'alt' => '']">
-        </x-layout.employee.nav.sidebar.nav-item>
-    @endcan
-
     {{-- HR Manager --}}
     @can(UserPermission::VIEW_PLAN_GENERATOR)
         <x-layout.employee.nav.sidebar.nav-item href="#" :active="request()->is('#')" class="" nav_txt="Plan Generator"
