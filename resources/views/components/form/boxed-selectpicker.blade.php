@@ -33,7 +33,6 @@
     }
 </style>
 
-@script
 <script>
     document.addEventListener('livewire:navigated', () => {
         const selectElements = document.querySelectorAll('.selectpicker');
@@ -62,4 +61,3 @@
         });
     });
 </script>
-@endscript
