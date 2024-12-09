@@ -202,6 +202,36 @@
 
 {{--
 * |--------------------------------------------------------------------------
+* | Supervision
+* |--------------------------------------------------------------------------
+--}}
+
+<x-layout.employee.nav.sidebar.nav-group :sidebar_expanded="$sidebar_expanded" class="" txt_collapsed="Supervision"
+    txt_expanded="">
+
+    {{-- Supervisor / Head Dept --}}
+    @can(UserPermission::VIEW_ALL_SUBORDINATE_REQUESTS)
+        <x-layout.employee.nav.sidebar.nested-nav-items nav_txt="Performance" :active="request()->routeIs($routePrefix . 'requests.*')" class="tw-order-[11]" :defaultIcon="['src' => 'requests', 'alt' => 'Performance']"
+            :activeIcon="['src' => 'requests', 'alt' => 'Relations']" :children="[
+                ['href' => route($routePrefix . '.managerial.requests.leaves.all'), 'active' => request()->routeIs($routePrefix . '.managerial.requests.leaves.all'), 'nav_txt' => 'Leaves'],
+                ['href' => route($routePrefix . '.managerial.requests.overtime.all'), 'active' => request()->routeIs($routePrefix . '.managerial.requests.overtime.all'), 'nav_txt' => 'Overtime'],
+            ]">
+        </x-layout.employee.nav.sidebar.nested-nav-items>
+    @endcan
+
+    {{-- Supervisor / Head Dept --}}
+    @can(UserPermission::VIEW_ALL_SUBORDINATE_PERFORMANCE_EVAL_FORM)
+        <x-layout.employee.nav.sidebar.nav-item href="{{ route($routePrefix . '.managerial.evaluations.all') }}"
+        :active="request()->routeIs($routePrefix . '.managerial.evaluations.all')"  class="" nav_txt="Evaluations"
+            :defaultIcon="['src' => 'evaluations', 'alt' => '']" :activeIcon="['src' => 'evaluations', 'alt' => '']">
+        </x-layout.employee.nav.sidebar.nav-item>
+    @endcan
+
+</x-layout.employee.nav.sidebar.nav-group>
+
+
+{{--
+* |--------------------------------------------------------------------------
 * | Configuration
 * |--------------------------------------------------------------------------
 --}}
