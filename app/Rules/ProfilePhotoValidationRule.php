@@ -28,17 +28,19 @@ class ProfilePhotoValidationRule extends PhotoValidationRule
         $rules = $this->getRule() . '|' . $this->dimensionsRule;
 
         $validator = Validator::make([$attribute => $value], ['file' => $rules]);
+    }
 
-        if ($validator->fails()) {
-            $fail('The :attribute must have a valid aspect ratio and dimensions between 160x160 and 2160x2160 pixels.');
-        }
+    public function getRule(): string
+    {
+        $rule = parent::getRule() . '|' . $this->dimensionsRule;
+        return $rule;
     }
 
     public function messages()
     {
-        // return [
-        //     'file.dimensions' => 'The :attribute must have a valid aspect ratio and dimensions between 160x160 and 2160x2160 pixels.',
-        // ];
+        return [
+            'dimensions' => 'The :attribute must have a valid aspect ratio and dimensions between 160x160 and 2160x2160 pixels.',
+        ];
     }
 
     public function getDimensionsRule()
