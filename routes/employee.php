@@ -168,9 +168,9 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         return view('employee.hr-manager.relations.incidents.all');
     })->name('hr.relations.incidents.all');
 
-    Route::get('/relations/incidents/create', function () {
+    Route::get('hr/relations/incidents/create', function () {
         return view('employee.hr-manager.relations.incidents.create');
-    })->name('relations.incidents.create');
+    })->name('hr.relations.incidents.create');
 
 
     /**
