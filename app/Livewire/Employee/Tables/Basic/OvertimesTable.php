@@ -3,6 +3,7 @@
 namespace App\Livewire\Employee\Tables\Basic;
 
 use App\Models\Overtime;
+use Livewire\Attributes\On;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\Views\Column;
@@ -64,6 +65,12 @@ class OvertimesTable extends DataTableComponent
             ->select('*')
             ->where('employee_id', Auth::user()->account->employee_id);
     }
+    
+    #[On('overtime-request-created')]
+    public function refreshComponent()
+    {
+        $this->render();
+    }
 
     public function columns(): array
     {
@@ -79,9 +86,19 @@ class OvertimesTable extends DataTableComponent
             
             Column::make(__('Hours Requested'))
                 ->label(fn ($row) => $row->getHoursRequested()),
+
+            Column::make(__('Status'))
+                ->label(function ($row) {
+                    return $row->processes->first()->hr_manager_approved_at
+                        ? __('Approved')
+                        : __('Pending');
+                }),
             
-            Column::make(__('Filed At'))
-                ->sortable(),
+            Column::make(__('Date Filed'))
+                ->label(fn ($row) => $row->filed_at)
+                ->sortable(function (Builder $query, $direction) {
+                    return $query->orderBy('filed_at', $direction);
+                }),
         ];
     }
 }
