@@ -28,6 +28,14 @@
 
     $navPayslipOrder = $user->hasPermissionTo(UserPermission::VIEW_ALL_PAYSLIPS) ? 7 : 3;
 
+    $navPayslipRoute = $user->hasPermissionTo(UserPermission::VIEW_ALL_PAYSLIPS)
+        ? $routePrefix . '.hr.payslips.all'
+        : $routePrefix . '.general.payslips.all';
+
+    $navPayslipActivePattern = $user->hasPermissionTo(UserPermission::VIEW_ALL_PAYSLIPS)
+        ? $routePrefix . '.hr.payslips.*'
+        : $routePrefix . '.general.payslips.*';
+
 
     /**
      * Overtime
@@ -90,10 +98,11 @@
     {{-- Employee, HR Manager, Supervisor --}}
     @canAny([UserPermission::VIEW_PAYSLIPS, UserPermission::VIEW_ALL_PAYSLIPS])
     <x-layout.employee.nav.sidebar.nav-item
-        href="{{ route($routePrefix . '.hr.payslips.all') }}"
-        :active="request()->routeIs($routePrefix . '.hr.payslips.all')"
+        href="{{ route($navPayslipRoute) }}"
+        :active="request()->routeIs($navPayslipActivePattern)"
         class="tw-order-[{{ $navPayslipOrder }}]"
-        nav_txt="Payslips" :defaultIcon="['src' => 'payslips', 'alt' => '']"
+        nav_txt="Payslips"
+        :defaultIcon="['src' => 'payslips', 'alt' => '']"
         :activeIcon="['src' => 'payslips', 'alt' => '']">
     </x-layout.employee.nav.sidebar.nav-item>
     @endcan

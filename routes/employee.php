@@ -291,6 +291,15 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
 
     /**
+     * General: Payslip
+     */
+
+     Route::get('general/payslips/all', function () {
+        return view('employee.basic.payslips.all');
+    })->name('general.payslips.all');
+
+
+    /**
      * General: Leaves
      */
 
