@@ -66,7 +66,7 @@ class OvertimesTable extends DataTableComponent
             ->where('employee_id', Auth::user()->account->employee_id);
     }
     
-    #[On('overtime-request-created')]
+    #[On('overtimeRequestCreated')]
     public function refreshComponent()
     {
         $this->render();

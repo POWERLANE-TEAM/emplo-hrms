@@ -37,27 +37,12 @@
     </x-slot:breadcrumbs>
 </x-breadcrumbs>
 
-
-<section class="row">
-    <div class="col-6">
-        <x-headings.main-heading :isHeading="true">
-            <x-slot:heading>
-                {{__('Overtime Requests')}}
-            </x-slot:heading>
-
-            <x-slot:description>
-                <p><b>{{ __('Payroll Period:') }}</b> {{ __('September 01, 2024 - September 28, 2024') }}</p>
-                <!-- BACK-END REPLACE: Replace with current payroll period. -->
-            </x-slot:description>
-        </x-headings.main-heading>
-    </div>
-</section>
+<livewire:employee.overtimes.basic.cut-off-payout-periods />
 
 @include('components.includes.tab_navs.leaves-navs')
 
 <section class="my-2">
     <livewire:employee.tables.basic.overtimes-table />
-    <livewire:employee.overtimes.basic.request-overtime />
 </section>
 
 @endsection
