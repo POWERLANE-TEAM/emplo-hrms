@@ -17,6 +17,7 @@ use App\Livewire\Employee\Tables\Basic\RecentOvertimesTable;
 class RequestOvertime extends Component
 {
     public $state = [
+        'overtimeId' => null,
         'workToPerform' => '',
         'date' => null,
         'startTime' => null,
@@ -47,55 +48,54 @@ class RequestOvertime extends Component
             if ($end->lt($start)) {
                 $this->addError('state.endTime', __('End time cannot be before the start date.'));
             } else {
-                $this->resetErrorBag();
-                $this->hoursRequested = $start->diffForHumans($end);
+                $this->resetErrorBag('state.endTime');
+                $this->hoursRequested = $start->diff($end)->format('%h hours and %i minutes');
             }
         }
-    }
-
-    public function rules(): array
-    {
-        return [
-            'state.*' => 'required',
-            // unique validation requirements for each state prop
-        ];
-    }
-
-    public function messages(): array
-    {
-        return [
-            'state.workToPerform' => __('Please provide a valid description.'),
-            'state.date' => __('Please provide a valid date.'),
-            'state.startTime' => __('Please provide a valid start time.'),
-            'state.endTime' => __('Please provide a valid end time.')
-        ];
     }
 
     public function save()
     {
         if ($this->editMode) {
-            abort(403, 'Fuck you');
-        }
+            $overtime = Overtime::find($this->state['overtimeId']);
 
-        $this->authorize('submitOvertimeRequest', Auth::user());
-        $this->authorize('submitOvertimeRequestToday', $this->employee);
-        $this->authorize('submitNewOrAnotherOvertimeRequest', $this->employee);
-        
-        $this->validate();
+            if (! $overtime) {
+                abort (403);
+            }
 
-        DB::transaction(function () {
-            $overtime = Overtime::create([
-                'employee_id' => Auth::id(),
-                'work_performed' => $this->state['workToPerform'],
-                'start_time' => $this->state['startTime'],
-                'end_time' => $this->state['endTime'],
-            ]);
+            $this->authorize('updateOvertimeRequest', [$this->employee, $overtime]);
+
+            $this->validate();
+
+            DB::transaction(function () use ($overtime) {
+                $overtime->update([
+                    'employee_id' => Auth::id(),
+                    'work_performed' => $this->state['workToPerform'],
+                    'start_time' => $this->state['startTime'],
+                    'end_time' => $this->state['endTime'],
+                ]);
+            });    
+        } else {
+            $this->authorize('submitOvertimeRequest', Auth::user());
+            $this->authorize('submitOvertimeRequestToday', $this->employee);
+            $this->authorize('submitNewOrAnotherOvertimeRequest', $this->employee);
+            
+            $this->validate();
     
-            $overtime->processes()->create([
-                'processable_type' => Overtime::class,
-                'processable_id' => $overtime->overtime_id,
-            ]);
-        });
+            DB::transaction(function () {
+                $overtime = Overtime::create([
+                    'employee_id' => Auth::id(),
+                    'work_performed' => $this->state['workToPerform'],
+                    'start_time' => $this->state['startTime'],
+                    'end_time' => $this->state['endTime'],
+                ]);
+        
+                $overtime->processes()->create([
+                    'processable_type' => Overtime::class,
+                    'processable_id' => $overtime->overtime_id,
+                ]);
+            });    
+        }
 
         $this->reset();
         $this->resetErrorBag();
@@ -116,6 +116,7 @@ class RequestOvertime extends Component
             ]);
         } else {
             $this->state = [
+                'overtimeId' => $request->overtime_id,
                 'workToPerform' => $request->work_performed,
                 'date' => Carbon::parse($request->date)->format('Y-m-d'),
                 'startTime' => Carbon::parse($request->start_time)->format('H:i'),
@@ -145,6 +146,33 @@ class RequestOvertime extends Component
     private function employee()
     {
         return Auth::user()->account;
+    }
+
+    public function rules(): array
+    {
+        return [
+            'state.workToPerform' => 'required|string|max:100',
+            'state.date' => 'required|date|after_or_equal:today',
+            'state.startTime' => 'required|date_format:H:i',
+            'state.endTime' => 'required|date_format:H:i|after:state.startTime',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'state.workToPerform.required' => __('Please provide a description.'),
+            'state.workToPerform.string' => __('Description must be a valid string.'),
+            'state.workToPerform.max' => __('Description must not exceed 100 characters.'),
+            'state.date.required' => __('Please provide a valid date.'),
+            'state.date.date' => __('The date must be a valid format.'),
+            'state.date.after_or_equal' => __('The date must not be in the past.'),
+            'state.startTime.required' => __('Please provide a start time.'),
+            'state.startTime.date_format' => __('The start time must be in the format HH:mm.'),
+            'state.endTime.required' => __('Please provide an end time.'),
+            'state.endTime.date_format' => __('The end time must be in the format HH:mm.'),
+            'state.endTime.after' => __('The end time must be after the start time.'),
+        ];
     }
 
     public function render()
