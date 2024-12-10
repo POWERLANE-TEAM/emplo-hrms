@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Overtime;
 use App\Models\User;
 use App\Models\Employee;
 use App\Enums\UserPermission;
@@ -32,7 +33,21 @@ class OvertimePolicy
     }
 
     /**
-     * Check if user can submit an overtime request today.
+     * Check if user owns the overtime model request before updating.
+     * 
+     * @param \App\Models\Employee $employee
+     * @param \App\Models\Overtime $overtime
+     * @return \Illuminate\Auth\Access\Response
+     */
+    public function updateOvertimeRequest(?User $user, Employee $employee, Overtime $overtime): Response
+    {
+        return $employee->overtimes->contains($overtime)
+            ? Response::allow()
+            : Response::deny(__('You don\'t own this overtime request.'));
+    }
+
+    /**
+     * Check if user employee can submit an overtime request today.
      * 
      * @param mixed $user
      * @param \App\Models\Employee $employee
@@ -50,7 +65,7 @@ class OvertimePolicy
     }
 
     /**
-     * Check if user has reached max allowed pending status of overtime request submissions.
+     * Check if user employee has reached max allowed pending status of overtime request submissions.
      * 
      * @param mixed $user
      * @param \App\Models\Employee $employee
@@ -60,7 +75,7 @@ class OvertimePolicy
     {
         $pendingRequestCount = $employee->overtimes()
             ->whereHas('processes', function ($query) {
-                $query->whereNull('hr_manager_approved_at');
+                $query->whereNull('secondary_approver_signed_at');
             })
             ->count();
 
