@@ -33,7 +33,7 @@ class BasicUserSeeder extends Seeder
         $userData = [
             'account_type' => AccountType::EMPLOYEE,
             'account_id' => $employee->employee_id,
-            'email' => 'basic'.fake()->unique()->userName().'@'.$validDomains,
+            'email' => 'basic.'.fake()->unique()->userName().'@'.$validDomains,
             'password' => Hash::make('UniqP@ssw0rd'),
             'user_status_id' => EnumUserStatus::ACTIVE,
             'email_verified_at' => fake()->dateTimeBetween('-10 days', 'now'),

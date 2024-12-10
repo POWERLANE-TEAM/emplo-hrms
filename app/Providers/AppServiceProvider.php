@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\User;
 use App\Enums\UserRole;
+use App\Policies\OvertimePolicy;
 use Laravel\Pulse\Facades\Pulse;
 use App\Providers\Form\FormWizardServiceProvider;
 use Illuminate\Support\Facades\Gate;
@@ -33,6 +34,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(BiometricDevice::class, function () {
             return new BiometricDevice();
         });
+        
         $this->app->register(FormWizardServiceProvider::class);
     }
 
@@ -123,6 +125,10 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('viewPulse', function (User $user) {
             return $user->hasRole(UserRole::ADVANCED);
         });
+
+        Gate::define('submitOvertimeRequest', [OvertimePolicy::class, 'submitOvertimeRequest']);
+        Gate::define('submitOvertimeRequestToday', [OvertimePolicy::class, 'submitOvertimeRequestToday']);
+        Gate::define('submitNewOrAnotherOvertimeRequest', [OvertimePolicy::class, 'submitNewOrAnotherOvertimeRequest']);
 
         Vite::useAggressivePrefetching();
     }

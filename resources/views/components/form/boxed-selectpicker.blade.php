@@ -35,33 +35,31 @@
     }
 </style>
 
-@script
-    <script>
-        document.addEventListener('livewire:navigated', () => {
-            const selectElements = document.querySelectorAll('.selectpicker');
+<script>
+    document.addEventListener('livewire:navigated', () => {
+        const selectElements = document.querySelectorAll('.selectpicker');
 
-            selectElements.forEach(function(selectElement) {
-                if (selectElement.getAttribute('data-choices-initialized') === 'true') {
-                    return;
-                }
+        selectElements.forEach(function(selectElement) {
+            if (selectElement.getAttribute('data-choices-initialized') === 'true') {
+                return;
+            }
 
-                new Choices(selectElement, {
-                    searchEnabled: true,
-                    itemSelectText: '',
-                    maxItemCount: 2,
-                    renderSelectedChoices: 'always',
-                    shouldSort: false, // Optional, can be changed :) Disables sorting if you want to retain original order
-                });
-
-                selectElement.setAttribute('data-choices-initialized', 'true');
-
-                setTimeout(() => {
-                    const dropdownList = document.querySelector('.choices__list--dropdown');
-                    if (dropdownList) {
-                        dropdownList.classList.add('visible-gray-scrollbar');
-                    }
-                }, 100);
+            new Choices(selectElement, {
+                searchEnabled: true,
+                itemSelectText: '',
+                maxItemCount: 2,
+                renderSelectedChoices: 'always',
+                shouldSort: false, // Optional, can be changed :) Disables sorting if you want to retain original order
             });
+
+            selectElement.setAttribute('data-choices-initialized', 'true');
+
+            setTimeout(() => {
+                const dropdownList = document.querySelector('.choices__list--dropdown');
+                if (dropdownList) {
+                    dropdownList.classList.add('visible-gray-scrollbar');
+                }
+            }, 100);
         });
-    </script>
-@endscript
+    });
+</script>

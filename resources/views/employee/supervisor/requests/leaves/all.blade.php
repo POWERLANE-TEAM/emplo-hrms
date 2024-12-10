@@ -2,7 +2,7 @@
 @use ('Illuminate\View\ComponentAttributeBag')
 
 @section('head')
-<title>All Summary Forms</title>
+<title>Leaves</title>
 <script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 @endsection
@@ -11,31 +11,24 @@
 @endPushOnce
 
 @pushOnce('scripts')
-    @vite(['resources/js/employee/basic/leaves.js'])
+    @vite(['resources/js/employee/hr-manager/performance.js'])
 
 @endPushOnce
 
 @pushOnce('styles')
-    @vite(['resources/css/employee/basic/leaves.css'])
+    @vite(['resources/css/employee/hr-manager/performance.css'])
 
 @endPushOnce
 @section('content')
 
-
-
 <x-headings.main-heading :isHeading="true">
     <x-slot:heading>
-        {{__('Overtime Summary Forms')}}
+        {{ __('Leaves Table') }}
     </x-slot:heading>
 
     <x-slot:description>
-        <p>{{ __('Manage your overtime summary forms and hours.') }}</p>
+        {{ __('View and manage.') }}
     </x-slot:description>
 </x-headings.main-heading>
-
-
-<section class="my-2">
-    <!-- BACK-END REPLACE: Table of all OT Summary Forms. Highlight the current paayroll period. -->
-</section>
 
 @endsection

@@ -26,10 +26,10 @@
 
 <x-breadcrumbs>
     <x-slot:breadcrumbs>
-        <x-breadcrumb :href="'#'"> <!-- REPLACE: Link to the All Issues table -->
+        <x-breadcrumb :href="route($routePrefix . '.general.issues.all')">
             Issues
         </x-breadcrumb>
-        <x-breadcrumb :active="request()->routeIs($routePrefix . '.issues.create')">
+        <x-breadcrumb :active="request()->routeIs($routePrefix . '.general.issues.create')">
             Submit Complaint
         </x-breadcrumb>
     </x-slot:breadcrumbs>

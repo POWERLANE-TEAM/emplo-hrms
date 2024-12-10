@@ -85,7 +85,8 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::VIEW_ALL_EMP_PERFORMANCE_EVAL_APPROVAL_FORM->value,
             UserPermission::VIEW_ALL_EMP_PERFORMANCE_EVAL_FINAL_APPROVAL_FORM->value,
             UserPermission::VIEW_ALL_RELATIONS->value,
-            UserPermission::VIEW_MATRIX_PROJECTOR->value,
+            UserPermission::VIEW_ALL_ISSUES->value,
+            UserPermission::VIEW_ALL_TRAINING->value,
             UserPermission::VIEW_TALENT_EVALUATOR->value,
             UserPermission::VIEW_PLAN_GENERATOR->value,
 
@@ -157,12 +158,16 @@ class RolesAndPermissionsSeeder extends Seeder
     public static function managerialPermissions()
     {
         return [
-            UserPermission::UPDATE_EMP_PERFORMANCE_EVAL_GRADE_FORM->value,
-            UserPermission::ASSIGN_PERFORMANCE_EVAL_SCORE->value,
-            UserPermission::UPDATE_EMP_PERFORMANCE_EVAL_GRADE_FORM->value,
+            UserPermission::VIEW_ALL_SUBORDINATE_REQUESTS->value,
+            UserPermission::VIEW_ALL_SUBORDINATE_PERFORMANCE_EVAL_FORM->value,
+            UserPermission::VIEW_ALL_SUBORDINATE_LEAVE_REQUEST->value,
+            UserPermission::VIEW_ALL_SUBORDINATE_OVERTIME_REQUEST->value,
             UserPermission::VIEW_SUBORDINATE_PERFORMANCE_EVAL_FORM->value,
             UserPermission::VIEW_SUBORDINATE_LEAVE_REQUEST->value,
             UserPermission::VIEW_SUBORDINATE_OVERTIME_REQUEST->value,
+            UserPermission::ASSIGN_PERFORMANCE_EVAL_SCORE->value,
+            UserPermission::UPDATE_EMP_PERFORMANCE_EVAL_GRADE_FORM->value,
+            UserPermission::UPDATE_EMP_PERFORMANCE_EVAL_GRADE_FORM->value,
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Barangay;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -23,8 +24,8 @@ class ApplicantFactory extends Factory
             'contact_number' => fake()->unique()->numerify('###########'),
             'sex' => fake()->randomElement(['MALE', 'FEMALE']),
             'civil_status' => fake()->randomElement(['SINGLE', 'MARRIED', 'WIDOWED', 'LEGALLY SEPARATED']),
-            'present_barangay' => fake()->randomNumber(1, 9),
-            'permanent_barangay' => fake()->randomNumber(1, 9),
+            'present_barangay' => Barangay::inRandomOrder()->first()->id,
+            'permanent_barangay' => Barangay::inRandomOrder()->first()->id,
             'present_address' => fake()->streetName(),
             'permanent_address' => fake()->streetName(),
             'date_of_birth' => fake()->date,

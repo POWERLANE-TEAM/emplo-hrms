@@ -5,6 +5,6 @@
 --}}
 
 <x-sub-navs.tabular-nav :guard="$routePrefix" :items="[
-    ['title' => 'Summary Form', 'route' => 'overtime.summary-form'],
-    ['title' => 'Overtime Requests', 'route' => 'overtime.requests'],
+    ['title' => 'Recent Records', 'route' => 'overtimes.recents'],
+    ['title' => 'Archive Records', 'route' => 'overtimes.index'],
 ]" />
