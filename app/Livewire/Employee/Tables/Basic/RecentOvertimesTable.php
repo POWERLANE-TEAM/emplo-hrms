@@ -36,12 +36,21 @@ class RecentOvertimesTable extends DataTableComponent
         ]);
 
         $this->setTrAttributes(function ($row, $index) {
-            return [
+            $attributes = [
                 'default' => true,
-                'role' => 'button',
                 'class' => 'border-1 rounded-2 outline no-transition mx-4',
-                'wire:click' => "\$dispatch('showOvertimeRequest', $row->overtime_id)",
             ];
+
+            $pendingStatus = is_null($row->processes->first()->secondary_approver_signed_at);
+
+            if ($pendingStatus) {
+                $attributes = [
+                    'role' => 'button',
+                    'wire:click' => "\$dispatch('showOvertimeRequest', $row->overtime_id)",
+                ];
+            }
+
+            return $attributes;
         });
 
         $this->setSearchFieldAttributes([
@@ -98,7 +107,7 @@ class RecentOvertimesTable extends DataTableComponent
 
             Column::make(__('Status'))
                 ->label(function ($row) {
-                    return $row->processes->first()->hr_manager_approved_at
+                    return $row->processes->first()->secondary_approver_signed_at
                         ? __('Approved')
                         : __('Pending');
                 }),
