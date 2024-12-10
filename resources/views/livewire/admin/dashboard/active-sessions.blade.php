@@ -10,7 +10,7 @@
             </header>
         </div>
 
-        <div class="card-body px-3">
+        <div class="card-body px-3 indiv-grid-container-2 overflow-auto thin-custom-scrollbar">
             <ul class="list-unstyled">
                 <template x-if="online.paginatedUsers().length > 0">
                     <template x-for="user in online.paginatedUsers()" :key="user . user_id">

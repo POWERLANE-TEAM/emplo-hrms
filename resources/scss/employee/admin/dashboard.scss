@@ -1,4 +1,5 @@
 @import '../../utils';
+@import '../../scrollbar';
 @import '../../scales/icon-size';
 @import '../../icon/lucide';
 @import '../side-top-bar';
@@ -77,6 +78,13 @@
 /* Create Announcement Button 
 ========================================================================== */
 
+.indiv-grid-container-1 {
+    max-height: 50vh;
+}
+
+.indiv-grid-container-2 {
+    max-height: 30vh;
+}
 
 .icons-container {
     padding-left: 3rem;
@@ -105,4 +113,13 @@
 
 .icon-container:hover .icon-with-border {
     color: white;
+}
+
+.table {
+--bs-table-striped-bg: #fff !important;
+}
+
+table.table {
+    border-collapse: collapse !important;
+    border-spacing: 0 calc(1rem + .5vw) !important;
 }

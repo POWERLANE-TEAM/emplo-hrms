@@ -1,5 +1,5 @@
 <div class="col-md-7 flex">
-    <div class="card">
+    <div class="card h-100">
         <div class="card-header w-100 d-flex justify-content-between align-items-center">
             {{-- DTR Total --}}
             <div>
