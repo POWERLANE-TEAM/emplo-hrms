@@ -2,8 +2,10 @@
 
 namespace [namespace];
 
+use Illuminate\View\ComponentAttributeBag;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
+use App\Livewire\Tables\Defaults as DefaultTableConfig;
 use [model_import];
 
 /**
@@ -15,6 +17,8 @@ use [model_import];
  */
 class [class] extends DataTableComponent
 {
+    use DefaultTableConfig;
+
     protected $model = [model]::class;
 
     /**
@@ -25,6 +29,8 @@ class [class] extends DataTableComponent
     public function configure(): void
     {
         $this->setPrimaryKey('_id');
+
+        $this->configuringStandardTableMethods();
 
         $this->setConfigurableAreas([
             // 'toolbar-left-start' => [
