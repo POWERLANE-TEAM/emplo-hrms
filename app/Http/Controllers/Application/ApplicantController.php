@@ -40,6 +40,7 @@ class ApplicantController extends Controller
     /* store a new resource */
     public function store(Request|array $request, bool $isValidated = false)
     {
+
         if ($this->canApply(true));
 
         $jobVacancyId = is_array($request) ? $request['application']['jobVacancyId'] : $request->input('jobVacancyId');
@@ -74,9 +75,6 @@ class ApplicantController extends Controller
             $sex = $request['sex'];
             $civilStatus = $request['civilStatus'];
             $dateOfBirth = $request['dateOfBirth'] ?? null;
-            $education = $request['education'] ?? 'null';
-            $experience = $request['experience'] ?? 'null';
-            // $skills = $request['skills'] ?? 'null';
         } else {
             // $jobVacancyId = $validated('jobVacancyId') ?? null;
         }
@@ -95,8 +93,6 @@ class ApplicantController extends Controller
             'sex' => $sex,
             'civil_status' => $civilStatus,
             'date_of_birth' => $dateOfBirth,
-            'education' => $education,
-            'experience' => $experience,
         ]);
 
         if (is_array($request)) {
@@ -112,6 +108,24 @@ class ApplicantController extends Controller
         }
 
         $applicationController  = new ApplicationController();
+
+        $educationController = new EducationController();
+        $educationController->store([
+            'applicantId' => $newApplicant->applicant_id,
+            'education' => $request['education']
+        ], false);
+
+        $experienceController = new ExperienceController();
+        $experienceController->store([
+            'applicantId' => $newApplicant->applicant_id,
+            'experience' => $request['experience']
+        ], false);
+
+        $skillController = new SkillController();
+        $skillController->store([
+            'applicantId' => $newApplicant->applicant_id,
+            'skills' => $request['skills']
+        ], false);
 
         $userToApplicantController  = new UpdateUserProfileInformation();
 
@@ -143,6 +157,6 @@ class ApplicantController extends Controller
 
     private function canApply(?bool $isTerminate = false)
     {
-        return !self::applicantOrYet(!Auth::user()->hasPermissionTo(UserPermission::VIEW_JOB_APPLICATION_FORM->value), $isTerminate) || !self::hasApplication($isTerminate);
+        return !self::applicantOrYet(!Auth::user()->hasPermissionTo(UserPermission::VIEW_JOB_APPLICATION_FORM->value), $isTerminate) && !self::hasApplication($isTerminate);
     }
 }
