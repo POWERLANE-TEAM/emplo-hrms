@@ -26,27 +26,19 @@ class Process extends Model
     */
 
     /**
-     * Get the Supervisor who approved/signed the process(e.g.: overtime, leave)
+     * Get the initial approver who approved/signed the process(e.g.: overtime, leave)
      */
-    public function supervisor(): BelongsTo
+    public function initialApprover(): BelongsTo
     {
-        return $this->belongsTo(Employee::class, 'supervisor', 'employee_id');
+        return $this->belongsTo(Employee::class, 'initial_approver', 'employee_id');
     }
 
     /**
-     * Get the Area Manager who approved/signed the process(e.g.: overtime, leave)
+     * Get the secondary approver who approved/signed the process(e.g.: overtime, leave)
      */
-    public function areaManager(): BelongsTo
+    public function secondaryApprover(): BelongsTo
     {
-        return $this->belongsTo(Employee::class, 'area_manager', 'employee_id');
-    }
-
-    /**
-     * Get the HR Manager who approved/signed the process(e.g.: overtime, leave)
-     */
-    public function hrManager(): BelongsTo
-    {
-        return $this->belongsTo(Employee::class, 'hr_manager', 'employee_id');
+        return $this->belongsTo(Employee::class, 'secondary_approver', 'employee_id');
     }
 
     /**
