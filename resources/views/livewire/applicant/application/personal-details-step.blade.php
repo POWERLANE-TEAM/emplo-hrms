@@ -37,15 +37,22 @@
                         'message' => $errors->first(),
                     ])
 
+                    @php
+                        $profileUploadLabel = <<<HTML
+                        Drag & Drop or <span class="filepond--label-action"> Browse</span> a Profile Picture
+                        HTML;
+                    @endphp
+
                     {{-- Hide Preview for now --}}
                     <div
                         class="{{ !is_null($displayProfileUrl) && filter_var($displayProfileUrl, FILTER_VALIDATE_URL) ? 'd-none' : '' }}">
                         {{-- Image size client validation not working --}}
-                        <x-filepond::upload id="display-profile" image-validate-size-min-width="160"
-                            image-validate-size-min-height="160" image-validate-size-max-width="2160"
-                            image-validate-size-max-height="2160" allow-image-validate-size="true"
-                            image-validate-size-max-resolution="2160" wire:model="displayProfile" :accept="$accepted"
-                            allow-image-preview="{{ $allowImagePreview }}" instant-upload="false" :required="true" />
+                        <x-filepond::upload id="display-profile" label-idle="{!! $profileUploadLabel !!}"
+                            image-validate-size-min-width="160" image-validate-size-min-height="160"
+                            image-validate-size-max-width="2160" image-validate-size-max-height="2160"
+                            allow-image-validate-size="true" image-validate-size-max-resolution="2160"
+                            wire:model="displayProfile" :accept="$accepted" allow-image-preview="{{ $allowImagePreview }}"
+                            instant-upload="false" :required="true" />
                         @include('components.form.input-feedback', [
                             'feedback_id' => 'display-profile-feedback',
                             'message' => $errors->first('displayProfile'),
