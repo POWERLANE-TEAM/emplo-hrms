@@ -324,13 +324,13 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         return view('employee.basic.overtime.all');
     })->name('general.overtime.all');
 
-    Route::get('/overtime/summary-form', function () {
-        return view('employee.basic.overtime.summary-form');
-    })->name('overtime.summary-form');
+    Route::get('/overtimes/recents', function () {
+        return view('employee.basic.overtime.recent-records');
+    })->name('overtimes.recents');
 
-    Route::get('/overtime/requests', function () {
-        return view('employee.basic.overtime.requests');
-    })->name('overtime.requests');
+    Route::get('/overtimes/archive', function () {
+        return view('employee.basic.overtime.index');
+    })->name('overtimes.index');
 
 
     /**

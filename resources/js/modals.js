@@ -13,7 +13,7 @@ window.openModal = openModal;
 
 // Helper function to hide the modal by ID
 export function hideModal(modalId) {
-    const modal = bootstrap.Modal.getInstance(document.getElementById(modalId));
+    const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById(modalId));
     if (modal) {
         modal.hide();
     }

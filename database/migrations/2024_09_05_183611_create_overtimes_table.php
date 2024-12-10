@@ -21,11 +21,10 @@ return new class extends Migration
                 ->cascadeOnDelete();
 
             $table->longText('work_performed');
-            $table->dateTime('start_time');
-            $table->dateTime('end_time');
-            $table->decimal('hours_requested');
+            $table->timestamp('start_time');
+            $table->timestamp('end_time');
             $table->timestamp('filed_at');
-            $table->timestamps();
+            $table->timestamp('modified_at');
         });
     }
 
