@@ -55,23 +55,63 @@ class FinalPreviewStep extends StepComponent
 
         $applicant = $applicantName;
 
+        // I get the education as a whole string as is from resume
+        // I have no idea how to separate education tho
         $education = $parsedResumeData['employee_education'] ?? null;
+
+        if (is_string($education)) {
+            // Log the original education string
+            Log::info('Original education string', ['education' => $education]);
+
+            // Define a regex pattern to match date formats (e.g., "August 2024", "June 2014 - June 2019")
+            $datePattern = '/
+            (?:^|\n)                                       # Start of the string or a newline
+            (January|February|March|April|May|June|July|August|September|October|November|December)
+            (\s+\d{4})                                     # Match month and year
+            (\s*-\s*
+            ((January|February|March|April|May|June|July|August|September|October|November|December)
+            \s+\d{4}|Present))?                            # Optionally match a date range or "Present"
+        /ix';
+
+            // Split the education string based on the date pattern
+            $educationArray = preg_split($datePattern, $education, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
+
+            // Log the split education array
+            Log::info('Split education array', ['educationArray' => $educationArray]);
+
+            // Combine dates with their corresponding entries
+            $parsedEducation = [];
+            $currentEntry = null;
+
+            foreach ($educationArray as $value) {
+                $value = trim($value);
+                if (preg_match($datePattern, $value)) {
+                    // Start a new entry with the date
+                    if ($currentEntry) {
+                        $parsedEducation[] = $currentEntry;
+                    }
+                    $currentEntry = ['date' => $value, 'details' => ''];
+                } else {
+                    // Append details to the current entry
+                    if ($currentEntry) {
+                        $currentEntry['details'] .= ($currentEntry['details'] ? "\n" : '') . $value;
+                    }
+                }
+            }
+
+            // Add the last entry
+            if ($currentEntry) {
+                $parsedEducation[] = $currentEntry;
+            }
+
+            // Log the parsed education entries
+            Log::info('Parsed education entries', ['education' => $parsedEducation]);
+
+            $education = $parsedEducation;
+        }
+
         $experience = $parsedResumeData['employee_experience'] ?? null;
         $skills = $parsedResumeData['employee_skills'] ?? null;
-
-        // Encode the data as JSON
-        $education = json_encode($education);
-        $experience = json_encode($experience);
-        $skills = json_encode($skills);
-
-        Log::info('Education: ' . $education);
-        Log::info('Experience: ' . $experience);
-        Log::info('Skills: ' . $skills);
-
-        // Additional logging to verify the types
-        Log::info('Education type: ' . gettype($education));
-        Log::info('Experience type: ' . gettype($experience));
-        Log::info('Skills type: ' . gettype($skills));
 
         $applicant =  array_merge($applicant, [
             'user' => [
