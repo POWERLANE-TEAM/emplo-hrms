@@ -2,9 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Support\Str;
+use App\Enums\ActivityLogName;
 use Illuminate\Support\Carbon;
+use Spatie\Activitylog\LogOptions;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,6 +17,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Overtime extends Model
 {
     use HasFactory;
+    use LogsActivity;
 
     const CREATED_AT = 'filed_at';
 
@@ -65,7 +71,7 @@ class Overtime extends Model
         $start = Carbon::parse($this->start_time);
         $end = Carbon::parse($this->end_time);
 
-        return $start->diffForHumans($end);
+        return $start->diff($end)->format('%h hours and %i minutes');
     }
 
     /**
@@ -82,5 +88,26 @@ class Overtime extends Model
     public function processes(): MorphMany
     {
         return $this->morphMany(Process::class, 'processable');
+    }
+
+    /**
+     * Override default values for more controlled logging.
+     */
+    public function getActivityLogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logUnguarded()
+            ->useLogName(ActivityLogName::OVERTIME->value)
+            ->dontSubmitEmptyLogs()
+            ->submitEmptyLogs()
+            ->setDescriptionForEvent(function (string $eventName) {
+                $causerFirstName = Str::ucfirst(Auth::user()->account->first_name);
+
+                return match ($eventName) {
+                    'created' => __($causerFirstName.' submitted an overtime request.'),
+                    'updated' => __($causerFirstName.' updated an overtime request\'s information.'),
+                    'deleted' => __($causerFirstName.' deleted an overtime request record.'),
+                };
+            });
     }
 }
