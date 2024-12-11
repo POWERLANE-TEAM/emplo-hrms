@@ -2,12 +2,15 @@
 
 namespace App\Livewire\Employee\Tables\HRManager;
 
+use App\Enums\ApplicationStatus;
+use App\Http\Helpers\BeforeRoute;
 use App\Livewire\Tables\Defaults as DefaultTableConfig;
 use App\Models\Applicant;
 use App\Models\Application;
 use App\Models\JobVacancy;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Route;
 use Livewire\Attributes\Computed;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
@@ -31,10 +34,28 @@ class ApplicantsTable extends DataTableComponent
 
     protected $model = Application::class;
 
+    private $qualifiedState;
+
+    public $status;
+
     /**
      * @var array contains the dropdown values and keys.
      */
     protected $customFilterOptions;
+
+    public function mount(string $applicationStatus)
+    {
+        $this->qualifiedState = ApplicationStatus::qualifiedState();
+
+        if ($applicationStatus == 'qualified') {
+            $this->status = array_map(fn($status) => $status->value, $this->qualifiedState);
+        } else {
+            $statusValue = ApplicationStatus::fromNameSubstring($applicationStatus);
+            $this->status = $statusValue !== null ? [$statusValue] : [];
+        }
+        // dump($applicationStatus);
+        // dd($this->status);
+    }
 
     #[Computed]
     private function getJobVacancies(): Builder
@@ -69,6 +90,12 @@ class ApplicantsTable extends DataTableComponent
 
         $this->setPrimaryKey('application_id')
             ->setTableRowUrl(function ($row) use ($routePrefix) {
+                // dd(BeforeRoute::checkRoutePermission(route($routePrefix . '.application.show', $row)));
+                // // if (!BeforeRoute::checkRoutePermission($routePrefix . '.application.show')) {
+                // //     $currentRoute = Route::currentRouteName();
+                // //     // dd($currentRoute);
+                // //     return route($currentRoute);
+                // // }
                 return route($routePrefix . '.application.show', $row);
             });
 
@@ -189,7 +216,8 @@ class ApplicantsTable extends DataTableComponent
             ->join('applicants', 'applications.applicant_id', '=', 'applicants.applicant_id')
             ->join('job_vacancies', 'applications.job_vacancy_id', '=', 'job_vacancies.job_vacancy_id')
             ->join('job_titles', 'job_vacancies.job_title_id', '=', 'job_titles.job_title_id')
-            ->where('hired_at', null);
+            ->where('hired_at', null)
+            ->whereIn('application_status_id', $this->status);
 
         return $query;
     }
