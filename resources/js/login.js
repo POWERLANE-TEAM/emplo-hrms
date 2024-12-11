@@ -11,6 +11,12 @@ import PasswordValidator from './forms/password-validation.js';
 import initPasswordConfirmValidation, { validateConfirmPassword } from './forms/password-confirm-validation.js';
 import debounce from './debounce-fn.js';
 // import './livewire.js'
+import ThemeManager, { initPageTheme } from 'theme-listener-script';
+
+const themeManager = new ThemeManager();
+
+initPageTheme(themeManager);
+
 
 document.addEventListener("DOMContentLoaded", (event) => {
     initLucideIcons();
