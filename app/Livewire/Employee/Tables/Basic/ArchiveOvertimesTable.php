@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 
-class OvertimesTable extends DataTableComponent
+class ArchiveOvertimesTable extends DataTableComponent
 {
     public function configure(): void
     {

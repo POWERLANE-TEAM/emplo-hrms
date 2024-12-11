@@ -26,7 +26,7 @@
 @endPushOnce
 @section('content')
 
-<x-breadcrumbs>
+{{-- <x-breadcrumbs>
     <x-slot:breadcrumbs>
         <x-breadcrumb :href="'#'"> <!-- REPLACE: Link to the All Overtime Summary Form tables -->
             {{ __('Overtime Requests') }}
@@ -35,14 +35,14 @@
             {{ __('Archive Records') }}
         </x-breadcrumb>
     </x-slot:breadcrumbs>
-</x-breadcrumbs>
+</x-breadcrumbs> --}}
 
 <livewire:employee.overtimes.basic.cut-off-payout-periods />
 
 @include('components.includes.tab_navs.leaves-navs')
 
 <section class="my-2">
-    <livewire:employee.tables.basic.overtimes-table />
+    <livewire:employee.tables.basic.archive-overtimes-table />
 </section>
 
 @endsection
