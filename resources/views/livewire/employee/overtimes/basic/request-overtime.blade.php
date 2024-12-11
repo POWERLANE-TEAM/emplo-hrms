@@ -4,13 +4,13 @@
 
 <div>
     <x-modals.dialog :id="$modalId">
-        <x-slot:title>
-            <h1 class="modal-title fs-5" id="{{ $modalId }}">{{ __('Request Overtime') }}</h1>
-            <button data-bs-toggle="modal" class="btn-close" aria-label="Close"></button>        
+        <x-slot:title class="">
+            <h1 class="modal-title fs-5 fw-bold text-secondary-emphasis" id="{{ $modalId }}">{{ $title }}</h1>
+            <button @click="$dispatch('abortAction')" wire:loading.attr="disabled" class="btn-close" aria-label="Close"></button>        
         </x-slot:title>
         <x-slot:content>
             <div class="mb-3">
-                <x-form.boxed-input-text wire:model.blur="state.workToPerform" id="work_performed" label="{{ __('Work To Perform') }}" :nonce="$nonce"
+                <x-form.boxed-input-text name="state.workToPerform" id="work_performed" label="{{ __('Work To Perform') }}" :nonce="$nonce"
                     :required="true" placeholder="Detail of the work to be done" />
                 @error('state.workToPerform')
                     <div class="invalid-feedback" role="alert">{{ $message }}</div>
@@ -25,33 +25,59 @@
                     @enderror
                 </div>
                 <div class="col-md-3 mb-3">
-                    <x-form.boxed-time name="state.startTime" id="hours_ot" label="{{ __('Start Time') }}" :nonce="$nonce" :required="true"
+                    <x-form.boxed-time wire:model.live="state.startTime" id="hours_ot" label="{{ __('Start Time') }}" :nonce="$nonce" :required="true"
                     placeholder="Date of Overtime" />
                     @error('state.startTime')
                         <div class="invalid-feedback" role="alert">{{ $message }}</div>
                     @enderror
                 </div>
-                <div class="col-md-3 mb-3">
-                    <x-form.boxed-time name="state.endTime" id="hours_ot" label="{{ __('End Time') }}" :nonce="$nonce" :required="true"
+                <div class="col-md-3">
+                    <x-form.boxed-time wire:model.live="state.endTime" id="hours_ot" label="{{ __('End Time') }}" :nonce="$nonce" :required="true"
                     placeholder="Date of Overtime" />
                     @error('state.endTime')
                         <div class="invalid-feedback" role="alert">{{ $message }}</div>
                     @enderror
                 </div>
             </div>
-            <p class="fs-6 fw-medium">
-                <strong>Instructions: </strong>{{ __('Overtime submissions require a minimum of 30 minutes.') }}
+            <p class="fs-6 fw-medium text-secondary-emphasis">
+                <strong>{{ __('Requested Hours: ') }}</strong>{{ $hoursRequested }}
             </p>
         </x-slot:content>
         <x-slot:footer>
-            <button wire:click="save" wire:loading.attr="disabled" class="btn btn-primary">{{ __('Submit Request') }}</button>
-        </x-slot:footer>
+            <div class="d-flex justify-content-between align-items-center w-100 text-secondary-emphasis">
+                <div class="me-auto">
+                    <p class="fs-6 fw-medium mb-0">
+                        <strong>Instructions: </strong>{{ __('Overtime submissions require a minimum of 30 minutes.') }}
+                    </p>
+                </div>
+                <div class="ms-auto">
+                    <button wire:click="save" wire:loading.attr="disabled" class="btn btn-primary">
+                        {{ $buttonName }}
+                    </button>
+                </div>
+            </div>
+        </x-slot:footer>                
     </x-modals.dialog>
 </div>
 
 @script
 <script>
-    Livewire.on('changes-saved', () => {
+    Livewire.on('showOvertimeRequest', (event) => {
+        // console.log(event)
+        if (event) {
+            Livewire.dispatch('findModelId', { overtimeId: event });
+        };
+    });
+
+    Livewire.on('openOvertimeRequestModal', () => {
+        openModal('{{ $modalId }}');
+    })
+
+    Livewire.on('resetOvertimeRequestModal', () => {
+        hideModal('{{ $modalId }}');
+    })
+
+    Livewire.on('changesSaved', () => {
         hideModal('{{ $modalId }}');     
     })
 </script>

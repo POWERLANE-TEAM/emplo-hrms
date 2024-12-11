@@ -37,27 +37,7 @@
     </x-slot:breadcrumbs>
 </x-breadcrumbs>
 
-
-<section class="row">
-    <div class="col-6">
-        <x-headings.main-heading :isHeading="true">
-            <x-slot:heading>
-                {{__('Overtime Requests')}}
-            </x-slot:heading>
-
-            <x-slot:description>
-                <p><b>{{ __('Payroll Period:') }}</b> {{ __('September 01, 2024 - September 28, 2024') }}</p>
-                <!-- BACK-END REPLACE: Replace with current payroll period. -->
-            </x-slot:description>
-        </x-headings.main-heading>
-    </div>
-    <div class="col-6 pt-2 text-end">
-        <button onclick="openModal('requestOvertimeModal')" class="btn btn-primary">
-        <i data-lucide="plus-circle" class="icon icon-large me-2"></i> Request Overtime</button>
-
-        <!-- BACK-END REPLACE NOTE: This button should not appear if the OT Summary Form being viewed is history/not the current payroll period. -->
-    </div>
-</section>
+<livewire:employee.overtimes.basic.cut-off-payout-periods />
 
 @include('components.includes.tab_navs.leaves-navs')
 

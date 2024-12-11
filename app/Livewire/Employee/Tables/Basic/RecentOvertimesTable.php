@@ -3,6 +3,7 @@
 namespace App\Livewire\Employee\Tables\Basic;
 
 use App\Models\Overtime;
+use Livewire\Attributes\On;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
@@ -35,10 +36,21 @@ class RecentOvertimesTable extends DataTableComponent
         ]);
 
         $this->setTrAttributes(function ($row, $index) {
-            return [
+            $attributes = [
                 'default' => true,
                 'class' => 'border-1 rounded-2 outline no-transition mx-4',
             ];
+
+            $pendingStatus = is_null($row->processes->first()->secondary_approver_signed_at);
+
+            if ($pendingStatus) {
+                $attributes = [
+                    'role' => 'button',
+                    'wire:click' => "\$dispatch('showOvertimeRequest', $row->overtime_id)",
+                ];
+            }
+
+            return $attributes;
         });
 
         $this->setSearchFieldAttributes([
@@ -69,6 +81,12 @@ class RecentOvertimesTable extends DataTableComponent
             ->where('filed_at', '>=', Carbon::now()->subWeek());
     }
 
+    #[On('overtimeRequestCreated')]
+    public function refreshDataTable()
+    {
+        $this->render();
+    }
+
     public function columns(): array
     {
         return [
@@ -76,17 +94,20 @@ class RecentOvertimesTable extends DataTableComponent
                 ->searchable(),
 
             Column::make(__('Start Time'))
-                ->sortable(),
+                ->sortable()
+                ->setSortingPillDirections('Asc', 'Desc'),
 
             Column::make(__('End Time'))
-                ->sortable(),
+                ->sortable()
+                ->setSortingPillDirections('Asc', 'Desc'),
             
             Column::make(__('Hours Requested'))
-                ->label(fn ($row) => $row->getHoursRequested()),
+                ->label(fn ($row) => $row->getHoursRequested())
+                ->setSortingPillDirections('Asc', 'Desc'),
 
             Column::make(__('Status'))
                 ->label(function ($row) {
-                    return $row->processes->first()->hr_manager_approved_at
+                    return $row->processes->first()->secondary_approver_signed_at
                         ? __('Approved')
                         : __('Pending');
                 }),
@@ -95,7 +116,8 @@ class RecentOvertimesTable extends DataTableComponent
                 ->label(fn ($row) => $row->filed_at)
                 ->sortable(function (Builder $query, $direction) {
                     return $query->orderBy('filed_at', $direction);
-                }),
+                })
+                ->setSortingPillDirections('Asc', 'Desc'),
         ];
     }
 }
