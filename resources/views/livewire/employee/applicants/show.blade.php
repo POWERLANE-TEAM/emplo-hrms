@@ -1,8 +1,8 @@
 @use('App\Enums\ApplicationStatus')
 <div>
     <div
-        class="d-flex justify-content-xl-between justify-content-xxl-start flex-wrap flex-md-nowrap px-md-1 px-lg-3 mb-4 mb-lg-5 tw-min-w-full tw-min-h-[62dvh]">
-        <div class="container d-flex flex-column mx-0 col-12 col-md-5 px-0 pe-md-3 tw-md:min-h-[inherit]">
+        class="d-flex justify-content-xl-between justify-content-xxl-start flex-wrap flex-md-nowrap px-md-1 px-lg-3 mb-4 mb-lg-5 min-w-100" style="min-height: 62dvh;">
+        <div class="container d-flex flex-column mx-0 col-12 col-md-5 px-0 pe-md-3 min-h-md-inherit ">
             <div class="bg-body-secondary rounded-3 p-3 px-lg-5 py-md-4 mb-4 flex-grow-1">
                 <hgroup class="mb-4 mb-md-5">
                     <span class="h3 text-primary ">ID:
@@ -50,7 +50,7 @@
 
                 @livewire('form.employee.applicant.intial.decline', ['application' => $application])
 
-                <button class="btn btn-lg btn-success tw-grow-[1.25]" data-bs-toggle="modal"
+                <button class="btn btn-lg btn-success flex-grow-1-25"  data-bs-toggle="modal"
                     data-bs-target="#{{ $modalId }}">Approve Resume</button>
             </div>
         </div>
@@ -69,7 +69,7 @@
         </div>
     </div>
 
-    <div class="d-flex justify-content-between tw-max-w-[2710px]">
+    <div class="d-flex justify-content-between" style="max-width:2170px;">
         <button class="btn btn-outline-primary"><span>Prev</span>ious Applicant</button>
         <button class="btn btn-primary">Next Applicant</button>
     </div>
