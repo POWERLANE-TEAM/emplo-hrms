@@ -41,9 +41,7 @@
             </aside>
 
             <x-notif-dropdown>
-                <li class="dropdown-item">Notif 1</li>
-                <li class="dropdown-item">Notif 1</li>
-                <li class="dropdown-item">Notif 1</li>
+                <livewire:notifications.notifs />
             </x-notif-dropdown>
 
             <div class="overflow-hidden">

@@ -9,12 +9,11 @@
             <source media="(min-width:768px)" class=""
                 srcset="{{ Vite::asset('resources/images/icons/notif-bell-69x69.webp') }}">
 
-            <img class="icon" width="{{ $iconSize }}" height="{{ $iconSize }}"
-                aspect-ratio="{{ $iconRatio }}"
+            <img class="icon" width="{{ $iconSize }}" height="{{ $iconSize }}" aspect-ratio="{{ $iconRatio }}"
                 src="{{ Vite::asset('resources/images/icons/notif-bell-35x35.webp') }}" alt="">
         </picture>
     </button>
-    <ul class="dropdown-menu">
+    <div class="dropdown-menu dropdown-menu-left">
         {{ $slot }}
-    </ul>
+    </div>
 </div>
