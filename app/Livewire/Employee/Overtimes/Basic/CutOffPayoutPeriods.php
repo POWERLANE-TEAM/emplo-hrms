@@ -9,12 +9,12 @@ class CutOffPayoutPeriods extends Component
 {
     public function render()
     {
-        $start = Payroll::getCutOffPeriod()['start']->format('F d, Y');
-        $end = Payroll::getCutOffPeriod()['end']->format('F d, Y');
-        $payout = Payroll::getPayoutDate()->format('F d, Y');
+        $cutOff = Payroll::getCutOffPeriod(isReadableFormat: true);
+        $cutOff = $cutOff['start'].' - '.$cutOff['end'];
+        $payout = Payroll::getPayoutDate(isReadableFormat: true);
 
         return view('livewire.employee.overtimes.basic.cut-off-payout-periods', 
-            compact('start', 'end', 'payout')
+            compact('cutOff', 'payout')
         );
     }
 }
