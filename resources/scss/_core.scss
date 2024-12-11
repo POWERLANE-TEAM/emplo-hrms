@@ -205,7 +205,16 @@ $body-tertiary-bg-dark: mix($gray-500, $gray-900, 50%);
  * Description
  */
 
+
 $utilities: (
+    "flex-grow": (responsive: true,
+        property: flex-grow,
+        class: flex,
+        values: (grow-0: 0,
+            grow-1: 1,
+            grow-1-25: 1.25,
+            grow-1-5: 1.5,
+        )),
     "order": (responsive: true,
         property: order,
         values: (first: -1,
@@ -232,7 +241,48 @@ $utilities: (
             last: 20,
         ),
     ),
+    "order-important": (responsive: true,
+        class: 'i-order',
+        property: order,
+        values: (first: -1 !important,
+            0: 0 !important,
+            1: 1 !important,
+            2: 2 !important,
+            3: 3 !important,
+            4: 4 !important,
+            5: 5 !important,
+            6: 6 !important,
+            7: 7 !important,
+            8: 8 !important,
+            9: 9 !important,
+            10: 10 !important,
+            11: 11 !important,
+            12: 12 !important,
+            13: 13 !important,
+            14: 14 !important,
+            15: 15 !important,
+            16: 16 !important,
+            17: 17 !important,
+            18: 18 !important,
+            19: 19 !important,
+            last: 20 !important,
+        ),
+    ),
+    "min-height": (responsive: true,
+        property: min-height,
+        class: min-h,
+        values: (100: 100%, inherit: inherit), ),
+
+    "min-width": (responsive: true,
+        property: min-width,
+        class: min-w,
+        values: (100: 100%, inherit: inherit), ),
 );
+
+
+// "viewport-height": (property: height,
+//     class: vh,
+//     values: (100: 100vh)),
 
 @import "../../node_modules/bootstrap/scss/bootstrap";
 
