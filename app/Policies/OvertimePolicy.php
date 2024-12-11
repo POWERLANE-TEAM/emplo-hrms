@@ -35,6 +35,7 @@ class OvertimePolicy
     /**
      * Check if user owns the overtime model request before updating.
      * 
+     * @param mixed $user
      * @param \App\Models\Employee $employee
      * @param \App\Models\Overtime $overtime
      * @return \Illuminate\Auth\Access\Response
