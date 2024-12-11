@@ -53,8 +53,6 @@ class ApplicantsTable extends DataTableComponent
             $statusValue = ApplicationStatus::fromNameSubstring($applicationStatus);
             $this->status = $statusValue !== null ? [$statusValue] : [];
         }
-        // dump($applicationStatus);
-        // dd($this->status);
     }
 
     #[Computed]
