@@ -315,14 +315,21 @@ sidebar.main-menu {
     }
 
     .company-name,
-    .nav-item,
     .nav-head .truncate,
     .user-info {
         transition: width ease-in-out 0.5s;
-        opacity: 0;
         width: 0;
+    }
+    
+    .company-name,
+    .nav-item,
+    .nav-head .truncate,
+    .user-info {
+        transition: opacity ease-in-out 0.5s, margin-right ease-in-out 0.5s;
+        opacity: 0;
         margin-right: 0 !important;
     }
+    
 
     .nested-menu {
         display: none;
@@ -658,6 +665,9 @@ body {
             .company-name,
             .nav-item {
                 opacity: 1;
+            }
+
+            .company-name {
                 width: 5vw;
             }
 
