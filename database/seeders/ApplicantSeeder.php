@@ -43,7 +43,7 @@ function createApplicants($chunkStart, $chunk, $permissions)
                         Application::create([
                             'applicant_id' => $applicant->applicant_id,
                             'job_vacancy_id' => JobVacancy::inRandomOrder()->first()->job_vacancy_id,
-                            'application_status_id' => ApplicationStatus::APPROVED,
+                            'application_status_id' => fake()->randomElement(ApplicationStatus::values()),
                         ]);
 
                         // $applicant_user->givePermissionTo($permissions);
