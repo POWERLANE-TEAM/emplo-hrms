@@ -7,39 +7,50 @@ use Illuminate\Support\Carbon;
 class Payroll
 {
     /**
-     * Getter for cut off periods
+     * Getter for cut off periods.
+     *
+     * @param string|null $date
+     * @param bool $isReadableFormat format the values similar to December 01 - December 15, 2024
+     * @return array
      */
-    public static function getCutOffPeriod(): array
+    public static function getCutOffPeriod(?string $date = null, bool $isReadableFormat = false): array
     {
-        $today = now();
-    
-        if ($today->day <= 10) {
-            $start = $today->copy()->subMonth()->endOfMonth()->subDays(4);
-            $end = $today->copy()->startOfMonth()->addDays(9);
-        } elseif ($today->day <= 25) {
-            $start = $today->copy()->startOfMonth()->addDays(10);
-            $end = $today->copy()->startOfMonth()->addDays(24);
+        $date = Carbon::parse($date) ?? now();
+        
+        if ($date->day <= 10) {
+            $start = $date->copy()->subMonth()->endOfMonth()->subDays(4);
+            $end = $date->copy()->startOfMonth()->addDays(9);
+        } elseif ($date->day <= 25) {
+            $start = $date->copy()->startOfMonth()->addDays(10);
+            $end = $date->copy()->startOfMonth()->addDays(24);
         } else {
-            $start = $today->copy()->startOfMonth()->addDays(25);
-            $end = $today->copy()->addMonth()->startOfMonth()->addDays(9);
+            $start = $date->copy()->startOfMonth()->addDays(25);
+            $end = $date->copy()->addMonth()->startOfMonth()->addDays(9);
         }
     
-        return compact('start', 'end');
-    }
+        return $isReadableFormat
+            ? ['start' => $start->format('F d'), 'end' => $end->format('F d, Y')]
+            : compact('start', 'end');
+    }    
     
     /**
      * Getter for payout date.
      */
-    public static function getPayoutDate(): Carbon
+    public static function getPayoutDate(?string $date = null, bool $isReadableFormat = false)
     {
-        $today = now();
-
-        if ($today->day <= 10) {
-            return $today->copy()->startOfMonth()->addDays(14);
-        } elseif ($today->day <= 25) {
-            return $today->copy()->endOfMonth();
+        $date = Carbon::parse($date) ?? now();
+        $payoutDate = null;
+        
+        if ($date->day <= 10) {
+            $payoutDate = $date->copy()->startOfMonth()->addDays(14);
+        } elseif ($date->day <= 25) {
+            $payoutDate = $date->copy()->endOfMonth();
         } else {
-            return $today->copy()->addMonth()->startOfMonth()->addDays(14);
+            $payoutDate = $date->copy()->addMonth()->startOfMonth()->addDays(14);
         }
+    
+        return $isReadableFormat
+            ? $payoutDate->format('F d, Y') 
+            : $payoutDate;
     }
 }

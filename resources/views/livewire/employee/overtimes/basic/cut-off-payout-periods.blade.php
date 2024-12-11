@@ -1,14 +1,21 @@
+@php
+    $heading = match (true) {
+        request()->routeIs("{$routePrefix}.overtimes.recents") => __('Recent Overtime Requests'),
+        request()->routeIs("{$routePrefix}.overtimes.archive") => __('All Overtime Requests'),
+    };
+@endphp
+
 <section class="row">
     <div class="col-6">
         <x-headings.main-heading :isHeading="true">
             <x-slot:heading>
-                {{__('Overtime Requests')}}
+                {{ $heading }}
             </x-slot:heading>
 
             <x-slot:description>
                 <div class="text-secondary-emphasis">
                     <strong>{{ __('Cut Off Period:') }}</strong>
-                    {{ $start }} - {{ $end }} 
+                    {{ $cutOff }} 
                 </div>
                 <div class="text-secondary-emphasis">
                     <strong>{{ __('Pay-Out Date:') }}</strong> {{ $payout }}

@@ -11,8 +11,8 @@ use Livewire\Attributes\Locked;
 use Livewire\Attributes\Computed;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use App\Livewire\Employee\Tables\Basic\OvertimesTable;
 use App\Livewire\Employee\Tables\Basic\RecentOvertimesTable;
+use App\Livewire\Employee\Tables\Basic\ArchiveOvertimesTable;
 
 class RequestOvertime extends Component
 {
@@ -100,7 +100,7 @@ class RequestOvertime extends Component
         $this->reset();
         $this->resetErrorBag();
 
-        $this->dispatch('overtimeRequestCreated')->to(OvertimesTable::class);
+        $this->dispatch('overtimeRequestCreated')->to(ArchiveOvertimesTable::class);
         $this->dispatch('overtimeRequestCreated')->to(RecentOvertimesTable::class);
         $this->dispatch('changesSaved');
     }

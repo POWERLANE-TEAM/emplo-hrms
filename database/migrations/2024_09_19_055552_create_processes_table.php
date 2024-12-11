@@ -29,6 +29,8 @@ return new class extends Migration
                 ->constrained('employees', 'employee_id')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
+
+            $table->boolean('is_denied')->default(false);
         });
     }
 
