@@ -47,7 +47,7 @@
     ])
 </head>
 
-<body class="employee-main" data-bs-theme>
+<body class="employee-main" data-bs-theme="{{ session('themePreference', 'light') }}">
     @yield('critical-styles')
     <x-no-script-body />
 

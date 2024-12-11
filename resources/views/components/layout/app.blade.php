@@ -51,7 +51,7 @@
 
 </head>
 
-<body>
+<body data-bs-theme="{{ session('themePreference', 'light') }}">
     @yield('critical-styles')
     <x-no-script-body />
 
