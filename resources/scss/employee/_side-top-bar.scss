@@ -315,21 +315,14 @@ sidebar.main-menu {
     }
 
     .company-name,
-    .nav-head .truncate,
-    .user-info {
-        transition: width ease-in-out 0.5s;
-        width: 0;
-    }
-    
-    .company-name,
     .nav-item,
     .nav-head .truncate,
     .user-info {
-        transition: opacity ease-in-out 0.5s, margin-right ease-in-out 0.5s;
+        transition: width ease-in-out 0.5s;
         opacity: 0;
+        width: 0;
         margin-right: 0 !important;
     }
-    
 
     .nested-menu {
         display: none;
@@ -665,16 +658,14 @@ body {
             .company-name,
             .nav-item {
                 opacity: 1;
-            }
-
-            .company-name {
-                width: 5vw;
+                width: 10vw;
             }
 
             .sidebar-item:hover .nested-menu,
             .sidebar-item:has(.nested-item.active) .nested-menu {
                 display: block;
             }
+            
 
             .nav-icon img {
                 height: auto;
