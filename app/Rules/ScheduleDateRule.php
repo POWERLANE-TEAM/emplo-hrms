@@ -13,9 +13,13 @@ class ScheduleDateRule
      */
     public static function get(?string $minDate = null, ?string $maxDate = null): string
     {
-        $minDate = $minDate ?? date('Y-m-d');
-        $maxDate = $maxDate ?? date('Y-m-d', strtotime('+1 month'));
 
-        return 'date|after_or_equal:'.$minDate.'|before_or_equal:'.$maxDate;
+        $timezone = config('app.server_timezone');
+        $dateTimeZone = new \DateTimeZone($timezone);
+
+        $minDate = $minDate ?? (new \DateTime('now', $dateTimeZone))->format('Y-m-d');
+        $maxDate = $maxDate ?? (new \DateTime('now', $dateTimeZone))->modify('+1 month')->format('Y-m-d');
+
+        return 'date|after_or_equal:' . $minDate . '|before_or_equal:' . $maxDate;
     }
 }

@@ -26,16 +26,10 @@ class FileForm extends Form
         'xl' => '102400', // 100mb
     ];
 
-    const IMAGE_MIME_TYPES = [
-        'jpg',
-        'jpeg',
-        'png',
-        'webp'
-    ];
 
-    public function mount(array $accepted,  bool $isImage, string $minSize = null, string $maxSize = 'sm', bool $required = true)
+    public function mount(array $accepted, string $minSize = null, string $maxSize = 'sm', bool $required = true)
     {
-        $this->accepted = $isImage ? self::IMAGE_MIME_TYPES : $accepted;
+
         $this->accepted = $accepted;
         $this->minSize = $minSize;
         $this->maxSize = $maxSize;
@@ -53,16 +47,6 @@ class FileForm extends Form
         }
 
         return $rules;
-    }
-
-    public function setToImageMode()
-    {
-        $this->accepted = self::IMAGE_MIME_TYPES;
-    }
-
-    public function setToHasImageMode()
-    {
-        $this->accepted = array_merge($this->accepted, self::IMAGE_MIME_TYPES);
     }
 
     public function setAccepted(array $accepted)

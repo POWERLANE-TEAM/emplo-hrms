@@ -9,20 +9,22 @@
 <label for="{{ $attributes->get('id') }}" class="mb-1 fw-semibold">
     {{ $label }}
     {{-- Conditionally display the red asterisk for required fields --}}
-    @if($required)
+    @if ($required)
         <span class="text-danger">*</span>
     @endif
 </label>
 
 {{-- Optional description below the label --}}
-@if($description)
+@if ($description)
     <p class="fs-7 mb-3">{!! $description !!}</p>
 @endif
 
 <div class="input-group mb-3 position-relative" id="custom-textarea-container">
     {{-- Editable Content Area Styled Like a Textarea --}}
-    <div id="{{ $attributes->get('id') }}" contenteditable="{{ $readonly ? 'false' : 'true' }}" class="form-control border ps-3 rounded text-start"
-        style="min-height: 150px; overflow-y: auto; padding-bottom: 40px;" nonce="{{ $nonce }}" {{ $readonly ? 'disabled' : '' }}></div>
+    <div id="{{ $attributes->get('id') }}" contenteditable="{{ $readonly ? 'false' : 'true' }}"
+        class="form-control border ps-3 rounded text-start"
+        style="min-height: 150px; overflow-y: auto; padding-bottom: 40px;" nonce="{{ $nonce }}"
+        {{ $readonly ? 'disabled' : '' }} aria-owns="{{ $attributes->get('id') }}-feedback"></div>
 
     {{-- Attachments Section --}}
     <div id="attachments-container" class="attachments-wrapper rounded-bottom">
@@ -32,8 +34,9 @@
         </div>
 
         {{-- Attach Files Button (Only visible if not in readonly mode) --}}
-        @if(!$readonly)
-            <label class="btn no-hover-border btn-sm hover-opacity d-inline-flex align-items-center justify-content-center attach-files-button">
+        @if (!$readonly)
+            <label
+                class="btn no-hover-border btn-sm hover-opacity d-inline-flex align-items-center justify-content-center attach-files-button">
                 <i data-lucide="paperclip" class="icon text-primary icon-large"></i>
                 <input type="file" class="d-none" multiple onchange="handleAttachments(this)">
             </label>
@@ -62,8 +65,8 @@
             const removeButton = document.createElement('button');
             removeButton.type = 'button';
             removeButton.className = 'btn btn-sm py-0 px-1 no-hover-border hover-opacity';
-            removeButton.textContent = '✖'; 
-            removeButton.setAttribute('data-bs-toggle', 'tooltip'); 
+            removeButton.textContent = '✖';
+            removeButton.setAttribute('data-bs-toggle', 'tooltip');
             removeButton.setAttribute('title', 'Remove attachment');
             removeButton.onclick = () => {
                 attachmentsList.removeChild(attachmentContainer);

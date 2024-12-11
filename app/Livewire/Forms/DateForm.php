@@ -19,7 +19,7 @@ class DateForm extends Form
     {
         return [
             'date' => (function () {
-                return 'bail|required|' . ScheduleDateRule::get($this->minDate, $this->maxDate);
+                return 'required|' . ScheduleDateRule::get($this->minDate, $this->maxDate);
             })(),
         ];
     }
@@ -32,5 +32,16 @@ class DateForm extends Form
     public function setMaxDate($maxDate = null)
     {
         $this->maxDate = $maxDate;
+    }
+
+
+    public function getMinDate()
+    {
+        return $this->minDate;
+    }
+
+    public function getMaxDate()
+    {
+        return $this->maxDate;
     }
 }
