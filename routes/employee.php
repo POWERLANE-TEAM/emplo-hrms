@@ -240,12 +240,21 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
 
     /**
-     * Overtime
+     * Overtime Requests
      */
 
     Route::get('managerial/requests/overtime/all', function () {
         return view('employee.supervisor.requests.overtime.all');
     })->name('managerial.requests.overtime.all');
+
+
+    /**
+     * Overtime Summary
+     */
+
+     Route::get('managerial/overtime/summary-forms/all', function () {
+        return view('employee.supervisor.overtime.summary-forms.all');
+    })->name('managerial.overtime.summary-forms.all');
 
 
     /**
