@@ -37,6 +37,9 @@
 
         <x-form.email id="userLogin-email" label="{{ __('Email Address') }}" name="email" auto_complete="email"
             :$nonce aria-owns="userLogin-email-feedback" class=" {{ $errors->has('email') ? 'is-invalid' : '' }}">
+            <x-slot:input_icon_left>
+                <i data-lucide="mail" class="icon-large"></i>
+            </x-slot:input_icon_left>
 
             <x-slot:feedback>
                 @include('components.form.input-feedback', [
