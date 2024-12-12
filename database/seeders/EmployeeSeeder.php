@@ -9,7 +9,12 @@ use App\Enums\UserStatus;
 use App\Models\Applicant;
 use App\Models\Application;
 use App\Models\Employee;
+use App\Models\EmployeeJobDetail;
+use App\Models\EmploymentStatus;
+use App\Models\JobTitle;
 use App\Models\JobVacancy;
+use App\Models\Shift;
+use App\Models\SpecificArea;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Arr;
@@ -60,6 +65,14 @@ function createEmployee($chunkStart, $chunk, $freeEmailDomain)
                             'application_status_id' => ApplicationStatus::APPROVED,
                             'is_passed' => true,
                             'hired_at' => $timestamp->modify('+' . rand(3, 14) . ' days'),
+                        ]);
+
+                        EmployeeJobDetail::create([
+                            'employee_id' => $employee->employee_id,
+                            'job_title_id' => JobTitle::inRandomOrder()->first()->job_title_id,
+                            'area_id' => SpecificArea::inRandomOrder()->first()->area_id,
+                            'shift_id' => Shift::inRandomOrder()->first()->shift_id,
+                            'emp_status_id' => EmploymentStatus::inRandomOrder()->first()->emp_status_id,
                         ]);
                     } catch (\Exception $e) {
                         Log::error('Exception: ' . $e->getMessage() . ' in ' . $e->getFile() . ' on line ' . $e->getLine());

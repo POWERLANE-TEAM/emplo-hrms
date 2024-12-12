@@ -73,11 +73,11 @@ class ApplicationController extends Controller
         if (! $isValidated) {
 
             $validated = $request->validate([
-                'jobVacancyId' => 'bail|nullable|integer|exists:job_vacancies,job_vacancy_id',
-                'applicationStatusId' => 'bail|nullable|integer|in:' . implode(',', ApplicationStatus::values()),
+                'jobVacancyId' => 'nullable|integer|exists:job_vacancies,job_vacancy_id',
+                'applicationStatusId' => 'nullable|integer|in:' . implode(',', ApplicationStatus::values()),
                 'hireDate' => [
                     'nullable',
-                    'bail',
+
                     'date',
                     Rule::in([Carbon::today()->toDateString()]),
                 ],

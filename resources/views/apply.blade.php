@@ -8,10 +8,10 @@
 
 @pushOnce('pre-scripts')
     <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://unpkg.com/filepond-plugin-pdf-preview/dist/filepond-plugin-pdf-preview.min.js"></script>
 @endPushOnce
 
 @pushOnce('scripts')
+    <script src="https://unpkg.com/filepond-plugin-pdf-preview/dist/filepond-plugin-pdf-preview.min.js"></script>
     @filepondScripts
     @vite(['resources/js/applicant/apply.js', 'resources/js/progress-bar.js'])
 @endPushOnce
@@ -21,10 +21,10 @@
 @endsection
 
 @pushOnce('pre-styles')
-    <link href="https://unpkg.com/filepond-plugin-pdf-preview/dist/filepond-plugin-pdf-preview.min.css" rel="stylesheet">
 @endPushOnce
 
 @pushOnce('styles')
+    <link href="https://unpkg.com/filepond-plugin-pdf-preview/dist/filepond-plugin-pdf-preview.min.css" rel="stylesheet">
     @vite(['resources/css/applicant/apply.css'])
 @endPushOnce
 
@@ -55,7 +55,7 @@
         </x-headings.main-heading>
     </div>
 
-    <form {{-- wire:submit.prevent="save" --}} {{-- x-ref="resume-file" --}}>
+    <form id="application-wizard-form" {{-- wire:submit.prevent="save" --}} {{-- x-ref="resume-file" --}}>
         <livewire:form.applicant.application-wizard />
     </form>
 @endsection

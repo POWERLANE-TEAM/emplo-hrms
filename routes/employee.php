@@ -209,7 +209,9 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
     Route::get('{employee}', function (Employee $employee) {
         return view('employee.hr-manager.employees.information', compact('employee'));
-    })->name('employees.information');
+    })
+        ->whereNumber('employee')
+        ->name('employees.information');
 
 
     /**
@@ -322,9 +324,9 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     /**
      * General: Overtime
      */
-    Route::get('general/overtime/all', function () {
+    Route::get('/overtimes', function () {
         return view('employee.basic.overtime.all');
-    })->name('general.overtime.all');
+    })->name('overtimes');
 
     Route::get('/overtimes/recents', function () {
         return view('employee.basic.overtime.recent-records');
@@ -332,7 +334,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
     Route::get('/overtimes/archive', function () {
         return view('employee.basic.overtime.index');
-    })->name('overtimes.index');
+    })->name('overtimes.archive');
 
 
     /**

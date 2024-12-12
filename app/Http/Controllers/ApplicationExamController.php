@@ -54,10 +54,9 @@ class ApplicationExamController extends Controller
             $this->date = $request->input('examination.date');
 
             $validated = $request->validate([
-                'examination.date' => 'bail|required|'.ScheduleDateRule::get($this->minDate, $this->maxDate),
+                'examination.date' => 'required|' . ScheduleDateRule::get($this->minDate, $this->maxDate),
                 'examination.time' => (function () {
                     return [
-                        'bail',
                         'required_with:date',
                         new ScheduleTimeRule($this->date),
                     ];
@@ -82,12 +81,12 @@ class ApplicationExamController extends Controller
                 $examStartTime = $validated('examination.time');
             }
 
-            $examStart = $examStartDate.' '.$examStartTime;
+            $examStart = $examStartDate . ' ' . $examStartTime;
 
             $examDuration = '00:30:00';
             [$hours, $minutes, $seconds] = explode(':', $examDuration);
             $totalMinutes = ($hours * 60) + $minutes + ($seconds / 60);
-            $examEnd = date('Y-m-d H:i:s', strtotime($examStart.' + '.$hours.' hours '.$minutes.' minutes '.$seconds.' seconds'));
+            $examEnd = date('Y-m-d H:i:s', strtotime($examStart . ' + ' . $hours . ' hours ' . $minutes . ' minutes ' . $seconds . ' seconds'));
 
             ApplicationExam::create([
                 'application_id' => $applicationId,
