@@ -272,11 +272,16 @@ class ApplicantsTable extends DataTableComponent
             ->whereIn('application_status_id', $this->status)
             ->select('*', 'applications.*');
 
-        if (!empty(array_intersect($this->status, $this->getEnumValues(ApplicationStatus::qualifiedState())))) {
+        if (!empty(array_intersect($this->status, $this->getEnumValues(ApplicationStatus::qualifiedState()))) || in_array(ApplicationStatus::PRE_EMPLOYED->value, $this->status)) {
             $query->leftJoin('application_exams', 'applications.application_id', '=', 'application_exams.application_id')
                 ->leftJoin('initial_interviews', 'applications.application_id', '=', 'initial_interviews.application_id')
                 ->leftJoin('final_interviews', 'applications.application_id', '=', 'final_interviews.application_id')
                 ->whereNotNull('application_exams.application_id');
+        }
+
+        if (in_array(ApplicationStatus::PRE_EMPLOYED->value, $this->status)) {
+            $query->where('final_interviews.is_final_interview_passed', true)
+                ->where('final_interviews.is_job_offer_accepted', true);
         }
 
         // dump($query->toSql(), $query->getBindings());

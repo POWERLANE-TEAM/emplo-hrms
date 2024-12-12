@@ -80,6 +80,19 @@ function createApplicants($chunkStart, $chunk, $permissions)
                                     })->inRandomOrder()->firstOr(fn() => Employee::inRandomOrder()->first())->employee_id,
                                 ]);
                             }
+
+                            if ($applicantStatus == ApplicationStatus::PRE_EMPLOYED->value) {
+                                $finalInterviewTime = fake()->dateTimeBetween('5 days', '7 days');
+                                FinalInterview::create([
+                                    'application_id' => $application->application_id,
+                                    'final_interview_at' => $finalInterviewTime,
+                                    'final_interviewer' => Employee::whereHas('jobTitle', function ($query) {
+                                        $query->where('job_title', 'like', '%hr%');
+                                    })->inRandomOrder()->firstOr(fn() => Employee::inRandomOrder()->first())->employee_id,
+                                    'is_final_interview_passed' => true,
+                                    'is_job_offer_accepted' => true,
+                                ]);
+                            }
                         }
 
 
