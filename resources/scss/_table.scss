@@ -69,7 +69,7 @@ div:has(div[wire\:\key="table-wrapper"]) {
 
             div:has(>div[wire\:click="clearSearch"]) {
                 // Hides clear button of datatable
-                display: none !important;
+                // display: none !important;
             }
 
             /*
