@@ -1,13 +1,18 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Tables;
 
+use App\Enums\BiometricPunchType;
 use Illuminate\View\ComponentAttributeBag;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Livewire\Tables\Defaults as DefaultTableConfig;
+use App\Models\AttendanceLog;
 use App\Models\Employee;
+use App\Models\Shift;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Livewire\Attributes\Computed;
 
 /**
  * Implemented Methods:
@@ -16,124 +21,140 @@ use Illuminate\Database\Eloquent\Builder;
  * @method  builder(): Builder
  * @method  filters(): array
  */
-class EmployeesAttendancePeriodTable extends DataTableComponent
+class AttendanceBreakdownTable extends DataTableComponent
 {
     use DefaultTableConfig;
 
-    protected $model = Employee::class;
+    protected $model = AttendanceLog::class;
 
     /**
      * @var array $customFilterOptions contains the dropdown values and keys.
      */
     protected $customFilterOptions;
 
+    public $employee;
+
+    public function mount(Employee $employee)
+    {
+        $this->employee = $employee;
+    }
+
     public function configure(): void
     {
-        $this->setPrimaryKey('employee_id');
+        $this->setPrimaryKey('uid');
 
         $this->configuringStandardTableMethods();
 
         $this->setConfigurableAreas([
-            // 'toolbar-left-start' => [
-            //     'components.table.filter.select-filter',
-            //     [
-            //         'filter' => (function () {
-
-            //             //populate custom filter options here
-
-            //             $this->customFilterOptions = [
-
-            //             ];
-
-            //             return SelectFilter::make('setFilterName', 'set FilterKey here')
-            //                 ->options($this->customFilterOptions)
-            //                 ->filter(function (Builder $builder, string $value) {
-            //                     if ($value !== '') {
-            //                         $this->dispatch('setFilter', 'set FilterKey here', $value);
-            //                     }
-            //                 })
-            //                 ->setFirstOption('set Default Selected');
-            //         })(),
-            //     ],
-            // ],
+            'toolbar-left-start' => [
+                'components.headings.main-heading',
+                [
+                    'overrideClass' => true,
+                    'overrideContainerClass' => true,
+                    'attributes' => new ComponentAttributeBag(['class' => 'fs-4 fw-bold']),
+                    'heading' => 'Workdays Logs Breakdown',
+                ],
+            ],
         ]);
     }
 
     public function columns(): array
     {
         return [
-            Column::make("Employee")
-                ->label(fn($row) => $row->fullname)
-                ->sortable(),
-
-            Column::make("Total Hours")
+            // Column::make("Employee id")
+            //     ->label(fn($row) => 'Sample')
+            //     ->sortable(),
+            Column::make("Date")
+                ->sortable()
+                ->label(fn($row) => Carbon::parse($row->shift_date)->format('F d, Y')),
+            Column::make("Time Recorded")
                 ->label(function ($row) {
-                    $totalSeconds = $row->attendanceLogs->sum(function ($log) {
-                        return strtotime($log->timestamp);
-                    });
-
-                    $hours = floor($totalSeconds / 3600);
-                    $minutes = floor(($totalSeconds % 3600) / 60);
-                    $seconds = $totalSeconds % 60;
-
-                    return sprintf('%d:%02d:%02d', $hours, $minutes, $seconds);
+                    $checkIn = $row->check_in_time ? Carbon::parse($row->check_in_time)->format('h:i A') : 'No Check-In';
+                    $checkOut = $row->check_out_time ? Carbon::parse($row->check_out_time)->format('h:i A') : 'No Check-Out';
+                    return "$checkIn - $checkOut";
                 })
                 ->sortable(),
-            Column::make("Regular Hours")
+            Column::make("Duration")
                 ->label(function ($row) {
-                    $totalSeconds = 36000; // Dummy data: 10 hours, 0 minutes, 0 seconds
+                    if ($row->check_in_time && $row->check_out_time) {
+                        $checkIn = Carbon::parse($row->check_in_time);
+                        $checkOut = Carbon::parse($row->check_out_time);
 
-                    $hours = floor($totalSeconds / 3600);
-                    $minutes = floor(($totalSeconds % 3600) / 60);
-                    $seconds = $totalSeconds % 60;
+                        if ($checkOut->lessThan($checkIn)) {
+                            $checkOut->addDay();
+                        }
 
-                    return sprintf('%d:%02d:%02d', $hours, $minutes, $seconds);
-                })
-                ->sortable(),
+                        $durationInSeconds = abs($checkOut->diffInSeconds($checkIn));
+                        $hours = floor($durationInSeconds / 3600);
+                        $minutes = floor(($durationInSeconds / 60) % 60);
+                        $seconds = $durationInSeconds % 60;
 
-            Column::make("Rest Day Hours")
-                ->label(function ($row) {
-                    $totalSeconds = 7200; // Dummy data: 2 hours, 0 minutes, 0 seconds
-
-                    $hours = floor($totalSeconds / 3600);
-                    $minutes = floor(($totalSeconds % 3600) / 60);
-                    $seconds = $totalSeconds % 60;
-
-                    return sprintf('%d:%02d:%02d', $hours, $minutes, $seconds);
+                        return sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+                    }
+                    return 'N/A';
                 })
                 ->sortable(),
 
-            Column::make("Regular Holiday")
+            Column::make("Check-Out Type")
                 ->label(function ($row) {
-                    $totalSeconds = 14400; // Dummy data: 4 hours, 0 minutes, 0 seconds
 
-                    $hours = floor($totalSeconds / 3600);
-                    $minutes = floor(($totalSeconds % 3600) / 60);
-                    $seconds = $totalSeconds % 60;
+                    $employeeId = $this->employee->employee_id;
 
-                    return sprintf('%d:%02d:%02d', $hours, $minutes, $seconds);
-                })
-                ->sortable(),
+                    if ($row->check_out_time) {
+                        $checkOutType = AttendanceLog::where('timestamp', $row->check_out_time)
+                            ->where('employee_id', $employeeId)
+                            ->value('type');
 
-            Column::make("Special Holiday")
-                ->label(function ($row) {
-                    $totalSeconds = 18000; // Dummy data: 5 hours, 0 minutes, 0 seconds
-
-                    $hours = floor($totalSeconds / 3600);
-                    $minutes = floor(($totalSeconds % 3600) / 60);
-                    $seconds = $totalSeconds % 60;
-
-                    return sprintf('%d:%02d:%02d', $hours, $minutes, $seconds);
+                        return in_array($checkOutType, [BiometricPunchType::CHECK_OUT->value]) ? 'Regular' : 'Overtime';
+                    }
+                    return 'N/A';
                 })
                 ->sortable(),
         ];
     }
 
+    #[Computed]
+    public function getNightShift()
+    {
+        $nightShift = Shift::where('shift_name', 'Night Differential')->first();
+
+        if (!$nightShift) {
+            throw new \Exception('Night Differential shift not found');
+        }
+
+        $startTime = $nightShift->start_time;
+        $endTime = $nightShift->end_time;
+
+        return [$startTime, $endTime];
+    }
+
     public function builder(): Builder
     {
-        return Employee::query()
-            ->with(['attendanceLogs'])
-            ->select('employee_id', 'first_name', 'middle_name', 'last_name');
+
+        [$startTime, $endTime] = $this->getNightShift();
+
+        $employeeId = $this->employee->employee_id;
+
+        $query = AttendanceLog::query()
+            ->where('employee_id', $employeeId)
+            ->selectRaw("
+                DATE(
+                    CASE
+                        WHEN timestamp::time >= '$startTime'
+                            THEN timestamp
+                        WHEN timestamp::time < '$endTime'
+                            THEN timestamp - INTERVAL '1 day'
+                        ELSE timestamp
+                    END
+                ) as shift_date,
+                MIN(CASE WHEN type IN (0, 4) THEN timestamp END) as check_in_time,
+                MAX(CASE WHEN type IN (1, 5) THEN timestamp END) as check_out_time
+            ")
+            ->groupBy('shift_date');
+
+        // dd($query->limit(5)->get());
+
+        return $query;
     }
 
     public function filters(): array
