@@ -13,6 +13,10 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
 
+    Route::get('notifications', function () {
+        return view('employee.notifications.index');
+    })->name('notifications');
+
     /**
      * Dashboard
      */

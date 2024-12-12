@@ -19,6 +19,10 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth'/* , 'verified' */)->group(function () {
 
+    Route::get('notifications', function () {
+        return view('employee.notifications.index');
+    })->name('notifications');
+    
     // =========================================
     // HR MANAGER ROUTES
     // ==========================================
