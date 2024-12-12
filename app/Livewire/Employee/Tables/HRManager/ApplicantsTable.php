@@ -3,6 +3,7 @@
 namespace App\Livewire\Employee\Tables\HRManager;
 
 use App\Enums\ApplicationStatus;
+use App\Enums\UserPermission;
 use App\Http\Helpers\BeforeRoute;
 use App\Livewire\Tables\Defaults as DefaultTableConfig;
 use App\Models\Applicant;
@@ -45,14 +46,39 @@ class ApplicantsTable extends DataTableComponent
 
     public function mount(string $applicationStatus)
     {
-        $this->qualifiedState = ApplicationStatus::qualifiedState();
 
+        $user = auth()->user();
+
+        // dd($this->getEnumValues($this->qualifiedState));
         if ($applicationStatus == 'qualified') {
-            $this->status = array_map(fn($status) => $status->value, $this->qualifiedState);
+            $this->status = $this->getEnumValues(ApplicationStatus::qualifiedState());
+
+            if (!$user->hasPermissionTo(UserPermission::VIEW_ALL_QUALIFIED_APPLICATIONS)) {
+                abort(403);
+            }
         } else {
             $statusValue = ApplicationStatus::fromNameSubstring($applicationStatus);
+
+            if ($statusValue == ApplicationStatus::PENDING->value && !$user->hasPermissionTo(UserPermission::VIEW_ALL_PENDING_APPLICATIONS)) {
+                abort(403);
+            } else if ($statusValue == ApplicationStatus::PRE_EMPLOYED->value && !$user->hasPermissionTo(UserPermission::VIEW_ALL_PRE_EMPLOYED_APPLICATIONS)) {
+                abort(403);
+            }
+
             $this->status = $statusValue !== null ? [$statusValue] : [];
         }
+    }
+
+    public function boot(): void
+    {
+        $this->setTimezone();
+        // dump(session()->all());
+    }
+
+
+    private function getEnumValues($values)
+    {
+        return array_map(fn($item) => $item->value, $values);
     }
 
     #[Computed]
@@ -85,7 +111,6 @@ class ApplicantsTable extends DataTableComponent
     public function configure(): void
     {
         $routePrefix = auth()->user()->account_type;
-
         $this->setPrimaryKey('application_id')
             ->setTableRowUrl(function ($row) use ($routePrefix) {
                 // dd(BeforeRoute::checkRoutePermission(route($routePrefix . '.application.show', $row)));
@@ -94,11 +119,14 @@ class ApplicantsTable extends DataTableComponent
                 // //     // dd($currentRoute);
                 // //     return route($currentRoute);
                 // // }
+
                 return route($routePrefix . '.application.show', $row);
             });
 
         $this->configuringStandardTableMethods();
 
+        // To avoid the switching applicant status column bug
+        $this->setRememberColumnSelectionDisabled();
 
         // $this->setSingleSortingDisabled();
         $this->setDefaultSort('applicants.created_at', 'desc');
@@ -173,6 +201,31 @@ class ApplicantsTable extends DataTableComponent
                     return $this->applyJobPositionSearch($query, $searchTerm);
                 }),
 
+            Column::make('Examination')
+                ->label(function ($row) {
+                    // $exam = ApplicationExam::where('application_id', $row->application_id)->first();
+
+                    $startTime = $row->start_time;
+                    return $startTime ? Carbon::parse($startTime)->setTimezone($this->timezone)->format('m/d/y - h:i A') : 'No Exam Scheduled';
+                })
+                ->selectedIf(fn() => !empty(array_intersect($this->status, $this->getEnumValues(ApplicationStatus::qualifiedState())))),
+
+            Column::make('Interview')
+                ->label(function ($row) {
+
+                    $startTime = $row->init_interview_at;
+                    return $startTime ? Carbon::parse($startTime)->setTimezone($this->timezone)->format('m/d/y - h:i A') : 'No Interview Scheduled';
+                })
+                ->selectedIf(fn() => !empty(array_intersect($this->status, $this->getEnumValues(ApplicationStatus::qualifiedState())))),
+
+            Column::make('Final Interview')
+                ->label(function ($row) {
+
+                    $startTime = $row->final_interview_at;
+                    return $startTime ? Carbon::parse($startTime)->setTimezone($this->timezone)->format('m/d/y - h:i A') : 'No Interview Scheduled';
+                })
+                ->deselected(),
+
             Column::make('Date Applied')
                 ->label(fn($row) => $row->applicant->created_at->format('F j, Y') ?? 'An error occured.')
                 ->setSortingPillDirections('Oldest first', 'Latest first')
@@ -181,7 +234,8 @@ class ApplicantsTable extends DataTableComponent
                 })
                 ->searchable(function (Builder $query, $searchTerm) {
                     return $this->applyDateSearch($query, $searchTerm);
-                }),
+                })
+                ->deselectedIf(fn() => !empty(array_filter($this->status, fn($status) => $status > 1))),
 
             /**
              * |--------------------------------------------------------------------------
@@ -206,7 +260,7 @@ class ApplicantsTable extends DataTableComponent
 
     public function builder(): Builder
     {
-        $query = Application::query()->with(['applicant', 'vacancy', 'vacancy.jobTitle.department',  'vacancy.jobTitle.jobLevel'])
+        $query = Application::query()/* ->with(['applicant', 'vacancy', 'vacancy.jobTitle.department',  'vacancy.jobTitle.jobLevel']) */
 
             // Without this I got SQLSTATE[42P01]: Undefined table: 7 ERROR: missing FROM-clause entry for table
             // I now know that I need to join the table to be able for the sort acually work
@@ -215,7 +269,20 @@ class ApplicantsTable extends DataTableComponent
             ->join('job_vacancies', 'applications.job_vacancy_id', '=', 'job_vacancies.job_vacancy_id')
             ->join('job_titles', 'job_vacancies.job_title_id', '=', 'job_titles.job_title_id')
             ->where('hired_at', null)
-            ->whereIn('application_status_id', $this->status);
+            ->whereIn('application_status_id', $this->status)
+            ->select('*', 'applications.*');
+
+        if (!empty(array_intersect($this->status, $this->getEnumValues(ApplicationStatus::qualifiedState())))) {
+            $query->leftJoin('application_exams', 'applications.application_id', '=', 'application_exams.application_id')
+                ->leftJoin('initial_interviews', 'applications.application_id', '=', 'initial_interviews.application_id')
+                ->leftJoin('final_interviews', 'applications.application_id', '=', 'final_interviews.application_id')
+                ->whereNotNull('application_exams.application_id');
+        }
+
+        // dump($query->toSql(), $query->getBindings());
+
+        // $results = $query->limit(5)->get();
+        // dd($results);
 
         return $query;
     }
@@ -254,65 +321,4 @@ class ApplicantsTable extends DataTableComponent
      * |--------------------------------------------------------------------------
      * Description
      */
-
-    /**
-     * Apply a search filter to the query based on the full name of the applicant.
-     *
-     * This method splits the search term into individual words and applies a case-insensitive
-     * search on the first name, middle name, and last name of the applicant.
-     *
-     * @param  \Illuminate\Database\Query\Builder  $query  The query builder instance.
-     * @param  string  $searchTerm  The search term to filter applicants by full name.
-     * @return \Illuminate\Database\Query\Builder The modified query builder instance.
-     */
-
-
-    /**
-     * Apply a case-insensitive search using the 'ILIKE' operator on the 'job_title' field in the query.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query  The query builder instance.
-     * @param  string  $searchTerm  The term to search for in the job titles.
-     * @return \Illuminate\Database\Eloquent\Builder The modified query builder instance with the search filter applied.
-     */
-    public function applyJobPositionSearch(Builder $query, $searchTerm): Builder
-    {
-        return $query->orWhereHas('vacancy.jobTitle', function ($query) use ($searchTerm) {
-            $query->where('job_title', 'ILIKE', "%{$searchTerm}%");
-        });
-    }
-
-    /**
-     * Apply a date search filter to the query.
-     *
-     * This method normalizes the search term by removing spaces and then applies
-     * a series of `orWhereRaw` conditions to the query to match the `created_at`
-     * field of the `applicants` table against various date formats.
-     *
-     * Supported date formats:
-     * - 'YYYY-MM-DD'
-     * - 'MM/DD/YYYY'
-     * - 'MM-DD-YYYY'
-     * - 'Month DD, YYYY'
-     * - 'Month YYYY'
-     * - 'Month'
-     * - 'DD-MM-YYYY'
-     * - 'DD/MM/YYYY'
-     *
-     * @param  \Illuminate\Database\Query\Builder  $query  The query builder instance.
-     * @param  string  $searchTerm  The search term to filter by.
-     * @return \Illuminate\Database\Query\Builder The modified query builder instance.
-     */
-    public function applyDateSearch(Builder $query, $searchTerm)
-    {
-        $normalizedSearchTerm = str_replace(' ', '', $searchTerm);
-
-        return $query->orWhereRaw("replace(to_char(applicants.created_at, 'YYYY-MM-DD'), ' ', '') ILIKE ?", ["%{$normalizedSearchTerm}%"])
-            ->orWhereRaw("replace(to_char(applicants.created_at, 'MM/DD/YYYY'), ' ', '') ILIKE ?", ["%{$normalizedSearchTerm}%"])
-            ->orWhereRaw("replace(to_char(applicants.created_at, 'MM-DD-YYYY'), ' ', '') ILIKE ?", ["%{$normalizedSearchTerm}%"])
-            ->orWhereRaw("replace(to_char(applicants.created_at, 'Month DD, YYYY'), ' ', '') ILIKE ?", ["%{$normalizedSearchTerm}%"])
-            ->orWhereRaw("replace(to_char(applicants.created_at, 'Month YYYY'), ' ', '') ILIKE ?", ["%{$normalizedSearchTerm}%"])
-            ->orWhereRaw("replace(to_char(applicants.created_at, 'Month'), ' ', '') ILIKE ?", ["%{$normalizedSearchTerm}%"])
-            ->orWhereRaw("replace(to_char(applicants.created_at, 'DD-MM-YYYY'), ' ', '') ILIKE ?", ["%{$normalizedSearchTerm}%"])
-            ->orWhereRaw("replace(to_char(applicants.created_at, 'DD/MM/YYYY'), ' ', '') ILIKE ?", ["%{$normalizedSearchTerm}%"]);
-    }
 }

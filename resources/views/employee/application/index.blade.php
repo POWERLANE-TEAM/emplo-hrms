@@ -31,7 +31,7 @@
 @section('content')
     <x-headings.main-heading :isHeading="true">
         <x-slot:heading>
-            Applicants
+           {{when($applicationStatus  != 'pending' , ucwords($applicationStatus))}} Applicants
         </x-slot:heading>
 
         <x-slot:description>
