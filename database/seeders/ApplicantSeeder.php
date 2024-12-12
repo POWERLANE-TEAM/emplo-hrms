@@ -8,8 +8,13 @@ use App\Enums\UserPermission;
 use App\Enums\UserStatus as EnumUserStatus;
 use App\Models\Applicant;
 use App\Models\Application;
+use App\Models\ApplicationExam;
+use App\Models\Employee;
+use App\Models\FinalInterview;
+use App\Models\InitialInterview;
 use App\Models\JobVacancy;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Concurrency;
 use Illuminate\Support\Facades\DB;
@@ -40,11 +45,43 @@ function createApplicants($chunkStart, $chunk, $permissions)
 
                         $applicant_user = User::factory()->create($users_data);
 
-                        Application::create([
+                        $applicantStatus = fake()->randomElement(ApplicationStatus::values());
+
+                        $application = Application::create([
                             'applicant_id' => $applicant->applicant_id,
                             'job_vacancy_id' => JobVacancy::inRandomOrder()->first()->job_vacancy_id,
-                            'application_status_id' => fake()->randomElement(ApplicationStatus::values()),
+                            'application_status_id' =>  $applicantStatus,
                         ]);
+
+                        if (in_array($applicantStatus, array_map(fn($status) => $status->value, ApplicationStatus::qualifiedState()))) {
+                            $examTime = Carbon::instance(fake()->dateTimeBetween('1 days', '2 days'));
+                            $interviewTime = $examTime->addDays(fake()->numberBetween(0, 5));
+                            ApplicationExam::create([
+                                'application_id' => $application->application_id,
+                                'start_time' => $examTime,
+                                'end_time' => $examTime->addMinutes(30),
+                            ]);
+
+                            InitialInterview::create([
+                                'application_id' => $application->application_id,
+                                'init_interview_at' => $interviewTime,
+                                'init_interviewer' => Employee::whereHas('jobTitle', function ($query) {
+                                    $query->where('job_title', 'like', '%hr%');
+                                })->inRandomOrder()->firstOr(fn() => Employee::inRandomOrder()->first())->employee_id,
+                            ]);
+
+                            if ($applicantStatus == ApplicationStatus::FINAL_INTERVIEW_SCHEDULED->value) {
+                                $finalInterviewTime = fake()->dateTimeBetween('5 days', '7 days');
+                                FinalInterview::create([
+                                    'application_id' => $application->application_id,
+                                    'final_interview_at' => $finalInterviewTime,
+                                    'final_interviewer' => Employee::whereHas('jobTitle', function ($query) {
+                                        $query->where('job_title', 'like', '%hr%');
+                                    })->inRandomOrder()->firstOr(fn() => Employee::inRandomOrder()->first())->employee_id,
+                                ]);
+                            }
+                        }
+
 
                         // $applicant_user->givePermissionTo($permissions);
                     } catch (\Exception $e) {
@@ -85,6 +122,10 @@ class ApplicantSeeder extends Seeder
     public function run(?int $count = null, ?int $start = null, ?int $concurrencyCount = null): void
     {
         $count ??= env('APP_USER_SEEDING_COUNT', 30);
+
+        if ($count > 100) {
+            $count = $count / 2;
+        }
 
         $start ??= Applicant::max('applicant_id') + 1;
 
