@@ -53,7 +53,7 @@ function createApplicants($chunkStart, $chunk, $permissions)
                             'application_status_id' =>  $applicantStatus,
                         ]);
 
-                        if (in_array($applicantStatus, array_map(fn($status) => $status->value, ApplicationStatus::qualifiedState()))) {
+                        if (in_array($applicantStatus, array_map(fn($status) => $status->value, array_merge(ApplicationStatus::qualifiedState(), [ApplicationStatus::PRE_EMPLOYED])))) {
                             $examTime = Carbon::instance(fake()->dateTimeBetween('1 days', '2 days'));
                             $interviewTime = $examTime->addDays(fake()->numberBetween(0, 5));
                             ApplicationExam::create([
