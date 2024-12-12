@@ -577,3 +577,15 @@ body {
 .fs-7 {
     font-size: .8rem;
 }
+
+.tab-section {
+    display: none;
+}
+
+.tab-section.active-section {
+    display: block;
+}
+
+.tab-section p {
+    margin-bottom: 0 !important;
+}
