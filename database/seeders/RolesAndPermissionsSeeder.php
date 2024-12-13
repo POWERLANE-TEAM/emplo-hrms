@@ -168,6 +168,7 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::ASSIGN_PERFORMANCE_EVAL_SCORE->value,
             UserPermission::UPDATE_EMP_PERFORMANCE_EVAL_GRADE_FORM->value,
             UserPermission::UPDATE_EMP_PERFORMANCE_EVAL_GRADE_FORM->value,
+            UserPermission::UPDATE_SUBORDINATE_OVERTIME_REQUEST->value,
         ];
     }
 }
