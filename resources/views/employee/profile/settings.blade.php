@@ -2,7 +2,7 @@
 @use ('Illuminate\View\ComponentAttributeBag')
 
 @section('head')
-<title>Profile</title>
+<title>Settings & Privacy</title>
 <script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 @endsection
@@ -38,7 +38,7 @@
     <livewire:profile.two-factor-authentication-form />
 
     <hr>
-    
+
     <livewire:profile.logout-other-browser-sessions-form />
 
 </div>
