@@ -8,7 +8,7 @@
     <section id="general" class="tab-section">
         <ul class="list-unstyled">
             @foreach ($generalNotifications as $notification)
-                <a href="">
+                <a href=""> <!-- BACK-END REPLACE: Proper redirection -->
                     <li class="mx-3 d-flex px-3 py-3 align-items-start">
 
                         <!-- Profile Icon -->
