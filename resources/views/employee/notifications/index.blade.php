@@ -35,11 +35,11 @@
 
             <div class="row px-4 mb-3">
                 <div class="col-md-10">
-                    <h4 class="mb-0 fw-bold">Notifications</h4>
+                    <h2 class="mb-0 fw-bold">Notifications</h4>
                 </div>
-                <div class="col-md-2 text-end mb-3">
+                <!-- <div class="col-md-2 text-end mb-3">
                     Mark all as read
-                </div>
+                </div> -->
             </div>
 
             <livewire:notifications.notifs />
