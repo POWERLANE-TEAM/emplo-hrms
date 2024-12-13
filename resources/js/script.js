@@ -116,13 +116,13 @@ document.addEventListener("DOMContentLoaded", () => {
 document.addEventListener("DOMContentLoaded", function () {
     const notificationContainer = document.querySelector(".notification-container");
 
-    // Prevent closing when clicking inside
+    // Prevent closing when clicking inside the notifications container
     notificationContainer.addEventListener("click", function (event) {
         event.stopPropagation();
     });
 
     // Close notifications when clicking outside
     document.addEventListener("click", function () {
-        notificationContainer.classList.remove("show"); // or your custom class to hide
+        notificationContainer.classList.remove("show");
     });
 });
