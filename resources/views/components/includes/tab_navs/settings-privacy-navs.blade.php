@@ -6,7 +6,7 @@
 
 <x-sub-navs.tabular-nav :guard="$routePrefix" :items="[
     [
-        'title' => 'Recent Records',
+        'title' => 'Security',
         'icon' => 'shield-plus',
         'route' => 'profile',
     ],
