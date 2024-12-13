@@ -28,7 +28,8 @@
 
     <div class="col-md-4 text-end d-flex justify-content-end align-items-center">
         <div>
-            <a href="#" class="btn btn-lg btn-outline-primary">
+            <!-- BACK-END REPLACE: Replace with Employee ID while redirecting to Edit Profile -->
+            <a href="{{ route($routePrefix . '.profile.edit') }}" class="btn btn-lg btn-outline-primary">
                 <i data-lucide="pen-line" class="icon icon-large me-2"></i>
                 Edit Profile
             </a>
