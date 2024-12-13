@@ -687,3 +687,8 @@ hr {
     color: #cfcfcf !important;
     height: 4px !important;
 }
+
+ul#dropdown-menu > a > li.dropdown-item:hover, ul#dropdown-menu > li.dropdown-item:hover {
+    background-color: rgba(97, 176, 0, 0.2);
+    border-radius: 5px 
+}
