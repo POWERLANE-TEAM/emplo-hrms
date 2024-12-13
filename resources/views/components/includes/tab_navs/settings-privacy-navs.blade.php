@@ -8,7 +8,7 @@
     [
         'title' => 'Security',
         'icon' => 'shield-plus',
-        'route' => 'profile',
+        'route' => 'settings',
     ],
     [
         'title' => 'Activity Log',

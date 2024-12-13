@@ -25,11 +25,11 @@ Route::middleware('auth')->group(function () {
         ->name('dashboard');
 
     /**
-     * Profile
+     * Settings & Privacy
      */
-    Route::get('profile', function () {
-        return view('employee.admin.profile');
-    })->name('profile');
+    Route::get('settings', function () {
+        return view('employee.profile.settings');
+    })->name('settings');
 
     /**
      * Log out

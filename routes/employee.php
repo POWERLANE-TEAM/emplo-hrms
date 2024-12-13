@@ -108,11 +108,11 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     });
 
     /**
-     * Profile
+     * Settings & Privacy
      */
-    Route::get('profile', function () {
+    Route::get('settings', function () {
         return view('employee.profile.settings');
-    })->name('profile');
+    })->name('settings');
 
 
     /**
