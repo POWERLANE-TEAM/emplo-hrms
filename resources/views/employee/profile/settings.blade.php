@@ -31,6 +31,10 @@
 <div class="container">
 
 
+    <livewire:profile.change-email-form />
+
+    <hr>
+
     <livewire:profile.update-password-form />
 
     <hr>

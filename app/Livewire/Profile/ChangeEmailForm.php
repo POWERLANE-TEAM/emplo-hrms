@@ -4,10 +4,10 @@ namespace App\Livewire\Profile;
 
 use Livewire\Component;
 
-class ChangeEmail extends Component
+class ChangeEmailForm extends Component
 {
     public function render()
     {
-        return view('livewire.profile.change-email');
+        return view('livewire.profile.change-email-form');
     }
 }
