@@ -28,8 +28,12 @@ Route::middleware('auth')->group(function () {
      * Profile
      */
     Route::get('profile', function () {
-        return view('employee.profile.profile');
+        return view('employee.profile.information.index');
     })->name('profile');
+
+    Route::get('profile/edit', function () {
+        return view('employee.profile.information.edit');
+    })->name('profile.edit');
 
     /**
      * Settings & Privacy
