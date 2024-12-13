@@ -1,12 +1,11 @@
-<div class="card border-0 px-4 py-3 notification-container visible-gray-scrollbar show">
+<div class="card border-0 py-3 notification-container visible-gray-scrollbar show">
     <section>
-        <div class="row">
+        <div class="row px-4">
             <div class="col-md-10">
                 <h4 class="mb-0 fw-bold">Notifications</h4>
-                <p class="text-muted">You have 12 new notifications.</p>
             </div>
             <div class="col-md-2 text-end">
-                <a wire:navigate href="{{ route($routePrefix . '.notifications') }}" class="icon-link"
+                <a wire:navigate href="{{ route($routePrefix . '.notifications') }}" class="text-muted green-hover"
                     data-bs-toggle="tooltip" title="See all notifications">
                     <div class="icon-container">
                         <i data-lucide="plus" class="icon-with-border"></i>
@@ -16,51 +15,76 @@
         </div>
     </section>
 
-    <div class="seperator mt-1 mb-3">
+    <!-- <div class="seperator mt-1 mb-3">
         <div class="wavy-line"></div>
-    </div>
+    </div> -->
 
-    <div>
-        <div>
+    <section class="mt-3">
+        <div class="px-4">
             @include('components.includes.tab_navs.notifs-navs')
         </div>
 
         <!-- General Notifications -->
         <section id="general" class="tab-section">
             <ul class="list-unstyled">
-                <li class="d-flex align-items-start mb-3">
+                @foreach ($generalNotifications as $notification)
+                    <a href="">
+                        <li class="mx-3 d-flex px-3 py-3 align-items-start">
 
-                    <!-- Profile Icon -->
-                    <img class="img-size-10 img-responsive rounded-circle w-100 h-auto object-fit-cover aspect-ratio--square"
-                        src="https://ui-avatars.com/api/?name=Peter+Wilrexe" alt="">
+                            <!-- Profile Icon -->
+                            <img class="img-size-10 img-responsive rounded-circle w-100 h-auto object-fit-cover aspect-ratio--square"
+                                src="{{ $notification['profile'] }}" alt="Profile Picture">
 
-                    <!-- Notification Content -->
-                    <div class=" ms-3 flex-grow-1">
-                        <p class="mb-0 fs-7">Peter Wilrexe requested a new leave.</p>
+                            <!-- Notification Content -->
+                            <div class="ms-3 flex-grow-1">
+                                <p class="mb-0">
+                                    {!! $notification['message'] !!}
+                                </p>
 
-                        <span class="text-muted small">2 hours ago</span>
-                    </div>
-                </li>
+                                <!-- Labels -->
+                                <div class="pt-1">
+                                    @foreach ($notification['label'] as $label)
+                                        <x-status-badge color="info">{{ $label }}</x-status-badge>
+                                    @endforeach
+                                    <small class="text-muted fs-8">{{ $notification['time'] }}</small>
+                                </div>
+                            </div>
+                        </li>
+                    </a>
+                @endforeach
             </ul>
         </section>
 
         <!-- Urgent Notifications -->
         <section id="urgent" class="tab-section">
             <ul class="list-unstyled">
-                <li class="d-flex align-items-start mb-3">
+                @foreach ($urgentNotifications as $notification)
+                    <a href="">
+                        <li class="mx-3 d-flex px-3 py-3 align-items-start">
 
-                    <!-- Profile Icon -->
-                    <img class="img-size-10 img-responsive rounded-circle w-100 h-auto object-fit-cover aspect-ratio--square"
-                        src="https://ui-avatars.com/api/?name=Peter+Wilrexe" alt="">
+                            <!-- Profile Icon -->
+                            <img class="img-size-10 img-responsive rounded-circle w-100 h-auto object-fit-cover aspect-ratio--square"
+                                src="{{ $notification['profile'] }}" alt="Profile Picture">
 
-                    <!-- Notification Content -->
-                    <div class=" ms-3 flex-grow-1">
-                        <p class="mb-0 fs-7">Peter Wilrexe requested a new leave. Luh??</p>
+                            <!-- Notification Content -->
+                            <div class="ms-3 flex-grow-1">
+                                <p class="mb-0">
+                                    {!! $notification['message'] !!}
+                                </p>
 
-                        <span class="text-muted small">2 hours ago</span>
-                    </div>
-                </li>
+                                <!-- Labels -->
+                                <div class="pt-1">
+                                    @foreach ($notification['label'] as $label)
+                                        <x-status-badge color="warning">{{ $label }}</x-status-badge>
+                                    @endforeach
+                                    <small class="text-muted fs-8">{{ $notification['time'] }}</small>
+                                </div>
+                            </div>
+                        </li>
+                    </a>
+                @endforeach
             </ul>
         </section>
-    </div>
+    </section>
+
 </div>
