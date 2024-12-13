@@ -151,7 +151,7 @@ class RecentOvertimesTable extends DataTableComponent
                         } elseif ($value === OvertimeRequestStatus::PENDING->value) {
                             $subquery->whereNull('secondary_approver_signed_at');
                         } elseif ($value === OvertimeRequestStatus::DENIED->value) {
-                            $subquery->where('is_denied', true);
+                            $subquery->whereNotNull('denied_at');
                         }
                     });
                 })

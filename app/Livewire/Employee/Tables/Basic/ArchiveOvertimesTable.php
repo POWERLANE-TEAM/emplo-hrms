@@ -103,9 +103,13 @@ class ArchiveOvertimesTable extends DataTableComponent
 
             Column::make(__('Status'))
                 ->label(function ($row) {
-                    return $row->processes->first()->secondary_approver_signed_at
-                        ? __('Approved')
-                        : __('Pending');
+                    if ($row->processes->first()->secondary_approver_signed_at) {
+                        return __('Approved');
+                    } elseif ($row->processes->first()->denied_at) {
+                        return __('Denied');
+                    } else {
+                        return __('Pending');
+                    }
                 }),
             
             Column::make(__('Date Filed'))
@@ -143,7 +147,7 @@ class ArchiveOvertimesTable extends DataTableComponent
                         } elseif ($value === OvertimeRequestStatus::PENDING->value) {
                             $subquery->whereNull('secondary_approver_signed_at');
                         } elseif ($value === OvertimeRequestStatus::DENIED->value) {
-                            $subquery->where('is_denied', true);
+                            $subquery->whereNotNull('denied_at');
                         }
                     });
                 })
