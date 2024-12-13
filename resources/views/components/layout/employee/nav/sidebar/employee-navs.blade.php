@@ -2,7 +2,7 @@
 @use('App\Enums\UserRole')
 @use('App\Enums\UserPermission')
 
-<!-- DO NOT AUTO FORMAT! -->
+{{-- DO NOT AUTO FORMAT! --}}
 
 {{--
 * |--------------------------------------------------------------------------
@@ -43,7 +43,7 @@
     $navOvertimeOrder = $user->hasPermissionTo(UserPermission::VIEW_ALL_OVERTIME) ? 6 : 4; // Adjust order as needed
     $navOvertimeRoute = $user->hasPermissionTo(UserPermission::VIEW_ALL_OVERTIME)
         ? $routePrefix . '.hr.overtime.all'
-        : $routePrefix . '.general.overtime.all';
+        : $routePrefix . '.overtimes';
 
 
     /**
@@ -76,8 +76,8 @@
     ])
     <x-layout.employee.nav.sidebar.nav-item
         href="{{ route($routePrefix . '.dashboard') }}"
-        :active="request()->routeIs($routePrefix . '.dashboard')" 
-        class="tw-order-[0]" nav_txt="Dashboard"
+        :active="request()->routeIs($routePrefix . '.dashboard')"
+        class="order-first" nav_txt="Dashboard"
         :defaultIcon="['src' => 'dashboard', 'alt' => '']" :activeIcon="['src' => 'dashboard', 'alt' => '']">
     </x-layout.employee.nav.sidebar.nav-item>
     @endcan
@@ -88,7 +88,7 @@
     <x-layout.employee.nav.sidebar.nav-item
         :href="route($navAttendanceRoute)"
         :active="request()->routeIs($navAttendanceRoute)"
-        class="tw-order-[{{ $navAttendanceOrder }}]"
+        class="order-{{ $navAttendanceOrder }}"
         nav_txt="Attendance"
         :defaultIcon="['src' => 'attendance', 'alt' => '']"
         :activeIcon="['src' => 'attendance', 'alt' => '']">
@@ -100,7 +100,7 @@
     <x-layout.employee.nav.sidebar.nav-item
         href="{{ route($navPayslipRoute) }}"
         :active="request()->routeIs($navPayslipActivePattern)"
-        class="tw-order-[{{ $navPayslipOrder }}]"
+        class="order-{{ $navPayslipOrder }}"
         nav_txt="Payslips"
         :defaultIcon="['src' => 'payslips', 'alt' => '']"
         :activeIcon="['src' => 'payslips', 'alt' => '']">
@@ -112,7 +112,7 @@
         $navPerformanceOrder = $user->hasPermissionTo(UserPermission::VIEW_ALL_EMP_PERFORMANCE_EVAL) ? 8 : 4;
     @endphp
     @canAny([UserPermission::VIEW_EMP_PERFORMANCE_EVAL, UserPermission::VIEW_ALL_EMP_PERFORMANCE_EVAL])
-    <x-layout.employee.nav.sidebar.nav-item :href="route($routePrefix . '.performance.evaluation.index', ['employeeStatus' => 'probationary'])" :active="request()->routeIs($routePrefix . '.performance.evaluation.index')" class="tw-order-[{{ $navPerformanceOrder }}]" nav_txt="Performance"
+    <x-layout.employee.nav.sidebar.nav-item :href="route($routePrefix . '.performance.evaluation.index', ['employeeStatus' => 'probationary'])" :active="request()->routeIs($routePrefix . '.performance.evaluation.index')" class="order-{{ $navPerformanceOrder }}" nav_txt="Performance"
         :defaultIcon="['src' => 'performances', 'alt' => '']" :activeIcon="['src' => 'performances', 'alt' => '']">
     </x-layout.employee.nav.sidebar.nav-item>
     @endcan -->
@@ -122,7 +122,7 @@
     <x-layout.employee.nav.sidebar.nested-nav-items
         nav_txt="Performance"
         :active="request()->routeIs($routePrefix . 'evaluations.*')"
-        class="tw-order-[11]"
+        class="order-11"
         :defaultIcon="['src' => 'performances', 'alt' => 'Performance']"
         :activeIcon="['src' => 'performances', 'alt' => 'Relations']" :children="[
             ['href' => route($routePrefix . '.hr.evaluation-results.probationary.all'), 'active' => request()->routeIs($routePrefix . '.hr.evaluation-results.probationary.all'), 'nav_txt' => 'Probationary'],
@@ -135,7 +135,7 @@
     <x-layout.employee.nav.sidebar.nav-item
         href="#"
         :active="request()->routeIs($routePrefix . '.leaves')"
-        class="tw-order-[4]"
+        class="order-4"
         nav_txt="Performance"
         :defaultIcon="['src' => 'performances', 'alt' => '']"
         :activeIcon="['src' => 'performances', 'alt' => '']">
@@ -145,7 +145,7 @@
     @canAny([UserPermission::VIEW_LEAVES, UserPermission::VIEW_ALL_LEAVES])
     <x-layout.employee.nav.sidebar.nav-item :href="route($navLeavesRoute)"
         :active="request()->routeIs($navLeavesActivePattern)"
-        class="tw-order-[{{ $navLeavesOrder }}]"
+        class="order-{{ $navLeavesOrder }}"
         nav_txt="Leaves"
         :defaultIcon="['src' => 'leaves', 'alt' => '']"
         :activeIcon="['src' => 'leaves', 'alt' => '']">
@@ -156,7 +156,7 @@
     <x-layout.employee.nav.sidebar.nav-item
         :href="route($navOvertimeRoute)"
         :active="request()->routeIs($navOvertimeRoute)"
-        class="tw-order-[{{ $navOvertimeOrder }}]"
+        class="order-{{ $navOvertimeOrder }}"
         nav_txt="Overtime"
         :defaultIcon="['src' => 'overtime', 'alt' => '']"
         :activeIcon="['src' => 'overtime', 'alt' => '']">
@@ -169,7 +169,7 @@
     <x-layout.employee.nav.sidebar.nav-item
         href="{{ route($routePrefix . '.general.documents.all') }}"
         :active="request()->routeIs($routePrefix . '.general.documents.*')"
-        class="tw-order-[7]"
+        class="order-7"
         nav_txt="Documents"
         :defaultIcon="['src' => 'documents', 'alt' => '']"
         :activeIcon="['src' => 'documents', 'alt' => '']">
@@ -181,7 +181,7 @@
         <x-layout.employee.nav.sidebar.nav-item
             href="{{ route($routePrefix . '.general.issues.all') }}"
             :active="request()->routeIs($routePrefix . '.general.issues.*')"
-            class="tw-order-[8]"
+            class="order-8"
             nav_txt="Issues"
             :defaultIcon="['src' => 'issues', 'alt' => '']"
             :activeIcon="['src' => 'issues', 'alt' => '']">
@@ -193,7 +193,7 @@
         <x-layout.employee.nav.sidebar.nav-item
             href="{{ route($routePrefix . '.applications', ['applicationStatus' => 'pending']) }}"
             :active="request()->routeIs($routePrefix . '.applications', ['applicationStatus' => 'pending'])"
-            class="tw-order-[2]"
+            class="order-2"
             nav_txt="Applicants"
             :defaultIcon="['src' => 'applicants', 'alt' => '']"
             :activeIcon="['src' => 'applicants', 'alt' => '']">
@@ -205,7 +205,7 @@
         <x-layout.employee.nav.sidebar.nav-item
             href="{{ route($routePrefix . '.index') }}"
             :active="request()->routeIs($routePrefix . '.employees')"
-            class="tw-order-[3]" nav_txt="Employees"
+            class="order-3" nav_txt="Employees"
             :defaultIcon="['src' => 'employee', 'alt' => '']"
             :activeIcon="['src' => 'employee', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
@@ -213,12 +213,12 @@
 
     {{-- HR Manager --}}
     @can(UserPermission::VIEW_ALL_RELATIONS)
-        <x-layout.employee.nav.sidebar.nested-nav-items 
-            nav_txt="Relations" 
-            :active="request()->routeIs($routePrefix . '.relations.*')" 
-            class="tw-order-[11]" 
+        <x-layout.employee.nav.sidebar.nested-nav-items
+            nav_txt="Relations"
+            :active="request()->routeIs($routePrefix . '.relations.*')"
+            class="order-11"
             :defaultIcon="['src' => 'relations', 'alt' => 'Relations']"
-            :activeIcon="['src' => 'relations', 'alt' => 'Relations']" 
+            :activeIcon="['src' => 'relations', 'alt' => 'Relations']"
             :children="[
                 [
                     'href' => route($routePrefix . '.hr.relations.incidents.all'),
@@ -240,7 +240,7 @@
         <x-layout.employee.nav.sidebar.nav-item
             href="{{ route($routePrefix . '.training.all') }}"
             :active="request()->routeIs($routePrefix . '.training.all')"
-            class="tw-order-[3]" nav_txt="Training"
+            class="order-3" nav_txt="Training"
             :defaultIcon="['src' => 'training', 'alt' => '']"
             :activeIcon="['src' => 'training', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
@@ -251,7 +251,7 @@
         <x-layout.employee.nav.sidebar.nested-nav-items
             nav_txt="Accounts"
             :active="request()->routeIs($routePrefix . 'accounts.*')"
-            class="tw-order-[11]"
+            class="order-11"
             :defaultIcon="['src' => 'accounts', 'alt' => 'Accounts']"
             :activeIcon="['src' => 'accounts', 'alt' => 'Relations']"
             :children="[
@@ -326,7 +326,7 @@
         <x-layout.employee.nav.sidebar.nested-nav-items
             nav_txt="Performance"
             :active="request()->routeIs($routePrefix . 'requests.*')"
-            class="tw-order-[11]"
+            class="order-11"
             :defaultIcon="['src' => 'requests', 'alt' => 'Performance']"
             :activeIcon="['src' => 'requests', 'alt' => 'Relations']" :children="[
                 ['href' => route($routePrefix . '.managerial.requests.leaves.all'), 'active' => request()->routeIs($routePrefix . '.managerial.requests.leaves.all'), 'nav_txt' => 'Leaves'],

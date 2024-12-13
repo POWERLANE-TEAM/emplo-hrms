@@ -37,9 +37,8 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     /**
      * List of Applicants
      */
-    Route::get('/applicants/{applicationStatus}/{page?}', [ApplicationController::class, 'index'])
+    Route::get('/applicants/{applicationStatus}', [ApplicationController::class, 'index'])
         ->where('applicationStatus', 'pending|qualified|preemployed')
-        ->where('page', 'index|')
         ->middleware([
             'permission:' . UserPermission::VIEW_ALL_PENDING_APPLICATIONS->value
                 . '|' . UserPermission::VIEW_ALL_QUALIFIED_APPLICATIONS->value
@@ -53,9 +52,12 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
      */
     Route::get('/applicant/{application}', [ApplicationController::class, 'show'])
         ->middleware([
-            'permission:' . UserPermission::VIEW_APPLICATION_INFORMATION->value . '&(' . UserPermission::VIEW_ALL_PENDING_APPLICATIONS->value
+            'permission:' . UserPermission::VIEW_APPLICATION_INFORMATION->value,
+        ])
+        ->middleware([
+            'permission:' . UserPermission::VIEW_ALL_PENDING_APPLICATIONS->value
                 . '|' . UserPermission::VIEW_ALL_QUALIFIED_APPLICATIONS->value
-                . '|' . UserPermission::VIEW_ALL_PRE_EMPLOYED_APPLICATIONS->value . ')',
+                . '|' . UserPermission::VIEW_ALL_PRE_EMPLOYED_APPLICATIONS->value,
         ])
         ->name('application.show');
 
@@ -110,7 +112,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
 
     /**
-     * Evaluator 
+     * Evaluator
      */
     Route::get('resume-evaluator/rankings', function () {
         return view('/employee.hr-manager.resume-evaluator.rankings');
@@ -136,7 +138,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     Route::get('hr/evaluation-results/regular/all', function () {
         return view('/employee.hr-manager.evaluations.regular.all');
     })->name('hr.evaluation-results.regular.all');
-    
+
     Route::get('evaluation-results/regular', function () {
         return view('/employee.hr-manager.evaluations.regular.evaluation-results');
     })->name('evaluation-results.regular');
@@ -146,7 +148,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
      * HR: Leaves
      */
 
-     Route::get('hr/leaves/all', function () {
+    Route::get('hr/leaves/all', function () {
         return view('employee.hr-manager.leaves.all');
     })->name('hr.leaves.all');
 
@@ -155,7 +157,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
      * Overtime
      */
 
-     Route::get('hr/overtime/all', function () {
+    Route::get('hr/overtime/all', function () {
         return view('employee.hr-manager.overtime.all');
     })->name('hr.overtime.all');
 
@@ -207,7 +209,9 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
     Route::get('{employee}', function (Employee $employee) {
         return view('employee.hr-manager.employees.information', compact('employee'));
-    })->name('employees.information');
+    })
+        ->whereNumber('employee')
+        ->name('employees.information');
 
 
     /**
@@ -229,7 +233,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     // SUPERVISOR ROUTES
     // ==========================================
 
-    
+
     /**
      * Leaves
      */
@@ -252,7 +256,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
      * Performance Evaluations
      */
 
-     Route::get('managerial/evaluations/all', function () {
+    Route::get('managerial/evaluations/all', function () {
         return view('employee.supervisor.performance-evaluations.all');
     })->name('managerial.evaluations.all');
 
@@ -294,7 +298,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
      * General: Payslip
      */
 
-     Route::get('general/payslips/all', function () {
+    Route::get('general/payslips/all', function () {
         return view('employee.basic.payslips.all');
     })->name('general.payslips.all');
 
@@ -320,9 +324,9 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     /**
      * General: Overtime
      */
-    Route::get('general/overtime/all', function () {
+    Route::get('/overtimes', function () {
         return view('employee.basic.overtime.all');
-    })->name('general.overtime.all');
+    })->name('overtimes');
 
     Route::get('/overtimes/recents', function () {
         return view('employee.basic.overtime.recent-records');
@@ -330,7 +334,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
     Route::get('/overtimes/archive', function () {
         return view('employee.basic.overtime.index');
-    })->name('overtimes.index');
+    })->name('overtimes.archive');
 
 
     /**

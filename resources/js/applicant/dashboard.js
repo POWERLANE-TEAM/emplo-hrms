@@ -3,7 +3,7 @@ import "../../css/applicant/dashboard.css";
 import '../script.js';
 import './script.js';
 import initLucideIcons from '../icons/lucide.js';
-import addGlobalScrollListener, { documentScrollPosY } from '../global-scroll-fn.js';
+import addGlobalScrollListener, { documentScrollPosY } from 'global-scroll-script';
 import addGlobalListener, { GlobalListener } from 'globalListener-script';
 // import './livewire.js'
 

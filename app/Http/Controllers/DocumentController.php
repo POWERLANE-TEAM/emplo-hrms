@@ -130,8 +130,34 @@ class DocumentController extends Controller
                     $mentionText = $entity->getMentionText();
                     $confidence = $entity->getConfidence();
 
+                    $mentionTextTrimmed = ltrim($mentionText, '@');
+                    $isEmail = filter_var($mentionTextTrimmed, FILTER_VALIDATE_EMAIL);
+
+                    // Log::info('Entity', [
+                    //     'type' => $type,
+                    //     'mentionText' => $mentionText,
+                    //     'isContact ' => strpos($type, 'contact'),
+                    //     'isContactBool ' => strpos($type, 'contact') !== false,
+                    //     'isEmail' => $isEmail,
+                    //     'evaluate to ' => (strpos($type, 'contact') !== false && $isEmail),
+                    // ]);
+
+                    // This should skip assigning email to contact
+                    if (strpos($type, 'contact') !== false && $isEmail) {
+                        continue;
+                    }
+
                     // Store to assoc array field_name => ocr_value
-                    $extractedData[$type] = $mentionText;
+                    if (isset($extractedData[$type])) {
+                        // If the existing value is a string, convert it to an array
+                        if (is_string($extractedData[$type])) {
+                            $extractedData[$type] = [$extractedData[$type]];
+                        }
+                        $extractedData[$type][] = $mentionText;
+                    } else {
+                        // Store the ocr field value as a string
+                        $extractedData[$type] = $mentionText;
+                    }
 
                     if (app()->environment() === 'local') {
                         Log::info('Entity', [

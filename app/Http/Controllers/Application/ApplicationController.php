@@ -15,11 +15,9 @@ use Illuminate\Validation\Rule;
 class ApplicationController extends Controller
 {
     /* Show all resource */
-    public function index($applicationStatus, $page = null)
+    public function index($applicationStatus)
     {
-        if (empty($page) || $page == 'index') {
-            return view('employee.application.index');
-        }
+        return view('employee.application.index', ['applicationStatus' => $applicationStatus]);
     }
 
     /* Show form page for creating resource */
@@ -75,11 +73,11 @@ class ApplicationController extends Controller
         if (! $isValidated) {
 
             $validated = $request->validate([
-                'jobVacancyId' => 'bail|nullable|integer|exists:job_vacancies,job_vacancy_id',
-                'applicationStatusId' => 'bail|nullable|integer|in:' . implode(',', ApplicationStatus::values()),
+                'jobVacancyId' => 'nullable|integer|exists:job_vacancies,job_vacancy_id',
+                'applicationStatusId' => 'nullable|integer|in:' . implode(',', ApplicationStatus::values()),
                 'hireDate' => [
                     'nullable',
-                    'bail',
+
                     'date',
                     Rule::in([Carbon::today()->toDateString()]),
                 ],

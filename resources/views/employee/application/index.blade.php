@@ -1,11 +1,7 @@
 @extends('components.layout.employee.layout', ['description' => 'Employee Dashboard', 'nonce' => $nonce])
 
-@php
-    $subPage = 'Pending';
-@endphp
-
 @section('head')
-    <title>{{ $subPage }} Applicants</title>
+    <title>{{  ucwords($applicationStatus) }} Applicants</title>
     <script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
     <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 @endsection
@@ -35,7 +31,7 @@
 @section('content')
     <x-headings.main-heading :isHeading="true">
         <x-slot:heading>
-            Applicants
+           {{when($applicationStatus  != 'pending' , ucwords($applicationStatus))}} Applicants
         </x-slot:heading>
 
         <x-slot:description>
@@ -44,5 +40,5 @@
     </x-headings.main-heading>
 
 
-    <livewire:employee.tables.hrmanager.applicants-table />
+    <livewire:employee.tables.hrmanager.applicants-table :applicationStatus="$applicationStatus"/>
 @endsection

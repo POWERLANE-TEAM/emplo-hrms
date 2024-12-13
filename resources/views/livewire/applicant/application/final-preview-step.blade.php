@@ -19,7 +19,7 @@
         $user = auth()->user() ?? abort(401);
 
         try {
-            $applicantEmail = $personalDetail['parsedResume']['employee_email'] ?? $user->email;
+            $applicantEmail = $personalDetail['applicant']['email'] ?? $user->email;
             if (empty($applicantEmail) && !$user->facebook_id) {
                 throw new \Exception('User email is missing.');
             }
@@ -30,12 +30,12 @@
 
         try {
             $applicantName = ucwords(
-                (data_get($personalDetail, 'form.applicantName.lastName') ?? '') .
+                (data_get($personalDetail, 'applicant.name.lastName') ?? '') .
                     ', ' .
-                    (data_get($personalDetail, 'form.applicantName.firstName') ?? ''),
+                    (data_get($personalDetail, 'applicant.name.firstName') ?? ''),
             );
 
-            $applicantName .= ' ' . (data_get($personalDetail, 'form.applicantName.middleName') ?? '');
+            $applicantName .= ' ' . (data_get($personalDetail, 'applicant.name.middleName') ?? '');
 
             if (empty($applicantName) || trim($applicantName) == ',') {
                 throw new \Exception('Name information is missing');
@@ -45,7 +45,7 @@
         }
 
         try {
-            $applicantBirthDate = data_get($personalDetail, 'form.applicantBirth') ?? 'Birth date missing';
+            $applicantBirthDate = data_get($personalDetail, 'applicant.birth') ?? 'Birth date missing';
             if ($applicantBirthDate) {
                 $applicantBirthDateF = \Carbon\Carbon::parse($applicantBirthDate)->format('F j, Y');
             } else {
@@ -84,7 +84,7 @@
                 </x-iframe>
             </div>
 
-            <div class="container d-flex flex-column mx-0 col-12 col-md-5 px-0 ps-md-3 tw-md:min-h-[inherit]">
+            <div class="container d-flex flex-column mx-0 col-12 col-md-5 px-0 ps-md-3 min-h-md-inherit">
                 <div class="border rounded-3 p-3 px-lg-5 py-md-4 flex-grow-1">
 
                     <h3 class="fs-5 text-primary fw-bold mb-4" id="review-label">Review your information.</h3>
