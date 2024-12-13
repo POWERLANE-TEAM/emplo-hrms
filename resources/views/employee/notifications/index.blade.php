@@ -29,26 +29,19 @@
 
 @section('content')
 
-<div class="row">
-    <div class="col-md-12 d-flex justify-content-center">
-
-        <h1>
-            Notifications
-        </h1>
-    </div>
-</div>
-
-<div class="row d-flex justify-content-center">
-    <div class="col-md-6">
-        <div class="seperator mt-1 mb-3">
-            <div class="wavy-line"></div>
-        </div>
-    </div>
-</div>
-
-<div class="row">
+<div class="row pt-3">
     <div class="col-md-12 d-flex justify-content-center">
         <div class="notification-container">
+
+            <div class="row px-4 mb-3">
+                <div class="col-md-10">
+                    <h4 class="mb-0 fw-bold">Notifications</h4>
+                </div>
+                <div class="col-md-2 text-end mb-3">
+                    Mark all as read
+                </div>
+            </div>
+
             <livewire:notifications.notifs />
         </div>
     </div>
