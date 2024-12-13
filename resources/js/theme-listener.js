@@ -5,7 +5,12 @@ export default class ThemeManager {
     defaultTheme = 'light';
 
     constructor() {
+        if (ThemeManager.instance) {
+            return ThemeManager.instance;
+        }
+        ThemeManager.instance = this;
         this.pageBody = document.querySelector('body');
+        this.isRequestPending = false;
     }
 
     getUserPreference() {
@@ -59,23 +64,31 @@ export default class ThemeManager {
         const validThemes = ['light', 'dark'];
         const currentTheme = sessionStorage.getItem('pageThemePreference');
 
-        if (validThemes.includes(themeToSet) && currentTheme !== themeToSet) {
-            fetch('/theme-preference/set', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify({
-                    themePreference: themeToSet
-                })
-            })
-                .then(response => {
-                    if (response.ok) {
-                        sessionStorage.setItem('pageThemePreference', themeToSet);
-                    }
-                })
+        if (this.isRequestPending || !validThemes.includes(themeToSet) || currentTheme === themeToSet) {
+            return;
         }
+
+        this.isRequestPending = true;
+
+        fetch('/theme-preference/set', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({
+                themePreference: themeToSet
+            })
+        })
+            .then(response => {
+                if (response.ok) {
+                    sessionStorage.setItem('pageThemePreference', themeToSet);
+                }
+            })
+            .finally(() => {
+                this.isRequestPending = false;
+            });
+
     }
 }
 
