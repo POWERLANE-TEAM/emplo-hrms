@@ -25,6 +25,7 @@ return new class extends Migration
             $table->timestamp('end_time');
             $table->timestamp('filed_at');
             $table->timestamp('modified_at');
+            $table->index(['filed_at']);
         });
     }
 

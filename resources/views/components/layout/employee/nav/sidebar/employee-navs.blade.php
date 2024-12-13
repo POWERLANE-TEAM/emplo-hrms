@@ -43,7 +43,7 @@
     $navOvertimeOrder = $user->hasPermissionTo(UserPermission::VIEW_ALL_OVERTIME) ? 6 : 4; // Adjust order as needed
     $navOvertimeRoute = $user->hasPermissionTo(UserPermission::VIEW_ALL_OVERTIME)
         ? $routePrefix . '.hr.overtime.all'
-        : $routePrefix . '.general.overtime.all';
+        : $routePrefix . '.overtimes';
 
 
     /**

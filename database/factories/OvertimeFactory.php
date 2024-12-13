@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use App\Models\Employee;
-use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -26,7 +25,7 @@ class OvertimeFactory extends Factory
             'work_performed' => fake()->sentence(),
             'start_time' => $start,
             'end_time' => $end,
-            'filed_at' =>  fake()->dateTimeBetween('-1 week', $end),
+            'filed_at' =>  fake()->dateTimeBetween('-1 month', $end),
         ];
     }
 }

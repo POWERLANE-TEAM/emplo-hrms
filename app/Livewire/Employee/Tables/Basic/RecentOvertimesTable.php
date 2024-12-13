@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Employee\Tables\Basic;
 
+use App\Enums\OvertimeRequestStatus;
 use App\Models\Overtime;
 use Livewire\Attributes\On;
 use Illuminate\Support\Carbon;
@@ -9,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Filters\DateFilter;
+use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class RecentOvertimesTable extends DataTableComponent
 {
@@ -44,10 +47,10 @@ class RecentOvertimesTable extends DataTableComponent
             $pendingStatus = is_null($row->processes->first()->secondary_approver_signed_at);
 
             if ($pendingStatus) {
-                $attributes = [
+                $attributes = array_merge($attributes, [
                     'role' => 'button',
                     'wire:click' => "\$dispatch('showOvertimeRequest', $row->overtime_id)",
-                ];
+                ]);
             }
 
             return $attributes;
@@ -55,7 +58,7 @@ class RecentOvertimesTable extends DataTableComponent
 
         $this->setSearchFieldAttributes([
             'type' => 'search',
-            'class' => 'form-control rounded-pill search text-body body-bg',
+            'class' => 'form-control rounded-3 search text-body body-bg shadow-sm',
         ]);
 
         $this->setThAttributes(function (Column $column) {
@@ -69,7 +72,7 @@ class RecentOvertimesTable extends DataTableComponent
             return [
                 'class' => 'text-md-center',
             ];
-        });
+        });        
     }
 
     public function builder(): Builder
@@ -118,6 +121,40 @@ class RecentOvertimesTable extends DataTableComponent
                     return $query->orderBy('filed_at', $direction);
                 })
                 ->setSortingPillDirections('Asc', 'Desc'),
+        ];
+    }
+
+    public function filters(): array
+    {
+        return [
+            DateFilter::make(__('Filing Date'))
+                ->config([
+                    'max' => now()->format('Y-m-d'),
+                    'pillFormat' => 'd M Y',
+                ])
+                ->filter(function (Builder $query, $value) {
+                    return $query->whereDate('filed_at', $value);
+                }),
+
+            SelectFilter::make(__('Request Status'))
+                ->options(
+                    array_reduce(
+                        OvertimeRequestStatus::cases(),
+                        fn ($options, $case) => $options + [$case->value => $case->getLabel()],
+                        []
+                    )
+                )
+                ->filter(function (Builder $query, $value) {
+                    $query->whereHas('processes', function ($subquery) use ($value) {
+                        if ($value === OvertimeRequestStatus::APPROVED->value) {
+                            $subquery->whereNotNull('secondary_approver_signed_at');
+                        } elseif ($value === OvertimeRequestStatus::PENDING->value) {
+                            $subquery->whereNull('secondary_approver_signed_at');
+                        } elseif ($value === OvertimeRequestStatus::DENIED->value) {
+                            $subquery->where('is_denied', true);
+                        }
+                    });
+                })
         ];
     }
 }
