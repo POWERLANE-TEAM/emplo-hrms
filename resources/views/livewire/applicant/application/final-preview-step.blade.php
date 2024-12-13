@@ -84,7 +84,7 @@
                 </x-iframe>
             </div>
 
-            <div class="container d-flex flex-column mx-0 col-12 col-md-5 px-0 ps-md-3 tw-md:min-h-[inherit]">
+            <div class="container d-flex flex-column mx-0 col-12 col-md-5 px-0 ps-md-3 min-h-md-inherit">
                 <div class="border rounded-3 p-3 px-lg-5 py-md-4 flex-grow-1">
 
                     <h3 class="fs-5 text-primary fw-bold mb-4" id="review-label">Review your information.</h3>

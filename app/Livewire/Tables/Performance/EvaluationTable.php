@@ -53,7 +53,7 @@ class EvaluationTable extends DataTableComponent
             if ($columnIndex == 0) {
                 // Full name column
                 return [
-                    'class' => 'text-md-center border-end',
+                    'class' => 'text-md-center border-end sticky',
                 ];
             }
 
