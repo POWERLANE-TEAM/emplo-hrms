@@ -41,23 +41,18 @@ class EmployeesAttendancePeriodTable extends DataTableComponent
             if ($columnIndex == 0) {
                 // Full name column
                 return [
-                    'class' => 'text-md-center border-end',
-                    'style' => 'min-width: 500px; ',
+                    'class' => 'text-md-center border-end sticky',
                 ];
             }
 
             if ($columnIndex == 1) {
-
-                // doesnt work will do it in sass file instead
                 return [
                     'class' => 'text-md-center text-primary fw-bold',
-                    'style' => 'color: var(--bs-primary-rgb) !important; font-weight: 700 !important; ',
                 ];
             }
 
             return [
                 'class' => 'text-md-center',
-                'style' => 'min-width: 200px; ',
             ];
         });
 
