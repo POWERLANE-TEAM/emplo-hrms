@@ -33,8 +33,12 @@
 
     <livewire:profile.update-password-form />
 
+    <hr>
+
     <livewire:profile.two-factor-authentication-form />
 
+    <hr>
+    
     <livewire:profile.logout-other-browser-sessions-form />
 
 </div>
