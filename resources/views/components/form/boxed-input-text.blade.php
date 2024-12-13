@@ -30,9 +30,9 @@
             'type' => $attributes->get('type', 'text'),
             'class' => 'form-control border ps-3 rounded',
             'autocomplete' => $attributes->get('autocomplete', 'off'),
-            'placeholder' => $attributes->get('placeholder', ''), // Add placeholder attribute
+            'placeholder' => $attributes->get('placeholder', ''),
         ]) }}
-        nonce="{{ $nonce }}">
+        aria-owns="{{ $attributes->get('id') }}-feedback" nonce="{{ $nonce }}">
     @if (!empty($feedback))
         {{ $feedback }}
     @endif

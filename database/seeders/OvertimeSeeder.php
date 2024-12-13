@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Employee;
 use App\Models\Overtime;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class OvertimeSeeder extends Seeder
 {
@@ -20,6 +20,12 @@ class OvertimeSeeder extends Seeder
                 $overtime->processes()->create([
                     'processable_type' => Overtime::class,
                     'processable_id' => $overtime->overtime_id,
+                    // 'supervisor_approved_at' => now(),
+                    // 'supervisor' => Employee::inRandomOrder()->first()->employee_id,
+                    // 'area_manager_approved_at' => now(),
+                    // 'area_manager' => Employee::inRandomOrder()->first()->employee_id,
+                    // 'hr_manager_approved_at' => now(),
+                    // 'hr_manager' => Employee::inRandomOrder()->first()->employee_id,
                 ]);
             }
         });

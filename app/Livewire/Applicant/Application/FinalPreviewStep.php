@@ -45,7 +45,7 @@ class FinalPreviewStep extends StepComponent
         $dPPreviewSrc = $this->formState['form.applicant.personal-details-step']['displayProfilePath'] ?? null;
         $personalDetails = $this->formState['form.applicant.personal-details-step'] ?? [];
 
-        $applicantName = $personalDetails['form']['applicantName'];
+        $applicantName = $personalDetails['applicant']['name'];
 
         $parsedResumeData = $personalDetails['parsedResume'];
 
@@ -55,10 +55,29 @@ class FinalPreviewStep extends StepComponent
 
         $applicant = $applicantName;
 
+        // I get the education as a whole string as is from resume
+        // I have no idea how to separate education tho
+        $education = $parsedResumeData['employee_education'] ?? null;
+
+        if (is_string($education)) {
+            $education = [$education];
+        }
+
+        $experience = $parsedResumeData['employee_experience'] ?? null;
+        if (is_string($experience)) {
+            $experience = [$experience];
+        }
+
+        $skills = $parsedResumeData['employee_skills'] ?? null;
+        if (is_string($skills)) {
+            $skills = [$skills];
+        }
+
+
         $applicant =  array_merge($applicant, [
             'user' => [
                 'photo' => $tempDPFile,
-                'email' => $parsedResumeData['employee_email'] ?? null
+                'email' => $personalDetails['applicant']['email'] ?? null
             ],
             'application' => [
                 'jobVacancyId' => JobVacancy::first()->job_vacancy_id,
@@ -68,13 +87,13 @@ class FinalPreviewStep extends StepComponent
             'presentAddress' => fake()->streetName(),
             'permanentBarangay' => 14104,
             'permanentAddress' => fake()->streetName(),
-            'contactNumber' => $parsedResumeData['employee_contact'] ?? 'Not Set',
+            'contactNumber' => $personalDetails['applicant']['mobileNumber'] ?? 'Not Set',
             'sex' => $personalDetails['sexAtBirth'],
             'civilStatus' => CivilStatus::SINGLE->value,
-            'dateOfBirth' => $personalDetails['form']['applicantBirth'],
-            'education' => $parsedResumeData['employee_education'],
-            'experience' => $parsedResumeData['employee_experience'],
-            'skills' => $parsedResumeData['employee_skills'],
+            'dateOfBirth' => $personalDetails['applicant']['birth'],
+            'education' => $education,
+            'experience' => $experience,
+            'skills' => $skills,
         ]);
 
         $applcantController = new ApplicantController();

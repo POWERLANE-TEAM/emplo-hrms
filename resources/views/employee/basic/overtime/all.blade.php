@@ -2,17 +2,13 @@
 @use ('Illuminate\View\ComponentAttributeBag')
 
 @section('head')
-<title>All Summary Forms</title>
+<title>Overtime Summaries</title>
 <script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 @endsection
 
-@pushOnce('pre-scripts')
-@endPushOnce
-
 @pushOnce('scripts')
     @vite(['resources/js/employee/basic/leaves.js'])
-
 @endPushOnce
 
 @pushOnce('styles')
@@ -20,8 +16,6 @@
 
 @endPushOnce
 @section('content')
-
-
 
 <x-headings.main-heading :isHeading="true">
     <x-slot:heading>
@@ -33,10 +27,8 @@
     </x-slot:description>
 </x-headings.main-heading>
 
-
 <section class="my-2">
-    <!-- BACK-END REPLACE: Table of all OT Summary Forms.
-        Redirection of data when row is clicked should be in: overtime/summary-form.blade.php -->
+    <livewire:employee.tables.basic.overtime-summaries-table />
 </section>
 
 @endsection
