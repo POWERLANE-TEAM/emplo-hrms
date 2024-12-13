@@ -14,7 +14,9 @@ class OvertimeSeeder extends Seeder
     public function run(): void
     {
         activity()->withoutLogs(function () {
+            Overtime::unguard();
             $overtimes = Overtime::factory(40)->create();
+            Overtime::reguard();
 
             foreach ($overtimes as $overtime) {
                 $overtime->processes()->create([

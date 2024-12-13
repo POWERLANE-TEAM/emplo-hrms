@@ -2,7 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Enums\Payroll;
 use App\Models\Employee;
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,15 +19,26 @@ class OvertimeFactory extends Factory
      */
     public function definition(): array
     {
-        $start = fake()->dateTimeBetween('-2 days', 'now');
+        $start = fake()->dateTimeBetween('-15 days', 'now');
         $end = fake()->dateTimeBetween($start, '+4 hours');
+    
+        $date = Carbon::parse($start);
 
+        $cutOffPeriod = match (true) {
+            $date->day <= 10 => Payroll::CUT_OFF_2,
+            $date->day <= 25 => Payroll::CUT_OFF_1,
+            default => Payroll::CUT_OFF_2,
+        };
+    
         return [
             'employee_id' => Employee::inRandomOrder()->first()->employee_id,
             'work_performed' => fake()->sentence(),
-            'start_time' => $start,
-            'end_time' => $end,
-            'filed_at' =>  fake()->dateTimeBetween('-1 month', $end),
+            'date' => $start->format('Y-m-d'),
+            'start_time' => $start->format('H:i:s'),
+            'end_time' => $end->format('H:i:s'),
+            'cut_off' => $cutOffPeriod->value,
+            'filed_at' => $start,
+            'modified_at' => $start,
         ];
-    }
+    }    
 }
