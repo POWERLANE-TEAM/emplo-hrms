@@ -25,6 +25,13 @@ Route::middleware('auth')->group(function () {
         ->name('dashboard');
 
     /**
+     * Profile
+     */
+    Route::get('profile', function () {
+        return view('employee.profile.profile');
+    })->name('profile');
+
+    /**
      * Settings & Privacy
      */
     Route::get('settings', function () {

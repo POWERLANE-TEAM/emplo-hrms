@@ -73,7 +73,7 @@
                             onerror="this.onerror=null;this.src='http://placehold.it/45/45';" alt="">
                     </button>
                     <ul id="dropdown-menu" class="dropdown-menu dropdown-menu-end px-2" role="menu">
-                        <a href="#" class="text-decoration-none">
+                        <a href="{{ route($routePrefix . '.profile') }}" class="text-decoration-none">
                             <li class="dropdown-item" role="button">
                                 Profile
                             </li>
