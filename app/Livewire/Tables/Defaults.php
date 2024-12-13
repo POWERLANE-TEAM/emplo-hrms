@@ -2,11 +2,21 @@
 
 namespace App\Livewire\Tables;
 
+use App\Http\Helpers\Timezone;
 use Illuminate\Database\Eloquent\Builder;
+use Livewire\Attributes\Computed;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 
 trait Defaults
 {
+
+    protected $timezone;
+
+    public function setTimezone(): void
+    {
+        $this->timezone = Timezone::get();
+    }
+
     public function configuringStandardTableMethods()
     {
         // Your standard configure() options go here, anything set here will be over-ridden by the configure() method

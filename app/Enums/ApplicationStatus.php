@@ -36,6 +36,14 @@ enum ApplicationStatus: int
         return array_column(self::cases(), 'value');
     }
 
+    public static function qualifiedState(): array
+    {
+        return [
+            self::ASSESSMENT_SCHEDULED,
+            self::FINAL_INTERVIEW_SCHEDULED,
+        ];
+    }
+
     /**
      * Get an array of allowed status updates for pending applications.
      *
@@ -73,5 +81,23 @@ enum ApplicationStatus: int
             self::PRE_EMPLOYED,
             self::REJECTED,
         ];
+    }
+
+    /**
+     * Match substrings to enum case values.
+     *
+     * @param string $status
+     * @return int|null
+     */
+    public static function fromNameSubstring(string $status): ?int
+    {
+        $status = strtolower(trim($status));
+        foreach (self::cases() as $case) {
+            $caseName = strtolower(str_replace(['_'], '', $case->name));
+            if (str_contains($caseName, $status)) {
+                return $case->value;
+            }
+        }
+        return null;
     }
 }
