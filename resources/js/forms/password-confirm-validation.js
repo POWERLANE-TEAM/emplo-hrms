@@ -1,6 +1,6 @@
 import addGlobalListener from 'globalListener-script';
 import InputValidator, { setInvalidMessage } from './input-validator.js';
-import debounce from '../debounce-fn.js';
+import debounce from 'debounce-script';
 
 const PASSWORD_CONFIRM_VALIDATION = {
     clear_invalid: false,

@@ -8,9 +8,9 @@
             {{ $input_icon_left }}
         @endif
     </div>
-    <input @if($attributes->has('name')) wire:model="{{ $attributes->get('name') }}" @endif
+    <input @if ($attributes->has('name')) wire:model="{{ $attributes->get('name') }}" @endif
         {{ $attributes->merge(['class' => 'form-control border-bottom ps-5', 'autocomplete' => $attributes->get('autocomplete', 'off')]) }}
-        nonce="{{ $nonce }}">
+        aria-owns="{{ $attributes->get('id') }}-feedback" nonce="{{ $nonce }}">
     @if (!empty($feedback))
         {{ $feedback }}
     @endif

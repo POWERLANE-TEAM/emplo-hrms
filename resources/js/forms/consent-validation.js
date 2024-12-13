@@ -1,6 +1,6 @@
 import addGlobalListener from 'globalListener-script';
 import InputValidator, { setInvalidMessage, setFormDirty } from './input-validator.js';
-import debounce from '../debounce-fn.js';
+import debounce from 'debounce-script';
 
 export default class ConsentValidator {
     constructor(inputSelector, validator, resultRef, callback = null, parent = document) {

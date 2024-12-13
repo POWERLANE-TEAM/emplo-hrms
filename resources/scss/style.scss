@@ -213,15 +213,41 @@ iframe body {
     background-color: red;
 }
 
+// adds placeholder on phone
 input[type="date"],
 input[type="time"],
 input[type="datetime-local"] {
-    &:not(:focus):not(.has-value):before {
+    &:not(:focus):invalid:before {
+        position: absolute;
+        color: color-mix(in srgb, var(--bs-body-color) 60%, transparent 40%) !important;
+
         @media screen and (max-width: 576px) {
             color: inherit;
             content: attr(placeholder);
         }
     }
+}
+
+input {
+    &:focus-visible {
+
+        &::placeholder {
+            font-weight: normal;
+        }
+    }
+}
+
+input[type="tel"] {
+    letter-spacing: 0.25em;
+
+    // negate the letter-spacing on placeholder
+    &::placeholder {
+        letter-spacing: normal;
+    }
+}
+
+select:invalid {
+    color: color-mix(in srgb, var(--bs-body-color) 60%, transparent 40%);
 }
 
 .btn-full-screen:hover:not(:active) {

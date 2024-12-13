@@ -26,12 +26,15 @@
 
         <x-form.email id="userLogin-email" label="Email Address" name="email" autocomplete="email" :nonce="$nonce"
             class=" {{ $errors->has('email') ? 'is-invalid' : '' }}">
+            <x-slot:input_icon_left>
+                <i data-lucide="mail" class="icon-large"></i>
+            </x-slot:input_icon_left>
 
             <x-slot:feedback>
                 @include('components.form.input-feedback', [
-    'feedback_id' => 'userLogin-email-feedback',
-    'message' => $errors->first('email'),
-])
+                    'feedback_id' => 'userLogin-email-feedback',
+                    'message' => $errors->first('email'),
+                ])
             </x-slot:feedback>
         </x-form.email>
 
@@ -40,16 +43,16 @@
 
             <x-slot:toggle_password>
                 @include('components.form.toggle-password', [
-    'toggler_id' => 'toggle-psw',
-    'controls' => 'userLogin-password',
-])
+                    'toggler_id' => 'toggle-psw',
+                    'controls' => 'userLogin-password',
+                ])
             </x-slot:toggle_password>
 
             <x-slot:feedback>
                 @include('components.form.input-feedback', [
-    'feedback_id' => 'userLogin-password-feedback',
-    'message' => $errors->first('password'),
-])
+                    'feedback_id' => 'userLogin-password-feedback',
+                    'message' => $errors->first('password'),
+                ])
             </x-slot:feedback>
         </x-form.password>
 

@@ -397,27 +397,19 @@ class Employee extends Model
     */
 
     /**
-     * Get the processes(e.g., overtimes, leaves) where employee is the supervisor.
+     * Get the processes(e.g., overtimes, leaves) where employee is the initial approver.
      */
-    public function supervisedProcesses(): HasMany
+    public function initiallyApprovedProcesses(): HasMany
     {
-        return $this->hasMany(Process::class, 'supervisor', 'employee_id');
+        return $this->hasMany(Process::class, 'initial_approver', 'employee_id');
     }
 
     /**
-     * Get the processes(e.g., overtimes, leaves) where employee is the Area Manager.
+     * Get the processes(e.g., overtimes, leaves) where employee is the secondary approver.
      */
-    public function areaManagedProcesses(): HasMany
+    public function secondaryApprovedProcesses(): HasMany
     {
-        return $this->hasMany(Process::class, 'area_manager', 'employee_id');
-    }
-
-    /**
-     * Get the processes(e.g., overtimes, leaves) where employee is the HR Manager.
-     */
-    public function hrManagedProcesses(): HasMany
-    {
-        return $this->hasMany(Process::class, 'hr_manager', 'employee_id');
+        return $this->hasMany(Process::class, 'secondary_approver', 'employee_id');
     }
 
     /*

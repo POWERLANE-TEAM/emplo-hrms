@@ -19,7 +19,7 @@
         $user = auth()->user() ?? abort(401);
 
         try {
-            $applicantEmail = $personalDetail['parsedResume']['employee_email'] ?? $user->email;
+            $applicantEmail = $personalDetail['applicant']['email'] ?? $user->email;
             if (empty($applicantEmail) && !$user->facebook_id) {
                 throw new \Exception('User email is missing.');
             }
@@ -30,12 +30,12 @@
 
         try {
             $applicantName = ucwords(
-                (data_get($personalDetail, 'form.applicantName.lastName') ?? '') .
+                (data_get($personalDetail, 'applicant.name.lastName') ?? '') .
                     ', ' .
-                    (data_get($personalDetail, 'form.applicantName.firstName') ?? ''),
+                    (data_get($personalDetail, 'applicant.name.firstName') ?? ''),
             );
 
-            $applicantName .= ' ' . (data_get($personalDetail, 'form.applicantName.middleName') ?? '');
+            $applicantName .= ' ' . (data_get($personalDetail, 'applicant.name.middleName') ?? '');
 
             if (empty($applicantName) || trim($applicantName) == ',') {
                 throw new \Exception('Name information is missing');
@@ -45,7 +45,7 @@
         }
 
         try {
-            $applicantBirthDate = data_get($personalDetail, 'form.applicantBirth') ?? 'Birth date missing';
+            $applicantBirthDate = data_get($personalDetail, 'applicant.birth') ?? 'Birth date missing';
             if ($applicantBirthDate) {
                 $applicantBirthDateF = \Carbon\Carbon::parse($applicantBirthDate)->format('F j, Y');
             } else {
