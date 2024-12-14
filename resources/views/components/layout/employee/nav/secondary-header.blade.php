@@ -7,10 +7,10 @@
                 </div>
             </div>
 
-            <x-nav-link href="/" wire:navigate :active="request()->is('/')" class="no-hover ps-0  nav-link">
-                <h1 class="fs-2  fw-bold text-primary">Powerlane</h1>
+            <x-nav-link href="/hiring" wire:navigate :active="request()->is('/')"
+                class="no-hover text-decoration-none p-0">
+                <p class="fs-3 mb-0 fw-bold text-primary">Powerlane</p>
             </x-nav-link>
-
         </div>
         <div class="d-flex align-items-center fw-bold">
 
