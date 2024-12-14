@@ -28,7 +28,7 @@
             'class' => 'form-control border ps-3 rounded',
             'autocomplete' => $attributes->get('autocomplete', 'off'),
             'placeholder' => $attributes->get('placeholder', 'HH:mm'),
-            {{-- Placeholder with time format --}},
+            {{-- Placeholder with time format --}}
         ]) }}
         aria-owns="{{ $attributes->get('id') }}-feedback" nonce="{{ $nonce }}">
     @if (!empty($feedback))
