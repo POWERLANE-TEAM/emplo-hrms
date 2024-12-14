@@ -1,7 +1,7 @@
 @extends('components.layout.app', ['description' => 'Hiring Page', 'font_weights' => ['900', '600']])
 
 @section('head')
-    <title>Toast Alerts</title>
+    <title>Pop Ups</title>
 @endsection
 
 @pushOnce('pre-scripts')
@@ -18,29 +18,37 @@
 @endPushOnce
 
 @section('before-nav')
+ 
+<div class="container mt-5">
+    <h2 class="mb-4">Alerts</h2>
 
-<!-- Toast Container (Bootstrap's auto-managed container) -->
-<div class="toast-container position-fixed top-0 end-0 p-3">
+    <!-- Success Alert -->
+    <x-pop-ups.alerts :type="'success'" :icon="'check-circle'" :message="'This is a success alert!'" />
 
+    <!-- Error Alert -->
+    <x-pop-ups.alerts :type="'danger'" :icon="'alert-triangle'" :message="'This is an error alert!'" />
+
+    <!-- Warning Alert -->
+    <x-pop-ups.alerts :type="'warning'" :icon="'alert-octagon'" :message="'This is a warning alert!'" />
+
+    <!-- Info Alert -->
+    <x-pop-ups.alerts :type="'info'" :icon="'info'" :message="'This is an info alert!'" />
 </div>
 
 <div class="container mt-5">
-    <h2 class="mb-4">Test Alerts</h2>
+    <h2 class="mb-4">Toasts</h2>
 
-    <!-- Success Alert -->
-    <x-alerts.toasts :type="'success'" :icon="'check-circle'" :message="'This is a success alert!'" />
+    <!-- Success Toast -->
     <button class="btn btn-success mt-3" onclick="showToast('success', 'This is a success toast!', 'check-circle')">Show Success Alert</button>
 
-    <!-- Error Alert -->
-    <x-alerts.toasts :type="'danger'" :icon="'alert-triangle'" :message="'This is an error alert!'" />
-    <button class="btn btn-danger mt-3" onclick="showToast('danger', 'This is an error toast!!', 'alert-triangle')">Show Error Alert</button>
+    <!-- Error Toast -->
+    <button class="btn btn-danger mt-3" onclick="showToast('danger', 'This is an error toast!', 'alert-triangle')">Show Error Alert</button>
 
-    <!-- Warning Alert -->
-    <x-alerts.toasts :type="'warning'" :icon="'alert-octagon'" :message="'This is a warning alert!'" />
-    <button class="btn btn-warning mt-3" onclick="showToast('warning', 'This is a warning toast!!', 'alert-octagon')">Show Warning Alert</button>
+    <!-- Warning Toast -->
+    <button class="btn btn-warning mt-3" onclick="showToast('warning', 'This is a warning toast!', 'alert-octagon')">Show Warning Alert</button>
 
-    <!-- Info Alert -->
-    <x-alerts.toasts :type="'info'" :icon="'info'" :message="'This is an info alert!'" />
+    <!-- Info Toast -->
     <button class="btn btn-info mt-3" onclick="showToast('info', 'This is an info alert!', 'info')">Show Info Alert</button>
 </div>
+
 @endsection
