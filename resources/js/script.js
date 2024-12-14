@@ -1,4 +1,4 @@
-
+import './animations/texts-effect.js';
 
 function disableSubmit() {
     document.querySelectorAll('form:has(:invalid) button[type="submit"],form:has(:invalid) button:not([type])').forEach(button => {
@@ -72,6 +72,33 @@ document.querySelectorAll('.announcement-item').forEach(element => {
     if (words.length > 20) {
         element.innerText = words.slice(0, 15).join(' ') + '...';
     }
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    /**
+     * Adds a scroll-triggered animation to specified elements with unique naming.
+     * @param {string} selector - The CSS selector for the elements to animate.
+     * @param {string} activeClass - The unique class to add when the element enters the viewport.
+     * @param {object} options - IntersectionObserver options.
+     */
+    function addScrollTriggerAnimation(selector, activeClass = 'u-active', options = { threshold: 0.1 }) {
+        const elements = document.querySelectorAll(selector);
+
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add(activeClass);
+                    observer.unobserve(entry.target); // Stop observing once triggered
+                }
+            });
+        }, options);
+
+        elements.forEach(element => observer.observe(element));
+    }
+
+    // Example usage
+    addScrollTriggerAnimation('.u-animate-on-scroll'); // Default: adds 'u-active' class
+    addScrollTriggerAnimation('.u-fade-in', 'u-visible'); // Adds 'u-visible' class for '.u-fade-in' elements
 });
 
 
