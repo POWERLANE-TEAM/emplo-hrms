@@ -7,6 +7,8 @@ use Carbon\Carbon;
 
 class ActivityLogs extends Component
 {
+
+    // BACK-END REPLACE: Database fetching only. The rest of the back-end are handled.
     public $events = [
         [
             'date' => '2024-12-10 12:23:52',
