@@ -18,19 +18,18 @@
 @section('content')
 
 <div class="row pb-3">
-    <div class="col-md-8">
-        <x-headings.main-heading :isHeading="true" :containerAttributes="new ComponentAttributeBag(['class' => 'ps-2 pt-2 pb-2 ms-n1'])" :overrideContainerClass="true" class="fs-2 fw-bold mb-2 text-secondary-emphasis">
+    <div class="col-md-8 d-flex align-items-center">
+        <x-headings.main-heading :isHeading="true" :containerAttributes="new ComponentAttributeBag(['class' => 'ps-2 pt-2 ms-n1'])" :overrideContainerClass="true" :overrideClass="true" class="fs-2 fw-bold text-secondary-emphasis">
             <x-slot:heading>
-                {{ __('Profile Information') }}
+                {{ __('Edit Profile Information') }}
             </x-slot:heading>
         </x-headings.main-heading>
     </div>
 
     <div class="col-md-4 text-end d-flex justify-content-end align-items-center">
         <div>
-            <a href="{{ route($routePrefix . '.profile') }}" class="btn btn-lg btn-outline-primary">
-                <i data-lucide="pen-line" class="icon icon-large me-2"></i>
-                Edit Profile
+            <a href="{{ route($routePrefix . '.profile') }}" class="hover-opacity" data-bs-toggle="tooltip" title="Close">
+                <i data-lucide="circle-x" class="text-black-50 icon icon-xlarge"></i>
             </a>
         </div>
     </div>
