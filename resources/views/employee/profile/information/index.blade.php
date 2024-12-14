@@ -37,6 +37,11 @@
     </div>
 </div>
 
+<!-- BACK-END REPLACE Note:
+
+This section can be replaced with the same component used in Employees' in HR Manager: information.
+The only thing I removed was the Date Hired, but that can be bring up again if you think it's needed. -->
+
 <section>
     <div class="row">
         <!-- Left Column: Work / Personal Information -->
