@@ -1,4 +1,7 @@
 .activity-logs-container {
+
+    padding-top: 2em;
+
     .timeline {
         border-left: 3px solid #ebebeb;
         border-bottom-right-radius: 4px;
@@ -114,8 +117,32 @@
     }
 
     .date-header {
-        margin: 0 0 0 6%;
+        margin: 0 0 0 6.4%;
         font-size: 1rem;
     }
+
+    .change-detail {
+        font-size: 0.8rem;
+      }
+      
+      .change-label {
+        font-weight: 500;
+        color: #333;
+      }
+      
+      .change-value {
+        font-size: 0.8rem;
+      }
+      
+      .change-value.previous {
+        color: #d9534f;
+        text-decoration: line-through; 
+      }
+      
+      .change-value.new {
+        color: #28a745;
+        font-weight: bold;
+      }
+      
   }
   
