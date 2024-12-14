@@ -123,7 +123,18 @@
     }
 
     table tbody tr {
-        margin-bottom: 1rem; /* Adjust this value to your desired spacing */
-        border-bottom: 1px solid #dee2e6 !important; /* Add a bottom border */
+        position: relative;
+        margin-bottom: 1rem;
     }
+    
+    table tbody tr::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 3%;
+        width: 95%; 
+        height: 1.5px; 
+        background-color: #f6f6f6;
+    }
+    
 }
