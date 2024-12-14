@@ -52,3 +52,7 @@ Route::middleware('guest')->group(function () {
 Route::post('/logout', [Logout::class, 'destroy'])
     ->middleware('auth')
     ->name('logout');
+
+Route::get('/test-alerts', function () {
+    return view('components.html.test-alerts');
+});
