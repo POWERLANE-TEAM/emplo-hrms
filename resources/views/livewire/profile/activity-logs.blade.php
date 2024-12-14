@@ -3,63 +3,39 @@
         <div class="col-md-12">
             <div class="card-body">
 
-                <div id="content">
+                <div>
 
-                    <div class="timeline-data">
-                        <div class="date-header">
-                            <x-status-badge color="success">April 2, 2024</x-status-badge>
-                        </div>
-                        <ul class="timeline">
-                            <li class="event" data-date="12:30pm">
-                                <h3>Registration</h3>
-                                <p>Get here on time, it's first come first serve. Be late, get turned away.</p>
-                            </li>
-                            <li class="event" data-date="2:30pm">
-                                <h3>Opening Ceremony</h3>
-                                <p>Get ready for an exciting event, this will kick off in amazing fashion with MOP &amp;
-                                    Busta Rhymes as an opening show.</p>
-                            </li>
-                            <li class="event" data-date="5:00pm">
-                                <h3>Main Event</h3>
-                                <p>This is where it all goes down. You will compete head to head with your friends and
-                                    rivals. Get ready!</p>
-                            </li>
-                            <li class="event" data-date="8:30pm">
-                                <h3>Closing Ceremony</h3>
-                                <p>See how is the victor and who are the losers. The big stage is where the winners bask
-                                    in
-                                    their own glory.</p>
-                            </li>
-                        </ul>
-                    </div>
+                    @foreach ($events as $event)
+                        <div class="timeline-data">
+                            <div class="date-header">
+                                <x-status-badge color="success">{{ $event['formatted_date'] }}</x-status-badge>
+                            </div>
+                            <ul class="timeline">
+                                @foreach ($event['logs'] as $log)
+                                    <li class="event" data-date="{{ $log['time'] }}">
+                                        <h3 style="margin-bottom:0">{{ $log['title'] }}</h3>
 
-                    <div class="timeline-data">
-                        <div class="date-header">
-                            <x-status-badge color="success">April 2, 2024</x-status-badge>
+                                        @if (!empty($log['previous_value']))
+                                            <p class="mb-0 mt-2 change-detail">
+                                                <span class="change-label">Previous Value:</span>
+                                                <span class="change-value previous">{{ $log['previous_value'] }}</span>
+                                            </p>
+                                        @endif
+
+                                        @if (!empty($log['new_value']))
+                                            <p class="mb-0 change-detail">
+                                                <span class="change-label">New Value:</span>
+                                                <span class="change-value new">{{ $log['new_value'] }}</span>
+                                            </p>
+                                        @endif
+                                    </li>
+                                @endforeach
+                            </ul>
                         </div>
-                        <ul class="timeline">
-                            <li class="event" data-date="12:30pm">
-                                <h3>Registration</h3>
-                                <p>Get here on time, it's first come first serve. Be late, get turned away.</p>
-                            </li>
-                            <li class="event" data-date="2:30pm">
-                                <h3>Opening Ceremony</h3>
-                                <p>Get ready for an exciting event, this will kick off in amazing fashion with MOP &amp;
-                                    Busta Rhymes as an opening show.</p>
-                            </li>
-                            <li class="event" data-date="5:00pm">
-                                <h3>Main Event</h3>
-                                <p>This is where it all goes down. You will compete head to head with your friends and
-                                    rivals. Get ready!</p>
-                            </li>
-                            <li class="event" data-date="8:30pm">
-                                <h3>Closing Ceremony</h3>
-                                <p>See how is the victor and who are the losers. The big stage is where the winners bask
-                                    in
-                                    their own glory.</p>
-                            </li>
-                        </ul>
-                    </div>
+                    @endforeach
+
+
+
                 </div>
             </div>
         </div>
