@@ -30,7 +30,14 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
-            $table->boolean('is_denied')->default(false);
+            $table->timestamp('denied_at')->nullable();
+            $table->foreignIdFor(Employee::class, 'denier')
+                ->nullable()
+                ->constrained('employees', 'employee_id')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+
+            $table->longText('feedback')->nullable();
         });
     }
 

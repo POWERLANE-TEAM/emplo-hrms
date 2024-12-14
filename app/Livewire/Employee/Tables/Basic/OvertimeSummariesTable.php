@@ -2,9 +2,8 @@
 
 namespace App\Livewire\Employee\Tables\Basic;
 
+use App\Enums\Payroll;
 use App\Models\Overtime;
-use App\Http\Helpers\Payroll;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\View\ComponentAttributeBag;
@@ -87,64 +86,18 @@ class OvertimeSummariesTable extends DataTableComponent
 
     public function builder(): Builder
     {
-        $cutOffs = $this->getAllCutOffs(now()->toDateTimeString(), 12);
-        
-        $periods = array_map(function ($cutOff) {
-            $start = $cutOff['start']->toDateTimeString();
-            $end = $cutOff['end']->toDateTimeString();
-            return "when filed_at between '{$start}' and '{$end}' then '{$start} - {$end}'";
-        }, $cutOffs);
-    
-        $period = implode(' ', $periods);
         $statement = "
-            max(filed_at) as filed_at, 
-            (case {$period} end) as cut_off_period,
+            count(overtime_id) as overtime_id, 
+            max(filed_at) as filed_at,
+            max(date) as date,
+            cut_off, 
             sum(abs(extract(epoch from (start_time - end_time)))) / 3600 as total_hours_rendered
         ";
 
-        $interval = array_map(function ($cutOff) {
-            $start = $cutOff['start']->toDateTimeString();
-            $end = $cutOff['end']->toDateTimeString();
-            return "filed_at between '{$start}' AND '{$end}'";
-        }, $cutOffs);
-    
-        $condition = implode(' or ', $interval);
-        
         return Overtime::query()
             ->where('employee_id', Auth::user()->account->employee_id)
             ->selectRaw($statement)
-            ->whereRaw("($condition)")
-            ->groupByRaw('cut_off_period');
-    }
-    
-    private function getAllCutOffs($date = null, $numPeriods = 12): array
-    {
-        $date = Carbon::parse($date) ?? now();
-        $periods = [];
-        
-        for ($i = 0; $i < $numPeriods; $i++) {
-            if ($date->day >= 11 && $date->day <= 25) {
-                $start = $date->copy()->day(11)->startOfDay();
-                $end = $date->copy()->day(25)->endOfDay();
-                $periods[] = compact('start', 'end');
-                
-                $start = $date->copy()->day(26)->startOfDay();
-                $end = $date->copy()->addMonth()->day(10)->endOfDay();
-                $periods[] = compact('start', 'end');
-            } elseif ($date->day >= 26) {
-                $start = $date->copy()->day(26)->startOfDay();
-                $end = $date->copy()->addMonth()->day(10)->endOfDay();
-                $periods[] = compact('start', 'end');
-            } else {
-                $start = $date->copy()->subMonth()->day(26)->startOfDay();
-                $end = $date->copy()->subMonth()->day(10)->endOfDay();
-                $periods[] = compact('start', 'end');
-            }
-    
-            $date->subMonth();
-        }
-    
-        return $periods;
+            ->groupBy('cut_off');
     }
 
     public function columns(): array
@@ -152,19 +105,19 @@ class OvertimeSummariesTable extends DataTableComponent
         return [
             Column::make(__('Cut-Off Period'))
                 ->label(function ($row) {
-                    $cutOff = Payroll::getCutOffPeriod($row->filed_at, isReadableFormat: true);
+                    $cutOff = Payroll::getCutOffPeriod($row->date, isReadableFormat: true);
                     return $cutOff['start']. ' - ' .$cutOff['end'];
                 })
                 ->sortable(function (Builder $query, $direction) {
-                    return $query->orderBy('filed_at', $direction);
+                    return $query->orderBy('date', $direction);
                 })
                 ->setSortingPillDirections('Asc', 'Desc')
                 ->setSortingPillTitle(__('Cut-Off')),
 
             Column::make(__('Payout Date'))
-                ->label(fn ($row) => Payroll::getPayoutDate($row->filed_at, isReadableFormat: true))
+                ->label(fn ($row) => Payroll::getPayoutDate($row->date, isReadableFormat: true))
                 ->sortable(function (Builder $query, $direction) {
-                    return $query->orderBy('filed_at', $direction);
+                    return $query->orderBy('date', $direction);
                 })
                 ->setSortingPillDirections('Asc', 'Desc')
                 ->setSortingPillTitle(__('Payout')),
@@ -207,4 +160,3 @@ class OvertimeSummariesTable extends DataTableComponent
         ];
     }
 }
-

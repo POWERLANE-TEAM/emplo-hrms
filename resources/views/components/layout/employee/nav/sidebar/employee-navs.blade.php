@@ -329,7 +329,7 @@
             :defaultIcon="['src' => 'requests', 'alt' => 'Performance']"
             :activeIcon="['src' => 'requests', 'alt' => 'Relations']" :children="[
                 ['href' => route($routePrefix . '.managerial.requests.leaves.all'), 'active' => request()->routeIs($routePrefix . '.managerial.requests.leaves.all'), 'nav_txt' => 'Leaves'],
-                ['href' => route($routePrefix . '.managerial.requests.overtime.all'), 'active' => request()->routeIs($routePrefix . '.managerial.requests.overtime.all'), 'nav_txt' => 'Overtime'],
+                ['href' => route($routePrefix . '.overtimes.requests'), 'active' => request()->routeIs($routePrefix . '.overtimes.requests'), 'nav_txt' => 'Overtime'],
             ]">
         </x-layout.employee.nav.sidebar.nested-nav-items>
     @endcan

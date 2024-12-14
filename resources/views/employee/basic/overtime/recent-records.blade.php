@@ -34,6 +34,5 @@
 
 <section class="my-2">
     <livewire:employee.tables.basic.recent-overtimes-table />
-    <livewire:employee.overtimes.basic.request-overtime />
 </section>
 @endsection

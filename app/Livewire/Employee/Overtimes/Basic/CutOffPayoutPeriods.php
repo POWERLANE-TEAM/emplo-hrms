@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Employee\Overtimes\Basic;
 
-use App\Http\Helpers\Payroll;
+use App\Enums\Payroll;
 use Livewire\Component;
 
 class CutOffPayoutPeriods extends Component

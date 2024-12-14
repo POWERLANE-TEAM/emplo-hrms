@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Employee\Overtimes\Basic;
 
+use App\Enums\Payroll;
 use Livewire\Component;
 use App\Models\Overtime;
 use Illuminate\Support\Str;
@@ -36,6 +37,12 @@ class RequestOvertime extends Component
     #[Locked]
     public $buttonName = 'Submit Request';
 
+    public function mount()
+    {
+        $this->state['date'] = now()->format('Y-m-d');
+        $this->state['startTime'] = now()->format('H:i');
+    }
+
     public function updated($prop)
     {
         if (
@@ -69,10 +76,12 @@ class RequestOvertime extends Component
 
             DB::transaction(function () use ($overtime) {
                 $overtime->update([
-                    'employee_id' => Auth::id(),
+                    'employee_id' => $this->employee->employee_id,
                     'work_performed' => $this->state['workToPerform'],
+                    'date' => $this->state['date'],
                     'start_time' => $this->state['startTime'],
                     'end_time' => $this->state['endTime'],
+                    'cut_off' => $this->getCutOffType(),
                 ]);
             });    
         } else {
@@ -84,10 +93,12 @@ class RequestOvertime extends Component
     
             DB::transaction(function () {
                 $overtime = Overtime::create([
-                    'employee_id' => Auth::id(),
+                    'employee_id' => $this->employee->employee_id,
                     'work_performed' => $this->state['workToPerform'],
+                    'date' => $this->state['date'],
                     'start_time' => $this->state['startTime'],
                     'end_time' => $this->state['endTime'],
+                    'cut_off' => $this->getCutOffType(),
                 ]);
         
                 $overtime->processes()->create([
@@ -140,6 +151,12 @@ class RequestOvertime extends Component
         $this->reset();
         $this->resetErrorBag();
         $this->dispatch('resetOvertimeRequestModal');
+    }
+
+    private function getCutOffType()
+    {
+        $selectedDate = Carbon::parse($this->state['date']);
+        return Payroll::getCutOffPeriodForDate($selectedDate);
     }
 
     #[Computed]

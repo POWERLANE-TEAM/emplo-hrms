@@ -267,9 +267,11 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
      * Overtime Requests
      */
 
-    Route::get('managerial/requests/overtime/all', function () {
+    Route::get('overtimes/requests', function () {
         return view('employee.supervisor.requests.overtime.all');
-    })->name('managerial.requests.overtime.all');
+    })
+        ->can(UserPermission::VIEW_SUBORDINATE_OVERTIME_REQUEST)
+        ->name('overtimes.requests');
 
 
     /**
