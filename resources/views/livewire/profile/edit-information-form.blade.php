@@ -1,3 +1,4 @@
+<!-- BACK-END REPLACE: Form should have the current value of each input fields when editing. -->
 
 <div>
 <section class="mx-2">
@@ -148,15 +149,10 @@
             </div>
         </section>
 
-        <aside class="pl-3">
-    <x-info_panels.note 
-    note="Some information shown on the profile information cannot be edited."
-    />
-</aside>
-
-<x-buttons.main-btn id="create_acc" label="Create Account" name="create_acc" :nonce="$nonce"
-            :disabled="false" class="w-25" :loading="'Creating...'" />
-
+        <div class="mt-3">
+            <x-buttons.main-btn id="create_acc" label="Update Information" name="update_info" :nonce="$nonce"
+            :disabled="true" class="w-25" :loading="'Creating...'" />
+        </div>
     </form>
 </section>
 </div>
