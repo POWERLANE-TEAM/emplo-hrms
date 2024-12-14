@@ -28,14 +28,15 @@
                                                 <span class="change-value new">{{ $log['new_value'] }}</span>
                                             </p>
                                         @endif
+
+                                        <div class="mt-2">
+                                            <small class="text-muted">{{ $log['platform'] }} | {{ $log['ip_address'] }}</small>
+                                        </div>
                                     </li>
                                 @endforeach
                             </ul>
                         </div>
                     @endforeach
-
-
-
                 </div>
             </div>
         </div>
