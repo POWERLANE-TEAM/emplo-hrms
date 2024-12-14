@@ -13,6 +13,6 @@
     [
         'title' => 'Activity Log',
         'icon' => 'list',
-        'route' => 'notifications',
+        'route' => 'activity-logs',
     ],
 ]" />
