@@ -95,9 +95,8 @@ export function showToast(type, message, icon) {
         toast.show();
 
         setTimeout(() => {
-            toastElement.classList.remove('show');
             toastElement.classList.add('fade');
-            setTimeout(() => toastElement.remove(), 300);
+            setTimeout(() => toastElement.remove(), 500);
         }, 5000);
     } else {
         console.error('Toast container not found!');
