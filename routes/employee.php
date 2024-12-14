@@ -126,6 +126,10 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         return view('employee.profile.settings');
     })->name('settings');
 
+    Route::get('activity-logs', function () {
+        return view('employee.profile.activity-logs');
+    })->name('activity-logs');
+
 
     /**
      * Evaluator
