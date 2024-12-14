@@ -6,7 +6,7 @@
     @endisset
 
     <div id="interview-group">Interview</div>
-    <div class="input-group flex-md-nowrap gap-1 tw-min-w-[100%]" aria-labelledby="interview-group">
+    <div class="input-group flex-md-nowrap gap-1 min-w-100" aria-labelledby="interview-group">
         <div class="col-12 col-md-6">
             <x-form.boxed-date label="Date" id="interview-date"
                 class=" {{ $errors->has('interview.date') ? 'is-invalid' : '' }}" name="interview.date"

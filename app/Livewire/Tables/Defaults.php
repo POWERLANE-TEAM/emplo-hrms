@@ -2,11 +2,21 @@
 
 namespace App\Livewire\Tables;
 
+use App\Http\Helpers\Timezone;
 use Illuminate\Database\Eloquent\Builder;
+use Livewire\Attributes\Computed;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 
 trait Defaults
 {
+
+    protected $timezone;
+
+    public function setTimezone(): void
+    {
+        $this->timezone = Timezone::get();
+    }
+
     public function configuringStandardTableMethods()
     {
         // Your standard configure() options go here, anything set here will be over-ridden by the configure() method
@@ -88,7 +98,7 @@ trait Defaults
             $area = $account->specificArea->first();
 
             if ($area && $area->area_id != 2) {
-                $query->where('specificArea.area_id', $area->area_id);
+                $query->where('specific_areas.area_id', $area->area_id);
             }
         } else {
             report(new \Exception("User ID: auth()->user()->user_id  User  $account->fullName ; has no Specific Area Assigned"));
