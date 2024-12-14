@@ -26,11 +26,11 @@
             <table class="w-100">
                 <thead class="">
                     <tr class="">
-                        <th class="px-5 py-3">{{ __('Employee') }}</th>
-                        <th>{{ __('Check-In') }}</th>
-                        <th>{{ __('Check-Out') }}</th>
-                        <th>{{ __('Overtime-In') }}</th>
-                        <th>{{ __('Overtime-Out') }}</th>
+                        <th class="ps-5 pt-4 pb-2">{{ __('Employee') }}</th>
+                        <th class="text-center pt-4 pb-2">{{ __('Check-In') }}</th>
+                        <th class="text-center pt-4 pb-2">{{ __('Check-Out') }}</th>
+                        <th class="text-center pt-4 pb-2">{{ __('Overtime-In') }}</th>
+                        <th class="text-center pe-2 pt-4 pb-2">{{ __('Overtime-Out') }}</th>
                     </tr>
                 </thead>
 
@@ -48,10 +48,10 @@
                                     </small>
                                 </div>
                             </td>
-                            <td>{{ $dtrLog->checkIn ?? '-' }}</td>
-                            <td>{{ $dtrLog->checkOut ?? '-' }}</td>
-                            <td>{{ $dtrLog->overtimeIn ?? '-' }}</td>
-                            <td>{{ $dtrLog->overtimeOut ?? '-' }}</td>
+                            <td class="text-center">{{ $dtrLog->checkIn ?? '-' }}</td>
+                            <td class="text-center">{{ $dtrLog->checkOut ?? '-' }}</td>
+                            <td class="text-center">{{ $dtrLog->overtimeIn ?? '-' }}</td>
+                            <td class="text-center pe-2 ">{{ $dtrLog->overtimeOut ?? '-' }}</td>
                         </tr>
                     @endforeach
 
