@@ -1,3 +1,5 @@
+
+
 function disableSubmit() {
     document
         .querySelectorAll(
@@ -71,7 +73,17 @@ document.querySelectorAll(".announcement-item").forEach((element) => {
     }
 });
 
-export function showToast(type, message, icon) {
+export function showToast(type, message) {
+    
+    const iconsMap = {
+        success: "check-circle",
+        danger: "alert-triangle",
+        warning: "alert-octagon",
+        info: "info",
+    };
+
+    const icon = iconsMap[type] || "info";
+
     let toastHtml = `
         <div class="toast align-items-center text-white bg-${type} border-0" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="d-flex">
@@ -107,3 +119,11 @@ export function showToast(type, message, icon) {
 }
 
 window.showToast = showToast;
+
+
+export function openModal(modalId) {
+    const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById(modalId));
+    modal.show();
+}
+
+window.openModal = openModal;
