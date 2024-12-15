@@ -65,6 +65,7 @@ class RolesAndPermissionsSeeder extends Seeder
         return [
             // View cases goes here
             UserPermission::VIEW_HR_MANAGER_DASHBOARD->value,
+            UserPermission::VIEW_APPLICATION_INFORMATION->value,
             UserPermission::VIEW_JOB_APPLICATION_FORM->value,
             UserPermission::VIEW_ALL_PENDING_APPLICATIONS->value,
             UserPermission::VIEW_ALL_QUALIFIED_APPLICATIONS->value,

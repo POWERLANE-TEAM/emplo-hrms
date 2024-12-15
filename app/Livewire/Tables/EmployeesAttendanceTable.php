@@ -281,6 +281,8 @@ class EmployeesAttendanceTable extends DataTableComponent
         $query = Employee::query()->with(['attendanceLogs', 'specificArea', 'shift' /* 'status', */ /* 'jobTitle.department' */ /* , 'jobTitle.jobLevel' *//* , 'application' */])
 
             // prevent duplicate rows (workaround)
+            ->leftJoin('employee_job_details', 'employees.employee_id', '=', 'employee_job_details.employee_id')
+            ->leftJoin('specific_areas', 'employee_job_details.area_id', '=', 'specific_areas.area_id')
             ->distinct('employees.employee_id');
 
         // Maybe add specific area restriction based on permission?

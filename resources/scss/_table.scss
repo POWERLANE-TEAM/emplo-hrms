@@ -42,11 +42,84 @@ table.table {
 
     &.table-hover {
         @include table-hover-styles;
+
+        tr:not(:hover) td {
+            &.text-primary {
+                color: rgba(var(--bs-primary-rgb), var(--bs-text-opacity));
+            }
+
+            &.text-danger {
+                color: rgba(var(--bs-danger-rgb), var(--bs-text-opacity));
+            }
+        }
     }
 
     td {
         font-size: 1.05em;
-        font-weight: 500;
+        min-width: 35cqw;
+
+        @media (min-width: 768px) {
+            min-width: calc(100px + 5cqw);
+        }
+
+    }
+
+    &:has(td.border-end.sticky) {
+        position: relative;
+
+        tr {
+
+            td:first-of-type,
+            th:first-of-type {
+
+                min-width: 30cqw;
+
+                @media (min-width: 768px) {
+                    min-width: calc(150px + 10cqw);
+                }
+
+                position: sticky;
+                z-index: 2;
+                left: 0;
+            }
+        }
+    }
+
+    tr {
+        min-height: fit-content;
+        --tr-padding-x: calc(0.25rem + 0.5vw);
+        --padding-y: calc(1rem + 0.5vw);
+
+        td,
+        th {
+            padding-top: var(--padding-y);
+            padding-bottom: var(--padding-y);
+        }
+
+        td:first-of-type,
+        td:last-of-type {
+            padding-left: var(--tr-padding-x);
+            padding-right: var(--tr-padding-x);
+
+            &.border-end {
+                border-right: none;
+
+                &::after {
+                    content: "";
+                    border-radius: 1cqw;
+                    align-self: center;
+                    position: absolute;
+                    width: calc(0.1rem + 0.12vw);
+                    height: 60%;
+                    top: 20%;
+                    bottom: 20%;
+                    right: calc(var(--tr-padding-x) / 2);
+                    background-color: currentColor;
+                    opacity: 0.25;
+                }
+            }
+        }
+
     }
 
 }
@@ -69,7 +142,7 @@ div:has(div[wire\:\key="table-wrapper"]) {
 
             div:has(>div[wire\:click="clearSearch"]) {
                 // Hides clear button of datatable
-                display: none !important;
+                // display: none !important;
             }
 
             /*
@@ -314,54 +387,6 @@ div:has(div[wire\:\key="table-wrapper"]) {
         table {
 
             @include table-hover-styles;
-
-            tr {
-                min-height: fit-content;
-                --tr-padding-x: calc(0.25rem + 0.5vw);
-                --padding-y: calc(1rem + 0.5vw);
-
-                td,
-                th {
-                    padding-top: var(--padding-y);
-                    padding-bottom: var(--padding-y);
-                }
-
-                &:has(td.border-end) {
-                    position: relative;
-
-                    td:first-of-type,
-                    th:first-of-type {
-                        position: sticky;
-                        z-index: 2;
-                        left: 0;
-                    }
-                }
-
-                td:first-of-type,
-                td:last-of-type {
-                    padding-left: var(--tr-padding-x);
-                    padding-right: var(--tr-padding-x);
-
-                    &.border-end {
-                        border-right: none;
-
-                        &::after {
-                            content: "";
-                            border-radius: 1cqw;
-                            align-self: center;
-                            position: absolute;
-                            width: calc(0.1rem + 0.12vw);
-                            height: 60%;
-                            top: 20%;
-                            bottom: 20%;
-                            right: calc(var(--tr-padding-x) / 2);
-                            background-color: currentColor;
-                            opacity: 0.25;
-                        }
-                    }
-                }
-
-            }
 
         }
     }
