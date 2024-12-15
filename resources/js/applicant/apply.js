@@ -79,13 +79,80 @@ new GlobalListener('click', document, `#present_region`, (e) => {
     // setRegionInput(e.target)
 });
 
+function setOptions(presentSelect, permanentSelect) {
+
+    let presentSelectVal = presentSelect.value;
+    let optionExists = Array.from(permanentSelect.options).some(option => option.value === presentSelectVal);
+
+    if (!optionExists) {
+        let newOption = document.createElement('option');
+        newOption.value = presentSelectVal;
+        newOption.text = presentSelect.options[presentSelect.selectedIndex].text;
+        permanentSelect.add(newOption);
+    }
+    console.log(presentSelect, permanentSelect);
+}
+
 new GlobalListener('input', document, `${applicationForm} #sameAddressCheck`, (e) => {
 
-    // if (e.target.checked) {
-    console.log('Same input');
+    if (!e.target.checked) {
+        return;
+    }
+    console.log(e.target.getAttribute('data-comp-id'))
 
+    console.log(Livewire.find(e.target.getAttribute('data-comp-id')))
 
-    // }
+    let component = Livewire.find(e.target.getAttribute('data-comp-id'))
+
+    let presentRegionSelect = document.querySelector(`${applicationForm} #present_region`);
+    let presentProvinceSelect = document.querySelector(`${applicationForm} #present_province`);
+    let presentCitySelect = document.querySelector(`${applicationForm} #present_city`);
+    let presentBarangaySelect = document.querySelector(`${applicationForm} #present_barangay`);
+    let presentAddressInput = document.querySelector(`${applicationForm} #present_address`);
+
+    let permanentRegionSelect = document.querySelector(`${applicationForm} #permanent_region`);
+    let permanentProvinceSelect = document.querySelector(`${applicationForm} #permanent_province`);
+    let permanentCitySelect = document.querySelector(`${applicationForm} #permanent_city`);
+    let permanentBarangaySelect = document.querySelector(`${applicationForm} #permanent_barangay`);
+    let permanentAddressInput = document.querySelector(`${applicationForm} #permanent_address`);
+
+    setOptions(presentRegionSelect, permanentRegionSelect)
+    setOptions(presentProvinceSelect, permanentProvinceSelect)
+    setOptions(presentCitySelect, permanentCitySelect)
+    setOptions(presentBarangaySelect, permanentBarangaySelect)
+
+    setTimeout(() => {
+        permanentRegionSelect.value = presentRegionSelect.value
+        permanentProvinceSelect.value = presentRegionSelect.value
+        permanentCitySelect.value = presentRegionSelect.value
+        permanentBarangaySelect.value = presentRegionSelect.value
+        permanentAddressInput.value = presentAddressInput.value
+
+        component.set('address.permanentRegion', presentRegionSelect.value);
+        component.set('address.permanentProvince', presentRegionSelect.value);
+        component.set('address.permanentCity', presentRegionSelect.value);
+        component.set('address.permanentBarangay', presentRegionSelect.value);
+        component.set('address.permanentAddress', presentAddressInput.value);
+
+        Array.from(permanentRegionSelect.options).forEach(option => {
+            option.selected = option.value === presentRegionSelect.value;
+        });
+        Array.from(permanentProvinceSelect.options).forEach(option => {
+            option.selected = option.value === presentProvinceSelect.value;
+        });
+        Array.from(permanentCitySelect.options).forEach(option => {
+            option.selected = option.value === presentCitySelect.value;
+        });
+        Array.from(permanentBarangaySelect.options).forEach(option => {
+            option.selected = option.value === presentBarangaySelect.value;
+        });
+
+        permanentRegionSelect.dispatchEvent(new Event('change'));
+        permanentProvinceSelect.dispatchEvent(new Event('change'));
+        permanentCitySelect.dispatchEvent(new Event('change'));
+        permanentBarangaySelect.dispatchEvent(new Event('change'));
+
+    }, 0);
 
 });
 

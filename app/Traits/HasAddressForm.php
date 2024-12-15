@@ -93,13 +93,10 @@ trait HasAddressForm
 
                 $permanentProperty = explode('.', $property)[1];
 
-                // dump('not updated ' . $permanentProperty . ' ' . $presentProperty);
-
-                // $this->address[$permanentProperty] = $this->address[$presentProperty];
-                // throw new CannotUpdateLockedPropertyException($property);
-                // abort(400, 'You set the permanent address to be the same as the present address.');
                 $this->addError('samePresentAddressChckBox.checked', 'You set the permanent address to be the same as the present address.');
             }
+        } else {
+            $this->resetErrorBag('samePresentAddressChckBox.checked');
         }
     }
 

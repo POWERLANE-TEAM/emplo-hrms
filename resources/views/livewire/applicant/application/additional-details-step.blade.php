@@ -201,6 +201,7 @@
                         <x-form.checkbox container_class="" :nonce="$nonce"  id="sameAddressCheck"
                         wire:model="samePresentAddressChckBox.checked"
                         wire:click="useSameAsPresentAddress"
+                        :data-comp-id="$this->__id"
                         class="checkbox checkbox-primary same-present-address" >
 
                             <x-slot:label>
