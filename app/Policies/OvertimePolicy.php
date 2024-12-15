@@ -97,4 +97,63 @@ class OvertimePolicy
             ? Response::allow()
             : Response::deny();
     }
+
+    /**
+     * Check if user employee can see all overtime requests, regardless of job family.
+     * 
+     * @param \App\Models\User $user
+     * @return \Illuminate\Auth\Access\Response
+     */
+    public function viewOvertimeRequestAsSecondaryApprover(User $user): Response
+    {
+        return $user->hasAllPermissions([
+            UserPermission::VIEW_SUBORDINATE_LEAVE_REQUEST,
+            UserPermission::VIEW_ALL_OVERTIME_REQUEST,
+        ]) || $user->hasPermissionTo(UserPermission::VIEW_ALL_OVERTIME_REQUEST)
+            ? Response::allow()
+            : Response::deny();
+    }
+
+    /**
+     * Check if user can see overtime requests under his jurisdiction.
+     * 
+     * @param \App\Models\User $user
+     * @return \Illuminate\Auth\Access\Response
+     */
+    public function viewOvertimeRequestAsInitialApprover(User $user): Response
+    {
+        return $user->hasPermissionTo(UserPermission::VIEW_SUBORDINATE_OVERTIME_REQUEST)
+            ? Response::allow()
+            : Response::deny();
+    }
+
+    /**
+     * Check if user employee is a secondary approver (hr staff/manager) of overtime request submissions.
+     * 
+     * @param \App\Models\User $user
+     * @return \Illuminate\Auth\Access\Response
+     */
+    public function updateAllOvertimeRequest(User $user): Response
+    {
+        return $user->hasPermissionTo(UserPermission::UPDATE_ALL_OVERTIME_REQUEST)
+            ? Response::allow()
+            : Response::deny();
+    }
+
+    /**
+     * Check if user employee overtime request is still untouched by approvers.
+     * 
+     * @param \App\Models\Overtime $overtime
+     * @return \Illuminate\Auth\Access\Response
+     */
+    public function editOvertimeRequest(?User $user, Overtime $overtime): Response
+    {
+        $process = $overtime->processes->first();
+
+        return is_null($process->initial_approver_signed_at) &&
+            is_null($process->secondary_approver_signed_at) &&
+            is_null($process->denied_at)
+                ? Response::allow()
+                : Response::deny();
+    }
 }
