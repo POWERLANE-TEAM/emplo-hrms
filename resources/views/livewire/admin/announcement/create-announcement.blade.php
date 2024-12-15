@@ -46,3 +46,19 @@
             :disabled="false" class="w-25" :loading="'Posting...'" />
     </form>
 </section>
+
+
+@script
+<script>
+    Livewire.hook('morph.added', ({ el }) => {
+        console.log('Livewire morph added triggered for element:', el);
+        lucide.createIcons();
+    });
+
+    Livewire.on('show-toast', (data) => {
+        const toastData = Array.isArray(data) && data.length > 0 ? data[0] : data;
+        showToast(toastData.type, toastData.message, toastData.icon);
+    });
+</script>
+
+@endscript
