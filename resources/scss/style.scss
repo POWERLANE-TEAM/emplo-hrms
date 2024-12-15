@@ -259,3 +259,12 @@ select:invalid {
             drop-shadow(-1px -1px 0px var(--hover-color)) drop-shadow(2px -1px 0px var(--hover-color)) drop-shadow(2px 2px 0px var(--hover-color)) drop-shadow(-1px 2px 0px var(--hover-color))
     }
 }
+
+label:has(+div input:not(:placeholder-shown), +input:not(:placeholder-shown), +div textarea:not(:placeholder-shown), +textarea:not(:placeholder-shown)) {
+
+    .label-placeholder {
+        display: initial;
+        font-weight: initial;
+        font-style: italic;
+    }
+}
