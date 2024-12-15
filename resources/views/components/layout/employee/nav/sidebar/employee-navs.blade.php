@@ -40,10 +40,10 @@
     /**
      * Overtime
      */
-    $navOvertimeOrder = $user->hasPermissionTo(UserPermission::VIEW_ALL_OVERTIME) ? 6 : 4; // Adjust order as needed
-    $navOvertimeRoute = $user->hasPermissionTo(UserPermission::VIEW_ALL_OVERTIME)
-        ? $routePrefix . '.hr.overtime.all'
-        : $routePrefix . '.overtimes';
+    $navOvertimeOrder = $user->hasPermissionTo(UserPermission::VIEW_ALL_OVERTIME_REQUEST) ? 6 : 4; // Adjust order as needed
+    $navOvertimeRoute = $user->hasPermissionTo(UserPermission::VIEW_ALL_OVERTIME_REQUEST)
+        ? $routePrefix . '.overtimes.requests.secondary'
+        : $routePrefix . '.overtimes.index';
 
 
     /**
@@ -152,7 +152,7 @@
     </x-layout.employee.nav.sidebar.nav-item>
     @endcan
 
-    @canAny([UserPermission::VIEW_OVERTIME, UserPermission::VIEW_ALL_OVERTIME])
+    @canAny([UserPermission::VIEW_OVERTIME, UserPermission::VIEW_ALL_OVERTIME_REQUEST])
     <x-layout.employee.nav.sidebar.nav-item
         :href="route($navOvertimeRoute)"
         :active="request()->routeIs($navOvertimeRoute)"
@@ -330,7 +330,7 @@
             :defaultIcon="['src' => 'requests', 'alt' => 'Performance']"
             :activeIcon="['src' => 'requests', 'alt' => 'Relations']" :children="[
                 ['href' => route($routePrefix . '.managerial.requests.leaves.all'), 'active' => request()->routeIs($routePrefix . '.managerial.requests.leaves.all'), 'nav_txt' => 'Leaves'],
-                ['href' => route($routePrefix . '.overtimes.requests'), 'active' => request()->routeIs($routePrefix . '.overtimes.requests'), 'nav_txt' => 'Overtime'],
+                ['href' => route($routePrefix . '.overtimes.requests.initial'), 'active' => request()->routeIs($routePrefix . '.overtimes.requests.initial'), 'nav_txt' => 'Overtime'],
             ]">
         </x-layout.employee.nav.sidebar.nested-nav-items>
     @endcan
