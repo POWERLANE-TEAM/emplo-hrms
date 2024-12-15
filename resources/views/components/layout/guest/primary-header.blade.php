@@ -15,7 +15,7 @@
             <section class="desktop-topnav d-none d-md-flex">
                 <x-nav-link href="/" class="nav-link" :active="request()->is('/')">Home</x-nav-link>
 
-                <x-nav-link href="/hiring" class="nav-link" :active="request()->is('hiring')">Job
+                <x-nav-link href="/hiring" class="nav-link" :active="request()->is('hiring')" activeLink="#job-listtings">Job
                     Listings</x-nav-link>
 
                 <x-nav-link href="/contact-us" class="nav-link" :active="request()->is('contact-us')">Contact</x-nav-link>

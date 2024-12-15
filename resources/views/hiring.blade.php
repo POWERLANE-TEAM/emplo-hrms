@@ -90,7 +90,7 @@
         </div>
     </section>
 
-    <section class="second-section hidden-until-scroll scroll-trigger-section">
+    <section id="job-listtings" class="second-section hidden-until-scroll scroll-trigger-section " style="--top-offset: calc(2rem + 15vh); padding-top: var(--top-offset); margin-top: calc(var(--top-offset) * -0.6);">
 
         @livewire('guest.job-search-input')
         <div class="px-md-5  pt-md-5 pb-md-3 ms-5">
