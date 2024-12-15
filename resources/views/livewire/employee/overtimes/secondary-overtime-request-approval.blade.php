@@ -48,6 +48,9 @@
                                     {{ $overtime?->requestorJobTitle }}
                                 </div>
                                 <div class="text-muted fs-6">
+                                    {{ $overtime?->requestorJobFamily }}
+                                </div>
+                                <div class="text-muted fs-6">
                                     {{ "Level {$overtime?->requestorJobLevel}: {$overtime?->requestorJobLevelName}" }}
                                 </div>
                                 <div class="text-muted fs-6">
@@ -243,7 +246,7 @@
     const footer = document.getElementById('footer');
     const modalId = document.getElementById('{{ $modalId }}');
 
-    $wire.on('showOvertimeRequestApproval', () => {
+    $wire.on('showPreApprovedOvertimeRequestApproval', () => {
         collapsible.hide();
         openModal('{{ $modalId }}');
     });

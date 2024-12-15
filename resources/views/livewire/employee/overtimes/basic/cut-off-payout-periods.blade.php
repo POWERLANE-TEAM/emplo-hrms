@@ -31,4 +31,5 @@
         <!-- BACK-END REPLACE NOTE: This button should not appear if the OT Summary Form being viewed is history/not the current payroll period. -->
     </div>
     <livewire:employee.overtimes.basic.request-overtime />
+    <livewire:employee.overtimes.basic.edit-overtime-request />
 </section>

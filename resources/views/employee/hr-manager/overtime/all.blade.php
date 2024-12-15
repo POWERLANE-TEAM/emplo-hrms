@@ -2,33 +2,32 @@
 @use ('Illuminate\View\ComponentAttributeBag')
 
 @section('head')
-<title>Employee Name's Performance Evaluation Results</title><!-- Replace with Employee Name -->
+<title>Overtime Request Approval</title>
 <script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 @endsection
 
-@pushOnce('pre-scripts')
-@endPushOnce
-
 @pushOnce('scripts')
     @vite(['resources/js/employee/hr-manager/performance.js'])
-
 @endPushOnce
 
 @pushOnce('styles')
     @vite(['resources/css/employee/hr-manager/performance.css'])
-
 @endPushOnce
+
 @section('content')
 
 <x-headings.main-heading :isHeading="true">
     <x-slot:heading>
-        {{ __('Overtime Tables') }}
+        {{ __('Overtime Requests') }}
     </x-slot:heading>
 
     <x-slot:description>
-        {{ __('View and manage.') }}
+        {{ __('Manage overtime requests here.') }}
     </x-slot:description>
 </x-headings.main-heading>
 
-    @endsection
+<livewire:employee.tables.all-overtime-requests-table />
+<livewire:employee.overtimes.secondary-overtime-request-approval />
+
+@endsection

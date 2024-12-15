@@ -10,19 +10,15 @@ use Livewire\Attributes\Locked;
 use Livewire\Attributes\Computed;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use App\Livewire\Employee\Tables\OvertimeRequestsTable;
 use App\Livewire\Employee\Tables\AllOvertimeRequestsTable;
 
-/**
- * This belongs to initial approver. Don't confuse this as the final approver.
- */
-class RequestOvertimeApproval extends Component
+class SecondaryOvertimeRequestApproval extends Component
 {
     /**
      * Set attributes in readable format.
      */
     #[Locked]
-    public $overtime;
+    public ?object $overtime;
 
     /**
      * Easy access to relationship and attributes.
@@ -40,10 +36,17 @@ class RequestOvertimeApproval extends Component
 
     /** @var bool $loading */
     public bool $loading = true;
-    
-    #[On('showOvertimeRequestApproval')]
+
+    #[On('showPreApprovedOvertimeRequestApproval')]
     public function openOtRequest(int $overtimeId)
     {
+        if ($this->request) {
+            if ($this->request->overtime_id === $overtimeId) {
+                $this->loading = false;
+                return;
+            }            
+        }
+        
         $this->request = Overtime::with([
             'processes',
             'processes.initialApprover',
@@ -60,7 +63,7 @@ class RequestOvertimeApproval extends Component
 
         if (! $this->request) {
             $this->dispatch('modelNotFound', [
-                'feedbackMsg' => __('Sorry, it seems like this record has already been removed.'),
+                'feedbackMsg' => __('Sorry, it seems like this record has been removed.'),
             ]);
         } else {
             $this->checkIfNotReadOnly();
@@ -71,6 +74,7 @@ class RequestOvertimeApproval extends Component
                 'requestorFirstName'        =>  $this->request->employee->first_name,
                 'requestorJobTitle'         =>  $this->request->employee->jobTitle->job_title,
                 'requestorJobLevel'         =>  $this->request->employee->jobTitle->jobLevel->job_level,
+                'requestorJobFamily'        =>  $this->request->employee->jobTitle->jobFamily->job_family_name,
                 'requestorJobLevelName'     =>  $this->request->employee->jobTitle->jobLevel->job_level_name,
                 'requestorId'               =>  $this->request->employee->employee_id,
                 'requestorShift'            =>  $this->request->employee->shift->shift_name,
@@ -97,7 +101,7 @@ class RequestOvertimeApproval extends Component
 
     public function denyOtRequest()
     {
-        $this->authorize('updateSubordinateOvertimeRequest', Auth::user());
+        $this->authorize('updateAllOvertimeRequest', Auth::user());
 
         $this->validate();
 
@@ -114,12 +118,12 @@ class RequestOvertimeApproval extends Component
 
     public function approveOtRequest()
     {
-        $this->authorize('updateSubordinateOvertimeRequest', Auth::user());
+        $this->authorize('updateAllOvertimeRequest', Auth::user());
 
         DB::transaction(function () {
             $this->request->processes()->update([
-                'initial_approver_signed_at' => now(),
-                'initial_approver' => $this->employeeId,
+                'secondary_approver_signed_at' => now(),
+                'secondary_approver' => $this->employeeId,
             ]);            
         });
 
@@ -129,7 +133,7 @@ class RequestOvertimeApproval extends Component
     private function checkIfNotReadOnly()
     {
         if (
-            is_null($this->request->processes->first()->initial_approver_signed_at) &&
+            is_null($this->request->processes->first()->secondary_approver_signed_at) &&
             is_null($this->request->processes->first()->denied_at)
         ) {
             $this->isReadOnly = false;
@@ -145,7 +149,6 @@ class RequestOvertimeApproval extends Component
 
         $this->dispatch('changesSaved');
         $this->dispatch('changesSaved')->to(AllOvertimeRequestsTable::class);
-        $this->dispatch('changesSaved')->to(OvertimeRequestsTable::class);
     }
 
     public function rules(): array
@@ -170,6 +173,6 @@ class RequestOvertimeApproval extends Component
 
     public function render()
     {
-        return view('livewire.employee.overtimes.request-overtime-approval');
+        return view('livewire.employee.overtimes.secondary-overtime-request-approval');
     }
 }

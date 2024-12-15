@@ -19,7 +19,7 @@
 
 <x-breadcrumbs>
     <x-slot:breadcrumbs>
-        <x-breadcrumb :href="route($routePrefix . '.overtimes')">
+        <x-breadcrumb :href="route($routePrefix . '.overtimes.index')">
             {{ __('Overtime Summaries') }}
         </x-breadcrumb>
         <x-breadcrumb :active="request()->routeIs($routePrefix . '.overtimes.recents')">
