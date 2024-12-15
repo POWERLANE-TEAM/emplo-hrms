@@ -44,7 +44,6 @@ class CreateAnnouncement extends Component
         $this->dispatch('show-toast', [
             'type' => 'success',
             'message' => 'Announcement created successfully',
-            'icon' => 'check-circle',
         ]);
 
         $this->dispatch('changes-saved');

@@ -57,7 +57,7 @@
 
     Livewire.on('show-toast', (data) => {
         const toastData = Array.isArray(data) && data.length > 0 ? data[0] : data;
-        showToast(toastData.type, toastData.message, toastData.icon);
+        showToast(toastData.type, toastData.message);
     });
 </script>
 
