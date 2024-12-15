@@ -1,5 +1,3 @@
-console.log("HEREE");
-
 function disableSubmit() {
     document
         .querySelectorAll(
@@ -76,34 +74,36 @@ document.querySelectorAll(".announcement-item").forEach((element) => {
 export function showToast(type, message, icon) {
     let toastHtml = `
         <div class="toast align-items-center text-white bg-${type} border-0" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="d-flex">
-            <div class="toast-body">
-                <i data-lucide="${icon}" class="me-2"></i> <strong>${message}</strong>
+            <div class="d-flex">
+                <div class="toast-body">
+                    <i data-lucide="${icon}" class="me-2"></i> <strong>${message}</strong>
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-    </div> 
+        </div> 
     `;
-    
-    const container = document.querySelector('.toast-container');
+
+    const container = document.querySelector(".toast-container");
     if (container) {
-        container.insertAdjacentHTML('beforeend', toastHtml);
+        container.insertAdjacentHTML("beforeend", toastHtml);
 
-        const toastElement = container.querySelector('.toast:last-child');
+        const toastElement = container.querySelector(".toast:last-child");
+
         const toast = new bootstrap.Toast(toastElement);
-
         toast.show();
 
         setTimeout(() => {
-            toastElement.classList.add('fade');
-            setTimeout(() => toastElement.remove(), 500);
+            toastElement.classList.add("fade");
+            setTimeout(() => {
+                console.log("Removing toast element:", toastElement);
+                toastElement.remove();
+            }, 500);
         }, 5000);
     } else {
-        console.error('Toast container not found!');
+        console.error("Toast container not found!");
     }
 
     lucide.createIcons();
 }
 
 window.showToast = showToast;
-
