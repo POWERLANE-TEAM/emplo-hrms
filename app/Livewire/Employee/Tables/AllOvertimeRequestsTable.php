@@ -15,7 +15,7 @@ use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateRangeFilter;
 
-class OvertimeRequestsTable extends DataTableComponent
+class AllOvertimeRequestsTable extends DataTableComponent
 {
     protected $model = Overtime::class;
 
@@ -47,8 +47,8 @@ class OvertimeRequestsTable extends DataTableComponent
                 'class' => 'border-1 rounded-2 outline no-transition mx-4',
                 'role' => 'button',
                 'wire:click' => "\$dispatchTo(
-                    'employee.overtimes.request-overtime-approval', 
-                    'showOvertimeRequestApproval', 
+                    'employee.overtimes.secondary-overtime-request-approval', 
+                    'showPreApprovedOvertimeRequestApproval', 
                     { overtimeId: $row->overtime_id })",
             ];
         });
@@ -79,13 +79,14 @@ class OvertimeRequestsTable extends DataTableComponent
                 'employee',
                 'employee.account',
                 'employee.jobTitle.jobFamily',
-                'processes'
+                'processes',
+                'processes.initialApprover',
             ])
             ->select('*')
-            ->whereHas('employee.jobTitle.jobFamily', function ($query) {
-                $query->where('job_family_id', Auth::user()->account->jobTitle->jobFamily->job_family_id);
-            })
-            ->whereNot('employee_id', Auth::user()->account->employee_id);
+            ->whereNot('employee_id', Auth::user()->account->employee_id)
+            ->whereHas('processes', function ($subquery) {
+                $subquery->whereNotNull('initial_approver_signed_at');
+            });
     }
 
     #[On('changesSaved')]
@@ -98,32 +99,47 @@ class OvertimeRequestsTable extends DataTableComponent
     {
         return [
             Column::make(__('Employee'))
-            ->label(function ($row) {
-                $name = Str::headline($row->employee->full_name);
-                $photo = $row->employee->account->photo;
-                $id = $row->employee->employee_id;
-        
-                return '<div class="d-flex align-items-center">
-                            <img src="' . e($photo) . '" alt="User Picture" class="rounded-circle me-3" style="width: 38px; height: 38px;">
-                            <div>
-                                <div>' . e($name) . '</div>
-                                <div class="text-muted fs-6">Employee ID: ' . e($id) . '</div>
-                            </div>
-                        </div>';
-            })
-            ->html()
-            ->sortable(function (Builder $query, $direction) {
-                return $query->whereHas('employee.account', function ($subquery) use ($direction) {
-                    $subquery->orderBy('last_name', $direction);
-                });
-            })
-            ->searchable(function (Builder $query, $searchTerm) {
-                return $query->whereHas('employee.account', function ($subquery) use ($searchTerm) {
-                    $subquery->whereLike('first_name', "%{$searchTerm}%")
-                        ->orWhereLike('middle_name', "%{$searchTerm}%")
-                        ->orWhereLike('last_name', "%{$searchTerm}%");
-                });
-            }),
+                ->label(function ($row) {
+                    $name = Str::headline($row->employee->full_name);
+                    $photo = $row->employee->account->photo;
+                    $id = $row->employee->employee_id;
+            
+                    return '<div class="d-flex align-items-center">
+                                <img src="' . e($photo) . '" alt="User Picture" class="rounded-circle me-3" style="width: 38px; height: 38px;">
+                                <div>
+                                    <div>' . e($name) . '</div>
+                                    <div class="text-muted fs-6">Employee ID: ' . e($id) . '</div>
+                                </div>
+                            </div>';
+                })
+                ->html()
+                ->sortable(function (Builder $query, $direction) {
+                    return $query->whereHas('employee', function ($subquery) use ($direction) {
+                        $subquery->orderBy('last_name', $direction);
+                    });
+                })
+                ->searchable(function (Builder $query, $searchTerm) {
+                    return $query->whereHas('employee', function ($subquery) use ($searchTerm) {
+                        $subquery->whereLike('first_name', "%{$searchTerm}%")
+                            ->orWhereLike('middle_name', "%{$searchTerm}%")
+                            ->orWhereLike('last_name', "%{$searchTerm}%");
+                    });
+                }),
+
+            Column::make(__('Job Family'))
+                ->label(function ($row) {
+                    return $row->employee->jobTitle->jobFamily->job_family_name;
+                })
+                ->sortable(function (Builder $query, $direction) {
+                    return $query->whereHas('employee.jobTitle.jobFamily', function ($subquery) use ($direction) {
+                        $subquery->orderBy('job_family_name', $direction);
+                    });
+                })
+                ->searchable(function (Builder $query, $searchTerm) {
+                    return $query->whereHas('employee.jobTitle.jobFamily', function ($subquery) use ($searchTerm) {
+                        $subquery->whereLike('job_family_name', "%{$searchTerm}%");
+                    });
+                }),
 
             Column::make(__('Work Performed'))
                 ->searchable()
@@ -154,7 +170,7 @@ class OvertimeRequestsTable extends DataTableComponent
 
             Column::make(__('Status'))
                 ->label(function ($row) {
-                    if ($row->processes->first()->initial_approver_signed_at) {
+                    if ($row->processes->first()->secondary_approver_signed_at) {
                         return __('Approved');
                     } elseif ($row->processes->first()->denied_at) {
                         return __('Denied');
@@ -180,6 +196,24 @@ class OvertimeRequestsTable extends DataTableComponent
                     return $query->orderBy('filed_at', $direction);
                 })
                 ->setSortingPillDirections('Asc', 'Desc'),
+
+            Column::make(__('Initial Approval'))
+                ->label(function ($row) {
+                    return $row->processes->first()->initialApprover->full_name;
+                })
+                ->sortable(function (Builder $query, $direction) {
+                    return $query->whereHas('processes.initialApprover', function ($subquery) use ($direction) {
+                        $subquery->orderBy('last_name', $direction);
+                    });
+                })
+                ->searchable(function (Builder $query, $searchTerm) {
+                    return $query->whereHas('processes.initialApprover', function ($subquery) use ($searchTerm) {
+                        $subquery->whereLike('first_name', "%{$searchTerm}%")
+                            ->orWhereLike('middle_name', "%{$searchTerm}%")
+                            ->orWhereLike('last_name', "%{$searchTerm}%");
+                    });
+                })
+                ->deselected(),
         ];
     }
 
@@ -222,9 +256,9 @@ class OvertimeRequestsTable extends DataTableComponent
                 ->filter(function (Builder $query, $value) {
                     $query->whereHas('processes', function ($subquery) use ($value) {
                         if ($value === OvertimeRequestStatus::APPROVED->value) {
-                            $subquery->whereNotNull('initial_approver_signed_at');
+                            $subquery->whereNotNull('secondary_approver_signed_at');
                         } elseif ($value === OvertimeRequestStatus::PENDING->value) {
-                            $subquery->whereNull('initial_approver_signed_at')
+                            $subquery->whereNull('secondary_approver_signed_at')
                                 ->whereNull('denied_at');
                         } elseif ($value === OvertimeRequestStatus::DENIED->value) {
                             $subquery->whereNotNull('denied_at');

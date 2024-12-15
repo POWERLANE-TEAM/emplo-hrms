@@ -36,21 +36,15 @@ class ArchiveOvertimesTable extends DataTableComponent
         ]);
 
         $this->setTrAttributes(function ($row, $index) {
-            $attributes = [
+            return [
                 'default' => true,
                 'class' => 'border-1 rounded-2 outline no-transition mx-4',
+                'role' => 'button',
+                'wire:click' => "\$dispatchTo(
+                    'employee.overtimes.basic.edit-overtime-request', 
+                    'showOvertimeRequest', 
+                    { overtimeId: $row->overtime_id })",
             ];
-
-            $pendingStatus = is_null($row->processes->first()->secondary_approver_signed_at);
-
-            if ($pendingStatus) {
-                $attributes = array_merge($attributes, [
-                    'role' => 'button',
-                    'wire:click' => "\$dispatch('showOvertimeRequest', $row->overtime_id)",
-                ]);
-            }
-
-            return $attributes;
         });
 
         $this->setSearchFieldAttributes([
