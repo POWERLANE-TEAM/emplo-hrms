@@ -53,6 +53,6 @@ Route::post('/logout', [Logout::class, 'destroy'])
     ->middleware('auth')
     ->name('logout');
 
-Route::get('/test-alerts', function () {
-    return view('components.html.test-alerts');
+Route::get('/test-pop-ups', function () {
+    return view('components.html.test-pop-ups');
 });

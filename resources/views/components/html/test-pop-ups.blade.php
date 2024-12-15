@@ -56,43 +56,20 @@
 </div>
 
 <div class="container mt-5">
-    <h2 class="mb-4">Alerts</h2>
-
-    <!-- Success Alert -->
-    <x-pop-ups.alerts :type="'success'" :icon="'check-circle'" :message="'This is a success alert!'" />
-
-    <!-- Error Alert -->
-    <x-pop-ups.alerts :type="'danger'" :icon="'alert-triangle'" :message="'This is an error alert!'" />
-
-    <!-- Warning Alert -->
-    <x-pop-ups.alerts :type="'warning'" :icon="'alert-octagon'" :message="'This is a warning alert!'" />
-
-    <!-- Info Alert -->
-    <x-pop-ups.alerts :type="'info'" :icon="'info'" :message="'This is an info alert!'" />
-</div>
-
-<div class="container mt-5">
     <h2 class="mb-4">Modals</h2>
 
-    <!-- Success Modal -->
-    <button class="btn btn-success mt-3" onclick="openModal('register-email-alert')">Show
-        Success Alert</button>
+    <!-- Show Success Modal Button -->
+    <button class="btn btn-success mt-3" onclick="openModal('success-modal')">Show Success Modal</button>
 
-    <!-- Error Modal -->
-    <button class="btn btn-danger mt-3" onclick="showToast('danger', 'This is an error toast!', 'alert-triangle')">Show
-        Error Alert</button>
-
-    <!-- Warning Modal -->
-    <button class="btn btn-warning mt-3"
-        onclick="showToast('warning', 'This is a warning toast!', 'alert-octagon')">Show Warning Alert</button>
-
-    <!-- Info Modal -->
-    <button class="btn btn-info mt-3" onclick="showToast('info', 'This is an info alert!', 'info')">Show Info
-        Alert</button>
+    <!-- Show Error Modal Button -->
+    <button class="btn btn-danger mt-3" onclick="openModal('error-modal')">Show Error Modal</button>
 </div>
 
+<!-- Success Modal -->
+<x-modals.status-modal  type="success" label="Success Notification" header="Success title here" id="success-modal" message="Replace success action message here."/>
 
-<x-modals.status-modal label="Registered email notification" id="register-email-alert"
-    message="Please check your inbox for the next steps." />
+<!-- Error Modal -->
+<x-modals.status-modal type="error" label="Error notification" header="Error title here" id="error-modal" message="Replace error action message here." />
+
 
 @endsection
