@@ -23,16 +23,17 @@
     <h2 class="mb-4">Alerts</h2>
 
     <!-- Success Alert -->
-    <x-pop-ups.alerts :type="'success'" :icon="'check-circle'" :message="'This is a success alert!'" />
+    <x-pop-ups.alerts :type="'success'" :message="'This is a success alert!'" />
 
     <!-- Error Alert -->
-    <x-pop-ups.alerts :type="'danger'" :icon="'alert-triangle'" :message="'This is an error alert!'" />
+    <x-pop-ups.alerts :type="'danger'" :message="'This is an error alert!'" />
 
     <!-- Warning Alert -->
-    <x-pop-ups.alerts :type="'warning'" :icon="'alert-octagon'" :message="'This is a warning alert!'" />
+    <x-pop-ups.alerts :type="'warning'" :message="'This is a warning alert!'" />
 
     <!-- Info Alert -->
-    <x-pop-ups.alerts :type="'info'" :icon="'info'" :message="'This is an info alert!'" />
+    <x-pop-ups.alerts :type="'info'" :message="'This is an info alert!'" />
+
 </div>
 
 <div class="container mt-5">
@@ -40,19 +41,19 @@
 
     <!-- Success Toast -->
     <button class="btn btn-success mt-3" onclick="showToast('success', 'This is a success toast!')">Show
-        Success Alert</button>
+        Success Toast</button>
 
     <!-- Error Toast -->
     <button class="btn btn-danger mt-3" onclick="showToast('danger', 'This is an error toast!')">Show
-        Error Alert</button>
+        Error Toast</button>
 
     <!-- Warning Toast -->
-    <button class="btn btn-warning mt-3"
-        onclick="showToast('warning', 'This is a warning toast!')">Show Warning Alert</button>
+    <button class="btn btn-warning mt-3" onclick="showToast('warning', 'This is a warning toast!')">Show Warning
+        Toast</button>
 
     <!-- Info Toast -->
     <button class="btn btn-info mt-3" onclick="showToast('info', 'This is an info toast!')">Show Info
-        Alert</button>
+        Toast</button>
 </div>
 
 <div class="container mt-5">
@@ -66,10 +67,12 @@
 </div>
 
 <!-- Success Modal -->
-<x-modals.status-modal  type="success" label="Success Notification" header="Success title here" id="success-modal" message="Replace success action message here."/>
+<x-modals.status-modal type="success" label="Success Notification" header="Success title here" id="success-modal"
+    message="Replace success action message here." />
 
 <!-- Error Modal -->
-<x-modals.status-modal type="error" label="Error notification" header="Error title here" id="error-modal" message="Replace error action message here." />
+<x-modals.status-modal type="error" label="Error notification" header="Error title here" id="error-modal"
+    message="Replace error action message here." />
 
 
 @endsection
