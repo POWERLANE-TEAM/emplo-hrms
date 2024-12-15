@@ -16,7 +16,7 @@
     @endif
 
 
-    @if (!empty($feedback))
-        {{ $feedback }}
-    @endif
 </div>
+@if (!empty($feedback))
+    {{ $feedback }}
+@endif

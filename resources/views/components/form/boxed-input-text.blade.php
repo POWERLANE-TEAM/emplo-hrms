@@ -22,6 +22,10 @@
     @if ($attributes->has('required'))
         <span class="text-danger">*</span>
     @endif
+    @if ($attributes->has('showPlaceholderOnLabel'))
+    <span class="text-muted label-placeholder d-none">{!! $attributes->get('placeholder') !!}</span>
+    @php $attributes = $attributes->except('showPlaceholderOnLabel'); @endphp
+@endif
 </label>
 <div {{ $containerAttributes }}>
     <!-- Input with boxed styling -->
@@ -33,7 +37,7 @@
             'placeholder' => $attributes->get('placeholder', ''),
         ]) }}
         aria-owns="{{ $attributes->get('id') }}-feedback" nonce="{{ $nonce }}">
+    </div>
     @if (!empty($feedback))
         {{ $feedback }}
     @endif
-</div>

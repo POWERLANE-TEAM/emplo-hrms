@@ -60,7 +60,7 @@
             <option value="{{ $value }}">{{ $optionLabel }}</option>
         @endforeach
     </select>
-    @if (!empty($feedback))
-        {{ $feedback }}
-    @endif
 </div>
+@if (!empty($feedback))
+    {{ $feedback }}
+@endif
