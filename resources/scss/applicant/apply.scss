@@ -7,6 +7,7 @@
 @import '../footer';
 @import '../btn-toggle-psw';
 @import '../input/checkbox';
+@import '../input/address-form';
 @import '../filepond';
 @import '../guest/main';
 
@@ -74,4 +75,12 @@ div:has(>.form-display-profile) {
         aspect-ratio: 1/1;
 
     }
+}
+
+.checkbox-primary {
+    @include custom-checkbox(var(--bs-black), var(--bs-primary));
+}
+
+.checkbox-label {
+    padding-left: clamp(1.5rem, 0.5rem + 1.25vw, 5vw);
 }
