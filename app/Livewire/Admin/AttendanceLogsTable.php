@@ -111,12 +111,12 @@ class AttendanceLogsTable extends DataTableComponent
             Column::make(__('Time'), 'timestamp')
                 ->sortable()
                 ->searchable()
-                ->format(fn ($value, $row, Column $column) => Carbon::parse($row->timestamp)->format('g:i A')),
+                ->format(fn ($value, $row, Column $column) => Carbon::make($row->timestamp)->format('g:i A')),
 
             Column::make(__('Date'), 'timestamp')
                 ->sortable()
                 ->searchable()
-                ->format(fn ($value, $row, Column $column) => Carbon::parse($row->timestamp)->format('F d, Y')),
+                ->format(fn ($value, $row, Column $column) => Carbon::make($row->timestamp)->format('F d, Y')),
         ];
     }
 }

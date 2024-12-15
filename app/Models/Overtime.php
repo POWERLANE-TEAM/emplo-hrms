@@ -37,8 +37,8 @@ class Overtime extends Model
     protected function startTime(): Attribute
     {
         return Attribute::make(
-            get: fn (mixed $value) => Carbon::parse($value)->format('g:i A'),
-            set: fn (mixed $value) => Carbon::parse($value)->format('H:i:s'),
+            get: fn (mixed $value) => Carbon::make($value)->format('g:i A'),
+            set: fn (mixed $value) => Carbon::make($value)->format('H:i:s'),
         );
     }
     
@@ -48,8 +48,8 @@ class Overtime extends Model
     protected function endTime(): Attribute
     {
         return Attribute::make(
-            get: fn (mixed $value) => Carbon::parse($value)->format('g:i A'),
-            set: fn (mixed $value) => Carbon::parse($value)->format('H:i:s'),
+            get: fn (mixed $value) => Carbon::make($value)->format('g:i A'),
+            set: fn (mixed $value) => Carbon::make($value)->format('H:i:s'),
         );
     }
 
@@ -59,7 +59,7 @@ class Overtime extends Model
     protected function filedAt(): Attribute
     {
         return Attribute::make(
-            get: fn (mixed $value) => Carbon::parse($value)->format('F d, Y')
+            get: fn (mixed $value) => Carbon::make($value)->format('F d, Y g:i A')
         );
     }
 
@@ -77,7 +77,7 @@ class Overtime extends Model
     public function date(): Attribute
     {
         return Attribute::make(
-            set: fn (mixed $value) => Carbon::parse($value)->format('Y-m-d')
+            set: fn (mixed $value) => Carbon::make($value)->format('Y-m-d')
         );
     }
 

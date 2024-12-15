@@ -157,8 +157,8 @@ class Employee extends Model
      */
     protected function getShiftScheduleAttribute()
     {
-        $start = Carbon::parse($this->shift->start_time)->format('g:i A');
-        $end = Carbon::parse($this->shift->end_time)->format('g:i A');
+        $start = Carbon::make($this->shift->start_time)->format('g:i A');
+        $end = Carbon::make($this->shift->end_time)->format('g:i A');
 
         return "{$start} - {$end}";
     }
