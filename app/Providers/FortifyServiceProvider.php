@@ -55,7 +55,7 @@ class FortifyServiceProvider extends ServiceProvider
                     // avoid Pusher error: cURL error 7: Failed to connect to localhost port 8080 after 2209 ms: Couldn't connect to server
                     /* when websocket server is not started */
 
-                    Log::error('Broadcast error: '.$th);
+                    Log::error('Broadcast error: ' . $th);
                 } finally {
                     return redirect($redirectUrl);
                 }
@@ -72,7 +72,7 @@ class FortifyServiceProvider extends ServiceProvider
                 activity()
                     ->by($authUser)
                     ->useLog(ActivityLogName::AUTHENTICATION->value)
-                    ->log(Str::ucfirst($authUser->account->first_name).' logged in.');
+                    ->log(Str::ucfirst($authUser->account->first_name) . ' logged in.');
 
                 // Redirection to previously visited page before being prompt to login
                 // For example you visit /employee/payslip and you are not logged in
@@ -121,7 +121,7 @@ class FortifyServiceProvider extends ServiceProvider
                 }
 
                 if ($authUser->account_type == AccountType::APPLICANT->value) {
-                    return redirect('/applicant');
+                    return redirect('/application');
                 }
 
                 return redirect('/');
@@ -140,7 +140,7 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
 
-        Fortify::verifyEmailView(fn () => app(UnverifiedEmail::class)->render());
+        Fortify::verifyEmailView(fn() => app(UnverifiedEmail::class)->render());
 
         Fortify::authenticateUsing(function (Request $request) {
 
@@ -176,7 +176,7 @@ class FortifyServiceProvider extends ServiceProvider
         });
 
         RateLimiter::for('login', function (Request $request) {
-            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
+            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())) . '|' . $request->ip());
 
             return Limit::perMinute(5)->by($throttleKey);
         });
