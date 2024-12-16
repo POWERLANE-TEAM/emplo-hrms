@@ -33,4 +33,24 @@
     .modal-lg {
         max-width: 40%;
     }
+
+    @media (max-width: 768px) {
+        .modal-lg {
+            max-width: 100% !important;
+        }
+
+        .modal-body hgroup {
+            padding: 1rem 0rem;
+        }
+
+        .modal-content .px-md-3 {
+            padding: 1rem 1rem 0rem 0rem;
+        }
+    }
+
+    @media (max-width: 1024px) {
+        .modal-lg {
+            max-width: 90%;
+        }
+    }
 </style>
