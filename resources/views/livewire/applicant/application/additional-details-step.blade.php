@@ -89,6 +89,7 @@
                                     :nonce="$nonce"
                                     :required="true"
                                     :options="$presentAddressFields['regions']"
+
                                 >
                                 <x-slot:feedback>
                                     @include('components.form.input-feedback', [
@@ -117,6 +118,7 @@
                                     :required="when(!$isPresentRegionNcr, 'required')"
                                     :disabled="when($isPresentRegionNcr, true)"
                                     :options="$presentAddressFields['provinces']"
+
                                 >
                                 <x-slot:feedback>
                                     @include('components.form.input-feedback', [
@@ -138,6 +140,7 @@
                                     :nonce="$nonce"
                                     :required="true"
                                     :options="$presentAddressFields['cities']"
+
                                 >
                                 <x-slot:feedback>
                                     @include('components.form.input-feedback', [

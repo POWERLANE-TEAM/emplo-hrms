@@ -58,12 +58,11 @@ lastNameValidator.initValidation(null, null);
 
 initEmailValidation(`${applicationForm} input[name="applicant.email"]`, null, null);
 
-const passwordConfirmPaste = new GlobalListener('click', document, `[aria-label="Application Additional Details"]:not(:has(*:user-invalid))+section div[wire\\:click="validateNow"]`, () => {
+new GlobalListener('click', document, `[aria-label="Application Additional Details"]:not(:has(*:user-invalid))+section div[wire\\:click="validateNow"]`, () => {
     if (JSON.parse(sessionStorage.getItem('applicant'))?.region) return;
 
     const locationService = new LocationService();
     locationService.getUserRegion((data, region) => {
-        console.log('Callback Region:', data, region);
 
         let applicantData = JSON.parse(sessionStorage.getItem('applicant')) || {};
 
@@ -74,9 +73,34 @@ const passwordConfirmPaste = new GlobalListener('click', document, `[aria-label=
     });
 });
 
-new GlobalListener('click', document, `#present_region`, (e) => {
-    console.log('Region:', e.target.value);
-    // setRegionInput(e.target)
+new GlobalListener('change', document, `#present_region`, (e) => {
+    document.querySelector(`${applicationForm} #present_province`).value = '';
+    document.querySelector(`${applicationForm} #present_city`).value = '';
+    document.querySelector(`${applicationForm} #present_barangay`).value = '';
+});
+new GlobalListener('change', document, `#present_province`, (e) => {
+    document.querySelector(`${applicationForm} #present_city`).value = '';
+    document.querySelector(`${applicationForm} #present_barangay`).value = '';
+});
+new GlobalListener('change', document, `#present_city`, (e) => {
+    document.querySelector(`${applicationForm} #present_barangay`).value = '';
+});
+
+new GlobalListener('change', document, `#permanent_region`, (e) => {
+    if (document.querySelector(`${applicationForm} #sameAddressCheck`).checked) return;
+
+    document.querySelector(`${applicationForm} #permanent_province`).value = '';
+    document.querySelector(`${applicationForm} #permanent_city`).value = '';
+    document.querySelector(`${applicationForm} #permanent_barangay`).value = '';
+});
+new GlobalListener('change', document, `#permanent_province`, (e) => {
+    if (document.querySelector(`${applicationForm} #sameAddressCheck`).checked) return;
+    document.querySelector(`${applicationForm} #permanent_city`).value = '';
+    document.querySelector(`${applicationForm} #permanent_barangay`).value = '';
+});
+new GlobalListener('change', document, `#permanent_city`, (e) => {
+    if (document.querySelector(`${applicationForm} #sameAddressCheck`).checked) return;
+    document.querySelector(`${applicationForm} #permanent_barangay`).value = '';
 });
 
 function setOptions(presentSelect, permanentSelect) {
@@ -85,12 +109,16 @@ function setOptions(presentSelect, permanentSelect) {
     let optionExists = Array.from(permanentSelect.options).some(option => option.value === presentSelectVal);
 
     if (!optionExists) {
-        let newOption = document.createElement('option');
-        newOption.value = presentSelectVal;
-        newOption.text = presentSelect.options[presentSelect.selectedIndex].text;
-        permanentSelect.add(newOption);
+        createSelectOptions(permanentSelect, presentSelectVal, presentSelect.options[presentSelect.selectedIndex].text)
     }
-    console.log(presentSelect, permanentSelect);
+
+}
+
+function createSelectOptions(element, val, text) {
+    let newOption = document.createElement('option');
+    newOption.value = val;
+    newOption.text = text;
+    element.add(newOption);
 }
 
 new GlobalListener('input', document, `${applicationForm} #sameAddressCheck`, (e) => {
@@ -98,9 +126,6 @@ new GlobalListener('input', document, `${applicationForm} #sameAddressCheck`, (e
     if (!e.target.checked) {
         return;
     }
-    console.log(e.target.getAttribute('data-comp-id'))
-
-    console.log(Livewire.find(e.target.getAttribute('data-comp-id')))
 
     let component = Livewire.find(e.target.getAttribute('data-comp-id'))
 
@@ -157,9 +182,8 @@ new GlobalListener('input', document, `${applicationForm} #sameAddressCheck`, (e
 });
 
 document.addEventListener('livewire:init', () => {
-    console.log('Same init:');
+
     Livewire.on('same-as-present-address', (event) => {
-        console.log('Same Address:', event);
         setTimeout(() => {
             document.querySelector(`${applicationForm} #permanent_region`).value = document.querySelector(`${applicationForm} #present_region`).value;
             document.querySelector(`${applicationForm} #permanent_province`).value = document.querySelector(`${applicationForm} #present_province`).value;
