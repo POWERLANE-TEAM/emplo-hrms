@@ -13,6 +13,10 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
 
+    Route::get('notifications', function () {
+        return view('employee.notifications.index');
+    })->name('notifications');
+
     /**
      * Dashboard
      */
@@ -24,8 +28,23 @@ Route::middleware('auth')->group(function () {
      * Profile
      */
     Route::get('profile', function () {
-        return view('employee.admin.profile');
+        return view('employee.profile.information.index');
     })->name('profile');
+
+    Route::get('profile/edit', function () {
+        return view('employee.profile.information.edit');
+    })->name('profile.edit');
+
+    /**
+     * Settings & Privacy
+     */
+    Route::get('settings', function () {
+        return view('employee.profile.settings');
+    })->name('settings');
+
+    Route::get('activity-logs', function () {
+        return view('employee.profile.activity-logs');
+    })->name('activity-logs');
 
     /**
      * Log out

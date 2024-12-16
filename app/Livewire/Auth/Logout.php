@@ -18,7 +18,7 @@ class Logout extends Component
 
     protected $use_guard;
 
-    public function mount($class = 'border-0 bg-transparent')
+    public function mount($class = 'border-0 bg-transparent p-0')
     {
         $this->class = $class;
 

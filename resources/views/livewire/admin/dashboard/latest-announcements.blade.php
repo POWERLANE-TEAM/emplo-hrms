@@ -1,5 +1,5 @@
 <div class="col-md-5 flex">
-    <div class="indiv-grid-container-1 overflow-auto thin-custom-scrollbar">
+    <div class="text-black-50 indiv-grid-container-1 overflow-auto thin-custom-scrollbar">
         <!-- Header -->
         <div class="px-4 pb-4">
             <div class="d-flex align-items-center justify-content-between">

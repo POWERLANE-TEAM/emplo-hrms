@@ -1,17 +1,17 @@
 @extends('components.layout.employee.layout', ['nonce' => $nonce])
+@use ('Illuminate\View\ComponentAttributeBag')
 
 @section('head')
-    <title>Profile</title>
-    <script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
-    <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
+<title>Settings & Privacy</title>
+<script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
+<script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 @endsection
 
 @pushOnce('pre-scripts')
-    {{--  --}}
+    {{-- --}}
 @endPushOnce
 
 @pushOnce('scripts')
-    <script src="{{ Vite::asset('resources/js/forms/nbp.min.js') }}" defer></script>
     @vite(['resources/js/employee/hr/dashboard.js'])
 @endPushOnce
 
@@ -20,13 +20,30 @@
 @endPushOnce
 
 @section('content')
-    <div class="container">
+<x-headings.main-heading :isHeading="true" :containerAttributes="new ComponentAttributeBag(['class' => 'ps-2 pt-2 pb-2 ms-n1'])" :overrideContainerClass="true" class="fs-2 fw-bold mb-2 text-secondary-emphasis">
+    <x-slot:heading>
+        {{ __('Settings & Privacy') }}
+    </x-slot:heading>
+</x-headings.main-heading>
 
-        <livewire:profile.update-password-form />
+@include('components.includes.tab_navs.settings-privacy-navs')
 
-        <livewire:profile.two-factor-authentication-form />
+<div class="container">
 
-        <livewire:profile.logout-other-browser-sessions-form />
 
-    </div>
+    <livewire:profile.change-email-form />
+
+    <hr>
+
+    <livewire:profile.update-password-form />
+
+    <hr>
+
+    <livewire:profile.two-factor-authentication-form />
+
+    <hr>
+
+    <livewire:profile.logout-other-browser-sessions-form />
+
+</div>
 @endsection
