@@ -314,7 +314,7 @@
 
 {{--
 * |--------------------------------------------------------------------------
-* | Supervision
+* | Managerial
 * |--------------------------------------------------------------------------
 --}}
 
@@ -324,9 +324,8 @@
     {{-- Supervisor / Head Dept --}}
     @can(UserPermission::VIEW_ALL_SUBORDINATE_REQUESTS)
         <x-layout.employee.nav.sidebar.nested-nav-items
-            nav_txt="Performance"
+            nav_txt="Requests"
             :active="request()->routeIs($routePrefix . 'requests.*')"
-            class="order-11"
             :defaultIcon="['src' => 'requests', 'alt' => 'Performance']"
             :activeIcon="['src' => 'requests', 'alt' => 'Relations']" :children="[
                 ['href' => route($routePrefix . '.managerial.requests.leaves.all'), 'active' => request()->routeIs($routePrefix . '.managerial.requests.leaves.all'), 'nav_txt' => 'Leaves'],
@@ -335,6 +334,16 @@
         </x-layout.employee.nav.sidebar.nested-nav-items>
     @endcan
 
+    {{-- Supervisor / Head Dept --}}
+    @can(UserPermission::VIEW_ALL_SUBORDINATE_OVERTIME_SUMMARY_FORMS)
+        <x-layout.employee.nav.sidebar.nav-item href="{{ route($routePrefix . '.managerial.overtime.summary-forms.all') }}"
+            :active="request()->routeIs($routePrefix . '.managerial.overtime.summary-forms.all')"
+            class="" nav_txt="OT Summary Forms"
+            :defaultIcon="['src' => 'ot-summary-form', 'alt' => '']"
+            :activeIcon="['src' => 'ot-summary-form', 'alt' => '']">
+        </x-layout.employee.nav.sidebar.nav-item>
+    @endcan
+    
     {{-- Supervisor / Head Dept --}}
     @can(UserPermission::VIEW_ALL_SUBORDINATE_PERFORMANCE_EVAL_FORM)
         <x-layout.employee.nav.sidebar.nav-item href="{{ route($routePrefix . '.managerial.evaluations.all') }}"

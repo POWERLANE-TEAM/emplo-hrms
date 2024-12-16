@@ -28,8 +28,7 @@
                                 srcset="{{ Vite::asset('resources/images/icons/moon-and-stars-69x69.webp') }}">
 
                             <img class="icon" width="{{ $iconSize }}" aspect-ratio="{{ $iconRatio }}"
-                                src="{{ Vite::asset('resources/images/icons/moon-and-stars-35x35.webp') }}"
-                                alt="">
+                                src="{{ Vite::asset('resources/images/icons/moon-and-stars-35x35.webp') }}" alt="">
                         </picture>
                     </button>
                     <ul class="dropdown-menu" role="menu">
@@ -41,9 +40,28 @@
             </aside>
 
             <x-notif-dropdown>
-                <li class="dropdown-item">Notif 1</li>
-                <li class="dropdown-item">Notif 1</li>
-                <li class="dropdown-item">Notif 1</li>
+                @if (!request()->routeIs($routePrefix . '.notifications'))
+                    <div class="card border-0 py-3 notification-container visible-gray-scrollbar show">
+
+                        <!-- Header -->
+                        <div>
+                            <div class="row px-4">
+                                <div class="col-md-10">
+                                    <h4 class="mb-0 fw-bold">Notifications</h4>
+                                </div>
+                                <div class="col-md-2 text-end mb-3">
+                                    <a wire:navigate href="{{ route($routePrefix . '.notifications') }}"
+                                        class="text-muted green-hover">
+                                        <span data-bs-toggle="tooltip" title="See all notifications">
+                                            <i data-lucide="list" class="icon icon-large"></i>
+                                        </span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <livewire:notifications.notifs />
+                    </div>
+                @endif
             </x-notif-dropdown>
 
             <div class="overflow-hidden">
@@ -54,11 +72,15 @@
                             aspect-ratio="{{ $iconRatio }}" src="{{ $userPhoto }}"
                             onerror="this.onerror=null;this.src='http://placehold.it/45/45';" alt="">
                     </button>
-                    <ul id="dropdown-menu" class="dropdown-menu dropdown-menu-end" role="menu">
-                        <a href="{{-- {{ route($routePrefix.'.profile') }} --}}">
-                            <li class="dropdown-item" role="button">Profile</li>
+                    <ul id="dropdown-menu" class="dropdown-menu dropdown-menu-end px-2" role="menu">
+                        <a href="{{ route($routePrefix . '.profile') }}" class="text-decoration-none">
+                            <li class="dropdown-item" role="button">
+                                Profile
+                            </li>
                         </a>
-                        <li class="dropdown-item" role="button">Settings</li>
+                        <a href="{{ route($routePrefix . '.settings') }}" class="text-decoration-none">
+                            <li class="dropdown-item" role="button" class="mt-5">Settings & Privacy</li>
+                        </a>
                         <li class="dropdown-item" role="button">@livewire('auth.logout')</li>
                     </ul>
                 </div>
