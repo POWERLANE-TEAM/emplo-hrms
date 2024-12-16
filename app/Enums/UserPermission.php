@@ -96,7 +96,8 @@ enum UserPermission: string
     case VIEW_ALL_SUBORDINATE_REQUESTS = 'view all subordinate requests';
     case VIEW_ALL_SUBORDINATE_PERFORMANCE_EVAL_FORM = 'view all subordinate performance evaluation forms.';
     case VIEW_ALL_SUBORDINATE_LEAVE_REQUEST = 'view all subordinate leaves requests.';
-    case VIEW_ALL_SUBORDINATE_OVERTIME_REQUEST = 'view all subordinate overtime forms.';
+    case VIEW_ALL_SUBORDINATE_OVERTIME_REQUEST = 'view all subordinate overtime requests.';
+    case VIEW_ALL_SUBORDINATE_OVERTIME_SUMMARY_FORMS = 'view all subordinate overtime summary forms.';
     case VIEW_SUBORDINATE_PERFORMANCE_EVAL_FORM = 'view subordinate performance evaluation form.';
     case VIEW_SUBORDINATE_LEAVE_REQUEST = 'view subordinate leave request';
     case VIEW_SUBORDINATE_OVERTIME_REQUEST = 'view subordinate overtime request';
@@ -230,7 +231,8 @@ enum UserPermission: string
             self::VIEW_ALL_SUBORDINATE_REQUESTS => 'View all subordinate requests',
             self::VIEW_ALL_SUBORDINATE_PERFORMANCE_EVAL_FORM => 'View all subordinate performance evaluation forms.',
             self::VIEW_ALL_SUBORDINATE_LEAVE_REQUEST => 'View all subordinate leaves requests.',
-            self::VIEW_ALL_SUBORDINATE_OVERTIME_REQUEST => 'View all subordinate overtime forms.',
+            self::VIEW_ALL_SUBORDINATE_OVERTIME_REQUEST => 'View all subordinate overtime requests.',
+            self::VIEW_ALL_SUBORDINATE_OVERTIME_SUMMARY_FORMS => 'View all subordinate overtime summary forms.',
             self::VIEW_SUBORDINATE_LEAVE_REQUEST => 'View subordinate leave request',
             self::VIEW_SUBORDINATE_OVERTIME_REQUEST => 'View subordinate overtime request',
 

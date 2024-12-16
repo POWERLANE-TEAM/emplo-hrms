@@ -1,4 +1,4 @@
-
+import './animations/texts-effect.js';
 
 function disableSubmit() {
     document
@@ -73,6 +73,58 @@ document.querySelectorAll(".announcement-item").forEach((element) => {
     }
 });
 
+
+// ================================
+// Toggle of Active Tab Sections
+// ================================
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    const tabs = document.querySelectorAll(".tab-link");
+    const sections = document.querySelectorAll(".tab-section");
+
+    // Default active tab and section
+    tabs[0].classList.add("fw-bold", "text-primary", "underline-padded");
+    tabs[0].classList.remove("text-muted"); 
+    sections[0].classList.add("active-section");
+
+    tabs.forEach((tab) => {
+        tab.addEventListener("click", (e) => {
+            e.preventDefault();
+
+            // Get the target section from the tab's data-section attribute
+            const targetSection = document.getElementById(tab.dataset.section);
+
+            // Remove active classes and text-muted from all tabs and sections
+            tabs.forEach((t) => {
+                t.classList.remove("fw-bold", "text-primary", "underline-padded");
+                t.classList.add("text-muted"); 
+            });
+            sections.forEach((section) => {
+                section.classList.remove("active-section");
+            });
+
+            // Add active classes to clicked tab and corresponding section
+            tab.classList.add("fw-bold", "text-primary", "underline-padded");
+            tab.classList.remove("text-muted"); 
+            targetSection.classList.add("active-section");
+        });
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const notificationContainer = document.querySelector(".notification-container");
+
+    // Prevent closing when clicking inside the notifications container
+    notificationContainer.addEventListener("click", function (event) {
+        event.stopPropagation();
+    });
+
+    // Close notifications when clicking outside
+    document.addEventListener("click", function () {
+        notificationContainer.classList.remove("show");
+    });
+});
 export function showToast(type, message) {
     
     const iconsMap = {

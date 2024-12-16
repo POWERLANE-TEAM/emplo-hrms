@@ -19,6 +19,10 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth'/* , 'verified' */)->group(function () {
 
+    Route::get('notifications', function () {
+        return view('employee.notifications.index');
+    })->name('notifications');
+    
     // =========================================
     // HR MANAGER ROUTES
     // ==========================================
@@ -107,8 +111,24 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
      * Profile
      */
     Route::get('profile', function () {
-        return view('employee.profile.settings');
+        return view('employee.profile.information.index');
     })->name('profile');
+
+    Route::get('profile/edit', function () {
+        return view('employee.profile.information.edit');
+    })->name('profile.edit');
+
+
+    /**
+     * Settings & Privacy
+     */
+    Route::get('settings', function () {
+        return view('employee.profile.settings');
+    })->name('settings');
+
+    Route::get('activity-logs', function () {
+        return view('employee.profile.activity-logs');
+    })->name('activity-logs');
 
 
     /**
@@ -244,7 +264,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
 
     /**
-     * Overtime
+     * Overtime Requests
      */
 
     Route::get('overtimes/requests', function () {
@@ -252,6 +272,15 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     })
         ->can(UserPermission::VIEW_SUBORDINATE_OVERTIME_REQUEST)
         ->name('overtimes.requests');
+
+
+    /**
+     * Overtime Summary
+     */
+
+     Route::get('managerial/overtime/summary-forms/all', function () {
+        return view('employee.supervisor.overtime.summary-forms.all');
+    })->name('managerial.overtime.summary-forms.all');
 
 
     /**
