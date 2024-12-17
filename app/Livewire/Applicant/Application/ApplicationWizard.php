@@ -35,9 +35,9 @@ class ApplicationWizard extends WizardComponent
     {
         return [
             // Order Matters here
-            AdditionalDetailsStep::class,
-            PersonalDetailsStep::class,
             ResumeUploadStep::class,
+            PersonalDetailsStep::class,
+            AdditionalDetailsStep::class,
             FinalPreviewStep::class,
 
         ];

@@ -210,11 +210,11 @@ trait HasAddressForm
                 ->pluck('name', 'id')
                 ->toArray();
 
-            $this->address['permanentRegion'] ??= $this->address['presentRegion'];
-            $this->address['permanentProvince'] ??= $this->address['presentProvince'];
-            $this->address['permanentCity'] ??= $this->address['presentCity'];
-            $this->address['permanentBarangay'] ??= $this->address['presentBarangay'];
-            $this->address['permanentAddress'] ??= $this->address['presentAddress'];
+            $this->address['permanentRegion'] = $this->address['presentRegion'] ?? $this->address['permanentRegion'];
+            $this->address['permanentProvince'] = $this->address['presentProvince'] ?? $this->address['permanentProvince'];
+            $this->address['permanentCity'] = $this->address['presentCity'] ?? $this->address['permanentCity'];
+            $this->address['permanentBarangay'] = $this->address['presentBarangay'] ?? $this->address['permanentBarangay'];
+            $this->address['permanentAddress'] = $this->address['presentAddress'] ?? $this->address['permanentAddress'];
 
             $this->dispatch('same-as-present-address');
         } else {
