@@ -57,7 +57,7 @@ class FortifyServiceProvider extends ServiceProvider
 
                     Log::error('Broadcast error: ' . $th);
                 } finally {
-                    return redirect($redirectUrl);
+                    return redirect($redirectUrl)->with('clearSessionStorageKeys', 'pageThemePreference');
                 }
             }
         });
@@ -114,11 +114,11 @@ class FortifyServiceProvider extends ServiceProvider
                 if ($authUser->account_type == AccountType::EMPLOYEE->value) {
 
                     if ($authUser->hasPermissionTo(UserPermission::VIEW_ADMIN_DASHBOARD->value)) {
-                        return redirect('/admin/dashboard')->with('clearSessionStorageKeys', 'pageThemePreference');;
+                        return redirect('/admin/dashboard')->with('clearSessionStorageKeys', 'pageThemePreference');
                     }
 
                     if ($authUser->hasAnyPermission([UserPermission::VIEW_EMPLOYEE_DASHBOARD->value, UserPermission::VIEW_HR_MANAGER_DASHBOARD->value])) {
-                        return redirect('/employee/dashboard')->with('clearSessionStorageKeys', 'pageThemePreference');;
+                        return redirect('/employee/dashboard')->with('clearSessionStorageKeys', 'pageThemePreference');
                     }
                 }
 
