@@ -8,6 +8,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Spatie\LivewireWizard\Components\StepComponent;
 use App\Livewire\Forms\FileForm;
+use App\Models\JobVacancy;
 use App\Traits\Applicant;
 use App\Traits\HasObjectForm;
 use Illuminate\Support\Facades\Auth;
@@ -17,7 +18,7 @@ use Spatie\LivewireFilepond\WithFilePond;
 
 class ResumeUploadStep extends StepComponent
 {
-    use WithFilePond, HasObjectForm, Applicant;
+    use WithFilePond, HasObjectForm;
 
     public $resume;
 
@@ -32,15 +33,11 @@ class ResumeUploadStep extends StepComponent
 
     public bool $isValid = false;
 
+    protected JobVacancy $jobVacancy;
+
 
     public function boot()
     {
-        if (Auth::check()) {
-            // check if applicant or guest and if employee has permission to view job application form
-            if (self::applicantOrYet(!Auth::user()->hasPermissionTo(UserPermission::VIEW_JOB_APPLICATION_FORM->value), true));
-            else self::hasApplication(true);
-        } else abort(401);
-
 
         $this->mountWithObjectForm(FileForm::class, 'resume');
 

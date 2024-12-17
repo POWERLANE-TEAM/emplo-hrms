@@ -2,25 +2,26 @@
 
 namespace App\Livewire\Applicant\Application;
 
+use App\Enums\CivilStatus;
 use App\Models\Barangay;
 use App\Models\City;
 use App\Models\Province;
 use App\Traits\Applicant;
 use App\Traits\HasAddressForm;
 use Closure;
-use Exception;
 use Illuminate\Contracts\View\View;
-use Livewire\Attributes\Locked;
-use Livewire\Features\SupportLockedProperties\CannotUpdateLockedPropertyException;
+use Livewire\Attributes\Computed;
 use Spatie\LivewireWizard\Components\StepComponent;
 
 class AdditionalDetailsStep  extends StepComponent
 {
-    use Applicant, HasAddressForm;
+    use HasAddressForm;
 
     // used to tag the step is complete
     // has no actual use yet
     public bool $isValid = false;
+
+    public string $civilStatus =  CivilStatus::SINGLE->value;
 
     public function mount()
     {
@@ -49,12 +50,6 @@ class AdditionalDetailsStep  extends StepComponent
     }
 
 
-    /**
-     * Handle automatic dropdown options for provinces, cities, and barangays.
-     *
-     * @param  mixed  $property
-     * @return void
-     */
     public function updated($property, $value)
     {
         $this->updatedAddress($property);
@@ -72,6 +67,17 @@ class AdditionalDetailsStep  extends StepComponent
     public function dispatchSameAddress()
     {
         $this->dispatch('same-as-present-address');
+    }
+
+    /**
+     * Accessor for civil statuses, returning key / value pairs of enum cases and labels.
+     *
+     * @return array
+     */
+    #[Computed]
+    public function civilStatuses()
+    {
+        return CivilStatus::options();
     }
 
     /**

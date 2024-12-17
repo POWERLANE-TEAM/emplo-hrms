@@ -76,6 +76,32 @@
                         </div>
                     </div> --}}
 
+                    <div class="row">
+                        <div class="col-12 col-md-6 col-lg-3 ">
+
+                            <x-form.boxed-dropdown
+                            id="civil_status"
+                            label="{{ __('Civil Status') }}"
+                            name="civilStatus"
+                            :nonce="$nonce"
+                            :required="true"
+                            :options="$this->civilStatuses"
+                            placeholder="Select type">
+
+                            <x-slot:feedback>
+                                @include('components.form.input-feedback', [
+                                    'feedback_id' => 'civil_status-feedback',
+                                    'message' => $errors->first('civilStatus'),
+                                ])
+                            </x-slot:feedback>
+                        </x-form.boxed-dropdown>
+
+
+                        </div>
+
+
+                    </div>
+
                     <section class="present-address">
                         <x-headings.section-title title="{{ __('Present Address') }}" :isNextSection="true" />
 
@@ -107,7 +133,7 @@
 
                             @php
                             $isPresentRegionNcr = $this->address['presentRegion'] === '13';
-                        @endphp
+                            @endphp
 
                             <div class="col-12 col-md-6 col-lg-3"         >
                                 <x-form.boxed-dropdown

@@ -4,6 +4,7 @@ namespace App\Livewire\Applicant\Application;
 
 use App\Enums\Sex;
 use App\Enums\UserPermission;
+use App\Events\Guest\ResumeParsed;
 use App\Http\Requests\PersonNameRequest;
 use App\Jobs\Guest\ParseResumeJob;
 use App\Rules\EmailRule;
@@ -28,7 +29,7 @@ use Spatie\LivewireWizard\Components\StepComponent;
 class PersonalDetailsStep extends StepComponent
 {
 
-    use WithFilePond, NeedsAuthBroadcastId, Applicant;
+    use WithFilePond, NeedsAuthBroadcastId;
 
     /**
      * |--------------------------------------------------------------------------
@@ -81,11 +82,6 @@ class PersonalDetailsStep extends StepComponent
     public function mount()
     {
 
-        if (Auth::check()) {
-            if (self::applicantOrYet(!Auth::user()->hasPermissionTo(UserPermission::VIEW_JOB_APPLICATION_FORM->value), true));
-            else self::hasApplication(true);
-        } else abort(401);
-
         // get the resume file property state from the resume upload step
         $resumeState = $this->state()->forStep('form.applicant.resume-upload-step');
 
@@ -120,27 +116,27 @@ class PersonalDetailsStep extends StepComponent
 
         // For testing purposes not relying on Document AI API
 
-        // ResumeParsed::dispatch([
-        //     'employee_education' => 'Bachelor of Arts in Communication, Ateneo de Manila University',
-        //     'employee_contact' => '+63-961-5719',
-        //     'employee_email' => 'fernando.poe.jrs@gmail.com',
-        //     'employee_experience' => 'Globe Telecom - 3 years as Project Manager\nRobinsons Land - 5 years as Marketing Specialist',
-        //     'employee_name' => 'Grace, Fernando Poe Jr.',
-        //     'employee_skills' => 'Project Management, Customer Service, Problem Solving',
-        // ], self::getBroadcastId());
+        ResumeParsed::dispatch([
+            'employee_education' => 'Bachelor of Arts in Communication, Ateneo de Manila University',
+            'employee_contact' => '+63-961-571-0923',
+            'employee_email' => 'fernando.poe.jrs@gmail.com',
+            'employee_experience' => 'Globe Telecom - 3 years as Project Manager\nRobinsons Land - 5 years as Marketing Specialist',
+            'employee_name' => 'Grace, Fernando Poe Jr.',
+            'employee_skills' => 'Project Management, Customer Service, Problem Solving',
+        ], self::getBroadcastId());
 
-        // if (empty($this->parsedResume)) {
-        //     $this->parsedResume = [
-        //         'employee_education' => 'Bachelor of Arts in Communication, Ateneo de Manila University',
-        //         'employee_contact' => '+63-961-5719',
-        //         'employee_email' => 'fernando.poe.jrs@gmail.com',
-        //         'employee_experience' => 'Globe Telecom - 3 years as Project Manager\nRobinsons Land - 5 years as Marketing Specialist',
-        //         'employee_name' => 'Grace, Fernando Poe Jr.',
-        //         'employee_skills' => 'Project Management, Customer Service, Problem Solving',
-        //     ];
-        // }
+        if (empty($this->parsedResume)) {
+            $this->parsedResume = [
+                'employee_education' => 'Bachelor of Arts in Communication, Ateneo de Manila University',
+                'employee_contact' => '+63-961-571-0923',
+                'employee_email' => 'fernando.poe.jrs@gmail.com',
+                'employee_experience' => 'Globe Telecom - 3 years as Project Manager\nRobinsons Land - 5 years as Marketing Specialist',
+                'employee_name' => 'Grace, Fernando Poe Jr.',
+                'employee_skills' => 'Project Management, Customer Service, Problem Solving',
+            ];
+        }
 
-        // $this->updateParsedNameSegment();
+        $this->updateParsedNameSegment();
     }
 
     public function boot()
