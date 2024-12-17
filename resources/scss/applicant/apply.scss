@@ -10,6 +10,7 @@
 @import '../input/address-form';
 @import '../filepond';
 @import '../guest/main';
+@import '../scrollbar';
 
 .boxed {
     .filepond--root {
@@ -30,6 +31,31 @@
                 // background-color: color-mix(in srgb, var(--bs-primary-bg-subtle) 45%, white);
             }
 
+        }
+    }
+}
+
+[role="heading"][aria-level="1"] {
+    position: relative;
+
+    @media screen and (min-width: 576px) {
+
+        &:hover {
+            .change-application {
+                visibility: visible;
+            }
+        }
+    }
+
+    .change-application {
+        position: absolute;
+
+        @media screen {
+            visibility: hidden;
+        }
+
+        @media not screen {
+            display: none;
         }
     }
 }
