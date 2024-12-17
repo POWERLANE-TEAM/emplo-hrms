@@ -7,6 +7,7 @@ use App\Enums\AccountType;
 use App\Enums\UserPermission;
 use App\Enums\UserStatus;
 use App\Http\Controllers\Controller;
+use App\Http\Helpers\RouteHelper;
 use App\Models\Applicant;
 use App\Models\JobVacancy;
 use App\Models\User;
@@ -29,11 +30,16 @@ class ApplicantController extends Controller
     }
 
     /* Show form page for creating resource */
-    public function create()
+    public function create($job)
     {
+
+        $job = RouteHelper::validateModel(JobVacancy::class, $job);
+
+        $job = $job->load('jobTitle');
+
         // add check if authenticated is guest or applicant
         if ($this->canApply()) {
-            return view('apply');
+            return view('apply', ['job' => $job]);
         }
     }
 

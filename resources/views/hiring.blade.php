@@ -94,7 +94,7 @@
 
         @livewire('guest.job-search-input')
         <div class="px-md-5  pt-md-5 pb-md-3 ms-5">
-            <em class=" ms-5" x-data="{ jobCount: 12 }"
+            <em class=" ms-5" x-data="{ jobCount: 0 }"
                 x-on:job-vacancies-fetched.window="jobCount = $event.detail[0].count || 'no';" nonce="{{ $nonce }}">
                 Currently
                 <span x-text="jobCount" nonce="{{ $nonce }}"></span>

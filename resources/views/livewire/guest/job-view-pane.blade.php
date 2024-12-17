@@ -14,7 +14,7 @@
             '</p>
     </hgroup>
     <a href="' .
-            (auth()->check() ? url('/apply') : '') .
+            (auth()->check() ? route('apply', ['job' => $job_vacancy['jobDetail']['jobId']]) : '') .
             '"
          class="btn btn-primary mt-1 mb-4" role="navigation" aria-label="Apply"
         ' .

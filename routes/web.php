@@ -14,14 +14,14 @@ use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 Route::group([], function () {
     Route::get('/hiring', function () {
         return view('hiring');
-    });
+    })->name('hiring');
 });
 
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/application/{page?}', [ApplicantController::class, 'index']);
 
-    Route::get('/apply', [ApplicantController::class, 'create']);
+    Route::get('/apply/{job}', [ApplicantController::class, 'create'])->name('apply');
 
     Route::get('/preemploy', [ApplicationDocController::class, 'create']);
     Route::post('/preemploy', [ApplicationDocController::class, 'store']);
