@@ -36,6 +36,22 @@
     <x-authenticated-broadcast-id />
     <x-livewire-listener />
 
+    @if(session('clearSessionStorageKeys'))
+    <script nonce="{{ $nonce }}">
+        @php
+            $keys = session('clearSessionStorageKeys');
+        @endphp
+
+        @if(is_array($keys))
+            @foreach($keys as $key)
+                sessionStorage.removeItem('{{ $key }}');
+            @endforeach
+        @else
+            sessionStorage.removeItem('{{ $keys }}');
+        @endif
+    </script>
+    @endif
+
     @auth
         @vite(['resources/js/listeners/online-users.js'])
     @endauth
@@ -51,7 +67,7 @@
 
 </head>
 
-<body>
+<body data-bs-theme="{{ session('themePreference', 'light') }}">
     @yield('critical-styles')
     <x-no-script-body />
 
