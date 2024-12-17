@@ -12,7 +12,7 @@ use App\Enums\RoutePrefix as EnumsRoutePrefix;
 use App\Enums\UserPermission;
 use App\Enums\UserRole;
 use App\Events\UserLoggedout;
-use App\Http\Helpers\RoutePrefix;
+use App\Http\Helpers\RouteHelper;
 use App\Livewire\Auth\UnverifiedEmail;
 use App\Models\User;
 use Illuminate\Cache\RateLimiting\Limit;
@@ -37,13 +37,13 @@ class FortifyServiceProvider extends ServiceProvider
     public function register(): void
     {
 
-        config(['fortify.prefix' => RoutePrefix::getByReferrer()]);
+        config(['fortify.prefix' => RouteHelper::getByReferrer()]);
 
         $this->app->instance(LogoutResponse::class, new class implements LogoutResponse
         {
             public function toResponse($request)
             {
-                $redirectUrl = match (RoutePrefix::getByReferrer()) {
+                $redirectUrl = match (RouteHelper::getByReferrer()) {
                     'employee' => '/employee/login',
                     'admin' => '/admin/login',
                     default => '/login',
@@ -55,7 +55,7 @@ class FortifyServiceProvider extends ServiceProvider
                     // avoid Pusher error: cURL error 7: Failed to connect to localhost port 8080 after 2209 ms: Couldn't connect to server
                     /* when websocket server is not started */
 
-                    Log::error('Broadcast error: '.$th);
+                    Log::error('Broadcast error: ' . $th);
                 } finally {
                     return redirect($redirectUrl);
                 }
@@ -72,7 +72,7 @@ class FortifyServiceProvider extends ServiceProvider
                 activity()
                     ->by($authUser)
                     ->useLog(ActivityLogName::AUTHENTICATION->value)
-                    ->log(Str::ucfirst($authUser->account->first_name).' logged in.');
+                    ->log(Str::ucfirst($authUser->account->first_name) . ' logged in.');
 
                 // Redirection to previously visited page before being prompt to login
                 // For example you visit /employee/payslip and you are not logged in
@@ -140,11 +140,11 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
 
-        Fortify::verifyEmailView(fn () => app(UnverifiedEmail::class)->render());
+        Fortify::verifyEmailView(fn() => app(UnverifiedEmail::class)->render());
 
         Fortify::authenticateUsing(function (Request $request) {
 
-            $routePrefix = RoutePrefix::getByRequest($request);
+            $routePrefix = RouteHelper::getByRequest($request);
 
             $user = User::where('email', $request->email)->first();
 
@@ -176,7 +176,7 @@ class FortifyServiceProvider extends ServiceProvider
         });
 
         RateLimiter::for('login', function (Request $request) {
-            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
+            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())) . '|' . $request->ip());
 
             return Limit::perMinute(5)->by($throttleKey);
         });
