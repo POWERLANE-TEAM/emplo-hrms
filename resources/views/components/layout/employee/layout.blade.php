@@ -92,6 +92,9 @@
     <div class="main-layout-container">
         <main class="main {{ $main_cont_class }}">
             @yield('content')
+
+            <!-- Toast Container -->
+            <div class="toast-container position-fixed bottom-0 end-0 p-3"></div>
         </main>
     </div>
 

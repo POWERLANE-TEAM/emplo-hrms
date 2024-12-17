@@ -163,12 +163,14 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::VIEW_ALL_SUBORDINATE_PERFORMANCE_EVAL_FORM->value,
             UserPermission::VIEW_ALL_SUBORDINATE_LEAVE_REQUEST->value,
             UserPermission::VIEW_ALL_SUBORDINATE_OVERTIME_REQUEST->value,
+            UserPermission::VIEW_ALL_SUBORDINATE_OVERTIME_SUMMARY_FORMS->value,
             UserPermission::VIEW_SUBORDINATE_PERFORMANCE_EVAL_FORM->value,
             UserPermission::VIEW_SUBORDINATE_LEAVE_REQUEST->value,
             UserPermission::VIEW_SUBORDINATE_OVERTIME_REQUEST->value,
             UserPermission::ASSIGN_PERFORMANCE_EVAL_SCORE->value,
             UserPermission::UPDATE_EMP_PERFORMANCE_EVAL_GRADE_FORM->value,
             UserPermission::UPDATE_EMP_PERFORMANCE_EVAL_GRADE_FORM->value,
+            UserPermission::UPDATE_SUBORDINATE_OVERTIME_REQUEST->value,
         ];
     }
 }

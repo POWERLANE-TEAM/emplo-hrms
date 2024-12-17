@@ -96,7 +96,8 @@ enum UserPermission: string
     case VIEW_ALL_SUBORDINATE_REQUESTS = 'view all subordinate requests';
     case VIEW_ALL_SUBORDINATE_PERFORMANCE_EVAL_FORM = 'view all subordinate performance evaluation forms.';
     case VIEW_ALL_SUBORDINATE_LEAVE_REQUEST = 'view all subordinate leaves requests.';
-    case VIEW_ALL_SUBORDINATE_OVERTIME_REQUEST = 'view all subordinate overtime forms.';
+    case VIEW_ALL_SUBORDINATE_OVERTIME_REQUEST = 'view all subordinate overtime requests.';
+    case VIEW_ALL_SUBORDINATE_OVERTIME_SUMMARY_FORMS = 'view all subordinate overtime summary forms.';
     case VIEW_SUBORDINATE_PERFORMANCE_EVAL_FORM = 'view subordinate performance evaluation form.';
     case VIEW_SUBORDINATE_LEAVE_REQUEST = 'view subordinate leave request';
     case VIEW_SUBORDINATE_OVERTIME_REQUEST = 'view subordinate overtime request';
@@ -128,6 +129,7 @@ enum UserPermission: string
     case UPDATE_ISSUE_COMPLAINT_CLOSED = 'update issue complaint to closed';
     case UPDATE_ISSUE_COMPLAINT_RESOLVED = 'update issue complaint to resolved';
     case UPDATE_BIOMETRIC_DEVICE = 'update biometric attendance device configuration';
+    case UPDATE_SUBORDINATE_OVERTIME_REQUEST = 'update subordinate overtime request';
 
         // Delete cases goes here
     case DELETE_JOB_LISTING = 'delete job listing';
@@ -229,7 +231,8 @@ enum UserPermission: string
             self::VIEW_ALL_SUBORDINATE_REQUESTS => 'View all subordinate requests',
             self::VIEW_ALL_SUBORDINATE_PERFORMANCE_EVAL_FORM => 'View all subordinate performance evaluation forms.',
             self::VIEW_ALL_SUBORDINATE_LEAVE_REQUEST => 'View all subordinate leaves requests.',
-            self::VIEW_ALL_SUBORDINATE_OVERTIME_REQUEST => 'View all subordinate overtime forms.',
+            self::VIEW_ALL_SUBORDINATE_OVERTIME_REQUEST => 'View all subordinate overtime requests.',
+            self::VIEW_ALL_SUBORDINATE_OVERTIME_SUMMARY_FORMS => 'View all subordinate overtime summary forms.',
             self::VIEW_SUBORDINATE_LEAVE_REQUEST => 'View subordinate leave request',
             self::VIEW_SUBORDINATE_OVERTIME_REQUEST => 'View subordinate overtime request',
 
@@ -260,6 +263,7 @@ enum UserPermission: string
             self::UPDATE_ISSUE_COMPLAINT_CLOSED => 'Close an issue complaint',
             self::UPDATE_ISSUE_COMPLAINT_RESOLVED => 'Mark an issue complaint as resolved',
             self::UPDATE_BIOMETRIC_DEVICE => 'Update biometric attendance device configuration',
+            self::UPDATE_SUBORDINATE_OVERTIME_REQUEST => 'Update (approve/deny) subordinate overtime request.',
 
             // Delete labels goes here
             self::DELETE_JOB_LISTING => 'Delete job listing/s',

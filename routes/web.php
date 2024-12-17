@@ -56,3 +56,7 @@ Route::middleware('guest')->group(function () {
 Route::post('/logout', [Logout::class, 'destroy'])
     ->middleware('auth')
     ->name('logout');
+
+Route::get('/test-pop-ups', function () {
+    return view('components.html.test-pop-ups');
+});

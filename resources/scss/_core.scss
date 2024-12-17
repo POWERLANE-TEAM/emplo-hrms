@@ -662,3 +662,33 @@ body {
         }
     }
 }
+
+.fs-7 {
+    font-size: .8rem;
+}
+
+.fs-8 {
+    font-size: .6rem;
+}
+
+.tab-section {
+    display: none;
+}
+
+.tab-section.active-section {
+    display: block;
+}
+
+.tab-section p {
+    margin-bottom: 0 !important;
+}
+
+hr {
+    color: #cfcfcf !important;
+    height: 4px !important;
+}
+
+ul#dropdown-menu > a > li.dropdown-item:hover, ul#dropdown-menu > li.dropdown-item:hover {
+    background-color: rgba(97, 176, 0, 0.2);
+    border-radius: 5px 
+}

@@ -38,7 +38,7 @@ class Overtime extends Model
     {
         return Attribute::make(
             get: fn (mixed $value) => Carbon::parse($value)->format('g:i A'),
-            set: fn (mixed $value) => Carbon::parse($value)->format('Y-m-d H:i:s'),
+            set: fn (mixed $value) => Carbon::parse($value)->format('H:i:s'),
         );
     }
     
@@ -49,7 +49,7 @@ class Overtime extends Model
     {
         return Attribute::make(
             get: fn (mixed $value) => Carbon::parse($value)->format('g:i A'),
-            set: fn (mixed $value) => Carbon::parse($value)->format('Y-m-d H:i:s'),
+            set: fn (mixed $value) => Carbon::parse($value)->format('H:i:s'),
         );
     }
 
@@ -59,19 +59,26 @@ class Overtime extends Model
     protected function filedAt(): Attribute
     {
         return Attribute::make(
-            get: fn (mixed $value) => Carbon::parse($value)->format('F d Y')
+            get: fn (mixed $value) => Carbon::parse($value)->format('F d, Y')
         );
     }
 
     /**
      * Getter for computed overtime hours requested.
      */
-    public function getHoursRequested()
+    public function getHoursRequested(): string
     {
-        $start = Carbon::parse($this->start_time);
-        $end = Carbon::parse($this->end_time);
-
+        $start = Carbon::createFromFormat('g:i A', $this->start_time);
+        $end = Carbon::createFromFormat('g:i A', $this->end_time);
+    
         return $start->diff($end)->format('%h hours and %i minutes');
+    }
+    
+    public function date(): Attribute
+    {
+        return Attribute::make(
+            set: fn (mixed $value) => Carbon::parse($value)->format('Y-m-d')
+        );
     }
 
     /**

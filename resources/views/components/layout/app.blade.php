@@ -88,6 +88,9 @@
 
     @yield('before-nav')
 
+    <!-- Toast Container -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3"></div>
+
     @yield('header-nav')
 
     @yield('before-main')

@@ -130,6 +130,7 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('updateOvertimeRequest', [OvertimePolicy::class, 'updateOvertimeRequest']);
         Gate::define('submitOvertimeRequestToday', [OvertimePolicy::class, 'submitOvertimeRequestToday']);
         Gate::define('submitNewOrAnotherOvertimeRequest', [OvertimePolicy::class, 'submitNewOrAnotherOvertimeRequest']);
+        Gate::define('updateSubordinateOvertimeRequest', [OvertimePolicy::class, 'updateSubordinateOvertimeRequest']);
 
         Vite::useAggressivePrefetching();
     }

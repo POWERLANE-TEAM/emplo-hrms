@@ -3,9 +3,6 @@
         <header class="typewriter-text display-5 fw-semibold text-primary mb-3 d-none d-md-block">
             {{ __('Hello, Admin!') }}
         </header>
-        <header class="h2 typewriter-text fw-semibold text-primary mb-3 d-block d-md-none" aria-hidden="true">
-            {{ __('Hello, Admin!') }}
-        </header>
         <span class="fs-5 text-wrap fadein-text">
             {{ __('Let\'s get you sign in to get started.') }}
         </span>
@@ -35,17 +32,17 @@
             </div>
         @endif
 
-        <x-form.email id="userLogin-email" label="{{ __('Email Address') }}" name="email" auto_complete="email"
-            :$nonce aria-owns="userLogin-email-feedback" class=" {{ $errors->has('email') ? 'is-invalid' : '' }}">
+        <x-form.email id="userLogin-email" label="{{ __('Email Address') }}" name="email" auto_complete="email" :$nonce
+            aria-owns="userLogin-email-feedback" class=" {{ $errors->has('email') ? 'is-invalid' : '' }}">
             <x-slot:input_icon_left>
                 <i data-lucide="mail" class="icon-large"></i>
             </x-slot:input_icon_left>
 
             <x-slot:feedback>
                 @include('components.form.input-feedback', [
-                    'feedback_id' => 'userLogin-email-feedback',
-                    'message' => $errors->first('email'),
-                ])
+    'feedback_id' => 'userLogin-email-feedback',
+    'message' => $errors->first('email'),
+])
             </x-slot:feedback>
         </x-form.email>
 
@@ -55,16 +52,16 @@
 
             <x-slot:toggle_password>
                 @include('components.form.toggle-password', [
-                    'toggler_id' => 'toggle-psw',
-                    'controls' => 'userLogin-password',
-                ])
+    'toggler_id' => 'toggle-psw',
+    'controls' => 'userLogin-password',
+])
             </x-slot:toggle_password>
 
             <x-slot:feedback>
                 @include('components.form.input-feedback', [
-                    'feedback_id' => 'userLogin-password-feedback',
-                    'message' => $errors->first('password'),
-                ])
+    'feedback_id' => 'userLogin-password-feedback',
+    'message' => $errors->first('password'),
+])
             </x-slot:feedback>
         </x-form.password>
 

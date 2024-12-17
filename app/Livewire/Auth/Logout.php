@@ -23,8 +23,8 @@ class Logout extends Component
 
     public function mount(?ComponentAttributeBag $buttonAttributes = null, ?ComponentAttributeBag $formAttributes = null)
     {
-        $buttonAttributes ?? new ComponentAttributeBag();
-        $formAttributes ?? new ComponentAttributeBag();
+        $buttonAttributes ??= new ComponentAttributeBag();
+        $formAttributes ??= new ComponentAttributeBag();
 
         $nonce = csp_nonce();
 
