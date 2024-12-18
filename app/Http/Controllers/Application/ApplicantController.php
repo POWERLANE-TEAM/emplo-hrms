@@ -148,7 +148,7 @@ class ApplicantController extends Controller
             UserPermission::VIEW_ALL_PRE_EMPLOYED_APPLICATIONS->value,
         ];
 
-        $usersWithPermissions = User::permission($permissions)->get();
+        $usersWithPermissions = User::permission($permissions)->select('user_id')->get();
 
         foreach ($usersWithPermissions as $otherUser) {
             $otherUser->notify(new AccountCreated($user->user_id, $application->application_id, ['database', 'broadcast']));
