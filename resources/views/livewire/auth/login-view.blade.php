@@ -42,10 +42,10 @@
 @endsection
 
 @section('header-nav')
-    @if ($routePrefix === 'admin')
-    <x-layout.employee.nav.secondary-header />
-    @else
+    @if ($routePrefix === 'guest')
     <x-layout.guest.secondary-header />
+    @else
+    <x-layout.employee.nav.secondary-header />
     @endif
 @endsection
 

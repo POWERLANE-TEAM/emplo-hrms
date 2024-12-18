@@ -84,4 +84,17 @@ class OvertimePolicy
             ? Response::deny(__('You may only have three (3) pending status of overtime requests at a time.'))
             : Response::allow();
     }
+
+    /**
+     * Check if user employee is an initial approver (supervisor/dept head) of overtime request submissions.
+     * 
+     * @param \App\Models\User $user
+     * @return \Illuminate\Auth\Access\Response
+     */
+    public function updateSubordinateOvertimeRequest(User $user): Response
+    {
+        return $user->hasPermissionTo(UserPermission::UPDATE_SUBORDINATE_OVERTIME_REQUEST)
+            ? Response::allow()
+            : Response::deny();
+    }
 }

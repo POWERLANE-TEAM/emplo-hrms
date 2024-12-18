@@ -42,6 +42,14 @@ class Process extends Model
     }
 
     /**
+     * Get the secondary approver who denied the process(e.g.: overtime, leave)
+     */
+    public function denier(): BelongsTo
+    {
+        return $this->belongsTo(Employee::class, 'denier', 'employee_id');
+    }
+
+    /**
      * Get the parent model (Overtime or Leave) that the process belongs to.
      */
     public function processable(): MorphTo

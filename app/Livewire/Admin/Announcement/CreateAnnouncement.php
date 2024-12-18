@@ -41,6 +41,11 @@ class CreateAnnouncement extends Component
         $this->reset();
         $this->resetErrorBag();
 
+        $this->dispatch('show-toast', [
+            'type' => 'success',
+            'message' => 'Announcement created successfully',
+        ]);
+
         $this->dispatch('changes-saved');
     }
 

@@ -40,4 +40,5 @@
     <livewire:admin.dashboard.recent-activity-logs />
     <livewire:admin.dashboard.active-sessions />
 </x-section-wrapper>
+
 @endsection

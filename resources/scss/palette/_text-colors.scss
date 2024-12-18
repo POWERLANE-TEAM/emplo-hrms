@@ -54,4 +54,8 @@
     text-decoration: underline;
     font-weight: 500;
   }
+
+  .bg-green-hover-opacity:hover {
+    background-color: rgba(var(--main-green-rgb), 0.5) !important;
+  }
   

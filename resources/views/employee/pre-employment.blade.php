@@ -10,7 +10,7 @@
 @endPushOnce
 
 @pushOnce('scripts')
-    @vite(['resources/js/employee/pre-employment.js'])
+    @vite(['resources/js/applicant/pre-employment.js'])
 @endPushOnce
 
 @pushOnce('pre-styles')
