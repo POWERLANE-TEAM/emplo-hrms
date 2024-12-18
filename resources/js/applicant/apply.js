@@ -123,17 +123,25 @@ function createSelectOptions(element, val, text) {
 
 new GlobalListener('input', document, `${applicationForm} #sameAddressCheck`, (e) => {
 
+    let presentRegionSelect = document.querySelector(`${applicationForm} #present_region:valid`);
+    let presentProvinceSelect = document.querySelector(`${applicationForm} #present_province:valid`);
+    let presentCitySelect = document.querySelector(`${applicationForm} #present_city:valid`);
+    let presentBarangaySelect = document.querySelector(`${applicationForm} #present_barangay`);
+    let presentAddressInput = document.querySelector(`${applicationForm} #present_address:valid`);
+
+    if (!(presentRegionSelect && presentProvinceSelect && presentCitySelect && presentBarangaySelect && presentAddressInput)) {
+        e.target.checked = false;
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
     if (!e.target.checked) {
         return;
     }
 
     let component = Livewire.find(e.target.getAttribute('data-comp-id'))
 
-    let presentRegionSelect = document.querySelector(`${applicationForm} #present_region`);
-    let presentProvinceSelect = document.querySelector(`${applicationForm} #present_province`);
-    let presentCitySelect = document.querySelector(`${applicationForm} #present_city`);
-    let presentBarangaySelect = document.querySelector(`${applicationForm} #present_barangay`);
-    let presentAddressInput = document.querySelector(`${applicationForm} #present_address`);
+    component.dispatch('useSameAsPresentAddress');
 
     let permanentRegionSelect = document.querySelector(`${applicationForm} #permanent_region`);
     let permanentProvinceSelect = document.querySelector(`${applicationForm} #permanent_province`);
@@ -224,4 +232,10 @@ function getLocalSession(key) {
     }
 }
 
+document.addEventListener('livewire:init', () => {
 
+    Livewire.on('applicant-application-received', (event) => {
+        bootstrap.Modal.getOrCreateInstance('#application-email-alert').show();
+    });
+
+});

@@ -9,11 +9,26 @@ use App\Models\Region;
 use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Computed;
 use Livewire\Features\SupportLockedProperties\CannotUpdateLockedPropertyException;
+use App\Http\Requests\ResidentialAddressRequest  as AddressRequest;
+use Livewire\Attributes\Validate;
 
 trait HasAddressForm
 {
 
+    #[Validate(as: [
+        'address.presentRegion' => 'present region',
+        'address.presentProvince' => 'present province',
+        'address.presentCity' => 'present city/municipality',
+        'address.presentBarangay' => 'present barangay',
+        'address.presentAddress' => 'present address',
 
+        // Permanent Address
+        'address.permanentRegion' => 'permanent region',
+        'address.permanentProvince' => 'permanent province',
+        'address.permanentCity' => 'permanent city/municipality',
+        'address.permanentBarangay' => 'permanent barangay',
+        'address.permanentAddress' => 'permanent address',
+    ])]
     public $address = [
         // Present Address
         'presentRegion' => null,
@@ -173,7 +188,10 @@ trait HasAddressForm
             $this->address['presentAddress']
         )
             ? $this->samePresentAddressChckBox['shown'] = true
-            : $this->samePresentAddressChckBox['shown'] = false;
+            : (function () {
+                $this->samePresentAddressChckBox['shown'] = false;
+                $this->samePresentAddressChckBox['checked'] = false;
+            })();
 
         // This shoudld prevent chaging premanent address if same as present is checked
         $this->useSameAsPresentAddress(false);
@@ -198,6 +216,17 @@ trait HasAddressForm
     public function useSameAsPresentAddress($reset = true)
     {
         if ($this->samePresentAddressChckBox['checked']) {
+
+
+            $addressRequest = new AddressRequest();
+
+            $presentAddressRules = [];
+            foreach ($addressRequest->rules() as $key => $rule) {
+                $presentAddressRules["address.present" . ucfirst($key)] = $rule;
+            }
+
+            $this->validate($presentAddressRules);
+
             $this->permanentAddressFields['provinces'] = Province::where('region_code', $this->address['presentRegion'])
                 ->pluck('name', 'province_code')
                 ->toArray();
