@@ -5,7 +5,12 @@ export default class ThemeManager {
     defaultTheme = 'light';
 
     constructor() {
+        if (ThemeManager.instance) {
+            return ThemeManager.instance;
+        }
+        ThemeManager.instance = this;
         this.pageBody = document.querySelector('body');
+        this.isRequestPending = false;
     }
 
     getUserPreference() {
@@ -44,12 +49,46 @@ export default class ThemeManager {
                 return;
             }
 
+            themeToSet;
+
             if (matches) {
-                this.pageBody.setAttribute('data-bs-theme', 'light');
+                themeToSet = 'light';
             } else {
-                this.pageBody.setAttribute('data-bs-theme', 'dark');
+                themeToSet = 'dark';
             }
+            this.pageBody.setAttribute('data-bs-theme', themeToSet);
         });
+    }
+
+    postThemePreference(themeToSet) {
+        const validThemes = ['light', 'dark'];
+        const currentTheme = sessionStorage.getItem('pageThemePreference');
+
+        if (this.isRequestPending || !validThemes.includes(themeToSet) || currentTheme === themeToSet) {
+            return;
+        }
+
+        this.isRequestPending = true;
+
+        fetch('/theme-preference/set', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({
+                themePreference: themeToSet
+            })
+        })
+            .then(response => {
+                if (response.ok) {
+                    sessionStorage.setItem('pageThemePreference', themeToSet);
+                }
+            })
+            .finally(() => {
+                this.isRequestPending = false;
+            });
+
     }
 }
 
@@ -79,10 +118,10 @@ export function initPageTheme(themeManager, themeToggle = false) {
         if (isSystem) {
             const systemTheme = themeManager.getSystemPreference();
             themeManager.setPageTheme(systemTheme, isSystem);
-
+            themeManager.postThemePreference(systemTheme);
         } else {
-
             themeManager.setPageTheme(themePrefer);
+            themeManager.postThemePreference(themePrefer);
         }
     } catch (error) {
         console.error(error);
@@ -97,10 +136,10 @@ function updateTheme(theme) {
     const selectElements = document.querySelectorAll('.choices, .choices-custom, select, .choices__input, .choices__inner, .choices__list--dropdown, .choices__item, .choices__item--disabled');
     selectElements.forEach(select => {
         if (theme === 'dark') {
-            select.classList.add('dark'); 
-            select.classList.remove('light');  
+            select.classList.add('dark');
+            select.classList.remove('light');
         } else {
-            select.classList.add('light'); 
+            select.classList.add('light');
             select.classList.remove('dark');
         }
     });

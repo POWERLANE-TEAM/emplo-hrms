@@ -4,13 +4,6 @@
 
 // Helper function to show the modal by ID
 
-export function openModal(modalId) {
-    const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById(modalId));
-    modal.show();
-}
-
-window.openModal = openModal;
-
 // Helper function to hide the modal by ID
 export function hideModal(modalId) {
     const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById(modalId));

@@ -412,6 +412,14 @@ class Employee extends Model
         return $this->hasMany(Process::class, 'secondary_approver', 'employee_id');
     }
 
+    /**
+     * Get the rejected / denied processes(e.g., overtimes, leaves) by the employee.
+     */
+    public function deniedProcesses(): HasMany
+    {
+        return $this->hasMany(Process::class, 'denier', 'employee_id');
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Performance Evaluation Records Management

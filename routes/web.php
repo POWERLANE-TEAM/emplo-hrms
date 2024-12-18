@@ -4,6 +4,7 @@ use App\Http\Controllers\Application\ApplicantController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\ApplicationDocController;
 use App\Http\Controllers\ResumeController;
+use App\Http\Controllers\WebThemeController;
 use App\Livewire\Auth\FacebookOAuth;
 use App\Livewire\Auth\GoogleOAuth;
 use App\Livewire\Auth\GoogleOneTap;
@@ -16,6 +17,9 @@ Route::group([], function () {
         return view('hiring');
     })->name('hiring');
 });
+
+Route::post('/theme-preference/set', [WebThemeController::class, 'create'])
+    ->middleware('throttle:4,1');
 
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -52,3 +56,7 @@ Route::middleware('guest')->group(function () {
 Route::post('/logout', [Logout::class, 'destroy'])
     ->middleware('auth')
     ->name('logout');
+
+Route::get('/test-pop-ups', function () {
+    return view('components.html.test-pop-ups');
+});
