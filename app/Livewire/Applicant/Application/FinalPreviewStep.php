@@ -87,7 +87,7 @@ class FinalPreviewStep extends StepComponent
             $applicant =  array_merge($applicant, [
                 'user' => [
                     'photo' => $tempProfileFile,
-                    'email' => $personalDetails['applicant']['email'] ?? null
+                    'email' => $personalDetails['applicant']['email'] ?? auth()->user()->email ?? null,
                 ],
                 'application' => [
                     'jobVacancyId' =>  $this->jobVacancy->job_vacancy_id,
@@ -116,6 +116,8 @@ class FinalPreviewStep extends StepComponent
         $applcantController = new ApplicantController();
 
         $applcantController->store($this->applicationForm, true);
+
+        $this->dispatch('applicant-application-received');
     }
 
     public function stepInfo(): array
@@ -177,8 +179,6 @@ class FinalPreviewStep extends StepComponent
 
             $addressComponents = [$addressString, $barangay, $city, $province, $region];
             $address = implode(', ', $addressComponents);
-
-            Log::info($address);
         } catch (\Throwable $th) {
             $address = null;
             report($th);

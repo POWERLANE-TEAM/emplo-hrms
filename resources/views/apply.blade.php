@@ -46,7 +46,8 @@
         <x-headings.main-heading :isHeading="true" :containerAttributes="new ComponentAttributeBag(['class' => 'text-center fs-5'])" :overrideClass="true"
             class="text-primary fs-3 fw-bold mb-2">
             <x-slot:heading>
-                {{ __('Applying for: ') . $jobTitle }} <a href="{{route('hiring')}}#job-listing" class="btn btn-sm btn-secondary ms-1 ms-md-3 change-application">change</a>
+                {{ __('Applying for: ') . $jobTitle }} <a href="{{ route('hiring') }}#job-listing"
+                    class="btn btn-sm btn-secondary ms-1 ms-md-3 change-application">change</a>
             </x-slot:heading>
 
             <x-slot:description>
@@ -58,6 +59,9 @@
     <form id="application-wizard-form" {{-- wire:submit.prevent="save" --}} {{-- x-ref="resume-file" --}}>
         <livewire:form.applicant.application-wizard :jobVacancy="$job" />
     </form>
+
+    <x-modals.email-sent label="Application received email notification" id="application-email-alert"
+        message="Please check your inbox for the next steps." />
 @endsection
 
 @section('footer')

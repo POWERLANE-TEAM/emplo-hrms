@@ -81,6 +81,7 @@ class PersonalDetailsStep extends StepComponent
 
     public function mount()
     {
+        if (auth()->check())  $this->applicant['email'] = auth()->user()->email;
 
         // get the resume file property state from the resume upload step
         $resumeState = $this->state()->forStep('form.applicant.resume-upload-step');
@@ -114,29 +115,29 @@ class PersonalDetailsStep extends StepComponent
         }
 
 
-        // For testing purposes not relying on Document AI API
+        // // For testing purposes not relying on Document AI API
 
-        ResumeParsed::dispatch([
-            'employee_education' => 'Bachelor of Arts in Communication, Ateneo de Manila University',
-            'employee_contact' => '+63-961-571-0923',
-            'employee_email' => 'fernando.poe.jrs@gmail.com',
-            'employee_experience' => 'Globe Telecom - 3 years as Project Manager\nRobinsons Land - 5 years as Marketing Specialist',
-            'employee_name' => 'Grace, Fernando Poe Jr.',
-            'employee_skills' => 'Project Management, Customer Service, Problem Solving',
-        ], self::getBroadcastId());
+        // ResumeParsed::dispatch([
+        //     'employee_education' => 'Bachelor of Arts in Communication, Ateneo de Manila University',
+        //     'employee_contact' => '+63-961-571-0923',
+        //     'employee_email' => 'fernando.poe.jrs@gmail.com',
+        //     'employee_experience' => 'Globe Telecom - 3 years as Project Manager\nRobinsons Land - 5 years as Marketing Specialist',
+        //     'employee_name' => 'Grace, Fernando Poe Jr.',
+        //     'employee_skills' => 'Project Management, Customer Service, Problem Solving',
+        // ], self::getBroadcastId());
 
-        if (empty($this->parsedResume)) {
-            $this->parsedResume = [
-                'employee_education' => 'Bachelor of Arts in Communication, Ateneo de Manila University',
-                'employee_contact' => '+63-961-571-0923',
-                'employee_email' => 'fernando.poe.jrs@gmail.com',
-                'employee_experience' => 'Globe Telecom - 3 years as Project Manager\nRobinsons Land - 5 years as Marketing Specialist',
-                'employee_name' => 'Grace, Fernando Poe Jr.',
-                'employee_skills' => 'Project Management, Customer Service, Problem Solving',
-            ];
-        }
+        // if (empty($this->parsedResume)) {
+        //     $this->parsedResume = [
+        //         'employee_education' => 'Bachelor of Arts in Communication, Ateneo de Manila University',
+        //         'employee_contact' => '+63-961-571-0923',
+        //         'employee_email' => 'fernando.poe.jrs@gmail.com',
+        //         'employee_experience' => 'Globe Telecom - 3 years as Project Manager\nRobinsons Land - 5 years as Marketing Specialist',
+        //         'employee_name' => 'Grace, Fernando Poe Jr.',
+        //         'employee_skills' => 'Project Management, Customer Service, Problem Solving',
+        //     ];
+        // }
 
-        $this->updateParsedNameSegment();
+        // $this->updateParsedNameSegment();
     }
 
     public function boot()
@@ -208,7 +209,7 @@ class PersonalDetailsStep extends StepComponent
             'sexAtBirth' => 'required|in:' . implode(',', array_keys(Sex::options())),
             'displayProfile' => $displayProfileRule->getRule(),
             'applicant.mobileNumber' => ['required', MobileNumberRule::getRule()],
-            'applicant.email' => 'required|' . EmailRule::getRule(),
+            'applicant.email' => 'required|' . (new EmailRule(false))->getRule(),
             'applicant.birth' => new WorkAgeRule(),
         ]);
     }
@@ -287,9 +288,6 @@ class PersonalDetailsStep extends StepComponent
             $contactNumber = null;
             $regionMode = config('app.region_mode');
 
-            Log::info('parsed resume', ['parsed_resume' => $event['parsedResume']]);
-
-            // Log::info('employee_contact', ['employee_contact' => $event['parsedResume']['employee_contact']]);
 
             if (isset($event['parsedResume']['employee_contact'])) {
                 $contacts = is_array($event['parsedResume']['employee_contact']) ? $event['parsedResume']['employee_contact'] : [$event['parsedResume']['employee_contact']];
@@ -315,7 +313,7 @@ class PersonalDetailsStep extends StepComponent
             $this->updateParsedNameSegment();
 
             if (isset($event['parsedResume']['employee_email'])) {
-                $this->applicant['email'] = is_array($this->parsedResume['employee_email']) ? end($this->parsedResume['employee_email']) : $this->parsedResume['employee_email'];
+                $this->applicant['email'] ??= is_array($this->parsedResume['employee_email']) ? end($this->parsedResume['employee_email']) : $this->parsedResume['employee_email'];
             }
         } catch (\Throwable $th) {
             report($th);

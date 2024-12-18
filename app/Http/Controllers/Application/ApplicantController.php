@@ -9,8 +9,10 @@ use App\Enums\UserStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\RouteHelper;
 use App\Models\Applicant;
+use App\Models\Application;
 use App\Models\JobVacancy;
 use App\Models\User;
+use App\Notifications\Applicant\AccountCreated;
 use App\Traits\Applicant as ApplicantTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,11 +24,9 @@ class ApplicantController extends Controller
     use ApplicantTrait;
 
     /* Show all resource */
-    public function index($page = null)
+    public function index()
     {
-        if (empty($page) || $page == 'index') {
-            return view('applicant/index');
-        }
+        //
     }
 
     /* Show form page for creating resource */
@@ -54,8 +54,6 @@ class ApplicantController extends Controller
         $jobVacancy = JobVacancy::findOrFail($jobVacancyId);
 
         $user = auth()->user();
-
-        Log::info('ApplicantController@store', ['user' => $user]);
 
         if (! $isValidated) {
             // $validated = $request->validate([
@@ -140,13 +138,29 @@ class ApplicantController extends Controller
 
         // add save resume file
 
-        $applicationController->create($application, true);
+        $application = $applicationController->create($application, true);
+
+        $user->notify(new AccountCreated($user->user_id, $application->application_id));
+
+        $permissions = [
+            UserPermission::VIEW_ALL_PENDING_APPLICATIONS->value,
+            UserPermission::VIEW_ALL_QUALIFIED_APPLICATIONS->value,
+            UserPermission::VIEW_ALL_PRE_EMPLOYED_APPLICATIONS->value,
+        ];
+
+        $usersWithPermissions = User::permission($permissions)->get();
+
+        foreach ($usersWithPermissions as $otherUser) {
+            $otherUser->notify(new AccountCreated($user->user_id, $application->application_id, ['database', 'broadcast']));
+        }
     }
 
     /* Get single resource */
-    public function show()
+    public function show($application)
     {
-        //
+        $application = RouteHelper::validateModel(Application::class, $application);
+
+        return view('applicant/index', ['application' => $application]);
     }
 
     /* Patch or edit */
