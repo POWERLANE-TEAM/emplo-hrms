@@ -37,6 +37,7 @@
                             <div class="col-12 col-md-6 col-lg-3 ">
                                 <x-form.boxed-dropdown id="present_region" label="{{ __('Region') }}"
                                     wire:model.live="address.presentRegion" :nonce="$nonce" :required="true"
+                                    autocomplete="home address-level1 country-name"
                                     ariaOwns="present-applicant-address-feedback" :options="$presentAddressFields['regions']">
                                     <x-slot:feedback>
                                         @include('components.form.input-feedback', [
@@ -57,8 +58,8 @@
                             <div class="col-12 col-md-6 col-lg-3">
                                 <x-form.boxed-dropdown id="present_province" label="{{ __('Province') }}"
                                     :wire:model.live="when(!$isPresentRegionNcr, 'address.presentProvince')"
-                                    ariaOwns="present-applicant-address-feedback" :nonce="$nonce" :required="when(!$isPresentRegionNcr, 'required')"
-                                    :disabled="when($isPresentRegionNcr, true)" :options="$presentAddressFields['provinces']">
+                                    autocomplete="home address-level2" ariaOwns="present-applicant-address-feedback"
+                                    :nonce="$nonce" :required="when(!$isPresentRegionNcr, 'required')" :disabled="when($isPresentRegionNcr, true)" :options="$presentAddressFields['provinces']">
                                     <x-slot:feedback>
                                         @include('components.form.input-feedback', [
                                             'attributes' => new ComponentAttributeBag([
@@ -76,8 +77,9 @@
 
                             <div class="col-12 col-md-6 col-lg-3 ">
                                 <x-form.boxed-dropdown id="present_city" label="{{ __('City / Municipality') }}"
-                                    wire:model.live="address.presentCity" :nonce="$nonce" :required="true"
-                                    ariaOwns="present-applicant-address-feedback" :options="$presentAddressFields['cities']">
+                                    wire:model.live="address.presentCity" autocomplete="home address-level3"
+                                    :nonce="$nonce" :required="true" ariaOwns="present-applicant-address-feedback"
+                                    :options="$presentAddressFields['cities']">
                                     <x-slot:feedback>
                                         @include('components.form.input-feedback', [
                                             'attributes' => new ComponentAttributeBag([
@@ -94,8 +96,9 @@
 
                             <div class="col-12 col-md-6 col-lg-3">
                                 <x-form.boxed-dropdown id="present_barangay" label="{{ __('Barangay') }}"
-                                    wire:model.blur="address.presentBarangay" :nonce="$nonce" :required="true"
-                                    ariaOwns="present-applicant-address-feedback" :options="$presentAddressFields['barangays']">
+                                    wire:model.blur="address.presentBarangay" autocomplete="home address-level4"
+                                    :nonce="$nonce" :required="true" ariaOwns="present-applicant-address-feedback"
+                                    :options="$presentAddressFields['barangays']">
                                     <x-slot:feedback>
                                         @include('components.form.input-feedback', [
                                             'attributes' => new ComponentAttributeBag([
@@ -125,7 +128,8 @@
                         <div class="row">
                             <div class="col">
                                 <x-form.boxed-input-text id="present_address" label="{{ __('Present Home Address') }}"
-                                    wire:model.live.throttle.100ms="address.presentAddress" :nonce="$nonce" required
+                                    wire:model.live.throttle.100ms="address.presentAddress"
+                                    autocomplete="home street-address" :nonce="$nonce" required
                                     placeholder="{{ __('Room/Floor/Unit No. & Bldg. Name | House/Lot & Blk. No. | Street Name | Subdivision') }}"
                                     :showPlaceholderOnLabel="true">
                                     <x-slot:feedback>
@@ -165,6 +169,7 @@
                             <div class="flex-1-sm-grow">
                                 <x-form.boxed-dropdown id="permanent_region" label="{{ __('Region') }}"
                                     wire:model.live="address.permanentRegion"
+                                    autocomplete="home address-level1 country-name"
                                     ariaOwns="permanent-applicant-address-feedback" :nonce="$nonce"
                                     :disabled="when($this->samePresentAddressChckBox['checked'], true)" :required="true" :options="$permanentAddressFields['regions']">
                                     <x-slot:feedback>
@@ -188,8 +193,9 @@
                             <div class="col-12 col-md-6 col-lg-3">
                                 <x-form.boxed-dropdown id="permanent_province" label="{{ __('Province') }}"
                                     :wire:model.live="when(!$isPermaRegionNcr || !$this->samePresentAddressChckBox['checked'], 'address.permanentProvince')"
-                                    :nonce="$nonce" ariaOwns="permanent-applicant-address-feedback"
-                                    :required="when(!$isPermaRegionNcr, 'required')" :disabled="when(
+                                    autocomplete="home address-level2" :nonce="$nonce"
+                                    ariaOwns="permanent-applicant-address-feedback" :required="when(!$isPermaRegionNcr, 'required')"
+                                    :disabled="when(
                                         $isPermaRegionNcr || $this->samePresentAddressChckBox['checked'],
                                         true,
                                     )" :options="$permanentAddressFields['provinces']">
@@ -208,9 +214,9 @@
 
                             <div class="col-12 col-md-6 col-lg-3">
                                 <x-form.boxed-dropdown id="permanent_city" label="{{ __('City / Municipality') }}"
-                                    wire:model.live="address.permanentCity" :nonce="$nonce"
-                                    ariaOwns="permanent-applicant-address-feedback" :required="true"
-                                    :disabled="when($this->samePresentAddressChckBox['checked'], true)" :options="$permanentAddressFields['cities']">
+                                    wire:model.live="address.permanentCity" autocomplete="home address-level3"
+                                    :nonce="$nonce" ariaOwns="permanent-applicant-address-feedback"
+                                    :required="true" :disabled="when($this->samePresentAddressChckBox['checked'], true)" :options="$permanentAddressFields['cities']">
                                     <x-slot:feedback>
                                         @include('components.form.input-feedback', [
                                             'attributes' => new ComponentAttributeBag([
@@ -225,9 +231,9 @@
 
                             <div class="col-12 col-md-6 col-lg-3">
                                 <x-form.boxed-dropdown id="permanent_barangay" label="{{ __('Barangay') }}"
-                                    wire:model.live="address.permanentBarangay" :nonce="$nonce" :required="true"
-                                    :disabled="when($this->samePresentAddressChckBox['checked'], true)" ariaOwns="permanent-applicant-address-feedback"
-                                    :options="$permanentAddressFields['barangays']">
+                                    wire:model.live="address.permanentBarangay" autocomplete="home address-level4"
+                                    :nonce="$nonce" :required="true" :disabled="when($this->samePresentAddressChckBox['checked'], true)"
+                                    ariaOwns="permanent-applicant-address-feedback" :options="$permanentAddressFields['barangays']">
                                     <x-slot:feedback>
                                         @include('components.form.input-feedback', [
                                             'attributes' => new ComponentAttributeBag([
@@ -254,7 +260,8 @@
                             <div class="col">
                                 <x-form.boxed-input-text id="permanent_address"
                                     label="{{ __('Permanent Home Address') }}" wire:model="address.permanentAddress"
-                                    :nonce="$nonce" :required="true" :readonly="when($this->samePresentAddressChckBox['checked'], true)"
+                                    autocomplete="home street-address" :nonce="$nonce" :required="true"
+                                    :readonly="when($this->samePresentAddressChckBox['checked'], true)"
                                     placeholder="{{ __('Room/Floor/Unit No. & Bldg. Name | House/Lot & Blk. No. | Street Name | Subdivision') }}"
                                     :showPlaceholderOnLabel="true">
                                     <x-slot:feedback>
