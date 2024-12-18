@@ -23,7 +23,7 @@ Route::post('/theme-preference/set', [WebThemeController::class, 'create'])
 
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/application/{page?}', [ApplicantController::class, 'index']);
+    Route::get('/application/{application?}', [ApplicantController::class, 'show'])->name('applicant.dashboard');
 
     Route::get('/apply/{job}', [ApplicantController::class, 'create'])->name('apply');
 
