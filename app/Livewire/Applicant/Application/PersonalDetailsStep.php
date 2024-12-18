@@ -111,6 +111,12 @@ class PersonalDetailsStep extends StepComponent
 
         // add check if user approves consent to parse resume
         if (true && empty($this->parsedResume) && isset($this->resumePath)) {
+            if (config('services.google.document_ai.enabled')) {
+                $this->dispatch('show-toast', [
+                    'type' => 'info',
+                    'message' => 'Your resume is being parsed. Data will be available shortly.',
+                ]);
+            }
             ParseResumeJob::dispatch($this->resumePath, self::getBroadcastId());
         }
 

@@ -52,7 +52,7 @@
                             image-validate-size-max-width="2160" image-validate-size-max-height="2160"
                             allow-image-validate-size="true" image-validate-size-max-resolution="2160"
                             wire:model="displayProfile" :accept="$accepted" allow-image-preview="{{ $allowImagePreview }}"
-                            instant-upload="false" :required="true" />
+                            instant-upload="true" :required="true" />
                         @include('components.form.input-feedback', [
                             'feedback_id' => 'display-profile-feedback',
                             'message' => $errors->first('displayProfile'),

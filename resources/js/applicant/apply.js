@@ -12,19 +12,14 @@ import LocationService from '../utils/location.js';
 // import './livewire.js'
 
 
-document.addEventListener('livewire:navigated', () => {
-    Livewire.hook('morph.removed', ({ el, component }) => {
-        initLucideIcons();
-    })
-    setTimeout(() => {
-        initLucideIcons();
-    }, 0);
+document.addEventListener('livewire:initialized', () => {
 
     Livewire.on('additional-details-step', (event) => {
         setTimeout(() => {
             setRegionInput(`#present_region`);
         }, 0);
     });
+
 });
 
 document.addEventListener('livewire:init', () => {
@@ -42,6 +37,7 @@ try {
         //  I think livewire is already hnadling the listener for this event
         .listen('Guest.ResumeParsed', (event) => {
             // maybe show a toast message
+            showToast('success', 'Your resume has been parsed successfully.');
         })
 } catch (error) {
 
@@ -137,8 +133,6 @@ new GlobalListener('input', document, `${applicationForm} #sameAddressCheck`, (e
 
     if (!(presentRegionSelect && presentProvinceSelect && presentCitySelect && presentBarangaySelect && presentAddressInput)) {
         e.target.checked = false;
-        e.preventDefault();
-        e.stopPropagation();
     }
 
     if (!e.target.checked) {
@@ -146,8 +140,6 @@ new GlobalListener('input', document, `${applicationForm} #sameAddressCheck`, (e
     }
 
     let component = Livewire.find(e.target.getAttribute('data-comp-id'))
-
-    component.dispatch('useSameAsPresentAddress');
 
     let permanentRegionSelect = document.querySelector(`${applicationForm} #permanent_region`);
     let permanentProvinceSelect = document.querySelector(`${applicationForm} #permanent_province`);
