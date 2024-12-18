@@ -3,7 +3,7 @@
 <div>
     @include('livewire.applicant.application.application-wizard-progress-bar')
     <div class="d-contents">
-        <section class="container " aria-label="Application Second Step ">
+        <section class="container " aria-label="Application Second Step">
 
             <div class="my-3 col-md-8 mx-auto">
 
@@ -73,7 +73,7 @@
                         @endif
                         @if (!empty($this->parsedResume['employee_email']))
                             @if (is_array($this->parsedResume['employee_email']))
-                                @foreach ($this->parsedResume['employee_email'] as $contact)
+                                @foreach ($this->parsedResume['employee_email'] as $email)
                                     <option value="{{ $email }}">{{ $email }}</option>
                                 @endforeach
                             @else

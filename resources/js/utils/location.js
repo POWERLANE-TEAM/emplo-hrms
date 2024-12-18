@@ -37,7 +37,7 @@ export default class LocationService {
                 }
             })
             .catch(error => {
-                console.warning('Error:', error);
+                console.warn('Error:', error);
                 throw error;
             });
     }
@@ -45,16 +45,16 @@ export default class LocationService {
     showError(error) {
         switch (error.code) {
             case error.PERMISSION_DENIED:
-                console.warning("User denied the request for Geolocation.");
+                console.warn("User denied the request for Geolocation.");
                 break;
             case error.POSITION_UNAVAILABLE:
-                console.warning("Location information is unavailable.");
+                console.warn("Location information is unavailable.");
                 break;
             case error.TIMEOUT:
-                console.warning("The request to get user location timed out.");
+                console.warn("The request to get user location timed out.");
                 break;
             case error.UNKNOWN_ERROR:
-                console.warning("An unknown error occurred.");
+                console.warn("An unknown error occurred.");
                 break;
         }
     }

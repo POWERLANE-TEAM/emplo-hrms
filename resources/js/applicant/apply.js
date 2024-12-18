@@ -12,13 +12,19 @@ import LocationService from '../utils/location.js';
 // import './livewire.js'
 
 
-document.addEventListener('livewire:navigate', () => {
+document.addEventListener('livewire:navigated', () => {
     Livewire.hook('morph.removed', ({ el, component }) => {
         initLucideIcons();
     })
     setTimeout(() => {
         initLucideIcons();
     }, 0);
+
+    Livewire.on('additional-details-step', (event) => {
+        setTimeout(() => {
+            setRegionInput(`#present_region`);
+        }, 0);
+    });
 });
 
 document.addEventListener('livewire:init', () => {
@@ -58,7 +64,7 @@ lastNameValidator.initValidation(null, null);
 
 initEmailValidation(`${applicationForm} input[name="applicant.email"]`, null, null);
 
-new GlobalListener('click', document, `[aria-label="Application Additional Details"]:not(:has(*:user-invalid))+section div[wire\\:click="validateNow"]`, () => {
+new GlobalListener('click', document, `[aria-label="Application Second Step"]:not(:has(*:user-invalid))+section div[wire\\:click="validateNow"]`, () => {
     if (JSON.parse(sessionStorage.getItem('applicant'))?.region) return;
 
     const locationService = new LocationService();
@@ -206,20 +212,24 @@ function setRegionInput(selector) {
     let applicantData = getLocalSession('applicant');
 
     if (applicantData.region) {
-        let selectElement;
         try {
-            selectElement = document.querySelector(selector);
-        } catch (error) {
-            selectElement = selector;
-        }
-        const options = selectElement.options;
-        const region = applicantData.region.toLowerCase();
-
-        for (let i = 0; i < options.length; i++) {
-            if (options[i].text.toLowerCase().includes(region)) {
-                selectElement.selectedIndex = i;
-                break;
+            let selectElement;
+            try {
+                selectElement = document.querySelector(selector);
+            } catch (error) {
+                selectElement = selector;
             }
+            const options = selectElement.options;
+            const region = applicantData.region.toLowerCase();
+
+            for (let i = 0; i < options.length; i++) {
+                if (options[i].text.toLowerCase().includes(region)) {
+                    selectElement.selectedIndex = i;
+                    break;
+                }
+            }
+        } catch (error) {
+            console.error(error);
         }
     }
 }

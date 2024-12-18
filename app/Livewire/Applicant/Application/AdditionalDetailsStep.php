@@ -32,6 +32,8 @@ class AdditionalDetailsStep  extends StepComponent
         $this->presentAddressFields['provinces'] = $this->provinces;
 
         $this->address['presentRegion'] = $this->initialAddressState['region'];
+
+        $this->dispatch('additional-details-step');
     }
 
     public function validateNow()
