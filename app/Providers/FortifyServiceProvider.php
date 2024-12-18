@@ -123,7 +123,7 @@ class FortifyServiceProvider extends ServiceProvider
                 }
 
                 if ($authUser->account_type == AccountType::APPLICANT->value) {
-                    return redirect('/applicant')->with('clearSessionStorageKeys', 'pageThemePreference');;
+                    return redirect('/application')->with('clearSessionStorageKeys', 'pageThemePreference');;
                 }
 
                 return redirect('/')->with('clearSessionStorageKeys', 'pageThemePreference');;
