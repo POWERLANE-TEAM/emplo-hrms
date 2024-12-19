@@ -37,7 +37,7 @@
         </div>
     </div>
 
-    <form action="applicant/sign-up" nonce="{{ $nonce }}">
+    <form wire:submit.prevent="store" action="applicant/sign-up" nonce="{{ $nonce }}">
         @csrf
 
         <div class="d-flex gap-md-5">

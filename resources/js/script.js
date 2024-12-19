@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Default active tab and section
     tabs[0].classList.add("fw-bold", "text-primary", "underline-padded");
-    tabs[0].classList.remove("text-muted"); 
+    tabs[0].classList.remove("text-muted");
     sections[0].classList.add("active-section");
 
     tabs.forEach((tab) => {
@@ -98,7 +98,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // Remove active classes and text-muted from all tabs and sections
             tabs.forEach((t) => {
                 t.classList.remove("fw-bold", "text-primary", "underline-padded");
-                t.classList.add("text-muted"); 
+                t.classList.add("text-muted");
             });
             sections.forEach((section) => {
                 section.classList.remove("active-section");
@@ -106,7 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Add active classes to clicked tab and corresponding section
             tab.classList.add("fw-bold", "text-primary", "underline-padded");
-            tab.classList.remove("text-muted"); 
+            tab.classList.remove("text-muted");
             targetSection.classList.add("active-section");
         });
     });
@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 export function showToast(type, message) {
-    
+
     const iconsMap = {
         success: "check-circle",
         danger: "alert-triangle",
@@ -144,7 +144,7 @@ export function showToast(type, message) {
                 </div>
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
-        </div> 
+        </div>
     `;
 
     const container = document.querySelector(".toast-container");
@@ -173,9 +173,16 @@ export function showToast(type, message) {
 window.showToast = showToast;
 
 
-export function openModal(modalId) {
-    const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById(modalId));
-    modal.show();
+export function openModal(modalId, callback) {
+    try {
+        const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById(modalId));
+        modal.show();
+        if (typeof callback === 'function') {
+            callback(modalId);
+        }
+    } catch (e) {
+        console.error(e);
+    }
 }
 
 window.openModal = openModal;

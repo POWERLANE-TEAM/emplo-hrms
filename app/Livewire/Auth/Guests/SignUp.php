@@ -5,7 +5,11 @@ namespace App\Livewire\Auth\Guests;
 use App\Actions\Fortify\CreateNewUser;
 use App\Enums\AccountType;
 use App\Enums\UserStatus as EnumsUserStatus;
+use Illuminate\Mail\Events\MessageSent;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rules\Password;
+use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -13,6 +17,10 @@ use Livewire\Component;
 class SignUp extends Component
 {
     private $job_vacancy;
+
+    public $registered = false;
+
+    public $emailSent = false;
 
     #[Validate('required|email:rfc,dns,spoof|max:320|unique:users|valid_email_dns')]
     public $email = '';
@@ -34,10 +42,6 @@ class SignUp extends Component
     #[Validate('required|min:2|max:191|regex:/^(?!\s)(?!.*\s{2,})(?!.*\s$)[A-Za-zÑñ \'\\-]+$/')]
     public $last_name = '';
 
-    // #[Validate('required|digits_between:7,11')]
-    #[Validate('required|digits:11')]
-    public $contact_number = '';
-
     public function rules()
     {
         return [
@@ -58,41 +62,41 @@ class SignUp extends Component
         // dd($this->job_vacancy);
     }
 
-    public function store(CreateNewUser $userCreate)
+    public function store(CreateNewUser $userCreator)
     {
+
         /* Reference https://www.youtube.com/watch?v=EuqyYQdyBU8 */
-
-        if (empty($this->contact_number)) {
-            $this->contact_number = fake()->unique()->numerify('###########');
-        }
-
         if ((! app()->runningInConsole() && ! app()->environment('local')) || ! app()->environment('testing')) {
             $this->email = trim($this->email);
             $this->first_name = trim($this->first_name);
             $this->middle_name = trim($this->middle_name);
             $this->last_name = trim($this->last_name);
-            $this->contact_number = trim($this->contact_number);
         }
 
         $this->validate();
 
-        $new_user = [
-            'email' => $this->email,
-            'password' => $this->password,
-            'password_confirmation' => $this->password_confirmation,
-            'consent' => $this->consent,
-            'first_name' => $this->first_name,
-            'middle_name' => $this->middle_name == '' ? null : $this->middle_name,
-            'last_name' => $this->last_name,
-            'contact_number' => $this->contact_number,
-            'account_type' => AccountType::APPLICANT->value,
-            'user_status' => EnumsUserStatus::ACTIVE->value,
-        ];
+        try {
+            $newUser = [
+                'email' => $this->email,
+                'password' => $this->password,
+                'password_confirmation' => $this->password_confirmation,
+                'consent' => $this->consent,
+                'first_name' => $this->first_name,
+                'middle_name' => $this->middle_name == '' ? null : $this->middle_name,
+                'last_name' => $this->last_name,
+                'account_type' => AccountType::GUEST->value,
+                'user_status' => EnumsUserStatus::ACTIVE->value,
+            ];
 
-        $new_user_created = $userCreate->create($new_user, true);
+            $newUserCreated = $userCreator->create($newUser, true);
+            $this->dispatch('sign-up-successful');
 
-        /* Listen for this livewire event to show email sent modal */
-        $this->dispatch('guest-new-user-registered');
+            $this->registered = true;
+        } catch (\Throwable $th) {
+            report($th);
+            // There is no listener currently for this event
+            $this->dispatch('sign-up-error');
+        }
 
         $this->reset();
     }
@@ -111,6 +115,8 @@ class SignUp extends Component
 
     public function rendered()
     {
+        // $this->dispatch('verification-email-error');
+        // $this->dispatch('sign-up-error');
         $this->dispatch('guest-sign-up-rendered');
     }
 }

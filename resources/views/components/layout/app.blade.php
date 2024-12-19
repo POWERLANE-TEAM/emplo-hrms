@@ -36,20 +36,20 @@
     <x-authenticated-broadcast-id />
     <x-livewire-listener />
 
-    @if(session('clearSessionStorageKeys'))
-    <script nonce="{{ $nonce }}">
-        @php
-            $keys = session('clearSessionStorageKeys');
-        @endphp
+    @if (session('clearSessionStorageKeys'))
+        <script nonce="{{ $nonce }}">
+            @php
+                $keys = session('clearSessionStorageKeys');
+            @endphp
 
-        @if(is_array($keys))
-            @foreach($keys as $key)
-                sessionStorage.removeItem('{{ $key }}');
-            @endforeach
-        @else
-            sessionStorage.removeItem('{{ $keys }}');
-        @endif
-    </script>
+            @if (is_array($keys))
+                @foreach ($keys as $key)
+                    sessionStorage.removeItem('{{ $key }}');
+                @endforeach
+            @else
+                sessionStorage.removeItem('{{ $keys }}');
+            @endif
+        </script>
     @endif
 
     @auth
@@ -108,6 +108,39 @@
     @stack('scripts')
 
     @yield('footer')
+
+
+
+    @if (session('verification-email-error'))
+        @once
+            <x-modals.email-verif-error :message="session('verification-email-error')" />
+        @endonce
+        <script nonce="{{ $nonce }}">
+            document.addEventListener("livewire:initialized", () => {
+                document.addEventListener("livewire:navigated", () => {
+                    window.openModal('modal-verification-email-error');
+                });
+            });
+        </script>
+    @endif
+
+    @if (session('verification-email-success'))
+        @once
+            <x-modals.email-sent label="Verification email sent" id="modal-verification-email-success" header="Email Sent"
+                :message="session('verification-email-success')" />
+        @endonce
+        <script nonce="{{ $nonce }}">
+            document.addEventListener("livewire:initialized", () => {
+                window.openModal('modal-verification-email-success');
+            });
+        </script>
+
+        @php
+            Log::info('Session value found in Blade template: ' . session('verification-email-success'));
+            Session::forget('verification-email-success');
+        @endphp
+    @endif
+
 </body>
 
 </html>
