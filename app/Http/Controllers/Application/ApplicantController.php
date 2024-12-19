@@ -16,6 +16,7 @@ use App\Notifications\Applicant\AccountCreated;
 use App\Traits\Applicant as ApplicantTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Propaganistas\LaravelPhone\PhoneNumber;
 
@@ -83,75 +84,89 @@ class ApplicantController extends Controller
             // $jobVacancyId = $validated('jobVacancyId') ?? null;
         }
 
+        DB::beginTransaction();
 
+        try {
+            $newApplicant = Applicant::create([
+                'first_name' => $firstName,
+                'middle_name' => $middleName,
+                'last_name' => $presentAddress,
+                'present_address' => $presentAddress,
+                'present_barangay' => $presentBarangay,
+                'permanent_address' => $permanentAddress,
+                'permanent_barangay' => $permanentBarangay,
+                'contact_number' => $contactNumber,
+                'sex' => $sex,
+                'civil_status' => $civilStatus,
+                'date_of_birth' => $dateOfBirth,
+            ]);
 
-        $newApplicant = Applicant::create([
-            'first_name' => $firstName,
-            'middle_name' => $middleName,
-            'last_name' => $presentAddress,
-            'present_address' => $presentAddress,
-            'present_barangay' => $presentBarangay,
-            'permanent_address' => $permanentAddress,
-            'permanent_barangay' => $permanentBarangay,
-            'contact_number' => $contactNumber,
-            'sex' => $sex,
-            'civil_status' => $civilStatus,
-            'date_of_birth' => $dateOfBirth,
-        ]);
+            if (is_array($request)) {
+                $request['application']['applicantId'] = $newApplicant->applicant_id;
+                $request['user']['accountId'] = $newApplicant->applicant_id;
+                $request['user']['accountType'] = AccountType::APPLICANT->value;
+                $request['user']['userStatusId'] = UserStatus::ACTIVE->value;
 
-        if (is_array($request)) {
-            $request['application']['applicantId'] = $newApplicant->applicant_id;
-            $request['user']['accountId'] = $newApplicant->applicant_id;
-            $request['user']['accountType'] = AccountType::APPLICANT->value;
-            $request['user']['userStatusId'] = UserStatus::ACTIVE->value;
+                $application =  $request['application'];
+                $applicantUser =  $request['user'];
+            } else {
+                //
+            }
 
-            $application =  $request['application'];
-            $applicantUser =  $request['user'];
-        } else {
-            //
+            $applicationController  = new ApplicationController();
+
+            $educationController = new EducationController();
+            $educationController->store([
+                'applicantId' => $newApplicant->applicant_id,
+                'education' => $request['education']
+            ], false);
+
+            $experienceController = new ExperienceController();
+            $experienceController->store([
+                'applicantId' => $newApplicant->applicant_id,
+                'experience' => $request['experience']
+            ], false);
+
+            $skillController = new SkillController();
+            $skillController->store([
+                'applicantId' => $newApplicant->applicant_id,
+                'skills' => $request['skills']
+            ], false);
+
+            $userToApplicantController  = new UpdateUserProfileInformation();
+
+            $errors = session()->get('errors');
+            $userToApplicantController->update($user, $applicantUser);
+
+            // add save resume file
+
+            $application = $applicationController->create($application, true);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            report($e);
         }
 
-        $applicationController  = new ApplicationController();
+        try {
+            $user->notify(new AccountCreated($user->user_id, $application->application_id));
+        } catch (\Throwable $th) {
+            report($th);
+        }
 
-        $educationController = new EducationController();
-        $educationController->store([
-            'applicantId' => $newApplicant->applicant_id,
-            'education' => $request['education']
-        ], false);
+        try {
+            $permissions = [
+                UserPermission::VIEW_ALL_PENDING_APPLICATIONS->value,
+                UserPermission::VIEW_ALL_QUALIFIED_APPLICATIONS->value,
+                UserPermission::VIEW_ALL_PRE_EMPLOYED_APPLICATIONS->value,
+            ];
 
-        $experienceController = new ExperienceController();
-        $experienceController->store([
-            'applicantId' => $newApplicant->applicant_id,
-            'experience' => $request['experience']
-        ], false);
+            $usersWithPermissions = User::permission($permissions)->select('user_id')->get();
 
-        $skillController = new SkillController();
-        $skillController->store([
-            'applicantId' => $newApplicant->applicant_id,
-            'skills' => $request['skills']
-        ], false);
-
-        $userToApplicantController  = new UpdateUserProfileInformation();
-
-        $errors = session()->get('errors');
-        $userToApplicantController->update($user, $applicantUser);
-
-        // add save resume file
-
-        $application = $applicationController->create($application, true);
-
-        $user->notify(new AccountCreated($user->user_id, $application->application_id));
-
-        $permissions = [
-            UserPermission::VIEW_ALL_PENDING_APPLICATIONS->value,
-            UserPermission::VIEW_ALL_QUALIFIED_APPLICATIONS->value,
-            UserPermission::VIEW_ALL_PRE_EMPLOYED_APPLICATIONS->value,
-        ];
-
-        $usersWithPermissions = User::permission($permissions)->select('user_id')->get();
-
-        foreach ($usersWithPermissions as $otherUser) {
-            $otherUser->notify(new AccountCreated($user->user_id, $application->application_id, ['database', 'broadcast']));
+            foreach ($usersWithPermissions as $otherUser) {
+                $otherUser->notify(new AccountCreated($user->user_id, $application->application_id, ['database', 'broadcast']));
+            }
+        } catch (\Throwable $th) {
+            report($th);
         }
     }
 
@@ -175,7 +190,7 @@ class ApplicantController extends Controller
         //
     }
 
-    private function canApply(?bool $isTerminate = false)
+    private function canApply(?bool $isTerminate = true)
     {
         return !self::applicantOrYet(!Auth::user()->hasPermissionTo(UserPermission::VIEW_JOB_APPLICATION_FORM->value), $isTerminate) && !self::hasApplication($isTerminate);
     }
