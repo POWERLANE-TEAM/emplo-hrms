@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
 use PhpOffice\PhpSpreadsheet\Calculation\DateTimeExcel\Time;
 
-class AccountCreated extends Notification
+class AccountCreated extends Notification implements ShouldQueue
 {
     use Queueable;
 
