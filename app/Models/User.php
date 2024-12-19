@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Actions\GenerateRandomUserAvatar;
 use App\Enums\ActivityLogName;
+use App\Notifications\Auth\VerifyEmailQueued;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -77,14 +78,29 @@ class User extends Authenticatable implements MustVerifyEmail
 
     /**
      * Accessor for photo attribute.
-     * 
+     *
      * If null, generate a random user avatar based on full name.
      */
     protected function photo(): Attribute
     {
         return Attribute::make(
-            get: fn (mixed $value) => $value ?? app(GenerateRandomUserAvatar::class)($this->account->full_name),
+            get: fn(mixed $value) => $value ?? app(GenerateRandomUserAvatar::class)($this->account->full_name),
         );
+    }
+
+    /**
+     * Send the email verification notification.
+     *
+     * Override the default method to queue the email verification notification.
+     * Overrides sendEmailVerificationNotification method from MustVerifyEmail.
+     *
+     * @see https://stackoverflow.com/questions/52644934/how-to-queue-laravel-5-7-email-verification-email-sending/52647112#52647112:~:text=public%20function-,sendEmailVerificationNotification,-()%0A%7B%0A%20%20%20%20%24this%2D%3Enotify(new%20%5CApp
+     *
+     * @return void
+     */
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new VerifyEmailQueued);
     }
 
     /**
@@ -126,11 +142,11 @@ class User extends Authenticatable implements MustVerifyEmail
                 $causerFirstName = Str::ucfirst(Auth::user()->account->first_name);
 
                 return match ($eventName) {
-                    'created' => __($causerFirstName.' created a new user.'),
-                    'updated' => __($causerFirstName.' updated a user information.'),
+                    'created' => __($causerFirstName . ' created a new user.'),
+                    'updated' => __($causerFirstName . ' updated a user information.'),
                     'deleted' => $this->deleted_at
-                                ? __($causerFirstName.' temporarily removed a user.')
-                                : __($causerFirstName.' permanently deleted a user.'),
+                        ? __($causerFirstName . ' temporarily removed a user.')
+                        : __($causerFirstName . ' permanently deleted a user.'),
                 };
             });
     }
