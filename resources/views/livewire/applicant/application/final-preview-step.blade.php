@@ -60,6 +60,17 @@
         }
 
         try {
+            $contactNumberString = $applicationForm['contactNumber'] ?? 'Contact number information is missing';
+
+            // Check if the contact number string is not the default message
+            if ($contactNumberString !== 'Contact number information is missing') {
+                $contactNumbers = explode(',', $contactNumberString);
+            }
+        } catch (\Exception $e) {
+            $contactNumber = 'Contact number information is missing';
+        }
+
+        try {
             $civilStatus = $applicationForm['civilStatus'] ?? 'Civil status information is missing';
         } catch (\Exception $e) {
             $applicantSexAtBirth = 'Civil status information is missing';
@@ -176,7 +187,7 @@
                         <div class="mb-3 mb-md-4">
                             <div id="applicant-mobile-num">Contact Number</div>
                             <div aria-labelledby="applicant-mobile-num">
-                                <x-phone-link class="d-inline-block text-truncate fw-bold unstyled" :phone="['09173090481', '09987922305']"
+                                <x-phone-link class="d-inline-block text-truncate fw-bold unstyled" :phone="$contactNumbers"
                                     separator=" / ">
                                 </x-phone-link>
                             </div>
