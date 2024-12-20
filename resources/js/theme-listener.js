@@ -49,7 +49,7 @@ export default class ThemeManager {
                 return;
             }
 
-            themeToSet;
+            let themeToSet;
 
             if (matches) {
                 themeToSet = 'light';

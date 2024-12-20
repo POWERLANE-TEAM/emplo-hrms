@@ -67,7 +67,7 @@
 
 
             <div class=" col-md-auto mx-auto me-md-0 ms-md-auto order-2 order-md-1">
-                <button class="border-0 bg-transparent text-decoration-underline ">
+                <button type="button" class="border-0 bg-transparent text-decoration-underline ">
                     Forgot your password?
                 </button>
             </div>
