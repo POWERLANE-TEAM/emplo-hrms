@@ -7,6 +7,10 @@
 <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 @endsection
 
+@props([
+    'filter' => $filter
+])
+
 @pushOnce('scripts')
     @vite(['resources/js/employee/basic/leaves.js'])
 @endPushOnce
@@ -28,7 +32,9 @@
     </x-slot:breadcrumbs>    
 </x-breadcrumbs>
 
-<livewire:employee.overtimes.basic.cut-off-payout-periods />
+<livewire:employee.overtimes.basic.cut-off-payout-periods 
+    :payroll="$filter"
+/>
 
 @include('components.includes.tab_navs.leaves-navs')
 
