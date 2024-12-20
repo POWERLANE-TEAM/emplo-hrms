@@ -137,6 +137,11 @@ enum UserPermission: string
     // Others
     case ASSIGN_PERFORMANCE_EVAL_SCORE = 'assign performance evaluation score';
 
+    case AUTHORIZE_OVERTIME_REQUEST = 'authorize overtime request';
+    case APPROVE_OVERTIME_SUMMARY_INITIAL = 'initially approve overtime summary form';
+    case APPROVE_OVERTIME_SUMMARY_SECONDARY = 'secondary approve overtime summary form';
+    case APPROVE_OVERTIME_SUMMARY_TERTIARY = 'tertiary approve overtime summary form';
+
     /**
      * Return user-friendly permission labels.
      */
@@ -268,6 +273,8 @@ enum UserPermission: string
 
             // Other labels goes here
             self::ASSIGN_PERFORMANCE_EVAL_SCORE => 'Assign performance evaluation score',
+
+            self::AUTHORIZE_OVERTIME_REQUEST => 'Authorize overtime request',
         };
     }
 }

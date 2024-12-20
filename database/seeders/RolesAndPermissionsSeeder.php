@@ -114,6 +114,7 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::UPDATE_ISSUE_COMPLAINT_CLOSED->value,
             UserPermission::UPDATE_ISSUE_COMPLAINT_RESOLVED->value,
             UserPermission::UPDATE_ALL_OVERTIME_REQUEST->value,
+            UserPermission::APPROVE_OVERTIME_SUMMARY_TERTIARY->value,
 
             // Delete cases goes here
         ];
@@ -170,6 +171,9 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::UPDATE_EMP_PERFORMANCE_EVAL_GRADE_FORM->value,
             UserPermission::UPDATE_EMP_PERFORMANCE_EVAL_GRADE_FORM->value,
             UserPermission::UPDATE_SUBORDINATE_OVERTIME_REQUEST->value,
+            UserPermission::AUTHORIZE_OVERTIME_REQUEST->value,
+            UserPermission::APPROVE_OVERTIME_SUMMARY_INITIAL->value,
+            UserPermission::APPROVE_OVERTIME_SUMMARY_SECONDARY->value,
         ];
     }
 }
