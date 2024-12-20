@@ -33,6 +33,7 @@ return new class extends Migration
         Schema::create('performance_periods', function (Blueprint $table) {
             $table->id('perf_period_id');
             $table->string('perf_period_name');
+            $table->boolean('is_open')->default(false);
             $table->timestamps();
         });
 
