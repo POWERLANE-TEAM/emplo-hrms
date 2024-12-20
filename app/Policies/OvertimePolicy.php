@@ -75,9 +75,7 @@ class OvertimePolicy
     public function submitNewOrAnotherOvertimeRequest(?User $user, Employee $employee): Response
     {
         $pendingRequestCount = $employee->overtimes()
-            ->whereHas('processes', function ($query) {
-                $query->whereNull('secondary_approver_signed_at');
-            })
+            ->whereNull('authorizer_signed_at')
             ->count();
 
         return $pendingRequestCount >= $this->allowedPendingRequestCount
@@ -86,14 +84,40 @@ class OvertimePolicy
     }
 
     /**
-     * Check if user employee is an initial approver (supervisor/dept head) of overtime request submissions.
+     * Check if user employee is an initial approver (supervisor) of overtime summary.
      * 
      * @param \App\Models\User $user
      * @return \Illuminate\Auth\Access\Response
      */
-    public function updateSubordinateOvertimeRequest(User $user): Response
+    public function approveOvertimeSummaryInitial(User $user): Response
     {
-        return $user->hasPermissionTo(UserPermission::UPDATE_SUBORDINATE_OVERTIME_REQUEST)
+        return $user->hasPermissionTo(UserPermission::APPROVE_OVERTIME_SUMMARY_INITIAL)
+            ? Response::allow()
+            : Response::deny();
+    }
+
+    /**
+     * Check if user employee is a secondary approver (dept head/area manager) of overtime summary.
+     * 
+     * @param \App\Models\User $user
+     * @return \Illuminate\Auth\Access\Response
+     */
+    public function approveOvertimeSummarySecondary(User $user): Response
+    {
+        return $user->hasPermissionTo(UserPermission::APPROVE_OVERTIME_SUMMARY_SECONDARY)
+            ? Response::allow()
+            : Response::deny();
+    }
+
+    /**
+     * Check if user employee is a third approver (hr staff/manager) of overtime summary.
+     * 
+     * @param \App\Models\User $user
+     * @return \Illuminate\Auth\Access\Response
+     */
+    public function approveOvertimeSummaryTertiary(User $user): Response
+    {
+        return $user->hasPermissionTo(UserPermission::APPROVE_OVERTIME_SUMMARY_TERTIARY)
             ? Response::allow()
             : Response::deny();
     }
@@ -107,7 +131,7 @@ class OvertimePolicy
     public function viewOvertimeRequestAsSecondaryApprover(User $user): Response
     {
         return $user->hasAllPermissions([
-            UserPermission::VIEW_SUBORDINATE_LEAVE_REQUEST,
+            UserPermission::VIEW_SUBORDINATE_OVERTIME_REQUEST,
             UserPermission::VIEW_ALL_OVERTIME_REQUEST,
         ]) || $user->hasPermissionTo(UserPermission::VIEW_ALL_OVERTIME_REQUEST)
             ? Response::allow()
@@ -120,7 +144,7 @@ class OvertimePolicy
      * @param \App\Models\User $user
      * @return \Illuminate\Auth\Access\Response
      */
-    public function viewOvertimeRequestAsInitialApprover(User $user): Response
+    public function viewSubordinateOvertimeRequest(User $user): Response
     {
         return $user->hasPermissionTo(UserPermission::VIEW_SUBORDINATE_OVERTIME_REQUEST)
             ? Response::allow()
@@ -148,12 +172,57 @@ class OvertimePolicy
      */
     public function editOvertimeRequest(?User $user, Overtime $overtime): Response
     {
-        $process = $overtime->processes->first();
+        $record = $overtime->first();
 
-        return is_null($process->initial_approver_signed_at) &&
-            is_null($process->secondary_approver_signed_at) &&
-            is_null($process->denied_at)
+        return is_null($record->authorizer_signed_at) &&
+            is_null($record->denied_at)
                 ? Response::allow()
                 : Response::deny();
+    }
+
+    /**
+     * Check if user employee can authrorize overtime request.
+     * 
+     * @param \App\Models\User $user
+     * @return \Illuminate\Auth\Access\Response
+     */
+    public function authorizeOvertimeRequest(User $user): Response
+    {
+        return $user->hasPermissionTo(UserPermission::AUTHORIZE_OVERTIME_REQUEST)
+            ? Response::allow()
+            : Response::deny();
+    }
+
+    public function viewOvertimeSummary(User $user, Employee $employee): Response
+    {
+        $employee->load('jobTitle.department');
+
+        $userJobFamily      = $user->account->jobTitle->job_family_id;
+        $userDepartment     = $user->account->jobTitle->department->department_id;
+        $employeeJobFamily  = $employee->jobTitle->jobFamily->job_family_id;
+        $employeeDepartment = $employee->jobTitle->department->department_id;
+
+        // is user employee the supervisor of employee? Do equal comparison of job_family_id
+        if (
+            $user->hasPermissionTo(UserPermission::VIEW_ALL_SUBORDINATE_OVERTIME_SUMMARY_FORMS) &&
+            $userJobFamily === $employeeJobFamily
+        ) {
+            return Response::allow();
+        }
+
+        // is user employee the dept head/manager of employee? Do equal comparison of department_id
+        if (
+            $user->hasPermissionTo(UserPermission::VIEW_ALL_SUBORDINATE_REQUESTS) &&
+            $userDepartment === $employeeDepartment
+        ) {
+            return Response::allow();
+        }
+
+        // checks if user employee is like idk the HR Manager
+        if ($user->hasPermissionTo(UserPermission::VIEW_ALL_OVERTIME_REQUEST)) {
+            return Response::allow();
+        }
+
+        return Response::deny();
     }
 }
