@@ -5,9 +5,6 @@ namespace App\Livewire\Auth\Guests;
 use App\Actions\Fortify\CreateNewUser;
 use App\Enums\AccountType;
 use App\Enums\UserStatus as EnumsUserStatus;
-use Illuminate\Mail\Events\MessageSent;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rules\Password;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
@@ -115,8 +112,6 @@ class SignUp extends Component
 
     public function rendered()
     {
-        // $this->dispatch('verification-email-error');
-        // $this->dispatch('sign-up-error');
         $this->dispatch('guest-sign-up-rendered');
     }
 }

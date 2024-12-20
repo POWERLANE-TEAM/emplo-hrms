@@ -136,7 +136,6 @@
         </script>
 
         @php
-            Log::info('Session value found in Blade template: ' . session('verification-email-success'));
             Session::forget('verification-email-success');
         @endphp
     @endif

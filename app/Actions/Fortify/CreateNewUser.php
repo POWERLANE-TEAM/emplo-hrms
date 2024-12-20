@@ -3,12 +3,10 @@
 namespace App\Actions\Fortify;
 
 use App\Enums\AccountType;
-use App\Models\Employee;
 use App\Models\Guest;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Mail\Events\MessageSent;
 // use App\Models\UserRole;
 use Illuminate\Support\Facades\DB;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
