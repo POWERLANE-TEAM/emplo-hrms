@@ -50,39 +50,24 @@
             </div>
 
             <div class="list-group">
-                @if ($overtime?->initiallyApprovedAt)
+                @if ($overtime?->authorizedAt)
                     <hr>
                     <div class="list-group-item border-0 ps-0">
-                        <h6 class="fw-semibold text-primary">{{ __('Initially Approved') }}</h6>
+                        <h6 class="fw-semibold text-primary">{{ __('Authorized') }}</h6>
                         <div class="d-flex justify-content-between align-items-center">
                             <span class="text-secondary-emphasis">{{ __('by: ') }}
                                 <span class="fw-semibold">
-                                    {{ $overtime?->initiallyApprovedBy }}
+                                    {{ $overtime?->authorizedBy }}
                                 </span>
                             </span>
-                            <span class="text-muted small">{{ $overtime?->initiallyApprovedAt }}</span>
-                        </div>
-                    </div>
-                @endif
-
-                @if ($overtime?->secondaryApprovedAt)
-                    <hr>
-                    <div class="list-group-item border-0 ps-0">
-                        <h6 class="fw-semibold text-primary">{{ __('Secondarily Approved') }}</h6>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="text-secondary-emphasis">{{ __('by: ') }}
-                                <span class="fw-semibold">
-                                    {{ $overtime?->secondaryApprovedBy }}
-                                </span>
-                            </span>
-                            <span class="text-muted small">{{ $overtime?->secondaryApprovedAt }}</span>
+                            <span class="text-muted small">{{ $overtime?->authorizedAt }}</span>
                         </div>
                     </div>
                 @endif
 
                 @if ($overtime?->deniedAt)
                     <hr>
-                    <div class="list-group-item border-0 ps-0">
+                    <div class="list-group-item border-0 ps-0 pt-0">
                         <h6 class="fw-semibold text-danger">{{ __('Request Denied') }}</h6>
                         <div class="d-flex justify-content-between align-items-center">
                             <span class="text-secondary-emphasis">{{ __('by: ') }}
@@ -110,8 +95,16 @@
                     </div>
                     <div class="ms-auto">
                         <button wire:click="update" wire:loading.attr="disabled" class="btn btn-primary">
-                            {{ __('Submit Request') }}
+                            {{ __('Save Changes') }}
                         </button>
+                    </div>
+                </div>
+            @else
+                <div class="d-flex justify-content-between align-items-center w-100 text-secondary-emphasis">
+                    <div class="me-auto">
+                        <p class="fs-6 fw-medium mb-0">
+                            <strong>Note: </strong>{{ __('Overtime requests cannot be updated after a week.') }}
+                        </p>
                     </div>
                 </div>
             @endif
