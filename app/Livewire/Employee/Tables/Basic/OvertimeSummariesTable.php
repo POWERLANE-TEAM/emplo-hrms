@@ -4,6 +4,7 @@ namespace App\Livewire\Employee\Tables\Basic;
 
 use App\Enums\Payroll;
 use App\Models\Overtime;
+use Livewire\Attributes\On;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\View\ComponentAttributeBag;
@@ -20,13 +21,18 @@ class OvertimeSummariesTable extends DataTableComponent
         $routePrefix = Auth::user()->account_type;
 
         $this->setPrimaryKey('overtime_id')
-            ->setTableRowUrl(fn () => route($routePrefix.'.overtimes.archive'))
-            ->setTableRowUrlTarget(fn () => 'navigate');
+            ->setTableRowUrl(function ($row) use ($routePrefix) {
+                $filterParams = $this->appendPayrollId($row->payrollApproval->payroll->payroll_id);
+
+                return route("{$routePrefix}.overtimes.archive").'?'.http_build_query($filterParams);
+            })
+            ->setTableRowUrlTarget(fn () => '__blank');
         
         $this->setPageName('overtime-requests');
         $this->setEagerLoadAllRelationsEnabled();
         $this->setSingleSortingDisabled();
         $this->setQueryStringEnabled();
+        $this->enableColumnSelectEvent();
         $this->setOfflineIndicatorEnabled();
         $this->setDefaultSort('filed_at', 'desc');
         $this->setSearchDebounce(1000);
@@ -84,20 +90,36 @@ class OvertimeSummariesTable extends DataTableComponent
 
     }
 
+    private function appendPayrollId(int $payrollId)
+    {
+        return [
+            'table-filters' => [
+                'payroll' => $payrollId,
+            ],
+        ];
+    }
+
+    #[On('changesSaved')]
+    public function refreshComponent()
+    {
+        $this->dispatch('refreshDatatable');
+    }
+
     public function builder(): Builder
     {
         $statement = "
             count(overtime_id) as overtime_id, 
             max(filed_at) as filed_at,
             max(date) as date,
-            cut_off, 
+            payroll_approval_id, 
             sum(abs(extract(epoch from (start_time - end_time)))) / 3600 as total_hours_rendered
         ";
 
         return Overtime::query()
+            ->with('payrollApproval',)
             ->where('employee_id', Auth::user()->account->employee_id)
             ->selectRaw($statement)
-            ->groupBy('cut_off');
+            ->groupBy('payroll_approval_id');
     }
 
     public function columns(): array
@@ -143,6 +165,15 @@ class OvertimeSummariesTable extends DataTableComponent
                 })
                 ->setSortingPillDirections('High', 'Low')
                 ->setSortingPillTitle(__('Hours rendered')),
+
+            Column::make(__('Status'))
+                ->label(function ($row) {
+                    if ($row->payrollApproval->third_approver_signed_at) {
+                        return $row->payrollApproval->thirdApprover->full_name;
+                    } else {
+                        return __('Pending');
+                    }
+                }),
         ];
     }
 
