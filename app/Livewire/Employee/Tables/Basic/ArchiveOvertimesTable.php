@@ -4,6 +4,7 @@ namespace App\Livewire\Employee\Tables\Basic;
 
 use App\Models\Overtime;
 use Livewire\Attributes\On;
+use Illuminate\Support\Carbon;
 use App\Enums\OvertimeRequestStatus;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
@@ -74,42 +75,59 @@ class ArchiveOvertimesTable extends DataTableComponent
             ->where('employee_id', Auth::user()->account->employee_id);
     }
     
-    #[On('overtimeRequestCreated')]
+    #[On('changesSaved')]
     public function refreshComponent()
     {
-        $this->render();
+        $this->dispatch('refreshDatatable');
+    }
+
+    private function getPayrollOptions()
+    {
+        return Overtime::query()
+            ->with('payrollApproval.payroll')
+            ->get()
+            ->mapWithKeys(function ($item) {
+                return [$item->payrollApproval->payroll->payroll_id => $item->payrollApproval->payroll->cut_off];
+            })
+            ->toArray();
     }
 
     public function columns(): array
     {
         return [
-            Column::make(__('Work Performed'))
-                ->searchable(),
+            Column::make(__('Date Requested'))
+                ->label(fn ($row) => Carbon::make($row->date)->format('F d, Y'))
+                ->sortable(function (Builder $query, $direction) {
+                    return $query->orderBy('date', $direction);
+                }),
 
             Column::make(__('Start Time'))
-                ->sortable(),
+                ->sortable()
+                ->setSortingPillDirections('Asc', 'Desc'),
 
             Column::make(__('End Time'))
-                ->sortable(),
+                ->sortable()
+                ->setSortingPillDirections('Asc', 'Desc'),
             
             Column::make(__('Hours Requested'))
-                ->label(fn ($row) => $row->getHoursRequested()),
-
-            Column::make(__('Status'))
-                ->label(function ($row) {
-                    if ($row->processes->first()->secondary_approver_signed_at) {
-                        return __('Approved');
-                    } elseif ($row->processes->first()->denied_at) {
-                        return __('Denied');
-                    } else {
-                        return __('Pending');
-                    }
-                }),
+                ->label(fn ($row) => $row->hoursRequested),
             
             Column::make(__('Date Filed'))
                 ->label(fn ($row) => $row->filed_at)
                 ->sortable(function (Builder $query, $direction) {
                     return $query->orderBy('filed_at', $direction);
+                })
+                ->setSortingPillDirections('Asc', 'Desc'),
+
+            Column::make(__('Authorization'))
+                ->label(function ($row) {
+                    if ($row->authorizer_signed_at) {
+                        return $row->authorizedBy->full_name;
+                    } elseif ($row->denied_at) {
+                        return __('Denied');
+                    } else {
+                        return __('Pending');
+                    }
                 }),
         ];
     }
@@ -117,6 +135,15 @@ class ArchiveOvertimesTable extends DataTableComponent
     public function filters(): array
     {
         return [
+            SelectFilter::make(__('Payroll'), 'payroll')
+                ->options($this->getPayrollOptions())
+                ->setFilterPillTitle('Payroll')
+                ->filter(function (Builder $query, $value) {
+                    $query->whereHas('payrollApproval.payroll', function ($subquery) use ($value) {
+                        $subquery->where('payroll_id', $value);
+                    });
+                }),
+
             DateFilter::make(__('Filing Date'))
                 ->config([
                     'max' => now()->format('Y-m-d'),
@@ -135,7 +162,7 @@ class ArchiveOvertimesTable extends DataTableComponent
                     )
                 )
                 ->filter(function (Builder $query, $value) {
-                    $query->whereHas('processes', function ($subquery) use ($value) {
+                    $query->whereHas('approvals', function ($subquery) use ($value) {
                         if ($value === OvertimeRequestStatus::APPROVED->value) {
                             $subquery->whereNotNull('secondary_approver_signed_at');
                         } elseif ($value === OvertimeRequestStatus::PENDING->value) {

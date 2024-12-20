@@ -46,7 +46,8 @@ class RecentOvertimesTable extends DataTableComponent
                 'wire:click' => "\$dispatchTo(
                     'employee.overtimes.basic.edit-overtime-request', 
                     'showOvertimeRequest', 
-                    { overtimeId: $row->overtime_id })",
+                    { overtimeId: $row->overtime_id,
+                      isEditable: true })",
             ];
         });
 
@@ -72,23 +73,26 @@ class RecentOvertimesTable extends DataTableComponent
     public function builder(): Builder
     {
         return Overtime::query()
-            ->with(['employee', 'processes'])
+            ->with(['employee'])
             ->select('*')
             ->where('employee_id', Auth::user()->account->employee_id)
             ->where('filed_at', '>=', Carbon::now()->subWeek());
     }
 
-    #[On('overtimeRequestCreated')]
+    #[On('changesSaved')]
     public function refreshDataTable()
     {
-        $this->render();
+        $this->dispatch('refreshDatatable');
     }
 
     public function columns(): array
     {
         return [
-            Column::make(__('Work Performed'))
-                ->searchable(),
+            Column::make(__('Date Requested'))
+                ->label(fn ($row) => Carbon::make($row->date)->format('F d, Y'))
+                ->sortable(function (Builder $query, $direction) {
+                    return $query->orderBy('date', $direction);
+                }),
 
             Column::make(__('Start Time'))
                 ->sortable()
@@ -99,15 +103,8 @@ class RecentOvertimesTable extends DataTableComponent
                 ->setSortingPillDirections('Asc', 'Desc'),
             
             Column::make(__('Hours Requested'))
-                ->label(fn ($row) => $row->getHoursRequested())
+                ->label(fn ($row) => $row->hoursRequested)
                 ->setSortingPillDirections('Asc', 'Desc'),
-
-            Column::make(__('Status'))
-                ->label(function ($row) {
-                    return $row->processes->first()->secondary_approver_signed_at
-                        ? __('Approved')
-                        : __('Pending');
-                }),
             
             Column::make(__('Date Filed'))
                 ->label(fn ($row) => $row->filed_at)
@@ -115,6 +112,17 @@ class RecentOvertimesTable extends DataTableComponent
                     return $query->orderBy('filed_at', $direction);
                 })
                 ->setSortingPillDirections('Asc', 'Desc'),
+
+                Column::make(__('Authorization'))
+                ->label(function ($row) {
+                    if ($row->authorizer_signed_at) {
+                        return $row->authorizedBy->full_name;
+                    } elseif ($row->denied_at) {
+                        return __('Denied');
+                    } else {
+                        return __('Pending');
+                    }
+                }),
         ];
     }
 
@@ -139,15 +147,14 @@ class RecentOvertimesTable extends DataTableComponent
                     )
                 )
                 ->filter(function (Builder $query, $value) {
-                    $query->whereHas('processes', function ($subquery) use ($value) {
-                        if ($value === OvertimeRequestStatus::APPROVED->value) {
-                            $subquery->whereNotNull('secondary_approver_signed_at');
-                        } elseif ($value === OvertimeRequestStatus::PENDING->value) {
-                            $subquery->whereNull('secondary_approver_signed_at');
-                        } elseif ($value === OvertimeRequestStatus::DENIED->value) {
-                            $subquery->whereNotNull('denied_at');
-                        }
-                    });
+                    if ($value === OvertimeRequestStatus::APPROVED->value) {
+                        $query->whereNotNull('authorizer_signed_at');
+                    } elseif ($value === OvertimeRequestStatus::PENDING->value) {
+                        $query->whereNull('authorizer_signed_at')
+                            ->whereNull('denied_at');
+                    } elseif ($value === OvertimeRequestStatus::DENIED->value) {
+                        $query->whereNotNull('denied_at');
+                    }
                 })
         ];
     }

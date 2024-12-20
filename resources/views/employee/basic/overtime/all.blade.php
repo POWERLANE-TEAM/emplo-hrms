@@ -17,15 +17,25 @@
 @endPushOnce
 @section('content')
 
-<x-headings.main-heading :isHeading="true">
-    <x-slot:heading>
-        {{__('Overtime Summary Forms')}}
-    </x-slot:heading>
-
-    <x-slot:description>
-        <p>{{ __('Manage your overtime summary forms and hours.') }}</p>
-    </x-slot:description>
-</x-headings.main-heading>
+<section class="row">
+    <div class="col-6">
+        <x-headings.main-heading :isHeading="true">
+            <x-slot:heading>
+                {{__('Overtime Summary Forms')}}
+            </x-slot:heading>
+        
+            <x-slot:description>
+                <p>{{ __('Manage your overtime summary forms and hours.') }}</p>
+            </x-slot:description>
+        </x-headings.main-heading>
+    </div>
+    <div class="col-6 pt-2 text-end">
+        <button onclick="openModal('requestOvertimeModal')" class="btn btn-primary">
+        <i data-lucide="plus-circle" class="icon icon-large me-2"></i>{{ __('Request Overtime') }}</button>
+    </div>
+    <livewire:employee.overtimes.basic.request-overtime />
+    <livewire:employee.overtimes.basic.edit-overtime-request />
+</section>
 
 <section class="my-2">
     <livewire:employee.tables.basic.overtime-summaries-table />
