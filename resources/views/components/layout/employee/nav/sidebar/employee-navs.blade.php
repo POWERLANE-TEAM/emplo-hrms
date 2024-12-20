@@ -42,7 +42,7 @@
      */
     $navOvertimeOrder = $user->hasPermissionTo(UserPermission::VIEW_ALL_OVERTIME_REQUEST) ? 6 : 4; // Adjust order as needed
     $navOvertimeRoute = $user->hasPermissionTo(UserPermission::VIEW_ALL_OVERTIME_REQUEST)
-        ? $routePrefix . '.overtimes.requests.secondary'
+        ? $routePrefix . '.overtimes.requests'
         : $routePrefix . '.overtimes.index';
 
 
@@ -329,15 +329,15 @@
             :defaultIcon="['src' => 'requests', 'alt' => 'Performance']"
             :activeIcon="['src' => 'requests', 'alt' => 'Relations']" :children="[
                 ['href' => route($routePrefix . '.managerial.requests.leaves.all'), 'active' => request()->routeIs($routePrefix . '.managerial.requests.leaves.all'), 'nav_txt' => 'Leaves'],
-                ['href' => route($routePrefix . '.overtimes.requests.initial'), 'active' => request()->routeIs($routePrefix . '.overtimes.requests.initial'), 'nav_txt' => 'Overtime'],
+                ['href' => route($routePrefix . '.overtimes.requests.cut-offs'), 'active' => request()->routeIs($routePrefix . '.overtimes.requests.cut-offs'), 'nav_txt' => 'Overtime'],
             ]">
         </x-layout.employee.nav.sidebar.nested-nav-items>
     @endcan
 
     {{-- Supervisor / Head Dept --}}
     @can(UserPermission::VIEW_ALL_SUBORDINATE_OVERTIME_SUMMARY_FORMS)
-        <x-layout.employee.nav.sidebar.nav-item href="{{ route($routePrefix . '.managerial.overtime.summary-forms.all') }}"
-            :active="request()->routeIs($routePrefix . '.managerial.overtime.summary-forms.all')"
+        <x-layout.employee.nav.sidebar.nav-item href="{{ route($routePrefix . '.overtimes.requests.summaries') }}"
+            :active="request()->routeIs($routePrefix . '.overtimes.requests.summaries')"
             class="" nav_txt="OT Summary Forms"
             :defaultIcon="['src' => 'ot-summary-form', 'alt' => '']"
             :activeIcon="['src' => 'ot-summary-form', 'alt' => '']">
