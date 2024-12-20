@@ -1,7 +1,8 @@
+@use('App\Enums\ApplicationStatus')
 @extends('components.layout.applicant.layout', ['description' => 'Guest Layout', 'nonce' => $nonce])
 
 @section('head')
-<title>Applicant</title>
+    <title>Applicant</title>
 @endsection
 
 @pushOnce('pre-scripts')
@@ -23,64 +24,104 @@
 @endPushOnce
 
 @section('content')
-<div class="container">
+    <div class="container">
 
-    <!-- Header Greetings -->
-    <hgroup>
-        <div class="fs-1 fw-bold">Hello, Jermiah!</div>
-        <h1><span id="applicant-id-label" class="fs-5 fw-normal">Applicant ID: </span> <strong
-                aria-labelledby="applicant-id-label" class="fs-5 text-primary">PWRLN-212-SR</strong></h1>
-    </hgroup>
+        <!-- Header Greetings -->
+        <hgroup>
+            <div class="fs-1 fw-bold">Hello, {{ $application->applicant->first_name }}!</div>
+            <h1><span id="applicant-id-label" class="fs-5 fw-normal">Applicant ID: </span> <strong
+                    aria-labelledby="applicant-id-label"
+                    class="fs-5 text-primary">PWRLN-{{ $application->application_id }}</strong></h1>
+        </hgroup>
 
-    <!-- BACK-END REPLACE:
-     Replace with the applicant's status to
-     show/hide sections for each stage. -->
+        <!-- BACK-END REPLACE:
+                                                                                                         Replace with the applicant's status to
+                                                                                                         show/hide sections for each stage. -->
 
-    @php
-        $isScreening = false;
-        $isScheduled = false;
-        $isPreEmployed = true;
-    @endphp
+        {{-- {{ dd($application->application_status_id == ApplicationStatus::PENDING->value) }} --}}
+        @php
+            $isPending = $application->application_status_id == ApplicationStatus::PENDING->value;
+            $isNotHired = $application->hired_at === null;
+            $isNotPassed = $application->is_passed === false;
+            $hasNoInitialInterview = $application->initialInterview === null;
+            $hasNoFinalInterview = $application->finalInterview === null;
 
-    <!-- Info Cards -->
-    <section class="mb-5">
-        <div class="row mt-md-5 gap-5 flex-md-nowrap mb-5">
-            <div class="col-md-6 card border-0 bg-body-secondary text-center p-5">
-                <label for="applicant-status" class="text-uppercase text-primary fw-medium">Current Status</label>
-                <strong id="applicant-status" class="applicant-status fs-3 fw-bold">
-                    Assessment Scheduled
-                </strong>
+            if ($isPending) {
+                $isScreening = true;
+                // pending application should not have any values for the assessment
+                if ($isPending && !($isNotPassed || $isNotHired || $hasNoInitialInterview || $hasNoFinalInterview)) {
+                    report('Application status is pending but has assigned values for the assessment.', [
+                        'application_id' => $application->application_id,
+                        'applicant_id' => $application->applicant_id,
+                        'applicant_name' => $application->applicant->fullname,
+                        'is_passed' => $application->is_passed,
+                        'hired_at' => $application->hired_at,
+                        'initialInterview' => $application->initialInterview,
+                        'finalInterview' => $application->finalInterview,
+                    ]);
+                    $isScreening = false;
+                }
+            }
+
+            $isScheduled = $application->application_status_id == ApplicationStatus::ASSESSMENT_SCHEDULED->value;
+
+            $isPreEmployed = $application->application_status_id == ApplicationStatus::PRE_EMPLOYED->value;
+
+            $missingAssessment = $isNotPassed || $isNotHired || $hasNoInitialInterview || $hasNoFinalInterview;
+
+            if ($isPreEmployed && $missingAssessment) {
+                report('Application status is preemployed but but not assessed yet.', [
+                    'application_id' => $application->application_id,
+                    'applicant_id' => $application->applicant_id,
+                    'applicant_name' => $application->applicant->fullname,
+                    'is_passed' => $application->is_passed,
+                    'hired_at' => $application->hired_at,
+                    'initialInterview' => $application->initialInterview,
+                    'finalInterview' => $application->finalInterview,
+                ]);
+            }
+        @endphp
+
+        <!-- Info Cards -->
+        <section class="mb-5">
+            <div class="row mt-md-5 gap-5 flex-md-nowrap mb-5">
+                <div class="col-md-6 card border-0 bg-body-secondary text-center p-5">
+                    <label for="applicant-status" class="text-uppercase text-primary fw-medium">Current Status</label>
+                    <strong id="applicant-status" class="applicant-status fs-3 fw-bold text-capitalize ">
+                        {!! when($isPending && !$isScreening, '<span class="text-danger"> ! </span>') !!}
+                        {{ $application->status->application_status_name }}
+                    </strong>
+                </div>
+                <div class="col-md-6 card border-0 bg-body-secondary text-center p-5 ">
+                    <label for="applicant-position" class="text-uppercase text-primary fw-medium">Applied Job
+                        Position</label>
+                    <strong id="applicant-position" class="applicant-position fs-3 fw-bold">
+                        {{ $application->vacancy->jobTitle->job_title }}
+                    </strong>
+                </div>
+
             </div>
-            <div class="col-md-6 card border-0 bg-body-secondary text-center p-5 ">
-                <label for="applicant-position" class="text-uppercase text-primary fw-medium">Applied Job
-                    Position</label>
-                <strong id="applicant-position" class="applicant-position fs-3 fw-bold">
-                    Assistant HR Manager
-                </strong>
-            </div>
+            @if ($isScheduled || (isset($isScreening) && $isScreening))
+                <div class="px-4">
+                    <div class="callout callout-info bg-body-tertiary"> <i class="icon p-1 mx-2 text-info"
+                            data-lucide="message-circle-warning"></i>Status
+                        updates will be provided periodically. Please ensure to check back
+                        regularly for
+                        the latest information.
+                    </div>
+                </div>
+            @endif
+        </section>
 
-        </div>
-        @if($isScheduled || $isScreening)
-        <div class="px-4">
-            <div class="callout callout-info bg-body-tertiary"> <i class="icon p-1 mx-2 text-info"
-                    data-lucide="message-circle-warning"></i>Status
-                updates will be provided periodically. Please ensure to check back
-                regularly for
-                the latest information.
-            </div>
-        </div>
+        <!-- Show only when Scheduled -->
+        @if ($isScheduled)
+            <livewire:applicant.stages.scheduled :application="$application" />
         @endif
-    </section>
 
-    <!-- Show only when Scheduled -->
-    @if($isScheduled)
-        <livewire:applicant.stages.scheduled />
-    @endif
+        <!-- Show only when Pre-Employed -->
+        @if ($isPreEmployed /* && !$missingAssessment */)
+            <livewire:applicant.stages.pre-employed :application="$application" :isMissingAssement="$missingAssessment" />
+        @endif
 
-    <!-- Show only when Pre-Employed -->
-    @if($isPreEmployed)
-        <livewire:applicant.stages.pre-employed />
-    @endif
-
-</div>
+    </div>
 @endsection

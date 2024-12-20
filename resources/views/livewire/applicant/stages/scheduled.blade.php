@@ -23,14 +23,15 @@
             <div class="col-md-12 card border-0 bg-body-secondary text-center p-5 gap-3">
                 <label for="applicant-exam-date" class="text-uppercase text-primary fw-medium">Examination</label>
                 <strong id="applicant-exam-date" class="applicant-exam-date fs-4 fw-bold">
-                    Assistant HR Manager
+                    {{ $examStartTimeF }}
                 </strong>
 
             </div>
             <div class="col-md-12 card border-0 bg-body-secondary text-center p-5 gap-3">
-                <label for="applicant-interview-date" class="text-uppercase text-primary fw-medium">Initial Interview</label>
+                <label for="applicant-interview-date" class="text-uppercase text-primary fw-medium">Initial
+                    Interview</label>
                 <strong id="applicant-interview-date" class="applicant-interview-date fs-4 fw-bold">
-                    Assistant HR Manager
+                    {{ $initialInterviewTimeF }}
                 </strong>
 
             </div>
@@ -57,11 +58,13 @@
                 Notice
             </header>
             <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque eius illum ipsa corporis similique
-                impedit
-                natus porro, aspernatur asperiores in excepturi voluptatibus rem distinctio eos eveniet laudantium
-                temporibus suscipit tempora.
+                Please ensure you are prepared and arrive on time for both sessions. Remember to bring a valid ID, a
+                copy of the resume you uploaded. Your punctuality is important. If you have any questions or need to
+                reschedule, please contact the HR department at {{ 'pri.hr.' . fake()->freeEmailDomain() }}. We wish
+                youthe bestof luck in your assessments!
             </p>
+
+            <span> <b>Attire:</b> White shirt, jeans, rubber shoes</span>
         </div>
     </div>
 </section>

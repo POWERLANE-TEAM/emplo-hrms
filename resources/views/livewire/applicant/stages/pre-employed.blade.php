@@ -22,21 +22,21 @@
                             <i class="icon p-1 mx-2 text-info  d-inline" data-lucide="badge-info"></i>
                         </span>
                         <span>Pending for review: </span>
-                        <b>4</b>
+                        <b>{{ $pendingDocuments->count() }}</b>
                     </div>
                     <div class="col-md-12 border-0 rounded-4 bg-body-secondary p-3 ">
                         <span class="col-2 px-2">
                             <i class="icon p-1 mx-2 text-success  d-inline" data-lucide="badge-check"></i>
                         </span>
                         <span>Verified documents: </span>
-                        <b>4</b>
+                        <b>{{ $verifiedDocuments->count() }}</b>
                     </div>
                     <div class="col-md-12 border-0 rounded-4 bg-body-secondary p-3 ">
                         <span class="col-2 px-2">
                             <i class="icon p-1 mx-2 text-danger  d-inline" data-lucide="badge-alert"></i>
                         </span>
                         <span>Awaiting Resubmission: </span>
-                        <b>4</b>
+                        <b>{{ $rejectedDocuments->count() }}</b>
                     </div>
 
                 </div>
