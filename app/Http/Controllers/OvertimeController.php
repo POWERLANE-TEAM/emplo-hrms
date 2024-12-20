@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Gate;
+use App\Models\Employee;
+use Illuminate\Http\Request;
 
 class OvertimeController extends Controller
 {
@@ -19,7 +20,7 @@ class OvertimeController extends Controller
      * 
      * @return \Illuminate\Contracts\View\View
      */
-    public function initialApprovals()
+    public function authorize()
     {
         return view('employee.supervisor.requests.overtime.all');
     }
@@ -29,9 +30,24 @@ class OvertimeController extends Controller
      * 
      * @return \Illuminate\Contracts\View\View
      */
-    public function secondaryApprovals()
+    public function cutOff()
     {
-        return view('employee.hr-manager.overtime.all');
+        return view('employee.overtime-cut-offs');
+    }
+
+    public function summary()
+    {
+        return view('employee.supervisor.overtime.summary-forms.all');
+    }
+
+    public function employeeSummary(Employee $employee, Request $request)
+    {
+        $query = $request->query('table-filters');
+        $filter = $query['payroll'];
+
+        return view('employee.supervisor.overtime.summary-forms.employee',
+            compact('employee', 'filter') 
+        );
     }
 
     /**
@@ -45,8 +61,13 @@ class OvertimeController extends Controller
     /**
      * Show archive overtime requests table.
      */
-    public function archive()
-    {
-        return view('employee.basic.overtime.index');
+    public function archive(Request $request)
+    {   
+        $query = $request->query('table-filters');
+        $filter = $query['payroll'];
+
+        return view('employee.basic.overtime.index', 
+            compact('filter')
+        );
     }
 }

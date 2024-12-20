@@ -182,15 +182,20 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
      */
     Route::prefix('overtimes')->name('overtimes.')->group(function () {
 
-        /** For initial approvals e.g: supervisor, dept head, area manager */
-        Route::get('requests/initial', [OvertimeController::class, 'initialApprovals'])
-            ->can('viewOvertimeRequestAsInitialApprover')
-            ->name('requests.initial');
+        Route::get('requests/cut-offs', [OvertimeController::class, 'cutOff'])
+            // ->can('viewOvertimeRequestAsInitialApprover')
+            ->name('requests.cut-offs');
 
-        /** For secondary approvals e.g: hr staff / manager */
-        Route::get('requests/secondary', [OvertimeController::class, 'secondaryApprovals'])
-            ->can('viewOvertimeRequestAsSecondaryApprover')
-            ->name('requests.secondary');
+        Route::get('requests', [OvertimeController::class, 'authorize'])
+            ->can('viewSubordinateOvertimeRequest')
+            ->name('requests');
+
+        Route::get('requests/summaries', [OvertimeController::class, 'summary'])
+            ->name('requests.summaries');
+
+        Route::get('requests/{employee}/summaries', [OvertimeController::class, 'employeeSummary'])
+            ->middleware('can:viewOvertimeSummary,employee')
+            ->name('requests.employee.summaries');
 
         /** Ot requests summary */
         Route::get('/', [OvertimeController::class, 'index'])
@@ -296,15 +301,6 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     })
         ->can(UserPermission::VIEW_SUBORDINATE_OVERTIME_REQUEST)
         ->name('overtimes.requests');
-
-
-    /**
-     * Overtime Summary
-     */
-
-     Route::get('managerial/overtime/summary-forms/all', function () {
-        return view('employee.supervisor.overtime.summary-forms.all');
-    })->name('managerial.overtime.summary-forms.all');
 
 
     /**
