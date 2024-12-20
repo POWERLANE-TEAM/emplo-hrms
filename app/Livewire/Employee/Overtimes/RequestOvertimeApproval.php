@@ -3,6 +3,7 @@
 namespace App\Livewire\Employee\Overtimes;
 
 use Livewire\Component;
+use App\Models\Employee;
 use App\Models\Overtime;
 use Livewire\Attributes\On;
 use Illuminate\Support\Carbon;
@@ -45,10 +46,8 @@ class RequestOvertimeApproval extends Component
     public function openOtRequest(int $overtimeId)
     {
         $this->request = Overtime::with([
-            'processes',
-            'processes.initialApprover',
-            'processes.secondaryApprover',
-            'processes.deniedBy',
+            'authorizedBy',
+            'deniedBy',
             'employee',
             'employee.jobTitle',
             'employee.shift',
@@ -80,15 +79,13 @@ class RequestOvertimeApproval extends Component
                 'date'                      =>  Carbon::parse($this->request->date)->format('F d, Y'),
                 'startTime'                 =>  $this->request->start_time,
                 'endTime'                   =>  $this->request->end_time,
-                'hrsRequested'              =>  $this->request->getHoursRequested(),
+                'hrsRequested'              =>  $this->request->hoursRequested,
                 'filedAt'                   =>  $this->request->filed_at,
-                'initiallyApprovedBy'       =>  $this->request?->processes?->first()?->initialApprover?->full_name,
-                'initiallyApprovedAt'       =>  $this->request?->processes?->first()?->initial_approver_signed_at,
-                'secondaryApprovedBy'       =>  $this->request?->processes?->first()?->secondaryApprover?->full_name,
-                'secondaryApprovedAt'       =>  $this->request?->processes?->first()?->secondary_approver_signed_at,
-                'deniedBy'                  =>  $this->request?->processes?->first()?->deniedBy?->full_name,
-                'deniedAt'                  =>  $this->request?->processes?->first()?->denied_at,
-                'feedback'                  =>  $this->request?->processes?->first()?->feedback,
+                'authorizedBy'              =>  $this->checkIfSameAsAuthUser($this->request?->authorizedBy),
+                'authorizedAt'              =>  $this->request?->authorizer_signed_at,
+                'deniedBy'                  =>  $this->checkIfSameAsAuthUser($this->request?->deniedBy),
+                'deniedAt'                  =>  $this->request?->denied_at,
+                'feedback'                  =>  $this->request?->feedback,
             ];
         }
 
@@ -97,12 +94,12 @@ class RequestOvertimeApproval extends Component
 
     public function denyOtRequest()
     {
-        $this->authorize('updateSubordinateOvertimeRequest', Auth::user());
+        $this->authorize('authorizeOvertimeRequest', Auth::user());
 
         $this->validate();
 
         DB::transaction(function () {
-            $this->request->processes()->update([
+            $this->request->update([
                 'denied_at' => now(),
                 'denier' => $this->employeeId,
                 'feedback' => $this->feedback,
@@ -114,12 +111,12 @@ class RequestOvertimeApproval extends Component
 
     public function approveOtRequest()
     {
-        $this->authorize('updateSubordinateOvertimeRequest', Auth::user());
+        $this->authorize('authorizeOvertimeRequest', Auth::user());
 
         DB::transaction(function () {
-            $this->request->processes()->update([
-                'initial_approver_signed_at' => now(),
-                'initial_approver' => $this->employeeId,
+            $this->request->update([
+                'authorizer_signed_at' => now(),
+                'authorizer' => $this->employeeId,
             ]);            
         });
 
@@ -129,13 +126,20 @@ class RequestOvertimeApproval extends Component
     private function checkIfNotReadOnly()
     {
         if (
-            is_null($this->request->processes->first()->initial_approver_signed_at) &&
-            is_null($this->request->processes->first()->denied_at)
+            is_null($this->request->authorizer_signed_at) &&
+            is_null($this->request->denied_at)
         ) {
             $this->isReadOnly = false;
         } else {
             $this->isReadOnly = true;
         }
+    }
+
+    private function checkIfSameAsAuthUser(?Employee $employee)
+    {
+        return $employee?->employee_id === Auth::user()->account->employee_id
+            ? "{$employee?->full_name} (You)"
+            : $employee?->full_name;
     }
 
     private function resetPropsAndDispatchEvents()

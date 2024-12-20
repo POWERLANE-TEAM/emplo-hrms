@@ -100,32 +100,17 @@
                         </div>
 
                         <div class="list-group">
-                            @if ($overtime->initiallyApprovedAt)
+                            @if ($overtime->authorizedAt)
                                 <hr>
                                 <div class="list-group-item border-0 ps-0">
-                                    <h6 class="fw-semibold text-primary">{{ __('Initially Approved') }}</h6>
+                                    <h6 class="fw-semibold text-primary">{{ __('Authorized') }}</h6>
                                     <div class="d-flex justify-content-between align-items-center">
                                         <span class="text-secondary-emphasis">{{ __('by: ') }}
                                             <span class="fw-semibold">
-                                                {{ $overtime?->initiallyApprovedBy }}
+                                                {{ $overtime?->authorizedBy }}
                                             </span>
                                         </span>
-                                        <span class="text-muted small">{{ $overtime?->initiallyApprovedAt }}</span>
-                                    </div>
-                                </div>
-                            @endif
-            
-                            @if ($overtime->secondaryApprovedAt)
-                                <hr>
-                                <div class="list-group-item border-0 ps-0">
-                                    <h6 class="fw-semibold text-primary">{{ __('Secondarily Approved') }}</h6>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="text-secondary-emphasis">{{ __('by: ') }}
-                                            <span class="fw-semibold">
-                                                {{ $overtime?->secondaryApprovedBy }}
-                                            </span>
-                                        </span>
-                                        <span class="text-muted small">{{ $overtime?->secondaryApprovedAt }}</span>
+                                        <span class="text-muted small">{{ $overtime?->authorizedAt }}</span>
                                     </div>
                                 </div>
                             @endif
