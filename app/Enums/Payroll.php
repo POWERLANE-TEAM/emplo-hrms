@@ -52,8 +52,14 @@ enum Payroll: int
      */
     private function getSecondCutOffPeriod(Carbon $date): array
     {
-        $start = $date->copy()->startOfMonth()->addDays(25);
-        $end = $date->copy()->addMonth()->startOfMonth()->addDays(9);
+        if ($date->day <= 10) {
+            $previousMonth = $date->copy()->subMonth();
+            $start = $previousMonth->copy()->startOfMonth()->addDays(25);
+            $end = $date->copy()->startOfMonth()->addDays(9);
+        } else {
+            $start = $date->copy()->startOfMonth()->addDays(25);
+            $end = $date->copy()->addMonth()->startOfMonth()->addDays(9);
+        }
 
         return compact('start', 'end');
     }
@@ -105,10 +111,14 @@ enum Payroll: int
      */
     public static function getCutOffPeriodForDate(Carbon $date): Payroll
     {
-        return match(true) {
-            $date->day <= 10 => Payroll::CUT_OFF_2,
-            $date->day <= 25 => Payroll::CUT_OFF_1,
-            default => Payroll::CUT_OFF_2,
-        };
+        if ($date->day >= 11 && $date->day <= 25) {
+            return Payroll::CUT_OFF_1;
+        }
+    
+        if ($date->day >= 26 || $date->day <= 10) {
+            return Payroll::CUT_OFF_2;
+        }
+    
+        return Payroll::CUT_OFF_2;
     }
 }
