@@ -52,6 +52,11 @@ class PhoneNumber implements CastsAttributes
         $contactNumber = null;
         $regionMode = config('app.region_mode');
 
+        if ($value == null) {
+            throw new Exception('Phone number is required');
+        }
+
+
         try {
             if ($regionMode == 'local') {
                 $phoneObj = new FormatPhoneNumber($value, 'PH');

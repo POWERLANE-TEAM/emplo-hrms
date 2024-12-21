@@ -187,9 +187,16 @@ export function showToast(type, message) {
 window.showToast = showToast;
 
 
-export function openModal(modalId) {
-    const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById(modalId));
-    modal.show();
+export function openModal(modalId, callback) {
+    try {
+        const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById(modalId));
+        modal.show();
+        if (typeof callback === 'function') {
+            callback(modalId);
+        }
+    } catch (e) {
+        console.error(e);
+    }
 }
 
 window.openModal = openModal;
