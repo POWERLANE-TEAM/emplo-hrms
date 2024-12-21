@@ -12,7 +12,7 @@ use App\Enums\RoutePrefix as EnumsRoutePrefix;
 use App\Enums\UserPermission;
 use App\Enums\UserRole;
 use App\Events\UserLoggedout;
-use App\Http\Helpers\RoutePrefix;
+use App\Http\Helpers\RouteHelper;
 use App\Livewire\Auth\UnverifiedEmail;
 use App\Models\User;
 use Illuminate\Cache\RateLimiting\Limit;
@@ -37,13 +37,13 @@ class FortifyServiceProvider extends ServiceProvider
     public function register(): void
     {
 
-        config(['fortify.prefix' => RoutePrefix::getByReferrer()]);
+        config(['fortify.prefix' => RouteHelper::getByReferrer()]);
 
         $this->app->instance(LogoutResponse::class, new class implements LogoutResponse
         {
             public function toResponse($request)
             {
-                $redirectUrl = match (RoutePrefix::getByReferrer()) {
+                $redirectUrl = match (RouteHelper::getByReferrer()) {
                     'employee' => '/employee/login',
                     'admin' => '/admin/login',
                     default => '/login',
@@ -146,7 +146,7 @@ class FortifyServiceProvider extends ServiceProvider
 
         Fortify::authenticateUsing(function (Request $request) {
 
-            $routePrefix = RoutePrefix::getByRequest($request);
+            $routePrefix = RouteHelper::getByRequest($request);
 
             $user = User::where('email', $request->email)->first();
 

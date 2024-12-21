@@ -4,6 +4,7 @@ namespace App\Livewire\Applicant\Application;
 
 use App\Enums\Sex;
 use App\Enums\UserPermission;
+use App\Events\Guest\ResumeParsed;
 use App\Http\Requests\PersonNameRequest;
 use App\Jobs\Guest\ParseResumeJob;
 use App\Rules\EmailRule;
@@ -28,7 +29,7 @@ use Spatie\LivewireWizard\Components\StepComponent;
 class PersonalDetailsStep extends StepComponent
 {
 
-    use WithFilePond, NeedsAuthBroadcastId, Applicant;
+    use WithFilePond, NeedsAuthBroadcastId;
 
     /**
      * |--------------------------------------------------------------------------
@@ -80,11 +81,7 @@ class PersonalDetailsStep extends StepComponent
 
     public function mount()
     {
-
-        if (Auth::check()) {
-            if (self::applicantOrYet(!Auth::user()->hasPermissionTo(UserPermission::VIEW_JOB_APPLICATION_FORM->value), true));
-            else self::hasApplication(true);
-        } else abort(401);
+        if (auth()->check())  $this->applicant['email'] = auth()->user()->email;
 
         // get the resume file property state from the resume upload step
         $resumeState = $this->state()->forStep('form.applicant.resume-upload-step');
@@ -114,15 +111,21 @@ class PersonalDetailsStep extends StepComponent
 
         // add check if user approves consent to parse resume
         if (true && empty($this->parsedResume) && isset($this->resumePath)) {
+            if (config('services.google.document_ai.enabled')) {
+                $this->dispatch('show-toast', [
+                    'type' => 'info',
+                    'message' => 'Your resume is being parsed. Data will be available shortly.',
+                ]);
+            }
             ParseResumeJob::dispatch($this->resumePath, self::getBroadcastId());
         }
 
 
-        // For testing purposes not relying on Document AI API
+        // // For testing purposes not relying on Document AI API
 
         // ResumeParsed::dispatch([
         //     'employee_education' => 'Bachelor of Arts in Communication, Ateneo de Manila University',
-        //     'employee_contact' => '+63-961-5719',
+        //     'employee_contact' => '+63-961-571-0923',
         //     'employee_email' => 'fernando.poe.jrs@gmail.com',
         //     'employee_experience' => 'Globe Telecom - 3 years as Project Manager\nRobinsons Land - 5 years as Marketing Specialist',
         //     'employee_name' => 'Grace, Fernando Poe Jr.',
@@ -132,7 +135,7 @@ class PersonalDetailsStep extends StepComponent
         // if (empty($this->parsedResume)) {
         //     $this->parsedResume = [
         //         'employee_education' => 'Bachelor of Arts in Communication, Ateneo de Manila University',
-        //         'employee_contact' => '+63-961-5719',
+        //         'employee_contact' => '+63-961-571-0923',
         //         'employee_email' => 'fernando.poe.jrs@gmail.com',
         //         'employee_experience' => 'Globe Telecom - 3 years as Project Manager\nRobinsons Land - 5 years as Marketing Specialist',
         //         'employee_name' => 'Grace, Fernando Poe Jr.',
@@ -212,7 +215,7 @@ class PersonalDetailsStep extends StepComponent
             'sexAtBirth' => 'required|in:' . implode(',', array_keys(Sex::options())),
             'displayProfile' => $displayProfileRule->getRule(),
             'applicant.mobileNumber' => ['required', MobileNumberRule::getRule()],
-            'applicant.email' => 'required|' . EmailRule::getRule(),
+            'applicant.email' => 'required|' . (new EmailRule(false))->getRule(),
             'applicant.birth' => new WorkAgeRule(),
         ]);
     }
@@ -291,9 +294,6 @@ class PersonalDetailsStep extends StepComponent
             $contactNumber = null;
             $regionMode = config('app.region_mode');
 
-            Log::info('parsed resume', ['parsed_resume' => $event['parsedResume']]);
-
-            // Log::info('employee_contact', ['employee_contact' => $event['parsedResume']['employee_contact']]);
 
             if (isset($event['parsedResume']['employee_contact'])) {
                 $contacts = is_array($event['parsedResume']['employee_contact']) ? $event['parsedResume']['employee_contact'] : [$event['parsedResume']['employee_contact']];
@@ -319,7 +319,7 @@ class PersonalDetailsStep extends StepComponent
             $this->updateParsedNameSegment();
 
             if (isset($event['parsedResume']['employee_email'])) {
-                $this->applicant['email'] = is_array($this->parsedResume['employee_email']) ? end($this->parsedResume['employee_email']) : $this->parsedResume['employee_email'];
+                $this->applicant['email'] ??= is_array($this->parsedResume['employee_email']) ? end($this->parsedResume['employee_email']) : $this->parsedResume['employee_email'];
             }
         } catch (\Throwable $th) {
             report($th);

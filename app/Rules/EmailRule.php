@@ -40,7 +40,7 @@ class EmailRule implements ValidationRule
      *
      * @return array
      */
-    public static function getRule(?bool $shouldStrictlyUnique = true): string
+    public function getRule(): string
     {
         $rules = [
             'email:rfc,dns,spoof',
@@ -48,10 +48,10 @@ class EmailRule implements ValidationRule
             'valid_email_dns',
         ];
 
-        if ($shouldStrictlyUnique) {
+        if ($this->shouldStrictlyUnique) {
             $rules[] = 'unique:users,email';
         } else {
-            // $rules[] = 'unique:users,email,' . auth()->id() . ',user_id';
+            $rules[] = 'unique:users,email,' . auth()->id('user_id') . ',user_id';
         }
 
         return implode('|', $rules);

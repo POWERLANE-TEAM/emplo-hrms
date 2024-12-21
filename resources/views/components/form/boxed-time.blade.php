@@ -31,7 +31,7 @@
             {{-- Placeholder with time format --}}
         ]) }}
         aria-owns="{{ $attributes->get('id') }}-feedback" nonce="{{ $nonce }}">
+    </div>
     @if (!empty($feedback))
         {{ $feedback }}
     @endif
-</div>

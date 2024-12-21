@@ -3,7 +3,7 @@
 <div>
     @include('livewire.applicant.application.application-wizard-progress-bar')
     <div class="d-contents">
-        <section class="container " aria-label="Application Second Step ">
+        <section class="container " aria-label="Application Second Step">
 
             <div class="my-3 col-md-8 mx-auto">
 
@@ -34,7 +34,7 @@
 
                     @include('components.form.input-feedback', [
                         'feedback_id' => 'sample-profile-feedback',
-                        'message' => $errors->first(),
+                        'message' => $errors->first('displayProfile'),
                     ])
 
                     @php
@@ -52,7 +52,7 @@
                             image-validate-size-max-width="2160" image-validate-size-max-height="2160"
                             allow-image-validate-size="true" image-validate-size-max-resolution="2160"
                             wire:model="displayProfile" :accept="$accepted" allow-image-preview="{{ $allowImagePreview }}"
-                            instant-upload="false" :required="true" />
+                            instant-upload="true" :required="true" />
                         @include('components.form.input-feedback', [
                             'feedback_id' => 'display-profile-feedback',
                             'message' => $errors->first('displayProfile'),
@@ -64,6 +64,22 @@
                             @foreach ($this->parsedNameSegment as $namePart)
                                 <option value="{{ $namePart }}">{{ $namePart }}</option>
                             @endforeach
+                        @endif
+                    </datalist>
+
+                    <datalist id="applicant-email-list">
+                        @if (optional(auth()->user()->email))
+                            <option value="{{ auth()->user()->email }}"></option>
+                        @endif
+                        @if (!empty($this->parsedResume['employee_email']))
+                            @if (is_array($this->parsedResume['employee_email']))
+                                @foreach ($this->parsedResume['employee_email'] as $email)
+                                    <option value="{{ $email }}">{{ $email }}</option>
+                                @endforeach
+                            @else
+                                <option value="{{ $this->parsedResume['employee_email'] }}">
+                                    {{ $this->parsedResume['employee_email'] }}</option>
+                            @endif
                         @endif
                     </datalist>
 
@@ -166,7 +182,7 @@
                     <div class="input-group column-gap-3 column-gap-md-4  flex-wrap flex-md-nowrap">
                         <div class="flex-1">
                             <x-form.boxed-email id="applicant-email" label="Email Address" name="applicant.email"
-                                autocomplete="email" :nonce="$nonce"
+                                list="applicant-email-list" autocomplete="email" :nonce="$nonce"
                                 class=" {{ $errors->has('applicant.email') ? 'is-invalid' : '' }}" required>
 
                                 <x-slot:feedback>

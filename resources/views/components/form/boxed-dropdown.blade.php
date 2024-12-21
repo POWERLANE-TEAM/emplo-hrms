@@ -18,6 +18,7 @@
     'tooltip' => null,
     'overrideContainerClass' => false,
     'containerAttributes' => new ComponentAttributeBag(),
+    'ariaOwns' => null,
 ])
 
 @php
@@ -54,13 +55,13 @@
             'class' => 'form-control form-select border ps-3 rounded pe-5',
             'autocomplete' => $attributes->get('autocomplete', 'off'),
         ]) }}
-        aria-owns="{{ $attributes->get('id') }}-feedback" nonce="{{ $nonce }}">
+        aria-owns="{{ $attributes->get('id') }}-feedback {{ $ariaOwns }}" nonce="{{ $nonce }}">
         <option value="">{{ $attributes->get('placeholder', 'Select an option') }}</option>
         @foreach ($options as $value => $optionLabel)
             <option value="{{ $value }}">{{ $optionLabel }}</option>
         @endforeach
     </select>
-    @if (!empty($feedback))
-        {{ $feedback }}
-    @endif
 </div>
+@if (!empty($feedback))
+    {{ $feedback }}
+@endif

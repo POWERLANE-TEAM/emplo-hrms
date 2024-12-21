@@ -35,11 +35,13 @@ class ApplicationController extends Controller
             $applicant = JobVacancy::findOrFail($applicantId);
         }
 
-        Application::create([
+        $application = Application::create([
             'job_vacancy_id' => $jobVacancyId,
             'applicant_id' => $applicantId ?? auth()->user()->account->applicant_id,
             'application_status_id' => ApplicationStatus::PENDING,
         ]);
+
+        return $application;
     }
 
     /* store a new resource */
