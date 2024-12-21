@@ -50,7 +50,7 @@
                     class=" {{ $errors->has('first_name') ? 'is-invalid' : '' }}">
 
                     <x-slot:input_icon_left>
-                        <i data-lucide="user-check-2"></i>
+                        <i data-lucide="user-check-2" class=" icon-large"></i>
                     </x-slot:input_icon_left>
 
                     <x-slot:feedback>
@@ -70,7 +70,7 @@
                     aria-owns="signUp-last-name-feedback" class=" {{ $errors->has('last_name') ? 'is-invalid' : '' }}">
 
                     <x-slot:input_icon_left>
-                        <i data-lucide="user"></i>
+                        <i data-lucide="user" class=" icon-large"></i>
                     </x-slot:input_icon_left>
 
                     <x-slot:feedback>
@@ -89,7 +89,7 @@
             aria-owns="signUp-middle-name-feedback" class=" {{ $errors->has('middle_name') ? 'is-invalid' : '' }}">
 
             <x-slot:input_icon_left>
-                <i data-lucide="user"></i>
+                <i data-lucide="user" class=" icon-large"></i>
             </x-slot:input_icon_left>
 
             <x-slot:feedback>
@@ -118,7 +118,7 @@
             autocomplete="new-password" :nonce="$nonce" class=" {{ $errors->has('password') ? 'is-invalid' : '' }}">
 
             <x-slot:input_icon_left>
-                <i data-lucide="lock"></i>
+                <i data-lucide="lock" class=" icon-large"></i>
             </x-slot:input_icon_left>
 
             <x-slot:toggle_password>
@@ -140,7 +140,7 @@
             autocomplete="new-password" :nonce="$nonce" class=" {{ $errors->has('password') ? 'is-invalid' : '' }}">
 
             <x-slot:input_icon_left>
-                <i data-lucide="shield-check"></i>
+                <i data-lucide="shield-check" class=" icon-large"></i>
             </x-slot:input_icon_left>
 
             <x-slot:toggle_password>
