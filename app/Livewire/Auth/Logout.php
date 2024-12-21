@@ -6,11 +6,14 @@ use App\Enums\ActivityLogName;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
+use Illuminate\View\ComponentAttributeBag;
 use Livewire\Component;
 
 class Logout extends Component
 {
-    protected $class;
+    protected ComponentAttributeBag $buttonAttributes;
+
+    protected ComponentAttributeBag $formAttributes;
 
     protected $authBroadcastId;
 
@@ -18,25 +21,28 @@ class Logout extends Component
 
     protected $use_guard;
 
-    public function mount($class = 'border-0 bg-transparent p-0')
+    public function mount(?ComponentAttributeBag $buttonAttributes = null, ?ComponentAttributeBag $formAttributes = null)
     {
-        $this->class = $class;
+        $buttonAttributes ??= new ComponentAttributeBag();
+        $formAttributes ??= new ComponentAttributeBag();
 
-        $this->nonce = csp_nonce();
+        $nonce = csp_nonce();
+
+        $this->formAttributes =  $formAttributes->merge(['nonce' => $nonce]);
+        $this->buttonAttributes = $buttonAttributes->merge(['class' => 'border-0 px-0 bg-transparent', 'nonce' => $nonce]);
 
         $user_session = session()->getId();
-        $this->authBroadcastId = hash('sha512', $user_session.Auth::user()->email.$user_session);
+        $this->authBroadcastId = hash('sha512', $user_session . Auth::user()->email . $user_session);
     }
 
     public function render()
     {
 
         return <<<'HTML'
-        <form action="/logout" method="POST" nonce="{{ $this->nonce }}">
+        <form  action="/logout" method="POST" {{$this->formAttributes}}>
             @csrf
             <input type="hidden" name="authBroadcastId" value="{{$this->authBroadcastId}}">
-            <button type="submit"  nonce="{{ $this->nonce }}" class="{{$this->class}}">
-                Logout
+            <button type="submit"  {{$this->buttonAttributes}}>Logout
             </button>
 
         </form>
@@ -49,7 +55,7 @@ class Logout extends Component
         activity()
             ->by(Auth::user())
             ->useLog(ActivityLogName::AUTHENTICATION->value)
-            ->log(Str::ucfirst(Auth::user()->account->first_name).' logged out');
+            ->log(Str::ucfirst(Auth::user()->account->first_name) . ' logged out');
 
         $response = $session_controller->destroy(request());
 

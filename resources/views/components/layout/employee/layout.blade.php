@@ -32,6 +32,21 @@
     <!-- Scripts -->
     <x-authenticated-broadcast-id />
     <x-livewire-listener />
+    @if(session('clearSessionStorageKeys'))
+    <script nonce="{{ $nonce }}">
+        @php
+            $keys = session('clearSessionStorageKeys');
+        @endphp
+
+        @if(is_array($keys))
+            @foreach($keys as $key)
+                sessionStorage.removeItem('{{ $key }}');
+            @endforeach
+        @else
+            sessionStorage.removeItem('{{ $keys }}');
+        @endif
+    </script>
+    @endif
 
     {{-- Waiting for this fix in livewire https://github.com/livewire/livewire/pull/8793 --}}
     {{-- livewire.js?id=cc800bf4:9932 Detected multiple instances of Livewire running --}}
@@ -47,7 +62,7 @@
     ])
 </head>
 
-<body class="employee-main" data-bs-theme>
+<body class="employee-main" data-bs-theme="{{ session('themePreference', 'light') }}">
     @yield('critical-styles')
     <x-no-script-body />
 
@@ -77,6 +92,9 @@
     <div class="main-layout-container">
         <main class="main {{ $main_cont_class }}">
             @yield('content')
+
+            <!-- Toast Container -->
+            <div class="toast-container position-fixed bottom-0 end-0 p-3"></div>
         </main>
     </div>
 

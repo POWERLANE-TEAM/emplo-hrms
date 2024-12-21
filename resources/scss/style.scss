@@ -75,6 +75,7 @@ input.rm-bg-icon {
 }
 
 body {
+    transition: background-color 0.5s ease-in-out 0.2s, color 0.3s ease 0.1s;
 
     .invalid-feedback,
     .invalid-feedback:empty {
