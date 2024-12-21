@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Http\Helpers\RoutePrefix;
+use App\Http\Helpers\RouteHelper;
 use App\View\Composers\AuthenticatedUserComposer;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -46,7 +46,7 @@ class ComposerServiceProvider extends ServiceProvider
     {
         View::composer($this->viewsNeedsUserData, AuthenticatedUserComposer::class);
         View::composer('*', function ($view) {
-            $routePrefix = RoutePrefix::getByRequest();
+            $routePrefix = RouteHelper::getByRequest();
 
             $view->with(['nonce' => csp_nonce(), 'routePrefix' => $routePrefix]);
         });

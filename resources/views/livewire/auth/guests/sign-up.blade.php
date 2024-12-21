@@ -1,4 +1,4 @@
-<section nonce="{{ $nonce }}" class="signUp-form ps-md-4 pe-md-5  pt-md-3 ">
+<section nonce="{{ $nonce }}" class="signUp-form ps-md-4 pe-md-5  pt-md-3 thin-gray-scrollbar">
     <hgroup class="d-flex flex-column text-center mb-3 mt-md-n4">
         <header class="display-6 fw-semibold text-primary mb-3">
             {{ __('register.sign_up.sign_up') }}
@@ -13,7 +13,7 @@
         @endif
     </hgroup>
 
-    <style>
+    <style nonce="{{ $nonce }}">
         .modal.sign-up-form:has(form) section {
             max-height: 75vh;
             max-height: 75svh;
@@ -38,7 +38,7 @@
         </div>
     </div>
 
-    <form action="applicant/sign-up" nonce="{{ $nonce }}">
+    <form wire:submit.prevent="store" action="applicant/sign-up" nonce="{{ $nonce }}">
         @csrf
 
         <div class="d-flex gap-md-5">

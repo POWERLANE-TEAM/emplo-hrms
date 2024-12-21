@@ -6,15 +6,15 @@
 
     &input[type="checkbox"].checkbox {
         opacity: 0;
-        width: clamp(1.5rem, 0.75rem + 1vw, 5vw);
-        height: clamp(1.5rem, 0.75rem + 1vw, 5vw);
+        width: clamp(1.5em, 0.75em + 1vw, 5vw);
+        height: clamp(1.5em, 0.75em + 1vw, 5vw);
         margin: 5px 0 0 3px;
         // z-index: 9;
     }
 
     &.checkbox~label.checkbox-label::before {
-        width: clamp(1rem, 0.5rem + 0.75vw, 1.5vw);
-        height: clamp(1rem, 0.5rem + 0.75vw, 1.5vw);
+        width: clamp(1em, 0.5em + 0.75vw, 1.5vw);
+        height: clamp(1em, 0.5em + 0.75vw, 1.5vw);
     }
 
     &.checkbox~label.checkbox-label::before {

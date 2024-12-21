@@ -55,15 +55,15 @@ class EmployeeFactory extends Factory
             'permanent_address' => fake()->streetName(),
             'contact_number' => fake()->unique()->numerify('09#########'),
             'date_of_birth' => fake()->date,
-            'sex' => fake()->randomElement(array_map(fn ($case) => $case->value, Sex::cases())),
-            'civil_status' => fake()->randomElement(array_map(fn ($case) => $case->value, CivilStatus::cases())),
+            'sex' => fake()->randomElement(array_map(fn($case) => $case->value, Sex::cases())),
+            'civil_status' => fake()->randomElement(array_map(fn($case) => $case->value, CivilStatus::cases())),
             'sss_no' => fake()->numerify('##########'),
             'philhealth_no' => fake()->numerify('############'),
             'tin_no' => fake()->numerify('############'),
             'pag_ibig_no' => fake()->numerify('############'),
             'signature' => fake()->sha256,
-            'education' => json_encode($education),
-            'experience' => json_encode($experience),
+            // 'education' => json_encode($education),
+            // 'experience' => json_encode($experience),
         ];
     }
 }

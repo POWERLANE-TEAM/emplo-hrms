@@ -32,6 +32,14 @@ document.addEventListener('livewire:init', () => {
         loadSignUp();
     });
 
+    Livewire.on('verification-email-error', (event) => {
+        window.openModal('modal-verification-email-error');
+    });
+
+    Livewire.on('sign-up-error', (event) => {
+        window.openModal('modal-sign-up-error');
+    });
+
 
     Livewire.on('guest-job-view-pane-rendered', (event) => {
     });
@@ -45,9 +53,21 @@ document.addEventListener('livewire:init', () => {
         }
     });
 
-    Livewire.on('guest-new-user-registered', (event) => {
+    Livewire.on('sign-up-successful', (event) => {
         bootstrap.Modal.getOrCreateInstance('#signUpForm').hide();
-        bootstrap.Modal.getOrCreateInstance('#register-email-alert').show();
+        window.openModal('modal-sign-up-success');
+
+        setTimeout(() => {
+            bootstrap.Modal.getOrCreateInstance('#signUpForm').hide();
+            bootstrap.Modal.getOrCreateInstance('#modal-sign-up-success').hide();
+            window.openModal('modal-verification-email-success');
+        }, 5000); // 5 seconds timeout
+    });
+
+
+    Livewire.on('verification-email-success', (event) => {
+        bootstrap.Modal.getOrCreateInstance('#signUpForm').hide();
+        window.openModal('"modal-verification-email-success');
     });
 
 });

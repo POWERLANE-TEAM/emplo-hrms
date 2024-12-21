@@ -16,6 +16,9 @@
                 <button value="{{ $job_vacancy->jobTitle->job_title_id }}"
                     x-on:click.debounce.10ms="$dispatch('job-hiring-selected', { job_vacancy: {
                                     jobDetail: {
+                                        jobId:
+                                            {{ $job_vacancy->job_vacancy_id }}
+                                    ,
                                         jobTitle: [
                                             {{ $job_vacancy->jobTitle }}
                                         ],
