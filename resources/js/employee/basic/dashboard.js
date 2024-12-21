@@ -11,12 +11,12 @@ import "employee-page-script";
 import "../../modals.js";
 import "../../tooltip.js";
 
-const themeManager = new ThemeManager();
+
 const themeToggle = document.getElementById(`theme-toggle-btn`).closest('.dropdown');
 
-initPageTheme(themeManager, themeToggle);
+initPageTheme(window.ThemeManager, themeToggle);
 
-handleThemeBtn(themeToggle, themeManager, addGlobalListener);
+handleThemeBtn(themeToggle, window.ThemeManager, addGlobalListener);
 
 document.addEventListener("DOMContentLoaded", (event) => {
     //

@@ -10,11 +10,11 @@ import PasswordValidator from './forms/password-validation.js';
 import initPasswordConfirmValidation, { validateConfirmPassword } from './forms/password-confirm-validation.js';
 import debounce from 'debounce-script';
 // import './livewire.js'
-import ThemeManager, { initPageTheme } from 'theme-listener-script';
+import { initPageTheme } from 'theme-listener-script';
 
-const themeManager = new ThemeManager();
 
-initPageTheme(themeManager);
+
+initPageTheme(window.ThemeManager);
 
 
 document.addEventListener("DOMContentLoaded", (event) => {

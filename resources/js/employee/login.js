@@ -9,11 +9,11 @@ import InputValidator, { setInvalidMessage } from '../forms/input-validator.js';
 import initEmailValidation, { validateEmail } from '../forms/email-validation.js';
 import PasswordValidator from '../forms/password-validation.js';
 import debounce from 'debounce-script';
-import ThemeManager, { initPageTheme } from 'theme-listener-script';
+import { initPageTheme } from 'theme-listener-script';
 
-const themeManager = new ThemeManager();
 
-initPageTheme(themeManager);
+
+initPageTheme(window.ThemeManager);
 
 document.addEventListener("DOMContentLoaded", (event) => {
     //

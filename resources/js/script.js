@@ -1,5 +1,10 @@
 import './animations/texts-effect.js';
 import initLucideIcons from './icons/lucide.js';
+import ThemeManager, { initPageTheme } from './theme-listener.js';
+
+const themeManager = new ThemeManager();
+
+window.ThemeManager = themeManager;
 
 function disableSubmit() {
     document
@@ -47,6 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
 try {
     document.addEventListener("livewire:initialized", () => {
         document.addEventListener("livewire:navigate", () => {
+            window.icons.initLucideIcons = initLucideIcons;
             disableSubmit();
         });
 

@@ -17,11 +17,9 @@ import NameValidator from 'name-validator-script';
 import { LAST_NAME_VALIDATION, MIDDLE_NAME_VALIDATION, FIRST_NAME_VALIDATION } from 'name-validate-rule';
 // import './livewire.js'
 
-const themeManager = new ThemeManager();
 
-window.ThemeManager = themeManager;
 
-initPageTheme(themeManager);
+initPageTheme(window.ThemeManager);
 
 document.addEventListener("DOMContentLoaded", (event) => {
     //

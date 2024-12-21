@@ -6,11 +6,11 @@ import ThemeManager, { initPageTheme, handleThemeBtn } from '../theme-listener.j
 import '../auth-listener.js';
 import '../tooltip.js';
 
-const themeManager = new ThemeManager();
+
 const themeToggle = document.getElementById(`theme-toggle-btn`).closest('.dropdown');
 
 document.addEventListener('livewire:navigated', () => {
     initSidebar();
-    initPageTheme(themeManager, themeToggle);
-    handleThemeBtn(themeToggle, themeManager, addGlobalListener);
+    initPageTheme(window.ThemeManager, themeToggle);
+    handleThemeBtn(themeToggle, window.ThemeManager, addGlobalListener);
 });
