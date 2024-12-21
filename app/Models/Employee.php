@@ -459,6 +459,30 @@ class Employee extends Model
     }
 
     /**
+     * Get the educational attainments of the employee.
+     */
+    public function educations(): HasMany
+    {
+        return $this->hasMany(EmployeeEducation::class, 'employee_id', 'employee_id');
+    }
+
+    /**
+     * Get the work experiences of the employee.
+     */
+    public function experiences(): HasMany
+    {
+        return $this->hasMany(EmployeeExperience::class, 'employee_id', 'employee_id');
+    }
+
+    /**
+     * Get the skills of the employee.
+     */
+    public function skills(): HasMany
+    {
+        return $this->hasMany(EmployeeSkill::class, 'employee_id', 'employee_id');
+    }
+
+    /**
      * Override default values for more controlled logging.
      */
     public function getActivityLogOptions(): LogOptions
