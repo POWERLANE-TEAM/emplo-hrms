@@ -40,24 +40,8 @@ export default class ThemeManager {
     }
 
     addListener() {
-        if (this.listenerFunc) {
-            console.log('already listening');
-        }
-        this.listenerFunc = window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', ({ matches }) => {
-            if (this.getUserPreference() !== 'system') {
-                // this.listenerFunc.removeEventListener('change', this.listenerFunc);
-                return;
-            }
-
-            let themeToSet;
-
-            if (matches) {
-                themeToSet = 'light';
-            } else {
-                themeToSet = 'dark';
-            }
-            this.pageBody.setAttribute('data-bs-theme', themeToSet);
-        });
+        window.matchMedia('(prefers-color-scheme: light)').removeEventListener('change', handleSystenThemeChange);
+        window.systemThemeChangeListener = window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', handleSystenThemeChange);
     }
 
     postThemePreference(themeToSet) {
@@ -91,6 +75,21 @@ export default class ThemeManager {
 
     }
 }
+
+function handleSystenThemeChange({ matches }) {
+    if (window.ThemeManager.getUserPreference() !== 'system') {
+        return;
+    }
+
+    let themeToSet;
+
+    if (matches) {
+        themeToSet = 'light';
+    } else {
+        themeToSet = 'dark';
+    }
+    document.querySelector('body').setAttribute('data-bs-theme', themeToSet);
+};
 
 export function initPageTheme(themeManager, themeToggle = false) {
     const themePrefer = themeManager.getUserPreference();
