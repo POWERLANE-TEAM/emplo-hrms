@@ -1,0 +1,13 @@
+section {
+    &.present-address {
+        &:has(:invalid) {
+
+            // select the container of permanent address section
+            &~section[class*="address"] {
+                div:has(input[type="checkbox"][class*="same"][class*="address"]) {
+                    visibility: hidden;
+                }
+            }
+        }
+    }
+}

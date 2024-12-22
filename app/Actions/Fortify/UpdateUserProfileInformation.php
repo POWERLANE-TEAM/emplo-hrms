@@ -63,7 +63,6 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             $this->updateVerifiedUser($user, $input);
         } else {
             $user->forceFill(array_filter([
-                'email' => $input['email'] ?? null,
                 'account_type' => $input['accountType'] ?? null,
                 'account_id' => $input['accountId'] ?? null,
                 'user_status_id' => $input['userStatusId'] ?? null,

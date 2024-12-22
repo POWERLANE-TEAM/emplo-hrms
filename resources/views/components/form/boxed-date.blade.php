@@ -35,7 +35,7 @@
             'placeholder' => $attributes->get('placeholder', ''),
         ]) }}
         aria-owns="{{ $attributes->get('id') }}-feedback" nonce="{{ $nonce }}">
+</div>
     @if (!empty($feedback))
         {{ $feedback }}
     @endif
-</div>

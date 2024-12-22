@@ -5,7 +5,7 @@
 
 @extends('components.layout.app', ['description' => 'Guest Layout'])
 
-@use('App\Http\Helpers\RoutePrefix')
+@use('App\Http\Helpers\RouteHelper')
 
 @section('head')
 <title>Sign in {{ $routePrefix ? ' as ' . ucfirst($routePrefix) : '' }}</title>

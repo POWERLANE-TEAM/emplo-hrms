@@ -22,7 +22,7 @@
         </button>
     </div>
 
-    <section class="overflow-y-auto thin-custom-scrollbar">
+    <section class="overflow-y-auto thin-hidden-scrollbar">
 
         <div class="nav-list">
             {{ $slot }}

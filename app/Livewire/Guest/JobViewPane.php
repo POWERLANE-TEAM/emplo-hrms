@@ -14,6 +14,7 @@ class JobViewPane extends Component
         $job = $jobsListCard->getJobVacancies()->first();
         $this->job_vacancy = [
             'jobDetail' => [
+                'jobId' => $job->job_vacancy_id,
                 'jobTitle' => [$job->jobTitle],
                 'jobFamilies' => [$job->jobTitle->jobFamily->first()],
             ],
