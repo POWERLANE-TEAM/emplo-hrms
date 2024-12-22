@@ -21,9 +21,10 @@ class EmployeeOvertimeRequestSummariesTable extends DataTableComponent
     public function configure(): void
     {
         $this->setPrimaryKey('overtime_id');
-        $this->setPageName('overtime-requests');
+        $this->setPageName('overtime-summmary');
         $this->setEagerLoadAllRelationsEnabled();
         $this->setSingleSortingDisabled();
+        $this->enableAllEvents();
         $this->setQueryStringEnabled();
         $this->setOfflineIndicatorEnabled();
         $this->setDefaultSort('filed_at', 'desc');
@@ -34,10 +35,22 @@ class EmployeeOvertimeRequestSummariesTable extends DataTableComponent
         $this->setToolBarAttributes(['class' => ' d-md-flex my-md-2']);
         $this->setToolsAttributes(['class' => ' bg-body-secondary border-0 rounded-3 px-5 py-2']);
 
+        $this->setTableAttributes([
+            'default' => true,
+            'class' => 'table-hover px-1 no-transition',
+        ]);
+
         $this->setTrAttributes(function ($row, $index) {
+            $eventPayload = $this->createEventPayload($row);
+
             return [
                 'default' => true,
                 'class' => 'border-1 rounded-2 outline no-transition mx-4',
+                'role' => 'button',
+                'wire:click' => "\$dispatchTo(
+                    'employee.overtimes.individual-overtime-request-approval',
+                    'showOvertimeRequestApprovalInfo',
+                    { eventPayload: ".json_encode($eventPayload)."})",
             ];
         });
 
@@ -59,25 +72,58 @@ class EmployeeOvertimeRequestSummariesTable extends DataTableComponent
             ];
         });
 
-        $this->setConfigurableAreas([
-            'toolbar-left-start' => [
-                'components.headings.main-heading',
-                [
-                    'overrideClass' => true,
-                    'overrideContainerClass' => true,
-                    'attributes' => new ComponentAttributeBag([
-                        'class' => 'fs-5 py-1 text-secondary-emphasis fw-medium text-underline',
-                    ]),
-                    'heading' => __('Some text here'),
-                ],
+        // $this->setConfigurableAreas([
+        //     'toolbar-left-start' => [
+        //         'components.headings.main-heading',
+        //         [
+        //             'overrideClass' => true,
+        //             'overrideContainerClass' => true,
+        //             'attributes' => new ComponentAttributeBag([
+        //                 'class' => 'fs-5 py-1 text-secondary-emphasis fw-medium text-underline',
+        //             ]),
+        //             'heading' => __('Some text here'),
+        //         ],
+        //     ],
+        // ]);
+    }
+
+    private function createEventPayload($row)
+    {
+        return [
+            'requestor' => [
+                'name'              => $row->employee->full_name,
+                'photo'             => $row->employee->account->photo,
+                'job_title'         => $row->employee->jobTitle->job_title,
+                'job_level'         => $row->employee->jobTitle->jobLevel->job_level,
+                'job_level_name'    => $row->employee->jobTitle->jobLevel->job_level_name,
+                'employee_id'       => $row->employee->employee_id,
+                'shift'             => $row->employee->shift->shift_name,
+                'shift_schedule'    => $row->employee->shift_schedule,
+                'employment'        => $row->employee->status->emp_status_name,
             ],
-        ]);
+            'overtime_details' => [
+                'work_performed'        => $row->work_performed,
+                'date'                  => Carbon::make($row->date)->format('F d, Y'),
+                'start_time'            => $row->start_time,
+                'end_time'              => $row->end_time,
+                'hours_requested'       => $row->hours_requested,
+                'authorizer_signed_at'  => $row->authorizer_signed_at,
+                'authorizer'            => $row?->authorizedBy?->full_name,
+                'denied_at'             => $row->denied_at,
+                'denier'                => $row?->deniedBy?->full_name,
+                'feedback'              => $row->feedback,
+                'filed_at'              => $row->filed_at,
+                'modified_at'           => Carbon::make($row->modified_at)->format('F d, Y'),             
+            ],
+        ];
     }
 
     private function getPayrollOptions()
     {
         return Overtime::query()
-            ->with('payrollApproval.payroll')
+            ->with([
+                'payrollApproval.payroll'
+            ])
             ->get()
             ->mapWithKeys(function ($item) {
                 return [$item->payrollApproval->payroll->payroll_id => $item->payrollApproval->payroll->cut_off];
@@ -88,6 +134,17 @@ class EmployeeOvertimeRequestSummariesTable extends DataTableComponent
     public function builder(): Builder
     {
         return Overtime::query()
+            ->with([
+                'authorizedBy',
+                'deniedBy',
+                'employee',
+                'employee.jobTitle',
+                'employee.shift',
+                'employee.jobTitle.jobLevel',
+                'employee.jobTitle.jobFamily',
+                'employee.account',
+                'employee.status',
+            ])
             ->where('employee_id', $this->employee->employee_id)
             ->select('*');
     }

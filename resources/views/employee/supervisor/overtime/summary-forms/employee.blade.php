@@ -42,6 +42,8 @@
     :payroll="$filter"
 />
 
+<livewire:employee.overtimes.individual-overtime-request-approval />
+
 <section class="my-2">
     <livewire:employee.tables.employee-overtime-request-summaries-table :employee="$employee" />
 </section>
