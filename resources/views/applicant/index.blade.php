@@ -35,8 +35,8 @@
         </hgroup>
 
         <!-- BACK-END REPLACE:
-                                                                                                         Replace with the applicant's status to
-                                                                                                         show/hide sections for each stage. -->
+                                                                                                                     Replace with the applicant's status to
+                                                                                                                     show/hide sections for each stage. -->
 
         {{-- {{ dd($application->application_status_id == ApplicationStatus::PENDING->value) }} --}}
         @php
@@ -84,15 +84,15 @@
 
         <!-- Info Cards -->
         <section class="mb-5">
-            <div class="row mt-md-5 gap-5 flex-md-nowrap mb-5">
-                <div class="col-md-6 card border-0 bg-body-secondary text-center p-5">
+            <div class="row mt-md-5 column-gap-5 flex-md-nowrap mb-5">
+                <div class="flex-1-sm-grow card border-0 bg-body-secondary text-center p-5">
                     <label for="applicant-status" class="text-uppercase text-primary fw-medium">Current Status</label>
                     <strong id="applicant-status" class="applicant-status fs-3 fw-bold text-capitalize ">
                         {!! when($isPending && !$isScreening, '<span class="text-danger"> ! </span>') !!}
                         {{ $application->status->application_status_name }}
                     </strong>
                 </div>
-                <div class="col-md-6 card border-0 bg-body-secondary text-center p-5 ">
+                <div class="flex-1-sm-grow card border-0 bg-body-secondary text-center p-5 ">
                     <label for="applicant-position" class="text-uppercase text-primary fw-medium">Applied Job
                         Position</label>
                     <strong id="applicant-position" class="applicant-position fs-3 fw-bold">

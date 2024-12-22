@@ -4,6 +4,8 @@ namespace App\Livewire\Applicant\Stages;
 
 use App\Models\Application;
 use App\Models\ApplicationDoc;
+use App\Models\PreempRequirement;
+use Livewire\Attributes\Computed;
 use Livewire\Component;
 
 class PreEmployed extends Component
@@ -35,6 +37,52 @@ class PreEmployed extends Component
         $this->pendingDocuments = $this->application->documents->where('evaluated_by', null);
         $this->verifiedDocuments = $this->application->documents->whereNotNull('evaluated_by');
         $this->rejectedDocuments = $this->application->documents->whereNotNull('evaluated_by');
+
+        $this->dataChecks();
+    }
+
+
+    public function dataChecks()
+    {
+        if (($this->pendingDocuments->count() + $this->pendingDocuments->count() + $this->pendingDocuments->count()) >  $this->premploymentRequirements->count()) {
+            report('Document count is greater than the pre-employment requirements count');
+        }
+    }
+
+
+    /**
+     * Computes the overall status of the applicant based on the document verification process.
+     *
+     * @return array An array containing the status and its type:
+     *               - ['pending', 'info'] if all documents are pending.
+     *               - ['complete', 'success'] if all documents are verified.
+     *               - ['incomplete', 'danger'] if some documents are pending and some are verified.
+     */
+    #[Computed(persist: true)]
+    public function overallStatus()
+    {
+        if ($this->pendingDocuments->count() == $this->premploymentRequirements->count()) {
+            return [
+                'pending',
+                'info'
+            ];
+        } elseif ($this->verifiedDocuments->count() == $this->premploymentRequirements->count()) {
+            return [
+                'complete',
+                'success'
+            ];
+        } else {
+            return [
+                'incomplete',
+                'danger'
+            ];
+        }
+    }
+
+    #[Computed(persist: true)]
+    public function premploymentRequirements()
+    {
+        return PreempRequirement::select('preemp_req_name')->get();
     }
 
 
@@ -44,6 +92,7 @@ class PreEmployed extends Component
             'pendingDocuments' => $this->pendingDocuments,
             'verifiedDocuments' => $this->verifiedDocuments,
             'rejectedDocuments' => $this->rejectedDocuments,
+            'overallStatus' => $this->overallStatus,
         ]);
     }
 }

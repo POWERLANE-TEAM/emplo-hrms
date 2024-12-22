@@ -1,8 +1,14 @@
+@use('App\Http\Helpers\ChartJs')
+
+@php
+    [$statusText, $statusColor] = $this->overallStatus;
+@endphp
+
 <div>
     <section class="mb-5">
         <header class="fs-4 fw-bold mb-4" role="heading" aria-level="2">
             <span class="fs-2 fw-bold ps-1 pe-3">Pre-Employment Requirements</span>
-            <x-status-badge color="danger">Incomplete</x-status-badge>
+            <x-status-badge :color="$statusColor">{{ $statusText }}</x-status-badge>
         </header>
 
         <div class="row flex-md-nowrap gap-5">
@@ -55,3 +61,207 @@
             page</a>
     </nav>
 </div>
+
+@script
+    <script nonce="{{ $nonce }}">
+        document.addEventListener("livewire:navigated", (event) => {
+
+            const pendingDocumentCount = Math.max(0, Math.floor(@json($pendingDocuments->count())));
+            const verifiedDocumentCount = Math.max(0, Math.floor(@json($verifiedDocuments->count())));
+            const rejectedDocumentCount = Math.max(0, Math.floor(@json($rejectedDocuments->count())));
+            const totalRequirementCount = Math.max(0, Math.floor(@json($this->premploymentRequirements->count())));
+
+            const ROOT = document.documentElement;
+            const ROOT_STYLES = getComputedStyle(ROOT);
+            const VERIFIED_COLOR = ROOT_STYLES.getPropertyValue('--bs-primary').trim();
+            const PENDING_COLOR = ROOT_STYLES.getPropertyValue('--bs-info').trim();
+            const REJECTED_COLOR = ROOT_STYLES.getPropertyValue('--bs-danger').trim();
+            const DEFAULT_COLOR = '#E5E5E5';
+            const body = document.body;
+            const currentTheme = body.getAttribute('data-bs-theme');
+
+            let primaryTextColor = window.validateTextColor(window.textColor.bodyColor) ? window.textColor
+                .bodyColor : 'black';
+            let secondaryTextColor = window.validateTextColor(window.textColor.bodySecondaryColor) ? window
+                .textColor.bodySecondaryColor : 'black';
+
+            const VIEW_WIDTH = document.documentElement.clientWidth;
+            const BASE_FONT_SIZE = parseInt(ROOT_STYLES.fontSize)
+            const RFS = VIEW_WIDTH * 0.00125;
+
+
+            function caclulateFillPercent(docCount, total = totalRequirementCount) {
+                return (docCount / total) * 100;
+            }
+
+            pendingDocumentPercent = caclulateFillPercent(pendingDocumentCount);
+            verfiedDocumentPercent = caclulateFillPercent(verifiedDocumentCount);
+            rejectedDocumentPercent = caclulateFillPercent(rejectedDocumentCount);
+
+            let submittedCount = pendingDocumentCount + verifiedDocumentCount + rejectedDocumentCount;
+
+            if (submittedCount > totalRequirementCount) {
+                console.error('Submitted count exceeds total requirement count');
+            }
+
+            let unsubmittedCount = totalRequirementCount - (pendingDocumentCount + verifiedDocumentCount +
+                rejectedDocumentCount);
+
+            let remainingPercent = caclulateFillPercent(pendingDocumentCount + verifiedDocumentCount +
+                rejectedDocumentCount);
+
+            let percentages = [verfiedDocumentPercent, pendingDocumentPercent, rejectedDocumentPercent];
+
+            let forTooltip = [verifiedDocumentCount, pendingDocumentCount, rejectedDocumentCount,
+                unsubmittedCount
+            ];
+
+            let dataLabels = ['Completed', 'Pending Review', 'Rejected ', 'Remaining'];
+
+            tooltipData = forTooltip.reduce((acc, count, index) => (count > 0 ? {
+                ...acc,
+                [index]: count
+            } : acc), {});
+
+            let submittedData = percentages.reduce((acc, count, index) => (count > 0 ? {
+                ...acc,
+                [index]: count
+            } : acc), {});
+
+            var myChartCircle = new Chart('chartProgress', {
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: percentages.concat(100),
+                        // backgroundColor: function(context) {
+                        //     const CHART = context.chart;
+                        //     const {
+                        //         ctx,
+                        //         chartArea
+                        //     } = CHART;
+                        //     if (!chartArea) {
+                        //         // This can happen if the chart is not yet initialized
+                        //         return null;
+                        //     }
+
+                        //     // return [
+                        //     //     window.createGradient(ctx, chartArea, PENDING_COLOR,
+                        //     //         pendingDocumentPercent),
+                        //     //     window.createGradient(ctx, chartArea, VERIFIED_COLOR,
+                        //     //         verfiedDocumentPercent),
+                        //     //     window.createGradient(ctx, chartArea, REJECTED_COLOR,
+                        //     //         rejectedDocumentPercent),
+                        //     //     DEFAULT_COLOR // Default color for remaining percentage
+                        //     // ];
+
+                        //     const dataIndex = context.dataIndex;
+                        //     const colors = [PENDING_COLOR, VERIFIED_COLOR, REJECTED_COLOR,
+                        //         DEFAULT_COLOR
+                        //     ];
+
+                        //     return createGradient(ctx, chartArea, colors[dataIndex], 0, 0.55);
+                        // },
+
+
+                        backgroundColor: {!! ChartJs::pieGenerateBgColors(
+                            ['pendingDocumentCount', 'verifiedDocumentCount', 'rejectedDocumentCount'],
+                            ['PENDING_COLOR', 'VERIFIED_COLOR', 'REJECTED_COLOR'],
+                            'DEFAULT_COLOR',
+                        ) !!},
+                        //
+
+                        borderWidth: 0,
+                        hoverBorderWidth: 3
+                    }],
+                    labels: dataLabels,
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    cutout: '82%',
+                    // cutout: '1%',
+                    rotation: Math.PI / 2,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: 'Submitted Requirements',
+                            color: primaryTextColor,
+                            padding: {
+                                bottom: 48
+                            },
+                            font: {
+                                size: 18,
+                                family: 'Figtree',
+                                weight: 'bold'
+                            }
+                        },
+                        annotation: {
+
+                            annotations: {
+                                labelfor: {
+                                    type: 'label',
+                                    xValue: 2.5,
+                                    yValue: 60,
+                                    yAdjust: 50,
+                                    content: ['Submitted'],
+                                    color: secondaryTextColor,
+                                    font: {
+                                        size: 14,
+                                        family: 'Figtree',
+                                        weight: 'bold'
+                                    }
+                                },
+
+                                labelData: {
+                                    type: 'label',
+                                    drawTime: 'afterDraw',
+                                    xValue: 2.5,
+                                    yValue: 60,
+                                    yAdjust: 80,
+                                    content: [`${verifiedDocumentCount} out of ${totalRequirementCount}`],
+                                    color: primaryTextColor,
+                                    font: {
+                                        size: 24,
+                                        family: 'Figtree',
+                                        weight: 'bold'
+                                    }
+                                }
+
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: ((tooltipItem, data) => {
+                                    console.log(tooltipItem);
+                                    console.log(data);
+                                    console.log(tooltipItem.dataIndex);
+                                    console.log(tooltipData[tooltipItem.dataIndex]);
+                                    return tooltipData[tooltipItem.dataIndex];
+                                })
+                            }
+                        }
+
+                    }
+
+                },
+                plugins: [{
+                        {!! ChartJs::pieGenerateLabels() !!}
+                    },
+
+
+                ]
+            });
+
+            setTimeout(() => {
+                /* https://www.chartjs.org/docs/latest/developers/api.html#update-mode */
+                console.log(myChartCircle.options.plugins.annotation.annotations.labelData.content[0]);
+                // myChartCircle.options.plugins.annotation.annotations.labelData.content[0] = 'Updated';
+                myChartCircle.options.plugins.annotation.annotations.labelData.color = 'red';
+                myChartCircle.options.animation = false;
+                myChartCircle.update('show');
+            }, 3000);
+        });
+    </script>
+@endscript
