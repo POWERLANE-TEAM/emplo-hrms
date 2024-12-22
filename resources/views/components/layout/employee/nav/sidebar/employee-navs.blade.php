@@ -42,9 +42,13 @@
      */
     $navOvertimeOrder = $user->hasPermissionTo(UserPermission::VIEW_ALL_OVERTIME_REQUEST) ? 6 : 4; // Adjust order as needed
     $navOvertimeRoute = $user->hasPermissionTo(UserPermission::VIEW_ALL_OVERTIME_REQUEST)
-        ? $routePrefix . '.overtimes.requests'
-        : $routePrefix . '.overtimes.index';
-
+        ? [$routePrefix . '.overtimes.requests']
+        : [
+            $routePrefix . '.overtimes.index',
+            $routePrefix . '.overtimes.summaries',
+            $routePrefix . '.overtimes.recents',
+            $routePrefix . '.overtimes.archive',
+        ];
 
     /**
      * Leaves
@@ -108,14 +112,14 @@
     @endcan
 
     {{-- Employee, HR Manager, Supervisor --}}
-    <!-- @php
+    @php
         $navPerformanceOrder = $user->hasPermissionTo(UserPermission::VIEW_ALL_EMP_PERFORMANCE_EVAL) ? 8 : 4;
     @endphp
-    @canAny([UserPermission::VIEW_EMP_PERFORMANCE_EVAL, UserPermission::VIEW_ALL_EMP_PERFORMANCE_EVAL])
+    {{-- @canAny([UserPermission::VIEW_EMP_PERFORMANCE_EVAL, UserPermission::VIEW_ALL_EMP_PERFORMANCE_EVAL])
     <x-layout.employee.nav.sidebar.nav-item :href="route($routePrefix . '.performance.evaluation.index', ['employeeStatus' => 'probationary'])" :active="request()->routeIs($routePrefix . '.performance.evaluation.index')" class="order-{{ $navPerformanceOrder }}" nav_txt="Performance"
         :defaultIcon="['src' => 'performances', 'alt' => '']" :activeIcon="['src' => 'performances', 'alt' => '']">
     </x-layout.employee.nav.sidebar.nav-item>
-    @endcan -->
+    @endcan --> --}}
 
     {{-- HR Manager / HR Staff --}}
     @can(UserPermission::VIEW_ALL_EMP_PERFORMANCE_EVAL)
@@ -152,16 +156,21 @@
     </x-layout.employee.nav.sidebar.nav-item>
     @endcan
 
-    @canAny([UserPermission::VIEW_OVERTIME, UserPermission::VIEW_ALL_OVERTIME_REQUEST])
+    @canAny([
+        UserPermission::VIEW_OVERTIME, 
+        UserPermission::VIEW_SUBORDINATE_OVERTIME_REQUEST,
+        UserPermission::VIEW_ALL_SUBORDINATE_LEAVE_REQUEST,
+        UserPermission::VIEW_ALL_OVERTIME_REQUEST,
+    ])
     <x-layout.employee.nav.sidebar.nav-item
-        :href="route($navOvertimeRoute)"
+        :href="route($navOvertimeRoute[0])"
         :active="request()->routeIs($navOvertimeRoute)"
         class="order-{{ $navOvertimeOrder }}"
         nav_txt="Overtime"
         :defaultIcon="['src' => 'overtime', 'alt' => '']"
         :activeIcon="['src' => 'overtime', 'alt' => '']">
     </x-layout.employee.nav.sidebar.nav-item>
-    @endcan
+    @endcanAny
 
 
     {{-- Employee, Supervisor --}}
@@ -337,7 +346,7 @@
     {{-- Supervisor / Head Dept --}}
     @can(UserPermission::VIEW_ALL_SUBORDINATE_OVERTIME_SUMMARY_FORMS)
         <x-layout.employee.nav.sidebar.nav-item href="{{ route($routePrefix . '.overtimes.requests.summaries') }}"
-            :active="request()->routeIs($routePrefix . '.overtimes.requests.summaries')"
+            :active="request()->routeIs([$routePrefix . '.overtimes.requests.summaries', $routePrefix . '.overtimes.requests.employee.summaries'])"
             class="" nav_txt="OT Summary Forms"
             :defaultIcon="['src' => 'ot-summary-form', 'alt' => '']"
             :activeIcon="['src' => 'ot-summary-form', 'alt' => '']">
