@@ -2,15 +2,11 @@
 
 namespace App\Livewire\Employee\Tables;
 
+use App\Enums\UserPermission;
 use App\Models\Overtime;
 use Illuminate\Support\Str;
-use Illuminate\Support\Carbon;
-use App\Models\OvertimeSummary;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Query\JoinClause;
-use Illuminate\View\ComponentAttributeBag;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 
@@ -128,10 +124,15 @@ class OvertimeRequestSummariesTable extends DataTableComponent
                 'employee.jobTitle.jobFamily',
             ])
             ->whereHas('employee', function ($query) {
-                $query->whereNot('employee_id', Auth::user()->account->employee_id)
-                    ->whereHas('jobTitle.jobFamily', function ($query) {
-                        $query->where('job_family_id', Auth::user()->account->jobTitle->jobFamily->job_family_id);
-                    });
+                $user = Auth::user();
+                if (! $user->hasPermissionTo(UserPermission::VIEW_ALL_OVERTIME_REQUEST)) {
+                    $query->whereNot('employee_id', Auth::user()->account->employee_id)
+                        ->whereHas('jobTitle.jobFamily', function ($query) {
+                            $query->where('job_family_id', Auth::user()->account->jobTitle->jobFamily->job_family_id);
+                        });     
+                } else {
+                    $query->whereNot('employee_id', Auth::user()->account->employee_id);                    
+                }
             })
             ->selectRaw($statement)
             ->groupBy('payroll_approval_id', 'employee_id');
@@ -187,7 +188,7 @@ class OvertimeRequestSummariesTable extends DataTableComponent
             Column::make(__('Status'))
                 ->label(function ($row) {
                     if ($row->payrollApproval->third_approver_signed_at) {
-                        return $row->payrollApproval->thirdApprover->full_name;
+                        return __('Approved');
                     } else {
                         return __('Pending');
                     }
