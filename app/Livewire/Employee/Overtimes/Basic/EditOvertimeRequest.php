@@ -41,6 +41,8 @@ class EditOvertimeRequest extends Component
     #[Locked]
     public $editMode = false;
 
+    public bool $loading = true;
+
     public function update()
     {
         if ($this->editMode) {
@@ -149,7 +151,7 @@ class EditOvertimeRequest extends Component
                 }
             }
 
-            $this->dispatch('openOvertimeRequestModal');
+            $this->loading = false;
         }
     }
 
