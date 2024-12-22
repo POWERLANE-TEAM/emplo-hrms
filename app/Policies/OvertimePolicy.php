@@ -195,30 +195,38 @@ class OvertimePolicy
 
     public function viewOvertimeSummary(User $user, Employee $employee): Response
     {
-        $employee->load('jobTitle.department');
+        $employee->load([
+            'jobTitle.jobFamily',
+            'jobTitle.department',
+        ]);
 
-        $userJobFamily      = $user->account->jobTitle->job_family_id;
-        $userDepartment     = $user->account->jobTitle->department->department_id;
-        $employeeJobFamily  = $employee->jobTitle->jobFamily->job_family_id;
-        $employeeDepartment = $employee->jobTitle->department->department_id;
+        $user->load([
+            'account.jobTitle.jobFamily',
+            'account.jobTitle.department',
+        ]);
 
-        // is user employee the supervisor of employee? Do equal comparison of job_family_id
+        $userJobFamily      = $user->account->jobTitle->jobFamily;
+        $userDepartment     = $user->account->jobTitle->department;
+        $employeeJobFamily  = $employee->jobTitle->jobFamily;
+        $employeeDepartment = $employee->jobTitle->department;
+
+        // is user employee the supervisor of employee? Compare both JobFamily models
         if (
             $user->hasPermissionTo(UserPermission::VIEW_ALL_SUBORDINATE_OVERTIME_SUMMARY_FORMS) &&
-            $userJobFamily === $employeeJobFamily
+            $userJobFamily->is($employeeJobFamily)
         ) {
             return Response::allow();
         }
 
-        // is user employee the dept head/manager of employee? Do equal comparison of department_id
+        // is user employee the dept head/manager of employee? Compare both Department models
         if (
             $user->hasPermissionTo(UserPermission::VIEW_ALL_SUBORDINATE_REQUESTS) &&
-            $userDepartment === $employeeDepartment
+            $userDepartment->is($employeeDepartment)
         ) {
             return Response::allow();
         }
 
-        // checks if user employee is like idk the HR Manager
+        // // checks if user employee is like idk the HR Manager
         if ($user->hasPermissionTo(UserPermission::VIEW_ALL_OVERTIME_REQUEST)) {
             return Response::allow();
         }
