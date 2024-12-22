@@ -133,7 +133,10 @@
                                 :nonce="$nonce"
                                 :disabled="false" 
                                 class="w-100" 
-                            />    
+                            />
+                            <div class="pt-2">
+                                <small> {{ __('Awaiting Initial Approval') }} </small>    
+                            </div>
                         </div>    
                     @endcan
 
@@ -148,7 +151,10 @@
                                 :nonce="$nonce"
                                 :disabled="false" 
                                 class="w-100" 
-                            />    
+                            />
+                            <div class="pt-2">
+                                <small> {{ __('Awaiting Secondary Approval') }} </small>    
+                            </div>
                         </div>
                     @endcan
 
@@ -163,7 +169,10 @@
                                 :nonce="$nonce"
                                 :disabled="false" 
                                 class="w-100" 
-                            />    
+                            />
+                            <div class="pt-2">
+                                <small> {{ __('Awaiting Third/Final Approval') }} </small>    
+                            </div>    
                         </div>             
                     @endcan
                 @endif
