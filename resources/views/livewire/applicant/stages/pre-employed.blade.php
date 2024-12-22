@@ -258,7 +258,7 @@
                 /* https://www.chartjs.org/docs/latest/developers/api.html#update-mode */
                 console.log(myChartCircle.options.plugins.annotation.annotations.labelData.content[0]);
                 // myChartCircle.options.plugins.annotation.annotations.labelData.content[0] = 'Updated';
-                myChartCircle.options.plugins.annotation.annotations.labelData.color = 'red';
+                // myChartCircle.options.plugins.annotation.annotations.labelData.color = 'red';
                 myChartCircle.options.animation = false;
                 myChartCircle.update('show');
             }, 3000);
