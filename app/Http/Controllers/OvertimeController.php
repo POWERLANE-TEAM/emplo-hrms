@@ -16,6 +16,23 @@ class OvertimeController extends Controller
     }
 
     /**
+     * Ot summary form approval
+     */
+    public function summary(?Request $request)
+    {
+        $query = $request->query('table-filters');
+        $filter = null;
+
+        if ($query) {
+            $filter = $query['payroll'];
+        }
+
+        return view('employee.basic.overtime.summary-form', 
+            compact('filter')
+        );
+    }
+
+    /**
      * For initial approvers (supervisors / dept head)
      * 
      * @return \Illuminate\Contracts\View\View
@@ -35,7 +52,7 @@ class OvertimeController extends Controller
         return view('employee.overtime-cut-offs');
     }
 
-    public function summary()
+    public function requestSummary()
     {
         return view('employee.supervisor.overtime.summary-forms.all');
     }
@@ -61,13 +78,8 @@ class OvertimeController extends Controller
     /**
      * Show archive overtime requests table.
      */
-    public function archive(Request $request)
+    public function archive()
     {   
-        $query = $request->query('table-filters');
-        $filter = $query['payroll'];
-
-        return view('employee.basic.overtime.index', 
-            compact('filter')
-        );
+        return view('employee.basic.overtime.index');
     }
 }

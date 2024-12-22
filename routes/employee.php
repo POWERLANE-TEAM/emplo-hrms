@@ -190,7 +190,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
             ->can('viewSubordinateOvertimeRequest')
             ->name('requests');
 
-        Route::get('requests/summaries', [OvertimeController::class, 'summary'])
+        Route::get('requests/summaries', [OvertimeController::class, 'requestSummary'])
             ->name('requests.summaries');
 
         Route::get('requests/{employee}/summaries', [OvertimeController::class, 'employeeSummary'])
@@ -200,6 +200,9 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         /** Ot requests summary */
         Route::get('/', [OvertimeController::class, 'index'])
             ->name('index');
+
+        Route::get('/summaries', [OvertimeController::class, 'summary'])
+            ->name('summaries');
 
         /** Ot requests recents */
         Route::get('recents', [OvertimeController::class, 'recent'])
