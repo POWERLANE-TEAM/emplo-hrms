@@ -58,6 +58,7 @@ class CutOffPayoutPeriodsApproval extends Component
     private function getOtInfo()
     {
         $this->overtime = Overtime::with([
+            // 'payrollApproval',
             'payrollApproval.payroll',
             'payrollApproval.initialApprover',
             'payrollApproval.secondaryApprover',
@@ -130,7 +131,7 @@ class CutOffPayoutPeriodsApproval extends Component
 
     private function checkIfSameAsAuthUser(?Employee $employee)
     {
-        return $employee?->employee_id === $this->authEmployee->employee_id
+        return $employee?->employee_id === $this->authEmployee
             ? "{$employee?->full_name} (You)"
             : $employee?->full_name;
     }
@@ -149,7 +150,7 @@ class CutOffPayoutPeriodsApproval extends Component
 
             $this->overtime->first()->payrollApproval()->update([
                 'initial_approver_signed_at'  => now(),
-                'initial_approver'            => $this->authEmployee->employee_id, 
+                'initial_approver'            => $this->authEmployee, 
             ]);
 
             $this->dispatch('otSummaryApprovedInitial')->self();
@@ -166,7 +167,7 @@ class CutOffPayoutPeriodsApproval extends Component
 
             $this->overtime->first()->payrollApproval()->update([
                 'secondary_approver_signed_at'  => now(),
-                'secondary_approver'            => $this->authEmployee->employee_id, 
+                'secondary_approver'            => $this->authEmployee, 
             ]);
 
             $this->dispatch('otSummaryApprovedSecondary')->self();
@@ -184,7 +185,7 @@ class CutOffPayoutPeriodsApproval extends Component
 
             $this->overtime->first()->payrollApproval()->update([
                 'third_approver_signed_at'  => now(),
-                'third_approver'            => $this->authEmployee->employee_id, 
+                'third_approver'            => $this->authEmployee, 
             ]);
 
             $this->dispatch('otSummaryApprovedTertiary')->self();
@@ -194,12 +195,7 @@ class CutOffPayoutPeriodsApproval extends Component
     #[Computed]
     private function authEmployee()
     {
-        return Auth::user()->account;
-    }
-
-    public function getUserProperty()
-    {
-        return Auth::user();
+        return Auth::user()->account->employee_id;
     }
 
     public function render()
