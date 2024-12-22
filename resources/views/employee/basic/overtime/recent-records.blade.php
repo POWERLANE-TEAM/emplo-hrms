@@ -20,7 +20,7 @@
 <x-breadcrumbs>
     <x-slot:breadcrumbs>
         <x-breadcrumb :href="route($routePrefix . '.overtimes.index')">
-            {{ __('Overtime Summaries') }}
+            {{ __('Overtime Cut-Offs') }}
         </x-breadcrumb>
         <x-breadcrumb :active="request()->routeIs($routePrefix . '.overtimes.recents')">
             {{ __('Recent Records') }}
@@ -28,7 +28,9 @@
     </x-slot:breadcrumbs>
 </x-breadcrumbs>
 
-<livewire:employee.overtimes.basic.cut-off-payout-periods />
+<livewire:employee.overtimes.basic.cut-off-payout-periods
+    :payroll="null"
+/>
 
 @include('components.includes.tab_navs.leaves-navs')
 

@@ -39,6 +39,10 @@ class RecentOvertimesTable extends DataTableComponent
         ]);
 
         $this->setTrAttributes(function ($row, $index) {
+            $isEditable = is_null($row->authorizer_signed_at)
+                ? true
+                : false;
+
             return [
                 'default' => true,
                 'class' => 'border-1 rounded-2 outline no-transition mx-4',
@@ -47,7 +51,7 @@ class RecentOvertimesTable extends DataTableComponent
                     'employee.overtimes.basic.edit-overtime-request', 
                     'showOvertimeRequest', 
                     { overtimeId: $row->overtime_id,
-                      isEditable: true })",
+                      isEditable: ".json_encode($isEditable)." })",
             ];
         });
 
