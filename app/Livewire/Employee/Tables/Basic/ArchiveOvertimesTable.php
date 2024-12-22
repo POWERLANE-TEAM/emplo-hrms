@@ -37,14 +37,16 @@ class ArchiveOvertimesTable extends DataTableComponent
         ]);
 
         $this->setTrAttributes(function ($row, $index) {
+            $eventPayload = $this->createEventPayload($row);
+
             return [
                 'default' => true,
                 'class' => 'border-1 rounded-2 outline no-transition mx-4',
                 'role' => 'button',
                 'wire:click' => "\$dispatchTo(
-                    'employee.overtimes.basic.edit-overtime-request', 
-                    'showOvertimeRequest', 
-                    { overtimeId: $row->overtime_id })",
+                    'employee.overtimes.overtime-summary-approval', 
+                    'showOvertimeSummaryApproval', 
+                    { eventPayload: ".json_encode($eventPayload)."})",
             ];
         });
 
@@ -67,10 +69,33 @@ class ArchiveOvertimesTable extends DataTableComponent
         });
     }
 
+    private function createEventPayload($row)
+    {
+        return [
+            'payroll'               => $row->payrollApproval->payroll->cut_off,
+            'work_performed'        => $row->work_performed,
+            'date'                  => Carbon::make($row->date)->format('F d, Y'),
+            'start_time'            => $row->start_time,
+            'end_time'              => $row->end_time,
+            'hours_requested'       => $row->hours_requested,
+            'authorizer_signed_at'  => $row->authorizer_signed_at,
+            'authorizer'            => $row?->authorizedBy?->full_name,
+            'denied_at'             => $row->denied_at,
+            'denier'                => $row?->deniedBy?->full_name,
+            'feedback'              => $row->feedback,
+            'filed_at'              => $row->filed_at,
+            'modified_at'           => $row->modified_at,
+        ];
+    }
+
     public function builder(): Builder
     {
         return Overtime::query()
-            ->with('employee')
+            ->with([
+                'payrollApproval.payroll',
+                'authorizedBy',
+                'deniedBy',
+            ])
             ->select('*')
             ->where('employee_id', Auth::user()->account->employee_id);
     }
@@ -83,11 +108,10 @@ class ArchiveOvertimesTable extends DataTableComponent
 
     private function getPayrollOptions()
     {
-        return Overtime::query()
-            ->with('payrollApproval.payroll')
-            ->get()
+        return $this->builder()->get()
             ->mapWithKeys(function ($item) {
-                return [$item->payrollApproval->payroll->payroll_id => $item->payrollApproval->payroll->cut_off];
+                $payroll = $item->payrollApproval->payroll;
+                return [$payroll->payroll_id => $payroll->cut_off];
             })
             ->toArray();
     }
