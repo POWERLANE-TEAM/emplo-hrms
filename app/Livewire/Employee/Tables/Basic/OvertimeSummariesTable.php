@@ -24,7 +24,7 @@ class OvertimeSummariesTable extends DataTableComponent
             ->setTableRowUrl(function ($row) use ($routePrefix) {
                 $filterParams = $this->appendPayrollId($row->payrollApproval->payroll->payroll_id);
 
-                return route("{$routePrefix}.overtimes.archive").'?'.http_build_query($filterParams);
+                return route("{$routePrefix}.overtimes.summaries").'?'.http_build_query($filterParams);
             })
             ->setTableRowUrlTarget(fn () => '__blank');
         

@@ -1,8 +1,8 @@
-@extends('components.layout.employee.layout', ['description' => 'Employee Dashboard', 'nonce' => $nonce])
+@extends('components.layout.employee.layout', ['description' => 'Overtime CutOffs', 'nonce' => $nonce])
 @use ('Illuminate\View\ComponentAttributeBag')
 
 @section('head')
-<title>Overtime Summaries</title>
+<title>Overtime Cut-Offs</title>
 <script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 @endsection
@@ -21,11 +21,11 @@
     <div class="col-6">
         <x-headings.main-heading :isHeading="true">
             <x-slot:heading>
-                {{__('Overtime Summary Forms')}}
+                {{__('Overtime Cut-Offs')}}
             </x-slot:heading>
         
             <x-slot:description>
-                <p>{{ __('Manage your overtime summary forms and hours.') }}</p>
+                <p>{{ __('Manage your overtime cut-off summary forms and requests.') }}</p>
             </x-slot:description>
         </x-headings.main-heading>
     </div>
