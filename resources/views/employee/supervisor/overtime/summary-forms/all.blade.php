@@ -1,5 +1,6 @@
 @extends('components.layout.employee.layout', ['description' => 'Overtime Summary', 'nonce' => $nonce])
 @use ('Illuminate\View\ComponentAttributeBag')
+@use ('App\Enums\UserPermission')
 
 @section('head')
 <title>Overtime Summaries</title>
@@ -23,11 +24,15 @@
     </x-slot:heading>
 
     <x-slot:description>
-        {!! __('Manage overtime summary forms per each request of ').
-            '<span class="text-primary fw-semibold">' 
-                .auth()->user()->account->jobTitle->jobFamily->job_family_name. 
-            '</span>'.
-            __(' employees here.') !!}
+        @if (auth()->user()->hasPermissionTo(UserPermission::VIEW_ALL_OVERTIME_REQUEST))
+            {{ __('View and manage overtime summary forms of every employees here.') }}
+        @else
+            {!! __('Manage overtime summary forms per each request of ').
+                '<span class="text-primary fw-semibold">' 
+                    .auth()->user()->account->jobTitle->jobFamily->job_family_name. 
+                '</span>'.
+                __(' employees here.') !!}
+        @endif
     </x-slot:description>
 </x-headings.main-heading>
 
