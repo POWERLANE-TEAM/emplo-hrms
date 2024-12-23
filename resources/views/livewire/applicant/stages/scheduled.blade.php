@@ -19,7 +19,7 @@
     </header>
 
     <div class="row flex-md-nowrap gap-5">
-        <section class="d-flex flex-column col-md-6 gap-3">
+        <section class="d-flex flex-column col gap-3">
             <div class="col-md-12 card border-0 bg-body-secondary text-center p-5 gap-3">
                 <label for="applicant-exam-date" class="text-uppercase text-primary fw-medium">Examination</label>
                 <strong id="applicant-exam-date" class="applicant-exam-date fs-4 fw-bold">
@@ -36,7 +36,7 @@
 
             </div>
         </section>
-        <div class="bg-primary text-white card border-0 col-md-6 p-5 gap-3">
+        <div class="bg-primary text-white card border-0 col p-5 gap-3">
             <header class="fs-4 fw-bold">
                 <span>
                     <picture>
