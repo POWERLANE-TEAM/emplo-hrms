@@ -68,7 +68,7 @@
 
             const pendingDocumentCount = Math.max(0, Math.floor(@json($pendingDocuments->count())));
             const verifiedDocumentCount = Math.max(0, Math.floor(@json($verifiedDocuments->count())));
-            const rejectedDocumentCount = Math.max(0, Math.floor(@json($rejectedDocuments->count())));
+            const rejectedDocumentCount = Math.max(16, Math.floor(@json($rejectedDocuments->count())));
             const totalRequirementCount = Math.max(0, Math.floor(@json($this->premploymentRequirements->count())));
 
             const ROOT = document.documentElement;
@@ -104,10 +104,10 @@
                 console.error('Submitted count exceeds total requirement count');
             }
 
-            let unsubmittedCount = totalRequirementCount - (pendingDocumentCount + verifiedDocumentCount +
+            let unsubmittedCount = totalRequirementCount - (verifiedDocumentCount + pendingDocumentCount +
                 rejectedDocumentCount);
 
-            let remainingPercent = caclulateFillPercent(pendingDocumentCount + verifiedDocumentCount +
+            let remainingPercent = caclulateFillPercent(verifiedDocumentCount + pendingDocumentCount +
                 rejectedDocumentCount);
 
             let percentages = [verfiedDocumentPercent, pendingDocumentPercent, rejectedDocumentPercent];
@@ -164,8 +164,9 @@
 
 
                         backgroundColor: {!! ChartJs::pieGenerateBgColors(
-                            ['pendingDocumentCount', 'verifiedDocumentCount', 'rejectedDocumentCount'],
-                            ['PENDING_COLOR', 'VERIFIED_COLOR', 'REJECTED_COLOR'],
+                            ['verifiedDocumentCount', 'pendingDocumentCount', 'rejectedDocumentCount'],
+                            16,
+                            ['VERIFIED_COLOR', 'PENDING_COLOR', 'REJECTED_COLOR'],
                             'DEFAULT_COLOR',
                         ) !!},
                         //

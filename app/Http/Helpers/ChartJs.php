@@ -21,8 +21,13 @@ class ChartJs
     }
 
 
-    public static function pieGenerateBgColors(array $valueVars, array $colorVars, string $defaultColorVar)
+    public static function pieGenerateBgColors(array $valueVars, int $maxvalue,  array $colorVars, string $defaultColorVar)
     {
+
+        $valueChecks = implode(' || ', array_map(function ($var) {
+            return "$var == maxValue";
+        }, $valueVars));
+
         // ChatGPT did this there is no way I did this myself
         // Not supported public links yet for convo with images https://chatgpt.com/c/6766de66-b54c-8001-984d-c5e1c469a6b6
         return 'function(context) {
@@ -88,6 +93,11 @@ class ChartJs
             // Assign colors
             const colors = [ ' . implode(', ', $colorVars) . ',  '  . $defaultColorVar . '];
             const color = colors[context.dataIndex] ||  '  . $defaultColorVar . '; // Fallback color
+
+
+            if ([' . implode(', ', $valueVars) . '].includes(' . $maxvalue . ')) {
+                return colors[context.dataIndex];
+            }
 
             // handle no submission
             if (( ' . implode(' + ', $valueVars) . ') == 0) {
