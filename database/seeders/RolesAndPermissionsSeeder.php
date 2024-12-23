@@ -79,7 +79,7 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::VIEW_DOWNLOAD_ALL_ATTENDANCE->value,
             UserPermission::VIEW_DOWNLOAD_PAYROLL_SUMMARY->value,
             UserPermission::VIEW_ALL_LEAVES->value,
-            UserPermission::VIEW_ALL_OVERTIME->value,
+            UserPermission::VIEW_ALL_OVERTIME_REQUEST->value,
             UserPermission::VIEW_ALL_PAYSLIPS->value,
             UserPermission::VIEW_ALL_EMP_PERFORMANCE_EVAL->value,
             UserPermission::VIEW_ALL_EMP_PERFORMANCE_EVAL_GRADE_FORM->value,
@@ -108,13 +108,13 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::UPDATE_EMP_PERFORMANCE_EVAL_GRADE_FORM->value,
             UserPermission::UPDATE_EMP_PERFORMANCE_EVAL_APPROVAL_FORM->value,
             UserPermission::UPDATE_EMP_PERFORMANCE_EVAL_FINAL_APPROVAL_FORM->value,
-            UserPermission::UPDATE_PENDING_LEAVE_REQUEST->value,
-            UserPermission::UPDATE_APPROVED_LEAVE_REQUEST->value,
             UserPermission::UPDATE_LEAVE_BALANCE->value,
             UserPermission::UPDATE_PENDING_OVERTIME_REQUEST_STATUS->value,
             UserPermission::UPDATE_APPROVED_OVERTIME_REQUEST_STATUS->value,
             UserPermission::UPDATE_ISSUE_COMPLAINT_CLOSED->value,
             UserPermission::UPDATE_ISSUE_COMPLAINT_RESOLVED->value,
+            UserPermission::UPDATE_ALL_OVERTIME_REQUEST->value,
+            UserPermission::APPROVE_OVERTIME_SUMMARY_TERTIARY->value,
 
             // Delete cases goes here
         ];
@@ -171,6 +171,9 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::UPDATE_EMP_PERFORMANCE_EVAL_GRADE_FORM->value,
             UserPermission::UPDATE_EMP_PERFORMANCE_EVAL_GRADE_FORM->value,
             UserPermission::UPDATE_SUBORDINATE_OVERTIME_REQUEST->value,
+            UserPermission::AUTHORIZE_OVERTIME_REQUEST->value,
+            UserPermission::APPROVE_OVERTIME_SUMMARY_INITIAL->value,
+            UserPermission::APPROVE_OVERTIME_SUMMARY_SECONDARY->value,
         ];
     }
 }

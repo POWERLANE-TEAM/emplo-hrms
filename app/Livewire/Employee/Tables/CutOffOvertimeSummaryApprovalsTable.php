@@ -1,20 +1,21 @@
 <?php
 
-namespace App\Livewire\Employee\Tables\Basic;
+namespace App\Livewire\Employee\Tables;
 
+use App\Livewire\Employee\Overtimes\Basic\CutOffPayOutPeriods;
 use App\Models\Overtime;
-use Livewire\Attributes\On;
 use Illuminate\Support\Carbon;
-use App\Enums\OvertimeRequestStatus;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\View\ComponentAttributeBag;
 use Rappasoft\LaravelLivewireTables\Views\Column;
+use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
-use Rappasoft\LaravelLivewireTables\Views\Filters\DateFilter;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
-class ArchiveOvertimesTable extends DataTableComponent
+class CutOffOvertimeSummaryApprovalsTable extends DataTableComponent
 {
+    protected $model = Overtime::class;
+
     public function configure(): void
     {
         $this->setPrimaryKey('overtime_id');
@@ -67,6 +68,20 @@ class ArchiveOvertimesTable extends DataTableComponent
                 'class' => 'text-md-center',
             ];
         });
+
+        $this->setConfigurableAreas([
+            'toolbar-left-start' => [
+                'components.headings.main-heading',
+                [
+                    'overrideClass' => true,
+                    'overrideContainerClass' => true,
+                    'attributes' => new ComponentAttributeBag([
+                        'class' => 'fs-5 py-1 text-secondary-emphasis fw-medium text-underline',
+                    ]),
+                    'heading' => __('Some text here'),
+                ],
+            ],
+        ]);
     }
 
     private function createEventPayload($row)
@@ -88,6 +103,19 @@ class ArchiveOvertimesTable extends DataTableComponent
         ];
     }
 
+    private function getPayrollOptions()
+    {
+        return Overtime::query()
+            ->with([
+                'payrollApproval.payroll',
+            ])
+            ->get()
+            ->mapWithKeys(function ($item) {
+                return [$item->payrollApproval->payroll->payroll_id => $item->payrollApproval->payroll->cut_off];
+            })
+            ->toArray();
+    }
+
     public function builder(): Builder
     {
         return Overtime::query()
@@ -96,51 +124,36 @@ class ArchiveOvertimesTable extends DataTableComponent
                 'authorizedBy',
                 'deniedBy',
             ])
-            ->select('*')
-            ->where('employee_id', Auth::user()->account->employee_id);
-    }
-    
-    #[On('changesSaved')]
-    public function refreshComponent()
-    {
-        $this->dispatch('refreshDatatable');
-    }
-
-    private function getPayrollOptions()
-    {
-        return $this->builder()->get()
-            ->mapWithKeys(function ($item) {
-                $payroll = $item->payrollApproval->payroll;
-                return [$payroll->payroll_id => $payroll->cut_off];
-            })
-            ->toArray();
+            ->where('employee_id', Auth::user()->account->employee_id)
+            ->select('*');
     }
 
     public function columns(): array
     {
         return [
+            Column::make(__('Work Performed'))
+                ->sortable(),
+
             Column::make(__('Date Requested'))
                 ->label(fn ($row) => Carbon::make($row->date)->format('F d, Y'))
                 ->sortable(function (Builder $query, $direction) {
                     return $query->orderBy('date', $direction);
-                }),
+                })
+                ->setSortingPillDirections('Asc', 'Desc'),
+
+            Column::make(__('Total Hours'))
+                ->label(fn ($row) => $row->hoursRequested)
+                ->deselected(),
 
             Column::make(__('Start Time'))
-                ->sortable()
-                ->setSortingPillDirections('Asc', 'Desc'),
+                ->sortable(),
 
             Column::make(__('End Time'))
-                ->sortable()
-                ->setSortingPillDirections('Asc', 'Desc'),
-            
-            Column::make(__('Hours Requested'))
-                ->label(fn ($row) => $row->hoursRequested),
-            
+                ->sortable(),
+
             Column::make(__('Date Filed'))
                 ->label(fn ($row) => $row->filed_at)
-                ->sortable(function (Builder $query, $direction) {
-                    return $query->orderBy('filed_at', $direction);
-                })
+                ->sortable(fn (Builder $query, $direction) => $query->orderBy('filed_at', $direction))
                 ->setSortingPillDirections('Asc', 'Desc'),
 
             Column::make(__('Authorization'))
@@ -166,35 +179,8 @@ class ArchiveOvertimesTable extends DataTableComponent
                     $query->whereHas('payrollApproval.payroll', function ($subquery) use ($value) {
                         $subquery->where('payroll_id', $value);
                     });
-                }),
 
-            DateFilter::make(__('Filing Date'))
-                ->config([
-                    'max' => now()->format('Y-m-d'),
-                    'pillFormat' => 'd M Y',
-                ])
-                ->filter(function (Builder $query, $value) {
-                    return $query->whereDate('filed_at', $value);
-                }),
-
-            SelectFilter::make(__('Request Status'))
-                ->options(
-                    array_reduce(
-                        OvertimeRequestStatus::cases(),
-                        fn ($options, $case) => $options + [$case->value => $case->getLabel()],
-                        []
-                    )
-                )
-                ->filter(function (Builder $query, $value) {
-                    $query->whereHas('approvals', function ($subquery) use ($value) {
-                        if ($value === OvertimeRequestStatus::APPROVED->value) {
-                            $subquery->whereNotNull('secondary_approver_signed_at');
-                        } elseif ($value === OvertimeRequestStatus::PENDING->value) {
-                            $subquery->whereNull('secondary_approver_signed_at');
-                        } elseif ($value === OvertimeRequestStatus::DENIED->value) {
-                            $subquery->whereNotNull('denied_at');
-                        }
-                    });
+                    $this->dispatch('payrollDateModified', $value)->to(CutOffPayOutPeriods::class);
                 })
         ];
     }

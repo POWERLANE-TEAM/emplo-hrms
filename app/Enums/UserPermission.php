@@ -71,7 +71,7 @@ enum UserPermission: string
     case VIEW_ALL_ATTENDANCE_WORKHOURS = 'view all attendance by workhours';
     case VIEW_DOWNLOAD_PAYROLL_SUMMARY = 'view download all computed attendance summary';
     case VIEW_ALL_LEAVES = 'view all leave requests';
-    case VIEW_ALL_OVERTIME = 'view all overtime requests';
+    case VIEW_ALL_OVERTIME_REQUEST = 'view all overtime requests';
     case VIEW_ALL_PAYSLIPS = 'view all payslips';
     case VIEW_ALL_ISSUES = 'view all employee issues';
     case VIEW_ALL_TRAINING = 'view all employee trainings';
@@ -115,13 +115,11 @@ enum UserPermission: string
     case UPDATE_EMP_PERFORMANCE_EVAL_GRADE_FORM = 'update employee performance evaluation grade form';
     case UPDATE_EMP_PERFORMANCE_EVAL_APPROVAL_FORM = 'update employee performance evaluation approval form';
     case UPDATE_EMP_PERFORMANCE_EVAL_FINAL_APPROVAL_FORM = 'update employee performance evaluation final approval form';
-    case UPDATE_PENDING_LEAVE_REQUEST = 'update pending leave request';
-    case UPDATE_APPROVED_LEAVE_REQUEST = 'update approved leave request';
     case UPDATE_LEAVE_BALANCE = 'update leave balance';
     case UPDATE_PERFORMANCE_CATEGORIES = 'update performance categories';
     case UPDATE_PERFORMANCE_RATING_SCALES = 'update performance rating scales';
     case UPDATE_PREEMPLOYMENT_REQUIREMENTS = 'update pre employment requirements';
-    case UPDATE_OVERTIME_REQUEST = 'update overtime request';
+    case UPDATE_ALL_OVERTIME_REQUEST = 'update every employee overtime request';
     case UPDATE_PENDING_OVERTIME_REQUEST_STATUS = 'update pending overtime request status';
     case UPDATE_APPROVED_OVERTIME_REQUEST_STATUS = 'update approved overtime request status';
     case UPDATE_ISSUE_COMPLAINT = 'update issue complaint';
@@ -138,6 +136,11 @@ enum UserPermission: string
 
     // Others
     case ASSIGN_PERFORMANCE_EVAL_SCORE = 'assign performance evaluation score';
+
+    case AUTHORIZE_OVERTIME_REQUEST = 'authorize overtime request';
+    case APPROVE_OVERTIME_SUMMARY_INITIAL = 'initially approve overtime summary form';
+    case APPROVE_OVERTIME_SUMMARY_SECONDARY = 'secondary approve overtime summary form';
+    case APPROVE_OVERTIME_SUMMARY_TERTIARY = 'tertiary approve overtime summary form';
 
     /**
      * Return user-friendly permission labels.
@@ -206,7 +209,7 @@ enum UserPermission: string
             self::VIEW_ALL_ATTENDANCE_WORKHOURS => 'View all attendance by workhours',
             self::VIEW_DOWNLOAD_PAYROLL_SUMMARY => 'Download all computed attendance summary',
             self::VIEW_ALL_LEAVES => 'View all leave requests',
-            self::VIEW_ALL_OVERTIME => 'View all overtime requests',
+            self::VIEW_ALL_OVERTIME_REQUEST => 'View all overtime requests',
             self::VIEW_ALL_PAYSLIPS => 'View all payslips',
             self::VIEW_ALL_EMP_PERFORMANCE_EVAL => 'View all performance evaluation records',
             self::VIEW_ALL_EMP_PERFORMANCE_TRAINING => 'View all performance training records',
@@ -249,13 +252,11 @@ enum UserPermission: string
             self::UPDATE_EMP_PERFORMANCE_EVAL_GRADE_FORM => 'Update employee performance evaluation grade form',
             self::UPDATE_EMP_PERFORMANCE_EVAL_APPROVAL_FORM => 'Update employee performance evaluation approval form',
             self::UPDATE_EMP_PERFORMANCE_EVAL_FINAL_APPROVAL_FORM => 'Update employee performance evaluation final approval form',
-            self::UPDATE_PENDING_LEAVE_REQUEST => 'Update pending leave request',
-            self::UPDATE_APPROVED_LEAVE_REQUEST => 'Update approved leave request',
             self::UPDATE_LEAVE_BALANCE => 'Update leave balance',
             self::UPDATE_PERFORMANCE_CATEGORIES => 'Update performance categories',
             self::UPDATE_PERFORMANCE_RATING_SCALES => 'Update performance rating scales',
             self::UPDATE_PREEMPLOYMENT_REQUIREMENTS => 'Update pre-employment requirements',
-            self::UPDATE_OVERTIME_REQUEST => 'Update overtime request',
+            self::UPDATE_ALL_OVERTIME_REQUEST => 'Update every employee overtime request status',
             self::UPDATE_PENDING_OVERTIME_REQUEST_STATUS => 'Update pending overtime request status',
             self::UPDATE_APPROVED_OVERTIME_REQUEST_STATUS => 'Update approved overtime request status',
             self::UPDATE_ISSUE_COMPLAINT => 'Update an issue complaint',
@@ -272,6 +273,8 @@ enum UserPermission: string
 
             // Other labels goes here
             self::ASSIGN_PERFORMANCE_EVAL_SCORE => 'Assign performance evaluation score',
+
+            self::AUTHORIZE_OVERTIME_REQUEST => 'Authorize overtime request',
         };
     }
 }

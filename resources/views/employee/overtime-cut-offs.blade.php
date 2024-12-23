@@ -1,29 +1,29 @@
-@extends('components.layout.employee.layout', ['description' => 'Employee Dashboard', 'nonce' => $nonce])
+@extends('components.layout.employee.layout', ['description' => 'Overtime Cut-offs', 'nonce' => $nonce])
 @use ('Illuminate\View\ComponentAttributeBag')
 
 @section('head')
-<title>Overtime Requests</title>
+<title>Overtime Cut-Offs</title>
 <script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 @endsection
 
 @pushOnce('scripts')
-    @vite(['resources/js/employee/hr-manager/performance.js'])
+    @vite(['resources/js/employee/basic/leaves.js'])
 @endPushOnce
 
 @pushOnce('styles')
-    @vite(['resources/css/employee/hr-manager/performance.css'])
-@endPushOnce
+    @vite(['resources/css/employee/basic/leaves.css'])
 
+@endPushOnce
 @section('content')
 
 <x-headings.main-heading :isHeading="true">
     <x-slot:heading>
-        {{ __('Overtime Requests') }}
+        {{__('Overtime Cut-Offs')}}
     </x-slot:heading>
 
     <x-slot:description>
-        {!! __('Manage overtime requests of ').
+        {!! __('Manage overtime cut-offs per each request of ').
             '<span class="text-primary fw-semibold">' 
                 .auth()->user()->account->jobTitle->jobFamily->job_family_name. 
             '</span>'.
@@ -31,7 +31,8 @@
     </x-slot:description>
 </x-headings.main-heading>
 
-<livewire:employee.tables.overtime-requests-table />
-<livewire:employee.overtimes.request-overtime-approval />
+<section class="my-2">
+    <livewire:employee.tables.overtime-request-cutoffs-table />
+</section>
 
 @endsection

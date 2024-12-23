@@ -157,8 +157,8 @@ class Employee extends Model
      */
     protected function getShiftScheduleAttribute()
     {
-        $start = Carbon::parse($this->shift->start_time)->format('g:i A');
-        $end = Carbon::parse($this->shift->end_time)->format('g:i A');
+        $start = Carbon::make($this->shift->start_time)->format('g:i A');
+        $end = Carbon::make($this->shift->end_time)->format('g:i A');
 
         return "{$start} - {$end}";
     }
@@ -392,32 +392,48 @@ class Employee extends Model
 
     /*
     |--------------------------------------------------------------------------
-    | Process management in overtimes and leaves
+    | Overtime Records Management
     |--------------------------------------------------------------------------
     */
 
     /**
-     * Get the processes(e.g., overtimes, leaves) where employee is the initial approver.
+     * Get the overtime requests where employee is the authorizer.
      */
-    public function initiallyApprovedProcesses(): HasMany
+    public function authorizedOvertimes(): HasMany
     {
-        return $this->hasMany(Process::class, 'initial_approver', 'employee_id');
+        return $this->hasMany(Overtime::class, 'authorizer', 'employee_id');
     }
 
     /**
-     * Get the processes(e.g., overtimes, leaves) where employee is the secondary approver.
+     * Get the overtime requests summaries where employee is the initial approver.
      */
-    public function secondaryApprovedProcesses(): HasMany
+    public function initiallyApprovedOvertimePayrolls(): HasMany
     {
-        return $this->hasMany(Process::class, 'secondary_approver', 'employee_id');
+        return $this->hasMany(OvertimePayrollApproval::class, 'initial_approver', 'employee_id');
     }
 
     /**
-     * Get the rejected / denied processes(e.g., overtimes, leaves) by the employee.
+     * Get the overtime requests summaries where employee is the secondary approver.
      */
-    public function deniedProcesses(): HasMany
+    public function secondaryApprovedOvertimePayrolls(): HasMany
     {
-        return $this->hasMany(Process::class, 'denier', 'employee_id');
+        return $this->hasMany(OvertimePayrollApproval::class, 'secondary_approver', 'employee_id');
+    }
+
+    /**
+     * Get the overtime requests summaries where employee is the third approver.
+     */
+    public function thirdApprovedOvertimePayrolls(): HasMany
+    {
+        return $this->hasMany(OvertimePayrollApproval::class, 'third_approver', 'employee_id');
+    }
+
+    /**
+     * Get the rejected / denied overtime requests by the employee.
+     */
+    public function deniedOvertimes(): HasMany
+    {
+        return $this->hasMany(Overtime::class, 'denier', 'employee_id');
     }
 
     /*
