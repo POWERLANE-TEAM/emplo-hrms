@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Overtime extends Model
@@ -37,8 +36,8 @@ class Overtime extends Model
     protected function startTime(): Attribute
     {
         return Attribute::make(
-            get: fn (mixed $value) => Carbon::parse($value)->format('g:i A'),
-            set: fn (mixed $value) => Carbon::parse($value)->format('H:i:s'),
+            get: fn (mixed $value) => Carbon::make($value)->format('g:i A'),
+            set: fn (mixed $value) => Carbon::make($value)->format('H:i:s'),
         );
     }
     
@@ -48,8 +47,8 @@ class Overtime extends Model
     protected function endTime(): Attribute
     {
         return Attribute::make(
-            get: fn (mixed $value) => Carbon::parse($value)->format('g:i A'),
-            set: fn (mixed $value) => Carbon::parse($value)->format('H:i:s'),
+            get: fn (mixed $value) => Carbon::make($value)->format('g:i A'),
+            set: fn (mixed $value) => Carbon::make($value)->format('H:i:s'),
         );
     }
 
@@ -59,14 +58,14 @@ class Overtime extends Model
     protected function filedAt(): Attribute
     {
         return Attribute::make(
-            get: fn (mixed $value) => Carbon::parse($value)->format('F d, Y')
+            get: fn (mixed $value) => Carbon::make($value)->format('F d, Y g:i A')
         );
     }
 
     /**
      * Getter for computed overtime hours requested.
      */
-    public function getHoursRequested(): string
+    public function getHoursRequestedAttribute(): string
     {
         $start = Carbon::createFromFormat('g:i A', $this->start_time);
         $end = Carbon::createFromFormat('g:i A', $this->end_time);
@@ -77,8 +76,49 @@ class Overtime extends Model
     public function date(): Attribute
     {
         return Attribute::make(
-            set: fn (mixed $value) => Carbon::parse($value)->format('Y-m-d')
+            set: fn (mixed $value) => Carbon::make($value)->format('Y-m-d')
         );
+    }
+
+        /**
+     * Accessor for authorized date (formatted).
+     */
+    protected function authorizerSignedAt(): Attribute
+    {
+        return Attribute::make(
+            get: fn (mixed $value) => Carbon::make($value)?->format('F d, Y g:i A') ?? null,
+        );
+    }
+
+    /**
+     * Accessor for request denied date (formatted).
+     */
+    protected function deniedAt(): Attribute
+    {
+        return Attribute::make(
+            get: fn (mixed $value) => Carbon::make($value)?->format('F d, Y g:i A') ?? null,
+        );
+    }
+
+    public function payrollApproval(): BelongsTo
+    {
+        return $this->belongsTo(OvertimePayrollApproval::class, 'payroll_approval_id', 'payroll_approval_id');
+    }
+
+    /**
+     * Get the authorizer who approved/signed the overtime request.
+     */
+    public function authorizedBy(): BelongsTo
+    {
+        return $this->belongsTo(Employee::class, 'authorizer', 'employee_id'); 
+    }
+
+    /**
+     * Get the secondary approver who denied the overtime.
+     */
+    public function deniedBy(): BelongsTo
+    {
+        return $this->belongsTo(Employee::class, 'denier', 'employee_id');
     }
 
     /**
@@ -87,14 +127,6 @@ class Overtime extends Model
     public function employee(): BelongsTo
     {
         return $this->belongsTo(Employee::class, 'employee_id', 'employee_id');
-    }
-
-    /**
-     * Get all of the overtime records' processes.
-     */
-    public function processes(): MorphMany
-    {
-        return $this->morphMany(Process::class, 'processable');
     }
 
     /**

@@ -36,7 +36,6 @@ class DatabaseSeeder extends Seeder
                 HolidaySeeder::class,
                 LeaveCategorySeeder::class,
                 AttendanceLogSeeder::class,
-                EmployeeJobDetailSeeder::class,
                 // UserSeeder::class,
                 ApplicantSeeder::class,
                 ApplicationSeeder::class,
@@ -47,6 +46,7 @@ class DatabaseSeeder extends Seeder
                 JobExperienceKeywordSeeder::class,
                 JobSkillKeywordSeeder::class,
                 ManagerialSeeder::class,
+                PayrollSeeder::class,
                 OvertimeSeeder::class,
                 EmployeeJobDetailSeeder::class,
             ]);

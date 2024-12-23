@@ -10,20 +10,18 @@ use Illuminate\Support\Carbon;
 use App\Enums\OvertimeRequestStatus;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\View\ComponentAttributeBag;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateRangeFilter;
 
-class OvertimeRequestsTable extends DataTableComponent
+class AllOvertimeRequestsTable extends DataTableComponent
 {
     protected $model = Overtime::class;
 
     public function configure(): void
     {
         $this->setPrimaryKey('overtime_id');
-        $this->enableFilterAppliedEvent();
         $this->setPageName('overtime-requests');
         $this->setEagerLoadAllRelationsEnabled();
         $this->setSingleSortingDisabled();
@@ -49,8 +47,8 @@ class OvertimeRequestsTable extends DataTableComponent
                 'class' => 'border-1 rounded-2 outline no-transition mx-4',
                 'role' => 'button',
                 'wire:click' => "\$dispatchTo(
-                    'employee.overtimes.request-overtime-approval', 
-                    'showOvertimeRequestApproval', 
+                    'employee.overtimes.secondary-overtime-request-approval', 
+                    'showPreApprovedOvertimeRequestApproval', 
                     { overtimeId: $row->overtime_id })",
             ];
         });
@@ -72,61 +70,29 @@ class OvertimeRequestsTable extends DataTableComponent
                 'class' => 'text-md-start',
             ];
         });
-
-        $this->setConfigurableAreas([
-            'toolbar-left-start' => [
-                'components.headings.main-heading',
-                [
-                    'overrideClass' => true,
-                    'overrideContainerClass' => true,
-                    'attributes' => new ComponentAttributeBag([
-                        'class' => 'fs-6 py-1 text-secondary-emphasis fw-medium text-underline',
-                    ]),
-                    'heading' => __('Filters are automatically applied upon page access.'),
-                ],
-            ],
-        ]);
     }
 
     public function builder(): Builder
     {
         return Overtime::query()
             ->with([
-                'payrollApproval.payroll',
                 'employee',
                 'employee.account',
                 'employee.jobTitle.jobFamily',
+                'processes',
+                'processes.initialApprover',
             ])
-            ->whereHas('employee.jobTitle.jobFamily', function ($query) {
-                $query->where('job_family_id', Auth::user()->account->jobTitle->jobFamily->job_family_id);
-            })
+            ->select('*')
             ->whereNot('employee_id', Auth::user()->account->employee_id)
-            ->select('*');
+            ->whereHas('processes', function ($subquery) {
+                $subquery->whereNotNull('initial_approver_signed_at');
+            });
     }
 
     #[On('changesSaved')]
     public function refresh()
     {
         $this->dispatch('refreshDatatable');
-    }
-    
-    private function getDefaultCutOff()
-    {
-        return Payroll::getCutOffPeriod(now());
-    }
-
-    private function getEmployeeOptions()
-    {
-        return Overtime::query()
-            ->with('employee')
-            ->whereNot('employee_id', Auth::user()->account->employee_id)
-            ->select('employee_id')
-            ->distinct()
-            ->get()
-            ->mapWithKeys(function ($item) {
-                return [$item->employee->employee_id => $item->employee->full_name];
-            })
-            ->toArray();
     }
 
     public function columns(): array
@@ -148,15 +114,30 @@ class OvertimeRequestsTable extends DataTableComponent
                 })
                 ->html()
                 ->sortable(function (Builder $query, $direction) {
-                    return $query->whereHas('employee.account', function ($subquery) use ($direction) {
+                    return $query->whereHas('employee', function ($subquery) use ($direction) {
                         $subquery->orderBy('last_name', $direction);
                     });
                 })
                 ->searchable(function (Builder $query, $searchTerm) {
-                    return $query->whereHas('employee.account', function ($subquery) use ($searchTerm) {
+                    return $query->whereHas('employee', function ($subquery) use ($searchTerm) {
                         $subquery->whereLike('first_name', "%{$searchTerm}%")
                             ->orWhereLike('middle_name', "%{$searchTerm}%")
                             ->orWhereLike('last_name', "%{$searchTerm}%");
+                    });
+                }),
+
+            Column::make(__('Job Family'))
+                ->label(function ($row) {
+                    return $row->employee->jobTitle->jobFamily->job_family_name;
+                })
+                ->sortable(function (Builder $query, $direction) {
+                    return $query->whereHas('employee.jobTitle.jobFamily', function ($subquery) use ($direction) {
+                        $subquery->orderBy('job_family_name', $direction);
+                    });
+                })
+                ->searchable(function (Builder $query, $searchTerm) {
+                    return $query->whereHas('employee.jobTitle.jobFamily', function ($subquery) use ($searchTerm) {
+                        $subquery->whereLike('job_family_name', "%{$searchTerm}%");
                     });
                 }),
 
@@ -180,7 +161,7 @@ class OvertimeRequestsTable extends DataTableComponent
                 ->setSortingPillTitle(__('Request Date')),
             
             Column::make(__('Hours Requested'))
-                ->label(fn ($row) => $row->hoursRequested)
+                ->label(fn ($row) => $row->getHoursRequested())
                 ->sortable(function (Builder $query, $direction) {
                     return $query->selectRaw('abs(extract(epoch from (start_time - end_time))) / 60 as time_diff')
                                  ->orderBy('time_diff', $direction);
@@ -189,9 +170,9 @@ class OvertimeRequestsTable extends DataTableComponent
 
             Column::make(__('Status'))
                 ->label(function ($row) {
-                    if ($row->authorizer_signed_at) {
+                    if ($row->processes->first()->secondary_approver_signed_at) {
                         return __('Approved');
-                    } elseif ($row->denied_at) {
+                    } elseif ($row->processes->first()->denied_at) {
                         return __('Denied');
                     } else {
                         return __('Pending');
@@ -199,7 +180,10 @@ class OvertimeRequestsTable extends DataTableComponent
                 }),
 
             Column::make(__('Cut-Off Period'))
-                ->label(fn ($row) => $row->payrollApproval->payroll->cut_off)
+                ->label(function ($row) {
+                    $cutOff = Payroll::getCutOffPeriod($row->date, isReadableFormat: true);
+                    return $cutOff['start']. ' - ' .$cutOff['end'];
+                })
                 ->sortable(function (Builder $query, $direction) {
                     return $query->orderBy('date', $direction);
                 })
@@ -212,42 +196,53 @@ class OvertimeRequestsTable extends DataTableComponent
                     return $query->orderBy('filed_at', $direction);
                 })
                 ->setSortingPillDirections('Asc', 'Desc'),
+
+            Column::make(__('Initial Approval'))
+                ->label(function ($row) {
+                    return $row->processes->first()->initialApprover->full_name;
+                })
+                ->sortable(function (Builder $query, $direction) {
+                    return $query->whereHas('processes.initialApprover', function ($subquery) use ($direction) {
+                        $subquery->orderBy('last_name', $direction);
+                    });
+                })
+                ->searchable(function (Builder $query, $searchTerm) {
+                    return $query->whereHas('processes.initialApprover', function ($subquery) use ($searchTerm) {
+                        $subquery->whereLike('first_name', "%{$searchTerm}%")
+                            ->orWhereLike('middle_name', "%{$searchTerm}%")
+                            ->orWhereLike('last_name', "%{$searchTerm}%");
+                    });
+                })
+                ->deselected(),
         ];
     }
 
     public function filters(): array
     {
-        return [            
+        return [
             DateRangeFilter::make(__('Cut-Off Period'))
                 ->config([
                     'allowInput' => true,
                     'altFormat' => 'F j, Y',
                     'ariaDateFormat' => 'F j, Y',
                     'dateFormat' => 'Y-m-d',
-                    // 'latestDate' => now(),
+                    'latestDate' => now(),
+                    'placeholder' => 'Enter Date Range',
                     'locale' => 'en',
                 ])
-                ->setFilterPillTitle('Cut-off')
+                ->setFilterPillValues([0 => 'minDate', 1 => 'maxDate'])
                 ->filter(function (Builder $query, $value) {
-                    $startDate = Carbon::parse($value['minDate']);
-                    $endDate = Carbon::parse($value['maxDate']);
-
-                    return $query->whereHas('payrollApproval.payroll', function ($subquery) use ($startDate, $endDate) {
-                        $subquery->whereBetween('cut_off_start', [$startDate, $endDate])
-                            ->orWhereBetween('cut_off_end', [$startDate, $endDate]);
-                    });
-                })
-                ->setFilterDefaultValue([
-                    'minDate' => $this->getDefaultCutOff()['start'],
-                    'maxDate' => $this->getDefaultCutOff()['end'],
-                ]),
-
-            SelectFilter::make(__('Employee'))
-                ->options($this->getEmployeeOptions())
-                ->filter(function (Builder $query, $value) {
-                    return $query->whereHas('employee', function ($subquery) use ($value) {
-                        $subquery->where('employee_id', $value);
-                    });
+                    if (isset($value['minDate'], $value['maxDate'])) {
+                        $startDate = Carbon::parse($value['minDate']);
+                        $endDate = Carbon::parse($value['maxDate']);
+        
+                        $cutOffPeriod = Payroll::getCutOffPeriodForDate($startDate);
+        
+                        return $query->where('cut_off', $cutOffPeriod->value)
+                            ->whereBetween('date', [$startDate, $endDate]);
+                    }
+        
+                    return $query;
                 }),
 
             SelectFilter::make(__('Request Status'))
@@ -258,16 +253,17 @@ class OvertimeRequestsTable extends DataTableComponent
                         []
                     )
                 )
-                ->setFilterPillTitle('Status')
                 ->filter(function (Builder $query, $value) {
-                    if ($value === OvertimeRequestStatus::APPROVED->value) {
-                        $query->whereNotNull('authorizer_signed_at');
-                    } elseif ($value === OvertimeRequestStatus::PENDING->value) {
-                        $query->whereNull('authorizer_signed_at')
-                            ->whereNull('denied_at');
-                    } elseif ($value === OvertimeRequestStatus::DENIED->value) {
-                        $query->whereNotNull('denied_at');
-                    }
+                    $query->whereHas('processes', function ($subquery) use ($value) {
+                        if ($value === OvertimeRequestStatus::APPROVED->value) {
+                            $subquery->whereNotNull('secondary_approver_signed_at');
+                        } elseif ($value === OvertimeRequestStatus::PENDING->value) {
+                            $subquery->whereNull('secondary_approver_signed_at')
+                                ->whereNull('denied_at');
+                        } elseif ($value === OvertimeRequestStatus::DENIED->value) {
+                            $subquery->whereNotNull('denied_at');
+                        }
+                    });
                 })
                 ->setFilterDefaultValue(OvertimeRequestStatus::PENDING->value)
         ];        

@@ -5,20 +5,20 @@ namespace App\Models;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Process extends Model
+class OvertimePayrollApproval extends Model
 {
     use HasFactory;
 
     public $timestamps = false;
 
-    protected $primaryKey = 'process_id';
+    protected $primaryKey = 'payroll_approval_id';
 
     protected $guarded = [
-        'process_id',
+        'payroll_approval_id',
     ];
 
     /**
@@ -32,7 +32,7 @@ class Process extends Model
     }
 
     /**
-     * Accessor for secondary / final approval date (formatted).
+     * Accessor for secondary approval date (formatted).
      */
     protected function secondaryApproverSignedAt(): Attribute
     {
@@ -42,23 +42,22 @@ class Process extends Model
     }
 
     /**
-     * Accessor for request denied date (formatted).
+     * Accessor for third approval date (formatted).
      */
-    protected function deniedAt(): Attribute
+    protected function thirdApproverSignedAt(): Attribute
     {
         return Attribute::make(
             get: fn (mixed $value) => Carbon::make($value)?->format('F d, Y g:i A') ?? null,
         );
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Processes: Overtime requests, Employee leaves
-    |--------------------------------------------------------------------------
-    */
+    public function payroll(): BelongsTo
+    {
+        return $this->belongsTo(Payroll::class, 'payroll_id', 'payroll_id');
+    }
 
-    /**
-     * Get the initial approver who approved/signed the process(e.g.: overtime, leave)
+        /**
+     * Get the initial approver who approved/signed the overtime.
      */
     public function initialApprover(): BelongsTo
     {
@@ -66,7 +65,7 @@ class Process extends Model
     }
 
     /**
-     * Get the secondary approver who approved/signed the process(e.g.: overtime, leave)
+     * Get the secondary approver who approved/signed the overtime.
      */
     public function secondaryApprover(): BelongsTo
     {
@@ -74,18 +73,15 @@ class Process extends Model
     }
 
     /**
-     * Get the secondary approver who denied the process(e.g.: overtime, leave)
+     * Get the third approver who approved/signed the overtime.
      */
-    public function deniedBy(): BelongsTo
+    public function thirdApprover(): BelongsTo
     {
-        return $this->belongsTo(Employee::class, 'denier', 'employee_id');
+        return $this->belongsTo(Employee::class, 'third_approver', 'employee_id');
     }
 
-    /**
-     * Get the parent model (Overtime or Leave) that the process belongs to.
-     */
-    public function processable(): MorphTo
+    public function overtimes(): HasMany
     {
-        return $this->morphTo();
+        return $this->hasMany(Overtime::class, 'payroll_approval_id', 'payroll_approval_id');
     }
 }

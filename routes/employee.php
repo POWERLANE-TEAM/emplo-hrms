@@ -4,12 +4,13 @@ use App\Models\Employee;
 use App\Enums\UserPermission;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\OvertimeController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\ApplicationExamController;
 use App\Http\Controllers\InitialInterviewController;
+use App\Http\Controllers\PerformanceDetailController;
 use App\Http\Controllers\Employee\DashboardController;
 use App\Http\Controllers\Application\ApplicationController;
-use App\Http\Controllers\PerformanceDetailController;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 
 Route::middleware('guest')->group(function () {
@@ -54,6 +55,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     /**
      * View Specific Application Details
      */
+
     Route::get('/applicant/{application}', [ApplicationController::class, 'show'])
         ->middleware([
             'permission:' . UserPermission::VIEW_APPLICATION_INFORMATION->value,
@@ -174,12 +176,42 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
 
     /**
-     * Overtime
+     * Overtime resource
+     * 
+     * TODO: Idk if Ivan plans to add middleware checks, but do them below.
      */
+    Route::prefix('overtimes')->name('overtimes.')->group(function () {
 
-    Route::get('hr/overtime/all', function () {
-        return view('employee.hr-manager.overtime.all');
-    })->name('hr.overtime.all');
+        Route::get('requests/cut-offs', [OvertimeController::class, 'cutOff'])
+            // ->can('viewOvertimeRequestAsInitialApprover')
+            ->name('requests.cut-offs');
+
+        Route::get('requests', [OvertimeController::class, 'authorize'])
+            ->can('viewSubordinateOvertimeRequest')
+            ->name('requests');
+
+        Route::get('requests/summaries', [OvertimeController::class, 'requestSummary'])
+            ->name('requests.summaries');
+
+        Route::get('requests/{employee}/summaries', [OvertimeController::class, 'employeeSummary'])
+            ->middleware('can:viewOvertimeSummary,employee')
+            ->name('requests.employee.summaries');
+
+        /** Ot requests summary */
+        Route::get('/', [OvertimeController::class, 'index'])
+            ->name('index');
+
+        Route::get('/summaries', [OvertimeController::class, 'summary'])
+            ->name('summaries');
+
+        /** Ot requests recents */
+        Route::get('recents', [OvertimeController::class, 'recent'])
+            ->name('recents');
+
+        /** Ot requests archive */
+        Route::get('archive', [OvertimeController::class, 'archive'])
+            ->name('archive');
+    });
 
 
     /**
@@ -275,15 +307,6 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
 
     /**
-     * Overtime Summary
-     */
-
-     Route::get('managerial/overtime/summary-forms/all', function () {
-        return view('employee.supervisor.overtime.summary-forms.all');
-    })->name('managerial.overtime.summary-forms.all');
-
-
-    /**
      * Performance Evaluations
      */
 
@@ -350,22 +373,6 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     Route::get('general/leaves/view', function () {
         return view('employee.basic.leaves.view');
     })->name('general.leaves.view');
-
-
-    /**
-     * General: Overtime
-     */
-    Route::get('/overtimes', function () {
-        return view('employee.basic.overtime.all');
-    })->name('overtimes');
-
-    Route::get('/overtimes/recents', function () {
-        return view('employee.basic.overtime.recent-records');
-    })->name('overtimes.recents');
-
-    Route::get('/overtimes/archive', function () {
-        return view('employee.basic.overtime.index');
-    })->name('overtimes.archive');
 
 
     /**

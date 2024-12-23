@@ -3,6 +3,7 @@
 namespace App\Livewire\Employee\Overtimes;
 
 use Livewire\Component;
+use App\Models\Employee;
 use App\Models\Overtime;
 use Livewire\Attributes\On;
 use Illuminate\Support\Carbon;
@@ -10,7 +11,12 @@ use Livewire\Attributes\Locked;
 use Livewire\Attributes\Computed;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Livewire\Employee\Tables\OvertimeRequestsTable;
+use App\Livewire\Employee\Tables\AllOvertimeRequestsTable;
 
+/**
+ * This belongs to initial approver. Don't confuse this as the final approver.
+ */
 class RequestOvertimeApproval extends Component
 {
     /**
@@ -24,7 +30,7 @@ class RequestOvertimeApproval extends Component
      * 
      * @var Overtime $request
      */
-    private Overtime $request;
+    public ?Overtime $request = null;
 
     /** @var string|null $feedback */
     public $feedback;
@@ -32,23 +38,28 @@ class RequestOvertimeApproval extends Component
     /** @var bool $isReadOnly */
     #[Locked]
     public $isReadOnly;
+
+    /** @var bool $loading */
+    public bool $loading = true;
     
-    #[On('findModelId')]
+    #[On('showOvertimeRequestApproval')]
     public function openOtRequest(int $overtimeId)
     {
         $this->request = Overtime::with([
-            'processes',
+            'authorizedBy',
+            'deniedBy',
             'employee',
             'employee.jobTitle',
             'employee.shift',
             'employee.jobTitle.jobLevel',
+            'employee.jobTitle.jobFamily',
             'employee.account',
             'employee.status',
         ])->find($overtimeId);
 
         if (! $this->request) {
             $this->dispatch('modelNotFound', [
-                'feedbackMsg' => __('Sorry, it seems like this record has been removed.'),
+                'feedbackMsg' => __('Sorry, it seems like this record has already been removed.'),
             ]);
         } else {
             $this->checkIfNotReadOnly();
@@ -68,61 +79,77 @@ class RequestOvertimeApproval extends Component
                 'date'                      =>  Carbon::parse($this->request->date)->format('F d, Y'),
                 'startTime'                 =>  $this->request->start_time,
                 'endTime'                   =>  $this->request->end_time,
-                'hrsRequested'              =>  $this->request->getHoursRequested(),
+                'hrsRequested'              =>  $this->request->hoursRequested,
                 'filedAt'                   =>  $this->request->filed_at,
+                'authorizedBy'              =>  $this->checkIfSameAsAuthUser($this->request?->authorizedBy),
+                'authorizedAt'              =>  $this->request?->authorizer_signed_at,
+                'deniedBy'                  =>  $this->checkIfSameAsAuthUser($this->request?->deniedBy),
+                'deniedAt'                  =>  $this->request?->denied_at,
+                'feedback'                  =>  $this->request?->feedback,
             ];
         }
 
-        $this->dispatch('openOvertimeRequestApprovalModal');
+        $this->loading = false;
     }
 
     public function denyOtRequest()
     {
-        $this->authorize('updateSubordinateOvertimeRequest', Auth::user());
+        $this->authorize('authorizeOvertimeRequest', Auth::user());
 
         $this->validate();
 
         DB::transaction(function () {
-            $this->request->processes()->update([
+            $this->request->update([
                 'denied_at' => now(),
                 'denier' => $this->employeeId,
                 'feedback' => $this->feedback,
             ]);
         });
 
-        $this->reset();
-        $this->resetErrorBag();
-
-        $this->dispatch('changesSaved');
+        $this->resetPropsAndDispatchEvents();
     }
 
     public function approveOtRequest()
     {
-        $this->authorize('updateSubordinateOvertimeRequest', Auth::user());
+        $this->authorize('authorizeOvertimeRequest', Auth::user());
 
         DB::transaction(function () {
-            $this->request->processes()->update([
-                'initial_approver_signed_at' => now(),
-                'initial_approver' => $this->employeeId,
+            $this->request->update([
+                'authorizer_signed_at' => now(),
+                'authorizer' => $this->employeeId,
             ]);            
         });
 
-        $this->reset();
-        $this->resetErrorBag();
-
-        $this->dispatch('changesSaved');
+        $this->resetPropsAndDispatchEvents();
     }
 
     private function checkIfNotReadOnly()
     {
         if (
-            is_null($this->request->processes->first()->secondary_approver_signed_at) &&
-            is_null($this->request->processes->first()->denied_at)
+            is_null($this->request->authorizer_signed_at) &&
+            is_null($this->request->denied_at)
         ) {
             $this->isReadOnly = false;
         } else {
             $this->isReadOnly = true;
         }
+    }
+
+    private function checkIfSameAsAuthUser(?Employee $employee)
+    {
+        return $employee?->employee_id === Auth::user()->account->employee_id
+            ? "{$employee?->full_name} (You)"
+            : $employee?->full_name;
+    }
+
+    private function resetPropsAndDispatchEvents()
+    {
+        $this->reset();
+        $this->resetErrorBag();
+
+        $this->dispatch('changesSaved');
+        $this->dispatch('changesSaved')->to(AllOvertimeRequestsTable::class);
+        $this->dispatch('changesSaved')->to(OvertimeRequestsTable::class);
     }
 
     public function rules(): array

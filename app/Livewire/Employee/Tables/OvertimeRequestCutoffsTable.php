@@ -1,30 +1,39 @@
 <?php
 
-namespace App\Livewire\Employee\Tables\Basic;
+namespace App\Livewire\Employee\Tables;
 
 use App\Enums\Payroll;
 use App\Models\Overtime;
-use Livewire\Attributes\On;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Payroll as PayrollModel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\View\ComponentAttributeBag;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateFilter;
 
-class OvertimeSummariesTable extends DataTableComponent
+class OvertimeRequestCutoffsTable extends DataTableComponent
 {
     private $cutOff;
 
+    private $routePrefix;
+
     public function configure(): void
     {
-        $routePrefix = Auth::user()->account_type;
+        $this->routePrefix = Auth::user()->account_type;
 
-        $this->setPrimaryKey('overtime_id')
-            ->setTableRowUrl(function ($row) use ($routePrefix) {
-                $filterParams = $this->appendPayrollId($row->payrollApproval->payroll->payroll_id);
+        $this->setPrimaryKey('payroll_id')
+            ->setTableRowUrl(function ($row) {
+                $cutOffFilter = [
+                    'start' => $row->payrollApproval->cut_off_start,
+                    'end' => $row->payrollApproval->cut_off_end,
+                ];
 
-                return route("{$routePrefix}.overtimes.summaries").'?'.http_build_query($filterParams);
+                $filterParams = $this->buildDateRangeFilterParams($cutOffFilter);
+                
+                return route("{$this->routePrefix}.overtimes.requests").'?'.
+                    http_build_query($filterParams);
             })
             ->setTableRowUrlTarget(fn () => '__blank');
         
@@ -32,9 +41,8 @@ class OvertimeSummariesTable extends DataTableComponent
         $this->setEagerLoadAllRelationsEnabled();
         $this->setSingleSortingDisabled();
         $this->setQueryStringEnabled();
-        $this->enableColumnSelectEvent();
         $this->setOfflineIndicatorEnabled();
-        $this->setDefaultSort('filed_at', 'desc');
+        // $this->setDefaultSort('cut_off_start', 'desc');
         $this->setSearchDebounce(1000);
         $this->setTrimSearchStringEnabled();
         $this->setEmptyMessage(__('No results found.'));
@@ -72,37 +80,31 @@ class OvertimeSummariesTable extends DataTableComponent
             ];
         });
 
-        $this->setConfigurableAreas([
-            $this->cutOff = Payroll::getCutOffPeriod(isReadableFormat: true),
-            
-            'toolbar-left-start' => [
-                'components.headings.main-heading',
-                [
-                    'overrideClass' => true,
-                    'overrideContainerClass' => true,
-                    'attributes' => new ComponentAttributeBag([
-                        'class' => 'fs-5 py-1 text-secondary-emphasis fw-medium text-underline',
-                    ]),
-                    'heading' => __('OT Summaries Per Cut-Off Period'),
-                ],
-            ],
-        ]);
-
+        // $this->setConfigurableAreas([
+        //     'toolbar-left-start' => [
+        //         'components.headings.main-heading',
+        //         [
+        //             'overrideClass' => true,
+        //             'overrideContainerClass' => true,
+        //             'attributes' => new ComponentAttributeBag([
+        //                 'class' => 'fs-5 py-1 text-secondary-emphasis fw-medium text-underline',
+        //             ]),
+        //             'heading' => __('OT Summaries Per Cut-Off Period'),
+        //         ],
+        //     ],
+        // ]);
     }
 
-    private function appendPayrollId(int $payrollId)
+    private function buildDateRangeFilterParams(mixed $date)
     {
         return [
             'table-filters' => [
-                'payroll' => $payrollId,
+                'cut-_off_period' => [
+                    'minDate' => $date['start'],
+                    'maxDate' => $date['end'],
+                ],
             ],
         ];
-    }
-
-    #[On('changesSaved')]
-    public function refreshComponent()
-    {
-        $this->dispatch('refreshDatatable');
     }
 
     public function builder(): Builder
@@ -112,34 +114,41 @@ class OvertimeSummariesTable extends DataTableComponent
             max(filed_at) as filed_at,
             max(date) as date,
             payroll_approval_id, 
-            sum(abs(extract(epoch from (start_time - end_time)))) / 3600 as total_hours_rendered
+            sum(abs(extract(epoch from (start_time - end_time)))) / 3600 as total_ot_hours
         ";
 
         return Overtime::query()
-            ->with('payrollApproval',)
-            ->where('employee_id', Auth::user()->account->employee_id)
+            ->with([
+                'payrollApproval.payroll',
+                'employee.jobTitle.jobFamily',
+            ])
+            ->whereHas('employee.jobTitle.jobFamily', function ($query) {
+                $query->where('job_family_id', Auth::user()->account->jobTitle->jobFamily->job_family_id);
+            })
             ->selectRaw($statement)
             ->groupBy('payroll_approval_id');
     }
-
+    
     public function columns(): array
     {
         return [
             Column::make(__('Cut-Off Period'))
-                ->label(function ($row) {
-                    $cutOff = Payroll::getCutOffPeriod($row->date, isReadableFormat: true);
-                    return $cutOff['start']. ' - ' .$cutOff['end'];
-                })
+                ->label(fn ($row) => $row->payrollApproval->payroll->cut_off)
                 ->sortable(function (Builder $query, $direction) {
-                    return $query->orderBy('date', $direction);
+                    return $query->whereHas('payrollApproval.payroll', function ($subquery) use ($direction) {
+                        $subquery->orderBy('cut_off_start', $direction);
+                        $subquery->orderBy('cut_off_end', $direction);
+                    });
                 })
                 ->setSortingPillDirections('Asc', 'Desc')
                 ->setSortingPillTitle(__('Cut-Off')),
 
             Column::make(__('Payout Date'))
-                ->label(fn ($row) => Payroll::getPayoutDate($row->date, isReadableFormat: true))
+                ->label(fn ($row) => $row->payrollApproval->payroll->payout)
                 ->sortable(function (Builder $query, $direction) {
-                    return $query->orderBy('date', $direction);
+                    return $query->whereHas('payrollApproval.payroll', function ($subquery) use ($direction) {
+                        $subquery->orderBy('payout', $direction);
+                    });
                 })
                 ->setSortingPillDirections('Asc', 'Desc')
                 ->setSortingPillTitle(__('Payout')),
@@ -152,42 +161,33 @@ class OvertimeSummariesTable extends DataTableComponent
                 ->setSortingPillDirections('Asc', 'Desc')
                 ->setSortingPillTitle(__('Last filing')),
 
-            Column::make(__('Hours Rendered'))
+            Column::make(__('Total OT Hours'))
                 ->label(function ($row) {
-                    $seconds = $row->total_hours_rendered * 3600;
+                    $seconds = $row->total_ot_hours * 3600;
                     $hours = floor($seconds / 3600);
                     $minutes = floor(($seconds % 3600) / 60);
                 
                     return __("{$hours} hours and {$minutes} minutes");
                 })
                 ->sortable(function (Builder $query, $direction) {
-                    return $query->orderBy('total_hours_rendered', $direction); 
+                    return $query->orderBy('total_ot_hours', $direction); 
                 })
                 ->setSortingPillDirections('High', 'Low')
                 ->setSortingPillTitle(__('Hours rendered')),
-
-            Column::make(__('Status'))
-                ->label(function ($row) {
-                    if ($row->payrollApproval->third_approver_signed_at) {
-                        return $row->payrollApproval->thirdApprover->full_name;
-                    } else {
-                        return __('Pending');
-                    }
-                }),
         ];
     }
 
-    public function filters(): array
-    {
-        return [
-            DateFilter::make(__('Last Filing Date'))
-                ->config([
-                    'max' => now()->format('Y-m-d'),
-                    'pillFormat' => 'd M Y',
-                ])
-                ->filter(function (Builder $query, $value) {
-                    return $query->whereDate('filed_at', $value);
-                }),
-        ];
-    }
+    // public function filters(): array
+    // {
+    //     return [
+    //         DateFilter::make(__('Last Filing Date'))
+    //             ->config([
+    //                 'max' => now()->format('Y-m-d'),
+    //                 'pillFormat' => 'd M Y',
+    //             ])
+    //             ->filter(function (Builder $query, $value) {
+    //                 return $query->whereDate('filed_at', $value);
+    //             }),
+    //     ];
+    // }
 }

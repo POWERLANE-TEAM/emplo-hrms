@@ -6,7 +6,6 @@
     wire:ignore.self 
     class="modal fade" 
     id="{{ $id }}" 
-    tabindex="-1" 
     aria-labelledby="{{ $id }}-label"
     {{ $attributes->merge([
         'data-bs-backdrop' => 'true',

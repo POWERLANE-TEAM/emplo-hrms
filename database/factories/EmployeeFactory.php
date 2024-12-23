@@ -19,32 +19,6 @@ class EmployeeFactory extends Factory
      */
     public function definition(): array
     {
-        $educationCount = fake()->numberBetween(1, 3);
-        $experienceCount = fake()->numberBetween(1, 5);
-
-        $education = [];
-        for ($i = 0; $i < $educationCount; $i++) {
-            $education[] = [
-                'degree' => fake()->randomElement([
-                    'Bachelor of ' . fake()->word . ' Studies',
-                    'Bachelor of ' . fake()->word . ' Science',
-                    'Bachelor of ' . fake()->word . ' Engineering',
-                    'Master of ' . fake()->word . ' Science',
-                ]),
-                'institution' => fake()->company,
-                'year' => fake()->year,
-            ];
-        }
-
-        $experience = [];
-        for ($i = 0; $i < $experienceCount; $i++) {
-            $experience[] = [
-                'company' => fake()->company,
-                'position' => fake()->jobTitle,
-                'years' => fake()->numberBetween(1, 10),
-            ];
-        }
-
         return [
             'first_name' => fake()->firstName,
             'middle_name' => fake()->firstName,
@@ -62,8 +36,6 @@ class EmployeeFactory extends Factory
             'tin_no' => fake()->numerify('############'),
             'pag_ibig_no' => fake()->numerify('############'),
             'signature' => fake()->sha256,
-            'education' => json_encode($education),
-            'experience' => json_encode($experience),
         ];
     }
 }
