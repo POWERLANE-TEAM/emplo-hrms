@@ -1,6 +1,6 @@
 <div class="modal fade" id="addPerfRange" tabindex="-1" aria-labelledby="addPerfRangeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
+        <div class="modal-content p-2">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="addPerfRangeModalLabel">Add Category</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

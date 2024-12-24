@@ -13,7 +13,7 @@
     }}
 >
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-        <div class="modal-content">
+        <div class="modal-content p-2">
             <div class="modal-header">
                 {{ $title }}
             </div>

@@ -1,7 +1,7 @@
 <div class="modal fade" id="editPerfScalesModalId" tabindex="-1" aria-labelledby="editPerfScalesModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
+        <div class="modal-content p-2">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="editPerfScalesModalLabel">Edit Performance Scale</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

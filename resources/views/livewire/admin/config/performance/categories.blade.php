@@ -20,7 +20,7 @@
                 @enderror
             </div>
             <div class="mb-3">
-                <label for="shortDescription" class="col-form-label">{{ __('Short Description') }} <span class="text-danger">*</span></label>
+                <label for="shortDescription" class="col-form-label">{{ __('Short Description') }} </label>
                 <textarea wire:model="state.shortDescription" id="shortDescription" rows="6" class="form-control 
                     @error('shortDescription') is-invalid @enderror"></textarea>
                 @error('shortDescription')
