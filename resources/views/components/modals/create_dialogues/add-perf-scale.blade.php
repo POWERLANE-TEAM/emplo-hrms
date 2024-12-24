@@ -8,18 +8,17 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-4 mb-3">
-                        <label for="addPerfScore" class="col-form-label">Score Number:</label>
+                        <label for="addPerfScore" class="col-form-label">Score Number</label>
                         <input type="text" id="addPerfScore" class="form-control" />
                     </div>
                     <div class="col-md-8 mb-3">
-                        <label for="addScaleDesc" class="col-form-label">Description:</label>
+                        <label for="addScaleDesc" class="col-form-label">Description</label>
                         <input type="text" id="addScaleDesc" class="form-control" />
                     </div>
                 </div>
 
             </div>
             <div class="modal-footer">
-                <button onclick="hideModal('addPerfScale')" class="btn btn-secondary">Close</button>
                 <button onclick="" class="btn btn-primary">Save changes</button>
             </div>
         </div>

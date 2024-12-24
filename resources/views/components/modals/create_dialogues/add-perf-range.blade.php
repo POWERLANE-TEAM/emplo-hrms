@@ -7,17 +7,16 @@
             </div>
             <div class="modal-body">
                 <div class="mb-3">
-                    <label for="addRangeStart" class="col-form-label">Score Number:</label>
+                    <label for="addRangeStart" class="col-form-label">Score Number</label>
                     <input type="text" id="addRangeStart" class="form-control" />
                 </div>
                 <div class="mb-3">
-                    <label for="addRangeEnd" class="col-form-label">Description:</label>
+                    <label for="addRangeEnd" class="col-form-label">Description</label>
                     <textarea id="addRangeEnd" rows="6" class="form-control">
                     </textarea>
                 </div>
             </div>
             <div class="modal-footer">
-                <button onclick="hideModal('addPerfRange')" class="btn btn-secondary">Close</button>
                 <button onclick="" class="btn btn-primary">Save changes</button>
             </div>
         </div>
