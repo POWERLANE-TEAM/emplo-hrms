@@ -9,7 +9,7 @@
             </div>
             <div class="modal-body">
                 <div class="mb-3">
-                    <label for="resolutionDesc" class="col-form-label">Resolution</label>
+                    <label for="resolutionDesc" class="col-form-label">Resolution <span class="text-danger">*</span></label>
                     <textarea id="resolutionDesc" rows="6" class="form-control"></textarea>
                 </div>
                 <div class="modal-footer">

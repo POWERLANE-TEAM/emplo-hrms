@@ -13,7 +13,7 @@
         <x-slot:content>
             <div class="row">
                 <div class="col-md-4 mb-3">
-                    <label for="scale" class="col-form-label">{{ __('Rating Scale') }}</label>
+                    <label for="scale" class="col-form-label">{{ __('Rating Scale') }} <span class="text-danger">*</span></label>
                     <input wire:model="state.scale" type="number" minlength="0" id="scale" class="form-control @error('state.scale') is-invalid @enderror" />
                     @error('state.scale')
                         <div class="invalid-feedback" role="alert">{{ $message }}</div>
@@ -21,7 +21,7 @@
                     
                 </div>
                 <div class="col-md-8 mb-3">
-                    <label for="ratingName" class="col-form-label">{{ __('Rating Name') }}</label>
+                    <label for="ratingName" class="col-form-label">{{ __('Rating Name') }} <span class="text-danger">*</span></label>
                     <input wire:model="state.name" type="text" id="ratingName" class="form-control @error('state.name') is-invalid @enderror" />
                     @error('state.name')
                         <div class="invalid-feedback" role="alert">{{ $message }}</div>

@@ -9,11 +9,11 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-4 mb-3">
-                        <label for="editRangeStart" class="col-form-label">Range Start:</label>
+                        <label for="editRangeStart" class="col-form-label">Range Start <span class="text-danger">*</span></label>
                         <input type="text" id="editRangeStart" class="form-control" />
                     </div>
                     <div class="col-md-8 mb-3">
-                        <label for="editRangeEnd" class="col-form-label">Range End:</label>
+                        <label for="editRangeEnd" class="col-form-label">Range End <span class="text-danger">*</span></label>
                         <input type="text" id="editRangeEnd" class="form-control" />
                     </div>
                 </div>

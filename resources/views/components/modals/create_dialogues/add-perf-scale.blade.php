@@ -8,11 +8,11 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-4 mb-3">
-                        <label for="addPerfScore" class="col-form-label">Score Number</label>
+                        <label for="addPerfScore" class="col-form-label">Score Number <span class="text-danger">*</span></label>
                         <input type="text" id="addPerfScore" class="form-control" />
                     </div>
                     <div class="col-md-8 mb-3">
-                        <label for="addScaleDesc" class="col-form-label">Description</label>
+                        <label for="addScaleDesc" class="col-form-label">Description <span class="text-danger">*</span></label>
                         <input type="text" id="addScaleDesc" class="form-control" />
                     </div>
                 </div>

@@ -7,11 +7,11 @@
             </div>
             <div class="modal-body">
                 <div class="mb-3">
-                    <label for="addCategoryTitle" class="col-form-label">Category Title</label>
+                    <label for="addCategoryTitle" class="col-form-label">Category Title <span class="text-danger">*</span></label>
                     <input type="text" id="addCategoryTitle" class="form-control" />
                 </div>
                 <div class="mb-3">
-                    <label for="categoryShortDesc" class="col-form-label">Priority</label>
+                    <label for="categoryShortDesc" class="col-form-label">Priority <span class="text-danger">*</span></label>
                     <textarea id="categoryShortDesc" rows="6" class="form-control">
                     </textarea>
                 </div>

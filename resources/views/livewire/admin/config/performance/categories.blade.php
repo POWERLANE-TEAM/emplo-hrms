@@ -12,7 +12,7 @@
         </x-slot:title>
         <x-slot:content>
             <div class="mb-3">
-                <label for="title" class="col-form-label">{{ __('Category Title') }}</label>
+                <label for="title" class="col-form-label">{{ __('Category Title') }} <span class="text-danger">*</span></label>
                 <input wire:model="state.title" type="text" id="title" class="form-control 
                     @error('title') is-invalid @enderror" />
                 @error('title')
@@ -20,7 +20,7 @@
                 @enderror
             </div>
             <div class="mb-3">
-                <label for="shortDescription" class="col-form-label">{{ __('Short Description') }}</label>
+                <label for="shortDescription" class="col-form-label">{{ __('Short Description') }} <span class="text-danger">*</span></label>
                 <textarea wire:model="state.shortDescription" id="shortDescription" rows="6" class="form-control 
                     @error('shortDescription') is-invalid @enderror"></textarea>
                 @error('shortDescription')

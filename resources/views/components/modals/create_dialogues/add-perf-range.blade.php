@@ -7,11 +7,11 @@
             </div>
             <div class="modal-body">
                 <div class="mb-3">
-                    <label for="addRangeStart" class="col-form-label">Score Number</label>
+                    <label for="addRangeStart" class="col-form-label">Score Number <span class="text-danger">*</span></label>
                     <input type="text" id="addRangeStart" class="form-control" />
                 </div>
                 <div class="mb-3">
-                    <label for="addRangeEnd" class="col-form-label">Description</label>
+                    <label for="addRangeEnd" class="col-form-label">Description <span class="text-danger">*</span></label>
                     <textarea id="addRangeEnd" rows="6" class="form-control">
                     </textarea>
                 </div>

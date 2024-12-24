@@ -8,11 +8,11 @@
             </div>
             <div class="modal-body">
             <div class="mb-3">
-                    <label for="editCategoryTitle" class="col-form-label">Category Title</label>
+                    <label for="editCategoryTitle" class="col-form-label">Category Title <span class="text-danger">*</span></label>
                     <input type="text" id="editCategoryTitle" class="form-control" />
                 </div>
                 <div class="mb-3">
-                    <label for="editShortDesc" class="col-form-label">Short Description</label>
+                    <label for="editShortDesc" class="col-form-label">Short Description <span class="text-danger">*</span></label>
                     <textarea id="editShortDesc" rows="6" class="form-control">
                     </textarea>
                 </div>
