@@ -22,10 +22,10 @@ class Scheduled extends Component
     #[Locked]
     public $initialInterviewTimeF;
 
-    public function mount(Application $application)
+    public function mount()
     {
 
-        $this->applicationExam = ApplicationExam::where('application_id', $application->application_id)->first();
+        $this->applicationExam = ApplicationExam::where('application_id', $this->application->application_id)->first();
 
         $examStartTime = optional($this->applicationExam)->start_time;
         $this->examStartTimeF = $examStartTime ? Carbon::parse($examStartTime)->setTimezone(Timezone::get())->format('m/d/y - h:iA') : 'Not Set';
