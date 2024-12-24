@@ -60,7 +60,7 @@ class SetExperience extends Component
 
         $this->dispatch('show-toast', [
             'type' => 'success',
-            'message' => 'Experience qualification added',
+            'message' => 'Experience qualification added!',
         ]);
 
         $this->resetExcept('items');
