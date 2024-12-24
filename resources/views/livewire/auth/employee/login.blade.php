@@ -39,6 +39,10 @@
             :nonce="$nonce" aria-owns="userLogin-password-feedback"
             class=" {{ $errors->has('password') ? 'is-invalid' : '' }}">
 
+            <x-slot:input_icon_left>
+                <i data-lucide="lock" class="icon-large"></i>
+            </x-slot:input_icon_left>
+
             <x-slot:toggle_password>
                 @include('components.form.toggle-password', [
                     'toggler_id' => 'toggle-psw',

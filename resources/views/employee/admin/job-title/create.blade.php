@@ -12,7 +12,7 @@
 
 @pushOnce('scripts')
     <script src="{{ Vite::asset('resources/js/forms/nbp.min.js') }}" defer></script>
-    @vite(['resources/js/employee/hr-manager/dashboard.js', 'resources/js/modal.js'])
+    @vite(['resources/js/employee/hr-manager/dashboard.js', 'resources/js/modals.js'])
 @endPushOnce
 
 @pushOnce('styles')

@@ -4,8 +4,7 @@
     <label for="{{ $attributes->get('id') }}" class="mb-1">{{ $label }}</label>
 @endisset
 <div class="input-group mb-3">
-    <div class="px-2 d-flex position-absolute icon  text-primary" wire:ignore nonce="{{ $nonce }}"><i
-            data-lucide="lock-keyhole" class="icon-large"></i>
+    <div class="px-2 d-flex position-absolute icon  text-primary" wire:ignore nonce="{{ $nonce }}">
         @if (!empty($input_icon_left))
             {{ $input_icon_left }}
         @endif
