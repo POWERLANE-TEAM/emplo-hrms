@@ -61,10 +61,20 @@
 
                     <!-- Buttons with col-2 -->
                     <div class="col-2 d-flex justify-content-end">
+
+                        <!-- Edit -->
                         <button wire:click="openEditMode( {{ $index }} )" data-bs-toggle="tooltip"
                             class="btn no-hover-border me-2" data-bs-title="Edit">
                             <i class="icon p-1 mx-2 text-info" data-lucide="pencil"></i>
                         </button>
+
+                        <!-- Delete -->
+                        <button data-bs-toggle="tooltip"
+                            class="btn no-hover-border me-2" data-bs-title="Delete">
+                            <i class="icon p-1 mx-2 text-danger" data-lucide="trash-2"></i>
+                        </button>
+
+                        <!-- Move -->
                         <button class="btn no-hover-border" data-bs-dismiss="modal" data-bs-toggle="tooltip"
                             data-bs-title="Drag" draggable="true">
                             <i class="icon p-1 mx-2 text-black" data-lucide="menu"></i>
@@ -89,7 +99,7 @@
                 <!-- Text input field -->
                 <div class="col-7">
                     <input id="qualification-input" name="qualification" class="form-control border ps-3 rounded"
-                        placeholder="{{ __('E.g., Public Speaking, Event Planning.') }}" wire:model="state.qualification"
+                        placeholder="{{ __('E.g., Public speaking skills.') }}" wire:model="state.qualification"
                         autocomplete="off">
 
                     @error('state.qualification')
