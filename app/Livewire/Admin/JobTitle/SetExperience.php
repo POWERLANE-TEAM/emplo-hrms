@@ -58,6 +58,11 @@ class SetExperience extends Component
             )->to(CreateJobTitleForm::class);
         }
 
+        $this->dispatch('show-toast', [
+            'type' => 'success',
+            'message' => 'Experience qualification added',
+        ]);
+
         $this->resetExcept('items');
         $this->resetErrorBag();
     }

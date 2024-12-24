@@ -58,6 +58,11 @@ class SetEducation extends Component
             )->to(CreateJobTitleForm::class);
         }
 
+        $this->dispatch('show-toast', [
+            'type' => 'success',
+            'message' => 'Education qualification added!',
+        ]);
+
         $this->resetExcept('items');
         $this->resetErrorBag();
     }

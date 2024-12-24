@@ -58,6 +58,11 @@ class SetSkills extends Component
             )->to(CreateJobTitleForm::class);
         }
 
+        $this->dispatch('show-toast', [
+            'type' => 'success',
+            'message' => 'Skill qualification added!',
+        ]);
+
         $this->resetExcept('items');
         $this->resetErrorBag();
     }
