@@ -8,7 +8,7 @@ use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
-class SetQualifications extends Component
+class SetExperience extends Component
 {
     public $items = [];
 
@@ -57,6 +57,11 @@ class SetQualifications extends Component
                 $this->state['priority'],
             )->to(CreateJobTitleForm::class);
         }
+
+        $this->dispatch('show-toast', [
+            'type' => 'success',
+            'message' => 'Experience qualification added!',
+        ]);
 
         $this->resetExcept('items');
         $this->resetErrorBag();
@@ -111,6 +116,6 @@ class SetQualifications extends Component
 
     public function render()
     {
-        return view('livewire.admin.job-title.set-qualifications');
+        return view('livewire.admin.job-title.set-experience');
     }
 }

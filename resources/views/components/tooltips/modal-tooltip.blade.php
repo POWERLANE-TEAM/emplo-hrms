@@ -9,8 +9,10 @@
     class="ms-1 btn btn-link p-0 hover-opacity" 
     data-bs-toggle="modal" 
     data-bs-target="#{{ $modalId }}"
+    data-modal-id="#{{ $modalId }}"
     aria-haspopup="dialog"
     aria-expanded="false"
+    onclick="fetchModalContent('{{ $modalId }}')"
 >
     <i data-lucide="{{ $icon }}" class="icon icon-large {{ $color }} icon-opacity"></i>
 </button>
