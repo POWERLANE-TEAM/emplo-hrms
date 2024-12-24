@@ -36,9 +36,9 @@
         @foreach($items as $index => $item)
                 @php
                     $color = match ($item['priority']) {
-                        'hp' => 'danger',
-                        'mp' => 'warning',
-                        'lp' => 'success',
+                        'High' => 'danger',
+                        'Medium' => 'warning',
+                        'Low' => 'success',
                         default => 'secondary',
                     };
 
@@ -61,7 +61,7 @@
 
                     <!-- Buttons with col-2 -->
                     <div class="col-2 d-flex justify-content-end">
-                        
+
                         <!-- Edit -->
                         <button wire:click="openEditMode( {{ $index }} )" data-bs-toggle="tooltip"
                             class="btn no-hover-border me-2" data-bs-title="Edit">

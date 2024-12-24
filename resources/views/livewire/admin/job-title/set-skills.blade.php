@@ -36,13 +36,15 @@
         @foreach($items as $index => $item)
                 @php
                     $color = match ($item['priority']) {
-                        'hp' => 'danger',
-                        'mp' => 'warning',
-                        'lp' => 'success',
-                        default => 'secondary',
+                        'High' => 'danger',
+                        'Medium' => 'warning',
+                        'Low' => 'success',
+                        default => 'danger',
                     };
 
                     $priority = JobQualificationPriorityLevel::tryFrom($item['priority'])
+
+                    
                 @endphp
 
                 <div wire:ignore.self

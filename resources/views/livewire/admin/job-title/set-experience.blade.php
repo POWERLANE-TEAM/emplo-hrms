@@ -36,9 +36,9 @@
         @foreach($items as $index => $item)
                 @php
                     $color = match ($item['priority']) {
-                        'hp' => 'danger',
-                        'mp' => 'warning',
-                        'lp' => 'success',
+                        'High' => 'danger',
+                        'Medium' => 'warning',
+                        'Low' => 'success',
                         default => 'secondary',
                     };
 
