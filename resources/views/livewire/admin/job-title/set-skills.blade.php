@@ -1,7 +1,12 @@
 @use(App\Enums\JobQualificationPriorityLevel)
 @props(['modalId' => 'qualificationsModal'])
 
-<div>
+<div class="mt-4">
+
+    <x-headings.form-snippet-intro label="{{ __('Skills') }}" :nonce="$nonce" required="true">
+
+    </x-headings.form-snippet-intro>
+
     <x-modals.dialog :id="$modalId">
         <x-slot:title>
             <h1 class="modal-title fs-5">{{ __('Edit Qualification') }}</h1>
@@ -26,54 +31,54 @@
             <button wire:click="save" class="btn btn-primary">{{ __('Save changes') }}</button>
         </x-slot:footer>
     </x-modals.dialog>
-    
+
     <div id="sortable-list" class="list-group">
         @foreach($items as $index => $item)
-            @php
-                $color = match($item['priority']) {
-                    'hp' => 'danger',
-                    'mp' => 'warning',
-                    'lp' => 'success',
-                    default => 'secondary',
-                };
+                @php
+                    $color = match ($item['priority']) {
+                        'hp' => 'danger',
+                        'mp' => 'warning',
+                        'lp' => 'success',
+                        default => 'secondary',
+                    };
 
-                $priority = JobQualificationPriorityLevel::tryFrom($item['priority'])
-            @endphp
+                    $priority = JobQualificationPriorityLevel::tryFrom($item['priority'])
+                @endphp
 
-            <div wire:ignore.self class="list-group-item d-flex align-items-center mb-2 border border-secondary py-2 px-3 rounded" 
-                draggable="true"
-                ondragstart="handleDragStart(event, this, '{{ $index }}')" 
-                ondragover="event.preventDefault()"
-                ondrop="drop(event, '{{ $index }}')"
-                ondragend="handleDragEnd(this)">
+                <div wire:ignore.self
+                    class="list-group-item d-flex align-items-center mb-2 border border-secondary py-2 px-3 rounded"
+                    draggable="true" ondragstart="handleDragStart(event, this, '{{ $index }}')"
+                    ondragover="event.preventDefault()" ondrop="drop(event, '{{ $index }}')" ondragend="handleDragEnd(this)">
 
-                <div class="col-8">{{ $item['qualification'] }}</div>
-                
-                <!-- Use status-badge component to display priority with color -->
-                <div class="col-2">
-                    <x-status-badge :color="$color">
-                        {{ $priority->label() }}
-                    </x-status-badge>
+                    <div class="col-8">{{ $item['qualification'] }}</div>
+
+                    <!-- Use status-badge component to display priority with color -->
+                    <div class="col-2">
+                        <x-status-badge :color="$color">
+                            {{ $priority->label() }}
+                        </x-status-badge>
+                    </div>
+
+                    <!-- Buttons with col-2 -->
+                    <div class="col-2 d-flex justify-content-end">
+                        <button wire:click="openEditMode( {{ $index }} )" data-bs-toggle="tooltip"
+                            class="btn no-hover-border me-2" data-bs-title="Edit">
+                            <i class="icon p-1 mx-2 text-info" data-lucide="pencil"></i>
+                        </button>
+                        <button class="btn no-hover-border" data-bs-dismiss="modal" data-bs-toggle="tooltip"
+                            data-bs-title="Drag" draggable="true">
+                            <i class="icon p-1 mx-2 text-black" data-lucide="menu"></i>
+                        </button>
+                    </div>
                 </div>
-
-                <!-- Buttons with col-2 -->
-                <div class="col-2 d-flex justify-content-end">
-                    <button wire:click="openEditMode( {{ $index }} )" data-bs-toggle="tooltip" class="btn no-hover-border me-2" data-bs-title="Edit">
-                        <i class="icon p-1 mx-2 text-info" data-lucide="pencil"></i>
-                    </button>
-                    <button class="btn no-hover-border" data-bs-dismiss="modal" data-bs-toggle="tooltip" data-bs-title="Drag" draggable="true">
-                        <i class="icon p-1 mx-2 text-black" data-lucide="menu"></i>
-                    </button>
-                </div>
-            </div>
-        @endforeach            
+        @endforeach
     </div>
 
     <div x-data="{ showInput: false }" x-cloak>
         <!-- Button to show the input field and dropdown -->
         <button x-show="!showInput" @click="showInput = true" type="button"
             class="btn w-100 border-dashed py-2 text-primary">
-            {{ __('Add Qualifications') }}
+            {{ __('Add Skills Qualifications') }}
         </button>
 
         <!-- Input field and dropdown; only shown when showInput is true -->
@@ -84,16 +89,18 @@
                 <!-- Text input field -->
                 <div class="col-7">
                     <input id="qualification-input" name="qualification" class="form-control border ps-3 rounded"
-                        placeholder="{{ __('Graduate of any 4-year course.') }}" wire:model="state.qualification" autocomplete="off">
+                        placeholder="{{ __('E.g., Public Speaking, Event Planning.') }}" wire:model="state.qualification"
+                        autocomplete="off">
 
-                        @error('state.qualification')
-                            <span class="invalid-feedback" role="alert">{{ $message }}</span>
-                        @enderror
+                    @error('state.qualification')
+                        <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                    @enderror
                 </div>
 
                 <!-- Dropdown for priority -->
                 <div class="col-3 position-relative">
-                    <select class="form-select form-control border ps-3 rounded pe-5" wire:model="state.priority" aria-label="Qualification options">
+                    <select class="form-select form-control border ps-3 rounded pe-5" wire:model="state.priority"
+                        aria-label="Qualification options">
                         <option value="">{{ __('Select Priority') }}</option>
                         @foreach ($this->priorityLevels as $priorityLevel => $index)
                             <option value="{{ $index }}">{{ $priorityLevel }}</option>
@@ -104,12 +111,14 @@
                     @enderror
                 </div>
 
-                    <!-- Buttons -->
+                <!-- Buttons -->
                 <div class="col-2 d-flex">
-                    <button type="button" class="btn btn-success me-2 text-white flex-fill" wire:loading.attr="disabled" wire:click="save">
+                    <button type="button" class="btn btn-success me-2 text-white flex-fill" wire:loading.attr="disabled"
+                        wire:click="save">
                         {{ __('Save') }}
                     </button>
-                    <button @click.prevent="showInput = false" wire:loading.attr="disabled" type="button" class="btn btn-secondary flex-fill">
+                    <button @click.prevent="showInput = false" wire:loading.attr="disabled" type="button"
+                        class="btn btn-secondary flex-fill">
                         {{ __('Cancel') }}
                     </button>
                 </div>
@@ -120,7 +129,7 @@
 
 @script
 <script>
-    Livewire.hook('morph.added',  ({ el }) => {
+    Livewire.hook('morph.added', ({ el }) => {
         lucide.createIcons();
     });
 

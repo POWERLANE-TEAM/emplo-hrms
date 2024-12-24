@@ -8,7 +8,7 @@ use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
-class SetQualifications extends Component
+class SetSkills extends Component
 {
     public $items = [];
 
@@ -111,6 +111,6 @@ class SetQualifications extends Component
 
     public function render()
     {
-        return view('livewire.admin.job-title.set-qualifications');
+        return view('livewire.admin.job-title.set-skills');
     }
 }
