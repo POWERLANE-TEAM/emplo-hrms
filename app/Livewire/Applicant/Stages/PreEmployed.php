@@ -20,10 +20,9 @@ class PreEmployed extends Component
 
     protected /* ApplicationDoc */ $rejectedDocuments;
 
-    public function mount(Application $application, $isMissingAssement)
+    public function mount()
     {
-        $this->application = $application->load('documents');
-        $this->isMissingAssement = $isMissingAssement;
+        $this->application->load('documents');
     }
 
     public function boot()
