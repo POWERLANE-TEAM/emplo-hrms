@@ -20,7 +20,7 @@
                             class="fs-2 fw-bold text-center {{ $type === 'delete' ? 'text-danger' : 'text-warning' }} mb-md-3">
                             {{ $header }}
                         </div>
-                        <span class="fs-5 mb-md-4">{{ $message }}</span>
+                        <div class="fs-5 mb-md-2 text-center">{{ $message }}</div>
                     </hgroup>
 
                     <div class="text-center">
