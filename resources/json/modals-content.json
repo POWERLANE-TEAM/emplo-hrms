@@ -1,0 +1,10 @@
+{
+    "aboutQualification": {
+        "title": "About Qualification",
+        "content": "<p>This is the qualification content that will be loaded into the modal.</p>"
+    },
+    "aboutOtherThings": {
+        "title": "Blah blah",
+        "content": "<p>This is the employee details content that will be loaded into the modal.</p>"
+    }
+}
