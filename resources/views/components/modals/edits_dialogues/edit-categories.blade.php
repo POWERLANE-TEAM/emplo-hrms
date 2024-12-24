@@ -8,17 +8,16 @@
             </div>
             <div class="modal-body">
             <div class="mb-3">
-                    <label for="editCategoryTitle" class="col-form-label">Category Title:</label>
+                    <label for="editCategoryTitle" class="col-form-label">Category Title</label>
                     <input type="text" id="editCategoryTitle" class="form-control" />
                 </div>
                 <div class="mb-3">
-                    <label for="editShortDesc" class="col-form-label">Short Description:</label>
+                    <label for="editShortDesc" class="col-form-label">Short Description</label>
                     <textarea id="editShortDesc" rows="6" class="form-control">
                     </textarea>
                 </div>
             </div>
             <div class="modal-footer">
-                <button onclick="hideModal('editCategoriesModalId')" class="btn btn-secondary">Close</button>
                 <button onclick="" class="btn btn-primary">Save changes</button>
             </div>
         </div>

@@ -19,7 +19,6 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button onclick="hideModal('editPerfRangeModalId')" class="btn btn-secondary">Close</button>
                 <button onclick="" class="btn btn-primary">Save changes</button>
             </div>
         </div>
