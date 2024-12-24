@@ -68,7 +68,7 @@
 
             const pendingDocumentCount = Math.max(0, Math.floor(@json($pendingDocuments->count())));
             const verifiedDocumentCount = Math.max(0, Math.floor(@json($verifiedDocuments->count())));
-            const rejectedDocumentCount = Math.max(16, Math.floor(@json($rejectedDocuments->count())));
+            const rejectedDocumentCount = Math.max(0, Math.floor(@json($rejectedDocuments->count())));
             const totalRequirementCount = Math.max(0, Math.floor(@json($this->premploymentRequirements->count())));
 
             const ROOT = document.documentElement;
