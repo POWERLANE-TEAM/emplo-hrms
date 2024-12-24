@@ -705,6 +705,10 @@ ul#dropdown-menu > li.dropdown-item:hover {
 
     padding: 0.5em;
 
+    .col-form-label {
+        font-weight: 600;
+    }
+    
     .modal-header {
         border-bottom: none;
         padding-bottom: .7rem;
