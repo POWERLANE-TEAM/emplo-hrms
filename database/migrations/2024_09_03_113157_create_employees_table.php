@@ -2,7 +2,6 @@
 
 use App\Models\Barangay;
 use App\Models\Employee;
-use App\Models\LeaveCategory;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -60,25 +59,6 @@ return new class extends Migration
             $table->string('file_path');
             $table->softDeletes();
         });
-
-        Schema::create('employee_leaves', function (Blueprint $table) {
-            $table->id('emp_leave_id');
-
-            $table->foreignIdFor(Employee::class, 'employee_id')
-                ->constrained('employees', 'employee_id')
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
-
-            $table->foreignIdFor(LeaveCategory::class, 'leave_id')
-                ->constrained('leave_categories', 'leave_id')
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
-
-            $table->longText('reason');
-            $table->timestamp('start_date');
-            $table->timestamp('end_date');
-            $table->timestamps();
-        });
     }
 
     /**
@@ -89,6 +69,5 @@ return new class extends Migration
         Schema::dropIfExists('employment_statuses');
         Schema::dropIfExists('employees');
         Schema::dropIfExists('employee_docs');
-        Schema::dropIfExists('employee_leaves');
     }
 };
