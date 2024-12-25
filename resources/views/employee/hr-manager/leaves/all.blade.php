@@ -31,4 +31,6 @@
     </x-slot:description>
 </x-headings.main-heading>
 
-    @endsection
+<livewire:employee.tables.any-leave-requests-table :$routePrefix />
+
+@endsection
