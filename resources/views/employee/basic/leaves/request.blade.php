@@ -23,10 +23,10 @@
 
 <x-breadcrumbs>
     <x-slot:breadcrumbs>
-        <x-breadcrumb :href="route($routePrefix . '.general.leaves.all')">
+        <x-breadcrumb :href="route($routePrefix . '.leaves.index')">
             Leaves
         </x-breadcrumb>
-        <x-breadcrumb :active="request()->routeIs($routePrefix . '.general.leaves.request')">
+        <x-breadcrumb :active="request()->routeIs($routePrefix . '.leaves.create')">
             Request Leave
         </x-breadcrumb>
     </x-slot:breadcrumbs>
