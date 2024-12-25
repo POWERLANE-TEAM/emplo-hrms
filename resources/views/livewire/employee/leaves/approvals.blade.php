@@ -1,89 +1,95 @@
-<!-- BACK-END REPLACE Note:
+@props(['leave'])
 
- This component is currently designed for viewing only,
- which is why the checkboxes have the disabled attribute applied.
- It can be refactored to enable functionality for Supervisor,
- Head of Department, or HR roles, allowing them to interact with the checkboxes.
- This will make the component reusable across different user roles.
- 
-</div> -->
-
-<div class="card border-primary mt-1 px-5 py-4 w-100 h-100">
+<div class="card border-{{ $leave->denied_at ? 'danger' : 'primary' }} mt-1 px-5 py-4 w-100 h-100">
     <section>
-        <div class="text-primary fs-3 fw-bold text-center">
-            Approvals
-        </div>
+        @if ($leave->denied_at)
+            <div class="text-danger fs-3 fw-bold text-center">
+                {{ __('Leave Request Denied') }}
+            </div>
 
-        <!-- SECTION: upervisor and Dept.Head/Manager’s Approval -->
-        <div class="pb-3 pt-4">
-            <p class="fw-medium fs-5">Supervisor and Dept.Head/Manager’s Approval</p>
-
-            <!-- Supervisor Approval -->
             <div class="ps-4 pe-2 py-3">
-                <x-form.checkbox container_class="" :nonce="$nonce" id="supervisor_approval" name="supervisor_approval"
-                    class="checkbox checkbox-primary" disabled> <!-- BACK-END Replace: Status of Supervisor approval. Checked attribute if approved. -->
-
-                    <x-slot:label>
-                        <div class="d-flex flex-column">
-                            <div class="fs-5">Augistina, De Leon C.</div> <!-- BACK-END Replace: Supervisor Name -->
-                            <div class="text-primary">Supervisor/Evaluator</div>
-                        </div>
-                    </x-slot:label>
-                </x-form.checkbox>
+                <div class="d-flex flex-column">
+                    <div class="fs-5">{{ $leave->deniedBy->full_name }}</div>
+                    <div class="text-primary">{{ $leave->deniedBy->jobTitle->job_title }}</div>
+                    <small class="text-muted">{{ $leave->denied_at }}</small>
+                </div>
+                <div class="mt-3">
+                    <label for="reason" class="fw-semibold text-secondary-emphasis">{{ __('Reason for denial:') }}</label>
+                    <textarea id="reason" class="form-control bg-body-secondary" rows="3" readonly>{{ $leave?->feedback }}</textarea>    
+                </div>
+            </div>
+        @else
+            <div class="text-primary fs-3 fw-bold text-center">
+                {{ __('Approvals') }}
             </div>
 
-            <!-- Head Department Approval -->
-            <div class="ps-4 pe-2 py-2">
-                <x-form.checkbox container_class="" :nonce="$nonce" id="head_dept_approval" name="head_dept_approval"
-                    class="checkbox checkbox-primary" disabled> <!-- BACK-END Replace: Status of Head Dept approval. Checked attribute if approved. -->
+            <div class="pb-3 pt-4">
+                <p class="fw-medium fs-5">{{ __('Supervisor and Dept.Head/Manager') }}</p>
 
-                    <x-slot:label>
-                        <div class="d-flex flex-column">
-                            <div class="fs-5">Swift, Taylor A.</div>
-                            <!-- BACK-END Replace: Job Family (Dept) Head Name -->
-                            <div class="text-primary">Supervisor/Evaluator</div>
-                        </div>
-                    </x-slot:label>
-                </x-form.checkbox>
-            </div>
-        </div>
+                <div class="ps-4 pe-2 py-3">
+                    <x-form.checkbox container_class="" :nonce="$nonce" id="initialApproval" name="initial-approval"
+                        class="checkbox checkbox-primary" disabled :checked="$leave->initial_approver_signed_at">
 
-        <!-- SECTION: HR Approvals -->
-        <div class="pb-3">
-            <p class="fw-medium fs-5">Human Resources Department</p>
+                        <x-slot:label>
+                            <div class="d-flex flex-column">
+                                <div class="fs-5">{{ $leave->initialApprover->full_name ?? __('Pending') }}</div>
+                                <div class="text-primary">{{ $leave?->initialApprover?->jobTitle?->job_title }}</div>
+                                <small class="text-muted">{{ $leave?->initial_approver_signed_at }}</small>
+                            </div>
+                        </x-slot:label>
+                    </x-form.checkbox>
+                </div>
 
-            <!-- Supervisor Approval -->
-            <div class="ps-4 pe-2 py-3">
-                <x-form.checkbox container_class="" :nonce="$nonce" id="hr_staff_approval" name="hr_staff_approval"
-                    class="checkbox checkbox-primary" disabled> <!-- BACK-END Replace: Status of HR Staff approval. Checked attribute if approved. -->
+                <div class="ps-4 pe-2 py-2">
+                    <x-form.checkbox container_class="" :nonce="$nonce" id="secondApproval" name="second-approval"
+                        class="checkbox checkbox-primary" disabled :checked="$leave->secondary_approver_signed_at">
 
-                    <x-slot:label>
-                        <div class="d-flex flex-column">
-                            <div class="fs-5">Ruiz, Edmark P.</div> <!-- BACK-END Replace: HR Staff -->
-                            <div class="text-primary">HR Staff</div>
-                        </div>
-                    </x-slot:label>
-                </x-form.checkbox>
+                        <x-slot:label>
+                            <div class="d-flex flex-column">
+                                <div class="fs-5">{{ $leave->secondaryApprover->full_name ?? __('Pending') }}</div>
+                                <div class="text-primary">{{ $leave?->secondaryApprover?->jobTitle?->job_title }}</div>
+                                <small class="text-muted">{{ $leave?->secondary_approver_signed_at }}</small>
+                            </div>
+                        </x-slot:label>
+                    </x-form.checkbox>
+                </div>
             </div>
 
-            <!-- Head Department Approval -->
-            <div class="ps-4 pe-2 py-2">
-                <div class="row">
-                    <div class="col-7">
-                        <x-form.checkbox container_class="" :nonce="$nonce" id="hr_head_approval"
-                            name="hr_head_approval" class="checkbox checkbox-primary" disabled> <!-- BACK-END Replace: Status of HR Staff approval. Checked attribute if approved. -->
+            <div class="pb-3">
+                <p class="fw-medium fs-5">{{ __('Human Resources Department') }}</p>
 
-                            <x-slot:label>
-                                <div class="d-flex flex-column">
-                                    <div class="fs-5">Kilnsey, Maria H.</div>
-                                    <!-- BACK-END Replace: HR Department Head Name -->
-                                    <div class="text-primary">HRD Department</div>
-                                </div>
-                            </x-slot:label>
-                        </x-form.checkbox>
+                <div class="ps-4 pe-2 py-3">
+                    <x-form.checkbox container_class="" :nonce="$nonce" id="thirdApproval" name="third-approval"
+                        class="checkbox checkbox-primary" disabled :checked="$leave->third_approver_signed_at">
+
+                        <x-slot:label>
+                            <div class="d-flex flex-column">
+                                <div class="fs-5">{{ $leave->thirdApprover->full_name ?? __('Pending') }}</div>
+                                <div class="text-primary">{{ $leave?->thirdApprover?->jobTitle?->job_title }}</div>
+                                <small class="text-muted">{{ $leave?->third_approver_signed_at }}</small>
+                            </div>
+                        </x-slot:label>
+                    </x-form.checkbox>
+                </div>
+
+                <div class="ps-4 pe-2 py-2">
+                    <div class="row">
+                        <div class="col-7">
+                            <x-form.checkbox container_class="" :nonce="$nonce" id="fourthApproval" name="fourth-approval"
+                                class="checkbox checkbox-primary" disabled :checked="$leave->fourth_approver_signed_at">
+
+                                <x-slot:label>
+                                    <div class="d-flex flex-column">
+                                        <div class="fs-5">{{ $leave->fourthApprover->full_name ?? __('Pending') }}</div>
+                                        <div class="text-primary">{{ $leave?->fourthApprover?->jobTitle?->job_title }}</div>
+                                        <small class="text-muted">{{ $leave?->fourth_approver_signed_at }}</small>
+                                    </div>
+                                </x-slot:label>
+                            </x-form.checkbox>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        @endif
     </section>
 </div>
