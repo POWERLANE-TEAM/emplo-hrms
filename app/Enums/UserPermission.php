@@ -141,6 +141,10 @@ enum UserPermission: string
     case APPROVE_OVERTIME_SUMMARY_INITIAL = 'initially approve overtime summary form';
     case APPROVE_OVERTIME_SUMMARY_SECONDARY = 'secondary approve overtime summary form';
     case APPROVE_OVERTIME_SUMMARY_TERTIARY = 'tertiary approve overtime summary form';
+    case APPROVE_LEAVE_REQUEST_FIRST = 'first approval for subordinate leave request';
+    case APPROVE_LEAVE_REQUEST_SECOND = 'second approval for subordinate leave request';
+    case APPROVE_LEAVE_REQUEST_THIRD = 'third approval for any leave request';
+    case APPROVE_LEAVE_REQUEST_FOURTH = 'fourth or last approval for any leave request';
 
     /**
      * Return user-friendly permission labels.
@@ -275,6 +279,13 @@ enum UserPermission: string
             self::ASSIGN_PERFORMANCE_EVAL_SCORE => 'Assign performance evaluation score',
 
             self::AUTHORIZE_OVERTIME_REQUEST => 'Authorize overtime request',
+            self::APPROVE_OVERTIME_SUMMARY_INITIAL => 'Initial approval of overtime summary form',
+            self::APPROVE_OVERTIME_SUMMARY_SECONDARY => 'Second approval of overtime summary form',
+            self::APPROVE_OVERTIME_SUMMARY_TERTIARY => 'Third approval of overtime summary form',
+            self::APPROVE_LEAVE_REQUEST_FIRST => 'First approval of subordinate leave request',
+            self::APPROVE_LEAVE_REQUEST_SECOND => 'Second approval of subordinate leave request',
+            self::APPROVE_LEAVE_REQUEST_THIRD => 'Third approval of any leave request',
+            self::APPROVE_LEAVE_REQUEST_FOURTH => 'Fourth or last approval of any leave request',
         };
     }
 }
