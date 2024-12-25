@@ -66,6 +66,18 @@
     <button class="btn btn-danger mt-3" onclick="openModal('error-modal')">Show Error Modal</button>
 </div>
 
+<div class="container mt-5">
+    <h2 class="mb-4">Confirmation Modals</h2>
+
+    <!-- Show Confirm Delete Modal Button -->
+    <button class="btn btn-danger mt-3" onclick="openModal('confirm-delete-modal')">Show Delete Confirmation Modal</button>
+
+    <!-- Show Caution Modal Button -->
+    <button class="btn btn-warning mt-3" onclick="openModal('caution-modal')">Show Caution Confirmation Modal</button>
+
+</div>
+
+
 <!-- Success Modal -->
 <x-modals.status-modal type="success" label="Success Notification" header="Success title here" id="success-modal"
     message="Replace success action message here." />
@@ -74,5 +86,9 @@
 <x-modals.status-modal type="error" label="Error notification" header="Error title here" id="error-modal"
     message="Replace error action message here." />
 
+<x-modals.confirmation.confirm-modal type="delete" label="Confirm Delete modal" header="Destructive Action Title?" id="confirm-delete-modal"
+    message="Are you sure you want to do this destructive action?" actionButtonTitle="Confirm Delete" />
 
+<x-modals.confirmation.confirm-modal type="caution" label="Caution modal" header="Caution Modal Title?" id="caution-modal"
+    message="Proceed with caution?" actionButtonTitle="Proceed" />
 @endsection
