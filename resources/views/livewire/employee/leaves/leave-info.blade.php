@@ -1,74 +1,70 @@
-<!-- BACK-END REPLACE Note:
-
- This component is currently designed for viewing only, just like the approvals component.
- It can be refactored to enable approve/reject functionality for Supervisor, Head of Department, or HR roles.
- This will make the component reusable across different user roles.
-
-  I've temporarily commented out the buttons. Feel free to uncomment them if this is the same component that'll
-  be used for the approval for the other users.
- 
-</div> -->
-
 <div>
     <div class="row px-3 mb-4">
 
-        <!-- Type of Leave -->
         <div class="row">
             <div class="col">
 
                 <div class="mb-3">
-                    <x-form.display.boxed-input-display label="Type of Leave" data="Sick Leave" />
-                    <!-- BACK-END REPLACE: Leave type -->
+                    <x-form.display.boxed-input-display label="{{ __('Type of Leave') }}" data="{{ $leave->category->leave_category_name }}" />
                 </div>
 
             </div>
         </div>
 
-        <!-- Calendar: Start Date & End Date -->
         <div class="row">
             <div class="col">
-                <x-form.display.boxed-input-display label="Start Date" data="11/21/2024" />
-                <!-- BACK-END REPLACE: Start Date -->
+                <x-form.display.boxed-input-display label="{{ __('Start Date') }}" data="{{ $leave->start_date }}" />
             </div>
 
             <div class="col">
-                <x-form.display.boxed-input-display label="Start Date" data="11/30/2024" />
-                <!-- BACK-END REPLACE: End  Date Date -->
+                <x-form.display.boxed-input-display label="{{ __('End Date') }}" data="{{ $leave->end_date }}" />
             </div>
         </div>
 
-        <!-- Reason for Leave -->
         <div class="row">
             <div class="col">
-                <x-form.display.boxed-input-display label="Reason for leave"
-                    data="Diagnosed with an acute case of 'I Can't Even.' Doctor's orders: binge-watch cat videos and avoid all human interaction for 24 hours.  My doctor insists I take an extended break to recalibrate my life, catch up on sleep, and pretend to be a productive member of society again. My symptoms include excessive scrolling through memes, procrastination, and a complete inability to look at spreadsheets without fainting. I'll be back when I remember how to function like a normal human." />
-                <!-- BACK-END REPLACE: End  Date Date -->
+                <x-form.display.boxed-input-display label="{{ __('Reason for leave') }}" data="{{ $leave->reason }}"/>
             </div>
         </div>
 
-        <!-- Reason for Leave -->
         <div class="pe-4 my-2">
             <div class="col-md-12 pe-2">
                 <div class="callout callout-success bg-body-tertiary">
-                    <div class="fs-5 px-2">Total leave days requested:
-                        <span class="fw-bold text-primary">10</span>
-                        <!-- Back-end Replace: Total count. This should be a client-side live response. -->
+                    <div class="fs-5 px-2">{{ __('Total leave days requested: ') }}
+                        <span class="fw-bold text-primary"> {{ $leave->total_days_requested }} </span>
+
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Approve/Reject Buttons 
-        <div class="container pe-4 mt-4">
-            <div class="row">
-                <div class="col-6 pe-2">
-                    <button type="submit" name="submit" class="btn btn-lg btn-danger w-100">Reject</button>
+        @if (is_null($leave->denied_at) && $destructiveBtnsEnabled)
+            <div class="container pe-4 mt-4">
+                <div class="row">
+                    <div class="col-6 pe-2">
+                        <button 
+                            type="submit" 
+                            wire:click="denyLeaveRequest" 
+                            wire:loading.attr="disabled"
+                            wire:target="approveLeaveRequest, rejectLeaveRequest"
+                            class="btn btn-lg btn-danger w-100"
+                        >
+                            {{ __('Deny') }}
+                        </button>
+                    </div>
+                    <div class="col-6">
+                        <button 
+                            type="submit" 
+                            wire:click="approveLeaveRequest" 
+                            wire:loading.attr="disabled"
+                            wire:target="approveLeaveRequest, rejectLeaveRequest"
+                            class="btn btn-lg btn-primary w-100"
+                        >
+                            {{ __('Approve') }}
+                        </button>
+                    </div>
                 </div>
-                <div class="col-6">
-                    <button type="submit" name="submit" class="btn btn-lg btn-primary w-100">Approve</button>
-                </div>
-            </div>
-        </div> -->
-
+            </div>              
+        @endif
     </div>
 </div>
