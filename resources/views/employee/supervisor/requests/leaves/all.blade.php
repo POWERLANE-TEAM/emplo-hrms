@@ -1,4 +1,4 @@
-@extends('components.layout.employee.layout', ['description' => 'Employee Dashboard', 'nonce' => $nonce])
+@extends('components.layout.employee.layout', ['description' => 'Leave Requests', 'nonce' => $nonce])
 @use ('Illuminate\View\ComponentAttributeBag')
 
 @section('head')
@@ -27,8 +27,14 @@
     </x-slot:heading>
 
     <x-slot:description>
-        {{ __('View and manage.') }}
+        {!! __('View and manage leave requests of ').
+            '<span class="text-primary fw-semibold">' 
+                .auth()->user()->account->jobTitle->jobFamily->job_family_name. 
+            '</span>'.
+            __(' employees here.') !!}
     </x-slot:description>
 </x-headings.main-heading>
+
+<livewire:employee.tables.subordinate-leave-requests-table :$routePrefix />
 
 @endsection
