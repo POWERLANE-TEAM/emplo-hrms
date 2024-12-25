@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\User;
 use App\Enums\UserRole;
+use App\Policies\EmployeeLeavePolicy;
 use App\Policies\OvertimePolicy;
 use Laravel\Pulse\Facades\Pulse;
 use App\Providers\Form\FormWizardServiceProvider;
@@ -99,7 +100,6 @@ class AppServiceProvider extends ServiceProvider
             'performance_rating' => 'App\Models\PerformanceRating',
             'holiday' => 'App\Models\Holiday',
             'attendance_log' => 'App\Models\AttendanceLog',
-            'overtime_summary' => '\App\Models\OvertimeSummary'
         ]);
 
         BroadcastServiceProvider::class;
@@ -127,6 +127,7 @@ class AppServiceProvider extends ServiceProvider
             return $user->hasRole(UserRole::ADVANCED);
         });
 
+        /** Overtime Policies */
         Gate::define('submitOvertimeRequest', [OvertimePolicy::class, 'submitOvertimeRequest']);
         Gate::define('updateOvertimeRequest', [OvertimePolicy::class, 'updateOvertimeRequest']);
         Gate::define('submitOvertimeRequestToday', [OvertimePolicy::class, 'submitOvertimeRequestToday']);
@@ -140,6 +141,15 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('editOvertimeRequest', [OvertimePolicy::class, 'editOvertimeRequest']);
         Gate::define('authorizeOvertimeRequest', [OvertimePolicy::class, 'authorizeOvertimeRequest']);
         Gate::define('viewOvertimeSummary', [OvertimePolicy::class, 'viewOvertimeSummary']);
+
+        /** Employee Leave Policies */
+        Gate::define('fileLeaveRequest', [EmployeeLeavePolicy::class, 'fileLeaveRequest']);
+        Gate::define('viewLeaveRequest', [EmployeeLeavePolicy::class, 'viewLeaveRequest']);
+        Gate::define('updateLeaveRequest', [EmployeeLeavePolicy::class, 'updateLeaveRequest']);
+        Gate::define('viewSubordinateLeaveRequest', [EmployeeLeavePolicy::class, 'viewSubordinateLeaveRequest']);
+        Gate::define('approveSubordinateLeaveRequest', [EmployeeLeavePolicy::class, 'approveSubordinateLeaveRequest']);
+        Gate::define('approveAnyLeaveRequest', [EmployeeLeavePolicy::class, 'approveAnyLeaveRequest']);
+        Gate::define('approveLeaveRequestFinal', [EmployeeLeavePolicy::class, 'approveLeaveRequestFinal']);
 
         Vite::useAggressivePrefetching();
     }
