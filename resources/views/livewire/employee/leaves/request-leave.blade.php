@@ -1,3 +1,7 @@
+@php
+    $validDate = today()->addDay()->format('Y-m-d');
+@endphp
+
 <div>
     <div class="row px-3 mb-4">
 
@@ -16,7 +20,7 @@
         <div class="row">
             <div class="col">
                 <x-form.boxed-date id="start_date" label="{{ __('Start Date') }}" wire:model.live="state.startDate" :nonce="$nonce"
-                    :required="true" placeholder="Start Date" />
+                    :required="true" placeholder="Start Date" min="{{ $validDate }}" />
                 @error('state.startDate')
                     <div class="invalid-feedback" role="alert"> {{ $message }} </div>
                 @enderror
@@ -24,7 +28,7 @@
 
             <div class="col">
                 <x-form.boxed-date id="end_date" label="{{ __('End Date') }}" wire:model.live="state.endDate" :nonce="$nonce"
-                    :required="true" placeholder="End Date" />
+                    :required="true" placeholder="End Date" min="{{ $validDate }}" />
                 @error('state.endDate')
                     <div class="invalid-feedback" role="alert"> {{ $message }} </div>
                 @enderror
