@@ -23,7 +23,7 @@
 
 <x-headings.header-link heading="{{ __('Leaves') }}"
     description="{{ __('Manage your leave balance and request leaves.') }}" label="Request Leave" nonce="{{ $nonce }}"
-    href="{{ route($routePrefix . '.general.leaves.request') }}">
+    href="{{ route($routePrefix . '.leaves.create') }}">
 </x-headings.header-link>
 
 <!-- SECTION: Leaves Info Cards + Dropdown -->
@@ -67,6 +67,5 @@
     </section>
 </div>
 
-<!-- BACK-END REPLACE: Employee's leaves table. 
-    The employee id should be passed to: leaves/view.blade.php -->
+<livewire:employee.tables.my-leaves-table />
 @endsection
