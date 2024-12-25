@@ -244,7 +244,15 @@ class Employee extends Model
     }
 
     /**
-     * Get the office name where employee is the office head.
+     * Get the job family / office where employee is the supervisor.
+     */
+    public function supervisorOf(): HasOne
+    {
+        return $this->hasOne(JobFamily::class, 'supervisor', 'employee_id');
+    }
+
+    /**
+     * Get the job family / office where employee is the office_head / manager.
      */
     public function headOf(): HasOne
     {
@@ -496,6 +504,52 @@ class Employee extends Model
     public function skills(): HasMany
     {
         return $this->hasMany(EmployeeSkill::class, 'employee_id', 'employee_id');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Leave Records Management
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * Get the leave requests where employee is the initial approver.
+     */
+    public function initiallyApprovedLeaves(): HasMany
+    {
+        return $this->hasMany(EmployeeLeave::class, 'initial_approver', 'employee_id');
+    }
+
+    /**
+     * Get the leave requests where employee is the secondary approver.
+     */
+    public function secondaryApprovedLeaves(): HasMany
+    {
+        return $this->hasMany(EmployeeLeave::class, 'secondary_approver', 'employee_id');
+    }
+
+    /**
+     * Get the leave requests where employee is the third approver.
+     */
+    public function thirdApprovedLeaves(): HasMany
+    {
+        return $this->hasMany(EmployeeLeave::class, 'third_approver', 'employee_id');
+    }
+
+    /**
+     * Get the leave requests where employee is the fourth approver.
+     */
+    public function fourthApprovedLeaves(): HasMany
+    {
+        return $this->hasMany(EmployeeLeave::class, 'fourth_approver', 'employee_id');
+    }
+
+    /**
+     * Get the user employee who denied the leave request.
+     */
+    public function deniedLeaves(): HasMany
+    {
+        return $this->hasMany(EmployeeLeave::class, 'denier', 'employee_id');
     }
 
     /**
