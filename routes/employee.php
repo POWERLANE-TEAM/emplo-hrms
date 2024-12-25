@@ -3,6 +3,7 @@
 use App\Models\Employee;
 use App\Enums\UserPermission;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LeaveController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\OvertimeController;
 use App\Http\Controllers\AttendanceController;
@@ -167,15 +168,6 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
 
     /**
-     * HR: Leaves
-     */
-
-    Route::get('hr/leaves/all', function () {
-        return view('employee.hr-manager.leaves.all');
-    })->name('hr.leaves.all');
-
-
-    /**
      * Overtime resource
      * 
      * TODO: Idk if Ivan plans to add middleware checks, but do them below.
@@ -211,6 +203,33 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         /** Ot requests archive */
         Route::get('archive', [OvertimeController::class, 'archive'])
             ->name('archive');
+    });
+
+
+    /**
+     * Leaves resource
+     */
+    Route::prefix('leaves')->name('leaves.')->group(function () {
+        Route::get('/', [LeaveController::class, 'index'])
+            ->name('index');
+    
+        Route::get('create', [LeaveController::class, 'create'])
+            ->name('create');
+
+        Route::get('{leave}', [LeaveController::class, 'show'])
+            // ->can('viewLeaveRequest', 'leave')
+            ->whereNumber('leave')
+            ->name('show');
+
+        Route::get('requests', [LeaveController::class, 'request'])
+            ->name('requests');
+
+        Route::get('requests/general', [LeaveController::class, 'general'])
+            ->name('requests.general');
+
+        Route::get('{leave}/requests', [LeaveController::class, 'show'])
+            ->can('viewSubordinateLeaveRequest', 'leave')
+            ->name('subordinate.requests');
     });
 
 
@@ -287,26 +306,6 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
 
     /**
-     * Leaves
-     */
-
-    Route::get('managerial/requests/leaves/all', function () {
-        return view('employee.supervisor.requests.leaves.all');
-    })->name('managerial.requests.leaves.all');
-
-
-    /**
-     * Overtime Requests
-     */
-
-    Route::get('overtimes/requests', function () {
-        return view('employee.supervisor.requests.overtime.all');
-    })
-        ->can(UserPermission::VIEW_SUBORDINATE_OVERTIME_REQUEST)
-        ->name('overtimes.requests');
-
-
-    /**
      * Performance Evaluations
      */
 
@@ -355,24 +354,6 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     Route::get('general/payslips/all', function () {
         return view('employee.basic.payslips.all');
     })->name('general.payslips.all');
-
-
-    /**
-     * General: Leaves
-     */
-
-    Route::get('general/leaves/all', function () {
-        return view('employee.basic.leaves.all');
-    })->name('general.leaves.all');
-
-    Route::get('general/leaves/request', function () {
-        return view('employee.basic.leaves.request');
-    })->name('general.leaves.request');
-
-
-    Route::get('general/leaves/view', function () {
-        return view('employee.basic.leaves.view');
-    })->name('general.leaves.view');
 
 
     /**
