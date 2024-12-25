@@ -1,7 +1,6 @@
 
 import './script.js';
 import './animations/texts-effect.js';
-import initLucideIcons from './icons/lucide.js';
 import addGlobalListener, { GlobalListener } from 'globalListener-script';
 import addGlobalScrollListener, { documentScrollPosY } from 'global-scroll-script';
 import togglePassword from './toggle-password.js';
@@ -18,12 +17,12 @@ import NameValidator from 'name-validator-script';
 import { LAST_NAME_VALIDATION, MIDDLE_NAME_VALIDATION, FIRST_NAME_VALIDATION } from 'name-validate-rule';
 // import './livewire.js'
 
-const themeManager = new ThemeManager();
 
-initPageTheme(themeManager);
+
+initPageTheme(window.ThemeManager);
 
 document.addEventListener("DOMContentLoaded", (event) => {
-    initLucideIcons();
+    //
 });
 
 document.addEventListener('livewire:init', () => {

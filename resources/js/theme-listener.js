@@ -30,34 +30,27 @@ export default class ThemeManager {
         if (isSystem) {
             this.pageBody.setAttribute('data-bs-theme', this.getSystemPreference());
             this.saveUserPreference('system');
+            this.setGlobalColors(themePrefer);
             return;
         }
 
         this.pageBody.setAttribute('data-bs-theme', themePrefer);
+        this.setGlobalColors(themePrefer);
 
         this.saveUserPreference(themePrefer);
 
     }
 
+    setGlobalColors(themePrefer) {
+        window.textColor = window.textColor || {};
+        window.textColor.bodyColor = themePrefer === 'light' ? 'black' : 'white';
+        window.textColor.bodySecondaryColor = themePrefer === 'light' ? 'gray' : 'whitesmoke';
+        console.log('Theme set to: ', window.textColor.bodySecondaryColor);
+    }
+
     addListener() {
-        if (this.listenerFunc) {
-            console.log('already listening');
-        }
-        this.listenerFunc = window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', ({ matches }) => {
-            if (this.getUserPreference() !== 'system') {
-                // this.listenerFunc.removeEventListener('change', this.listenerFunc);
-                return;
-            }
-
-            let themeToSet;
-
-            if (matches) {
-                themeToSet = 'light';
-            } else {
-                themeToSet = 'dark';
-            }
-            this.pageBody.setAttribute('data-bs-theme', themeToSet);
-        });
+        window.matchMedia('(prefers-color-scheme: light)').removeEventListener('change', handleSystenThemeChange);
+        window.systemThemeChangeListener = window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', handleSystenThemeChange);
     }
 
     postThemePreference(themeToSet) {
@@ -92,11 +85,28 @@ export default class ThemeManager {
     }
 }
 
+function handleSystenThemeChange({ matches }) {
+    if (window.ThemeManager.getUserPreference() !== 'system') {
+        return;
+    }
+
+    let themeToSet;
+
+    if (matches) {
+        themeToSet = 'light';
+    } else {
+        themeToSet = 'dark';
+    }
+    document.querySelector('body').setAttribute('data-bs-theme', themeToSet);
+    window.ThemeManager.setGlobalColors(themeToSet);
+};
+
 export function initPageTheme(themeManager, themeToggle = false) {
     const themePrefer = themeManager.getUserPreference();
     let prefersLightMode;
     const isSystem = themePrefer == 'system';
     const defaultTheme = 'light';
+
 
     try {
 

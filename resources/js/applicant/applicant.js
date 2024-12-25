@@ -1,6 +1,6 @@
 import addGlobalListener from 'globalListener-script';
-import ThemeManager, { initPageTheme, handleThemeBtn } from 'theme-listener-script';
-const themeManager = new ThemeManager();
+import { initPageTheme, handleThemeBtn } from 'theme-listener-script';
+
 const themeToggle = document.getElementById(`theme-toggle-btn`).closest('.dropdown');
 
 const initAll = () => {
@@ -8,8 +8,8 @@ const initAll = () => {
         document.querySelectorAll('.not-transition').forEach(element => {
             element.classList.remove('not-transition');
         });
-        initPageTheme(themeManager, themeToggle);
-        handleThemeBtn(themeToggle, themeManager, addGlobalListener);
+        initPageTheme(window.ThemeManager, themeToggle);
+        handleThemeBtn(themeToggle, window.ThemeManager, addGlobalListener);
     } catch (error) {
         console.error(error);
     }
