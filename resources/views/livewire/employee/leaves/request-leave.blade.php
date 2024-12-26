@@ -1,5 +1,6 @@
 @php
     $validDate = today()->addDay()->format('Y-m-d');
+    $leaveBalance = auth()->user()->account->jobDetail->leave_balance;
 @endphp
 
 <div>
@@ -54,6 +55,11 @@
                         <span class="fw-bold text-primary">{{ $totalDaysLeave }}</span>
                     </div>
                 </div>
+                <div class="callout callout-info bg-body-{{ $leaveBalance > 0 ? 'info' : 'danger' }} mt-3">
+                    <div class="fs-5 px-2">{{ __('Remaining Leave Balance') }}:
+                        <span class="fw-bold text-primary">{{ $leaveBalance }}</span>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -66,3 +72,12 @@
         </div>
     </div>
 </div>
+
+@script
+<script>
+    Livewire.on('showSuccessToast', (event) => {
+        const eventPayload = event[0];
+        showToast(eventPayload.type, eventPayload.message);
+    });
+</script>
+@endscript

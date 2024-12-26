@@ -84,6 +84,11 @@ class RequestLeave extends Component
         
         $this->reset();
         $this->resetErrorBag();
+
+        $this->dispatch('showSuccessToast', [
+            'type' => 'success',
+            'message' => __("Your file for leave request has been successfully submitted.")
+        ]);
     }
 
     #[Computed]
