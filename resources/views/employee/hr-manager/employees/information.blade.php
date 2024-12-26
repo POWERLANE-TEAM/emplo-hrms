@@ -15,7 +15,7 @@
 
 @pushOnce('scripts')
     @vite(['resources/js/employee/hr-manager/employee-info.js'])
-
+    @vite(['resources/js/employee/calendar.js'])
 @endPushOnce
 
 @pushOnce('styles')
@@ -52,10 +52,7 @@
 
         <!-- Information Tab Section-->
 
-        <!-- Sub-section: Employee Information -->
-        <livewire:hr-manager.employees.information :employee="$employee" />
-        <!-- Sub-section: Documents -->
-        <livewire:hr-manager.employees.documents />
+
 
         <!-- Attendance Tab Section -->
         <livewire:hr-manager.employees.attendance />
