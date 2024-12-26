@@ -52,7 +52,10 @@
 
         <!-- Information Tab Section-->
 
-
+        <!-- Sub-section: Employee Information -->
+        <livewire:hr-manager.employees.information :employee="$employee" />
+        <!-- Sub-section: Documents -->
+        <livewire:hr-manager.employees.documents />
 
         <!-- Attendance Tab Section -->
         <livewire:hr-manager.employees.attendance />
