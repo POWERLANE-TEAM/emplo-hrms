@@ -12,7 +12,7 @@
         </x-slot:title>
         <x-slot:content>
             <div class="mb-3">
-                <label for="title" class="col-form-label">{{ __('Category Title:') }}</label>
+                <label for="title" class="col-form-label">{{ __('Category Title') }} <span class="text-danger">*</span></label>
                 <input wire:model="state.title" type="text" id="title" class="form-control 
                     @error('title') is-invalid @enderror" />
                 @error('title')
@@ -20,7 +20,7 @@
                 @enderror
             </div>
             <div class="mb-3">
-                <label for="shortDescription" class="col-form-label">{{ __('Short Description:') }}</label>
+                <label for="shortDescription" class="col-form-label">{{ __('Short Description') }} </label>
                 <textarea wire:model="state.shortDescription" id="shortDescription" rows="6" class="form-control 
                     @error('shortDescription') is-invalid @enderror"></textarea>
                 @error('shortDescription')
@@ -29,7 +29,6 @@
             </div>
         </x-slot:content>
         <x-slot:footer>
-            <button wire:click="restart" wire:loading.attr="disabled" data-bs-toggle="modal" class="btn btn-secondary">{{ __('Close') }}</button>
             <button wire:click="save" wire:loading.attr="disabled" class="btn btn-primary">{{ __('Save changes') }}</button>
         </x-slot:footer>
     </x-modals.dialog>
@@ -83,9 +82,9 @@
 @script
 <script>
     const modalEl = document.getElementById('{{ $modalId }}');
-    const categoryModal = new bootstrap.Modal(modalEl);
+    const categoryModal = bootstrap.Modal.getOrCreateInstance(modalEl);
     const toastEl = document.getElementById('{{ $toastId }}');
-    const toast = new bootstrap.Toast(toastEl);
+    const toast = bootstrap.Toast.getOrCreateInstance(toastEl);
 
     Livewire.hook('morph.added', ({ el }) => {
         lucide.createIcons();

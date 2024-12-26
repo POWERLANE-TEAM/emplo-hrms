@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\Application\ApplicantController;
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\ContentController;
 use App\Http\Controllers\ApplicationDocController;
 use App\Http\Controllers\ResumeController;
+use App\Http\Controllers\WebThemeController;
 use App\Livewire\Auth\FacebookOAuth;
 use App\Livewire\Auth\GoogleOAuth;
 use App\Livewire\Auth\GoogleOneTap;
@@ -14,14 +16,17 @@ use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 Route::group([], function () {
     Route::get('/hiring', function () {
         return view('hiring');
-    });
+    })->name('hiring');
 });
+
+Route::post('/theme-preference/set', [WebThemeController::class, 'create'])
+    ->middleware('throttle:4,1');
 
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/application/{page?}', [ApplicantController::class, 'index']);
+    Route::get('/application/{application?}', [ApplicantController::class, 'show'])->name('applicant.dashboard');
 
-    Route::get('/apply', [ApplicantController::class, 'create']);
+    Route::get('/apply/{job}', [ApplicantController::class, 'create'])->name('apply');
 
     Route::get('/preemploy', [ApplicationDocController::class, 'create']);
     Route::post('/preemploy', [ApplicationDocController::class, 'store']);
@@ -52,3 +57,10 @@ Route::middleware('guest')->group(function () {
 Route::post('/logout', [Logout::class, 'destroy'])
     ->middleware('auth')
     ->name('logout');
+
+Route::get('/test-pop-ups', function () {
+    return view('components.html.test-pop-ups');
+});
+
+Route::get('/modal-content/{modalKey}', [ContentController::class, 'getModalContent']);
+

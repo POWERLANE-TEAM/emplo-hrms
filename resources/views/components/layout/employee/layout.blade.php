@@ -40,12 +40,21 @@
     <!-- Scripts -->
     <x-authenticated-broadcast-id />
     <x-livewire-listener />
+    @if(session('clearSessionStorageKeys'))
+    <script nonce="{{ $nonce }}">
+        @php
+            $keys = session('clearSessionStorageKeys');
+        @endphp
 
-    @vite([
-    'resources/js/listeners/online-users.js',
-    'resources/js/app.js',
-    'resources/css/style.css'
-])
+        @if(is_array($keys))
+            @foreach($keys as $key)
+                sessionStorage.removeItem('{{ $key }}');
+            @endforeach
+        @else
+            sessionStorage.removeItem('{{ $keys }}');
+        @endif
+    </script>
+    @endif
 
     {{-- Waiting for this fix in livewire https://github.com/livewire/livewire/pull/8793 --}}
     {{-- livewire.js?id=cc800bf4:9932 Detected multiple instances of Livewire running --}}
@@ -53,9 +62,15 @@
     {{-- @livewireStyles(['nonce' => $nonce])
     @livewireScripts(['nonce' => $nonce]) --}}
     @livewireStyles
+
+    @vite([
+        'resources/js/listeners/online-users.js',
+        'resources/js/app.js',
+        'resources/css/style.css'
+    ])
 </head>
 
-<body class="employee-main" data-bs-theme>
+<body class="employee-main" data-bs-theme="{{ session('themePreference', 'light') }}">
     @yield('critical-styles')
     <x-no-script-body />
 
@@ -75,8 +90,7 @@
     @yield('before-nav')
 
     @if (!View::hasSection('header-nav'))
-        <x-layout.employee.nav.main-menu class="position-sticky top-0 start-0" :user="$user" :userPhoto="$userPhoto"
-            :defaultAvatar="$defaultAvatar"></x-layout.employee.nav.main-menu>
+        <x-layout.employee.nav.main-menu class="position-sticky top-0 start-0" :user="$user" :userPhoto="$userPhoto"></x-layout.employee.nav.main-menu>
     @else
         @yield('header-nav')
     @endif
@@ -86,6 +100,9 @@
     <div class="main-layout-container">
         <main class="main {{ $main_cont_class }}">
             @yield('content')
+
+            <!-- Toast Container -->
+            <div class="toast-container position-fixed bottom-0 end-0 p-3"></div>
         </main>
     </div>
 

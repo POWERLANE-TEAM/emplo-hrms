@@ -4,16 +4,9 @@
 
 // Helper function to show the modal by ID
 
-export function openModal(modalId) {
-    const modal = new bootstrap.Modal(document.getElementById(modalId));
-    modal.show();
-}
-
-window.openModal = openModal;
-
 // Helper function to hide the modal by ID
 export function hideModal(modalId) {
-    const modal = bootstrap.Modal.getInstance(document.getElementById(modalId));
+    const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById(modalId));
     if (modal) {
         modal.hide();
     }
@@ -116,3 +109,37 @@ export function openEditPerfRangeModal(itemName, index, itemDesc) {
 }
 
 window.openEditPerfRangeModal = openEditPerfRangeModal;
+
+
+// ================================
+// JSON Fetcher: Informational Modal Content
+// ================================
+
+
+export function fetchModalContent(modalKey) {
+    // console.log(modalKey);
+    // if (!modalKey) {
+    //     console.error('Modal key is missing');
+    //     return;
+    // }
+
+    fetch(`/modal-content/${modalKey}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                console.error(data.error);
+                return;
+            }
+
+            // Dynamically update the modal content
+            const modalElement = document.getElementById(modalKey);
+            modalElement.querySelector('.modal-title').innerText = data.title;
+            modalElement.querySelector('.modal-body').innerHTML = data.content;
+
+        })
+        .catch(error => {
+            console.error('Error fetching modal content:', error);
+        });
+}
+
+window.fetchModalContent = fetchModalContent;

@@ -36,6 +36,22 @@
     <x-authenticated-broadcast-id />
     <x-livewire-listener />
 
+    @if (session('clearSessionStorageKeys'))
+        <script nonce="{{ $nonce }}">
+            @php
+                $keys = session('clearSessionStorageKeys');
+            @endphp
+
+            @if (is_array($keys))
+                @foreach ($keys as $key)
+                    sessionStorage.removeItem('{{ $key }}');
+                @endforeach
+            @else
+                sessionStorage.removeItem('{{ $keys }}');
+            @endif
+        </script>
+    @endif
+
     @auth
         @vite(['resources/js/listeners/online-users.js'])
     @endauth
@@ -51,7 +67,7 @@
 
 </head>
 
-<body>
+<body data-bs-theme="{{ session('themePreference', 'light') }}">
     @yield('critical-styles')
     <x-no-script-body />
 
@@ -61,17 +77,19 @@
     @stack('styles')
 
     @env('local')
-        @vite(['node_modules/bootstrap/dist/js/bootstrap.bundle.min.js'])
+    @vite(['node_modules/bootstrap/dist/js/bootstrap.bundle.min.js'])
     @endenv
 
     @env('production')
-        @vite(['node_modules/bootstrap/dist/js/bootstrap.bundle.min.js?commonjs-entry'])
+    @vite(['node_modules/bootstrap/dist/js/bootstrap.bundle.min.js?commonjs-entry'])
     @endenv
 
     @stack('pre-scripts')
-    @stack('scripts')
 
     @yield('before-nav')
+
+    <!-- Toast Container -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3"></div>
 
     @yield('header-nav')
 
@@ -87,7 +105,41 @@
         @livewireScripts()
     @endonce
 
+    @stack('scripts')
+
     @yield('footer')
+
+
+
+    @if (session('verification-email-error'))
+        @once
+            <x-modals.email-verif-error :message="session('verification-email-error')" />
+        @endonce
+        <script nonce="{{ $nonce }}">
+            document.addEventListener("livewire:initialized", () => {
+                document.addEventListener("livewire:navigated", () => {
+                    window.openModal('modal-verification-email-error');
+                });
+            });
+        </script>
+    @endif
+
+    @if (session('verification-email-success'))
+        @once
+            <x-modals.email-sent label="Verification email sent" id="modal-verification-email-success" header="Email Sent"
+                :message="session('verification-email-success')" />
+        @endonce
+        <script nonce="{{ $nonce }}">
+            document.addEventListener("livewire:initialized", () => {
+                window.openModal('modal-verification-email-success');
+            });
+        </script>
+
+        @php
+            Session::forget('verification-email-success');
+        @endphp
+    @endif
+
 </body>
 
 </html>

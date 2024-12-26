@@ -19,7 +19,7 @@ class JobVacancyFactory extends Factory
     {
         return [
             'job_title_id' => JobTitle::inRandomOrder()->first()->job_title_id,
-            'vacancy_count' => fake()->numberBetween(1, 10),
+            'vacancy_count' => fake()->numberBetween(0, 10),
             'application_deadline_at' => fake()->optional()->dateTimeBetween('now', '+1 year'),
         ];
     }

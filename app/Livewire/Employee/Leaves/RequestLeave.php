@@ -80,7 +80,7 @@ class RequestLeave extends Component
             ]);
 
             $leave->processes()->create([
-                'processable_type' => 'employee_leave',
+                'processable_type' => EmployeeLeave::class,
                 'processable_id' => $leave->emp_leave_id,
             ]);
         });

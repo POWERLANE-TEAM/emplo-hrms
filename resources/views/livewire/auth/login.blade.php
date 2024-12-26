@@ -26,30 +26,37 @@
 
         <x-form.email id="userLogin-email" label="Email Address" name="email" autocomplete="email" :nonce="$nonce"
             class=" {{ $errors->has('email') ? 'is-invalid' : '' }}">
+            <x-slot:input_icon_left>
+                <i data-lucide="mail" class="icon-large"></i>
+            </x-slot:input_icon_left>
 
             <x-slot:feedback>
                 @include('components.form.input-feedback', [
-    'feedback_id' => 'userLogin-email-feedback',
-    'message' => $errors->first('email'),
-])
+                    'feedback_id' => 'userLogin-email-feedback',
+                    'message' => $errors->first('email'),
+                ])
             </x-slot:feedback>
         </x-form.email>
 
         <x-form.password id="userLogin-password" label="Password" name="password" autocomplete="current-password"
             pattern="" :nonce="$nonce" class=" {{ $errors->has('password') ? 'is-invalid' : '' }}">
 
+            <x-slot:input_icon_left>
+                <i data-lucide="lock" class="icon-large"></i>
+            </x-slot:input_icon_left>
+
             <x-slot:toggle_password>
                 @include('components.form.toggle-password', [
-    'toggler_id' => 'toggle-psw',
-    'controls' => 'userLogin-password',
-])
+                    'toggler_id' => 'toggle-psw',
+                    'controls' => 'userLogin-password',
+                ])
             </x-slot:toggle_password>
 
             <x-slot:feedback>
                 @include('components.form.input-feedback', [
-    'feedback_id' => 'userLogin-password-feedback',
-    'message' => $errors->first('password'),
-])
+                    'feedback_id' => 'userLogin-password-feedback',
+                    'message' => $errors->first('password'),
+                ])
             </x-slot:feedback>
         </x-form.password>
 
@@ -63,7 +70,7 @@
             </div>
 
             <div class=" col-md-auto mx-auto me-md-0 ms-md-auto order-2 order-md-1">
-                <button class="border-0 bg-transparent text-decoration-underline ">
+                <button type="button" class="border-0 bg-transparent text-decoration-underline ">
                     Forgot your password?
                 </button>
             </div>

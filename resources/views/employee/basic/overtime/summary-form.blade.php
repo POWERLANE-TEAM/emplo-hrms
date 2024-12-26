@@ -1,18 +1,18 @@
-@extends('components.layout.employee.layout', ['description' => 'Employee Dashboard', 'nonce' => $nonce])
+@extends('components.layout.employee.layout', ['description' => 'Overtime Summary Form', 'nonce' => $nonce])
 @use ('Illuminate\View\ComponentAttributeBag')
 
 @section('head')
-<title>Summary Form</title>
+<title>Overtime Summary Form</title>
 <script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 @endsection
 
-@pushOnce('pre-scripts')
-@endPushOnce
+@props([
+    'filter' => $filter,
+])
 
 @pushOnce('scripts')
     @vite(['resources/js/employee/basic/leaves.js'])
-
 @endPushOnce
 
 @pushOnce('styles')
@@ -23,42 +23,25 @@
 
 <x-breadcrumbs>
     <x-slot:breadcrumbs>
-        <x-breadcrumb :href="'#'"> <!-- REPLACE: Link to the All Overtime Summary Form tables -->
-            Overtime Summaries
+        <x-breadcrumb :href="route($routePrefix . '.overtimes.index')">
+            {{ __('Overtime Cut-Offs') }}
         </x-breadcrumb>
-        <x-breadcrumb :active="request()->routeIs($routePrefix . '.overtime.summary-form')">
-            Current Overtime Form
+        <x-breadcrumb :active="request()->routeIs($routePrefix . '.overtimes.summaries')">
+            {{ __('Summary Record') }}
         </x-breadcrumb>
     </x-slot:breadcrumbs>
 </x-breadcrumbs>
 
-
-<section class="row">
-    <div class="col-6">
-        <x-headings.main-heading :isHeading="true">
-            <x-slot:heading>
-                {{__('Overtime Summary Form')}}
-            </x-slot:heading>
-
-            <x-slot:description>
-                <p><b>{{ __('Payroll Period:') }}</b> {{ __('September 01, 2024 - September 28, 2024') }}</p>
-                <!-- BACK-END REPLACE: Replace with current payroll period. -->
-            </x-slot:description>
-        </x-headings.main-heading>
-    </div>
-    <div class="col-6 pt-2 text-end">
-        <button onclick="openModal('requestOvertime')" class="btn btn-primary">
-        <i data-lucide="plus-circle" class="icon icon-large me-2"></i> Request Overtime</button>
-
-        <!-- BACK-END REPLACE NOTE: This button should not appear if the OT Summary Form being viewed is history/not the current payroll period. -->
-    </div>
-</section>
+<livewire:employee.overtimes.basic.cut-off-payout-periods
+    :payroll="$filter"
+/>
+<livewire:employee.overtimes.overtime-summary-approval 
+    :payroll="$filter"
+/>
 
 @include('components.includes.tab_navs.leaves-navs')
 
 <section class="my-2">
-    <!-- BACK-END REPLACE: Table of overtime queries for the chosen/current payroll period. -->
+    <livewire:employee.tables.cut-off-overtime-summary-approvals-table />
 </section>
-
-<x-modals.create_dialogues.request-overtime />
 @endsection

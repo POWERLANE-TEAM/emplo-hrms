@@ -1,7 +1,7 @@
-{{-- 
-* |-------------------------------------------------------------------------- 
-* | Boxed: Time Input Field 
-* |-------------------------------------------------------------------------- 
+{{--
+* |--------------------------------------------------------------------------
+* | Boxed: Time Input Field
+* |--------------------------------------------------------------------------
 --}}
 @use ('Illuminate\View\ComponentAttributeBag')
 
@@ -23,15 +23,15 @@
     @endif
 </label>
 <div {{ $containerAttributes }}>
-    <input type="time"
-        @if ($attributes->has('name')) wire:model="{{ $attributes->get('name') }}" @endif
+    <input type="time" @if ($attributes->has('name')) wire:model="{{ $attributes->get('name') }}" @endif
         {{ $attributes->merge([
             'class' => 'form-control border ps-3 rounded',
             'autocomplete' => $attributes->get('autocomplete', 'off'),
-            'placeholder' => $attributes->get('placeholder', 'HH:mm'),   {{-- Placeholder with time format --}}
+            'placeholder' => $attributes->get('placeholder', 'HH:mm'),
+            {{-- Placeholder with time format --}}
         ]) }}
-        nonce="{{ $nonce }}">
+        aria-owns="{{ $attributes->get('id') }}-feedback" nonce="{{ $nonce }}">
+    </div>
     @if (!empty($feedback))
         {{ $feedback }}
     @endif
-</div>

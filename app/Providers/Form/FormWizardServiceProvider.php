@@ -4,6 +4,7 @@ namespace App\Providers\Form;
 
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
+use App\Livewire\Applicant\Application\AdditionalDetailsStep;
 use App\Livewire\Applicant\Application\ApplicationWizard;
 use App\Livewire\Applicant\Application\FinalPreviewStep;
 use App\Livewire\Applicant\Application\PersonalDetailsStep;
@@ -19,6 +20,7 @@ class FormWizardServiceProvider extends ServiceProvider
         Livewire::component('form.applicant.application-wizard', ApplicationWizard::class);
         Livewire::component('form.applicant.resume-upload-step', ResumeUploadStep::class);
         Livewire::component('form.applicant.personal-details-step', PersonalDetailsStep::class);
+        Livewire::component('form.applicant.additional-details-step', AdditionalDetailsStep::class);
         Livewire::component('form.applicant.final-preview-step', FinalPreviewStep::class);
     }
 

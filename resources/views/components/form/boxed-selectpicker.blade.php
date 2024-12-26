@@ -6,22 +6,24 @@
 
 @props(['label' => null, 'options' => [], 'nonce', 'required' => false])
 
-@if($label)
+@if ($label)
     <label for="{{ $attributes->get('id') }}" class="mb-1 fw-semibold text-secondary-emphasis">
         {{ $label }}
-        {{-- Conditionally display the red asterisk for required fields --}}
-        @if($required)
+
+        @if ($required)
             <span class="text-danger">*</span>
         @endif
     </label>
 @endif
 <div wire:ignore class="input-group position-relative">
-    <select @if($attributes->has('name')) wire:model="{{ $attributes->get('name') }}" @endif {{ $attributes->merge([
-    'class' => 'form-control form-select border ps-3 rounded pe-5 selectpicker',
-    'autocomplete' => $attributes->get('autocomplete', 'off'),
-]) }} nonce="{{ $nonce }}">
+    <select @if ($attributes->has('name')) wire:model="{{ $attributes->get('name') }}" @endif
+        {{ $attributes->merge([
+            'class' => 'form-control form-select border ps-3 rounded pe-5 selectpicker',
+            'autocomplete' => $attributes->get('autocomplete', 'off'),
+        ]) }}
+        aria-owns="{{ $attributes->get('id') }}-feedback" nonce="{{ $nonce }}">
         <option value="">{{ $attributes->get('placeholder', 'Select an option') }}</option>
-        @foreach($options as $value => $optionLabel)
+        @foreach ($options as $value => $optionLabel)
             <option value="{{ $value }}">{{ $optionLabel }}</option>
         @endforeach
     </select>
@@ -34,14 +36,12 @@
 </style>
 
 <script>
-
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('livewire:navigated', () => {
         const selectElements = document.querySelectorAll('.selectpicker');
 
-        selectElements.forEach(function (selectElement) {
-            // Check if the element has already been initialized using a data attribute
+        selectElements.forEach(function(selectElement) {
             if (selectElement.getAttribute('data-choices-initialized') === 'true') {
-                return; // Skip initialization if already done
+                return;
             }
 
             new Choices(selectElement, {
@@ -54,15 +54,12 @@
 
             selectElement.setAttribute('data-choices-initialized', 'true');
 
-            // Add custom scrollbar class after initialization
-            // Use a small timeout to ensure the dropdown is fully initialized
             setTimeout(() => {
-                // Directly select the .choices__list--dropdown element
                 const dropdownList = document.querySelector('.choices__list--dropdown');
                 if (dropdownList) {
                     dropdownList.classList.add('visible-gray-scrollbar');
                 }
-            }, 100);  // Adjust the timeout duration as necessary
+            }, 100);
         });
     });
 </script>

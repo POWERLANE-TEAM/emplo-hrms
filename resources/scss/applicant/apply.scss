@@ -7,8 +7,10 @@
 @import '../footer';
 @import '../btn-toggle-psw';
 @import '../input/checkbox';
+@import '../input/address-form';
 @import '../filepond';
 @import '../guest/main';
+@import '../scrollbar';
 
 .boxed {
     .filepond--root {
@@ -29,6 +31,31 @@
                 // background-color: color-mix(in srgb, var(--bs-primary-bg-subtle) 45%, white);
             }
 
+        }
+    }
+}
+
+[role="heading"][aria-level="1"] {
+    position: relative;
+
+    @media screen and (min-width: 576px) {
+
+        &:hover {
+            .change-application {
+                visibility: visible;
+            }
+        }
+    }
+
+    .change-application {
+        position: absolute;
+
+        @media screen {
+            visibility: hidden;
+        }
+
+        @media not screen {
+            display: none;
         }
     }
 }
@@ -58,4 +85,28 @@
 
         }
     }
+}
+
+div:has(>.form-display-profile) {
+    --img-size: clamp(4rem, 2rem + 5vw, 10rem + 2.5vw);
+    padding: 0.1rem;
+    aspect-ratio: 1/1;
+    height: var(--img-size);
+    width: var(--img-size);
+    overflow: clip;
+
+    .form-display-profile {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1/1;
+
+    }
+}
+
+.checkbox-primary {
+    @include custom-checkbox(var(--bs-black), var(--bs-primary));
+}
+
+.checkbox-label {
+    padding-left: clamp(1.5rem, 0.5rem + 1.25vw, 5vw);
 }

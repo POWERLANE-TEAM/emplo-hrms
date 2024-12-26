@@ -22,6 +22,10 @@
     @if ($attributes->has('required'))
         <span class="text-danger">*</span>
     @endif
+    @if ($attributes->has('showPlaceholderOnLabel'))
+    <span class="text-muted label-placeholder d-none">{!! $attributes->get('placeholder') !!}</span>
+    @php $attributes = $attributes->except('showPlaceholderOnLabel'); @endphp
+@endif
 </label>
 <div {{ $containerAttributes }}>
     <!-- Input with boxed styling -->
@@ -30,10 +34,10 @@
             'type' => $attributes->get('type', 'text'),
             'class' => 'form-control border ps-3 rounded',
             'autocomplete' => $attributes->get('autocomplete', 'off'),
-            'placeholder' => $attributes->get('placeholder', ''), // Add placeholder attribute
+            'placeholder' => $attributes->get('placeholder', ''),
         ]) }}
-        nonce="{{ $nonce }}">
+        aria-owns="{{ $attributes->get('id') }}-feedback" nonce="{{ $nonce }}">
+    </div>
     @if (!empty($feedback))
         {{ $feedback }}
     @endif
-</div>

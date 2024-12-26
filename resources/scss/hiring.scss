@@ -1,7 +1,3 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 @import 'utils';
 @import 'guest/header-nav';
 @import 'icon/lucide';
@@ -13,6 +9,7 @@
 @import 'input/checkbox';
 @import 'palette/text-colors';
 @import 'scales/img-size';
+@import "./scrollbar";
 
 
 
@@ -197,21 +194,22 @@ section.top-vector {
         line-height: var(--line-height);
         overflow-y: auto;
         position: relative;
-        background: var(--bs-secondary-bg); /* Base background color */
+        background: var(--bs-secondary-bg);
+        /* Base background color */
     }
-    
+
     .job-descr::after {
         content: "";
         position: absolute;
         bottom: 0;
         left: 0;
         width: 100%;
-        height: 2rem; 
+        height: 2rem;
         pointer-events: none;
         background: linear-gradient(to bottom, transparent, var(--bs-secondary-bg-subtle));
         display: block;
     }
-    
+
     // .job-descr {
     //     /* Need javascript to make dynamic max line value based on device height */
     //     --max-lines: 9;

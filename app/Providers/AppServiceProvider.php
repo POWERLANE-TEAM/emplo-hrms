@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\User;
 use App\Enums\UserRole;
+use App\Policies\OvertimePolicy;
 use Laravel\Pulse\Facades\Pulse;
 use App\Providers\Form\FormWizardServiceProvider;
 use Illuminate\Support\Facades\Gate;
@@ -33,6 +34,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(BiometricDevice::class, function () {
             return new BiometricDevice();
         });
+        
         $this->app->register(FormWizardServiceProvider::class);
     }
 
@@ -97,6 +99,7 @@ class AppServiceProvider extends ServiceProvider
             'performance_rating' => 'App\Models\PerformanceRating',
             'holiday' => 'App\Models\Holiday',
             'attendance_log' => 'App\Models\AttendanceLog',
+            'overtime_summary' => '\App\Models\OvertimeSummary'
         ]);
 
         BroadcastServiceProvider::class;
@@ -123,6 +126,20 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('viewPulse', function (User $user) {
             return $user->hasRole(UserRole::ADVANCED);
         });
+
+        Gate::define('submitOvertimeRequest', [OvertimePolicy::class, 'submitOvertimeRequest']);
+        Gate::define('updateOvertimeRequest', [OvertimePolicy::class, 'updateOvertimeRequest']);
+        Gate::define('submitOvertimeRequestToday', [OvertimePolicy::class, 'submitOvertimeRequestToday']);
+        Gate::define('submitNewOrAnotherOvertimeRequest', [OvertimePolicy::class, 'submitNewOrAnotherOvertimeRequest']);
+        Gate::define('approveOvertimeSummaryInitial', [OvertimePolicy::class, 'approveOvertimeSummaryInitial']);
+        Gate::define('approveOvertimeSummarySecondary', [OvertimePolicy::class, 'approveOvertimeSummarySecondary']);
+        Gate::define('approveOvertimeSummaryTertiary', [OvertimePolicy::class, 'approveOvertimeSummaryTertiary']);
+        Gate::define('viewOvertimeRequestAsSecondaryApprover', [OvertimePolicy::class, 'viewOvertimeRequestAsSecondaryApprover']);
+        Gate::define('viewSubordinateOvertimeRequest', [OvertimePolicy::class, 'viewSubordinateOvertimeRequest']);
+        Gate::define('updateAllOvertimeRequest', [OvertimePolicy::class, 'updateAllOvertimeRequest']);
+        Gate::define('editOvertimeRequest', [OvertimePolicy::class, 'editOvertimeRequest']);
+        Gate::define('authorizeOvertimeRequest', [OvertimePolicy::class, 'authorizeOvertimeRequest']);
+        Gate::define('viewOvertimeSummary', [OvertimePolicy::class, 'viewOvertimeSummary']);
 
         Vite::useAggressivePrefetching();
     }

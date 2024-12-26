@@ -90,11 +90,12 @@
         </div>
     </section>
 
-    <section class="second-section hidden-until-scroll scroll-trigger-section">
+    <section id="job-listtings" class="second-section hidden-until-scroll scroll-trigger-section "
+        style="--top-offset: calc(2rem + 15vh); padding-top: var(--top-offset); margin-top: calc(var(--top-offset) * -0.6);">
 
         @livewire('guest.job-search-input')
         <div class="px-md-5  pt-md-5 pb-md-3 ms-5">
-            <em class=" ms-5" x-data="{ jobCount: 12 }"
+            <em class=" ms-5" x-data="{ jobCount: 0 }"
                 x-on:job-vacancies-fetched.window="jobCount = $event.detail[0].count || 'no';" nonce="{{ $nonce }}">
                 Currently
                 <span x-text="jobCount" nonce="{{ $nonce }}"></span>
@@ -110,7 +111,6 @@
 
         </section>
     </section>
-
 
     <div class="modal fade sign-up-form" id="signUpForm" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
         tabindex="-1">
@@ -131,8 +131,13 @@
 
     </div>
 
-    <x-modals.email-sent label="Registered email notification" id="register-email-alert"
-        message="Please check your inbox for the next steps." />
+    @once
+        <x-modals.email-verif-error />
+        <x-modals.sign-up-error />
+        <x-modals.sign-up-success />
+        <x-modals.email-sent label="Verification email sent" id="modal-verification-email-success" header="Email Sent"
+            message="Please check your inbox for the next steps." />
+    @endonce
 @endsection
 
 @section('footer')

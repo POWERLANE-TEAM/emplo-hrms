@@ -1,5 +1,5 @@
 @props(['sidebar_expanded' => true])
-@aware(['user', 'userPhoto', 'defaultAvatar', 'iconSize' => '31px', 'iconRatio' => '1/1'])
+@aware(['user', 'userPhoto', 'iconSize' => '31px', 'iconRatio' => '1/1'])
 
 
 <sidebar
@@ -22,7 +22,7 @@
         </button>
     </div>
 
-    <section class="overflow-y-auto thin-custom-scrollbar">
+    <section class="overflow-y-auto thin-hidden-scrollbar">
 
         <div class="nav-list">
             {{ $slot }}

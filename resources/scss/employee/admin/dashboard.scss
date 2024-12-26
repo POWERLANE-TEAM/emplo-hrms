@@ -1,11 +1,11 @@
-@import '../../utils';
-@import '../../scales/icon-size';
-@import '../../icon/lucide';
-@import '../side-top-bar';
-@import '../../palette/text-colors';
-@import '../../palette/start-borders';
-@import '../../footer';
-
+@import "../../utils";
+@import "../../scrollbar";
+@import "../../scales/icon-size";
+@import "../../icon/lucide";
+@import "../side-top-bar";
+@import "../../palette/text-colors";
+@import "../../palette/start-borders";
+@import "../../footer";
 
 .col-md-7 p {
     margin-bottom: 0 !important;
@@ -14,7 +14,6 @@
 /* ==========================================================================
    Section 2: Laravel Pulse & Activity Logs
    ========================================================================== */
-
 
 /* Laravel Pulse
 ========================================================================== */
@@ -68,15 +67,20 @@
     color: var(--main-white);
 }
 
-
 /* ==========================================================================
    Section 3: Announcement & DTR
    ========================================================================== */
 
-
 /* Create Announcement Button 
 ========================================================================== */
 
+.indiv-grid-container-1 {
+    max-height: 50vh;
+}
+
+.indiv-grid-container-2 {
+    max-height: 30vh;
+}
 
 .icons-container {
     padding-left: 3rem;
@@ -93,8 +97,8 @@
 
 .icon-with-border {
     color: gray;
-    width: 16px; 
-    height: 16px; 
+    width: 16px;
+    height: 16px;
     transition: all 0.3s ease;
 }
 
@@ -105,4 +109,32 @@
 
 .icon-container:hover .icon-with-border {
     color: white;
+}
+
+.dtr-table {
+    .table {
+        --bs-table-striped-bg: #fff !important;
+        border-collapse: collapse;
+    }
+
+    table.table {
+        border-spacing: 0 calc(1rem + 0.5vw) !important;
+        width: 100%;
+    }
+
+    table tbody tr {
+        position: relative;
+        margin-bottom: 1rem;
+    }
+    
+    table tbody tr::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 3%;
+        width: 95%; 
+        height: 1.5px; 
+        background-color: #f6f6f6;
+    }
+    
 }

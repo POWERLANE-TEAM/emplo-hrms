@@ -42,11 +42,42 @@ table.table {
 
     &.table-hover {
         @include table-hover-styles;
+
+        tr:not(:hover) td {
+            &.text-primary {
+                color: rgba(var(--bs-primary-rgb), var(--bs-text-opacity));
+            }
+
+            &.text-danger {
+                color: rgba(var(--bs-danger-rgb), var(--bs-text-opacity));
+            }
+        }
     }
 
     td {
         font-size: 1.05em;
-        font-weight: 500;
+
+    }
+
+    &:has(td.border-end.sticky) {
+        position: relative;
+
+        tr {
+
+            td:first-of-type,
+            th:first-of-type {
+
+                min-width: 30cqw;
+
+                @media (min-width: 768px) {
+                    min-width: calc(150px + 10cqw);
+                }
+
+                position: sticky;
+                z-index: 2;
+                left: 0;
+            }
+        }
     }
 
 }
@@ -69,7 +100,7 @@ div:has(div[wire\:\key="table-wrapper"]) {
 
             div:has(>div[wire\:click="clearSearch"]) {
                 // Hides clear button of datatable
-                display: none !important;
+                // display: none !important;
             }
 
             /*
@@ -315,6 +346,14 @@ div:has(div[wire\:\key="table-wrapper"]) {
 
             @include table-hover-styles;
 
+            td {
+                min-width: 35cqw;
+
+                @media (min-width: 768px) {
+                    min-width: calc(100px + 5cqw);
+                }
+            }
+
             tr {
                 min-height: fit-content;
                 --tr-padding-x: calc(0.25rem + 0.5vw);
@@ -324,17 +363,6 @@ div:has(div[wire\:\key="table-wrapper"]) {
                 th {
                     padding-top: var(--padding-y);
                     padding-bottom: var(--padding-y);
-                }
-
-                &:has(td.border-end) {
-                    position: relative;
-
-                    td:first-of-type,
-                    th:first-of-type {
-                        position: sticky;
-                        z-index: 2;
-                        left: 0;
-                    }
                 }
 
                 td:first-of-type,

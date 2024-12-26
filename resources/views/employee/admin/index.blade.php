@@ -41,6 +41,7 @@
 {{-- Recent Activity Logs & Online Users --}}
 <x-section-wrapper>
     <livewire:admin.dashboard.recent-activity-logs />
-    <livewire:admin.dashboard.online-users />
+    <livewire:admin.dashboard.active-sessions />
 </x-section-wrapper>
+
 @endsection

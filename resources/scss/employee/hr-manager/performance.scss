@@ -1,7 +1,3 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 @import '../../utils';
 @import '../../scrollbar';
 @import '../../scales/icon-size';
@@ -18,18 +14,6 @@
     overflow-y: auto; 
     overflow-x: hidden; 
     padding-right: 10px; 
-}
-
-.tab-section {
-    display: none;
-}
-
-.tab-section.active-section {
-    display: block;
-}
-
-.tab-section p {
-    margin-bottom: 0 !important;
 }
 
 

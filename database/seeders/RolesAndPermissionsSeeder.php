@@ -21,7 +21,8 @@ class RolesAndPermissionsSeeder extends Seeder
 
         $allRoles = $permissions->concat($this->basicPermissions())
             ->concat($this->intermediatePermissions())
-            ->concat($this->advancedPermissions());
+            ->concat($this->advancedPermissions())
+            ->concat($this->managerialPermissions());
 
         $allRoles->each(function (string $name) {
             Permission::firstOrCreate([
@@ -64,6 +65,7 @@ class RolesAndPermissionsSeeder extends Seeder
         return [
             // View cases goes here
             UserPermission::VIEW_HR_MANAGER_DASHBOARD->value,
+            UserPermission::VIEW_APPLICATION_INFORMATION->value,
             UserPermission::VIEW_JOB_APPLICATION_FORM->value,
             UserPermission::VIEW_ALL_PENDING_APPLICATIONS->value,
             UserPermission::VIEW_ALL_QUALIFIED_APPLICATIONS->value,
@@ -77,14 +79,15 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::VIEW_DOWNLOAD_ALL_ATTENDANCE->value,
             UserPermission::VIEW_DOWNLOAD_PAYROLL_SUMMARY->value,
             UserPermission::VIEW_ALL_LEAVES->value,
-            UserPermission::VIEW_ALL_OVERTIME->value,
+            UserPermission::VIEW_ALL_OVERTIME_REQUEST->value,
             UserPermission::VIEW_ALL_PAYSLIPS->value,
             UserPermission::VIEW_ALL_EMP_PERFORMANCE_EVAL->value,
             UserPermission::VIEW_ALL_EMP_PERFORMANCE_EVAL_GRADE_FORM->value,
             UserPermission::VIEW_ALL_EMP_PERFORMANCE_EVAL_APPROVAL_FORM->value,
             UserPermission::VIEW_ALL_EMP_PERFORMANCE_EVAL_FINAL_APPROVAL_FORM->value,
             UserPermission::VIEW_ALL_RELATIONS->value,
-            UserPermission::VIEW_MATRIX_PROJECTOR->value,
+            UserPermission::VIEW_ALL_ISSUES->value,
+            UserPermission::VIEW_ALL_TRAINING->value,
             UserPermission::VIEW_TALENT_EVALUATOR->value,
             UserPermission::VIEW_PLAN_GENERATOR->value,
 
@@ -105,13 +108,13 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::UPDATE_EMP_PERFORMANCE_EVAL_GRADE_FORM->value,
             UserPermission::UPDATE_EMP_PERFORMANCE_EVAL_APPROVAL_FORM->value,
             UserPermission::UPDATE_EMP_PERFORMANCE_EVAL_FINAL_APPROVAL_FORM->value,
-            UserPermission::UPDATE_PENDING_LEAVE_REQUEST->value,
-            UserPermission::UPDATE_APPROVED_LEAVE_REQUEST->value,
             UserPermission::UPDATE_LEAVE_BALANCE->value,
             UserPermission::UPDATE_PENDING_OVERTIME_REQUEST_STATUS->value,
             UserPermission::UPDATE_APPROVED_OVERTIME_REQUEST_STATUS->value,
             UserPermission::UPDATE_ISSUE_COMPLAINT_CLOSED->value,
             UserPermission::UPDATE_ISSUE_COMPLAINT_RESOLVED->value,
+            UserPermission::UPDATE_ALL_OVERTIME_REQUEST->value,
+            UserPermission::APPROVE_OVERTIME_SUMMARY_TERTIARY->value,
 
             // Delete cases goes here
         ];
@@ -150,6 +153,27 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::UPDATE_BIOMETRIC_DEVICE->value,
 
             // Delete cases goes here
+        ];
+    }
+
+    public static function managerialPermissions()
+    {
+        return [
+            UserPermission::VIEW_ALL_SUBORDINATE_REQUESTS->value,
+            UserPermission::VIEW_ALL_SUBORDINATE_PERFORMANCE_EVAL_FORM->value,
+            UserPermission::VIEW_ALL_SUBORDINATE_LEAVE_REQUEST->value,
+            UserPermission::VIEW_ALL_SUBORDINATE_OVERTIME_REQUEST->value,
+            UserPermission::VIEW_ALL_SUBORDINATE_OVERTIME_SUMMARY_FORMS->value,
+            UserPermission::VIEW_SUBORDINATE_PERFORMANCE_EVAL_FORM->value,
+            UserPermission::VIEW_SUBORDINATE_LEAVE_REQUEST->value,
+            UserPermission::VIEW_SUBORDINATE_OVERTIME_REQUEST->value,
+            UserPermission::ASSIGN_PERFORMANCE_EVAL_SCORE->value,
+            UserPermission::UPDATE_EMP_PERFORMANCE_EVAL_GRADE_FORM->value,
+            UserPermission::UPDATE_EMP_PERFORMANCE_EVAL_GRADE_FORM->value,
+            UserPermission::UPDATE_SUBORDINATE_OVERTIME_REQUEST->value,
+            UserPermission::AUTHORIZE_OVERTIME_REQUEST->value,
+            UserPermission::APPROVE_OVERTIME_SUMMARY_INITIAL->value,
+            UserPermission::APPROVE_OVERTIME_SUMMARY_SECONDARY->value,
         ];
     }
 }

@@ -1,6 +1,5 @@
 import "../../script.js";
 import GLOBAL_CONST from "../../global-constant.js";
-import initLucideIcons from "../../icons/lucide.js";
 import addGlobalListener from "globalListener-script";
 import "../../auth-listener.js";
 import "employee-page-script";
@@ -9,20 +8,20 @@ import "../../tooltip.js";
 
 
 export function toggleText(span) {
-    var qualificationsText = span.previousElementSibling; 
+    var qualificationsText = span.previousElementSibling;
 
     qualificationsText.classList.toggle("expanded");
 
     if (qualificationsText.classList.contains("expanded")) {
-        span.textContent = "See Less";  
+        span.textContent = "See Less";
     } else {
-        span.textContent = "See More"; 
+        span.textContent = "See More";
     }
 }
 
 export function checkOverflow() {
     const qualificationTextElements = document.querySelectorAll('.qualifications-text');
-    
+
     qualificationTextElements.forEach((element) => {
         const seeMoreButton = element.nextElementSibling;
 

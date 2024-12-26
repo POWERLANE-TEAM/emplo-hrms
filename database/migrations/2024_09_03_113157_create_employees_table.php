@@ -46,8 +46,6 @@ return new class extends Migration
             $table->string('tin_no', 12)->unique();
             $table->string('pag_ibig_no', 12)->unique();
             $table->binary('signature')->nullable();
-            $table->jsonb('education')->nullable();
-            $table->jsonb('experience')->nullable();
             $table->timestamps();
         });
 

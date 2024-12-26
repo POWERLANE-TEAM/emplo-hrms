@@ -10,9 +10,9 @@
 
 @php
 
-    $defaultAttributes = ['class' => 'fs-2 fw-bold mb-2'];
+    $defaultAttributes = ['class' => 'fs-2 fw-bold mb-2 text-secondary-emphasis'];
 
-    $defaultContainerAttributes = ['class' => 'pt-2 pb-4 ms-n1'];
+    $defaultContainerAttributes = ['class' => 'ps-2 pt-2 pb-4 ms-n1'];
 
     if (!$overrideClass) {
         $attributes = $attributes->merge($defaultAttributes);

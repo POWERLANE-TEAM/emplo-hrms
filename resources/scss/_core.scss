@@ -197,6 +197,107 @@ $body-secondary-bg-dark: $gray-700;
 // $body-tertiary-color-dark:          rgba($body-color-dark, .5) !default;
 $body-tertiary-bg-dark: mix($gray-500, $gray-900, 50%);
 
+/*
+ * |--------------------------------------------------------------------------
+ * | Overriding Utilities Variables
+ * |--------------------------------------------------------------------------
+ * Description
+ */
+
+$utilities: (
+    "flex-grow": (
+        responsive: true,
+        property: flex-grow,
+        class: flex,
+        values: (
+            grow-0: 0,
+            grow-1: 1,
+            grow-1-25: 1.25,
+            grow-1-5: 1.5,
+        ),
+    ),
+    "order": (
+        responsive: true,
+        property: order,
+        values: (
+            first: -1,
+            0: 0,
+            1: 1,
+            2: 2,
+            3: 3,
+            4: 4,
+            5: 5,
+            6: 6,
+            7: 7,
+            8: 8,
+            9: 9,
+            10: 10,
+            11: 11,
+            12: 12,
+            13: 13,
+            14: 14,
+            15: 15,
+            16: 16,
+            17: 17,
+            18: 18,
+            19: 19,
+            last: 20,
+        ),
+    ),
+    "order-important": (
+        responsive: true,
+        class: "i-order",
+        property: order,
+        values: (
+            first: -1 !important,
+            0: 0 !important,
+            1: 1 !important,
+            2: 2 !important,
+            3: 3 !important,
+            4: 4 !important,
+            5: 5 !important,
+            6: 6 !important,
+            7: 7 !important,
+            8: 8 !important,
+            9: 9 !important,
+            10: 10 !important,
+            11: 11 !important,
+            12: 12 !important,
+            13: 13 !important,
+            14: 14 !important,
+            15: 15 !important,
+            16: 16 !important,
+            17: 17 !important,
+            18: 18 !important,
+            19: 19 !important,
+            last: 20 !important,
+        ),
+    ),
+    "min-height": (
+        responsive: true,
+        property: min-height,
+        class: min-h,
+        values: (
+            100: 100%,
+            inherit: inherit,
+        ),
+    ),
+
+    "min-width": (
+        responsive: true,
+        property: min-width,
+        class: min-w,
+        values: (
+            100: 100%,
+            inherit: inherit,
+        ),
+    ),
+);
+
+// "viewport-height": (property: height,
+//     class: vh,
+//     values: (100: 100vh)),
+
 @import "../../node_modules/bootstrap/scss/bootstrap";
 
 *,
@@ -248,7 +349,6 @@ a.unstyled {
         --bs-btn-hover-color: #fff;
     }
 }
-
 
 button {
     min-width: fit-content;
@@ -309,7 +409,7 @@ button {
     background-color: transparent;
 }
 
-.list-group-item+.list-group-item {
+.list-group-item + .list-group-item {
     border-top-width: 2px;
 }
 
@@ -341,7 +441,6 @@ button {
     border-bottom: 2px solid var(--bs-secondary) !important;
     transition: border-color 0.3s, box-shadow 0.3s;
 
-
     &:focus {
         border-bottom: 2px solid var(--bs-primary) !important;
         box-shadow: none !important;
@@ -361,7 +460,6 @@ button {
         }
     }
 }
-
 
 .small-circle {
     width: 50px;
@@ -390,7 +488,7 @@ button {
     display: inline-block;
     background-color: rgba(95, 173, 0, 0.1);
     color: #3c6d00;
-    padding: .5rem 2rem;
+    padding: 0.5rem 2rem;
     border-radius: 1rem;
     text-transform: uppercase;
     font-weight: 700;
@@ -398,7 +496,7 @@ button {
 
 .vertical-line {
     width: 2.3px;
-    background-color: #D9D9D9;
+    background-color: #d9d9d9;
     height: 100%;
     margin: 0 auto;
 }
@@ -438,7 +536,7 @@ body {
         align-items: center;
     }
 
-    .breadcrumb-item+.breadcrumb-item::before {
+    .breadcrumb-item + .breadcrumb-item::before {
         float: none;
         display: inline-block;
         vertical-align: middle;
@@ -533,8 +631,6 @@ body {
     background-color: var(--bs-danger-subtle);
 }
 
-
-
 .input-group:has(input:-webkit-autofill, input:autofill) {
     div.icon {
         z-index: 10;
@@ -554,7 +650,7 @@ body {
 
 .or-text-divider::before,
 .or-text-divider::after {
-    content: '';
+    content: "";
     flex: 1;
     border-bottom: 1px solid #ccc;
     margin: 0 10px;
@@ -571,5 +667,62 @@ body {
         @media (min-width: 576px) {
             flex-basis: 0;
         }
+    }
+}
+
+.fs-7 {
+    font-size: 0.8rem;
+}
+
+.fs-8 {
+    font-size: 0.6rem;
+}
+
+.tab-section {
+    display: none;
+}
+
+.tab-section.active-section {
+    display: block;
+}
+
+.tab-section p {
+    margin-bottom: 0 !important;
+}
+
+hr {
+    color: #cfcfcf !important;
+    height: 4px !important;
+}
+
+ul#dropdown-menu > a > li.dropdown-item:hover,
+ul#dropdown-menu > li.dropdown-item:hover {
+    background-color: rgba(97, 176, 0, 0.2);
+    border-radius: 5px;
+}
+
+.modal-content {
+
+    .col-form-label {
+        font-weight: 600;
+    }
+
+    .modal-body {
+        padding-top: 0;
+    }
+
+    .modal-header {
+        border-bottom: none;
+        padding-bottom: .7rem;
+
+        .modal-title {
+            color: var(--bs-primary);
+            font-weight: 600;
+            font-size: 1.5rem !important;
+        }
+    }
+
+    .modal-footer {
+        border-top: none;
     }
 }

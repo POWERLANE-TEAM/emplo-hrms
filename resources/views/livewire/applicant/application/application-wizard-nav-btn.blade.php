@@ -14,18 +14,20 @@
         @if ($this->hasPreviousStep())
             <div wire:click="previousStep" class="btn btn-outline-primary ">
                 Previous
+                <x-html.inline-spinner target="previousStep" />
             </div>
         @else
             <div></div>
         @endif
 
         @if ($this->hasNextStep())
+            {{-- <div wire:click="nextStep" class="btn btn-primary "> --}}
             <div wire:click="validateNow" class="btn btn-primary submit-link">
             @else
                 <div wire:click="save" class="btn btn-primary submit-link">
         @endif
-
         {{ $nextStepText }}
+        <x-html.inline-spinner spinnerColor="light" :target="['validateNow', 'save']" />
     </div>
     </div>
 </section>

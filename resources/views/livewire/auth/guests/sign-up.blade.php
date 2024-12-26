@@ -1,4 +1,4 @@
-<section nonce="{{ $nonce }}" class="signUp-form ps-md-4 pe-md-5  pt-md-3 ">
+<section nonce="{{ $nonce }}" class="signUp-form ps-md-4 pe-md-5  pt-md-3 thin-gray-scrollbar">
     <hgroup class="d-flex flex-column text-center mb-3 mt-md-n4">
         <header class="display-6 fw-semibold text-primary mb-3">
             {{ __('register.sign_up.sign_up') }}
@@ -13,7 +13,7 @@
         @endif
     </hgroup>
 
-    <style>
+    <style nonce="{{ $nonce }}">
         .modal.sign-up-form:has(form) section {
             max-height: 75vh;
             max-height: 75svh;
@@ -33,11 +33,12 @@
     @livewire('auth.facebook-o-auth')
 
     <div class="my-5 d-flex align-items-center  border-bottom position-relative">
-        <div class="position-absolute start-50 bg-body px-3 opacity-75 fw-medium text-uppercase translate-middle-x">or
+        <div class="position-absolute start-50 bg-body px-3 text-body fw-medium text-uppercase translate-middle-x"
+            style="--bs-text-opacity: .75;">or
         </div>
     </div>
 
-    <form action="applicant/sign-up" nonce="{{ $nonce }}">
+    <form wire:submit.prevent="store" action="applicant/sign-up" nonce="{{ $nonce }}">
         @csrf
 
         <div class="d-flex gap-md-5">
@@ -49,7 +50,7 @@
                     class=" {{ $errors->has('first_name') ? 'is-invalid' : '' }}">
 
                     <x-slot:input_icon_left>
-                        <i data-lucide="user-check-2"></i>
+                        <i data-lucide="user-check-2" class=" icon-large"></i>
                     </x-slot:input_icon_left>
 
                     <x-slot:feedback>
@@ -69,7 +70,7 @@
                     aria-owns="signUp-last-name-feedback" class=" {{ $errors->has('last_name') ? 'is-invalid' : '' }}">
 
                     <x-slot:input_icon_left>
-                        <i data-lucide="user"></i>
+                        <i data-lucide="user" class=" icon-large"></i>
                     </x-slot:input_icon_left>
 
                     <x-slot:feedback>
@@ -88,7 +89,7 @@
             aria-owns="signUp-middle-name-feedback" class=" {{ $errors->has('middle_name') ? 'is-invalid' : '' }}">
 
             <x-slot:input_icon_left>
-                <i data-lucide="user"></i>
+                <i data-lucide="user" class=" icon-large"></i>
             </x-slot:input_icon_left>
 
             <x-slot:feedback>
@@ -101,6 +102,9 @@
 
         <x-form.email id="signUp-email" label="Email Address" name="email" autocomplete="email" :nonce="$nonce"
             class=" {{ $errors->has('email') ? 'is-invalid' : '' }}">
+            <x-slot:input_icon_left>
+                <i data-lucide="mail" class="icon-large"></i>
+            </x-slot:input_icon_left>
 
             <x-slot:feedback>
                 @include('components.form.input-feedback', [
@@ -114,7 +118,7 @@
             autocomplete="new-password" :nonce="$nonce" class=" {{ $errors->has('password') ? 'is-invalid' : '' }}">
 
             <x-slot:input_icon_left>
-                <i data-lucide="lock"></i>
+                <i data-lucide="lock" class=" icon-large"></i>
             </x-slot:input_icon_left>
 
             <x-slot:toggle_password>
@@ -136,7 +140,7 @@
             autocomplete="new-password" :nonce="$nonce" class=" {{ $errors->has('password') ? 'is-invalid' : '' }}">
 
             <x-slot:input_icon_left>
-                <i data-lucide="shield-check"></i>
+                <i data-lucide="shield-check" class=" icon-large"></i>
             </x-slot:input_icon_left>
 
             <x-slot:toggle_password>

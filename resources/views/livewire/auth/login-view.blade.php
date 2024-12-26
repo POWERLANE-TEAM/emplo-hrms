@@ -5,7 +5,7 @@
 
 @extends('components.layout.app', ['description' => 'Guest Layout'])
 
-@use('App\Http\Helpers\RoutePrefix')
+@use('App\Http\Helpers\RouteHelper')
 
 @section('head')
 <title>Sign in {{ $routePrefix ? ' as ' . ucfirst($routePrefix) : '' }}</title>
@@ -42,10 +42,10 @@
 @endsection
 
 @section('header-nav')
-    @if ($routePrefix === 'admin')
-    <x-layout.employee.nav.secondary-header />
-    @else
+    @if ($routePrefix === 'guest')
     <x-layout.guest.secondary-header />
+    @else
+    <x-layout.employee.nav.secondary-header />
     @endif
 @endsection
 

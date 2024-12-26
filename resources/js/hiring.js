@@ -1,9 +1,8 @@
 
 import './script.js';
 import './animations/texts-effect.js';
-import initLucideIcons from './icons/lucide.js';
-import addGlobalScrollListener, { documentScrollPosY } from './global-scroll-fn.js';
 import addGlobalListener, { GlobalListener } from 'globalListener-script';
+import addGlobalScrollListener, { documentScrollPosY } from 'global-scroll-script';
 import togglePassword from './toggle-password.js';
 import { initPasswordEvaluator, evalPassword } from './forms/eval-password.js';
 import InputValidator, { setInvalidMessage, setFormDirty } from './forms/input-validator.js';
@@ -12,22 +11,32 @@ import PasswordValidator, { DEFAULT_PASSWORD_VALIDATION } from './forms/password
 import ConsentValidator from './forms/consent-validation.js';
 import initPasswordConfirmValidation, { validateConfirmPassword } from './forms/password-confirm-validation.js';
 import ThemeManager, { initPageTheme } from './theme-listener.js';
-import debounce from './debounce-fn.js';
+import debounce from 'debounce-script';
 import './applicant/top-bar.js'
+import NameValidator from 'name-validator-script';
+import { LAST_NAME_VALIDATION, MIDDLE_NAME_VALIDATION, FIRST_NAME_VALIDATION } from 'name-validate-rule';
 // import './livewire.js'
 
-const themeManager = new ThemeManager();
 
-initPageTheme(themeManager);
+
+initPageTheme(window.ThemeManager);
 
 document.addEventListener("DOMContentLoaded", (event) => {
-    initLucideIcons();
+    //
 });
 
 document.addEventListener('livewire:init', () => {
     let loadSignUp = Livewire.on('guest-sign-up-load', (event) => {
         initPasswordEvaluator();
         loadSignUp();
+    });
+
+    Livewire.on('verification-email-error', (event) => {
+        window.openModal('modal-verification-email-error');
+    });
+
+    Livewire.on('sign-up-error', (event) => {
+        window.openModal('modal-sign-up-error');
     });
 
 
@@ -43,9 +52,21 @@ document.addEventListener('livewire:init', () => {
         }
     });
 
-    Livewire.on('guest-new-user-registered', (event) => {
+    Livewire.on('sign-up-successful', (event) => {
         bootstrap.Modal.getOrCreateInstance('#signUpForm').hide();
-        bootstrap.Modal.getOrCreateInstance('#register-email-alert').show();
+        window.openModal('modal-sign-up-success');
+
+        setTimeout(() => {
+            bootstrap.Modal.getOrCreateInstance('#signUpForm').hide();
+            bootstrap.Modal.getOrCreateInstance('#modal-sign-up-success').hide();
+            window.openModal('modal-verification-email-success');
+        }, 5000); // 5 seconds timeout
+    });
+
+
+    Livewire.on('verification-email-success', (event) => {
+        bootstrap.Modal.getOrCreateInstance('#signUpForm').hide();
+        window.openModal('"modal-verification-email-success');
     });
 
 });
@@ -68,101 +89,7 @@ let sigUpFormString = `form[action='applicant/sign-up']`;
 
 let signUpBtn = `#signUpBtn`;
 
-const FIRST_NAME_VALIDATION = {
-    clear_invalid: true,
-    trailing: {
-        '-+': '-',    // Replace consecutive dashes with a single dash
-        '\\.+': '.',  // Replace consecutive periods with a single period
-        ' +': ' ',    // Replace consecutive spaces with a single space
-        '\\\'+': '\'',    // Replace consecutive aposthrophe with a single aposthrophe
-    },
-    attributes: {
-        type: 'text',
-        // pattern: /^[\p{L} \'-]+$/u,
-        pattern: /^[A-Za-zÑñ '\-]+$/,
-        required: true,
-        max_length: 191,
-    },
-    // customMsg: {
-    //     required: true,
-    //     max_length: '',
-    // },
-    errorFeedback: {
-        required: 'First name is required.',
-        max_length: 'First name cannot be more than 255 characters.',
-        pattern: 'Invalid first name.',
-        typeMismatch: 'Invalid first name.',
-        trailing: 'Consecutive repeating characters not allowed.',
-    }
-}
 
-const MIDDLE_NAME_VALIDATION = { ...FIRST_NAME_VALIDATION };
-const LAST_NAME_VALIDATION = { ...FIRST_NAME_VALIDATION };
-
-MIDDLE_NAME_VALIDATION.attributes = {
-    type: 'text',
-    // pattern: /^[\p{L} \'-]+$/u,
-    pattern: /^[A-Za-zÑñ '\-]+$/,
-    max_length: 191,
-};
-
-MIDDLE_NAME_VALIDATION.errorFeedback = {
-    max_length: 'Middle name cannot be more than 255 characters.',
-    pattern: 'Invalid middle name.',
-    typeMismatch: 'Invalid middle name.',
-    trailing: 'Consecutive repeating characters not allowed.',
-};
-
-LAST_NAME_VALIDATION.errorFeedback = {
-    required: 'Last name is required.',
-    max_length: 'Last name cannot be more than 255 characters.',
-    pattern: 'Invalid last name.',
-    typeMismatch: 'Invalid last name.',
-    trailing: 'Consecutive repeating characters not allowed.',
-};
-
-class NameValidator {
-    constructor(inputSelector, validator, parent = document) {
-        this.inputSelector = inputSelector;
-        this.validator = validator;
-        this.parent = parent;
-    }
-
-    // Validate individual input element
-    validateElement(element) {
-        const isValid = this.validator.validate(element, setInvalidMessage);
-        if (!isValid) {
-            element.classList.add('is-invalid');
-        } else {
-            element.classList.remove('is-invalid');
-        }
-        return isValid;
-    }
-
-    validateName(inputSelector, parent = document) {
-        const element = parent.querySelector(this.inputSelector);
-        return this.validateElement(element);
-    }
-
-    // Initialize debounced validation on input
-    initValidation(callback, resultRef) {
-        const debouncedValidation = debounce((event) => {
-
-            event.target.classList.add('is-dirty');
-
-            const isValid = this.validateElement(event.target);
-            try {
-                resultRef = isValid;
-            } catch (error) {
-
-            }
-            callback();
-        }, 500);
-
-        addGlobalListener('input', this.parent, this.inputSelector, debouncedValidation);
-    }
-
-}
 
 const firstNameValidator = new NameValidator(`${sigUpFormString} input[name="first_name"]`, new InputValidator(FIRST_NAME_VALIDATION));
 const middleNameValidator = new NameValidator(`${sigUpFormString} input[name="middle_name"]`, new InputValidator(MIDDLE_NAME_VALIDATION));

@@ -26,6 +26,9 @@
 
         <x-form.email id="userLogin-email" label="Email Address" name="email" autocomplete="email" :nonce="$nonce"
             class=" {{ $errors->has('email') ? 'is-invalid' : '' }}">
+            <x-slot:input_icon_left>
+                <i data-lucide="mail" class="icon-large"></i>
+            </x-slot:input_icon_left>
 
             <x-slot:feedback>
                 @include('components.form.input-feedback', [
@@ -37,6 +40,9 @@
 
         <x-form.password id="userLogin-password" label="Password" name="password" autocomplete="current-password"
             pattern="" :nonce="$nonce" class=" {{ $errors->has('password') ? 'is-invalid' : '' }}">
+            <x-slot:input_icon_left>
+                <i data-lucide="lock" class="icon-large"></i>
+            </x-slot:input_icon_left>
 
             <x-slot:toggle_password>
                 @include('components.form.toggle-password', [
@@ -63,7 +69,7 @@
             </div>
 
             <div class=" col-md-auto mx-auto me-md-0 ms-md-auto order-2 order-md-1">
-                <button class="border-0 bg-transparent text-decoration-underline ">
+                <button type="button" class="border-0 bg-transparent text-decoration-underline ">
                     Forgot your password?
                 </button>
             </div>

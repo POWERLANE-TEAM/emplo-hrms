@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Barangay;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,28 +17,6 @@ class ApplicantFactory extends Factory
      */
     public function definition(): array
     {
-
-        $educationCount = fake()->numberBetween(1, 3); // Random count between 1 and 5
-        $experienceCount = fake()->numberBetween(1, 5); // Random count between 1 and 5
-
-        $education = [];
-        for ($i = 0; $i < $educationCount; $i++) {
-            $education[] = [
-                'degree' => fake()->word,
-                'institution' => fake()->company,
-                'year' => fake()->year,
-            ];
-        }
-
-        $experience = [];
-        for ($i = 0; $i < $experienceCount; $i++) {
-            $experience[] = [
-                'company' => fake()->company,
-                'position' => fake()->jobTitle,
-                'years' => fake()->numberBetween(1, 10),
-            ];
-        }
-
         return [
             'first_name' => fake()->firstName,
             'middle_name' => fake()->firstName,
@@ -45,13 +24,11 @@ class ApplicantFactory extends Factory
             'contact_number' => fake()->unique()->numerify('###########'),
             'sex' => fake()->randomElement(['MALE', 'FEMALE']),
             'civil_status' => fake()->randomElement(['SINGLE', 'MARRIED', 'WIDOWED', 'LEGALLY SEPARATED']),
-            'present_barangay' => fake()->randomNumber(1, 9),
-            'permanent_barangay' => fake()->randomNumber(1, 9),
+            'present_barangay' => Barangay::inRandomOrder()->first()->id,
+            'permanent_barangay' => Barangay::inRandomOrder()->first()->id,
             'present_address' => fake()->streetName(),
             'permanent_address' => fake()->streetName(),
             'date_of_birth' => fake()->date,
-            'education' => json_encode($education),
-            'experience' => json_encode($experience),
         ];
     }
 }

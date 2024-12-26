@@ -16,6 +16,7 @@ namespace App\Enums;
  * - `RECRUITMENT`      :   Job postings, applications, examinations, interviews, and absorbing.
  * - `ATTENDANCE`       :   Employee check-ins/outs.
  * - `LEAVE`            :   Leave application approvals and cancellations.
+ * - `OVERTIME`         :   Overtime request, updates, approvals, denials, etc.
  * - `SYSTEM`           :   AI-Generated contents, automatic deletions, backups, and automated/routine tasks.
  *
  * See docs: https://spatie.be/docs/laravel-activitylog/v4/introduction
@@ -31,5 +32,6 @@ enum ActivityLogName: string
     case RECRUITMENT = 'recruitment';
     case ATTENDANCE = 'attendance';
     case LEAVE = 'leave';
+    case OVERTIME = 'overtime';
     case SYSTEM = 'system';
 }

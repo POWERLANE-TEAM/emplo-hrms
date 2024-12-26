@@ -57,4 +57,6 @@
 
 
     <livewire:tables.employees-attendance-table />
+    {{-- <livewire:tables.employees-attendance-period-table /> --}}
+    {{-- <livewire:tables.attendance-breakdown-table :employee="3"/> --}}
 @endsection

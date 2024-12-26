@@ -16,26 +16,28 @@ return new class extends Migration
             $table->id('process_id');
             $table->morphs('processable');
 
-            $table->timestamp('supervisor_approved_at')->nullable();
-            $table->foreignIdFor(Employee::class, 'supervisor')
+            $table->timestamp('initial_approver_signed_at')->nullable();
+            $table->foreignIdFor(Employee::class, 'initial_approver')
                 ->nullable()
                 ->constrained('employees', 'employee_id')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
-            $table->timestamp('area_manager_approved_at')->nullable();
-            $table->foreignIdFor(Employee::class, 'area_manager')
+            $table->timestamp('secondary_approver_signed_at')->nullable();
+            $table->foreignIdFor(Employee::class, 'secondary_approver')
                 ->nullable()
                 ->constrained('employees', 'employee_id')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
-            $table->timestamp('hr_manager_approved_at')->nullable();
-            $table->foreignIdFor(Employee::class, 'hr_manager')
+            $table->timestamp('denied_at')->nullable();
+            $table->foreignIdFor(Employee::class, 'denier')
                 ->nullable()
                 ->constrained('employees', 'employee_id')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
+
+            $table->longText('feedback')->nullable();
         });
     }
 

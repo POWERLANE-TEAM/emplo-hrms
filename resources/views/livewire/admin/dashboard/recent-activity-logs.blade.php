@@ -12,7 +12,7 @@
             </div> --}}
         </div>
 
-        <div class="card-body px-4">
+        <div class="card-body px-4 indiv-grid-container-2 overflow-auto thin-custom-scrollbar">
             <ul class="list-unstyled">
                 @foreach ($this->logs as $log)
                     <div class="d-flex">

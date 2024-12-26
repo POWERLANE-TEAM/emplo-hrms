@@ -2,50 +2,51 @@
 
 namespace App\Livewire\Applicant\Application;
 
-use App\Enums\AccountType;
 use App\Enums\Sex;
 use App\Enums\UserPermission;
 use App\Events\Guest\ResumeParsed;
+use App\Http\Requests\PersonNameRequest;
 use App\Jobs\Guest\ParseResumeJob;
-use App\Livewire\Forms\DateForm;
-use App\Livewire\Forms\FileForm;
-use App\Livewire\Forms\PersonNameForm;
+use App\Rules\EmailRule;
+use App\Rules\MobileNumberRule;
+use App\Rules\ProfilePhotoValidationRule;
+use App\Rules\WorkAgeRule;
 use App\Traits\Applicant;
 use App\Traits\HasObjectForm;
 use App\Traits\NeedsAuthBroadcastId;
-use Carbon\Carbon;
 use Closure;
+use DateTime;
+use DateTimeZone;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Computed;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Propaganistas\LaravelPhone\PhoneNumber;
 use Spatie\LivewireFilepond\WithFilePond;
 use Spatie\LivewireWizard\Components\StepComponent;
 
 class PersonalDetailsStep extends StepComponent
 {
 
-    use WithFilePond, HasObjectForm, NeedsAuthBroadcastId, Applicant;
+    use WithFilePond, NeedsAuthBroadcastId;
 
     /**
      * |--------------------------------------------------------------------------
      * | Wire model properties
      * |--------------------------------------------------------------------------
      */
+
     public $displayProfile;
 
-    public $applicantName;
-
-    public $applicantBirth;
-
-    public ?string $sexAtBirth;
-
-    public $form = [
-        'applicantName' => ['firstName' => '', 'middleName' => '', 'lastName' => ''],
-        'applicantBirth' => '',
+    public $applicant = [
+        'name' => ['firstName' => '', 'middleName' => '', 'lastName' => ''],
+        'birth' => '',
+        'email' => '',
+        'mobileNumber' => '',
     ];
 
+    public ?string $sexAtBirth;
     /**
      * |--------------------------------------------------------------------------
      * | END Wire model properties
@@ -80,11 +81,7 @@ class PersonalDetailsStep extends StepComponent
 
     public function mount()
     {
-
-        if (Auth::check()) {
-            if (self::applicantOrYet(!Auth::user()->hasPermissionTo(UserPermission::VIEW_JOB_APPLICATION_FORM->value), true));
-            else self::hasApplication(true);
-        } else abort(401);
+        if (auth()->check())  $this->applicant['email'] = auth()->user()->email;
 
         // get the resume file property state from the resume upload step
         $resumeState = $this->state()->forStep('form.applicant.resume-upload-step');
@@ -114,15 +111,21 @@ class PersonalDetailsStep extends StepComponent
 
         // add check if user approves consent to parse resume
         if (true && empty($this->parsedResume) && isset($this->resumePath)) {
+            if (config('services.google.document_ai.enabled')) {
+                $this->dispatch('show-toast', [
+                    'type' => 'info',
+                    'message' => 'Your resume is being parsed. Data will be available shortly.',
+                ]);
+            }
             ParseResumeJob::dispatch($this->resumePath, self::getBroadcastId());
         }
 
 
-        // For testing purposes not relying on Document AI API
+        // // For testing purposes not relying on Document AI API
 
         // ResumeParsed::dispatch([
         //     'employee_education' => 'Bachelor of Arts in Communication, Ateneo de Manila University',
-        //     'employee_contact' => '+63-961-5719',
+        //     'employee_contact' => '+63-961-571-0923',
         //     'employee_email' => 'fernando.poe.jrs@gmail.com',
         //     'employee_experience' => 'Globe Telecom - 3 years as Project Manager\nRobinsons Land - 5 years as Marketing Specialist',
         //     'employee_name' => 'Grace, Fernando Poe Jr.',
@@ -132,7 +135,7 @@ class PersonalDetailsStep extends StepComponent
         // if (empty($this->parsedResume)) {
         //     $this->parsedResume = [
         //         'employee_education' => 'Bachelor of Arts in Communication, Ateneo de Manila University',
-        //         'employee_contact' => '+63-961-5719',
+        //         'employee_contact' => '+63-961-571-0923',
         //         'employee_email' => 'fernando.poe.jrs@gmail.com',
         //         'employee_experience' => 'Globe Telecom - 3 years as Project Manager\nRobinsons Land - 5 years as Marketing Specialist',
         //         'employee_name' => 'Grace, Fernando Poe Jr.',
@@ -145,11 +148,6 @@ class PersonalDetailsStep extends StepComponent
 
     public function boot()
     {
-
-        // Copied fix here  https://github.com/spatie/laravel-livewire-wizard/discussions/100#discussioncomment-10125903
-        // still broken
-        $this->mountWithObjectForm(PersonNameForm::class, 'applicantName');
-        $this->mountWithObjectForm(DateForm::class, 'applicantBirth');
 
         if (isset($this->displayProfile) && !is_array($this->displayProfile) && $this->displayProfile instanceof \Illuminate\Http\UploadedFile) {
 
@@ -178,21 +176,6 @@ class PersonalDetailsStep extends StepComponent
             }
         }
 
-        // Rehydrate the PersonName form object
-        $this->applicantName->firstName = $this->form['applicantName']['firstName'];
-        $this->applicantName->middleName = $this->form['applicantName']['middleName'];
-        $this->applicantName->lastName = $this->form['applicantName']['lastName'];
-
-        // Rehydrate the Date form object
-        $this->applicantBirth->date = $this->form['applicantBirth'];
-
-        // Rehydrate the Date form object validation rules
-        // atleast 18 years old
-        $this->applicantBirth->setMaxDate(Carbon::now()->subYears(18)->toDateString());
-
-        // at most 65 years old
-        $this->applicantBirth->setMinDate(Carbon::now()->subYears(65)->endOfYear()->toDateString());
-
 
         if (!empty($this->displayProfileUrl)) {
             // this supposed to be the fix for the filepond issue
@@ -201,39 +184,63 @@ class PersonalDetailsStep extends StepComponent
         }
     }
 
-    #[Computed]
+    protected function convertApplicantBirthToTimezone()
+    {
+        $timezone = config('app.server_timezone', 'Asia/Manila');
+        $dateTimeZone = new DateTimeZone($timezone);
+
+        try {
+            $date = new DateTime($this->applicant['birth']);
+            $date->setTimezone($dateTimeZone);
+            $this->applicant['birth'] = $date->format('Y-m-d');
+        } catch (\Exception $e) {
+            report('Error converting applicant birth date to timezone: ' . $e->getMessage());
+        }
+    }
+
+
     protected function rules()
     {
-        // use file form object to generate the file validation rules
-        $displayProfile = new FileForm($this, 'displayProfile');
 
-        $maxSize = 'xs';
-        $required = true;
+        $displayProfileRule = new ProfilePhotoValidationRule(null, 'lg', true);
 
-        $displayProfile->setToImageMode();
-        $displayProfile->setMaxSize($maxSize);
-        $maxFileSize = $displayProfile->getMaxFileSize();
-        $fileTypes = $displayProfile->getAcceptedFileTypes();
-        $displayProfile->setRequired($required);
+        $personNameRequest = new PersonNameRequest();
 
-        $displayProfileRules = $displayProfile->rules();
+        $nameRules = [];
+        foreach ($personNameRequest->rules() as $key => $rule) {
+            $nameRules["applicant.name.$key"] = $rule;
+        }
 
-        return [
+        return array_merge($nameRules, [
             'sexAtBirth' => 'required|in:' . implode(',', array_keys(Sex::options())),
-            'displayProfile' => 'bail|required|file|max:' . $maxFileSize . '|mimes:' . $fileTypes,
-        ];
+            'displayProfile' => $displayProfileRule->getRule(),
+            'applicant.mobileNumber' => ['required', MobileNumberRule::getRule()],
+            'applicant.email' => 'required|' . (new EmailRule(false))->getRule(),
+            'applicant.birth' => new WorkAgeRule(),
+        ]);
+    }
+
+    protected function validationAttributes()
+    {
+        $personNameRequest = new PersonNameRequest();
+
+        $nameAttributes = [];
+        foreach ($personNameRequest->attributes() as $key => $attribute) {
+            $nameAttributes["applicant.name.$key"] = $attribute;
+        }
+
+        return array_merge($nameAttributes, [
+            'sexAtBirth' => 'sex at birth',
+            'displayProfile' => 'profile photo',
+            'applicant.mobileNumber' => 'mobile number',
+            'applicant.email' => 'email address',
+            'applicant.birth' => 'birth date',
+        ]);
     }
 
     public function validateNow()
     {
-
-        // Rehydrate the PersonName form object
-        $this->applicantName->firstName = $this->form['applicantName']['firstName'];
-        $this->applicantName->middleName = $this->form['applicantName']['middleName'];
-        $this->applicantName->lastName = $this->form['applicantName']['lastName'];
-
-        // Rehydrate the Date form object
-        $this->applicantBirth->date = $this->form['applicantBirth'];
+        $this->convertApplicantBirthToTimezone();
 
         $this->isValid = false;
 
@@ -257,9 +264,9 @@ class PersonalDetailsStep extends StepComponent
     public function updating()
     {
         // Capitalize each word in applicant name
-        $this->form['applicantName']['firstName'] = ucwords(strtolower($this->form['applicantName']['firstName']));
-        $this->form['applicantName']['middleName'] = ucfirst(strtolower($this->form['applicantName']['middleName']));
-        $this->form['applicantName']['lastName'] = ucwords(strtolower($this->form['applicantName']['lastName']));
+        $this->applicant['name']['firstName'] = ucwords(strtolower($this->applicant['name']['firstName']));
+        $this->applicant['name']['middleName'] = ucfirst(strtolower($this->applicant['name']['middleName']));
+        $this->applicant['name']['lastName'] = ucwords(strtolower($this->applicant['name']['lastName']));
     }
 
     // websocket stuffs
@@ -282,7 +289,38 @@ class PersonalDetailsStep extends StepComponent
     {
         try {
             $this->parsedResume = $event['parsedResume'];
+
+            $phoneObj = null;
+            $contactNumber = null;
+            $regionMode = config('app.region_mode');
+
+
+            if (isset($event['parsedResume']['employee_contact'])) {
+                $contacts = is_array($event['parsedResume']['employee_contact']) ? $event['parsedResume']['employee_contact'] : [$event['parsedResume']['employee_contact']];
+                if ($regionMode == 'local') {
+
+                    foreach ($contacts as $contact) {
+                        try {
+                            $phoneObj = new PhoneNumber($contact, 'PH');
+                            $formattedContact = $phoneObj->formatNational();
+                        } catch (\Exception $e) {
+                            $formattedContact = $contact;
+                        } finally {
+                            $cleanedContact = preg_replace('/\D/', '', $formattedContact);
+                            $contactNumbers[] = $cleanedContact;
+                        }
+                    }
+                }
+
+                $this->parsedResume['employee_contact'] = $contactNumbers;
+                $this->applicant['mobileNumber'] = is_array($this->parsedResume['employee_contact']) ? end($this->parsedResume['employee_contact']) : $this->parsedResume['employee_contact'];
+            }
+
             $this->updateParsedNameSegment();
+
+            if (isset($event['parsedResume']['employee_email'])) {
+                $this->applicant['email'] ??= is_array($this->parsedResume['employee_email']) ? end($this->parsedResume['employee_email']) : $this->parsedResume['employee_email'];
+            }
         } catch (\Throwable $th) {
             report($th);
         }
@@ -294,9 +332,16 @@ class PersonalDetailsStep extends StepComponent
     public function updateParsedNameSegment()
     {
         if (!empty($this->parsedResume['employee_name'])) {
-            $parsedFullName = preg_replace('/[^\p{L}\s.-]/u', '', $this->parsedResume['employee_name']);
+            $name = $this->parsedResume['employee_name'];
+
+            if (is_array($name)) {
+                $name = implode(' ', $name);
+            }
+
+            $parsedFullName = preg_replace('/[^\p{L}\s.-]/u', '', $name);
+
             $parsedFullName = ucwords(strtolower($parsedFullName));
-            $this->parsedNameSegment = explode(' ', $parsedFullName);
+            $this->parsedNameSegment = array_unique(explode(' ', $parsedFullName));
         }
     }
 

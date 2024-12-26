@@ -47,10 +47,9 @@ class InitialInterviewController extends Controller
             $this->date = $request->input('examination.date');
 
             $validated = $request->validate([
-                'interview.date' => 'bail|required|'.ScheduleDateRule::get($this->minDate, $this->maxDate),
+                'interview.date' => 'required|' . ScheduleDateRule::get($this->minDate, $this->maxDate),
                 'interview.time' => (function () {
                     return [
-                        'bail',
                         'required_with:date',
                         new ScheduleTimeRule($this->date),
                     ];
@@ -76,7 +75,7 @@ class InitialInterviewController extends Controller
 
         InitialInterview::create([
             'application_id' => $application->application_id,
-            'init_interview_at' => $interviewStartDate.' '.$interviewStartTime,
+            'init_interview_at' => $interviewStartDate . ' ' . $interviewStartTime,
             'init_interviewer' => auth()->user()->user_id,
             'is_init_interview_passed' => false,
         ]);

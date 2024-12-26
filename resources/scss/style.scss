@@ -75,12 +75,15 @@ input.rm-bg-icon {
 }
 
 body {
+    transition: background-color 0.5s ease-in-out 0.2s, color 0.3s ease 0.1s;
 
     .invalid-feedback,
     .invalid-feedback:empty {
-        display: block;
-        min-height: 1.5em;
-        margin-bottom: 0.5em;
+        &:not([class*="d-md-none"]) {
+            display: block;
+            min-height: 1.5em;
+            margin-bottom: 0.5em;
+        }
     }
 }
 
@@ -213,15 +216,41 @@ iframe body {
     background-color: red;
 }
 
+// adds placeholder on phone
 input[type="date"],
 input[type="time"],
 input[type="datetime-local"] {
-    &:not(:focus):not(.has-value):before {
+    &:not(:focus):invalid:before {
+        position: absolute;
+        color: color-mix(in srgb, var(--bs-body-color) 60%, transparent 40%) !important;
+
         @media screen and (max-width: 576px) {
             color: inherit;
             content: attr(placeholder);
         }
     }
+}
+
+input {
+    &:focus-visible {
+
+        &::placeholder {
+            font-weight: normal;
+        }
+    }
+}
+
+input[type="tel"] {
+    letter-spacing: 0.25em;
+
+    // negate the letter-spacing on placeholder
+    &::placeholder {
+        letter-spacing: normal;
+    }
+}
+
+select:invalid {
+    color: color-mix(in srgb, var(--bs-body-color) 60%, transparent 40%);
 }
 
 .btn-full-screen:hover:not(:active) {
@@ -231,5 +260,14 @@ input[type="datetime-local"] {
         // https://stackoverflow.com/questions/18330344/how-to-add-border-outline-stroke-to-svg-elements-in-css#:~:text=%23example_1%20%7B%0A%20%20filter%3A%20%0A%20%20%20%20drop%2Dshadow(%2D1px%20%2D1px%200px%20%233e68ff)%20%0A%20%20%20%20drop%2Dshadow(2px%20%2D1px%200px%20%233e68ff)%20%0A%20%20%20%20drop%2Dshadow(2px%202px%200px%20%233e68ff)%0A%20%20%20%20drop%2Dshadow(%2D1px%202px%200px%20%233e68ff)%0A%7D
         filter:
             drop-shadow(-1px -1px 0px var(--hover-color)) drop-shadow(2px -1px 0px var(--hover-color)) drop-shadow(2px 2px 0px var(--hover-color)) drop-shadow(-1px 2px 0px var(--hover-color))
+    }
+}
+
+label:has(+div input:not(:placeholder-shown), +input:not(:placeholder-shown), +div textarea:not(:placeholder-shown), +textarea:not(:placeholder-shown)) {
+
+    .label-placeholder {
+        display: initial;
+        font-weight: initial;
+        font-style: italic;
     }
 }
