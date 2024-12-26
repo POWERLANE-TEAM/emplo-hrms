@@ -22,7 +22,7 @@ class SubordinateLeaveRequestsTable extends DataTableComponent
     public function configure(): void
     {
         $this->setPrimaryKey('emp_leave_id')
-            ->setTableRowUrl(fn ($row) => route("{$this->routePrefix}.leaves.subordinate.requests", [
+            ->setTableRowUrl(fn ($row) => route("{$this->routePrefix}.leaves.employee.requests", [
                 'leave' => $row->emp_leave_id
             ]))
             ->setTableRowUrlTarget(fn () => '__blank');
@@ -66,7 +66,7 @@ class SubordinateLeaveRequestsTable extends DataTableComponent
 
         $this->setTdAttributes(function (Column $column, $row, $columnIndex, $rowIndex) {
             return [
-                'class' => 'text-md-center',
+                'class' => $column->getTitle() === 'Employee' ? 'text-md-start' : 'text-md-center',
             ];
         });
     }
@@ -104,6 +104,7 @@ class SubordinateLeaveRequestsTable extends DataTableComponent
                 'employee.jobTitle.jobFamily',
                 'initialApprover',
             ])
+            ->whereNot('employee_id', Auth::user()->account->employee_id)
             ->whereHas('employee.jobTitle.jobFamily', function($query) {
                 $query->where('job_family_id', Auth::user()->account->jobTitle->jobFamily->job_family_id);
             });

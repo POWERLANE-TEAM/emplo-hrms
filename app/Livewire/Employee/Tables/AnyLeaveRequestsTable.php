@@ -21,7 +21,7 @@ class AnyLeaveRequestsTable extends DataTableComponent
     public function configure(): void
     {
         $this->setPrimaryKey('emp_leave_id')
-            ->setTableRowUrl(fn ($row) => route("{$this->routePrefix}.leaves.show", [
+            ->setTableRowUrl(fn ($row) => route("{$this->routePrefix}.leaves.employee.requests", [
                 'leave' => $row->emp_leave_id
             ]))
             ->setTableRowUrlTarget(fn () => '__blank');
@@ -65,7 +65,7 @@ class AnyLeaveRequestsTable extends DataTableComponent
 
         $this->setTdAttributes(function (Column $column, $row, $columnIndex, $rowIndex) {
             return [
-                'class' => 'text-md-center',
+                'class' => $column->getTitle() === 'Employee' ? 'text-md-start' : 'text-md-center',
             ];
         });
     }
@@ -74,6 +74,8 @@ class AnyLeaveRequestsTable extends DataTableComponent
     {
         if ($row->fourth_approver_signed_at) {
             return __('Approved');
+        } elseif ($row->denied_at) {
+            return __('Denied');
         } else {
             return __('Pending');
         }
@@ -95,8 +97,8 @@ class AnyLeaveRequestsTable extends DataTableComponent
                 'employee.jobTitle.jobFamily',
                 'initialApprover',
             ])
-            ->whereNull('denied_at')
-            ->whereNotNull('third_approver_signed_at');
+            ->whereNotNull('third_approver_signed_at')
+            ->orWhereNotNull('secondary_approver_signed_at');
     }
 
     public function columns(): array
@@ -150,11 +152,13 @@ class AnyLeaveRequestsTable extends DataTableComponent
 
             Column::make(__('Start Date'))
                 ->label(fn ($row) => $row->start_date)
-                ->sortable(fn (Builder $query, $direction) => $query->orderBy('start_date', $direction)),
+                ->sortable(fn (Builder $query, $direction) => $query->orderBy('start_date', $direction))
+                ->deselected(),
 
             Column::make(__('End Date'))
                 ->label(fn ($row) => $row->end_date)
-                ->sortable(fn (Builder $query, $direction) => $query->orderBy('end_date', $direction)),
+                ->sortable(fn (Builder $query, $direction) => $query->orderBy('end_date', $direction))
+                ->deselected(),
 
             Column::make('Status')
                 ->label(fn ($row) => $this->getLeaveStatus($row)),
@@ -171,6 +175,27 @@ class AnyLeaveRequestsTable extends DataTableComponent
             SelectFilter::make(__('Leave Type'))
                 ->options($this->getLeaveTypeOptions())
                 ->filter(fn (Builder $query, $value) => $query->where('leave_category_id', $value)),
+
+            SelectFilter::make(__('Status'))
+                ->options([
+                    '1' => __('Pending'),
+                    '2' => __('Approved'),
+                    '3' => __('Denied'),
+                ])
+                ->filter(function (Builder $query, $value) {
+                    if ($value === '1') {
+                        $query->where(function ($subQuery) {
+                            $subQuery->whereNotNull('third_approver_signed_at')
+                                     ->orWhereNotNull('secondary_approver_signed_at');
+                        })
+                        ->whereNull('denied_at');
+                    } elseif ($value === '2' ) {
+                        $query->whereNotNull('fourth_approver_signed_at');
+                    } elseif ($value === '3') {
+                        $query->whereNotNull('denied_at');
+                    }
+                })
+                ->setFilterDefaultValue('1')
         ];
     }
 }
