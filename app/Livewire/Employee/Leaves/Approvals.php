@@ -12,12 +12,17 @@ class Approvals extends Component
 
     public function mount()
     {
-        $this->leave->load([
+        $this->leave->loadMissing([
             'initialApprover',
             'secondaryApprover',
             'thirdApprover',
             'fourthApprover',
             'deniedBy',
+            'initialApprover.jobTitle',
+            'secondaryApprover.jobTitle',
+            'thirdApprover.jobTitle',
+            'fourthApprover.jobTitle',
+            'deniedBy.jobTitle',
         ]);
     }
 
