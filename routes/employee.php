@@ -217,7 +217,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
             ->name('create');
 
         Route::get('{leave}', [LeaveController::class, 'show'])
-            // ->can('viewLeaveRequest', 'leave')
+            ->can('viewLeaveRequest', 'leave')
             ->whereNumber('leave')
             ->name('show');
 
@@ -228,8 +228,8 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
             ->name('requests.general');
 
         Route::get('{leave}/requests', [LeaveController::class, 'show'])
-            ->can('viewSubordinateLeaveRequest', 'leave')
-            ->name('subordinate.requests');
+            // ->can('viewSubordinateLeaveRequest', 'leave')
+            ->name('employee.requests');
     });
 
 
