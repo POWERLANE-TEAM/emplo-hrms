@@ -20,38 +20,37 @@ class LeaveInfo extends Component
     #[Locked]
     public $approvingStage;
 
-    public function mount()
-    {
-        $this->leave->load([
-            'category',
-        ]);
-    }
+    public $feedback;
 
     private function renderDestructiveButtons()
     {
-        if (is_null($this->leave->fourth_approver_signed_at) && 
-            $this->leave->third_approver_signed_at &&
-            $this->user->can('approveLeaveRequestFinal')
-        ) {
-            $this->destructiveBtnsEnabled = true;
-            $this->approvingStage = 'fourth';
-        } elseif (is_null($this->leave->third_approver_signed_at) &&
-            $this->leave->secondary_approver_signed_at &&
-            $this->user->can('approveAnyLeaveRequest')
-        ) {
-            $this->destructiveBtnsEnabled = true;
-            $this->approvingStage = 'third';
-        } elseif (is_null($this->leave->secondary_approver_signed_at) &&
-            $this->leave->initial_approver_signed_at &&
-            $this->user->can('approveSubordinateLeaveRequest')
-        ) {
-            $this->destructiveBtnsEnabled = true;
-            $this->approvingStage = 'secondary';
-        } elseif (is_null($this->leave->initial_approver_signed_at) &&
-            $this->user->can('approveSubordinateLeaveRequest')
-        ) {
-            $this->destructiveBtnsEnabled = true;
-            $this->approvingStage = 'initial';
+        if ($this->user->account->leaves->doesntContain($this->leave)) {
+            if (is_null($this->leave->fourth_approver_signed_at) && 
+                $this->leave->third_approver_signed_at &&
+                $this->user->can('approveLeaveRequestFinal')
+            ) {
+                $this->destructiveBtnsEnabled = true;
+                $this->approvingStage = 'fourth';
+            } elseif (is_null($this->leave->third_approver_signed_at) &&
+                $this->leave->secondary_approver_signed_at &&
+                $this->user->can('approveAnyLeaveRequest')
+            ) {
+                $this->destructiveBtnsEnabled = true;
+                $this->approvingStage = 'third';
+            } elseif (is_null($this->leave->secondary_approver_signed_at) &&
+                $this->leave->initial_approver_signed_at &&
+                $this->user->can('approveSubordinateLeaveRequest')
+            ) {
+                $this->destructiveBtnsEnabled = true;
+                $this->approvingStage = 'secondary';
+            } elseif (is_null($this->leave->initial_approver_signed_at) &&
+                $this->user->can('approveSubordinateLeaveRequest')
+            ) {
+                $this->destructiveBtnsEnabled = true;
+                $this->approvingStage = 'initial';
+            } else {
+                $this->reset('destructiveBtnsEnabled', 'approvingStage');
+            }
         }
     }
 
@@ -64,23 +63,40 @@ class LeaveInfo extends Component
             ]);
 
             if ($this->approvingStage === 'fourth') {
-                $this->leave->employee->jobDetail()->decrement('leave_balance');
+                $this->leave->employee->jobDetail()
+                    ->where('leave_balance', '>', 0)
+                    ->decrement('leave_balance');
             }
         });
 
-        $this->dispatch('leaveRequestApproved')->to(Approvals::class);
+        $this->dispatchEvents(
+            'success', 
+            __("{$this->leave->employee->last_name}'s {$this->leave->category->leave_category_name} request was approved successfully."));
     }
 
     public function denyLeaveRequest()
     {
-        $this->authorize('approveSubordinateLeaveRequest');
-
         DB::transaction(function() {
             $this->leave->update([
                 'denier' => $this->employeeId,
                 'denied_at' => now(),
+                'feedback' => $this->feedback,
             ]);
         });
+
+        $this->dispatchEvents(
+            'info', 
+            __("{$this->leave->employee->last_name}'s {$this->leave->category->leave_category_name} request was denied."));
+    }
+
+    private function dispatchEvents(string $type, string $message)
+    {
+        $this->dispatch('leaveRequestApproved')->to(Approvals::class);
+        $this->dispatch('leaveRequestApproved')->to(RequestorInfo::class);
+        $this->dispatch('showSuccessToast', compact('message', 'type'));
+        $this->dispatch('changesSaved')->self();
+
+        $this->resetExcept('leave');
     }
 
     #[Computed]
@@ -95,6 +111,21 @@ class LeaveInfo extends Component
         return Auth::user();
     }
 
+    public function rules(): array
+    {
+        return [
+            'feedback' => 'required',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'feedback' => __('Please provide the reason for denial'),
+        ];
+    }
+
+    #[On('changesSaved')]
     public function render()
     {
         $this->renderDestructiveButtons();
