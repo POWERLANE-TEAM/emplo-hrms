@@ -13,6 +13,9 @@ document.addEventListener("DOMContentLoaded", function () {
         windowResize: function (arg) {
             calendar.updateSize();
         },
+        buttonText: {
+            today: 'Go to Current Month'  // Change the text of the "Today" button
+        },
 
         /*
         BACK-END REPLACE: Replace the event array section with event data fetched from the database.
