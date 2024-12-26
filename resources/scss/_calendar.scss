@@ -1,0 +1,39 @@
+#calendar {
+    .fc-toolbar-title {
+        font-weight: 700;
+        color: #61b000;
+    }
+
+    .fc-col-header-cell-cushion,
+    .fc-daygrid-day-top a {
+        color: #000;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .fc-daygrid-day-top a {
+        color: #616161;
+        margin: 2px;
+    }
+
+    .fc-day-today {
+        background-color: transparent;
+
+        a {
+            color: #f50000;
+            font-weight: 700;
+        }
+    }
+
+    .fc-h-event {
+        border: none;
+        padding: 5px;
+    }
+
+    .event-title {
+        white-space: normal;
+        word-wrap: break-word;
+        overflow: hidden; 
+        display: block;
+    }
+}
