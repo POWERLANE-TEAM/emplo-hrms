@@ -3,7 +3,6 @@
 
 @props([
     'leave' => $leave,
-    'status' => $status,
 ])
 
 @section('head')
@@ -26,71 +25,23 @@
 @endPushOnce
 @section('content')
 
-@php
-    $activeRoutes = [];
-    $ownRequest = $routePrefix.'.leaves.show';
-    $otherRequest = $routePrefix.'.leaves.requests.general';
+<livewire:employee.leaves.requestor-info :$routePrefix :$leave />
 
-    array_push($activeRoutes, $ownRequest, $otherRequest);
-@endphp
-
-<x-breadcrumbs>
-    <x-slot:breadcrumbs>
-        <x-breadcrumb :href="route($routePrefix.'.leaves.index')">
-            {{ __('Leaves') }}
-        </x-breadcrumb>
-        <x-breadcrumb :active="request()->routeIs($activeRoutes)">
-            {{ __('Request Leave') }}
-        </x-breadcrumb>
-    </x-slot:breadcrumbs>
-</x-breadcrumbs>
-
-<x-headings.main-heading :isHeading="true">
-    <x-slot:heading>
-        <span class="me-2">
-            {{ $leave->category->leave_category_name }}
-        </span>
-        <x-status-badge 
-            color="{{ $status->getColor() }}"
-        >
-            {{ $status->getLabel() }}
-        </x-status-badge>
-    </x-slot:heading>
-
-    <x-slot:description>
-        @if (request()->routeIs($otherRequest))
-            <div class="text-secondary-emphasis">
-                <span class="me-5">
-                    <span class="fw-semibold">
-                        {{ __('Employee: ') }}
-                    </span>
-                    {{ $leave->employee->full_name }}
-                </span>
-                <span>
-                    <span class="fw-semibold">
-                        {{ __('Filed On: ') }}
-                    </span>
-                    {{ $leave->filed_at }}
-                </span>
+<section class="mb-5 mt-3">
+    <div class="d-flex mb-5 row align-items-stretch">
+        <section class="col-md-5 d-flex">
+            <div class="w-100">
+                <livewire:employee.leaves.approvals :$leave />
             </div>
-        @endif
-    </x-slot:description>
-</x-headings.main-heading>
+        </section>
 
-    <section class="mb-5 mt-3">
-        <div class="d-flex mb-5 row align-items-stretch">
-            <section class="col-md-5 d-flex">
-                <div class="w-100">
-                    <livewire:employee.leaves.approvals :$leave />
-                </div>
-            </section>
+        <section class="col-md-7 d-flex">
+            <div class="w-100">
+                <livewire:employee.leaves.leave-info :$leave />
+            </div>
+        </section>
+    </div>
 
-            <section class="col-md-7 d-flex">
-                <div class="w-100">
-                    <livewire:employee.leaves.leave-info :$leave />
-                </div>
-            </section>
-        </div>
+</section>
 
-    </section>
 @endsection
