@@ -14,7 +14,7 @@
                     <small class="text-muted">{{ $leave->denied_at }}</small>
                 </div>
                 <div class="mt-3">
-                    <label for="reason" class="fw-semibold text-secondary-emphasis">{{ __('Reason for denial:') }}</label>
+                    <label for="reason" class="mb-2 fw-medium text-secondary-emphasis">{{ __('Reason for denial:') }}</label>
                     <textarea id="reason" class="form-control bg-body-secondary" rows="3" readonly>{{ $leave?->feedback }}</textarea>    
                 </div>
             </div>
@@ -27,7 +27,7 @@
                 <p class="fw-medium fs-5">{{ __('Supervisor and Dept.Head/Manager') }}</p>
 
                 <div class="ps-4 pe-2 py-3">
-                    <x-form.checkbox container_class="" :nonce="$nonce" id="initialApproval" name="initial-approval"
+                    <x-form.checkbox container_class="" :nonce="$nonce" id="initialApproval"
                         class="checkbox checkbox-primary" disabled :checked="$leave->initial_approver_signed_at">
 
                         <x-slot:label>
@@ -41,7 +41,7 @@
                 </div>
 
                 <div class="ps-4 pe-2 py-2">
-                    <x-form.checkbox container_class="" :nonce="$nonce" id="secondApproval" name="second-approval"
+                    <x-form.checkbox container_class="" :nonce="$nonce" id="secondApproval"
                         class="checkbox checkbox-primary" disabled :checked="$leave->secondary_approver_signed_at">
 
                         <x-slot:label>
@@ -59,7 +59,7 @@
                 <p class="fw-medium fs-5">{{ __('Human Resources Department') }}</p>
 
                 <div class="ps-4 pe-2 py-3">
-                    <x-form.checkbox container_class="" :nonce="$nonce" id="thirdApproval" name="third-approval"
+                    <x-form.checkbox container_class="" :nonce="$nonce" id="thirdApproval"
                         class="checkbox checkbox-primary" disabled :checked="$leave->third_approver_signed_at">
 
                         <x-slot:label>
@@ -73,21 +73,17 @@
                 </div>
 
                 <div class="ps-4 pe-2 py-2">
-                    <div class="row">
-                        <div class="col-7">
-                            <x-form.checkbox container_class="" :nonce="$nonce" id="fourthApproval" name="fourth-approval"
-                                class="checkbox checkbox-primary" disabled :checked="$leave->fourth_approver_signed_at">
+                    <x-form.checkbox container_class="" :nonce="$nonce" id="fourthApproval"
+                        class="checkbox checkbox-primary" disabled :checked="$leave->fourth_approver_signed_at">
 
-                                <x-slot:label>
-                                    <div class="d-flex flex-column">
-                                        <div class="fs-5">{{ $leave->fourthApprover->full_name ?? __('Pending') }}</div>
-                                        <div class="text-primary">{{ $leave?->fourthApprover?->jobTitle?->job_title }}</div>
-                                        <small class="text-muted">{{ $leave?->fourth_approver_signed_at }}</small>
-                                    </div>
-                                </x-slot:label>
-                            </x-form.checkbox>
-                        </div>
-                    </div>
+                        <x-slot:label>
+                            <div class="d-flex flex-column">
+                                <div class="fs-5">{{ $leave->fourthApprover->full_name ?? __('Pending') }}</div>
+                                <div class="text-primary">{{ $leave?->fourthApprover?->jobTitle?->job_title }}</div>
+                                <small class="text-muted">{{ $leave?->fourth_approver_signed_at }}</small>
+                            </div>
+                        </x-slot:label>
+                    </x-form.checkbox>
                 </div>
             </div>
         @endif
