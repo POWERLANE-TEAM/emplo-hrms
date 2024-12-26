@@ -7,14 +7,13 @@ enum StatusBadge: string
     case APPROVED = 'approved';
     case DENIED = 'denied';
     case PENDING = 'pending';
-    case FOR_APPROVAL = 'for approval';
 
     public function getColor()
     {
         return match ($this) {
             self::APPROVED => 'success',
             self::DENIED => 'danger',
-            self::PENDING, self::FOR_APPROVAL => 'info'
+            self::PENDING => 'info'
         };
     }
 
@@ -24,7 +23,6 @@ enum StatusBadge: string
             self::APPROVED => __('APPROVED'),
             self::DENIED => __('DENIED'),
             self::PENDING => __('PENDING'),
-            self::FOR_APPROVAL => __('FOR APPROVAL'),
         };
     }
 }
