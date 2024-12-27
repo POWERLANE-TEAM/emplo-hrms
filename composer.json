@@ -22,7 +22,6 @@
         "livewire/livewire": "^3.5",
         "maatwebsite/excel": "^3.1",
         "mobiledetect/mobiledetectlib": "^4.8",
-        "omnia-digital/livewire-calendar": "^3.1",
         "propaganistas/laravel-phone": "^5.3",
         "rappasoft/laravel-livewire-tables": "^3.4",
         "rats/zkteco": "^002.0",

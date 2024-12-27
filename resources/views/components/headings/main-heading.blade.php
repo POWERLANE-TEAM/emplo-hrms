@@ -10,7 +10,7 @@
 
 @php
 
-    $defaultAttributes = ['class' => 'fs-2 fw-bold mb-2 text-secondary-emphasis'];
+    $defaultAttributes = ['class' => 'fs-2 fw-bold mb-2'];
 
     $defaultContainerAttributes = ['class' => 'ps-2 pt-2 pb-4 ms-n1'];
 

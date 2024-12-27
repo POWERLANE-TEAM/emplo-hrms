@@ -28,6 +28,9 @@
         "vite-plugin-static-copy": "^1.0.6"
     },
     "dependencies": {
+        "@fullcalendar/core": "^6.1.15",
+        "@fullcalendar/daygrid": "^6.1.15",
+        "@fullcalendar/interaction": "^6.1.15",
         "bootstrap": "^5.3.3",
         "chartjs-plugin-annotation": "^3.0.1",
         "glob": "^11.0.0",
