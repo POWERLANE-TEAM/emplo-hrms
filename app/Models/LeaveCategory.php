@@ -10,11 +10,11 @@ class LeaveCategory extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'leave_id';
+    protected $primaryKey = 'leave_category_id';
 
     protected $fillable = [
-        'leave_name',
-        'leave_desc',
+        'leave_category_name',
+        'leave_category_desc',
     ];
 
     /**
@@ -22,6 +22,6 @@ class LeaveCategory extends Model
      */
     public function leaves(): HasMany
     {
-        return $this->hasMany(EmployeeLeave::class, 'leave_id', 'leave_id');
+        return $this->hasMany(EmployeeLeave::class, 'leave_category_id', 'leave_category_id');
     }
 }

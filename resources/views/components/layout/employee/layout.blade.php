@@ -12,6 +12,14 @@
     <style nonce="{{ $nonce }}">
         {!! Vite::content('resources/css/input/disable-submit.css') !!}
     </style>
+
+    <!-- Preload style.css -->
+    <link rel="preload" href="{{ Vite::asset('resources/css/style.css') }}" as="style"
+        onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="{{ Vite::asset('resources/css/style.css') }}">
+    </noscript>
+
     <x-html.meta />
     <x-html.meta-seo />
 
@@ -21,7 +29,7 @@
 
     {{-- {{ Vite::useScriptTagAttributes(['onerror' => 'handleError(error)']) }}
     @php
-        Debugbar::getJavascriptRenderer()->setCspNonce($nonce);
+    Debugbar::getJavascriptRenderer()->setCspNonce($nonce);
     @endphp --}}
 
     <x-global-debug />
@@ -70,11 +78,11 @@
     @stack('styles')
 
     @env('local')
-    @vite(['node_modules/bootstrap/dist/js/bootstrap.bundle.min.js'])
+        @vite(['node_modules/bootstrap/dist/js/bootstrap.bundle.min.js'])
     @endenv
 
     @env('production')
-    @vite(['node_modules/bootstrap/dist/js/bootstrap.bundle.min.js?commonjs-entry'])
+        @vite(['node_modules/bootstrap/dist/js/bootstrap.bundle.min.js?commonjs-entry'])
     @endenv
 
     @stack('pre-scripts')

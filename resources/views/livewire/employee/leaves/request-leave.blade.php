@@ -1,3 +1,8 @@
+@php
+    $validDate = today()->addDay()->format('Y-m-d');
+    $leaveBalance = auth()->user()->account->jobDetail->leave_balance;
+@endphp
+
 <div>
     <div class="row px-3 mb-4">
 
@@ -16,7 +21,7 @@
         <div class="row">
             <div class="col">
                 <x-form.boxed-date id="start_date" label="{{ __('Start Date') }}" wire:model.live="state.startDate" :nonce="$nonce"
-                    :required="true" placeholder="Start Date" />
+                    :required="true" placeholder="Start Date" min="{{ $validDate }}" />
                 @error('state.startDate')
                     <div class="invalid-feedback" role="alert"> {{ $message }} </div>
                 @enderror
@@ -24,7 +29,7 @@
 
             <div class="col">
                 <x-form.boxed-date id="end_date" label="{{ __('End Date') }}" wire:model.live="state.endDate" :nonce="$nonce"
-                    :required="true" placeholder="End Date" />
+                    :required="true" placeholder="End Date" min="{{ $validDate }}" />
                 @error('state.endDate')
                     <div class="invalid-feedback" role="alert"> {{ $message }} </div>
                 @enderror
@@ -50,6 +55,11 @@
                         <span class="fw-bold text-primary">{{ $totalDaysLeave }}</span>
                     </div>
                 </div>
+                <div class="callout callout-info bg-body-{{ $leaveBalance > 0 ? 'info' : 'danger' }} mt-3">
+                    <div class="fs-5 px-2">{{ __('Remaining Leave Balance') }}:
+                        <span class="fw-bold text-primary">{{ $leaveBalance }}</span>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -62,3 +72,12 @@
         </div>
     </div>
 </div>
+
+@script
+<script>
+    Livewire.on('showSuccessToast', (event) => {
+        const eventPayload = event[0];
+        showToast(eventPayload.type, eventPayload.message);
+    });
+</script>
+@endscript

@@ -55,8 +55,8 @@
      */
     $navLeavesOrder = $user->hasPermissionTo(UserPermission::VIEW_ALL_LEAVES) ? 5 : 3; // Adjust order as needed
     $navLeavesRoute = $user->hasPermissionTo(UserPermission::VIEW_ALL_LEAVES)
-        ? $routePrefix . '.hr.leaves.all'
-        : $routePrefix . '.general.leaves.all';
+        ? $routePrefix . '.leaves.requests.general'
+        : $routePrefix . '.leaves.index';
     $navLeavesActivePattern = $user->hasPermissionTo(UserPermission::VIEW_ALL_LEAVES)
         ? $routePrefix . '.hr.leaves.*'
         : $routePrefix . '.general.leaves.*';
@@ -337,7 +337,7 @@
             :active="request()->routeIs($routePrefix . 'requests.*')"
             :defaultIcon="['src' => 'requests', 'alt' => 'Performance']"
             :activeIcon="['src' => 'requests', 'alt' => 'Relations']" :children="[
-                ['href' => route($routePrefix . '.managerial.requests.leaves.all'), 'active' => request()->routeIs($routePrefix . '.managerial.requests.leaves.all'), 'nav_txt' => 'Leaves'],
+                ['href' => route($routePrefix . '.leaves.requests'), 'active' => request()->routeIs($routePrefix . '.leaves.requests'), 'nav_txt' => 'Leaves'],
                 ['href' => route($routePrefix . '.overtimes.requests.cut-offs'), 'active' => request()->routeIs($routePrefix . '.overtimes.requests.cut-offs'), 'nav_txt' => 'Overtime'],
             ]">
         </x-layout.employee.nav.sidebar.nested-nav-items>

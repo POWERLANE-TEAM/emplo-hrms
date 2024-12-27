@@ -80,7 +80,7 @@ class Overtime extends Model
         );
     }
 
-        /**
+    /**
      * Accessor for authorized date (formatted).
      */
     protected function authorizerSignedAt(): Attribute
@@ -114,7 +114,7 @@ class Overtime extends Model
     }
 
     /**
-     * Get the secondary approver who denied the overtime.
+     * Get the user employee who denied the overtime.
      */
     public function deniedBy(): BelongsTo
     {

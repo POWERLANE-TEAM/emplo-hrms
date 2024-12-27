@@ -115,6 +115,7 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::UPDATE_ISSUE_COMPLAINT_RESOLVED->value,
             UserPermission::UPDATE_ALL_OVERTIME_REQUEST->value,
             UserPermission::APPROVE_OVERTIME_SUMMARY_TERTIARY->value,
+            UserPermission::APPROVE_LEAVE_REQUEST_FOURTH->value,
 
             // Delete cases goes here
         ];
@@ -174,6 +175,9 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::AUTHORIZE_OVERTIME_REQUEST->value,
             UserPermission::APPROVE_OVERTIME_SUMMARY_INITIAL->value,
             UserPermission::APPROVE_OVERTIME_SUMMARY_SECONDARY->value,
+            UserPermission::APPROVE_LEAVE_REQUEST_FIRST->value,
+            UserPermission::APPROVE_LEAVE_REQUEST_SECOND->value,
+            UserPermission::APPROVE_LEAVE_REQUEST_THIRD->value,
         ];
     }
 }

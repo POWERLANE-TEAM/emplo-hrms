@@ -13,11 +13,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('job_families', function (Blueprint $table) {
-            $table->foreignIdFor(Employee::class, 'office_head')
+            $table->foreignIdFor(Employee::class, 'supervisor')
                 ->nullable()
                 ->constrained('employees', 'employee_id')
                 ->cascadeOnUpdate()
                 ->nullOnDelete();
+
+            $table->foreignIdFor(Employee::class, 'office_head')
+                ->nullable()
+                ->constrained('employees', 'employee_id')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
 
             $table->timestamps();
         });

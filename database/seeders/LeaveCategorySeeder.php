@@ -19,8 +19,8 @@ class LeaveCategorySeeder extends Seeder
         activity()->withoutLogs(function () use ($leaves) {
             $leaves->each(function ($item) {
                 LeaveCategory::create([
-                    'leave_name' => $item->name,
-                    'leave_desc' => $item->description,
+                    'leave_category_name' => $item->name,
+                    'leave_category_desc' => $item->description,
                 ]);
             });
         });

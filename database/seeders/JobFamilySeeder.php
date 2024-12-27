@@ -27,6 +27,7 @@ class JobFamilySeeder extends Seeder
                 'job_family_name' => $name,
                 'job_family_desc' => fake()->paragraph(),
                 'office_head' => null,
+                'supervisor' => null,
             ]);
         });
     }

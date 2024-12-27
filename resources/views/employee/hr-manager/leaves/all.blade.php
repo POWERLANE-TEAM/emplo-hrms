@@ -2,7 +2,7 @@
 @use ('Illuminate\View\ComponentAttributeBag')
 
 @section('head')
-<title>Employee Name's Performance Evaluation Results</title><!-- Replace with Employee Name -->
+<title>Employee Leave Requests</title>
 <script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 @endsection
@@ -23,12 +23,14 @@
 
 <x-headings.main-heading :isHeading="true">
     <x-slot:heading>
-        {{ __('Requested Leaves Table') }}
+        {{ __('Employee Leave Requests') }}
     </x-slot:heading>
 
     <x-slot:description>
-        {{ __('View and manage.') }}
+        {{ __('View and manage each employee\'s leave requests here.') }}
     </x-slot:description>
 </x-headings.main-heading>
 
-    @endsection
+<livewire:employee.tables.any-leave-requests-table :$routePrefix />
+
+@endsection

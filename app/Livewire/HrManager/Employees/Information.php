@@ -37,8 +37,6 @@ class Information extends Component
             'philHealth' => $employee->philhealth_no,
             'tin' => $employee->tin_no,
             'pagIbig' => $employee->pag_ibig_no,
-            'education' => json_decode($employee->education, true),
-            'experience' => json_decode($employee->experience, true),
             'registeredAt' => $this->parseDateToReadableFormat($employee->created_at),
         ];
     }

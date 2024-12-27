@@ -28,7 +28,7 @@
 
     <section class="mt-3 px-4">
         <div class="row">
-            <div class="col-6">
+            <div class="col-4">
                 <!-- Total Working Days -->
                 <div class="mt-2 border-0 rounded-4 bg-body-secondary p-3 fw-bold fs-5">
                     <span class="col-2 px-2">
@@ -70,9 +70,10 @@
                 </div>
             </div>
 
-            <div class="col-6 border">
-                <!-- REVISIT: Calendar -->
-                Calendar
+            <div class="col-8">
+                <div class="mt-3 ms-3">
+                <div id="calendar"></div>
+                </div>
             </div>
         </div>
     </section>
