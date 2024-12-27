@@ -393,4 +393,16 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     Route::get('general/issues/create', function () {
         return view('employee.basic.issues.create');
     })->name('general.issues.create');
+
+
+    /**
+     * General: Separation
+     */
+    Route::get('/separation/index', function () {
+        return view('employee.basic.separation.index');
+    })->name('separation.index');
+
+    Route::get('/separation/file-resignation', function () {
+        return view('employee.basic.separation.file-resignation');
+    })->name('separation.file-resignation');
 });
