@@ -49,6 +49,7 @@ class DatabaseSeeder extends Seeder
                 PayrollSeeder::class,
                 OvertimeSeeder::class,
                 EmployeeJobDetailSeeder::class,
+                // EmployeeLeaveSeeder::class,
             ]);
         });
     }

@@ -59,8 +59,6 @@
                         <p>{{ $employee->sex }}</p>
                         <div class="fw-bold">{{ __('Civil Status: ') }}</div>
                         <p>{{ $employee->civilStatus }}</p>
-                        <div class="fw-bold">{{ __('Education: ') }}</div>
-                        <p>{{ $employee->education[0]['degree'] }}</p>
                     </div>
                 </div>
 

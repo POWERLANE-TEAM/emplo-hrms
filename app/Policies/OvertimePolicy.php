@@ -76,6 +76,7 @@ class OvertimePolicy
     {
         $pendingRequestCount = $employee->overtimes()
             ->whereNull('authorizer_signed_at')
+            ->whereNull('denied_at')
             ->count();
 
         return $pendingRequestCount >= $this->allowedPendingRequestCount
@@ -226,7 +227,7 @@ class OvertimePolicy
             return Response::allow();
         }
 
-        // // checks if user employee is like idk the HR Manager
+        // checks if user employee is like idk the HR Manager
         if ($user->hasPermissionTo(UserPermission::VIEW_ALL_OVERTIME_REQUEST)) {
             return Response::allow();
         }

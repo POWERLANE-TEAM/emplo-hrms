@@ -22,13 +22,21 @@ class JobFamily extends Model
     protected $primaryKey = 'job_family_id';
 
     protected $fillable = [
-        'job_family_name',
-        'job_family_desc',
-        'office_head',
+        'job_family_id',
+        'created_at',
+        'updated_at',
     ];
 
     /**
-     * Get the office head of the job family.
+     * Get the supervisor of the job family.
+     */
+    public function supervisor(): BelongsTo
+    {
+        return $this->belongsTo(Employee::class, 'supervisor', 'employee_id');
+    }
+
+    /**
+     * Get the office_head / manager of the job family.
      */
     public function head(): BelongsTo
     {
