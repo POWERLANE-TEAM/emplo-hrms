@@ -56,7 +56,6 @@ class RequestorInfo extends Component
         ];
 
         $query = EmployeeLeave::query()
-            ->whereNot('employee_id', $this->user->account->employee_id)
             ->when($this->user->hasAnyPermission($higherPermissions),
                 function ($query) {
                     return $query->whereNotNull('third_approver_signed_at')
