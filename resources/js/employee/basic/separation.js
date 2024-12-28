@@ -36,9 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
             allowMultiple: false, 
             maxFiles: 1,
             acceptedFileTypes: [
-                'application/pdf',
-                'application/msword',
-                'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                'application/pdf'
             ],
             labelFileTypeNotAllowed: 'File type not supported.',
             fileValidateTypeLabelExpectedTypes: 'Expects {allTypes}',
