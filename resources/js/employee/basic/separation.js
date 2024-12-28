@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ],
             labelFileTypeNotAllowed: 'File type not supported.',
             fileValidateTypeLabelExpectedTypes: 'Expects {allTypes}',
-            labelIdle: 'Drag & Drop your files or <span class="filepond--label-action">Browse</span>',
+            labelIdle: 'Drag & Drop your file or <span class="filepond--label-action">Browse</span>',
             // PDF Preview Options
             pdfPreviewHeight: 320,
             pdfPreviewShowCoverOnly: true,
