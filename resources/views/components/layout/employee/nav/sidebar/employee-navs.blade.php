@@ -204,6 +204,17 @@
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan
 
+    @can(UserPermission::VIEW_RESIGNATION)
+        <x-layout.employee.nav.sidebar.nav-item
+            href="{{ route($routePrefix . '.separation.index') }}"
+            :active="request()->routeIs($routePrefix . '.separation.*')"
+            class="order-12"
+            nav_txt="Separation"
+            :defaultIcon="['src' => 'separation', 'alt' => '']"
+            :activeIcon="['src' => 'separation', 'alt' => '']">
+        </x-layout.employee.nav.sidebar.nav-item>
+    @endcan
+
     {{-- HR Manager --}}
     @can(UserPermission::VIEW_ALL_PENDING_APPLICATIONS)
         <x-layout.employee.nav.sidebar.nav-item
@@ -260,6 +271,19 @@
             :defaultIcon="['src' => 'training', 'alt' => '']"
             :activeIcon="['src' => 'training', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
+    @endcan
+
+    {{-- HR Manager --}}
+    @can(UserPermission::VIEW_ALL_FILED_RESIGNATION_LETTERS)
+    <x-layout.employee.nav.sidebar.nested-nav-items
+        nav_txt="Separation"
+        :active="request()->routeIs($routePrefix . '.separation.*')"
+        class="order-12"
+        :defaultIcon="['src' => 'separation', 'alt' => 'Separation']"
+        :activeIcon="['src' => 'separation', 'alt' => 'Separation']" :children="[
+            ['href' => route($routePrefix . '.separation.resignations'), 'active' => request()->routeIs($routePrefix . '.separation.resignation'), 'nav_txt' => 'Resignations'],
+            ['href' => route($routePrefix . '.separation.coe.requests'), 'active' => request()->routeIs($routePrefix . '.separation.coe.requests'), 'nav_txt' => 'COEs'],]">
+    </x-layout.employee.nav.sidebar.nested-nav-items>
     @endcan
 
     {{-- Head Admin --}}
@@ -323,18 +347,6 @@
             :defaultIcon="['src' => 'announcements', 'alt' => '']"
             :activeIcon="['src' => 'announcements', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
-    @endcan
-
-    @can(UserPermission::VIEW_ALL_FILED_RESIGNATION_LETTERS)
-    <x-layout.employee.nav.sidebar.nested-nav-items
-        nav_txt="Separation"
-        :active="request()->routeIs($routePrefix . 'separation.*')"
-        class="order-12"
-        :defaultIcon="['src' => 'performances', 'alt' => 'Separation']"
-        :activeIcon="['src' => 'performances', 'alt' => 'Separation']" :children="[
-            ['href' => route($routePrefix . '.separation.resignations'), 'active' => request()->routeIs($routePrefix . '.separation.resignation'), 'nav_txt' => 'Resignations'],
-            ['href' => route($routePrefix . '.separation.coe.requests'), 'active' => request()->routeIs($routePrefix . '.separation.coe.requests'), 'nav_txt' => 'COEs'],]">
-    </x-layout.employee.nav.sidebar.nested-nav-items>
     @endcan
 
 </x-layout.employee.nav.sidebar.nav-group>
