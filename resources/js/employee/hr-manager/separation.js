@@ -25,6 +25,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
 initSidebar();
 
+// Full Screen of the PDF
 new GlobalListener('click', document, `[aria-controls="iframe-resignation-letter"]`, (event) => {
     const resumeViewer = document.getElementById('iframe-resignation-letter');
     const container = resumeViewer.parentElement;
@@ -44,6 +45,25 @@ new GlobalListener('click', document, `[aria-controls="iframe-resignation-letter
     }
 });
 
+// Collapse Chevron
 
+const collapseTrigger = document.querySelector('[data-bs-toggle="collapse"]');
+    
+if (collapseTrigger) { 
+    collapseTrigger.addEventListener('click', function () {
+        const chevronIcon = this.querySelector('[data-lucide="chevron-down"]') || this.querySelector('[data-lucide="chevron-up"]');
+        
+        if (chevronIcon) {
+            if (this.getAttribute('aria-expanded') === 'true') {
+                chevronIcon.setAttribute('data-lucide', 'chevron-up');
+            } else {
+                chevronIcon.setAttribute('data-lucide', 'chevron-down');
+            }
+            lucide.createIcons(); // Refresh Lucide icons
+        } else {
+            console.error('Chevron icon not found inside the trigger element.');
+        }
+    });
+}
 
 
