@@ -2,7 +2,7 @@
 
     @php
         $isEmpty = false;
-        // BACK-END REPLACE: Toogle the boolean if there's submitted resignation letter.
+        // BACK-END REPLACE: Toogle the boolean if there's submitted resignation letter to either trigger the empty state or the resignation letter page
 
         $determinedOn = '2021-03-02';
         // Date when HR sent back the approval/rejection
@@ -50,7 +50,7 @@
                         <a href="file-resignation"
                             class="btn btn-primary btn-lg w-25 d-flex align-items-center justify-content-center mx-auto">
                             <i data-lucide="file-plus-2" class="icon icon-large me-2"></i>
-                            Submit Resignation Letter
+                            File Resignation Letter
                         </a>
                     </div>
 
@@ -70,7 +70,7 @@
     @if (!$isEmpty)
 
         <!-- BACK-END REPLACE NOTE: This notice should be always at every page after the employee has been
-                            resigned. It can be moved to the layout. -->
+        resigned. It can be moved to the layout. -->
 
         @if ($employeeStatus === 'resigned')
             @include('components.includes.callouts.data-retention-notice')
