@@ -307,7 +307,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     })->name('separation.all');
 
     Route::get('seperation/resignations', function () {
-        return view('employee.hr-manager.separation.resignation.review');
+        return view('employee.hr-manager.separation.resignation.all');
     })->name('separation.resignations');
 
     Route::get('seperation/coe/requests', function () {
