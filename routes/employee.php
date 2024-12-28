@@ -298,6 +298,22 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     })->name('payslips.bulk-upload');
 
 
+    /**
+     * Separation
+     */
+
+     Route::get('/seperation/all', function () {
+        return view('employee.hr-manager.separation.all');
+    })->name('separation.all');
+
+
+    Route::get('/seperation/resignation/review', function () {
+        return view('employee.hr-manager.separation.resignation.review');
+    })->name('separation.resignation.review');
+
+    Route::get('/seperation/coe/requests', function () {
+        return view('employee.hr-manager.separation.coe.requests');
+    })->name('separation.coe.requests');
 
 
     // =========================================
