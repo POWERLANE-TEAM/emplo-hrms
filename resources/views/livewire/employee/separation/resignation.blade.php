@@ -28,7 +28,7 @@
                 <!-- Row for Buttons -->
                 <div class="row justify-content-center">
                     <div class="col-12 text-center mb-3">
-                        <a href="{{ $routePrefix . '.separation.file-resignation' }}"
+                        <a href="file-resignation"
                             class="btn btn-primary btn-lg w-25 d-flex align-items-center justify-content-center mx-auto">
                             <i data-lucide="file-plus-2" class="icon icon-large me-2"></i>
                             Submit Resignation Letter
