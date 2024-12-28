@@ -6,7 +6,7 @@
 <script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 
-<script src="https://unpkg.com/filepond/dist/filepond.min.js"></script>
+<script src="https://unpkg.com/filepond/dist/filepond.min.js"></script> <!-- Remove once the back-end package is being used -->
 <script src="https://unpkg.com/filepond-plugin-pdf-preview/dist/filepond-plugin-pdf-preview.min.js"></script>
 <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.min.js"></script>
 
@@ -21,7 +21,7 @@
 @endPushOnce
 
 @pushOnce('pre-styles')
-    <link href="https://unpkg.com/filepond/dist/filepond.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/filepond/dist/filepond.min.css" rel="stylesheet"> <!-- Remove once the back-end package is being used -->
     <link href="https://unpkg.com/filepond-plugin-pdf-preview/dist/filepond-plugin-pdf-preview.min.css" rel="stylesheet">
 @endPushOnce
 
@@ -49,9 +49,9 @@
 <section class="mx-4">
     <div class="mt-1 pt-1 pb-3 py-4 w-100">
         <div class="filepond-wrapper custom-filepond-style">
-            <input multiple type="file" class="filepond" name="file"
-                accept="application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-                >
+            <input multiple type="file" class="filepond" name="file" accept="application/pdf">
+            <!-- BACK-END REPLACE: Replace thiS input with the x-filepond::upload component. Use search -->
+
         </div>
     </div>
 
