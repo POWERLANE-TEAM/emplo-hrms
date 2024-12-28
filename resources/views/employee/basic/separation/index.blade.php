@@ -14,7 +14,7 @@
 @endPushOnce
 
 @pushOnce('scripts')
-    @vite(['resources/js/employee/basic/dashboard.js'])
+    @vite(['resources/js/employee/basic/separation.js'])
 @endPushOnce
 
 @pushOnce('styles')
@@ -32,6 +32,7 @@
         <p>{{ __('Manage your resignation letter and end of employment here.') }}</p>
     </x-slot:description>
 </x-headings.main-heading>
+
 
 <livewire:employee.separation.resignation />
 
