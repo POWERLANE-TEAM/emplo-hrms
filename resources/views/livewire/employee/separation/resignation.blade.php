@@ -6,7 +6,7 @@
 
         $determinedOn = '2021-03-02';
         $status = 'approved';
-        $hasComments = true;
+        $hasComments = false;
         $employeeStatus = 'resigned'; // This can be triggered when the status of Resignation Letter is Approved.
     @endphp
 
@@ -66,7 +66,7 @@
         <section class="py-3">
             <div class="row">
                 <div class="col-md-6">
-                    <div class="d-flex mx-0 px-0 mt-3 mt-md-n1 h-100">
+                    <div class="d-flex mx-0 px-0 mt-3 mt-md-n1" style="min-height: 50vh;">
                         <div class="flex-grow-1 border border-1 rounded-3 ">
                             <div class="flex-grow-1 px-4 position-relative">
                                 <button type="button" aria-controls="iframe-resignation-letter"
