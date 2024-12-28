@@ -1,13 +1,18 @@
-<div class="my-3">
+<div>
 
     @php
         $isEmpty = false;
         // BACK-END REPLACE: Toogle the boolean if there's submitted resignation letter.
+
+        $determinedOn = '2021-03-02';
+        $status = 'approved';
+        $hasComments = true;
+        $employeeStatus = 'resigned'; // This can be triggered when the status of Resignation Letter is Approved.
     @endphp
 
     <!-- Empty State -->
     @if ($isEmpty)
-        <section>
+        <section class="py-3">
             <div class="container">
                 <!-- Row for the Image -->
                 <div class="row justify-content-center mb-4">
@@ -51,26 +56,26 @@
     <!-- Presence of Resignation Letter -->
     @if (!$isEmpty)
 
-        @php
-            // BACK-END REPLACE: This and its corresponding sections
-            $determinedOn = '2021-03-02';
-            $status = 'approved';
-            $hasComments = true;
-        @endphp
+        <!-- BACK-END REPLACE NOTE: This notice should be always at every page after the employee has been
+        resigned. It can be moved to the layout. -->
 
-        <section>
+        @if ($employeeStatus === 'resigned')
+            @include('components.includes.callouts.data-retention-notice')
+        @endif
+
+        <section class="py-3">
             <div class="row">
                 <div class="col-md-6">
-                    <div class="d-flex mx-0 col-12 px-0 mt-3 mt-md-n1">
+                    <div class="d-flex mx-0 px-0 mt-3 mt-md-n1 h-100">
                         <div class="flex-grow-1 border border-1 rounded-3 ">
                             <div class="flex-grow-1 px-4 position-relative">
-                                <button type="button" aria-controls="iframe-applicant-resume"
+                                <button type="button" aria-controls="iframe-resignation-letter"
                                     class="text-dark shadow rounded-circle btn-full-screen"><i class="icon-medium"
                                         data-lucide="expand"></i></button>
                             </div>
-                            <iframe id="iframe-applicant-resume" name="applicant-resume" class="rounded-3 "
+                            <iframe id="iframe-resignation-letter" name="applicant-resume" class="rounded-3 "
                                 allowfullscreen='yes' src="{{ Storage::url('hardware-and-software-components.pdf') }}"
-                                height="300vh" width="100%" frameborder="0" allowpaymentrequest="false"
+                                height="100%" width="100%" frameborder="0" allowpaymentrequest="false"
                                 loading="lazy"></iframe>
                             <!-- BACK-END REPLACE: PDF of the Resignation Letter -->
                         </div>
@@ -79,7 +84,7 @@
 
                 <div class="col-md-6">
                     <div class="container">
-                        <div class="p-3 px-lg-5 py-md-4 mb-4 flex-grow-1">
+                        <div class="px-lg-5 mb-4 flex-grow-1">
                             <header>
                                 <h3 class="text-primary fw-bold">Resignation Letter</h3>
                             </header>
@@ -102,7 +107,8 @@
                                 </p>
 
                                 <!-- Submitted on -->
-                                <p class="fw-bold mt-3 fs-5">Submitted on: <span class="fw-medium">January 20, 2024</span></p>
+                                <p class="fw-bold mt-3 fs-5">Submitted on: <span class="fw-medium">January 20, 2024</span>
+                                </p>
 
                                 <!-- Determined on. If determinedOn date is not null -->
                                 @if (!empty($determinedOn))
@@ -121,14 +127,28 @@
                                     <button type="submit" id="applicant-decline-resume" name="submit"
                                         class="btn btn-lg btn-danger w-25">Retract</button>
 
-                                <!-- Comments Section. If there's any and if it's not pending-->
+                                    <!-- Comments Section. If there's any and if it's not pending-->
                                 @else
                                     @if ($hasComments)
                                         <div class="card border-primary mt-4 p-4 w-100">
                                             <p class="fw-bold fs-5">Comments</p>
-                                            <p>Your resignation has been approved. Please check your email or contact HR for the next steps in the separation process. We appreciate your contributions and wish you the best in your future endeavors.</p>
+                                            <p>Your resignation has been approved. Please check your email or contact HR for the
+                                                next steps in the separation process. We appreciate your contributions and wish you
+                                                the best in your future endeavors.</p>
                                         </div>
+
+                                        <!-- Request COE if Resignation Letter is approved + Employment Status = Resigned -->
+                                        @if ($employeeStatus === 'resigned' && $status === 'approved')
+
+                                            <div class="mt-3">
+                                                <button class="btn btn-primary btn-lg w-100">
+                                                    <i data-lucide="file-badge" class="icon icon-large me-2"></i>
+                                                    Request for Certificate of Employment
+                                                </button>
+                                            </div>
+                                        @endif
                                     @endif
+
                                 @endif
                             </div>
                         </div>
