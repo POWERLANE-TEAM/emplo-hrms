@@ -1,27 +1,51 @@
 <div>
 
+    <!-- BACK-END REPLACE: Replace placeholder datas. -->
+
     @php
-        $isEmpty = false;
-        // BACK-END REPLACE: Toogle the boolean if there's submitted resignation letter to either trigger the empty state or the resignation letter page
+        // ===========================
+        // Resignation Letter State
+        // ===========================
+        $isEmpty = true;
+        // Boolean flag indicating if the resignation letter is submitted.
+        // If true, it triggers the empty state (no letter submitted).
+        // Toggle this flag if a resignation letter is submitted.
 
-        $determinedOn = '2021-03-02';
-        // Date when HR sent back the approval/rejection
+        $determinedOn = '';
+        // Date when HR processed and made a decision on the resignation (approval/rejection).
+        // Set when HR approves or rejects the resignation.
 
-        $status = 'approved';
-        // Enums: pending, approved, rejected
+        $status = 'pending';
+        // Current status of the resignation letter submission.
+        // Possible values: 'pending' (letter submitted but not yet reviewed),
+        // 'approved' (resignation letter approved by HR), or 'rejected' (resignation letter rejected).
 
-        $hasComments = true;
-        // If the HR left any comments
+        $hasComments = false;
+        // Indicates whether HR has left comments on the resignation letter.
+        // Set to true if HR provided comments, false if no comments are given.
 
-        $employeeStatus = 'resigned';
-        // This can be triggered when the status of Resignation Letter is Approved.
 
-        $requestCertificate = true;
-        // This is when the employee requested for the COE
+        // ===========================
+        // Employee Status
+        // ===========================
+        $employeeStatus = 'regular';
+        // The current employment status of the employee.
+        // This is updated to 'resigned' if the resignation letter is approved.
 
-        $requestCertificateStatus = 'pending';
-        // Enums: pending, issued
+
+        // ===========================
+        // COE Request
+        // ===========================
+        $requestCertificate = false;
+        // Boolean flag to track if the employee has requested a Certificate of Employment (COE).
+        // Set to true if the employee requests for a COE after resignation approval.
+
+        $requestCertificateStatus = '';
+        // Status of the COE request.
+        // Possible values: 'pending' (request made but not yet processed),
+        // 'issued' (COE has been issued to the employee).
     @endphp
+
 
     <!-- Empty State -->
     @if ($isEmpty)
@@ -70,7 +94,7 @@
     @if (!$isEmpty)
 
         <!-- BACK-END REPLACE NOTE: This notice should be always at every page after the employee has been
-        resigned. It can be moved to the layout. -->
+            resigned. It can be moved to the layout. -->
 
         @if ($employeeStatus === 'resigned')
             @include('components.includes.callouts.data-retention-notice')
@@ -155,7 +179,7 @@
                                     @if ($employeeStatus === 'resigned')
                                         @if ($requestCertificate)
                                             <div class="mt-4">
-                                                <button class="btn btn-primary btn-lg w-100 mb-2" disabled>
+                                                <button class="btn btn-primary btn-lg w-100 mb-2">
                                                     <i data-lucide="download" class="icon icon-large me-2"></i>
                                                     Download Certificate of Employee
                                                 </button>
@@ -165,7 +189,8 @@
 
                                             <small>
                                                 @if ($requestCertificateStatus === 'pending')
-                                                    Your request is currently <span class="fw-bold text-info">pending</span>. Please check back here
+                                                    Your request is currently <span class="fw-bold text-info">pending</span>. Please check
+                                                    back here
                                                     for further updates.
                                                 @elseif ($requestCertificateStatus === 'issued')
                                                     Your Certificate of Employment has been successfully <span
