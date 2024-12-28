@@ -60,6 +60,13 @@
     $navLeavesActivePattern = $user->hasPermissionTo(UserPermission::VIEW_ALL_LEAVES)
         ? $routePrefix . '.hr.leaves.*'
         : $routePrefix . '.general.leaves.*';
+    
+
+    /**
+     * Separation
+     */
+    $canViewSeparation = Auth::user()->can(UserPermission::VIEW_ALL_COE_REQUESTS) || Auth::user()->can(UserPermission::VIEW_ALL_FILED_RESIGNATION_LETTERS);
+
 @endphp
 
 
@@ -126,7 +133,7 @@
     <x-layout.employee.nav.sidebar.nested-nav-items
         nav_txt="Performance"
         :active="request()->routeIs($routePrefix . 'evaluations.*')"
-        class="order-11"
+        class="order-10"
         :defaultIcon="['src' => 'performances', 'alt' => 'Performance']"
         :activeIcon="['src' => 'performances', 'alt' => 'Relations']" :children="[
             ['href' => route($routePrefix . '.hr.evaluation-results.probationary.all'), 'active' => request()->routeIs($routePrefix . '.hr.evaluation-results.probationary.all'), 'nav_txt' => 'Probationary'],
@@ -225,7 +232,7 @@
         <x-layout.employee.nav.sidebar.nested-nav-items
             nav_txt="Relations"
             :active="request()->routeIs($routePrefix . '.relations.*')"
-            class="order-11"
+            class="order-12"
             :defaultIcon="['src' => 'relations', 'alt' => 'Relations']"
             :activeIcon="['src' => 'relations', 'alt' => 'Relations']"
             :children="[
@@ -249,7 +256,7 @@
         <x-layout.employee.nav.sidebar.nav-item
             href="{{ route($routePrefix . '.training.all') }}"
             :active="request()->routeIs($routePrefix . '.training.all')"
-            class="order-3" nav_txt="Training"
+            class="order-11" nav_txt="Training"
             :defaultIcon="['src' => 'training', 'alt' => '']"
             :activeIcon="['src' => 'training', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
@@ -316,6 +323,18 @@
             :defaultIcon="['src' => 'announcements', 'alt' => '']"
             :activeIcon="['src' => 'announcements', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
+    @endcan
+
+    @can(UserPermission::VIEW_ALL_FILED_RESIGNATION_LETTERS)
+    <x-layout.employee.nav.sidebar.nested-nav-items
+        nav_txt="Separation"
+        :active="request()->routeIs($routePrefix . 'separation.*')"
+        class="order-12"
+        :defaultIcon="['src' => 'performances', 'alt' => 'Separation']"
+        :activeIcon="['src' => 'performances', 'alt' => 'Separation']" :children="[
+            ['href' => route($routePrefix . '.separation.resignations'), 'active' => request()->routeIs($routePrefix . '.separation.resignation'), 'nav_txt' => 'Resignations'],
+            ['href' => route($routePrefix . '.separation.coe.requests'), 'active' => request()->routeIs($routePrefix . '.separation.coe.requests'), 'nav_txt' => 'COEs'],]">
+    </x-layout.employee.nav.sidebar.nested-nav-items>
     @endcan
 
 </x-layout.employee.nav.sidebar.nav-group>

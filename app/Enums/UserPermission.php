@@ -101,6 +101,9 @@ enum UserPermission: string
     case VIEW_SUBORDINATE_PERFORMANCE_EVAL_FORM = 'view subordinate performance evaluation form.';
     case VIEW_SUBORDINATE_LEAVE_REQUEST = 'view subordinate leave request';
     case VIEW_SUBORDINATE_OVERTIME_REQUEST = 'view subordinate overtime request';
+    case VIEW_RESIGNATION = 'view resignation';
+    case VIEW_ALL_FILED_RESIGNATION_LETTERS = 'view all filed resignation letters';
+    case VIEW_ALL_COE_REQUESTS = 'view all certificate of employment requests';
 
         // Update cases goes here
     case UDPATE_JOB_LISTING = 'update job listing';
@@ -242,6 +245,9 @@ enum UserPermission: string
             self::VIEW_ALL_SUBORDINATE_OVERTIME_SUMMARY_FORMS => 'View all subordinate overtime summary forms.',
             self::VIEW_SUBORDINATE_LEAVE_REQUEST => 'View subordinate leave request',
             self::VIEW_SUBORDINATE_OVERTIME_REQUEST => 'View subordinate overtime request',
+            self::VIEW_RESIGNATION => 'View resignation',
+            self::VIEW_ALL_FILED_RESIGNATION_LETTERS => 'view all filed resignation letters',
+            self::VIEW_ALL_COE_REQUESTS => 'View all certificate of employment requests',
 
             // Update labels goes here
             self::UDPATE_JOB_LISTING => 'Update job listing/s',
