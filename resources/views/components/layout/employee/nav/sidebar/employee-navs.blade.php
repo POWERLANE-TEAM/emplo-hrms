@@ -282,7 +282,7 @@
         :defaultIcon="['src' => 'separation', 'alt' => 'Separation']"
         :activeIcon="['src' => 'separation', 'alt' => 'Separation']" :children="[
             ['href' => route($routePrefix . '.separation.resignations'), 'active' => request()->routeIs($routePrefix . '.separation.resignation'), 'nav_txt' => 'Resignations'],
-            ['href' => route($routePrefix . '.separation.coe.requests'), 'active' => request()->routeIs($routePrefix . '.separation.coe.requests'), 'nav_txt' => 'COEs'],]">
+            ['href' => route($routePrefix . '.separation.coe'), 'active' => request()->routeIs($routePrefix . '.separation.coe'), 'nav_txt' => 'COEs'],]">
     </x-layout.employee.nav.sidebar.nested-nav-items>
     @endcan
 

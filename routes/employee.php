@@ -310,9 +310,17 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         return view('employee.hr-manager.separation.resignation.all');
     })->name('separation.resignations');
 
-    Route::get('seperation/coe/requests', function () {
-        return view('employee.hr-manager.separation.coe.requests');
-    })->name('separation.coe.requests');
+    Route::get('seperation/resignations/review', function () {
+        return view('employee.hr-manager.separation.resignation.review');
+    })->name('separation.resignations.review');
+
+    Route::get('seperation/coe', function () {
+        return view('employee.hr-manager.separation.coe.all');
+    })->name('separation.coe');
+
+    Route::get('seperation/coe/request', function () {
+        return view('employee.hr-manager.separation.coe.request');
+    })->name('separation.coe.request');
 
 
     // =========================================
