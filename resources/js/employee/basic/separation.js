@@ -25,8 +25,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
 initSidebar();
 
-new GlobalListener('click', document, `[aria-controls="iframe-applicant-resume"]`, (event) => {
-    const resumeViewer = document.getElementById('iframe-applicant-resume');
+new GlobalListener('click', document, `[aria-controls="iframe-resignation-letter"]`, (event) => {
+    const resumeViewer = document.getElementById('iframe-resignation-letter');
     const container = resumeViewer.parentElement;
     console.log('clicked');
     if (!document.fullscreenElement) {
