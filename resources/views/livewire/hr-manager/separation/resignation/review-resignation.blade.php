@@ -1,3 +1,171 @@
 <div>
-    {{-- Nothing in the world is as soft and yielding as water. --}}
+
+    <!-- BACK-END REPLACE: Placeholder datas -->
+    @php
+        $determinedOn = '';
+        // Date when HR processed and made a decision on the resignation (approval/rejection).
+        // Set when HR approves or rejects the resignation.
+
+        $status = 'pending';
+        // Current status of the resignation letter submission.
+        // Possible values: 'pending' (letter submitted but not yet reviewed),
+        // 'approved' (resignation letter approved by HR), or 'rejected' (resignation letter rejected).
+
+        $hasComments = true;
+        // Indicates whether HR has left comments on the resignation letter.
+        // Set to true if HR provided comments, false if no comments are given.
+
+
+        // ===========================
+        // Employee Status
+        // ===========================
+        $employeeStatus = 'regular';
+        // The current employment status of the employee.
+        // This is updated to 'resigned' if the resignation letter is approved.
+    @endphp
+
+    <!-- Modals -->
+    <x-modals.dialog id="approveLetter">
+        <x-slot:title>
+            <h1 class="modal-title fs-5">{{ __('Add Event') }}</h1>
+            <button data-bs-toggle="modal" class="btn-close" aria-label="Close"></button>
+        </x-slot:title>
+        <x-slot:content>
+            <div class="my-3"">
+                <x-form.boxed-input-text id=" trainer" label="{{ __('Event Name') }}" :nonce="$nonce" :required="true"
+                placeholder="National Hero's Day" />
+</div>
+<div class="mb-3">
+    <x-form.boxed-dropdown id="priority" label="{{ __('Select Type') }}" :required="true" :nonce="$nonce"
+        :options="['1' => 'Regular Holiday', '2' => 'Special Non-working Holiday', '3' => 'Company event']"
+        placeholder="Select type of event" />
+</div>
+</x-slot:content>
+<x-slot:footer>
+    <button class="btn btn-primary">{{ __('Add Event') }}</button>
+</x-slot:footer>
+</x-modals.dialog>
+
+<section class="py-3">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="d-flex mx-0 px-0 mt-3 mt-md-n1" style="min-height: 50vh;">
+                <div class="flex-grow-1 border border-1 rounded-3 ">
+                    <div class="flex-grow-1 px-4 position-relative">
+                        <button type="button" aria-controls="iframe-resignation-letter"
+                            class="text-dark shadow rounded-circle btn-full-screen"><i class="icon-medium"
+                                data-lucide="expand"></i></button>
+                    </div>
+                    <iframe id="iframe-resignation-letter" name="applicant-resume" class="rounded-3 "
+                        allowfullscreen='yes' src="{{ Storage::url('hardware-and-software-components.pdf') }}"
+                        height="100%" width="100%" frameborder="0" allowpaymentrequest="false" loading="lazy"></iframe>
+                    <!-- BACK-END REPLACE: PDF of the Resignation Letter -->
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="container">
+                <div class="px-lg-5 mb-4 flex-grow-1">
+                    <header>
+                        <div>
+                            <p class="fw-bold fs-3 text-primary mb-0">Blackwell, Kelly Princess J.</p>
+                            <p class="fs-5 fw-medium">Associate / Assistant Manager</p>
+                        </div>
+
+                        <!-- View Contact Information -->
+                        <div>
+                            <div>
+                                <p data-bs-toggle="collapse" data-bs-target="#contact-info" aria-expanded="false"
+                                    aria-controls="contact-info" class="hover-opacity fs-7" style="cursor: pointer;">
+                                    View Contact Information <i data-lucide="chevron-down"
+                                        class="icon icon-large me-2"></i>
+                                </p>
+
+                                <div id="contact-info" class="collapse px-2">
+                                    <p class="pt-3 pb-2"><i data-lucide="mail" class="icon icon-large me-2"></i>
+                                        <b>Email:</b>
+                                        <x-gmail-redirect email="blackwell.kpj@gmail.com" />
+                                    </p>
+                                    <p class="pb-2"><i data-lucide="phone" class="icon icon-large me-2"></i>
+                                        <b>Contact
+                                            Number:</b> +63 912 345 6789
+                                    </p>
+                                    <small>
+                                        <a class="text-link-blue hover-opacity" href="#">Go to Profile</a>
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </header>
+
+                    <div class="mt-4">
+                        <!-- Status -->
+                        <p class="fw-bold mt-3 fs-5">Status:
+                            @if ($status === 'pending')
+                                <span class="text-info">Pending</span>
+                            @elseif ($status === 'approved')
+                                <span class="text-primary">Approved <i class="icon icon-large text-primary ms-1"
+                                        data-lucide="badge-check"></i></span>
+                            @elseif ($status === 'rejected')
+                                <span class="text-danger">Rejected <i class="icon icon-large text-danger ms-1"
+                                        data-lucide="badge-x"></i></span>
+                            @else
+                            @endif
+                        </p>
+
+                        <!-- Submitted on -->
+                        <p class="fw-bold mt-3 fs-5">Submitted on: <span class="fw-medium">January 20, 2024</span>
+                        </p>
+
+                        <!-- Determined on. If determinedOn date is not null -->
+                        @if (!empty($determinedOn))
+                            <p class="fw-bold mt-3 fs-5">Determined on:
+                                <span class="fw-medium">{{ \Carbon\Carbon::parse($determinedOn)->format('F j, Y') }}</span>
+                            </p>
+                        @endif
+
+                        <!-- Comments -->
+                        @if ($hasComments)
+                            <div class="card border-primary mt-4 p-4 w-100">
+
+                                <div class="row">
+                                    <div class="col">
+                                        <p class="fw-bold fs-5">Comments</p>
+                                    </div>
+
+                                    <div class="col text-end">
+                                        <button
+                                            class="fs-7 underline fw-medium text-blue-info hover-opacity border-0 bg-transparent shadow-none p-0 m-0"
+                                            onclick="openModal('approveLetter')">
+                                            Edit
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <p>Your resignation has been approved. Please check your email or contact HR for the
+                                    next steps in the separation process. We appreciate your contributions and wish you
+                                    the best in your future endeavors.</p>
+                            </div>
+                        @endif
+
+                    </div>
+
+                    @if ($status === 'pending')
+                        <div class="mt-4">
+                            <div class="d-flex align-items-center w-100">
+                                <button type="button" data-bs-toggle="collapse" aria-expanded=" false"
+                                    aria-controls="collapseControls" class="btn btn-danger me-2 w-25">
+                                    {{ __('Reject') }}
+                                </button>
+                                <button type="button" class="btn btn-primary w-25" onclick="openModal('approveLetter')">
+                                    {{ __('Approve') }}
+                                </button>
+                            </div>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+</section>
 </div>
