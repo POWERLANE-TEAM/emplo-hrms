@@ -5,9 +5,22 @@
         // BACK-END REPLACE: Toogle the boolean if there's submitted resignation letter.
 
         $determinedOn = '2021-03-02';
+        // Date when HR sent back the approval/rejection
+
         $status = 'approved';
-        $hasComments = false;
-        $employeeStatus = 'resigned'; // This can be triggered when the status of Resignation Letter is Approved.
+        // Enums: pending, approved, rejected
+
+        $hasComments = true;
+        // If the HR left any comments
+
+        $employeeStatus = 'resigned';
+        // This can be triggered when the status of Resignation Letter is Approved.
+
+        $requestCertificate = true;
+        // This is when the employee requested for the COE
+
+        $requestCertificateStatus = 'pending';
+        // Enums: pending, issued
     @endphp
 
     <!-- Empty State -->
@@ -57,7 +70,7 @@
     @if (!$isEmpty)
 
         <!-- BACK-END REPLACE NOTE: This notice should be always at every page after the employee has been
-        resigned. It can be moved to the layout. -->
+                            resigned. It can be moved to the layout. -->
 
         @if ($employeeStatus === 'resigned')
             @include('components.includes.callouts.data-retention-notice')
@@ -102,7 +115,6 @@
                                         <span class="text-danger">Rejected <i class="icon icon-large text-danger ms-1"
                                                 data-lucide="badge-x"></i></span>
                                     @else
-                                        <span>Unknown</span>
                                     @endif
                                 </p>
 
@@ -118,7 +130,7 @@
                                     </p>
                                 @endif
 
-                                <!-- Retract Button Section. If resignation letter is still pending -->
+                                <!-- SECTION: Status Pending -->
                                 @if ($status === 'pending')
 
                                     <x-info_panels.note
@@ -127,8 +139,9 @@
                                     <button type="submit" id="applicant-decline-resume" name="submit"
                                         class="btn btn-lg btn-danger w-25">Retract</button>
 
-                                    <!-- Comments Section. If there's any and if it's not pending-->
+                                    <!-- SECTION: Status Approved / Rejected -->
                                 @else
+                                    <!-- Comments -->
                                     @if ($hasComments)
                                         <div class="card border-primary mt-4 p-4 w-100">
                                             <p class="fw-bold fs-5">Comments</p>
@@ -136,11 +149,31 @@
                                                 next steps in the separation process. We appreciate your contributions and wish you
                                                 the best in your future endeavors.</p>
                                         </div>
+                                    @endif
 
-                                        <!-- Request COE if Resignation Letter is approved + Employment Status = Resigned -->
-                                        @if ($employeeStatus === 'resigned' && $status === 'approved')
+                                    <!-- Request of COE -->
+                                    @if ($employeeStatus === 'resigned')
+                                        @if ($requestCertificate)
+                                            <div class="mt-4">
+                                                <button class="btn btn-primary btn-lg w-100 mb-2" disabled>
+                                                    <i data-lucide="download" class="icon icon-large me-2"></i>
+                                                    Download Certificate of Employee
+                                                </button>
 
-                                            <div class="mt-3">
+                                                <!-- BACK-END REPLACE: Remove disabled of the button if $requestCertificateStatus === 'issued' -->
+                                            </div>
+
+                                            <small>
+                                                @if ($requestCertificateStatus === 'pending')
+                                                    Your request is currently <span class="fw-bold text-info">pending</span>. Please check back here
+                                                    for further updates.
+                                                @elseif ($requestCertificateStatus === 'issued')
+                                                    Your Certificate of Employment has been successfully <span
+                                                        class="text-primary fw-bold">issued</span>. You can now download it.
+                                                @endif
+                                            </small>
+                                        @else
+                                            <div class="mt-4">
                                                 <button class="btn btn-primary btn-lg w-100">
                                                     <i data-lucide="file-badge" class="icon icon-large me-2"></i>
                                                     Request for Certificate of Employment
@@ -148,7 +181,6 @@
                                             </div>
                                         @endif
                                     @endif
-
                                 @endif
                             </div>
                         </div>
