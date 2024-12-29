@@ -2,7 +2,7 @@
     <header>
         <x-headings.main-heading :isHeading="true">
             <x-slot:heading>
-                {{__('Separation Process')}}
+                {{__('Data Retention')}}
             </x-slot:heading>
         </x-headings.main-heading>
     </header>
