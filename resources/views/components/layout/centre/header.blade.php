@@ -10,8 +10,8 @@
                 </div>
             </div>
 
-            <x-nav-link href="/" :active="request()->is('/')"
-                class="no-hover ps-0 fw-semibold d-flex align-items-center">
+            <x-nav-link href="/help-centre" :active="request()->is('/help-centre')"
+                class="no-hover ps-0 fw-semibold d-flex align-items-center text-decoration-none">
                 <h3 class="fw-bolder text-white mb-0">Help Centre</h1>
             </x-nav-link>
         </div>
