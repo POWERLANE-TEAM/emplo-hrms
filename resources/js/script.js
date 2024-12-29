@@ -206,3 +206,12 @@ export function openModal(modalId, callback) {
 }
 
 window.openModal = openModal;
+
+document.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(window.location.search);
+    const targetSection = params.get('section');
+
+    if (targetSection) {
+        showContent(targetSection, 'section-id');
+    }
+});

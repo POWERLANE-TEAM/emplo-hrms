@@ -92,3 +92,5 @@
 <x-modals.confirmation.confirm-modal type="caution" label="Caution modal" header="Caution Modal Title?" id="caution-modal"
     message="Proceed with caution?" actionButtonTitle="Proceed" />
 @endsection
+
+<a href="/help-centre?section=system-policies">Go to System Policy</a>
