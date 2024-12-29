@@ -45,8 +45,7 @@
     .nav-section {
         margin-bottom: 2em;
     }
-
-    /* Active state */
+    
     .nav-section.active-header header .icon {
         background-color: var(--main-green);
         color: var(--bs-white);
@@ -54,10 +53,14 @@
 
 }
 
+.centre-side-nav {
+    min-height: 100vh; /* Ensure enough height for sticky to activate */
+}
+
 .centre-side-nav nav {
     position: sticky;
-    top: 0;
-    height: 75vh !important;
+    top: 15vh;
+    height: 80vh;
     overflow: auto;
 }
 
