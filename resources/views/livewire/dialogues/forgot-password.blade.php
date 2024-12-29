@@ -15,7 +15,10 @@
 <x-slot:footer>
     <button class="btn btn-primary">{{ __('Submit') }}</button>
 
-    <!-- Use a status-modal here or x-email-sent once email has been sent -->
+    <!-- Use a status-modal here or x-email-sent once email has been sent.
+     Use the switchModal() global function to swap the modals out.
+     
+     Note: switchModal() function is still on PR #204. If not merged yet, it's still not accessible.-->
 </x-slot:footer>
 </x-modals.dialog>
 </div>
