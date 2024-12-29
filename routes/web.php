@@ -62,7 +62,7 @@ Route::get('/test-pop-ups', function () {
     return view('components.html.test-pop-ups');
 });
 
-Route::get('/help-centre', function () {
+Route::get('/information-centre', function () {
     return view('help-centre.index');
 });
 
