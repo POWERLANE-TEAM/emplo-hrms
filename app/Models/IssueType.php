@@ -17,6 +17,9 @@ class IssueType extends Model
         'issue_type_name',
     ];
 
+    /**
+     * Formatted accessor / mutator for issue_type_name attribute.
+     */
     protected function issueTypeName(): Attribute
     {
         return Attribute::make(
@@ -25,6 +28,9 @@ class IssueType extends Model
         );
     }
 
+    /**
+     * The issues associated with the type.
+     */
     public function issues(): BelongsToMany
     {
         return $this->belongsToMany(Issue::class, 'issue_tags', 'issue_type_id', 'issue_id');

@@ -18,6 +18,9 @@ class IssueAttachment extends Model
         'attachment_id',
     ];
 
+    /**
+     * Get the issue that owns the attachment
+     */
     public function issue(): BelongsTo
     {
         return $this->belongsTo(Issue::class, 'issue_id', 'issue_id');

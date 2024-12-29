@@ -26,6 +26,9 @@ class Issue extends Model
         'modified_at',
     ];
 
+    /**
+     * Formatted date accessor for filed_at attribute (e.g: December 30, 2024 11:59 PM)
+     */
     protected function filedAt(): Attribute
     {
         return Attribute::make(
@@ -33,6 +36,9 @@ class Issue extends Model
         );
     }
 
+    /**
+     * Formatted date accessor for occured_at attribute (e.g: December 30, 2024 11:59 PM)
+     */
     protected function occuredAt(): Attribute
     {
         return Attribute::make(
@@ -40,21 +46,33 @@ class Issue extends Model
         );
     }
 
+    /**
+     * Get the employee reporter of the issue.
+     */
     public function reporter(): BelongsTo
     {
         return $this->belongsTo(Employee::class, 'issue_reporter', 'employee_id');
     }
 
+    /**
+     * Get the status marker (employee of authority) of the issue.
+     */
     public function statusMarker(): BelongsTo
     {
         return $this->belongsTo(Employee::class, 'status_marker', 'employee_id');
     }
 
+    /**
+     * Get the types of the issue.
+     */
     public function types(): BelongsToMany
     {
         return $this->belongsToMany(IssueType::class, 'issue_tags', 'issue_id', 'issue_type_id');
     }
 
+    /**
+     * Get the attachments associated with the issue.
+     */
     public function attachments(): HasMany
     {
         return $this->hasMany(IssueAttachment::class, 'issue_id', 'issue_id');
