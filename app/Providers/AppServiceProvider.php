@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\User;
 use App\Enums\UserRole;
 use App\Policies\EmployeeLeavePolicy;
+use App\Policies\IssuePolicy;
 use App\Policies\OvertimePolicy;
 use Laravel\Pulse\Facades\Pulse;
 use App\Providers\Form\FormWizardServiceProvider;
@@ -150,6 +151,9 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('approveSubordinateLeaveRequest', [EmployeeLeavePolicy::class, 'approveSubordinateLeaveRequest']);
         Gate::define('approveAnyLeaveRequest', [EmployeeLeavePolicy::class, 'approveAnyLeaveRequest']);
         Gate::define('approveLeaveRequestFinal', [EmployeeLeavePolicy::class, 'approveLeaveRequestFinal']);
+
+        /** Issue Policies */
+        Gate::define('submitIssueReport', [IssuePolicy::class, 'submitIssueReport']);
 
         Vite::useAggressivePrefetching();
     }
