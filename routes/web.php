@@ -64,3 +64,6 @@ Route::get('/test-pop-ups', function () {
 
 Route::get('/modal-content/{modalKey}', [ContentController::class, 'getModalContent']);
 
+Route::get('/forgot-password', function () {
+    return view('password-recovery.index');
+});
