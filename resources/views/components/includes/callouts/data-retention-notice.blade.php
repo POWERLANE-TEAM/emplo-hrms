@@ -6,3 +6,5 @@
         <a href=\'#\' class=\'text-link-blue hover-opacity\'>separation process</a>
         to understand how your data is managed.')">
 </x-info_panels.callout>
+
+<!-- This will show up if the employee has resigned, terminated (not regularized) -->
