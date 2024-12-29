@@ -1,7 +1,7 @@
 @extends('components.layout.centre.layout', ['description' => 'Guest Layout', 'nonce' => $nonce])
 
 @section('head')
-<title>Help Centre</title>
+<title>Information Centre</title>
 @endsection
 
 @pushOnce('pre-scripts')
@@ -23,7 +23,7 @@
 
 @section('content')
 
-<div class="row">
+<div class="row hidden-until-load">
     <div class="col-md-4 centre-side-nav fadein-text">
         <x-layout.centre.nav-bar />
     </div>
