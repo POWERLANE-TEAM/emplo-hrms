@@ -1,0 +1,30 @@
+/* Default inactive state for navigation items */
+.nav-item {
+    padding: 10px;
+    background-color: #d1ecf1; /* Light blue background for inactive */
+    color: #17a2b8; /* Light blue color */
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  /* Active state for navigation items */
+  .nav-item.active {
+    background-color: #17a2b8; /* Darker blue background for active */
+    color: #ffffff; /* White color for active */
+  }
+  
+  /* Hide content sections by default */
+  .content-section {
+    display: none;
+  }
+  
+  /* Show active content */
+  .content-section.active {
+    display: block;
+  }
+  
+  /* Change header color when its child is active */
+  .active-header header {
+    color: #17a2b8 !important; /* Change header color to blue when active */
+  }
+  
