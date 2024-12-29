@@ -206,3 +206,19 @@ export function openModal(modalId, callback) {
 }
 
 window.openModal = openModal;
+
+export function switchModal(hideModalId, showModalId, callback) {
+    console.log("Here mf");
+    try {
+        // Hide the current modal
+        const hideModal = bootstrap.Modal.getOrCreateInstance(document.getElementById(hideModalId));
+        hideModal.hide();
+
+        // Open the target modal using your openModal function
+        openModal(showModalId, callback);
+    } catch (e) {
+        console.error(e);
+    }
+}
+
+window.switchModal = switchModal;

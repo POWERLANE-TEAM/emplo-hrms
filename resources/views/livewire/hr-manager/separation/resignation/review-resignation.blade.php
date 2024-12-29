@@ -24,27 +24,65 @@
         // This is updated to 'resigned' if the resignation letter is approved.
     @endphp
 
-    <!-- Modals -->
-    <x-modals.dialog id="approveLetter">
+    <!-- Dialogues -->
+    <x-modals.dialog id="approveResignation">
         <x-slot:title>
-            <h1 class="modal-title fs-5">{{ __('Add Event') }}</h1>
+            <h1 class="modal-title fs-5">{{ __('Approve Resignation') }}</h1>
             <button data-bs-toggle="modal" class="btn-close" aria-label="Close"></button>
         </x-slot:title>
         <x-slot:content>
-            <div class="my-3"">
-                <x-form.boxed-input-text id=" trainer" label="{{ __('Event Name') }}" :nonce="$nonce" :required="true"
-                placeholder="National Hero's Day" />
-</div>
-<div class="mb-3">
-    <x-form.boxed-dropdown id="priority" label="{{ __('Select Type') }}" :required="true" :nonce="$nonce"
-        :options="['1' => 'Regular Holiday', '2' => 'Special Non-working Holiday', '3' => 'Company event']"
-        placeholder="Select type of event" />
-</div>
-</x-slot:content>
-<x-slot:footer>
-    <button class="btn btn-primary">{{ __('Add Event') }}</button>
-</x-slot:footer>
-</x-modals.dialog>
+            <div class="mt-3">
+            <x-form.boxed-textarea
+                id="comment"
+                label="Comments"
+                :nonce="$nonce"
+                :rows="6"
+                :required="false"
+                placeholder="{{ __('Provide any feedback or additional instructions for the employee.') }}" />
+            </div>
+            <div class="fs-7">
+            <p class="fs-7 fw-medium">
+                <b>Note</b>: Once approved, the resignation cannot be edited. Ensure all necessary discussions with the employee have been completed.
+            </p>
+            </div>
+        </x-slot:content>
+        <x-slot:footer>
+            <button class="btn btn-primary" onclick="switchModal('approveResignation', 'confirmApproval')">{{ __('Proceed with Approval') }}</button>
+        </x-slot:footer>
+    </x-modals.dialog>
+
+    <x-modals.dialog id="rejectResignation">
+        <x-slot:title>
+            <h1 class="modal-title fs-5" style="color:#dc3030">{{ __('Reject Resignation') }}</h1>
+            <button data-bs-toggle="modal" class="btn-close" aria-label="Close"></button>
+        </x-slot:title>
+        <x-slot:content>
+            <div class="mt-3">
+            <x-form.boxed-textarea
+                id="comment"
+                label="Comments"
+                :nonce="$nonce"
+                :rows="6"
+                :required="true"
+                placeholder="{{ __('State the reasons of the rejection.') }}" />
+            </div>
+            <div class="fs-7">
+            <p class="fs-7 fw-medium">
+                <b>Note</b>: Please ensure that the reason for rejecting the resignation complies with Philippine labor laws, specifically provisions under the Labor Code and relevant company policies. Rejection should be based on valid grounds, such as ensuring a proper turnover process, pending obligations, or other operational requirements.
+            </p>
+            </div>
+        </x-slot:content>
+        <x-slot:footer>
+            <button class="btn btn-danger" onclick="switchModal('rejectResignation', 'confirmRejection')">{{ __('Proceed with Rejection') }}</button>
+        </x-slot:footer>
+    </x-modals.dialog>
+
+    <!-- Confirmational Modals -->
+    <x-modals.confirmation.confirm-modal type="check" label="Confirm Approval" header="Approve Resignation" id="confirmApproval"
+    message="This action cannot be undone. Are you sure you want to proceed?" actionButtonTitle="Confirm" />
+
+    <x-modals.confirmation.confirm-modal type="delete" label="Confirm Reject" header="Reject Resignation" id="confirmRejection"
+    message="This action cannot be undone. Are you sure you want to proceed?" actionButtonTitle="Confirm" />
 
 <section class="py-3">
     <div class="row">
@@ -154,11 +192,11 @@
                     @if ($status === 'pending')
                         <div class="mt-4">
                             <div class="d-flex align-items-center w-100">
-                                <button type="button" data-bs-toggle="collapse" aria-expanded=" false"
-                                    aria-controls="collapseControls" class="btn btn-danger me-2 w-25">
+                                <button type="button"
+                                    aria-controls="collapseControls" onclick="openModal('rejectResignation')" class="btn btn-danger me-2 w-25">
                                     {{ __('Reject') }}
                                 </button>
-                                <button type="button" class="btn btn-primary w-25" onclick="openModal('approveLetter')">
+                                <button type="button" class="btn btn-primary w-25" onclick="openModal('approveResignation')">
                                     {{ __('Approve') }}
                                 </button>
                             </div>
