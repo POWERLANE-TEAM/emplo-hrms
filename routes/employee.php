@@ -302,10 +302,6 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
      * Separation
      */
 
-     Route::get('seperation/all', function () {
-        return view('employee.hr-manager.separation.all');
-    })->name('separation.all');
-
     Route::get('seperation/resignations', function () {
         return view('employee.hr-manager.separation.resignation.all');
     })->name('separation.resignations');
