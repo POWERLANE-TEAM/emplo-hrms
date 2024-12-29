@@ -125,7 +125,7 @@
             </div>
         </div>
 
-        <div class="pt-3" wire:ignore>
+        <div class="pt-3">
             <x-buttons.main-btn
                 id="submit_report"
                 label="{{ __('Submit Report') }}"
