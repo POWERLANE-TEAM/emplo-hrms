@@ -25,13 +25,14 @@
 
 <x-headings.main-heading :isHeading="true">
     <x-slot:heading>
-        {{__('View Request')}}
+        {{__('Certificate of Employment (COE) Requests')}}
     </x-slot:heading>
 
     <x-slot:description>
-        <p>{{ __('Manage your resignation letter and end of employment here.') }}</p>
+        <p>{{ __('Manage and issue Certificate of Employment (COE) requests') }}</p>
     </x-slot:description>
 </x-headings.main-heading>
 
+<!-- BACK-END REPLACE: TABLE FOR ALL RESIGNATION LETTERS -->
 
 @endsection

@@ -25,12 +25,13 @@
 
 <x-headings.main-heading :isHeading="true">
     <x-slot:heading>
-        {{__('Review')}}
+        {{__('Resignation Letters')}}
     </x-slot:heading>
 
     <x-slot:description>
-        <p>{{ __('Manage your resignation letter and end of employment here.') }}</p>
+        <p>{{ __('Manage and approve submitted resignation letters.') }}</p>
     </x-slot:description>
 </x-headings.main-heading>
 
+<!-- BACK-END REPLACE: TABLE FOR ALL RESIGNATION LETTERS -->
 @endsection
