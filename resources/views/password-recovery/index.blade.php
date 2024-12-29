@@ -1,9 +1,8 @@
 @extends('components.layout.app', ['description' => 'Guest Layout', 'nonce' => $nonce])
 @use ('Illuminate\View\ComponentAttributeBag')
 
-
 @section('head')
-<title>Apply</title>
+<title>Create New Password</title>
 @endsection
 
 @pushOnce('pre-scripts')
@@ -78,7 +77,7 @@
 </div>
 
 <!-- BACK-END Replace: Add this when changed successfully  -->
-<x-modals.status-modal type="success" label="Changed Successfully" header="Success title here" id="changed-successfully"
+<x-modals.status-modal type="success" label="Changed Successfully" header="Password changed successfully!" id="changed-successfully"
     message="Password has been changed. You can now <a href='{{ $routePrefix === 'admin' ? '/admin/login' : ($routePrefix === 'employee' ? '/employee/login' : '/login') }}'>sign in</a>." />
 
 @endsection
