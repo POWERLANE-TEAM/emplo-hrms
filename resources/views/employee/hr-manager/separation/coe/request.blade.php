@@ -23,16 +23,17 @@
 @endPushOnce
 @section('content')
 
-<x-headings.main-heading :isHeading="true">
-    <x-slot:heading>
-        {{__('Certificate of Employment (COE) Requests')}}
-    </x-slot:heading>
+<x-breadcrumbs>
+    <x-slot:breadcrumbs>
+        <x-breadcrumb :href="route($routePrefix . '.separation.coe')">
+            Requests
+        </x-breadcrumb>
+        <x-breadcrumb :active="request()->routeIs($routePrefix . '.separation.coe.request')">
+            Issue Certificate
+        </x-breadcrumb>
+    </x-slot:breadcrumbs>
+</x-breadcrumbs>
 
-    <x-slot:description>
-        <p>{{ __('Manage and issue Certificate of Employment (COE) requests') }}</p>
-    </x-slot:description>
-</x-headings.main-heading>
-
-<!-- BACK-END REPLACE: TABLE FOR ALL RESIGNATION LETTERS -->
+<livewire:hr-manager.separation.coe.issue-coe-requests />
 
 @endsection
