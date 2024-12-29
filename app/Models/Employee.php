@@ -545,11 +545,33 @@ class Employee extends Model
     }
 
     /**
-     * Get the user employee who denied the leave request.
+     * Get the leave requests denied by the employee.
      */
     public function deniedLeaves(): HasMany
     {
         return $this->hasMany(EmployeeLeave::class, 'denier', 'employee_id');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Issue Records Management
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * Get the issues which statuses are marked by the employee.
+     */
+    public function markedStatusIssues(): HasMany
+    {
+        return $this->hasMany(Issue::class, 'status_marker', 'employee_id');
+    }
+
+    /**
+     * Get the issues reported by the employee.
+     */
+    public function reportedIssues(): HasMany
+    {
+        return $this->hasMany(Issue::class, 'issue_reporter', 'employee_id');
     }
 
     /**
