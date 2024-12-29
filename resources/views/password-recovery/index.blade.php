@@ -23,7 +23,7 @@
 
 @pushOnce('styles')
     <link href="https://unpkg.com/filepond-plugin-pdf-preview/dist/filepond-plugin-pdf-preview.min.css" rel="stylesheet">
-    @vite(['resources/css/applicant/apply.css'])
+    @vite(['resources/css/forgot-password.css'])
 @endPushOnce
 
 @section('before-nav')
@@ -81,8 +81,4 @@
 <x-modals.status-modal type="success" label="Changed Successfully" header="Success title here" id="changed-successfully"
     message="Password has been changed. You can now <a href='{{ $routePrefix === 'admin' ? '/admin/login' : ($routePrefix === 'employee' ? '/employee/login' : '/login') }}'>sign in</a>." />
 
-@endsection
-
-@section('footer')
-<x-guest.footer />
 @endsection
