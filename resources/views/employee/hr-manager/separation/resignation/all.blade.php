@@ -33,4 +33,5 @@
     </x-slot:description>
 </x-headings.main-heading>
 
+<!-- BACK-END REPLACE: TABLE FOR ALL RESIGNATION LETTERS -->
 @endsection
