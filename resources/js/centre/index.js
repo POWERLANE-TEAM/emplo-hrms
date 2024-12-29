@@ -1,0 +1,52 @@
+
+import "../../css/applicant/dashboard.css";
+import '../script.js';
+import addGlobalScrollListener, { documentScrollPosY } from 'global-scroll-script';
+import addGlobalListener, { GlobalListener } from 'globalListener-script';
+import createGradient from '../utils/color.js';
+// import './livewire.js'
+
+
+
+export function showContent(targetId, sectionId) {
+    // Hide all content sections
+    const contentSections = document.querySelectorAll('.content-section');
+    contentSections.forEach((section) => section.classList.remove('active'));
+  
+    // Show the targeted content section
+    const contentToShow = document.getElementById(targetId);
+    if (contentToShow) {
+      contentToShow.classList.add('active');
+    } else {
+      console.error('Content section not found for target: ' + targetId);
+    }
+  
+    // Remove active state from all nav items
+    const navItems = document.querySelectorAll('.nav-item');
+    navItems.forEach((item) => item.classList.remove('active'));
+  
+    // Add active state to the clicked nav item
+    const navItem = document.querySelector(`.nav-item[data-target="${targetId}"]`);
+    if (navItem) {
+      navItem.classList.add('active');
+    } else {
+      console.error('Nav item not found for target: ' + targetId);
+    }
+  
+    // Remove active-header class from all nav-section headers
+    const navSections = document.querySelectorAll('.nav-section');
+    navSections.forEach((section) => section.classList.remove('active-header'));
+  
+    // Add active-header class to the clicked section's parent header
+    const activeSection = document.getElementById(sectionId);
+    if (activeSection) {
+      activeSection.classList.add('active-header');
+    } else {
+      console.error('Nav section not found for ID: ' + sectionId);
+    }
+  }
+  
+window.showContent = showContent;
+
+
+
