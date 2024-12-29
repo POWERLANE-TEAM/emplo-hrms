@@ -2,6 +2,7 @@
 
 import "../../css/applicant/dashboard.css";
 import '../script.js';
+import '../animations/texts-effect.js';
 import './applicant.js';
 import addGlobalScrollListener, { documentScrollPosY } from 'global-scroll-script';
 import addGlobalListener, { GlobalListener } from 'globalListener-script';
@@ -13,7 +14,7 @@ import createGradient from '../utils/color.js';
 
 
 export function showContent(targetId, sectionId) {
-  
+
     // Hide all content sections
     const contentSections = document.querySelectorAll('.content-section');
     contentSections.forEach((section) => section.classList.remove('active'));
