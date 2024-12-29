@@ -11,8 +11,8 @@
             </div>
 
             <x-nav-link href="/" :active="request()->is('/')"
-                class="no-hover ps-0 fw-semibold nav-link d-flex align-items-center">
-                <h1 class="fs-2 fw-bolder text-white mb-0">Help Centre</h1>
+                class="no-hover ps-0 fw-semibold d-flex align-items-center">
+                <h3 class="fw-bolder text-white mb-0">Help Centre</h1>
             </x-nav-link>
         </div>
         <div class="d-flex align-items-center fw-bold ">
