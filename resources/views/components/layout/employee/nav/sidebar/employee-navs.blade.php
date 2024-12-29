@@ -60,12 +60,6 @@
     $navLeavesActivePattern = $user->hasPermissionTo(UserPermission::VIEW_ALL_LEAVES)
         ? $routePrefix . '.hr.leaves.*'
         : $routePrefix . '.general.leaves.*';
-    
-
-    /**
-     * Separation
-     */
-    $canViewSeparation = Auth::user()->can(UserPermission::VIEW_ALL_COE_REQUESTS) || Auth::user()->can(UserPermission::VIEW_ALL_FILED_RESIGNATION_LETTERS);
 
 @endphp
 
@@ -281,8 +275,8 @@
         class="order-12"
         :defaultIcon="['src' => 'separation', 'alt' => 'Separation']"
         :activeIcon="['src' => 'separation', 'alt' => 'Separation']" :children="[
-            ['href' => route($routePrefix . '.separation.resignations'), 'active' => request()->routeIs($routePrefix . '.separation.resignation'), 'nav_txt' => 'Resignations'],
-            ['href' => route($routePrefix . '.separation.coe'), 'active' => request()->routeIs($routePrefix . '.separation.coe'), 'nav_txt' => 'COEs'],]">
+            ['href' => route($routePrefix . '.separation.resignations'), 'active' => request()->routeIs($routePrefix . '.separation.resignations*'), 'nav_txt' => 'Resignations'],
+            ['href' => route($routePrefix . '.separation.coe'), 'active' => request()->routeIs($routePrefix . '.separation.coe*'), 'nav_txt' => 'COEs'],]">
     </x-layout.employee.nav.sidebar.nested-nav-items>
     @endcan
 
