@@ -50,6 +50,7 @@ class DatabaseSeeder extends Seeder
                 OvertimeSeeder::class,
                 EmployeeJobDetailSeeder::class,
                 // EmployeeLeaveSeeder::class,
+                IssueTypeSeeder::class,
             ]);
         });
     }
