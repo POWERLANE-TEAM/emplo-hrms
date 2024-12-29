@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\IncidentController;
+use App\Http\Controllers\IssueController;
 use App\Models\Employee;
 use App\Enums\UserPermission;
 use Illuminate\Support\Facades\Route;
@@ -234,6 +236,35 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
 
     /**
+     * Employee relations resource
+     */
+    Route::prefix('relations')->name('relations.')->group(function () {
+        Route::prefix('issues')->name('issues.')->group(function () {
+
+            Route::get('/', [IssueController::class, 'index'])
+                ->name('index');
+        
+            Route::get('create', [IssueController::class, 'create'])
+                ->name('create');
+
+            Route::get('{issue}', [IssueController::class, 'show'])
+                ->name('show');
+
+            Route::get('general', [IssueController::class, 'general'])
+                ->name('general');
+        
+            Route::get('{issue}/review', [IssueController::class, 'review'])
+                ->name('review');
+        });
+
+        Route::get('incidents', [IncidentController::class, 'index'])
+            ->name('incidents.index');
+    
+        Route::get('incidents/create', [IncidentController::class, 'create'])
+            ->name('incidents.create');
+    });
+
+    /**
      * Relations: Incidents Management
      */
 
@@ -362,16 +393,4 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     Route::get('general/documents/all', function () {
         return view('employee.basic.documents.all');
     })->name('general.documents.all');
-
-
-    /**
-     * General: Issues
-     */
-    Route::get('general/issues/all', function () {
-        return view('employee.basic.issues.all');
-    })->name('general.issues.all');
-
-    Route::get('general/issues/create', function () {
-        return view('employee.basic.issues.create');
-    })->name('general.issues.create');
 });
