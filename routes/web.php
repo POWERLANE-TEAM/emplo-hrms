@@ -62,5 +62,9 @@ Route::get('/test-pop-ups', function () {
     return view('components.html.test-pop-ups');
 });
 
+Route::get('/help-centre', function () {
+    return view('help-centre.index');
+});
+
 Route::get('/modal-content/{modalKey}', [ContentController::class, 'getModalContent']);
 
