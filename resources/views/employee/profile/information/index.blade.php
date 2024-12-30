@@ -65,6 +65,7 @@ The only thing I removed was the Date Hired, but that can be bring up again if y
                 <div>
                     <!-- BACK-END REPLACE: Department, Employment Status, Shift, Hired Date -->
                     <p class="pb-2"><b>Department:</b> Human Resources</p>
+                    <p class="pb-2"><b>Supervisor:</b> Anika M. Laurel</p>
                     <p class="pb-2"><b>Employment Status:</b> Regular</p>
                     <p class="pb-2"><b>Shift:</b> Day Shift</p>
                 </div>

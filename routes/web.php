@@ -62,5 +62,12 @@ Route::get('/test-pop-ups', function () {
     return view('components.html.test-pop-ups');
 });
 
+Route::get('/information-centre', function () {
+    return view('help-centre.index');
+});
+
 Route::get('/modal-content/{modalKey}', [ContentController::class, 'getModalContent']);
 
+Route::get('/forgot-password', function () {
+    return view('password-recovery.index');
+});
