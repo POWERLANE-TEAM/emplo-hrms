@@ -1,0 +1,73 @@
+.centre-side-nav {
+    .nav-item {
+        padding: 10px;
+        cursor: pointer;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .nav-item.active, .nav-item:hover {
+        background-color: #f7f7f7;
+        color: #61b000;
+        font-weight: 600;
+        border-radius: 8px;
+    }
+
+    .nav-item:hover {
+    }
+
+    .nav-items-section {
+        padding: 0 1em 0 4em;
+    }
+
+    header span {
+        font-size: 1.3rem;
+        font-weight: 500;
+    }
+
+    header {
+        margin-bottom: 1em;
+    }
+
+    .active-header header span {
+        color: #61b000;
+        font-weight: 600;
+    }
+
+    .nav-section header .icon {
+        background-color: #f3f3f3;
+        color: #545454;
+        border-radius: 50%;
+        padding: 8px;
+        display: inline-block;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .nav-section {
+        margin-bottom: 2em;
+    }
+    
+    .nav-section.active-header header .icon {
+        background-color: var(--main-green);
+        color: var(--bs-white);
+    }
+
+}
+
+.centre-side-nav {
+    min-height: 100vh; /* Ensure enough height for sticky to activate */
+}
+
+.centre-side-nav nav {
+    position: sticky;
+    top: 15vh;
+    height: 80vh;
+    overflow: auto;
+}
+
+.content-section {
+    display: none;
+}
+
+.content-section.active {
+    display: block;
+}

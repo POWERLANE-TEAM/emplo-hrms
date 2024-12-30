@@ -21,7 +21,7 @@
                             class="fs-2 fw-bold text-center {{ $type === 'success' ? 'text-primary' : 'text-danger' }} mb-md-3">
                             {{ $header }}
                         </div>
-                        <span class="fs-5 mb-md-4">{{ $message }}</span>
+                        <span class="fs-5 mb-md-4">{!! $message !!}</span>
                     </hgroup>
                 </div>
             </div>

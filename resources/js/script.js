@@ -207,8 +207,16 @@ export function openModal(modalId, callback) {
 
 window.openModal = openModal;
 
+document.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(window.location.search);
+    const targetSection = params.get('section');
+
+    if (targetSection) {
+        showContent(targetSection, 'section-id');
+    }
+});
+
 export function switchModal(hideModalId, showModalId, callback) {
-    console.log("Here mf");
     try {
         // Hide the current modal
         const hideModal = bootstrap.Modal.getOrCreateInstance(document.getElementById(hideModalId));
