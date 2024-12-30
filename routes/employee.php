@@ -298,6 +298,13 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     })->name('payslips.bulk-upload');
 
 
+    /**
+     * Payslips
+     */
+
+     Route::get('reports', function () {
+        return view('employee.hr-manager.reports.index');
+    })->name('reports');
 
 
     // =========================================
