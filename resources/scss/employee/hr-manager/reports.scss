@@ -9,3 +9,8 @@
 @import '../../input/checkbox';
 @import '../../input/choices';
 @import '../../input/attachments';
+
+canvas {
+    height: 50vh !important;
+    width: auto;
+}
