@@ -2,21 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Issue;
+use App\Enums\FilePath;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Response;
 
 class IssueController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         return view('employee.basic.issues.all');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('employee.basic.issues.create');
@@ -27,48 +24,33 @@ class IssueController extends Controller
         return view('employee.hr-manager.relations.issues.all');
     }
 
-    public function review()
+    public function review(Issue $issue)
     {
-        return view('employee.hr-manager.relations.issues.review');
+        $issue->loadMissing('reporter');
+        return view('employee.hr-manager.relations.issues.review', compact('issue'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function download(string $attachment)
     {
-        //
+        return Storage::disk('local')->download(FilePath::ISSUES->value.'/'.$attachment);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(Issue $issue)
     {
-        //
+        return view('employee.basic.issues.show', compact('issue'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function viewAttachment(string $attachment)
     {
-        //
-    }
+        $path = FilePath::ISSUES->value.'/'.$attachment;
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+        if (Storage::disk('local')->missing($path)) {
+            abort(404);
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return Response::make(Storage::disk('local')->get($path), 200, [
+            'Content-Type' => Storage::disk('local')->mimeType($path),
+            'Content-Disposition' => 'inline; filename="'.basename($path).'"',
+        ]);
     }
 }
