@@ -24,7 +24,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     Route::get('notifications', function () {
         return view('employee.notifications.index');
     })->name('notifications');
-    
+
     // =========================================
     // HR MANAGER ROUTES
     // ==========================================
@@ -169,7 +169,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
     /**
      * Overtime resource
-     * 
+     *
      * TODO: Idk if Ivan plans to add middleware checks, but do them below.
      */
     Route::prefix('overtimes')->name('overtimes.')->group(function () {
@@ -212,7 +212,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     Route::prefix('leaves')->name('leaves.')->group(function () {
         Route::get('/', [LeaveController::class, 'index'])
             ->name('index');
-    
+
         Route::get('create', [LeaveController::class, 'create'])
             ->name('create');
 
