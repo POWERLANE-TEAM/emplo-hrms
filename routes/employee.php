@@ -248,12 +248,22 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
                 ->name('create');
 
             Route::get('{issue}', [IssueController::class, 'show'])
+                ->can('viewIssueReport', 'issue')
+                ->whereNumber('issue')
                 ->name('show');
 
+            Route::get('{attachment}/download', [IssueController::class, 'download'])
+                ->name('download');
+
+            Route::get('attachments/{attachment}', [IssueController::class, 'viewAttachment'])
+                ->name('attachments.show');
+
             Route::get('general', [IssueController::class, 'general'])
+                ->can('viewAnyIssueReport')
                 ->name('general');
         
             Route::get('{issue}/review', [IssueController::class, 'review'])
+                ->can('viewAnyIssueReport')
                 ->name('review');
         });
 
@@ -275,19 +285,6 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     Route::get('hr/relations/incidents/create', function () {
         return view('employee.hr-manager.relations.incidents.create');
     })->name('hr.relations.incidents.create');
-
-
-    /**
-     * Relations: Issues
-     */
-    Route::get('hr/relations/issues/all', function () {
-        return view('employee.hr-manager.relations.issues.all');
-    })->name('hr.relations.issues.all');
-
-    Route::get('relations/issues/review', function () {
-        return view('employee.hr-manager.relations.issues.review');
-    })->name('relations.issues.review');
-
 
     /**
      * Training
