@@ -15,6 +15,7 @@ return new class extends Migration
         Schema::create('issue_attachments', function (Blueprint $table) {
             $table->id('attachment_id');
             $table->string('attachment');
+            $table->string('attachment_name');
 
             $table->foreignIdFor(Issue::class, 'issue_id')
                 ->constrained('issues', 'issue_id')
