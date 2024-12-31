@@ -9,10 +9,12 @@ use App\Enums\UserStatus;
 use App\Models\Applicant;
 use App\Models\Application;
 use App\Models\Employee;
+use App\Models\EmployeeDoc;
 use App\Models\EmployeeJobDetail;
 use App\Models\EmploymentStatus;
 use App\Models\JobTitle;
 use App\Models\JobVacancy;
+use App\Models\PreempRequirement;
 use App\Models\Shift;
 use App\Models\SpecificArea;
 use App\Models\User;
@@ -59,7 +61,7 @@ function createEmployee($chunkStart, $chunk, $freeEmailDomain)
 
                         $employeeUser->assignRole(fake()->randomElement(UserRole::values()));
 
-                        Application::create([
+                        $application = Application::create([
                             'applicant_id' => $applicant->applicant_id,
                             'job_vacancy_id' => JobVacancy::inRandomOrder()->first()->job_vacancy_id,
                             'application_status_id' => ApplicationStatus::APPROVED,
@@ -67,12 +69,25 @@ function createEmployee($chunkStart, $chunk, $freeEmailDomain)
                             'hired_at' => $timestamp->modify('+' . rand(3, 14) . ' days'),
                         ]);
 
+                        PreempRequirement::all()->each(function ($requirement) use ($application) {
+                            $application->documents()->create([
+                                'preemp_req_id' => $requirement->preemp_req_id,
+                                'file_path' => 'storage/',
+                            ]);
+                        });
+
                         EmployeeJobDetail::create([
                             'employee_id' => $employee->employee_id,
                             'job_title_id' => JobTitle::inRandomOrder()->first()->job_title_id,
                             'area_id' => SpecificArea::inRandomOrder()->first()->area_id,
                             'shift_id' => Shift::inRandomOrder()->first()->shift_id,
                             'emp_status_id' => EmploymentStatus::inRandomOrder()->first()->emp_status_id,
+                            'application_id' => $application->application_id,
+                        ]);
+
+                        EmployeeDoc::create([
+                            'employee_id' => $employee->employee_id,
+                            'file_path' => 'storage/',
                         ]);
                     } catch (\Exception $e) {
                         Log::error('Exception: ' . $e->getMessage() . ' in ' . $e->getFile() . ' on line ' . $e->getLine());
@@ -108,6 +123,7 @@ class EmployeeSeeder extends Seeder
         Applicant::unguard();
         Application::unguard();
         Employee::unguard();
+        EmployeeDoc::unguard();
 
         $tasks = [];
         for ($i = 0; $i < $concurrencyCount; $i++) {
@@ -120,5 +136,6 @@ class EmployeeSeeder extends Seeder
         Applicant::reguard();
         Application::reguard();
         Employee::reguard();
+        EmployeeDoc::reguard();
     }
 }
