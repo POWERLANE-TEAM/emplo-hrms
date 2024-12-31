@@ -26,7 +26,7 @@ return new class extends Migration
             $table->timestamp('occured_at')->nullable();
             $table->longText('issue_description');
             $table->longText('desired_resolution')->nullable();
-            $table->unsignedTinyInteger('status')->default(IssueStatus::ONGOING);
+            $table->unsignedTinyInteger('status')->default(IssueStatus::OPEN);
             $table->timestamp('status_marked_at');
             
             $table->foreignIdFor(Employee::class, 'status_marker')
@@ -35,6 +35,7 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
+            $table->longText('given_resolution')->nullable();
             $table->timestamp('filed_at');
             $table->timestamp('modified_at');
         });
