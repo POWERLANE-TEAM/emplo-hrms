@@ -47,6 +47,16 @@ class Issue extends Model
     }
 
     /**
+     * Formatted date accessor for status_marked_at attribute (e.g: December 30, 2024 11:59 PM)
+     */
+    protected function statusMarkedAt(): Attribute
+    {
+        return Attribute::make(
+            get: fn (mixed $value) => Carbon::make($value)?->format('F d, Y g:i A') ?? null,
+        );
+    }
+
+    /**
      * Get the employee reporter of the issue.
      */
     public function reporter(): BelongsTo
