@@ -235,8 +235,8 @@
                     'nav_txt' => 'Incidents'
                 ],
                 [
-                    'href' => route($routePrefix . '.hr.relations.issues.all'),
-                    'active' => request()->routeIs($routePrefix . '.hr.relations.issues.*'),
+                    'href' => route($routePrefix . '.relations.issues.general'),
+                    'active' => request()->routeIs($routePrefix . '.relations.issues.general'),
                     'nav_txt' => 'Issues'
                 ],
             ]">
