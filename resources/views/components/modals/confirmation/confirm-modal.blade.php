@@ -8,24 +8,31 @@
                 <div class="d-flex justify-content-center flex-column">
                     <div class="mx-auto">
                         @if($type === 'delete')
-                        <img class="img-size-100 img-responsive"
-                        src="{{ Vite::asset('resources/images/illus/statuses/trashbin.png') }}" alt="">
+                            <img class="img-size-100 img-responsive"
+                                src="{{ Vite::asset('resources/images/illus/statuses/trashbin.png') }}" alt="">
+                        @elseif($type === 'check')
+                            <img class="img-size-100 img-responsive"
+                                src="{{ Vite::asset('resources/images/illus/statuses/check.png') }}" alt="">
                         @else
-                        <img class="img-size-100 img-responsive"
-                        src="{{ Vite::asset('resources/images/illus/statuses/caution.png') }}" alt="">
+                            <img class="img-size-100 img-responsive"
+                                src="{{ Vite::asset('resources/images/illus/statuses/caution.png') }}" alt="">
                         @endif
                     </div>
                     <hgroup class="mx-auto fw-medium pt-3 pb-4" role="alert">
                         <div
-                            class="fs-2 fw-bold text-center {{ $type === 'delete' ? 'text-danger' : 'text-warning' }} mb-md-3">
+                            class="fs-2 fw-bold text-center {{ $type === 'delete' ? 'text-danger' : ($type === 'check' ? 'text-primary' : 'text-warning') }} mb-md-3">
                             {{ $header }}
                         </div>
                         <div class="fs-5 mb-md-2 text-center">{{ $message }}</div>
                     </hgroup>
 
                     <div class="text-center">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Close</button>
-                        <button onclick="" class="btn {{ $type === 'delete' ? 'btn-danger' : 'btn-warning' }}">{{ $actionButtonTitle }}</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                            aria-label="Close">Cancel</button>
+                        <button onclick=""
+                            class="btn {{ $type === 'delete' ? 'btn-danger' : ($type === 'check' ? 'btn-success' : 'btn-warning') }}">
+                            {{ $actionButtonTitle }}
+                        </button>
                     </div>
                 </div>
 

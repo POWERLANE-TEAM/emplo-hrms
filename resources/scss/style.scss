@@ -202,12 +202,19 @@ select {
 
 div:has(iframe, .btn-full-screen) {
     .btn-full-screen {
+        color: inherit;
+        border: none;
+        padding: 5px 8px;
+        background-color: transparent;
+        border-color: transparent;
+        font-size: 14px;
+
         position: absolute;
-        top: calc(1.75em + 2.25vw);
-        right: calc(1.75em + 2.25vw);
+        top: calc(.7em + 2vw);
+        right: calc(1em + 2.25vw);
 
         &:hover {
-            background-color: var(--bs-secondary-bg);
+            background-color: var(--bs-secondary-bg) !important;
         }
     }
 }
@@ -253,15 +260,15 @@ select:invalid {
     color: color-mix(in srgb, var(--bs-body-color) 60%, transparent 40%);
 }
 
-.btn-full-screen:hover:not(:active) {
-    svg {
-        --hover-color: var(--bs-body-color);
+// .btn-full-screen:hover:not(:active) {
+//     svg {
+//         --hover-color: var(--bs-body-color);
 
-        // https://stackoverflow.com/questions/18330344/how-to-add-border-outline-stroke-to-svg-elements-in-css#:~:text=%23example_1%20%7B%0A%20%20filter%3A%20%0A%20%20%20%20drop%2Dshadow(%2D1px%20%2D1px%200px%20%233e68ff)%20%0A%20%20%20%20drop%2Dshadow(2px%20%2D1px%200px%20%233e68ff)%20%0A%20%20%20%20drop%2Dshadow(2px%202px%200px%20%233e68ff)%0A%20%20%20%20drop%2Dshadow(%2D1px%202px%200px%20%233e68ff)%0A%7D
-        filter:
-            drop-shadow(-1px -1px 0px var(--hover-color)) drop-shadow(2px -1px 0px var(--hover-color)) drop-shadow(2px 2px 0px var(--hover-color)) drop-shadow(-1px 2px 0px var(--hover-color))
-    }
-}
+//         // https://stackoverflow.com/questions/18330344/how-to-add-border-outline-stroke-to-svg-elements-in-css#:~:text=%23example_1%20%7B%0A%20%20filter%3A%20%0A%20%20%20%20drop%2Dshadow(%2D1px%20%2D1px%200px%20%233e68ff)%20%0A%20%20%20%20drop%2Dshadow(2px%20%2D1px%200px%20%233e68ff)%20%0A%20%20%20%20drop%2Dshadow(2px%202px%200px%20%233e68ff)%0A%20%20%20%20drop%2Dshadow(%2D1px%202px%200px%20%233e68ff)%0A%7D
+//         filter:
+//             drop-shadow(-1px -1px 0px var(--hover-color)) drop-shadow(2px -1px 0px var(--hover-color)) drop-shadow(2px 2px 0px var(--hover-color)) drop-shadow(-1px 2px 0px var(--hover-color))
+//     }
+// }
 
 label:has(+div input:not(:placeholder-shown), +input:not(:placeholder-shown), +div textarea:not(:placeholder-shown), +textarea:not(:placeholder-shown)) {
 

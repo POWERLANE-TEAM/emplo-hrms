@@ -298,6 +298,25 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     })->name('payslips.bulk-upload');
 
 
+    /**
+     * Separation
+     */
+
+    Route::get('seperation/resignations', function () {
+        return view('employee.hr-manager.separation.resignation.all');
+    })->name('separation.resignations');
+
+    Route::get('seperation/resignations/review', function () {
+        return view('employee.hr-manager.separation.resignation.review');
+    })->name('separation.resignations.review');
+
+    Route::get('seperation/coe', function () {
+        return view('employee.hr-manager.separation.coe.all');
+    })->name('separation.coe');
+
+    Route::get('seperation/coe/request', function () {
+        return view('employee.hr-manager.separation.coe.request');
+    })->name('separation.coe.request');
 
 
     // =========================================
@@ -374,4 +393,16 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     Route::get('general/issues/create', function () {
         return view('employee.basic.issues.create');
     })->name('general.issues.create');
+
+
+    /**
+     * General: Separation
+     */
+    Route::get('/separation/index', function () {
+        return view('employee.basic.separation.index');
+    })->name('separation.index');
+
+    Route::get('/separation/file-resignation', function () {
+        return view('employee.basic.separation.file-resignation');
+    })->name('separation.file-resignation');
 });

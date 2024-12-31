@@ -53,6 +53,7 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::VIEW_OVERTIME->value,
             UserPermission::VIEW_DOCUMENTS->value,
             UserPermission::VIEW_ISSUES->value,
+            UserPermission::VIEW_RESIGNATION->value,
 
             UserPermission::CREATE_LEAVE_REQUEST->value,
             UserPermission::CREATE_OVERTIME_REQUEST->value,
@@ -90,6 +91,8 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::VIEW_ALL_TRAINING->value,
             UserPermission::VIEW_TALENT_EVALUATOR->value,
             UserPermission::VIEW_PLAN_GENERATOR->value,
+            UserPermission::VIEW_ALL_FILED_RESIGNATION_LETTERS->value,
+            UserPermission::VIEW_ALL_COE_REQUESTS->value,
 
             // Create cases goes here
             UserPermission::CREATE_APPLICANT_EXAM_SCHEDULE->value,
