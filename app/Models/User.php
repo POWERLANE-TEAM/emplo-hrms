@@ -86,8 +86,10 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected function photo(): Attribute
     {
+        $username = "{$this->account->last_name}, {$this->account->first_name}";
+
         return Attribute::make(
-            get: fn(mixed $value) => $value ?? app(GenerateRandomUserAvatar::class)($this->account->full_name),
+            get: fn(mixed $value) => $value ?? app(GenerateRandomUserAvatar::class)($username),
         );
     }
 
