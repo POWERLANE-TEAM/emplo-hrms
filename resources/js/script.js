@@ -173,7 +173,6 @@ export function showToast(type, message) {
         setTimeout(() => {
             toastElement.classList.add("fade");
             setTimeout(() => {
-                console.log("Removing toast element:", toastElement);
                 toastElement.remove();
             }, 500);
         }, 5000);
