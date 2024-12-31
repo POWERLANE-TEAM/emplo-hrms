@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Employee\Issues;
 
+use App\Enums\FilePath;
 use App\Models\Issue;
 use Livewire\Component;
 use App\Models\IssueType;
@@ -29,9 +30,13 @@ class CreateIssue extends Component
 
     public $desiredResolution;
 
+    public $files;
+
     public function mount()
     {
         unset($this->confidentialityPreferences);
+
+        $this->files = Storage::disk('local')->files('livewire-tmp');
     }
 
     public function save()
@@ -64,16 +69,14 @@ class CreateIssue extends Component
             'occured_at'            => $this->occuredAt,
             'issue_description'     => $this->description,
             'desired_resolution'    => $this->desiredResolution,
-            'status'                => IssueStatus::ONGOING,
+            'status'                => IssueStatus::OPEN,
             'status_marked_at'      => now(),
         ]);
     }
 
     private function storeAttachments(Issue $issue)
     {
-        $path = 'employee-relations/issues';
-
-        Storage::disk('local')->makeDirectory($path);
+        Storage::disk('local')->makeDirectory(FilePath::ISSUES->value);
 
         $issueAttachments = [];
 
@@ -81,11 +84,12 @@ class CreateIssue extends Component
 
             $hashedVersion = $attachment->hashName();
             
-            $attachment->storeAs($path, $hashedVersion, 'local');
+            $attachment->storeAs(FilePath::ISSUES->value, $hashedVersion, 'local');
 
             array_push($issueAttachments, [
-                'attachment'    => $hashedVersion,
-                'issue_id'      => $issue->issue_id,
+                'attachment'        => $hashedVersion,
+                'attachment_name'   => $attachment->getClientOriginalName(),
+                'issue_id'          => $issue->issue_id,
             ]); 
         }
 
@@ -104,13 +108,14 @@ class CreateIssue extends Component
     public function rules(): array
     {
         return [
-            'types'               => 'required',
-            'occuredAt'           => 'nullable',
-            'confidentiality'     => 'required',
-            'description'         => 'required',
-            'attachments'         => 'nullable|array|max:5',
-            'attachments.*'       => 'file|max:2048|mimes:jpg,png,pdf',
-            'desiredResolution'   => 'nullable',
+            'types'             => 'required',
+            'types.*'           => 'exists:issue_types,issue_type_id',
+            'occuredAt'         => 'nullable|date|before_or_equal:today',
+            'confidentiality'   => 'required',
+            'description'       => 'required|string',
+            'attachments'       => 'nullable|array|max:5',
+            'attachments.*'     => 'file|max:51200',
+            'desiredResolution' => 'nullable|string',
         ];
     }
 

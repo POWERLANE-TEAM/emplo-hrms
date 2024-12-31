@@ -112,11 +112,11 @@
                 <x-form.boxed-textarea 
                     name="desiredResolution"
                     id="desired_resolution" 
-                    label="Detailed Description" 
+                    label="{{ __('Desired Resolution') }}" 
                     :nonce="$nonce"
                     :required="true" 
                     :rows="6" 
-                    description="Kindly provide the desire resolution to the complaint."
+                    description="{{ __('Kindly provide the desire resolution to the complaint.') }}"
                 >
                 </x-form.boxed-textarea>
                 @error('desiredResolution')
