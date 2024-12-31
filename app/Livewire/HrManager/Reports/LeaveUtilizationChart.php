@@ -6,6 +6,24 @@ use Livewire\Component;
 
 class LeaveUtilizationChart extends Component
 {
+
+    /*
+     * BACK-END REPLACE / REQUIREMENTS:
+     * 
+     * FETCH FROM DATABASE:
+     * 1. Total count of ALL ENTITLED leave days across ALL leave types.
+     * 2. Total count of ALL REMAINING leave days across ALL leave types.
+     * 
+     * 3. Total count of ENTITLED leave days for EACH LEAVE TYPE.
+     * 4. Total count of entitled leave days for EACH LEAVE TYPE.
+     * 
+     * ADDITIONAL NOTES
+     * ► This just needs fetching from the database. The logic is already implemented.
+     * ► After fetching, replace the leaveData array in mount() function.
+     * 
+     */
+
+
     public $leaveData;
 
     public function mount()
