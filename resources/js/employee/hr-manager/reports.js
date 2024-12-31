@@ -68,22 +68,6 @@ function initializeCharts() {
                 },
             },
         },
-        {
-            id: "issue-resolution-chart",
-            type: "line",
-            data: {
-                labels: ["January", "February", "March", "April"],
-                datasets: [{
-                    label: "Resolution Time (days)",
-                    data: [3.0, 2.8, 2.5, 2.2],
-                    borderColor: Utils.CHART_COLORS.blue,
-                    fill: false,
-                }],
-            },
-            extraOptions: {
-                scales: { y: { beginAtZero: true } },
-            },
-        },
     ];
 
     // Initialize general charts
