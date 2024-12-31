@@ -43,4 +43,6 @@
 
 <livewire:hr-manager.reports.kpi/>
 
+<livewire:hr-manager.reports.leave-utilization-chart />
+
 @endsection
