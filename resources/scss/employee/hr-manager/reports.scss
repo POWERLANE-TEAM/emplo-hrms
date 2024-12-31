@@ -14,3 +14,25 @@ canvas {
     height: 50vh !important;
     width: auto;
 }
+
+.issue-table {
+    height: 25vh !important;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f0f8ff; /* Light blue color for odd rows */
+}
+
+.table-striped tbody tr:nth-of-type(even) {
+    background-color: #fafafa; /* Light gray color for even rows */
+}
+
+/* Optional: Change the hover color */
+.table-striped tbody tr:hover {
+    background-color: #e0e7ff; /* Soft blue for hover effect */
+}
+
+.table {
+    border-radius: 10px; /* Adjust the radius as needed */
+    overflow: hidden; /* Ensures the radius is applied properly */
+}
