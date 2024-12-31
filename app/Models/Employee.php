@@ -377,29 +377,6 @@ class Employee extends Model
 
     /*
     |--------------------------------------------------------------------------
-    | Complaint Records Management
-    |--------------------------------------------------------------------------
-    */
-
-    /**
-     * Get the complaint records where employee is the complainant.
-     */
-    public function complaintsAsComplainant(): HasMany
-    {
-        return $this->hasMany(EmployeeComplaint::class, 'complainant', 'employee_id');
-    }
-
-    /**
-     * The complaint records that belong to the complainee(employee).
-     */
-    public function complaintsAsComplainee(): BelongsToMany
-    {
-        return $this->belongsToMany(EmployeeComplaint::class, 'complaint_complainees', 'complainee', 'emp_complaint_id')
-            ->withTimestamps();
-    }
-
-    /*
-    |--------------------------------------------------------------------------
     | Overtime Records Management
     |--------------------------------------------------------------------------
     */
