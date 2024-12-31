@@ -24,11 +24,11 @@
 @endPushOnce
 @section('content')
 
-<x-headings.header-link heading="{{ __('Report Issue') }}"
-    description="{{ __('View and see the statuses of your submitted issues or complaints.') }}" label="Report Issue" nonce="{{ $nonce }}"
+<x-headings.header-link heading="{{ __('My Reported Issues') }}"
+    description="{{ __('View and see the statuses of your submitted issues, grievances, or complaints.') }}" label="Report Issue" nonce="{{ $nonce }}"
     href="{{ route($routePrefix . '.relations.issues.create') }}">
 </x-headings.header-link>
 
-<livewire:employee.tables.my-reported-issues-table />
+<livewire:employee.tables.my-reported-issues-table :$routePrefix />
 
 @endsection
