@@ -1,4 +1,7 @@
 <section nonce="{{ $nonce }}" class="auth-form px-md-4 py-md-3 mx-auto hidden-until-load">
+
+    <livewire:dialogues.forgot-password />
+
     <hgroup class="d-flex flex-column text-center mb-3 mt-md-n4">
         <header class="typewriter-text display-5 fw-semibold text-primary mb-3 d-none d-md-block">
             Welcome Back!
@@ -39,6 +42,10 @@
             :nonce="$nonce" aria-owns="userLogin-password-feedback"
             class=" {{ $errors->has('password') ? 'is-invalid' : '' }}">
 
+            <x-slot:input_icon_left>
+                <i data-lucide="lock" class="icon-large"></i>
+            </x-slot:input_icon_left>
+
             <x-slot:toggle_password>
                 @include('components.form.toggle-password', [
                     'toggler_id' => 'toggle-psw',
@@ -67,7 +74,7 @@
 
 
             <div class=" col-md-auto mx-auto me-md-0 ms-md-auto order-2 order-md-1">
-                <button type="button" class="border-0 bg-transparent text-decoration-underline ">
+                <button type="button" class="border-0 bg-transparent text-decoration-underline green-hover" onclick="openModal('forgotPassword')">
                     Forgot your password?
                 </button>
             </div>

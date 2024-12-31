@@ -1,4 +1,7 @@
 <section nonce="{{ $nonce }}" class="auth-form px-md-4 py-md-3 mx-auto hidden-until-load">
+
+    <livewire:dialogues.forgot-password />
+
     <hgroup class="d-flex flex-column text-center mb-3 mt-md-n4">
         <header class="typewriter-text display-5 fw-semibold text-primary mb-3 d-none d-md-block">
             {{ __('Hello, Admin!') }}
@@ -32,17 +35,17 @@
             </div>
         @endif
 
-        <x-form.email id="userLogin-email" label="{{ __('Email Address') }}" name="email" auto_complete="email" :$nonce
-            aria-owns="userLogin-email-feedback" class=" {{ $errors->has('email') ? 'is-invalid' : '' }}">
+        <x-form.email id="userLogin-email" label="{{ __('Email Address') }}" name="email" auto_complete="email"
+            :$nonce aria-owns="userLogin-email-feedback" class=" {{ $errors->has('email') ? 'is-invalid' : '' }}">
             <x-slot:input_icon_left>
                 <i data-lucide="mail" class="icon-large"></i>
             </x-slot:input_icon_left>
 
             <x-slot:feedback>
                 @include('components.form.input-feedback', [
-    'feedback_id' => 'userLogin-email-feedback',
-    'message' => $errors->first('email'),
-])
+                    'feedback_id' => 'userLogin-email-feedback',
+                    'message' => $errors->first('email'),
+                ])
             </x-slot:feedback>
         </x-form.email>
 
@@ -50,24 +53,29 @@
             auto_complete="current-password" :$nonce aria-owns="userLogin-password-feedback"
             class=" {{ $errors->has('password') ? 'is-invalid' : '' }}">
 
+            <x-slot:input_icon_left>
+                <i data-lucide="lock" class="icon-large"></i>
+            </x-slot:input_icon_left>
+
             <x-slot:toggle_password>
                 @include('components.form.toggle-password', [
-    'toggler_id' => 'toggle-psw',
-    'controls' => 'userLogin-password',
-])
+                    'toggler_id' => 'toggle-psw',
+                    'controls' => 'userLogin-password',
+                ])
             </x-slot:toggle_password>
+
 
             <x-slot:feedback>
                 @include('components.form.input-feedback', [
-    'feedback_id' => 'userLogin-password-feedback',
-    'message' => $errors->first('password'),
-])
+                    'feedback_id' => 'userLogin-password-feedback',
+                    'message' => $errors->first('password'),
+                ])
             </x-slot:feedback>
         </x-form.password>
 
         <div class="d-flex flex-wrap gap-4 gap-md-5">
             <div class=" col-md-auto mx-auto me-md-0 ms-md-auto order-2 order-md-1">
-                <button class="border-0 bg-transparent text-decoration-underline ">
+                <button type="button" class="border-0 bg-transparent text-decoration-underline green-hover" onclick="openModal('forgotPassword')">
                     {{ __('Forgot your password?') }}
                 </button>
             </div>

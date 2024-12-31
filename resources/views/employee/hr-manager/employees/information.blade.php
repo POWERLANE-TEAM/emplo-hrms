@@ -15,7 +15,7 @@
 
 @pushOnce('scripts')
     @vite(['resources/js/employee/hr-manager/employee-info.js'])
-
+    @vite(['resources/js/employee/calendar.js'])
 @endPushOnce
 
 @pushOnce('styles')

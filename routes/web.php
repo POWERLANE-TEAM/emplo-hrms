@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Application\ApplicantController;
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\ContentController;
 use App\Http\Controllers\ApplicationDocController;
 use App\Http\Controllers\ResumeController;
 use App\Http\Controllers\WebThemeController;
@@ -59,4 +60,14 @@ Route::post('/logout', [Logout::class, 'destroy'])
 
 Route::get('/test-pop-ups', function () {
     return view('components.html.test-pop-ups');
+});
+
+Route::get('/information-centre', function () {
+    return view('help-centre.index');
+});
+
+Route::get('/modal-content/{modalKey}', [ContentController::class, 'getModalContent']);
+
+Route::get('/forgot-password', function () {
+    return view('password-recovery.index');
 });

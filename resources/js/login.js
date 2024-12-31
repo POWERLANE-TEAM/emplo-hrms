@@ -1,6 +1,5 @@
 
 import './script.js';
-import initLucideIcons from './icons/lucide.js';
 import addGlobalScrollListener, { documentScrollPosY } from 'global-scroll-script';
 import addGlobalListener, { GlobalListener } from 'globalListener-script';
 import togglePassword from './toggle-password.js';
@@ -11,27 +10,23 @@ import PasswordValidator from './forms/password-validation.js';
 import initPasswordConfirmValidation, { validateConfirmPassword } from './forms/password-confirm-validation.js';
 import debounce from 'debounce-script';
 // import './livewire.js'
-import ThemeManager, { initPageTheme } from 'theme-listener-script';
+import { initPageTheme } from 'theme-listener-script';
 
-const themeManager = new ThemeManager();
 
-initPageTheme(themeManager);
+
+initPageTheme(window.ThemeManager);
 
 
 document.addEventListener("DOMContentLoaded", (event) => {
-    initLucideIcons();
+    //
 });
 
 document.addEventListener('livewire:init', () => {
     initPasswordEvaluator();
-    setTimeout(() => {
-        initLucideIcons();
-    }, 0);
-
 });
 
 document.addEventListener('livewire:navigate', (event) => {
-    initLucideIcons();
+    //
 })
 
 

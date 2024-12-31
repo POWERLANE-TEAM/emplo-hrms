@@ -1,6 +1,5 @@
 import "../../script.js";
 import GLOBAL_CONST from "../../global-constant.js";
-import initLucideIcons from "../../icons/lucide.js";
 import addGlobalListener from "globalListener-script";
 import "../../auth-listener.js";
 import "employee-page-script";
@@ -18,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Default active tab and section
     tabs[0].classList.add("fw-bold", "text-primary", "underline-padded");
-    tabs[0].classList.remove("text-muted"); 
+    tabs[0].classList.remove("text-muted");
     sections[0].classList.add("active-section");
 
     tabs.forEach((tab) => {
@@ -31,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // Remove active classes and text-muted from all tabs and sections
             tabs.forEach((t) => {
                 t.classList.remove("fw-bold", "text-primary", "underline-padded");
-                t.classList.add("text-muted"); 
+                t.classList.add("text-muted");
             });
             sections.forEach((section) => {
                 section.classList.remove("active-section");
@@ -39,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Add active classes to clicked tab and corresponding section
             tab.classList.add("fw-bold", "text-primary", "underline-padded");
-            tab.classList.remove("text-muted"); 
+            tab.classList.remove("text-muted");
             targetSection.classList.add("active-section");
         });
     });
@@ -59,6 +58,6 @@ document.addEventListener("DOMContentLoaded", () => {
         docSection.classList.remove("active-section");
         infoSection.classList.add("active-section");
     });
-    
+
 });
 

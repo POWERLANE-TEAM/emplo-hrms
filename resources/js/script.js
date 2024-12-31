@@ -1,5 +1,10 @@
 import './animations/texts-effect.js';
 import initLucideIcons from './icons/lucide.js';
+import ThemeManager, { initPageTheme } from './theme-listener.js';
+
+const themeManager = new ThemeManager();
+
+window.ThemeManager = themeManager;
 
 function disableSubmit() {
     document
@@ -47,6 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
 try {
     document.addEventListener("livewire:initialized", () => {
         document.addEventListener("livewire:navigate", () => {
+            window.icons.initLucideIcons = initLucideIcons;
             disableSubmit();
         });
 
@@ -199,3 +205,27 @@ export function openModal(modalId, callback) {
 }
 
 window.openModal = openModal;
+
+document.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(window.location.search);
+    const targetSection = params.get('section');
+
+    if (targetSection) {
+        showContent(targetSection, 'section-id');
+    }
+});
+
+export function switchModal(hideModalId, showModalId, callback) {
+    try {
+        // Hide the current modal
+        const hideModal = bootstrap.Modal.getOrCreateInstance(document.getElementById(hideModalId));
+        hideModal.hide();
+
+        // Open the target modal using your openModal function
+        openModal(showModalId, callback);
+    } catch (e) {
+        console.error(e);
+    }
+}
+
+window.switchModal = switchModal;

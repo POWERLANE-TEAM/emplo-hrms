@@ -2,8 +2,11 @@
 
 @section('head')
 <title>Home</title>
+<link rel="preload" href="{{ Vite::asset('resources/css/employee/admin/dashboard.css') }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="{{ Vite::asset('resources/css/employee/admin/dashboard.css') }}"></noscript>
 <script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
+
 @endsection
 
 @pushOnce('scripts')

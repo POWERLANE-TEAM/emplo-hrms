@@ -171,10 +171,17 @@ class ApplicantController extends Controller
     }
 
     /* Get single resource */
-    public function show($application)
+    public function show($application = null)
     {
-        $application = RouteHelper::validateModel(Application::class, $application);
+        if (empty($application) && auth()->check()) {
+            // dump(auth()->user());
+            $application = auth()->user()->account->application;
+        } else if (auth()->check()) {
+            $application = RouteHelper::validateModel(Application::class, $application);
+        }
 
+        $application = $application->load('applicant', 'vacancy.jobTitle', 'status');
+        // dd($application);
         return view('applicant/index', ['application' => $application]);
     }
 
