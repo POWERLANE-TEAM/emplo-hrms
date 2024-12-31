@@ -154,6 +154,9 @@ class AppServiceProvider extends ServiceProvider
 
         /** Issue Policies */
         Gate::define('submitIssueReport', [IssuePolicy::class, 'submitIssueReport']);
+        Gate::define('viewIssueReport', [IssuePolicy::class, 'viewIssueReport']);
+        Gate::define('viewAnyIssueReport', [IssuePolicy::class, 'viewAnyIssueReport']);
+        Gate::define('updateIssueStatus', [IssuePolicy::class, 'updateIssueStatus']);
 
         Vite::useAggressivePrefetching();
     }
