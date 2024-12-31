@@ -122,10 +122,7 @@ enum UserPermission: string
     case UPDATE_ALL_OVERTIME_REQUEST = 'update every employee overtime request';
     case UPDATE_PENDING_OVERTIME_REQUEST_STATUS = 'update pending overtime request status';
     case UPDATE_APPROVED_OVERTIME_REQUEST_STATUS = 'update approved overtime request status';
-    case UPDATE_ISSUE_COMPLAINT = 'update issue complaint';
-    case UPDATE_ISSUE_COMPLAINT_STATUS = 'update issue complaint status';
-    case UPDATE_ISSUE_COMPLAINT_CLOSED = 'update issue complaint to closed';
-    case UPDATE_ISSUE_COMPLAINT_RESOLVED = 'update issue complaint to resolved';
+    case UPDATE_ISSUE_STATUS = 'update issue status';
     case UPDATE_BIOMETRIC_DEVICE = 'update biometric attendance device configuration';
     case UPDATE_SUBORDINATE_OVERTIME_REQUEST = 'update subordinate overtime request';
 
@@ -263,10 +260,7 @@ enum UserPermission: string
             self::UPDATE_ALL_OVERTIME_REQUEST => 'Update every employee overtime request status',
             self::UPDATE_PENDING_OVERTIME_REQUEST_STATUS => 'Update pending overtime request status',
             self::UPDATE_APPROVED_OVERTIME_REQUEST_STATUS => 'Update approved overtime request status',
-            self::UPDATE_ISSUE_COMPLAINT => 'Update an issue complaint',
-            self::UPDATE_ISSUE_COMPLAINT_STATUS => 'Update issue complaint status',
-            self::UPDATE_ISSUE_COMPLAINT_CLOSED => 'Close an issue complaint',
-            self::UPDATE_ISSUE_COMPLAINT_RESOLVED => 'Mark an issue complaint as resolved',
+            self::UPDATE_ISSUE_STATUS => 'Update issue complaint status',
             self::UPDATE_BIOMETRIC_DEVICE => 'Update biometric attendance device configuration',
             self::UPDATE_SUBORDINATE_OVERTIME_REQUEST => 'Update (approve/deny) subordinate overtime request.',
 
