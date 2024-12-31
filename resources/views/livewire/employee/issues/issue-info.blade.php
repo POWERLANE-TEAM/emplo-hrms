@@ -13,17 +13,8 @@
 <div>
     <x-modals.dialog :id="$modalId">
         <x-slot:title>
-            <h1 class="modal-title fs-5 fw-bold text-{{ $isOpen 
-                ? 'secondary-emphasis' : 
-                    IssueStatus::from($issue->status)->getColor() }}" id="{{ $modalId }}"
-            >
-                {!! $isOpen
-                    ? __('Issue Resolution')
-                    : __('<i class="icon me-2 text-'.IssueStatus::from($issue->status)->getColor().' icon-slarge d-inline" 
-                            data-lucide="'.IssueStatus::from($issue->status)->getIcon().'">
-                        </i>'.'Marked as '.IssueStatus::from($issue->status)->getLabel()
-                    )
-                !!}
+            <h1 class="modal-title fs-5 fw-bold" id="{{ $modalId }}">
+                {{ __('Issue Report Review Details') }}
             </h1>
             <button data-bs-dismiss="modal" class="btn-close" aria-label="Close"></button>        
         </x-slot:title>
@@ -104,7 +95,20 @@
                     {{ __('Mark as Resolved') }}
                 </button>
             @else
-                <div>{{ __("Marked on {$issue->status_marked_at}") }}</div>
+                <div class="d-flex justify-content-between align-items-center w-100">
+                    <div class="text-{{ IssueStatus::from($issue->status)->getColor() }}">
+                        <div>
+                            {!! $isOpen
+                                ? __('Issue Resolution')
+                                : __('<i class="icon me-2 icon-slarge d-inline" 
+                                        data-lucide="'.IssueStatus::from($issue->status)->getIcon().'">
+                                    </i>'.'Marked as '.IssueStatus::from($issue->status)->getLabel()
+                                )
+                            !!}                    
+                        </div>
+                    </div>
+                    <div>{{ __("Marked on {$issue->status_marked_at}") }}</div>
+                </div>
             @endif
         </x-slot:footer>
     </x-modals.dialog>
