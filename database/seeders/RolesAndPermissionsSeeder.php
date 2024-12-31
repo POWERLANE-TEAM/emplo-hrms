@@ -111,11 +111,10 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::UPDATE_LEAVE_BALANCE->value,
             UserPermission::UPDATE_PENDING_OVERTIME_REQUEST_STATUS->value,
             UserPermission::UPDATE_APPROVED_OVERTIME_REQUEST_STATUS->value,
-            UserPermission::UPDATE_ISSUE_COMPLAINT_CLOSED->value,
-            UserPermission::UPDATE_ISSUE_COMPLAINT_RESOLVED->value,
             UserPermission::UPDATE_ALL_OVERTIME_REQUEST->value,
             UserPermission::APPROVE_OVERTIME_SUMMARY_TERTIARY->value,
             UserPermission::APPROVE_LEAVE_REQUEST_FOURTH->value,
+            UserPermission::UPDATE_ISSUE_STATUS->value,
 
             // Delete cases goes here
         ];

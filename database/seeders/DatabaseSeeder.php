@@ -47,7 +47,7 @@ class DatabaseSeeder extends Seeder
                 JobSkillKeywordSeeder::class,
                 ManagerialSeeder::class,
                 PayrollSeeder::class,
-                OvertimeSeeder::class,
+                // OvertimeSeeder::class,
                 EmployeeJobDetailSeeder::class,
                 // EmployeeLeaveSeeder::class,
                 IssueTypeSeeder::class,

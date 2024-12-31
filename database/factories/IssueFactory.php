@@ -25,9 +25,7 @@ class IssueFactory extends Factory
             'confidentiality' => fake()->randomElement(array_map(fn ($case) => $case->value, IssueConfidentiality::cases())),
             'occured_at' => fake()->dateTimeBetween('-1 year', 'now'),
             'issue_description' => fake()->paragraph(),
-            'supporting_info' => null,
             'desired_resolution' => fake()->paragraph(),
-            'status_marker' => Employee::inRandomOrder()->first()->employee_id,
             'status_marked_at' => now(),
         ];
     }
