@@ -6,7 +6,7 @@
 
 @props(['label', 'nonce', 'required' => false, 'description' => null, 'readonly' => false])
 
-<label for="{{ $attributes->get('id') }}" class="mb-1 fw-semibold">
+<label for="{{ $attributes->get('id') }}" class="mb-1 fw-semibold text-secondary-emphasis">
     {{ $label }}
     {{-- Conditionally display the red asterisk for required fields --}}
     @if ($required)
@@ -21,9 +21,9 @@
 
 <div class="input-group mb-3 position-relative" id="custom-textarea-container">
     {{-- Editable Content Area Styled Like a Textarea --}}
-    <div id="{{ $attributes->get('id') }}" contenteditable="{{ $readonly ? 'false' : 'true' }}"
+    <div id="{{ $attributes->get('id') }}"
         class="form-control border ps-3 rounded text-start"
-        style="min-height: 150px; overflow-y: auto; padding-bottom: 40px;" nonce="{{ $nonce }}"
+        style="overflow-y: auto; padding-bottom: 40px;" nonce="{{ $nonce }}"
         {{ $readonly ? 'disabled' : '' }} aria-owns="{{ $attributes->get('id') }}-feedback"></div>
 
     {{-- Attachments Section --}}
