@@ -215,3 +215,18 @@ document.addEventListener('DOMContentLoaded', () => {
         showContent(targetSection, 'section-id');
     }
 });
+
+export function switchModal(hideModalId, showModalId, callback) {
+    try {
+        // Hide the current modal
+        const hideModal = bootstrap.Modal.getOrCreateInstance(document.getElementById(hideModalId));
+        hideModal.hide();
+
+        // Open the target modal using your openModal function
+        openModal(showModalId, callback);
+    } catch (e) {
+        console.error(e);
+    }
+}
+
+window.switchModal = switchModal;
