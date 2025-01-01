@@ -6,7 +6,7 @@
             <div class="row">
                 <div class="col-md-3 icons-container d-flex align-items-center">
                     <img class="icons-row-card"
-                        src="{{ Vite::asset('resources/images/illus/dashboard/active-accs.webp') }}" 
+                        src="{{ Vite::asset('resources/images/illus/reports/incidents.webp') }}" 
                         alt="Incidents icon">
                 </div>
                 <div class="col-md-7">
@@ -23,7 +23,7 @@
             <div class="row">
                 <div class="col-md-3 icons-container d-flex align-items-center">
                     <img class="icons-row-card"
-                        src="{{ Vite::asset('resources/images/illus/dashboard/online-users.webp') }}" 
+                        src="{{ Vite::asset('resources/images/illus/reports/issues.webp') }}" 
                         alt="Issues icon">
                 </div>
                 <div class="col-md-7 mx-2">
@@ -40,7 +40,7 @@
             <div class="row">
                 <div class="col-md-3 icons-container d-flex align-items-center">
                     <img class="icons-row-card"
-                        src="{{ Vite::asset('resources/images/illus/dashboard/total-users.webp') }}" 
+                        src="{{ Vite::asset('resources/images/illus/reports/training.webp') }}" 
                         alt="Training icon">
                 </div>
                 <div class="col-md-7 mx-2">
