@@ -1,5 +1,5 @@
 <div class="mt-5">
-    <h2 class="text-primary fw-bold">Employee Retention & Turnover Rate</h2>
+    <h3 class="fw-bold pb-1">Employee Retention & Turnover Rate</h3>
 
     <!-- Chart Container -->
     <div wire:ignore x-data="{

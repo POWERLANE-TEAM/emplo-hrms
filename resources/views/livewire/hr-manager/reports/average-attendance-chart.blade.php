@@ -1,5 +1,5 @@
 <div class="mt-5">
-    <h2 class="text-primary fw-bold">Employee Attendance Rate Report</h2>
+    <h3 class="pb-1 fw-bold">Employee Attendance Rate Report</h3>
 
     <!-- Chart Container -->
     <div wire:ignore x-data="{

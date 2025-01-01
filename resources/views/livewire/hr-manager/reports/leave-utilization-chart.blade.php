@@ -1,5 +1,5 @@
 <section class="mt-5">
-    <h2 class="text-primary fw-bold">Leave Utilization Rate</h2>
+    <h3 class="pb-1 fw-bold">Leave Utilization Rate</h3>
     <div wire:ignore x-data="{
         leaveData: @entangle('leaveData'),
         selectedLeaveType: 'all',

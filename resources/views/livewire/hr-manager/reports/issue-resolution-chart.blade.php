@@ -1,5 +1,5 @@
 <section class="mt-5">
-    <h2 class="text-primary fw-bold">Issue Resolution Time Rate</h2>
+    <h3 class="pb-1 fw-bold">Issue Resolution Time Rate</h3>
 
     <!-- Chart Container -->
     <div wire:ignore x-data="{
