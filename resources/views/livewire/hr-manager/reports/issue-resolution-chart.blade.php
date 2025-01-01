@@ -1,4 +1,4 @@
-<class="mt-5">
+<section class="mt-5">
     <h2 class="text-primary fw-bold">Issue Resolution Time</h2>
 
     <!-- Chart Container -->
@@ -111,7 +111,5 @@
                 </div>
             </div>
         </div>
-
     </div>
-
-    </section>
+</section>

@@ -7,7 +7,7 @@ use Livewire\Component;
 class IssueResolutionChart extends Component
 {
 
-        /*
+    /*
      * BACK-END REPLACE / REQUIREMENTS:
      * 
      * ONLY FETCH ROWS FROM SELECTED YEAR.
