@@ -43,10 +43,11 @@
 
 <div id="reports-container">
     <div class="reports-content hidden-until-load">
+        <livewire:hr-manager.reports.employee-metrics />
         <livewire:hr-manager.reports.key-metrics />
-        <livewire:hr-manager.reports.retention-turnover-chart />
         <livewire:hr-manager.reports.average-attendance-chart />
         <livewire:hr-manager.reports.absenteeism-report-chart />
+        <livewire:hr-manager.reports.retention-turnover-chart />
         <livewire:hr-manager.reports.issue-resolution-chart />
         <livewire:hr-manager.reports.leave-utilization-chart />
     </div>
