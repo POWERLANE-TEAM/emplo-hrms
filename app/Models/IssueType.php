@@ -35,4 +35,12 @@ class IssueType extends Model
     {
         return $this->belongsToMany(Issue::class, 'issue_tags', 'issue_type_id', 'issue_id');
     }
+
+    /**
+     * The incidents associated with the type.
+     */
+    public function incidents(): BelongsToMany
+    {
+        return $this->belongsToMany(Incident::class, 'incident_tags', 'issue_type_id', 'incident_id');
+    }
 }
