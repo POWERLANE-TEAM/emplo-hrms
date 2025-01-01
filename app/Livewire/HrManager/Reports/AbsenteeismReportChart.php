@@ -32,7 +32,7 @@ class AbsenteeismReportChart extends Component
 
     public function mount()
     {
-        $this->selectedYear = date('Y');
+        $this->selectedYear;
         logger('ABSENTEEISM CHART - Selected Year initialized to: ' . $this->selectedYear);
 
         $data = [

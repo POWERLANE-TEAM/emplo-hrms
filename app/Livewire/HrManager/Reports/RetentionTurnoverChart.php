@@ -32,7 +32,7 @@ class RetentionTurnoverChart extends Component
     public function mount()
     {
 
-        $this->selectedYear = date('Y');
+        $this->selectedYear;
         logger('RETENTION CHART - Selected Year initialized to: ' . $this->selectedYear);
 
         // Sample yearly data

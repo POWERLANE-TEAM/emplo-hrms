@@ -30,7 +30,7 @@ class IssueResolutionChart extends Component
     public function mount()
     {
 
-        $this->selectedYear = date('Y');
+        $this->selectedYear;
         logger('ISSUE CHART - Selected Year initialized to: ' . $this->selectedYear);
 
         // Placeholder data for issue resolution times
