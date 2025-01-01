@@ -104,6 +104,7 @@ enum UserPermission: string
     case VIEW_RESIGNATION = 'view resignation';
     case VIEW_ALL_FILED_RESIGNATION_LETTERS = 'view all filed resignation letters';
     case VIEW_ALL_COE_REQUESTS = 'view all certificate of employment requests';
+    case VIEW_REPORTS = 'view reports';
 
         // Update cases goes here
     case UDPATE_JOB_LISTING = 'update job listing';
@@ -248,6 +249,7 @@ enum UserPermission: string
             self::VIEW_RESIGNATION => 'View resignation',
             self::VIEW_ALL_FILED_RESIGNATION_LETTERS => 'view all filed resignation letters',
             self::VIEW_ALL_COE_REQUESTS => 'View all certificate of employment requests',
+            self::VIEW_REPORTS => 'View reports',
 
             // Update labels goes here
             self::UDPATE_JOB_LISTING => 'Update job listing/s',
