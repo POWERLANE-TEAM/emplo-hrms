@@ -25,7 +25,7 @@ class IssuePolicy
      */
     public function submitIssueReport(User $user): Response
     {
-        return $user->hasPermissionTo(UserPermission::CREATE_ISSUE_COMPLAINT)
+        return $user->hasPermissionTo(UserPermission::CREATE_ISSUE_REPORT)
             ? Response::allow()
             : Response::deny(__('Sorry, you don\'t have permission to file for an issue report.'));
     }
