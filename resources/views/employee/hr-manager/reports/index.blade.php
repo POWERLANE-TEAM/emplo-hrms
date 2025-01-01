@@ -58,25 +58,33 @@
 
     </div>
     <div class="empty-state hidden-until-load">
-        <div class="d-flex justify-content-center align-items-center text-center w-100 h-100 py-5">
-            <div class="mt-4">
-                <img class="img-size-40 img-responsive text-wrap fadein-text"
-                    src="{{ Vite::asset('resources/images/illus/help-centre/search-content.gif') }}" alt="">
-
-                <div class="typewriter-text fs-2 fw-bold" aria-label="We are hiring!">
-                    Welcome to Information Centre!
+        <div class="container">
+            <!-- Row for the Image -->
+            <div class="row justify-content-center mb-4 me-2">
+                <div class="col-12 text-center">
+                    <img class="img-size-30 img-responsive"
+                        src="{{ Vite::asset('resources/images/illus/empty-states/reports.gif') }}" alt="">
                 </div>
+            </div>
 
-                <div class="w-50 mx-auto">
-                    <p class="text-wrap fadein-text">A helpful space where you can find important system policies and
-                        key information. It’s your one-stop
-                        place to stay informed about the guidelines and details you need.</p>
+            <!-- Row for the Text -->
+            <div class="row justify-content-center">
+                <div class="col-12 text-center">
+                    <p class="fs-3 fw-bold mb-0 pb-1">{{ date('Y') }} Annual Report Not Yet Available</p>
+                    <p class="fs-6 fw-medium">The report will be automatically generated once the year ends.</p>
+                </div>
+            </div>
+
+            <!-- Row for Buttons -->
+            <div class="row justify-content-center">
+                <!-- REPLACE STATIC PAGE LINK: Annual Reports Information -->
+                <div class="col-12 text-center">
+                    <a href="#" id="toggle-information" class="text-link-blue text-decoration-underline fs-7">
+                        Learn more about the Annual Report generation.
+                    </a>
                 </div>
             </div>
         </div>
-
     </div>
 </div>
-
-
 @endsection
