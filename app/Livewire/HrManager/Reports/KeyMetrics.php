@@ -30,7 +30,6 @@ class KeyMetrics extends Component
     public function mount()
     {
         $this->selectedYear;
-        logger('KEY METRICS - Selected Year initialized to: ' . $this->selectedYear);
 
         // Sample data - replace with actual database queries
         $data = [

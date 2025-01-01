@@ -31,7 +31,6 @@ class IssueResolutionChart extends Component
     {
 
         $this->selectedYear;
-        logger('ISSUE CHART - Selected Year initialized to: ' . $this->selectedYear);
 
         // Placeholder data for issue resolution times
         $data = [

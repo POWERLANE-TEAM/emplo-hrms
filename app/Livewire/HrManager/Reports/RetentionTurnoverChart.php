@@ -33,7 +33,6 @@ class RetentionTurnoverChart extends Component
     {
 
         $this->selectedYear;
-        logger('RETENTION CHART - Selected Year initialized to: ' . $this->selectedYear);
 
         // Sample yearly data
         $data = [

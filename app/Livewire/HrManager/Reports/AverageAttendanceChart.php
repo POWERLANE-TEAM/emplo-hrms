@@ -35,7 +35,6 @@ class AverageAttendanceChart extends Component
     {
 
         $this->selectedYear;
-        logger('ATTENDANCE CHART - Selected Year initialized to: ' . $this->selectedYear);
 
         $data = [
             [

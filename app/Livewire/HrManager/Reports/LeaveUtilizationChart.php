@@ -38,7 +38,6 @@ class LeaveUtilizationChart extends Component
     {
 
         $this->selectedYear;
-        logger('LEAVE CHART - Selected Year initialized to: ' . $this->selectedYear);
 
         $this->leaveData = [
             'all' => ['used' => 10342, 'total' => 10666],
