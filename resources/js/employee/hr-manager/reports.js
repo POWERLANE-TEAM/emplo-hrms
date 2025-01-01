@@ -36,10 +36,9 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Show reports if it's a previous year OR if it's December of current year
         const showReports = selectedYear < currentYear || 
-        (selectedYear == currentYear && currentMonth == 1);
+        (selectedYear == currentYear && currentMonth == 12);
         // BACK-END REPLACE NOTE: Replace the 12 to 1 to test.
         
-        // Add/remove classes instead of using display property
         if (reportsContent) {
             reportsContent.classList.toggle('hidden', !showReports);
             reportsContent.classList.toggle('visible', showReports);
