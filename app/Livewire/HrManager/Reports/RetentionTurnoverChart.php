@@ -15,7 +15,7 @@ class RetentionTurnoverChart extends Component
      * FETCH FROM DATABASE:
      * 1. 'total_employees_start': Start of year total count of employees.
      * 2. 'total_employees_end': End of year total employees count.
-     *     --> This needs to be store somewhere in the db.
+     * --> These needs to be store somewhere in the db.
      * 
      * 3. 'employees_left': Employees who left during the year. This is determined by their resigned_date.
      * 
@@ -31,9 +31,9 @@ class RetentionTurnoverChart extends Component
     {
         // Sample yearly data
         $data = [
-            'total_employees_start' => 100,    // Start of year
-            'employees_left' => 15,            // Left during the year
-            'total_employees_end' => 85        // End of year
+            'total_employees_start' => 150,    // Start of year
+            'employees_left' => 3,            // Left during the year
+            'total_employees_end' => 147        // End of year
         ];
 
         // Calculate rates

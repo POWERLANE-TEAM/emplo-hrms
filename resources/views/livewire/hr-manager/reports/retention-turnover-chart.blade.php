@@ -1,5 +1,5 @@
 <div class="mt-5">
-    <h2 class="text-primary fw-bold">Employee Retention & Turnover Rate {{ $retentionData['year'] }}</h2>
+    <h2 class="text-primary fw-bold">Employee Retention & Turnover Rate</h2>
 
     <!-- Chart Container -->
     <div wire:ignore x-data="{
@@ -17,19 +17,19 @@
                 this.chartInstance = new Chart(ctx, {
                     type: 'bar',
                     data: {
-                        labels: ['Employee Retention & Turnover'],
+                        labels: ['Retention & Turnover'],
                         datasets: [{
                             label: 'Retention Rate',
                             data: [this.retentionData.retention_rate],
-                            backgroundColor: 'rgba(75, 192, 192, 0.8)',
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
                             borderColor: 'rgba(75, 192, 192, 1)',
                             borderWidth: 1
                         }, {
                             label: 'Turnover Rate',
                             data: [this.retentionData.turnover_rate],
-                            backgroundColor: 'rgba(255, 99, 132, 0.8)',
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
                             borderColor: 'rgba(255, 99, 132, 1)',
-                            borderWidth: 1
+                            borderWidth: 1  
                         }]
                     },
                     options: {
@@ -83,14 +83,14 @@
                     <div class="col-md-4">
                         <div class="text-center">
                             <h5 class="text-primary">Retention Rate</h5>
-                            <h3 class="text-success">{{ $retentionData['retention_rate'] }}%</h3>
+                            <h3 class="text-success fw-bold">{{ $retentionData['retention_rate'] }}%</h3>
                             <p>{{ $retentionData['total_stayed'] }} employees stayed</p>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="text-center">
                             <h5 class="text-primary">Turnover Rate</h5>
-                            <h3 class="text-danger">{{ $retentionData['turnover_rate'] }}%</h3>
+                            <h3 class="text-danger fw-bold">{{ $retentionData['turnover_rate'] }}%</h3>
                             <p>{{ $retentionData['total_left'] }} employees left</p>
                         </div>
                     </div>
