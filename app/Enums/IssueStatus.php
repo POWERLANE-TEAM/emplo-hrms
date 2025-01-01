@@ -2,15 +2,13 @@
 
 namespace App\Enums;
 
-use Google\Service\ShoppingContent\Resource\Returnaddress;
-
 enum IssueStatus: int
 {
     case OPEN = 1;
     case RESOLVED = 2;
     case CLOSED = 3;
 
-    public function getLabel()
+    public function getLabel(): string
     {
         return match ($this) {
             self::OPEN => __('Open'),
@@ -19,7 +17,7 @@ enum IssueStatus: int
         };
     }
 
-    public function getColor()
+    public function getColor(): string
     {
         return match ($this) {
             self::RESOLVED => 'success',
@@ -28,12 +26,21 @@ enum IssueStatus: int
         };
     }
 
-    public function getIcon()
+    public function getIcon(): string
     {
         return match ($this) {
             self::RESOLVED => 'circle-check-big',
             self::OPEN => 'square-pen',
             self::CLOSED => 'circle-slash'
         };
+    }
+
+    public static function options(): array
+    {
+        return array_reduce(self::cases(), function ($carry, $case) {
+            $carry[$case->value] = $case->getLabel();
+
+            return $carry;
+        }, []);
     }
 }
