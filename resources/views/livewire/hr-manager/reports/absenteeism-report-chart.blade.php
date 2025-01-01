@@ -70,18 +70,39 @@
             </div>
         </div>
 
+        <div class="col-md-12 mt-3">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card border-0 bg-body-secondary w-100 p-4">
+                        <div class="text-center">
+                            <h5>Yearly Total</h5>
+                            <h3 class="text-success fw-bold">
+                                @foreach ($absenteeismData['yearly'] as $year => $data)
+                                    {{ $data['total_absences'] }} absences
+                                @endforeach
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card border-0 bg-body-secondary w-100 p-4">
+                        <div class="text-center">
+                            <h5>Monthly Average</h5>
+                            <h3 class="text-success fw-bold">
+                                @foreach ($absenteeismData['yearly'] as $year => $data)
+                                    {{ number_format($data['monthly_average'], 1) }} absences per month
+                                @endforeach
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="col-md-12 d-flex justify-content-center align-items-center pt-4">
+
             <div class="card border-0 bg-body-secondary w-100 p-4">
                 <div class="overflow-auto visible-gray-scrollbar absenteeism-table">
-                    <header>
-                        <h4 class="text-primary fw-bold">Yearly Summary:
-                            @foreach ($absenteeismData['yearly'] as $year => $data)
-                                {{ $data['total_absences'] }} total absences
-                                (avg {{ number_format($data['monthly_average'], 1) }} per month)
-                            @endforeach
-                        </h4>
-                    </header>
-
                     <div>
                         <table class="table table-striped">
                             <thead>

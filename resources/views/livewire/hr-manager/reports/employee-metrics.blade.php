@@ -42,7 +42,7 @@
                         alt="Training icon">
                 </div>
                 <div class="col-md-7 mx-2">
-                    <p class="fw-semibold fs-3">Evaluation Rate</p>
+                    <p class="fw-semibold fs-3">Evaluations</p>
                     <p class="pt-1 fw-medium fs-7 text-opacity-25"><b class="text-teal">{{ $metrics['evaluation_success'] }}%</b> Passing Rate</p>
                 </div>
             </div>

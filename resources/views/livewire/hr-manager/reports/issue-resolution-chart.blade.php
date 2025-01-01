@@ -81,9 +81,9 @@
             <div class="card border-0 bg-body-secondary w-100 p-4" height="50px">
                 <div class="overflow-auto visible-gray-scrollbar issue-table">
                     <header>
-                        <h4 class="text-primary fw-bold">Average Yearly Resolution Time:
+                        <h4 class="text-primary fw-bold">Yearly Average Summary:
                             @foreach ($issueResolutionData['yearly'] as $year => $data)
-                                {{ number_format($data['average_days'], 2) }} days
+                                {{ number_format($data['average_days'], 2) }} days resolution time
                             @endforeach
                         </h4>
                     </header>
