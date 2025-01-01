@@ -35,7 +35,7 @@
         </x-headings.main-heading>
     </div>
     <div class="col-2 pt-2 text-end d-flex align-items-center justify-content-end w-25s">
-        <x-form.boxed-dropdown id="priority"  wire:model="selectedYear" :required="true" :nonce="$nonce" :options="['2024' => '2024', '2023' => '2023', '2022' => '2022']" :default="date('Y')"
+        <x-form.boxed-dropdown id="select-year-report" :required="true" :nonce="$nonce" :options="['2024' => '2024', '2023' => '2023', '2022' => '2022']" :default="date('Y')"
             onchange="console.log('Selected Year:', this.value); window.dispatchEvent(new CustomEvent('year-changed', { detail: this.value }))"
             placeholder="Select year" />
     </div>
