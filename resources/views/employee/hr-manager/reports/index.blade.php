@@ -41,7 +41,7 @@
     </div>
 </section>
 
-<livewire:hr-manager.reports.kpi/>
+<livewire:hr-manager.reports.key-metrics />
 
 <livewire:hr-manager.reports.retention-turnover-chart />
 
