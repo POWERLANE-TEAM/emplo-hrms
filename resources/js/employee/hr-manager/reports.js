@@ -9,11 +9,11 @@ import "../../tooltip.js";
 
 document.addEventListener('DOMContentLoaded', function() {
     const selectYearElement = document.getElementById('select-year-report');
-    const currentYear = new Date().getFullYear(); // Get the current year
+    const currentYear = new Date().getFullYear();
+    const currentMonth = new Date().getMonth() + 1; // Get current month (1-12)
 
     // Start year is 2020. This can be changed.
     const startYear = 2020;
-
     const endYear = currentYear;
 
     selectYearElement.innerHTML = '';
@@ -27,11 +27,30 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     selectYearElement.value = currentYear;
-});
 
-document.addEventListener('DOMContentLoaded', function() {
-    const dropdown = document.getElementById('select-year-report');
+    // Function to handle reports visibility
+    function updateReportsVisibility(selectedYear) {
+        const reportsContent = document.querySelector('.reports-content');
+        const emptyState = document.querySelector('.empty-state');
+        const yearSpans = document.querySelectorAll('.selected-year');
+        
+        const showReports = selectedYear < currentYear || 
+        (selectedYear == currentYear && currentMonth == 12);
+        
+        if (reportsContent) reportsContent.style.display = showReports ? 'block' : 'none';
+        if (emptyState) emptyState.style.display = showReports ? 'none' : 'block';
+        
+        yearSpans.forEach(span => {
+            span.textContent = selectedYear;
+        });
+    }
+
+    window.addEventListener('year-changed', function(event) {
+        const selectedYear = parseInt(event.detail);
+        updateReportsVisibility(selectedYear);
+    });
+
     window.dispatchEvent(new CustomEvent('year-changed', { 
-        detail: dropdown.value 
+        detail: selectYearElement.value 
     }));
 });

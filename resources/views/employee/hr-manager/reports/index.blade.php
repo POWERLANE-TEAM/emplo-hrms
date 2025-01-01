@@ -41,26 +41,19 @@
     </div>
 </section>
 
-@php
-    $currentMonth = date('m'); // Get the current month
-    $currentYear = date('Y');  // Get the current year
-    $selectedYear = request()->input('year', $currentYear); // Get selected year from dropdown
-@endphp
-
-@if ($selectedYear < $currentYear || ($selectedYear == $currentYear && $currentMonth == 12))
-    <!-- Show reports if it's a previous year OR if it's December of current year -->
-    <livewire:hr-manager.reports.key-metrics />
-    <livewire:hr-manager.reports.retention-turnover-chart />
-    <livewire:hr-manager.reports.average-attendance-chart />
-    <livewire:hr-manager.reports.absenteeism-report-chart />
-    <livewire:hr-manager.reports.issue-resolution-chart />
-    <livewire:hr-manager.reports.leave-utilization-chart />
-@else
-    <!-- Empty state if it's current year but not December -->
-    <div class="empty-state">
-        <p>Reports for {{ $selectedYear }} will be generated at the end of the year (December {{ $selectedYear }}).</p>
+<div id="reports-container">
+    <div class="reports-content">
+        <livewire:hr-manager.reports.key-metrics />
+        <livewire:hr-manager.reports.retention-turnover-chart />
+        <livewire:hr-manager.reports.average-attendance-chart />
+        <livewire:hr-manager.reports.absenteeism-report-chart />
+        <livewire:hr-manager.reports.issue-resolution-chart />
+        <livewire:hr-manager.reports.leave-utilization-chart />
     </div>
-@endif
+    <div class="empty-state" style="display: none;">
+        <p>Reports will be generated at the end of the year (December <span class="selected-year"></span>).</p>
+    </div>
+</div>
 
 
 @endsection
