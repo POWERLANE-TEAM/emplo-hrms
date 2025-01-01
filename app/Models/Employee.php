@@ -551,6 +551,46 @@ class Employee extends Model
         return $this->hasMany(Issue::class, 'issue_reporter', 'employee_id');
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Incident Records Management
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * Get the incidents which are initiated by the employee.
+     */
+    public function initiatedIncidentReports(): HasMany
+    {
+        return $this->hasMany(Incident::class, 'initiator', 'employee_id');
+    }
+
+    /**
+     * Get the incidents reported by the employee.
+     */
+    public function reportedIncidents(): HasMany
+    {
+        return $this->hasMany(Incident::class, 'reporter', 'employee_id');
+    }
+
+    /**
+     * Get the incidents which statuses are marked by the employee.
+     */
+    public function markedStatusIncidents(): HasMany
+    {
+        return $this->hasMany(Incident::class, 'status_marker', 'employee_id');
+    }
+
+    /**
+     * Get incidents where employee is a collaborator
+     */
+    public function sharedIncidentRecords(): BelongsToMany
+    {
+        return $this->belongsToMany(Incident::class, 'incident_record_collaborators', 'employee_id', 'incident_id')
+            ->using(IncidentRecordCollaborator::class)
+            ->withPivot('is_editor');
+    }
+
     /**
      * Override default values for more controlled logging.
      */
