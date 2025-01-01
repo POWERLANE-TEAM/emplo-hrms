@@ -43,6 +43,12 @@
 
 <livewire:hr-manager.reports.kpi/>
 
+<livewire:hr-manager.reports.retention-turnover-chart />
+
+<livewire:hr-manager.reports.average-attendance-chart />
+
+<livewire:hr-manager.reports.absenteeism-report-chart />
+
 <livewire:hr-manager.reports.issue-resolution-chart />
 
 <livewire:hr-manager.reports.leave-utilization-chart />
