@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -86,5 +87,13 @@ class Issue extends Model
     public function attachments(): HasMany
     {
         return $this->hasMany(IssueAttachment::class, 'issue_id', 'issue_id');
+    }
+
+    /**
+     * Get the incident report associated with the issue.
+     */
+    public function incident(): HasOne
+    {
+        return $this->hasOne(Incident::class, 'originator', 'issue_id');
     }
 }
