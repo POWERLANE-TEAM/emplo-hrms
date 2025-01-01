@@ -242,7 +242,7 @@
             :activeIcon="['src' => 'relations', 'alt' => 'Relations']"
             :children="[
                 [
-                    'href' => route($routePrefix . '.hr.relations.incidents.all'),
+                    'href' => route($routePrefix . '.relations.incidents.index'),
                     'active' => request()->routeIs($routePrefix . '.hr.relations.incidents.*'),
                     'nav_txt' => 'Incidents'
                 ],
