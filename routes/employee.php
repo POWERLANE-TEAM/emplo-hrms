@@ -239,8 +239,8 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
      * Employee relations resource
      */
     Route::prefix('relations')->name('relations.')->group(function () {
+        /** Issue resource */
         Route::prefix('issues')->name('issues.')->group(function () {
-
             Route::get('/', [IssueController::class, 'index'])
                 ->name('index');
         
@@ -267,24 +267,25 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
                 ->name('review');
         });
 
-        Route::get('incidents', [IncidentController::class, 'index'])
-            ->name('incidents.index');
-    
-        Route::get('incidents/create', [IncidentController::class, 'create'])
-            ->name('incidents.create');
+        /** Incident resource */
+        Route::prefix('incidents')->name('incidents.')->group(function () {
+            Route::get('/', [IncidentController::class, 'index'])
+                ->name('index');
+        
+            Route::get('create', [IncidentController::class, 'create'])
+                ->name('create');
+
+            Route::get('{incident}', [IncidentController::class, 'show'])
+                ->whereNumber('incident')
+                ->name('show');
+
+            Route::get('{attachment}/download', [IncidentController::class, 'download'])
+                ->name('download');
+
+            Route::get('attachments/{attachment}', [IncidentController::class, 'viewAttachment'])
+                ->name('attachments.show');
+        });
     });
-
-    /**
-     * Relations: Incidents Management
-     */
-
-    Route::get('hr/relations/incidents/all', function () {
-        return view('employee.hr-manager.relations.incidents.all');
-    })->name('hr.relations.incidents.all');
-
-    Route::get('hr/relations/incidents/create', function () {
-        return view('employee.hr-manager.relations.incidents.create');
-    })->name('hr.relations.incidents.create');
 
     /**
      * Training
