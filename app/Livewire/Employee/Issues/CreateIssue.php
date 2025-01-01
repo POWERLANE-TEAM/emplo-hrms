@@ -30,13 +30,9 @@ class CreateIssue extends Component
 
     public $desiredResolution;
 
-    public $files;
-
     public function mount()
     {
         unset($this->confidentialityPreferences);
-
-        $this->files = Storage::disk('local')->files('livewire-tmp');
     }
 
     public function save()
