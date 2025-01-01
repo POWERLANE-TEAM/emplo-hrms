@@ -68,13 +68,9 @@ canvas {
 }
 
 .hidden {
-    opacity: 0;
-    visibility: hidden;
-    position: absolute; 
+    display:none;
 }
 
 .visible {
-    opacity: 1;
-    visibility: visible;
-    position: relative; 
+    display: block;
 }
