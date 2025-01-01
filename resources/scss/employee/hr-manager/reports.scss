@@ -66,3 +66,15 @@ canvas {
 .col-md-7 p {
     margin-bottom: 0 !important;
 }
+
+.hidden {
+    opacity: 0;
+    visibility: hidden;
+    position: absolute; 
+}
+
+.visible {
+    opacity: 1;
+    visibility: visible;
+    position: relative; 
+}
