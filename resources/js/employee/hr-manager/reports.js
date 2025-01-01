@@ -11,13 +11,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const selectYearElement = document.getElementById('select-year-report');
     const currentYear = new Date().getFullYear();
     const currentMonth = new Date().getMonth() + 1; // Get current month (1-12)
-
+    
     // Start year is 2020. This can be changed.
     const startYear = 2020;
     const endYear = currentYear;
-
+    
     selectYearElement.innerHTML = '';
-
+    
     // Add the new options dynamically from start year up to the current year
     for (let year = startYear; year <= endYear; year++) {
         const option = document.createElement('option');
@@ -26,7 +26,8 @@ document.addEventListener('DOMContentLoaded', function() {
         selectYearElement.appendChild(option);
     }
     
-    selectYearElement.value = currentYear;
+    // Set the default value to the previous year (currentYear - 1)
+    selectYearElement.value = currentYear - 1;
 
     // Function to handle reports visibility
     function updateReportsVisibility(selectedYear) {
