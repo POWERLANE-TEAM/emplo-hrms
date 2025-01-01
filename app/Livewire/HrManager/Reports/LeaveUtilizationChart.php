@@ -10,6 +10,8 @@ class LeaveUtilizationChart extends Component
     /*
      * BACK-END REPLACE / REQUIREMENTS:
      * 
+     * ONLY FETCH ROWS FROM SELECTED YEAR.
+     * 
      * FETCH FROM DATABASE:
      * 1. Total count of ALL ENTITLED leave days across ALL leave types.
      * 2. Total count of ALL REMAINING leave days across ALL leave types.
