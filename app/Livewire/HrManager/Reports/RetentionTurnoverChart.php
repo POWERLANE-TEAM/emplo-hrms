@@ -25,10 +25,16 @@ class RetentionTurnoverChart extends Component
      * 
      */
 
+    public $selectedYear;
+
     public $retentionData;
 
     public function mount()
     {
+
+        $this->selectedYear = date('Y');
+        logger('RETENTION CHART - Selected Year initialized to: ' . $this->selectedYear);
+
         // Sample yearly data
         $data = [
             'total_employees_start' => 150,    // Start of year
@@ -48,6 +54,13 @@ class RetentionTurnoverChart extends Component
             'turnover_rate' => round($turnover_rate, 1),
             'retention_rate' => round($retention_rate, 1)
         ];
+    }
+
+    public function updated($name)
+    {
+        if ($name === 'selectedYear' && !empty($this->selectedYear)) {
+            logger('RETENTION CHART - Selected Year updated to: ' . $this->selectedYear);
+        }
     }
 
     public function render()

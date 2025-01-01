@@ -24,12 +24,17 @@ class AbsenteeismReportChart extends Component
      */
 
 
+    public $selectedYear;
+
     public $absenteeismData;
     public $yearlyData;
     public $monthlyData;
 
     public function mount()
     {
+        $this->selectedYear = date('Y');
+        logger('ABSENTEEISM CHART - Selected Year initialized to: ' . $this->selectedYear);
+
         $data = [
             ['month' => '2024-01', 'absences' => 4],
             ['month' => '2024-02', 'absences' => 10],
@@ -70,6 +75,13 @@ class AbsenteeismReportChart extends Component
             'yearly' => $this->yearlyData,
             'monthly' => $this->monthlyData,
         ];
+    }
+
+    public function updated($name)
+    {
+        if ($name === 'selectedYear' && !empty($this->selectedYear)) {
+            logger('ABSENTEEISM CHART - Selected Year updated to: ' . $this->selectedYear);
+        }
     }
 
     public function render()

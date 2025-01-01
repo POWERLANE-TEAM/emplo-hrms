@@ -21,6 +21,7 @@ class IssueResolutionChart extends Component
      * 
      */
 
+    public $selectedYear;
 
     public $issueResolutionData;
     public $yearlyData;
@@ -28,6 +29,10 @@ class IssueResolutionChart extends Component
 
     public function mount()
     {
+
+        $this->selectedYear = date('Y');
+        logger('ISSUE CHART - Selected Year initialized to: ' . $this->selectedYear);
+
         // Placeholder data for issue resolution times
         $data = [
             // January
@@ -254,6 +259,13 @@ class IssueResolutionChart extends Component
             'yearly' => $this->yearlyData,
             'monthly' => $this->monthlyData,
         ];
+    }
+
+    public function updated($name)
+    {
+        if ($name === 'selectedYear' && !empty($this->selectedYear)) {
+            logger('ISSUE CHART - Selected Year updated to: ' . $this->selectedYear);
+        }
     }
 
     public function render()

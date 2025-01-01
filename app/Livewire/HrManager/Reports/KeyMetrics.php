@@ -9,7 +9,7 @@ class KeyMetrics extends Component
     /*
      * BACK-END REPLACE / REQUIREMENTS:
      * 
-     * ONLY FETCH ROWS FROM SELECTED YEAR.
+     * ONLY FETCH ROWS FROM SELECTED YEAR ($selectedYear).
      * 
      * FETCH FROM DATABASE:
      * 1. Fetch incidents, issues, training.
@@ -23,10 +23,15 @@ class KeyMetrics extends Component
      * 
      */
 
+    public $selectedYear;
+
     public $metrics;
 
     public function mount()
     {
+        $this->selectedYear = date('Y');
+        logger('KEY METRICS - Selected Year initialized to: ' . $this->selectedYear);
+
         // Sample data - replace with actual database queries
         $data = [
             'incidents' => [
@@ -77,8 +82,16 @@ class KeyMetrics extends Component
 
     private function calculatePercentage($completed, $total)
     {
-        if ($total == 0) return 0;
+        if ($total == 0)
+            return 0;
         return round(($completed / $total) * 100);
+    }
+
+    public function updated($name)
+    {
+        if ($name === 'selectedYear' && !empty($this->selectedYear)) {
+            logger('KEY METRICS - Selected Year updated to: ' . $this->selectedYear);
+        }
     }
 
     public function render()

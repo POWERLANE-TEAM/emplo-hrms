@@ -105,3 +105,12 @@
         </div>
     </div>
 </section>
+
+@script
+<script>
+    window.addEventListener('year-changed', event => {
+        console.log('Year changed event detected:', event.detail);
+        @this.set('selectedYear', event.detail);
+    });
+</script>
+@endscript

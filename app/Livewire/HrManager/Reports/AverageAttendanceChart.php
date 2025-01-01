@@ -25,13 +25,18 @@ class AverageAttendanceChart extends Component
      * 
      */
 
-     public $attendanceData;
+    public $selectedYear;
+
+    public $attendanceData;
     public $yearlyData;
     public $monthlyData;
 
     public function mount()
     {
-        // Sample data for 2024
+
+        $this->selectedYear = date('Y');
+        logger('ATTENDANCE CHART - Selected Year initialized to: ' . $this->selectedYear);
+
         $data = [
             [
                 'month' => '2024-01',
@@ -151,6 +156,14 @@ class AverageAttendanceChart extends Component
             'yearly' => $this->yearlyData,
             'monthly' => $this->monthlyData,
         ];
+    }
+
+    
+    public function updated($name)
+    {
+        if ($name === 'selectedYear' && !empty($this->selectedYear)) {
+            logger('ATTENDANCE CHART - Selected Year updated to: ' . $this->selectedYear);
+        }
     }
 
     public function render()
