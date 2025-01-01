@@ -50,6 +50,12 @@
         <livewire:hr-manager.reports.retention-turnover-chart />
         <livewire:hr-manager.reports.issue-resolution-chart />
         <livewire:hr-manager.reports.leave-utilization-chart />
+
+        <div class="mt-4">
+            <button class="btn btn-primary w-25"><i data-lucide="download" class="icon icon-large me-1"></i>
+                {{ __('Download Report') }}</button>
+        </div>
+
     </div>
     <div class="empty-state hidden-until-load">
         <p>Reports will be generated at the end of the year (December <span class="selected-year"></span>).</p>
