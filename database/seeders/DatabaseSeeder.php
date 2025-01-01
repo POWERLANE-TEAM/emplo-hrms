@@ -51,6 +51,7 @@ class DatabaseSeeder extends Seeder
                 EmployeeJobDetailSeeder::class,
                 // EmployeeLeaveSeeder::class,
                 IssueTypeSeeder::class,
+                // IncidentSeeder::class,
             ]);
         });
     }

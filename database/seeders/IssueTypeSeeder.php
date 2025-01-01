@@ -25,6 +25,7 @@ class IssueTypeSeeder extends Seeder
             'workplace harassment',
             'performance appraisal disputes',
             'interpersonal conflicts',
+            'equipment malfunction',
         ];
 
         collect($defaults)->each(function (string $item) {
