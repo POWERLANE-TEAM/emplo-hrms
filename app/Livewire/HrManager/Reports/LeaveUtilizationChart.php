@@ -13,11 +13,15 @@ class LeaveUtilizationChart extends Component
      * ONLY FETCH ROWS FROM SELECTED YEAR.
      * 
      * FETCH FROM DATABASE:
-     * 1. Total count of ALL ENTITLED leave days across ALL leave types.
-     * 2. Total count of ALL REMAINING leave days across ALL leave types.
      * 
-     * 3. Total count of ENTITLED leave days for EACH LEAVE TYPE.
-     * 4. Total count of entitled leave days for EACH LEAVE TYPE.
+     * 1. Fetch leave types.
+     * 
+     * 2. 'total': Total count of ALL ENTITLED leave days across ALL leave types.
+     * 3. 'total': Total count of ALL REMAINING leave days across ALL leave types.
+     *     --> Put this in the 'all' array.
+     * 
+     * 3. 'total': Total count of ENTITLED leave days for EACH LEAVE TYPE.
+     * 4. 'used': Total count of entitled leave days for EACH LEAVE TYPE.
      * 
      * ADDITIONAL NOTES
      * ► This just needs fetching from the database. The logic is already implemented.
