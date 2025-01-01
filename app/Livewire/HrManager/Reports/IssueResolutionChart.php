@@ -6,6 +6,22 @@ use Livewire\Component;
 
 class IssueResolutionChart extends Component
 {
+
+        /*
+     * BACK-END REPLACE / REQUIREMENTS:
+     * 
+     * ONLY FETCH ROWS FROM SELECTED YEAR.
+     * 
+     * FETCH FROM DATABASE:
+     * 1. Fetch all of the completed issues' columns: date_submitted & date_completed.
+     * 2. After fetching, replace/populate the $data in mount() function.
+     * 
+     * ADDITIONAL NOTES
+     * ► This just needs fetching from the database. The logic is already implemented.
+     * 
+     */
+
+
     public $issueResolutionData;
     public $yearlyData;
     public $monthlyData;
