@@ -57,7 +57,7 @@ class RolesAndPermissionsSeeder extends Seeder
 
             UserPermission::CREATE_LEAVE_REQUEST->value,
             UserPermission::CREATE_OVERTIME_REQUEST->value,
-            UserPermission::CREATE_ISSUE_COMPLAINT->value,
+            UserPermission::CREATE_ISSUE_REPORT->value,
         ];
     }
 
@@ -93,6 +93,7 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::VIEW_PLAN_GENERATOR->value,
             UserPermission::VIEW_ALL_FILED_RESIGNATION_LETTERS->value,
             UserPermission::VIEW_ALL_COE_REQUESTS->value,
+            UserPermission::VIEW_ANY_INCIDENT_REPORT->value,
 
             // Create cases goes here
             UserPermission::CREATE_APPLICANT_EXAM_SCHEDULE->value,
@@ -102,6 +103,7 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::CREATE_EMPLOYEE_ASSIGNED_SUPERVISOR->value,
             UserPermission::CREATE_PAYSLIPS->value,
             UserPermission::CREATE_BULK_PAYSLIPS->value,
+            UserPermission::CREATE_INCIDENT_REPORT->value,
 
             // Update cases goes here
             UserPermission::UPDATE_PENDING_APPLICATION_STATUS->value,

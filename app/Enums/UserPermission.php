@@ -33,9 +33,10 @@ enum UserPermission: string
     case CREATE_ATTENDANCE_TODAY = 'create attendance today';
     case CREATE_LEAVE_REQUEST = 'create leave request';
     case CREATE_OVERTIME_REQUEST = 'create overtime request';
-    case CREATE_ISSUE_COMPLAINT = 'create issue complaint';
+    case CREATE_ISSUE_REPORT = 'create issue report';
     case CREATE_PAYSLIPS = 'create payslips';
     case CREATE_BULK_PAYSLIPS = 'create bulk payslips';
+    case CREATE_INCIDENT_REPORT = 'create incident report';
 
         // View cases goes here
     case VIEW_APPLICATION_INFORMATION = 'view applicant/s information';
@@ -104,6 +105,7 @@ enum UserPermission: string
     case VIEW_RESIGNATION = 'view resignation';
     case VIEW_ALL_FILED_RESIGNATION_LETTERS = 'view all filed resignation letters';
     case VIEW_ALL_COE_REQUESTS = 'view all certificate of employment requests';
+    case VIEW_ANY_INCIDENT_REPORT = 'view any incident report';
 
         // Update cases goes here
     case UDPATE_JOB_LISTING = 'update job listing';
@@ -175,9 +177,10 @@ enum UserPermission: string
             self::CREATE_ATTENDANCE_TODAY => 'Set time-in attendance',
             self::CREATE_LEAVE_REQUEST => 'Create a leave request',
             self::CREATE_OVERTIME_REQUEST => 'Create an overtime request',
-            self::CREATE_ISSUE_COMPLAINT => 'Create an issue complaint',
+            self::CREATE_ISSUE_REPORT => 'Create an issue report',
             self::CREATE_PAYSLIPS => 'Create a payslip',
             self::CREATE_BULK_PAYSLIPS => 'Create payslips',
+            self::CREATE_INCIDENT_REPORT => 'Create an incident report',
 
             // View labels goes here
             self::VIEW_APPLICATION_INFORMATION => 'View application information',
@@ -245,6 +248,7 @@ enum UserPermission: string
             self::VIEW_RESIGNATION => 'View resignation',
             self::VIEW_ALL_FILED_RESIGNATION_LETTERS => 'view all filed resignation letters',
             self::VIEW_ALL_COE_REQUESTS => 'View all certificate of employment requests',
+            self::VIEW_ANY_INCIDENT_REPORT => 'View an incident report',
 
             // Update labels goes here
             self::UDPATE_JOB_LISTING => 'Update job listing/s',
