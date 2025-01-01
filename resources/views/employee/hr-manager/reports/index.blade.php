@@ -42,7 +42,7 @@
 </section>
 
 <div id="reports-container">
-    <div class="reports-content">
+    <div class="reports-content hidden-until-load">
         <livewire:hr-manager.reports.key-metrics />
         <livewire:hr-manager.reports.retention-turnover-chart />
         <livewire:hr-manager.reports.average-attendance-chart />
@@ -50,7 +50,7 @@
         <livewire:hr-manager.reports.issue-resolution-chart />
         <livewire:hr-manager.reports.leave-utilization-chart />
     </div>
-    <div class="empty-state" style="display: none;">
+    <div class="empty-state hidden-until-load">
         <p>Reports will be generated at the end of the year (December <span class="selected-year"></span>).</p>
     </div>
 </div>
