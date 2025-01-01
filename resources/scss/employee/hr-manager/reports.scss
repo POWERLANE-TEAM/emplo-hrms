@@ -6,9 +6,6 @@
 @import '../../palette/text-colors';
 @import '../../palette/start-borders';
 @import '../../footer';
-@import '../../input/checkbox';
-@import '../../input/choices';
-@import '../../input/attachments';
 
 canvas {
     height: 50vh !important;
@@ -35,4 +32,37 @@ canvas {
 .table {
     border-radius: 10px; /* Adjust the radius as needed */
     overflow: hidden; /* Ensures the radius is applied properly */
+}
+
+.icons-container {
+    padding-left: 3rem;
+    margin-right: 1.5rem;
+}
+
+.icon-container {
+    display: inline-flex;
+    padding: 5px;
+    border: 1px solid gray;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.icon-with-border {
+    color: gray;
+    width: 16px;
+    height: 16px;
+    transition: all 0.3s ease;
+}
+
+.icon-container:hover {
+    background-color: var(--main-green);
+    border-color: var(--main-green);
+}
+
+.icon-container:hover .icon-with-border {
+    color: white;
+}
+
+.col-md-7 p {
+    margin-bottom: 0 !important;
 }
