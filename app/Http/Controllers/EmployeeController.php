@@ -10,7 +10,7 @@ class EmployeeController extends Controller
     /* Show all resource */
     public function index(): ViewFactory|View
     {
-        return view('employee.index.index');
+        return view('employee.all.index');
     }
 
     /* Show form page for creating resource */

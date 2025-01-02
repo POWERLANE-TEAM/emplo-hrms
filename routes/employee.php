@@ -26,7 +26,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     Route::get('notifications', function () {
         return view('employee.notifications.index');
     })->name('notifications');
-    
+
     // =========================================
     // HR MANAGER ROUTES
     // ==========================================
@@ -171,7 +171,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
     /**
      * Overtime resource
-     * 
+     *
      * TODO: Idk if Ivan plans to add middleware checks, but do them below.
      */
     Route::prefix('overtimes')->name('overtimes.')->group(function () {
@@ -214,7 +214,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     Route::prefix('leaves')->name('leaves.')->group(function () {
         Route::get('/', [LeaveController::class, 'index'])
             ->name('index');
-    
+
         Route::get('create', [LeaveController::class, 'create'])
             ->name('create');
 
@@ -413,7 +413,14 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
      * General: Documents
      */
     Route::get('general/documents/all', function () {
-        return view('employee.basic.documents.all');
+
+        try {
+            return view('employee.basic.documents.all', [
+                'employee' => auth()->user()->account
+            ]);
+        } catch (\Throwable $th) {
+           abort(401);
+        }
     })->name('general.documents.all');
 
     /**
