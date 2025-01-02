@@ -19,7 +19,7 @@
     $navAttendanceOrder = $user->hasPermissionTo(UserPermission::VIEW_ALL_DAILY_ATTENDANCE) ? 4 : 2;
     $navAttendanceRoute = $user->hasPermissionTo(UserPermission::VIEW_ALL_DAILY_ATTENDANCE)
         ? $routePrefix . '.attendance.index'
-        : $routePrefix . '.attendance.index'; /* $routePrefix . '.attendance.show' */
+        : $routePrefix . '.attendance'; /* $routePrefix . '.attendance.show' */
 
 
     /**

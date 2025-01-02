@@ -100,6 +100,12 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
 
     /**
+     * Attendance
+     */
+    Route::get('/attendance/index', [AttendanceController::class, 'index'])
+    ->name('attendance.index');
+    
+    /**
      * Performances
      */
     Route::prefix('performance')->name('performance.')->group(function () {
@@ -362,9 +368,9 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     /**
      * General: Attendance
      */
-    Route::get('/attendance/index', [AttendanceController::class, 'index'])
-        ->name('attendance.index');
-
+    Route::get('/attendance', function () {
+        return view('employee.basic.attendance.index');
+    })->name('attendance');
 
     /**
      * General: Payslip
