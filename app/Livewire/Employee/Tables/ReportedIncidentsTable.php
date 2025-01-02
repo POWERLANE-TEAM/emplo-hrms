@@ -123,14 +123,11 @@ class ReportedIncidentsTable extends DataTableComponent
             Column::make(__('Incident Type'))
                 ->label(fn ($row) => $row->types->pluck('issue_type_name')->implode(', ')),
 
-            // Column::make(__('Confidentiality'))
-            //     ->label(fn ($row) => IssueConfidentiality::from($row->confidentiality)->getLabel()),
-
             Column::make(__('Status'))
                 ->label(fn ($row) => IssueStatus::from($row->status)->getLabel()),
             
             Column::make(__('Date Created'))
-                ->label(fn ($row) => $row->created_at)
+                ->label(fn ($row) => $row->created_at->format('F d, Y g:i A'))
                 ->sortable(fn (Builder $query, $direction) => $query->orderBy('created_at', $direction)),
         ];
     }
