@@ -1,8 +1,8 @@
 <div>
 
     <!-- SECTION: Metrics -->
-    <section class="mt-3 px-4">
-        <div class="row">
+    <section class="mt-5 px-4">
+        <div class="row pb-4">
 
             <!-- Attendance -->
             <div class="col-md-6">
@@ -23,7 +23,7 @@
                 <!-- Absents -->
                 <div class="mt-2 border-0 rounded-4 bg-body-secondary p-3 fs-5">
                     <span class="ps-3">Absents: </span>
-                    <b class="fw-bold">1 day</b> <!-- BACK-END REPLACE: Total present working days -->
+                    <b class="fw-bold">1 day</b> <!-- BACK-END REPLACE: Total absents -->
                 </div>
 
             </div>
@@ -31,12 +31,32 @@
             <!-- Hours Worked -->
             <div class="col-md-6">
 
+                <div class="d-flex justify-content-center">
+                    <h2 class="text-primary fw-bold">Hours Worked</h2>
+                </div>
+
+                <!-- Total Working Days -->
+                <div class="mt-2 border-0 rounded-4 bg-body-secondary p-3 fw-bold fs-5">
+                    <span class="col-2 px-2">
+                        <i data-lucide="badge-check" class="icon icon-slarge text-success"></i>
+                    </span>
+                    <span>Total Tracked Hours - </span>
+                    <b class="text-primary">149:55:03</b> <!-- BACK-END REPLACE: Total hours worked -->
+                </div>
+
+                <!-- Absents -->
+                <div class="mt-2 border-0 rounded-4 bg-body-secondary p-3 fs-5">
+                    <span class="ps-3">Overtime Hours: </span>
+                    <b class="fw-bold">8:52:26</b> <!-- BACK-END REPLACE: Total present working days -->
+                </div>
             </div>
         </div>
     </section>
 
+    <hr>
+
     <!-- SECTION: Calendar & Attendance Breakdown -->
-    <section class="mt-3 px-4">
+    <section class="mt-4 px-4">
         <div class="row">
             <div class="col-8">
                 <div class="mt-3 ms-3">
@@ -47,7 +67,7 @@
             <div class="col-4">
 
                 <div class="d-flex justify-content-center pt-4">
-                    <h2 class="text-primary fw-bold">Attendance Breakdown</h>
+                    <h2 class="fw-bold">Attendance Breakdown</h>
                 </div>
 
                 <!-- Metrics -->
