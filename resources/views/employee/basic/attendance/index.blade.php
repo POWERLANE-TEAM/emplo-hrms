@@ -33,58 +33,6 @@
     </x-slot:description>
 </x-headings.main-heading>
 
-<div x-data="{ 
-    view: 'summary',
-    period: '1',
-    init() {
-        this.updateView();
-        this.dispatchPeriod();
-    },
-    updateView() {
-        if (this.view === 'summary') {
-            document.getElementById('summary-component').style.display = 'block';
-            document.getElementById('logs-component').style.display = 'none';
-        } else {
-            document.getElementById('summary-component').style.display = 'none';
-            document.getElementById('logs-component').style.display = 'block';
-        }
-    },
-    dispatchPeriod() {
-        Livewire.dispatch('periodSelected', this.period);  // Changed this line
-    }
-}">
-    <div class="row">
-        <div class="col-md-6">
-            <div class="d-flex align-items-center">
-                <p class="mb-0 text-primary fw-bold me-3" style="min-width: 100px;">
-                    Payroll Period:
-                </p>
-                <select x-model="period" @change="dispatchPeriod()" class="form-select" style="flex: 1;">
-                    <option value="1">Sep 02, 2024 - Sep 27, 2024</option>
-                    <option value="2">Oct 28, 2024 - Nov 27, 2024</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="d-flex align-items-center">
-                <p class="mb-0 text-primary fw-bold me-3">
-                    View:
-                </p>
-                <select x-model="view" @change="updateView()" class="form-select" style="flex: 1;">
-                    <option value="summary">Summary</option>
-                    <option value="logs">Workday Logs</option>
-                </select>
-            </div>
-        </div>
-    </div>
-
-    <div id="summary-component">
-        <livewire:employee.attendance.summary />
-    </div>
-    <div id="logs-component" style="display: none;">
-        <livewire:employee.attendance.workday-logs />
-    </div>
-</div>
+<livewire:employee.attendance.general-attendance />
 
 @endsection

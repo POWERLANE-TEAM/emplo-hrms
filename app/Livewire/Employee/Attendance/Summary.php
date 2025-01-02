@@ -8,14 +8,18 @@ class Summary extends Component
 {
 
     public $period;
-
     protected $listeners = ['periodSelected'];
+
+
+    public function mount()
+    {
+        logger()->info('Summary Mount:', ['period' => $this->period]);
+    }
 
     public function periodSelected($period)
     {
         $this->period = $period;
-        logger()->info('Payroll period selected:', ['period' => $period]);
-        // Add any logic you need when period changes
+        logger()->info('Summary Received Period:', ['period' => $period]);
     }
 
     public function render()

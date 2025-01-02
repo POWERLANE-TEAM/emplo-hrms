@@ -8,13 +8,18 @@ class WorkdayLogs extends Component
 {
 
     public $period;
+    protected $listeners = ['periodSelected'];
 
-    protected $listeners = ['periodSelected' => 'updatePeriod'];
 
-    public function updatePeriod($data)
+    public function mount()
     {
-        $this->period = $data['period'];
-        // Add any logic you need when period changes
+        logger()->info('Workday Logs Mount:', ['period' => $this->period]);
+    }
+
+    public function periodSelected($period)
+    {
+        $this->period = $period;
+        logger()->info('Workday Logs Received Period:', ['period' => $period]);
     }
 
     public function render()
