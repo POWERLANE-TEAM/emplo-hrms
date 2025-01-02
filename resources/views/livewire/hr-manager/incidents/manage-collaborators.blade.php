@@ -196,6 +196,10 @@
             {{ __('Manage Collaborators') }}
         </div>
     </button>
+
+    <livewire:hr-manager.incidents.show-collaborator-photo 
+        :incidentCollaborators="$this->incidentCollaborators"
+    />
 </div>
 
 @script

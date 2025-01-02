@@ -37,8 +37,9 @@
 
     <div class="row mb-3">
         <div class="col">
+            <span class="pe-2">{{ __('Tags: ') }}</span>
             @foreach ($incident->types as $type)
-                <span class="badge rounded-pill bg-primary fs-6 px-3 py-2">{{ $type->issue_type_name }}</span>
+                <span class="badge rounded-pill bg-primary fs-6 fw-light px-3 py-2 my-1">{{ $type->issue_type_name }}</span>
             @endforeach
         </div>
     </div>
