@@ -5,6 +5,8 @@ namespace App\Providers;
 use App\Models\User;
 use App\Enums\UserRole;
 use App\Policies\EmployeeLeavePolicy;
+use App\Policies\IncidentPolicy;
+use App\Policies\IssuePolicy;
 use App\Policies\OvertimePolicy;
 use Laravel\Pulse\Facades\Pulse;
 use App\Providers\Form\FormWizardServiceProvider;
@@ -100,6 +102,7 @@ class AppServiceProvider extends ServiceProvider
             'performance_rating' => 'App\Models\PerformanceRating',
             'holiday' => 'App\Models\Holiday',
             'attendance_log' => 'App\Models\AttendanceLog',
+            'incident_attachment' => 'App\Models\IncidentAttachment',
         ]);
 
         BroadcastServiceProvider::class;
@@ -150,6 +153,17 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('approveSubordinateLeaveRequest', [EmployeeLeavePolicy::class, 'approveSubordinateLeaveRequest']);
         Gate::define('approveAnyLeaveRequest', [EmployeeLeavePolicy::class, 'approveAnyLeaveRequest']);
         Gate::define('approveLeaveRequestFinal', [EmployeeLeavePolicy::class, 'approveLeaveRequestFinal']);
+
+        /** Issue Policies */
+        Gate::define('submitIssueReport', [IssuePolicy::class, 'submitIssueReport']);
+        Gate::define('viewIssueReport', [IssuePolicy::class, 'viewIssueReport']);
+        Gate::define('viewAnyIssueReport', [IssuePolicy::class, 'viewAnyIssueReport']);
+        Gate::define('updateIssueStatus', [IssuePolicy::class, 'updateIssueStatus']);
+
+        /** Incident Policies */
+        Gate::define('createIncidentReport', [IncidentPolicy::class, 'createIncidentReport']);
+        Gate::define('updateIncidentReport', [IncidentPolicy::class, 'updateIncidentReport']);
+        Gate::define('manageIncidentReportCollaborators', [IncidentPolicy::class, 'manageIncidentReportCollaborators']);
 
         Vite::useAggressivePrefetching();
     }

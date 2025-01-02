@@ -57,7 +57,7 @@ class RolesAndPermissionsSeeder extends Seeder
 
             UserPermission::CREATE_LEAVE_REQUEST->value,
             UserPermission::CREATE_OVERTIME_REQUEST->value,
-            UserPermission::CREATE_ISSUE_COMPLAINT->value,
+            UserPermission::CREATE_ISSUE_REPORT->value,
         ];
     }
 
@@ -93,6 +93,7 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::VIEW_PLAN_GENERATOR->value,
             UserPermission::VIEW_ALL_FILED_RESIGNATION_LETTERS->value,
             UserPermission::VIEW_ALL_COE_REQUESTS->value,
+            UserPermission::VIEW_ANY_INCIDENT_REPORT->value,
             UserPermission::VIEW_REPORTS->value,
 
             // Create cases goes here
@@ -103,6 +104,7 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::CREATE_EMPLOYEE_ASSIGNED_SUPERVISOR->value,
             UserPermission::CREATE_PAYSLIPS->value,
             UserPermission::CREATE_BULK_PAYSLIPS->value,
+            UserPermission::CREATE_INCIDENT_REPORT->value,
 
             // Update cases goes here
             UserPermission::UPDATE_PENDING_APPLICATION_STATUS->value,
@@ -115,13 +117,15 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::UPDATE_LEAVE_BALANCE->value,
             UserPermission::UPDATE_PENDING_OVERTIME_REQUEST_STATUS->value,
             UserPermission::UPDATE_APPROVED_OVERTIME_REQUEST_STATUS->value,
-            UserPermission::UPDATE_ISSUE_COMPLAINT_CLOSED->value,
-            UserPermission::UPDATE_ISSUE_COMPLAINT_RESOLVED->value,
             UserPermission::UPDATE_ALL_OVERTIME_REQUEST->value,
             UserPermission::APPROVE_OVERTIME_SUMMARY_TERTIARY->value,
             UserPermission::APPROVE_LEAVE_REQUEST_FOURTH->value,
+            UserPermission::UPDATE_ISSUE_STATUS->value,
 
             // Delete cases goes here
+
+            // other
+            UserPermission::MANAGE_INCIDENT_REPORT_COLLABORATORS->value,
         ];
     }
 

@@ -1,4 +1,4 @@
-@extends('components.layout.employee.layout', ['description' => 'Employee Dashboard', 'nonce' => $nonce])
+@extends('components.layout.employee.layout', ['description' => 'Create Incident Report', 'nonce' => $nonce])
 @use ('Illuminate\View\ComponentAttributeBag')
 
 @section('head')
@@ -7,11 +7,7 @@
 <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
 <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
-
 @endsection
-
-@pushOnce('pre-scripts')
-@endPushOnce
 
 @pushOnce('scripts')
     @vite(['resources/js/employee/hr-manager/incident.js'])
@@ -26,10 +22,10 @@
 
 <x-breadcrumbs>
     <x-slot:breadcrumbs>
-        <x-breadcrumb :href="route($routePrefix . '.hr.relations.incidents.all')">
+        <x-breadcrumb :href="route($routePrefix . '.relations.incidents.index')">
             Incidents
         </x-breadcrumb>
-        <x-breadcrumb :active="request()->routeIs($routePrefix . '.hr.relations.incidents.create')">
+        <x-breadcrumb :active="request()->routeIs($routePrefix . '.relations.incidents.create')">
             Create Report
         </x-breadcrumb>
     </x-slot:breadcrumbs>
@@ -45,10 +41,8 @@
     </x-slot:description>
 </x-headings.main-heading>
 
+<section class="mb-5 mt-3">
+    <livewire:hr-manager.incidents.create-incident-report />
+</section>
 
-    <section class="mb-5 mt-3">
-        <!-- Incident Report Form -->
-        <livewire:hr-manager.incidents.incident-report-form />
-
-    </section>
-    @endsection
+@endsection
