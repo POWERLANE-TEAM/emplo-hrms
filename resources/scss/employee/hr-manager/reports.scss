@@ -1,0 +1,76 @@
+@import '../../utils';
+@import '../../scrollbar';
+@import '../../scales/icon-size';
+@import '../../icon/lucide';
+@import '../side-top-bar';
+@import '../../palette/text-colors';
+@import '../../palette/start-borders';
+@import '../../footer';
+
+canvas {
+    height: 50vh !important;
+    width: auto;
+}
+
+.issue-table, .absenteeism-table, .attendance-avg-table {
+    height: 25vh !important;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f0f8ff; /* Light blue color for odd rows */
+}
+
+.table-striped tbody tr:nth-of-type(even) {
+    background-color: #fafafa; /* Light gray color for even rows */
+}
+
+/* Optional: Change the hover color */
+.table-striped tbody tr:hover {
+    background-color: #e0e7ff; /* Soft blue for hover effect */
+}
+
+.table {
+    border-radius: 10px; /* Adjust the radius as needed */
+    overflow: hidden; /* Ensures the radius is applied properly */
+}
+
+.icons-container {
+    padding-left: 3rem;
+    margin-right: 1.5rem;
+}
+
+.icon-container {
+    display: inline-flex;
+    padding: 5px;
+    border: 1px solid gray;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.icon-with-border {
+    color: gray;
+    width: 16px;
+    height: 16px;
+    transition: all 0.3s ease;
+}
+
+.icon-container:hover {
+    background-color: var(--main-green);
+    border-color: var(--main-green);
+}
+
+.icon-container:hover .icon-with-border {
+    color: white;
+}
+
+.col-md-7 p {
+    margin-bottom: 0 !important;
+}
+
+.hidden {
+    display:none;
+}
+
+.visible {
+    display: block;
+}

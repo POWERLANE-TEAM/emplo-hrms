@@ -94,6 +94,7 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::VIEW_ALL_FILED_RESIGNATION_LETTERS->value,
             UserPermission::VIEW_ALL_COE_REQUESTS->value,
             UserPermission::VIEW_ANY_INCIDENT_REPORT->value,
+            UserPermission::VIEW_REPORTS->value,
 
             // Create cases goes here
             UserPermission::CREATE_APPLICANT_EXAM_SCHEDULE->value,

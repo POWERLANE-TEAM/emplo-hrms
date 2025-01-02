@@ -351,6 +351,14 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     Route::get('seperation/coe/request', function () {
         return view('employee.hr-manager.separation.coe.request');
     })->name('separation.coe.request');
+    
+    /**
+     * Reports
+     */
+
+     Route::get('reports', function () {
+        return view('employee.hr-manager.reports.index');
+    })->name('reports');
 
 
     // =========================================

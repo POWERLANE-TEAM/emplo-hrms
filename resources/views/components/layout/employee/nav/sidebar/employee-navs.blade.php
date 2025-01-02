@@ -289,6 +289,16 @@
     </x-layout.employee.nav.sidebar.nested-nav-items>
     @endcan
 
+    @can(UserPermission::VIEW_REPORTS)
+        <x-layout.employee.nav.sidebar.nav-item
+            href="{{ route($routePrefix . '.reports') }}"
+            :active="request()->routeIs($routePrefix . '.reports')"
+            class="order-13" nav_txt="Reports"
+            :defaultIcon="['src' => 'reports', 'alt' => '']"
+            :activeIcon="['src' => 'reports', 'alt' => '']">
+        </x-layout.employee.nav.sidebar.nav-item>
+    @endcan
+
     {{-- Head Admin --}}
     @can(UserPermission::VIEW_ALL_ACCOUNTS)
         <x-layout.employee.nav.sidebar.nested-nav-items
