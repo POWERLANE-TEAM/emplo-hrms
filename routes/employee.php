@@ -270,19 +270,24 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         /** Incident resource */
         Route::prefix('incidents')->name('incidents.')->group(function () {
             Route::get('/', [IncidentController::class, 'index'])
+                ->can('updateIncidentReport')
                 ->name('index');
         
             Route::get('create', [IncidentController::class, 'create'])
+                ->can('createIncidentReport')
                 ->name('create');
 
             Route::get('{incident}', [IncidentController::class, 'show'])
+                ->can('updateIncidentReport', 'incident')
                 ->whereNumber('incident')
                 ->name('show');
 
             Route::get('{attachment}/download', [IncidentController::class, 'download'])
+                ->can('updateIncidentReport')
                 ->name('download');
 
             Route::get('attachments/{attachment}', [IncidentController::class, 'viewAttachment'])
+                ->can('updateIncidentReport')
                 ->name('attachments.show');
         });
     });
