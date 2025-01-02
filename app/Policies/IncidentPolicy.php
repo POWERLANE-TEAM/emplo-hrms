@@ -34,16 +34,34 @@ class IncidentPolicy
      * Check if user employee owns the incident report or authorized to view any or he's assigned as collaborator.
      * 
      * @param \App\Models\User $user
-     * @param \App\Models\Incident $incident
+     * @param \App\Models\Incident|null $incident
      * @return \Illuminate\Auth\Access\Response
      */
-    public function updateIncidentReport(User $user, Incident $incident): Response
+    public function updateIncidentReport(User $user, ?Incident $incident = null): Response
     {
-        return
-            $user->account->reportedIncidents->contains($incident) ||
+        if (is_null($incident)) {
+            return $user->hasPermissionTo(UserPermission::VIEW_ANY_INCIDENT_REPORT)
+                ? Response::allow()
+                : Response::deny(__('Sorry, you don\'t have sufficient permission to perform this action.'));
+        }
+        
+        return $user->account->reportedIncidents->contains($incident) ||
             $user->hasPermissionTo(UserPermission::VIEW_ANY_INCIDENT_REPORT) ||
             $user->account->sharedIncidentRecords->contains($incident)
                 ? Response::allow()
-                : Response::deny(__('You don\'t own this incident report.'));
+                : Response::deny(); // tangina di ako makaisip ng message
+    }
+
+    /**
+     * Check for user employee permission to manage incident report collaborators
+     * 
+     * @param \App\Models\User $user
+     * @return \Illuminate\Auth\Access\Response
+     */
+    public function manageIncidentReportCollaborators(User $user): Response
+    {
+        return $user->hasPermissionTo(UserPermission::MANAGE_INCIDENT_REPORT_COLLABORATORS)
+            ? Response::allow()
+            : Response::deny(__('Sorry, you don\'t have sufficient permission to add incident collaborator.'));
     }
 }

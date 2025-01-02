@@ -163,6 +163,7 @@ class AppServiceProvider extends ServiceProvider
         /** Incident Policies */
         Gate::define('createIncidentReport', [IncidentPolicy::class, 'createIncidentReport']);
         Gate::define('updateIncidentReport', [IncidentPolicy::class, 'updateIncidentReport']);
+        Gate::define('manageIncidentReportCollaborators', [IncidentPolicy::class, 'manageIncidentReportCollaborators']);
 
         Vite::useAggressivePrefetching();
     }
