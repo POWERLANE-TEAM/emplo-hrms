@@ -122,6 +122,9 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::UPDATE_ISSUE_STATUS->value,
 
             // Delete cases goes here
+
+            // other
+            UserPermission::MANAGE_INCIDENT_REPORT_COLLABORATORS->value,
         ];
     }
 

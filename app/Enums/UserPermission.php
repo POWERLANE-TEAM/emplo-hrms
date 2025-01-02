@@ -138,7 +138,6 @@ enum UserPermission: string
 
     // Others
     case ASSIGN_PERFORMANCE_EVAL_SCORE = 'assign performance evaluation score';
-
     case AUTHORIZE_OVERTIME_REQUEST = 'authorize overtime request';
     case APPROVE_OVERTIME_SUMMARY_INITIAL = 'initially approve overtime summary form';
     case APPROVE_OVERTIME_SUMMARY_SECONDARY = 'secondary approve overtime summary form';
@@ -147,6 +146,7 @@ enum UserPermission: string
     case APPROVE_LEAVE_REQUEST_SECOND = 'second approval for subordinate leave request';
     case APPROVE_LEAVE_REQUEST_THIRD = 'third approval for any leave request';
     case APPROVE_LEAVE_REQUEST_FOURTH = 'fourth or last approval for any leave request';
+    case MANAGE_INCIDENT_REPORT_COLLABORATORS = 'manage incident report collaborators';
 
     /**
      * Return user-friendly permission labels.
@@ -290,6 +290,7 @@ enum UserPermission: string
             self::APPROVE_LEAVE_REQUEST_SECOND => 'Second approval of subordinate leave request',
             self::APPROVE_LEAVE_REQUEST_THIRD => 'Third approval of any leave request',
             self::APPROVE_LEAVE_REQUEST_FOURTH => 'Fourth or last approval of any leave request',
+            self::MANAGE_INCIDENT_REPORT_COLLABORATORS => 'Manage incident report collaborators',
         };
     }
 }
