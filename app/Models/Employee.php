@@ -587,6 +587,7 @@ class Employee extends Model
     public function sharedIncidentRecords(): BelongsToMany
     {
         return $this->belongsToMany(Incident::class, 'incident_record_collaborators', 'employee_id', 'incident_id')
+            ->as('access')
             ->using(IncidentRecordCollaborator::class)
             ->withPivot('is_editor');
     }
