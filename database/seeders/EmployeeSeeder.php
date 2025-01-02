@@ -41,16 +41,19 @@ function createEmployee($chunkStart, $chunk, $freeEmailDomain)
                             'created_at' => fake()->dateTimeBetween('-5 years', 'now'),
                         ]);
 
+                        $userRole = fake()->randomElement(UserRole::values());
+
                         $employee = Employee::factory()->create();
 
                         $validDomains = Arr::random($freeEmailDomain);
 
                         $timestamp = fake()->dateTimeBetween('-5 years', 'now');
 
+
                         $userData = [
                             'account_type' => AccountType::EMPLOYEE,
                             'account_id' => $employee->employee_id,
-                            'email' => fake()->randomElement(UserRole::values()) . '.' . str_pad($i, 3, '0', STR_PAD_LEFT) . '@' . $validDomains,
+                            'email' => $userRole . '.' . str_pad($i, 3, '0', STR_PAD_LEFT) . '@' . $validDomains,
                             'password' => Hash::make('UniqP@ssw0rd'),
                             'user_status_id' => UserStatus::ACTIVE,
                             'email_verified_at' => $timestamp->modify('+' . rand(1, 7) . ' days'),
@@ -59,7 +62,7 @@ function createEmployee($chunkStart, $chunk, $freeEmailDomain)
 
                         $employeeUser = User::factory()->create($userData);
 
-                        $employeeUser->assignRole(fake()->randomElement(UserRole::values()));
+                        $employeeUser->assignRole($userRole);
 
                         $application = Application::create([
                             'applicant_id' => $applicant->applicant_id,
