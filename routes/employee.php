@@ -379,7 +379,14 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
      * General: Documents
      */
     Route::get('general/documents/all', function () {
-        return view('employee.basic.documents.all');
+
+        try {
+            return view('employee.basic.documents.all', [
+                'employee' => auth()->user()->account
+            ]);
+        } catch (\Throwable $th) {
+           abort(401);
+        }
     })->name('general.documents.all');
 
 

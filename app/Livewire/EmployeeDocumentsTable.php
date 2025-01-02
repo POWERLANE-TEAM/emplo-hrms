@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Enums\UserRole;
 use Illuminate\View\ComponentAttributeBag;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
@@ -28,6 +29,8 @@ class EmployeeDocumentsTable extends DataTableComponent
 
     protected $routePrefix;
 
+    private bool $isBasicEmployee;
+
     protected $model = ApplicationDoc::class;
 
     /**
@@ -35,12 +38,17 @@ class EmployeeDocumentsTable extends DataTableComponent
      */
     protected $customFilterOptions;
 
-    public function boot(): void
+    public function configuring(): void
     {
+        // dump('boot');
         try {
+            $this->isBasicEmployee = auth()->user()->hasRole(UserRole::BASIC);
+
             $this->employee->load('jobDetail');
             $this->setTimezone();
             $this->routePrefix = auth()->user()->account_type;
+            // dd($this->employee->account->hasRole(UserRole::BASIC));
+
         } catch (\Throwable $th) {
             report($th);
         }
@@ -49,9 +57,39 @@ class EmployeeDocumentsTable extends DataTableComponent
 
     public function configure(): void
     {
+        // dump('configure');
+        // dump($this->employee);
+        // dump($this->isBasicEmployee);
+        // dump($this->routePrefix);
         $this->setPrimaryKey('application_doc_id');
 
         $this->configuringStandardTableMethods();
+
+        $this->setTrAttributes(function ($row, $index) {
+            // dump($index);
+            // dump( $this->perPage);
+            $attributes = [
+                'default' => true,
+                'class' => 'border-1 rounded-2 outline no-transition',
+            ];
+
+            if ($index + 1 == $this->perPage) {
+                $attributes['x-intersect.full'] = 'updatePerPage()';
+                $attributes['x-data'] = 'perPageDispatcher';
+            }
+
+            return $attributes;
+
+        });
+
+        if($this->isBasicEmployee){
+            // $this->setPaginationDisabled();
+            $this->setPaginationVisibilityDisabled();
+            $this->setPerPageAccepted([5, 10, 15, 20, -1]);
+            $this->setDefaultPerPage(5);
+            $this->setPerPage(5);
+
+        }
 
         $this->setConfigurableAreas([
             // 'toolbar-left-start' => [
@@ -87,6 +125,40 @@ class EmployeeDocumentsTable extends DataTableComponent
                     return ucwords($row->preemp_req_name);
                 }),
 
+                Column::make("Attachment")
+                ->label(function ($row) {
+                    try {
+                        $file_path = $row->file_path;
+
+                        if (Storage::exists($file_path)) {
+                            $file_name = basename($file_path);
+
+                            return <<<HTML
+                            <button class="btn " data-bs-target="#modal-employee-application-doc-$row->preemp_req_id">View Attachment</button>
+                            HTML;
+
+                        } else {
+
+                            throw new \Exception('File not found');
+                        }
+                    } catch (\Throwable $th) {
+                        report($th);
+                        return '<span class="text-danger" >File not found.</span>';
+                    }
+                })
+                ->html()
+                ->hideIf(!$this->isBasicEmployee),
+
+                Column::make("Upload")
+                ->label(function ($row) {
+                    return <<<HTML
+                    <button class="btn btn-primary" >Upload</button>
+                    HTML;
+                })
+                ->html()
+                ->hideIf(!$this->isBasicEmployee),
+
+
             Column::make("File Name", 'file_path')
                 ->format(function ($row) {
                     try {
@@ -104,7 +176,8 @@ class EmployeeDocumentsTable extends DataTableComponent
                         return '<span class="text-danger" >File not found.</span>';
                     }
                 })
-                ->html(),
+                ->html()
+                ->hideIf($this->isBasicEmployee),
 
             Column::make("Date Uploaded")
                 ->label(function ($row) {
@@ -118,13 +191,14 @@ class EmployeeDocumentsTable extends DataTableComponent
                         report($e);
                         return '--';
                     }
-                }),
+                })
+                ->deselectedIf($this->isBasicEmployee),
 
             LinkColumn::make("History")
                 ->title(fn($row) => 'See History')
-                // Route to the view > work hours
-                // use routePrefix
-                ->location(fn($row) => route($this->routePrefix . '.employees.information', ['employee' => $this->employee->employee_id]) . '/#information'),
+
+                ->location(fn($row) => route($this->routePrefix . '.employees.information', ['employee' => $this->employee->employee_id]) . '/#information')
+                ->deselectedIf($this->isBasicEmployee),
 
         ];
     }
@@ -175,6 +249,12 @@ class EmployeeDocumentsTable extends DataTableComponent
 
         ];
     }
+
+    // public function rendering(): string
+    // {
+    //    dump($this);
+    //    return 'string';
+    // }
 
     /**
      * |--------------------------------------------------------------------------
