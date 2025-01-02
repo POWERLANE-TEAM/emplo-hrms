@@ -15,7 +15,7 @@
                         </span>
                         <p class="fs-4">{{ $application->vacancy->jobTitle->job_title }}</p>
                     </hgroup>
-                @elseif ($application->application_status_id == ApplicationStatus::ASSESSMENT_SCHEDULED->value)
+                @elseif ($this->isInitAssessment)
                     <hgroup class="p-3 p-md-4 text-center ">
                         <div class="h2 text-primary fw-bold">ID:
                             <span class="h2 text-primary fw-bold" role="heading" aria-level="2">
@@ -43,7 +43,7 @@
                     </div>
 
                     <div class="mb-3 mb-md-4">
-                        <div id="applicant-contact-no">Contanct Number</div>
+                        <div id="applicant-contact-no">Contact Number</div>
                         <Address aria-labelledby="applicant-contact-no" class="d-block">
                             <x-phone-link class="d-inline-block fw-bold unstyled" :phone="$application->applicant->contact_number"
                                 separator=" / "></x-phone-link>
@@ -66,6 +66,9 @@
 
 
             </div>
+
+            {{-- TODO add checks if atleast one of the schedule is set or what --}}
+            @if($isInitAssessment)
 
             <div class="d-flex gap-4 min-w-100 ">
                 <div class="bg-body-secondary rounded-3 col p-3 px-lg-5 py-md-4 text-center position-relative">
@@ -107,7 +110,7 @@
                 <div class="bg-body-tertiary rounded-3 col p-3 position-relative">
                     <label for="applicant-exam-result" class="d-block text-uppercase text-primary fw-medium mb-2">Initial Interview</label>
                     <div id="applicant-exam-result" class="applicant-exam-result d-flex align-items-center fw-bold">
-                        <span class="flex-1 text-capitalize">{{ $application->initialInterview->is_init_interview_passed == null ? 'No Result' : ($application->initialInterview->is_init_interview_passed ? 'passed' : 'failed') }}</span>
+                        <span class="flex-1 text-capitalize">{{ optional($application->initialInterview)->is_init_interview_passed == null ? 'No Result' : ($application->initialInterview->is_init_interview_passed ? 'passed' : 'failed') }}</span>
                         <button class="btn btn-sm btn-outline-secondary px-3 px-md-4" type="button"  {!! when($notYetInterview, 'disabled') !!}>
                             Assign
                         </button>
@@ -116,12 +119,14 @@
                 </div>
 
             </div>
+            @endif
 
             @isset($evaluationNotice)
             <p><span class="text-primary fw-bold">Note</span> {{$evaluationNotice}}</p>
             @endisset
 
-            @if (!$notYetExam || !$notYetInterview && false || $application->initialInterview->is_init_interview_passed == null)
+            {{-- TODO add check if has result in exam --}}
+            @if ($isInitAssessment && (!$notYetExam || !$notYetInterview && false || $application->initialInterview->is_init_interview_passed == null))
                 <p><i class="icon icon-xl text-info mx-2" data-lucide="badge-check"></i> No final result yet. Please assign all the result. </p>
             @endif
 

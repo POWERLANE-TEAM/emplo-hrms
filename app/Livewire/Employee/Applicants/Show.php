@@ -20,6 +20,8 @@ class Show extends Component
 
     protected bool $isPending;
 
+    protected bool $isInitAssessment;
+
     protected $examSchedF;
 
     protected $initialInterviewSchedF;
@@ -47,7 +49,9 @@ class Show extends Component
             $this->applicationId = 'APL-' . $this->application->application_id;
             $this->isPending = $this->application->application_status_id == ApplicationStatus::PENDING->value;
 
-            if($this->application->application_status_id == ApplicationStatus::ASSESSMENT_SCHEDULED->value){
+            $this->isInitAssessment = $this->application->application_status_id == ApplicationStatus::ASSESSMENT_SCHEDULED->value;
+
+            if($this->isInitAssessment){
 
                 $this->application->load('initialInterview');
 
@@ -69,7 +73,7 @@ class Show extends Component
                     $this->notYetInterview = false;
                 }
 
-                if($this->notYetExam || $this->notYetInterview){
+                if(!$this->isInitAssessment && $this->notYetExam || $this->notYetInterview){
                     $this->evaluationNotice = 'The assign button(s) are currently disabled. They will be available once the scheduled date arrives.';
                 }
 
@@ -95,6 +99,7 @@ class Show extends Component
             [
                 'applicationId' => $this->applicationId,
                 'isPending' => $this->isPending,
+                'isInitAssessment' => $this->isInitAssessment,
                 'examSchedF' => $this->examSchedF,
                 'initialInterviewSchedF' => $this->initialInterviewSchedF
             ]
