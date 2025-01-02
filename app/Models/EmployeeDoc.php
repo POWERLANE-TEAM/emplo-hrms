@@ -12,6 +12,8 @@ class EmployeeDoc extends Model
 
     protected $primaryKey = 'emp_doc_id';
 
+    public $timestamps = false;
+
     protected $guarded = [
         'emp_doc_id',
         'deleted_at',
