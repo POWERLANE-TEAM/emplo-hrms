@@ -19,7 +19,9 @@
     $navAttendanceOrder = $user->hasPermissionTo(UserPermission::VIEW_ALL_DAILY_ATTENDANCE) ? 4 : 2;
     $navAttendanceRoute = $user->hasPermissionTo(UserPermission::VIEW_ALL_DAILY_ATTENDANCE)
         ? $routePrefix . '.attendance.index'
-        : $routePrefix . '.attendance.index'; /* $routePrefix . '.attendance.show' */
+        : $routePrefix . '.attendance.show';
+
+
 
 
     /**
@@ -90,14 +92,22 @@
     {{-- Employee, HR Manager, Supervisor --}}
 
     @canAny([UserPermission::VIEW_DAILY_ATTENDANCE, UserPermission::VIEW_ALL_DAILY_ATTENDANCE])
-    <x-layout.employee.nav.sidebar.nav-item
-        :href="route($navAttendanceRoute)"
-        :active="request()->routeIs($navAttendanceRoute)"
+    <x-layout.employee.nav.sidebar.nested-nav-items
+
+        :href="!$user->hasPermissionTo(UserPermission::VIEW_ALL_DAILY_ATTENDANCE) ? route($navAttendanceRoute) : null"
+
+        :active="request()->routeIs($navAttendanceRoute, when(!$user->hasPermissionTo(UserPermission::VIEW_ALL_DAILY_ATTENDANCE), ['range' => 'daily']))"
         class="order-{{ $navAttendanceOrder }}"
         nav_txt="Attendance"
         :defaultIcon="['src' => 'attendance', 'alt' => '']"
-        :activeIcon="['src' => 'attendance', 'alt' => '']">
-    </x-layout.employee.nav.sidebar.nav-item>
+        :activeIcon="['src' => 'attendance', 'alt' => '']"
+        :children="when( $user->hasPermissionTo(UserPermission::VIEW_ALL_DAILY_ATTENDANCE), [
+            ['href' => route($navAttendanceRoute, ['range' => 'daily']), 'active' => request()->routeIs($navAttendanceRoute, ['range' => 'daily']), 'nav_txt' => 'Daily Time Log', 'range' => 'daily'],
+            ['href' => route($navAttendanceRoute, ['range' => 'period']), 'active' => request()->routeIs($navAttendanceRoute, ['range' => 'period']), 'nav_txt' => 'Attendance Records', 'range' => 'period']
+        ])"
+
+        >
+    </x-layout.employee.nav.sidebar.nested-nav-items>
     @endcan
 
     {{-- Employee, HR Manager, Supervisor --}}

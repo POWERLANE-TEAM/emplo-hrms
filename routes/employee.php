@@ -243,7 +243,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         Route::prefix('issues')->name('issues.')->group(function () {
             Route::get('/', [IssueController::class, 'index'])
                 ->name('index');
-        
+
             Route::get('create', [IssueController::class, 'create'])
                 ->name('create');
 
@@ -261,7 +261,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
             Route::get('general', [IssueController::class, 'general'])
                 ->can('viewAnyIssueReport')
                 ->name('general');
-        
+
             Route::get('{issue}/review', [IssueController::class, 'review'])
                 ->can('viewAnyIssueReport')
                 ->name('review');
@@ -272,7 +272,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
             Route::get('/', [IncidentController::class, 'index'])
                 ->can('updateIncidentReport')
                 ->name('index');
-        
+
             Route::get('create', [IncidentController::class, 'create'])
                 ->can('createIncidentReport')
                 ->name('create');
@@ -351,7 +351,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     Route::get('seperation/coe/request', function () {
         return view('employee.hr-manager.separation.coe.request');
     })->name('separation.coe.request');
-    
+
     /**
      * Reports
      */
@@ -404,8 +404,13 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     /**
      * General: Attendance
      */
-    Route::get('/attendance/index', [AttendanceController::class, 'index'])
+    Route::get('{employee}/attendance', [AttendanceController::class, 'show'])
+    ->name('attendance.show');
+
+    Route::get('/attendance/{range}', [AttendanceController::class, 'index'])
+        ->where('range', 'daily|period')
         ->name('attendance.index');
+
 
 
     /**
