@@ -31,29 +31,20 @@
         </div>
 
         <div class="col-5 mt-2 d-flex align-items-start justify-content-end">
-            <livewire:hr-manager.incidents.add-collaborators :$incident />
+            <livewire:hr-manager.incidents.manage-collaborators :$routePrefix :$incident />
         </div>        
+    </div>
+
+    <div class="row mb-3">
+        <div class="col">
+            @foreach ($incident->types as $type)
+                <span class="badge rounded-pill bg-primary fs-6 px-3 py-2">{{ $type->issue_type_name }}</span>
+            @endforeach
+        </div>
     </div>
     
     <section class="mb-5">
-        <form wire:submit="save" enctype="multipart/form-data">
-            <div class="row mb-3">
-                <div class="col">
-                    <x-form.multi-select-dropdown
-                        name="types"
-                        x-cloak
-                        id="incident_type" 
-                        label="{{ __('Incident Type') }}" 
-                        :nonce="$nonce"
-                        :required="true" 
-                        :options="$this->incidentTypes"
-                    ></x-form.multi-select-dropdown>
-                    @error('types')
-                        <div class="invalid-feedback" role="alert">{{ $message }}</div>
-                    @enderror
-                </div>
-            </div>
-    
+        <form wire:submit="saveChanges" enctype="multipart/form-data">
             <div class="row pt-2">
                 <div class="col">
                     <x-form.boxed-dropdown
@@ -141,7 +132,26 @@
                         :nonce="$nonce" 
                         description="<span class='fw-medium text-info'>For attachments:</span> Please ensure that the title of the attached file(s) clearly reflects its content for easy reference.">
                     <x-slot:preview>
-                        @forelse ($this->attachments as $attachment)
+                        @if ($attachments)
+                            @foreach ($attachments as $index => $attachment)
+                                <div class="attachment-item d-inline-flex align-items-center me-2">
+                                    <a 
+                                        href="#" 
+                                        target="__blank" 
+                                        class="text-info text-decoration-underline me-1" 
+                                        title="File Name">{{ $attachment->getClientOriginalName() }}
+                                    </a>
+                                    <button 
+                                        type="button"
+                                        wire:click="removeAttachment({{ $index }})" 
+                                        class="btn btn-sm py-0 px-1 no-hover-border hover-opacity"
+                                        data-bs-toggle="tooltip" title="Remove attachment">✖
+                                    </button>
+                                </div>
+                            @endforeach
+                        @endif
+
+                        @forelse ($incident->attachments as $attachment)
                             <div class="attachment-item d-inline-flex align-items-center me-2">
                                 <a 
                                     href="{{ route("{$this->routePrefix}.relations.incidents.attachments.show", ['attachment' => $attachment->attachment]) }}" 
@@ -210,8 +220,9 @@
 
 @script
 <script>
-    Livewire.on('setInitialValues', (event) => {
-        $wire.dispatch('populateMultiSelect');
+    Livewire.on('updatedIncidentReport', (event) => {
+        const eventPayload = event[0];
+        showToast(eventPayload.type, eventPayload.message);
     });
 </script>
 @endscript

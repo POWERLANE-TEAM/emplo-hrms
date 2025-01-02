@@ -6,14 +6,12 @@ use App\Enums\FilePath;
 use Livewire\Component;
 use App\Models\Employee;
 use App\Models\Incident;
-use App\Models\IssueType;
 use App\Enums\IssueStatus;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Computed;
 use Illuminate\Support\Facades\DB;
 use App\Enums\IncidentPriorityLevel;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class IncidentReportInfo extends Component
@@ -24,8 +22,6 @@ class IncidentReportInfo extends Component
 
     #[Locked]
     public $routePrefix;
-
-    public $types = [];
 
     public $attachments = [];
     
@@ -43,13 +39,8 @@ class IncidentReportInfo extends Component
 
     public function mount()
     {
-        $this->types = $this->incident->types->map(function ($item) {
-            return (string) $item->issue_type_id;
-        });
+        $this->incident->loadMissing('types');
 
-        $this->dispatch('setInitialValues', $this->types);
-
-        $this->attachments          = $this->incident->attachments;
         $this->description          = $this->incident->incident_description;
         $this->initiator            = $this->incident->initiator;
         $this->priority             = $this->incident->priority;
@@ -58,42 +49,46 @@ class IncidentReportInfo extends Component
         $this->resolutionDetails    = $this->incident?->resolution;
     }
 
-    public function save()
+    public function saveChanges()
     {
-        $this->authorize('createIncidentReport');
+        $this->authorize('updateIncidentReport');
 
-        $this->validate();
+        // $this->validate();
 
         DB::transaction(function () {
-            $incident = $this->storeIncident();
-            $incident->types()->attach($this->types);
-            $this->storeAttachments($incident);
+            $incident = $this->updateIncident();
+            $this->updateAttachments($incident);
         });
 
-        $this->reset();
+        $this->reset('attachments');
 
-        $this->dispatch('storedIncidentReport', [
+        $this->dispatch('updatedIncidentReport', [
             'type' => 'success',
-            'message' => __("Incident report was successfully created.")
+            'message' => __("Incident report was successfully updated.")
         ]);
 
         $this->dispatch('changes-saved');
     }
 
-    public function storeIncident(): Incident
+    public function updateIncident(): Incident
     {
-        return Incident::create([
+        $this->incident->update([
             'incident_description'  => $this->description,
             'resolution'            => $this->resolutionDetails,
             'status'                => $this->status,
             'priority'              => $this->priority,
             'initiator'             => $this->initiator,
-            'reporter'              => Auth::user()->account->employee_id,
         ]);
+
+        return $this->incident->refresh();
     }
 
-    public function storeAttachments(Incident $incident): void
+    private function updateAttachments(Incident $incident): void
     {
+        if (count($this->attachments) === 0) {
+            return;
+        }
+
         Storage::disk('local')->makeDirectory(FilePath::INCIDENTS->value);
 
         $incidentAttachments = [];
@@ -126,8 +121,6 @@ class IncidentReportInfo extends Component
     public function rules(): array
     {
         return [
-            'types'             => 'required',
-            'types.*'           => 'exists:issue_types,issue_type_id',
             'attachments'       => 'nullable|array|max:5',
             'attachments.*'     => 'file|max:51200',
             'description'       => 'required',
@@ -139,17 +132,9 @@ class IncidentReportInfo extends Component
         ];
     }
 
-    // public function messages()
-    // {
-    //     //
-    // }
-
-    #[Computed]
-    public function incidentTypes()
+    public function messages()
     {
-        return IssueType::all()
-            ->pluck('issue_type_name', 'issue_type_id')
-            ->toArray();
+        //
     }
 
     #[Computed]
