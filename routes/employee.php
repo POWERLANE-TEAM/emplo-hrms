@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\IncidentController;
+use App\Http\Controllers\IssueController;
 use App\Models\Employee;
 use App\Enums\UserPermission;
 use Illuminate\Support\Facades\Route;
@@ -234,29 +236,61 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
 
     /**
-     * Relations: Incidents Management
+     * Employee relations resource
      */
+    Route::prefix('relations')->name('relations.')->group(function () {
+        /** Issue resource */
+        Route::prefix('issues')->name('issues.')->group(function () {
+            Route::get('/', [IssueController::class, 'index'])
+                ->name('index');
+        
+            Route::get('create', [IssueController::class, 'create'])
+                ->name('create');
 
-    Route::get('hr/relations/incidents/all', function () {
-        return view('employee.hr-manager.relations.incidents.all');
-    })->name('hr.relations.incidents.all');
+            Route::get('{issue}', [IssueController::class, 'show'])
+                ->can('viewIssueReport', 'issue')
+                ->whereNumber('issue')
+                ->name('show');
 
-    Route::get('hr/relations/incidents/create', function () {
-        return view('employee.hr-manager.relations.incidents.create');
-    })->name('hr.relations.incidents.create');
+            Route::get('{attachment}/download', [IssueController::class, 'download'])
+                ->name('download');
 
+            Route::get('attachments/{attachment}', [IssueController::class, 'viewAttachment'])
+                ->name('attachments.show');
 
-    /**
-     * Relations: Issues
-     */
-    Route::get('hr/relations/issues/all', function () {
-        return view('employee.hr-manager.relations.issues.all');
-    })->name('hr.relations.issues.all');
+            Route::get('general', [IssueController::class, 'general'])
+                ->can('viewAnyIssueReport')
+                ->name('general');
+        
+            Route::get('{issue}/review', [IssueController::class, 'review'])
+                ->can('viewAnyIssueReport')
+                ->name('review');
+        });
 
-    Route::get('relations/issues/review', function () {
-        return view('employee.hr-manager.relations.issues.review');
-    })->name('relations.issues.review');
+        /** Incident resource */
+        Route::prefix('incidents')->name('incidents.')->group(function () {
+            Route::get('/', [IncidentController::class, 'index'])
+                ->can('updateIncidentReport')
+                ->name('index');
+        
+            Route::get('create', [IncidentController::class, 'create'])
+                ->can('createIncidentReport')
+                ->name('create');
 
+            Route::get('{incident}', [IncidentController::class, 'show'])
+                ->can('updateIncidentReport', 'incident')
+                ->whereNumber('incident')
+                ->name('show');
+
+            Route::get('{attachment}/download', [IncidentController::class, 'download'])
+                ->can('updateIncidentReport')
+                ->name('download');
+
+            Route::get('attachments/{attachment}', [IncidentController::class, 'viewAttachment'])
+                ->can('updateIncidentReport')
+                ->name('attachments.show');
+        });
+    });
 
     /**
      * Training
@@ -388,19 +422,6 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
            abort(401);
         }
     })->name('general.documents.all');
-
-
-    /**
-     * General: Issues
-     */
-    Route::get('general/issues/all', function () {
-        return view('employee.basic.issues.all');
-    })->name('general.issues.all');
-
-    Route::get('general/issues/create', function () {
-        return view('employee.basic.issues.create');
-    })->name('general.issues.create');
-
 
     /**
      * General: Separation

@@ -189,8 +189,8 @@
     {{-- Employee, Supervisor --}}
     @can(UserPermission::VIEW_ISSUES)
         <x-layout.employee.nav.sidebar.nav-item
-            href="{{ route($routePrefix . '.general.issues.all') }}"
-            :active="request()->routeIs($routePrefix . '.general.issues.*')"
+            href="{{ route($routePrefix . '.relations.issues.index') }}"
+            :active="request()->routeIs($routePrefix . '.relations.issues.*')"
             class="order-8"
             nav_txt="Issues"
             :defaultIcon="['src' => 'issues', 'alt' => '']"
@@ -251,13 +251,13 @@
             :activeIcon="['src' => 'relations', 'alt' => 'Relations']"
             :children="[
                 [
-                    'href' => route($routePrefix . '.hr.relations.incidents.all'),
+                    'href' => route($routePrefix . '.relations.incidents.index'),
                     'active' => request()->routeIs($routePrefix . '.hr.relations.incidents.*'),
                     'nav_txt' => 'Incidents'
                 ],
                 [
-                    'href' => route($routePrefix . '.hr.relations.issues.all'),
-                    'active' => request()->routeIs($routePrefix . '.hr.relations.issues.*'),
+                    'href' => route($routePrefix . '.relations.issues.general'),
+                    'active' => request()->routeIs($routePrefix . '.relations.issues.general'),
                     'nav_txt' => 'Issues'
                 ],
             ]">

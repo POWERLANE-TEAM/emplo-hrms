@@ -1,5 +1,7 @@
 @props([
     'id' => null,
+    'modalSize' => 'modal-lg',
+    'isCentered' => true,
 ])
 
 <div 
@@ -12,7 +14,7 @@
         'data-bs-keyboard' => 'true'])
     }}
 >
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-dialog {{ $modalSize }} {{ $isCentered ? 'modal-dialog-centered' : 'modal-dialog' }}" role="document">
         <div class="modal-content p-2">
             <div class="modal-header">
                 {{ $title }}

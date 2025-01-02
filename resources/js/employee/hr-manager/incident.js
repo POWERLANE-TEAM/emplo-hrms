@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     function toggleResolutionDetails() {
-        if (statusDropdown.value === 'resolved') {
+        if (statusDropdown.value === '2') {
             resolutionDetailsField.style.display = 'block'; // Show Resolution Details
         } else {
             resolutionDetailsField.style.display = 'none'; // Hide Resolution Details
