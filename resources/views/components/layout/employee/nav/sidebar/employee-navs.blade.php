@@ -158,7 +158,7 @@
     @endcan
 
     @canAny([
-        UserPermission::VIEW_OVERTIME, 
+        UserPermission::VIEW_OVERTIME,
         UserPermission::VIEW_SUBORDINATE_OVERTIME_REQUEST,
         UserPermission::VIEW_ALL_SUBORDINATE_LEAVE_REQUEST,
         UserPermission::VIEW_ALL_OVERTIME_REQUEST,
@@ -189,8 +189,8 @@
     {{-- Employee, Supervisor --}}
     @can(UserPermission::VIEW_ISSUES)
         <x-layout.employee.nav.sidebar.nav-item
-            href="{{ route($routePrefix . '.general.issues.all') }}"
-            :active="request()->routeIs($routePrefix . '.general.issues.*')"
+            href="{{ route($routePrefix . '.relations.issues.index') }}"
+            :active="request()->routeIs($routePrefix . '.relations.issues.*')"
             class="order-8"
             nav_txt="Issues"
             :defaultIcon="['src' => 'issues', 'alt' => '']"
@@ -211,14 +211,23 @@
 
     {{-- HR Manager --}}
     @can(UserPermission::VIEW_ALL_PENDING_APPLICATIONS)
-        <x-layout.employee.nav.sidebar.nav-item
-            href="{{ route($routePrefix . '.applications', ['applicationStatus' => 'pending']) }}"
+        <x-layout.employee.nav.sidebar.nested-nav-items
             :active="request()->routeIs($routePrefix . '.applications', ['applicationStatus' => 'pending'])"
             class="order-2"
             nav_txt="Applicants"
             :defaultIcon="['src' => 'applicants', 'alt' => '']"
-            :activeIcon="['src' => 'applicants', 'alt' => '']">
-        </x-layout.employee.nav.sidebar.nav-item>
+            :activeIcon="['src' => 'applicants', 'alt' => '']"
+            :children="[
+                ['href' => route($routePrefix . '.applications', ['applicationStatus' => 'pending']), 'active' => request()->routeIs($routePrefix . '.applications', ['applicationStatus' => 'pending']), 'nav_txt' => 'Pending', 'applicationStatus' => 'pending'],
+                ['href' => route($routePrefix . '.applications', ['applicationStatus' => 'qualified']), 'active' => request()->routeIs($routePrefix . '.applications', ['applicationStatus' => 'qualified']), 'nav_txt' => 'Qualified', 'applicationStatus' => 'qualified'],
+                ['href' => route($routePrefix . '.applications', ['applicationStatus' => 'preemployed']), 'active' => request()->routeIs($routePrefix . '.applications', ['applicationStatus' => 'preemployed']), 'nav_txt' => 'Pre-employed', 'applicationStatus' => 'preemployed'],
+            ]"
+            :isActiveClosure="function($isActive, $child) use ($routePrefix) {
+                return request()->routeIs($routePrefix . '.applications', ['applicationStatus' => $child['applicationStatus']]);
+            }"
+
+            >
+        </x-layout.employee.nav.sidebar.nested-nav-items>
     @endcan
 
     {{-- HR Manager --}}
@@ -242,13 +251,13 @@
             :activeIcon="['src' => 'relations', 'alt' => 'Relations']"
             :children="[
                 [
-                    'href' => route($routePrefix . '.hr.relations.incidents.all'),
+                    'href' => route($routePrefix . '.relations.incidents.index'),
                     'active' => request()->routeIs($routePrefix . '.hr.relations.incidents.*'),
                     'nav_txt' => 'Incidents'
                 ],
                 [
-                    'href' => route($routePrefix . '.hr.relations.issues.all'),
-                    'active' => request()->routeIs($routePrefix . '.hr.relations.issues.*'),
+                    'href' => route($routePrefix . '.relations.issues.general'),
+                    'active' => request()->routeIs($routePrefix . '.relations.issues.general'),
                     'nav_txt' => 'Issues'
                 ],
             ]">
@@ -278,6 +287,16 @@
             ['href' => route($routePrefix . '.separation.resignations'), 'active' => request()->routeIs($routePrefix . '.separation.resignations*'), 'nav_txt' => 'Resignations'],
             ['href' => route($routePrefix . '.separation.coe'), 'active' => request()->routeIs($routePrefix . '.separation.coe*'), 'nav_txt' => 'COEs'],]">
     </x-layout.employee.nav.sidebar.nested-nav-items>
+    @endcan
+
+    @can(UserPermission::VIEW_REPORTS)
+        <x-layout.employee.nav.sidebar.nav-item
+            href="{{ route($routePrefix . '.reports') }}"
+            :active="request()->routeIs($routePrefix . '.reports')"
+            class="order-13" nav_txt="Reports"
+            :defaultIcon="['src' => 'reports', 'alt' => '']"
+            :activeIcon="['src' => 'reports', 'alt' => '']">
+        </x-layout.employee.nav.sidebar.nav-item>
     @endcan
 
     {{-- Head Admin --}}
@@ -377,7 +396,7 @@
             :activeIcon="['src' => 'ot-summary-form', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan
-    
+
     {{-- Supervisor / Head Dept --}}
     @can(UserPermission::VIEW_ALL_SUBORDINATE_PERFORMANCE_EVAL_FORM)
         <x-layout.employee.nav.sidebar.nav-item href="{{ route($routePrefix . '.managerial.evaluations.all') }}"

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\HrManager\Employees;
 
+use App\Http\Helpers\Timezone;
 use Livewire\Component;
 use App\Models\Employee;
 use Illuminate\Support\Carbon;
@@ -11,6 +12,8 @@ class Information extends Component
 {
     #[Locked]
     public object $employee;
+
+    private string $timezone;
 
     public function mount(Employee $employee)
     {
@@ -41,9 +44,14 @@ class Information extends Component
         ];
     }
 
+    public function boot()
+    {
+        $this->timezone = Timezone::get();
+    }
+
     private function parseDateToReadableFormat($date)
     {
-        return Carbon::parse($date)->format('F, j Y');
+        return Carbon::parse($date)->setTimezone($this->timezone)->format('F, j Y');
     }
 
     public function render()

@@ -7,6 +7,7 @@
     'src_path' => 'resources/images/icons/sidebar/',
     'src_extn' => '.webp',
     'children' => [], // Pass an array of child items
+    'isActiveClosure' => null,
 ])
 
 @aware(['iconSize' => '23px', 'iconRatio' => '1/1'])
@@ -34,12 +35,27 @@
     @if (!empty($children))
         <ul class="nested-menu list-unstyled ">
             @foreach ($children as $child)
-                <li class="nested-item {{ $child['active'] ? 'active' : '' }} 
-                    {{ request()->routeIs($child['href']) ? 'hovered' : '' }}" style="position: relative; padding-left: 20px;">
+                @php
+                    //  Determine if the current route matches the child's route
+                    $isActive = url()->current() == $child['href'];
+                    // dump($child['href']);
+                    // dump($isActive);
 
-                    <!-- Vertical Line -->
+                    // Optional additional check for active state
+                    if ($isActive && $isActiveClosure instanceof \Closure) {
+                        $isActive = $isActiveClosure($isActive, $child);
+                    }
 
-                    <x-nav-link href="{{ $child['href'] }}" active="{{ $child['active'] }}"
+                    // dump($child['href']);
+                    // dump($isActive);
+                @endphp
+
+                <li class="nested-item {{ $isActive ? 'active' : '' }}
+                    {{ $isActive ? 'hovered' : '' }}" style="position: relative; padding-left: 20px;">
+
+                    {{-- Vertical Line  --}}
+
+                    <x-nav-link href="{{ $child['href'] }}" active="{{ $isActive }}"
                         class="d-flex align-items-center nav-link">
                         <span class="vertical-menu-line"></span>
 
@@ -48,7 +64,5 @@
                 </li>
             @endforeach
         </ul>
-
-
     @endif
 </li>

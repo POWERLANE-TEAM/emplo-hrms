@@ -29,7 +29,7 @@ class Logout extends Component
         $nonce = csp_nonce();
 
         $this->formAttributes =  $formAttributes->merge(['nonce' => $nonce]);
-        $this->buttonAttributes = $buttonAttributes->merge(['class' => 'border-0 px-0 bg-transparent', 'nonce' => $nonce]);
+        $this->buttonAttributes = $buttonAttributes->merge(['class' => 'border-0 px-0 w-100 text-start bg-transparent', 'nonce' => $nonce]);
 
         $user_session = session()->getId();
         $this->authBroadcastId = hash('sha512', $user_session . Auth::user()->email . $user_session);
