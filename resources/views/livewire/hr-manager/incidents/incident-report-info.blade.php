@@ -18,14 +18,25 @@
                 </x-slot:heading>
             
                 <x-slot:description>
-                    @if ($incident->created_at->eq($incident->updated_at))
-                        {{ $incident->created_at->format('F d, Y g:i A') }}
-                    @else
-                        {{ $incident->updated_at->format('F d, Y g:i A') }}
-                        <span class="text-muted">
-                            {{ __('(Edited)') }}
-                        </span>
-                    @endif
+                    <div class="d-flex align-items-center">
+                        <div>
+                            <img src="{{ $incident->reportedBy->account->photo }}" width="20" height="20" class="rounded-circle me-2" alt="Collaborator photo">      
+                        </div>
+                        <div>
+                            <div class="fw-medium">{{ $incident->reportedBy->full_name }}</div>
+                        </div>
+
+                        <div class="ms-3">
+                            @if ($incident->created_at->eq($incident->updated_at))
+                                {{ $incident->created_at->format('F d, Y g:i A') }}
+                            @else
+                                {{ $incident->updated_at->format('F d, Y g:i A') }}
+                                <span class="text-muted">
+                                    {{ __('(Edited)') }}
+                                </span>
+                            @endif
+                        </div>
+                    </div>
                 </x-slot:description>
             </x-headings.main-heading>        
         </div>
