@@ -34,4 +34,23 @@
 
 <!-- BACK-END TABLE NOTE:
     The employee id should be passed to: training/records.blade.php -->
+    <livewire:employee-documents-table :employee="$employee" />
+
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('perPageDispatcher', () => ({
+                updatePerPage() {
+                    let select = document.getElementById('table-perPage');
+                    let currentValue = parseInt(select.value);
+                    let newValue = currentValue + 5;
+                    let options = Array.from(select.options).map(option => parseInt(option.value));
+                    if (options.includes(newValue)) {
+                        select.value = newValue;
+                        select.dispatchEvent(new Event('change'));
+                    }
+                }
+            }));
+        });
+    </script>
+
 @endsection

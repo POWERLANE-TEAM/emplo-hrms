@@ -29,11 +29,11 @@
 @section('content')
     <x-headings.main-heading :isHeading="true">
         <x-slot:heading>
-            Employees
+            {{ __('Employees') }}
         </x-slot:heading>
 
         <x-slot:description>
-            <p>View and manage employees' information and documents</p>
+            {{ __('View and manage employees\' information and documents') }}
         </x-slot:description>
     </x-headings.main-heading>
 

@@ -57,9 +57,9 @@ try {
         });
 
         Livewire.hook("request", ({ el, component }) => {
-            setTimeout(() => {
-                disableSubmit();
-            }, 400);
+            // setTimeout(() => {
+            //     disableSubmit();
+            // }, 400);
         });
 
         setTimeout(() => {
