@@ -179,7 +179,7 @@ class EmployeesAttendancePeriodTable extends DataTableComponent
                 ->title(fn($row) => 'Full Details')
                 // Route to the view > work hours
                 // use routePrefix
-                ->location(fn($row) => route('employee.attendance.index', $row)),
+                ->location(fn($row) => route('employee.attendance.show', $row)),
         ];
     }
 

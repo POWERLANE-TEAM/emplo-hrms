@@ -19,7 +19,9 @@
     $navAttendanceOrder = $user->hasPermissionTo(UserPermission::VIEW_ALL_DAILY_ATTENDANCE) ? 4 : 2;
     $navAttendanceRoute = $user->hasPermissionTo(UserPermission::VIEW_ALL_DAILY_ATTENDANCE)
         ? $routePrefix . '.attendance.index'
-        : $routePrefix . '.attendance'; /* $routePrefix . '.attendance.show' */
+        : $routePrefix . '.attendance.show';
+
+
 
 
     /**
@@ -90,14 +92,22 @@
     {{-- Employee, HR Manager, Supervisor --}}
 
     @canAny([UserPermission::VIEW_DAILY_ATTENDANCE, UserPermission::VIEW_ALL_DAILY_ATTENDANCE])
-    <x-layout.employee.nav.sidebar.nav-item
-        :href="route($navAttendanceRoute)"
-        :active="request()->routeIs($navAttendanceRoute)"
+    <x-layout.employee.nav.sidebar.nested-nav-items
+
+        :href="!$user->hasPermissionTo(UserPermission::VIEW_ALL_DAILY_ATTENDANCE) ? route($navAttendanceRoute) : null"
+
+        :active="request()->routeIs($navAttendanceRoute, when(!$user->hasPermissionTo(UserPermission::VIEW_ALL_DAILY_ATTENDANCE), ['range' => 'daily']))"
         class="order-{{ $navAttendanceOrder }}"
         nav_txt="Attendance"
         :defaultIcon="['src' => 'attendance', 'alt' => '']"
-        :activeIcon="['src' => 'attendance', 'alt' => '']">
-    </x-layout.employee.nav.sidebar.nav-item>
+        :activeIcon="['src' => 'attendance', 'alt' => '']"
+        :children="when( $user->hasPermissionTo(UserPermission::VIEW_ALL_DAILY_ATTENDANCE), [
+            ['href' => route($navAttendanceRoute, ['range' => 'daily']), 'active' => request()->routeIs($navAttendanceRoute, ['range' => 'daily']), 'nav_txt' => 'Daily Time Log', 'range' => 'daily'],
+            ['href' => route($navAttendanceRoute, ['range' => 'period']), 'active' => request()->routeIs($navAttendanceRoute, ['range' => 'period']), 'nav_txt' => 'Attendance Records', 'range' => 'period']
+        ])"
+
+        >
+    </x-layout.employee.nav.sidebar.nested-nav-items>
     @endcan
 
     {{-- Employee, HR Manager, Supervisor --}}
@@ -114,7 +124,7 @@
 
     {{-- Employee, HR Manager, Supervisor --}}
     @php
-        $navPerformanceOrder = $user->hasPermissionTo(UserPermission::VIEW_ALL_EMP_PERFORMANCE_EVAL) ? 8 : 4;
+        $navPerformanceOrder = $user->hasPermissionTo(UserPermission::VIEW_ALL_EMP_PERFORMANCE_EVAL) ? 10 : 4;
     @endphp
     {{-- @canAny([UserPermission::VIEW_EMP_PERFORMANCE_EVAL, UserPermission::VIEW_ALL_EMP_PERFORMANCE_EVAL])
     <x-layout.employee.nav.sidebar.nav-item :href="route($routePrefix . '.performance.evaluation.index', ['employeeStatus' => 'probationary'])" :active="request()->routeIs($routePrefix . '.performance.evaluation.index')" class="order-{{ $navPerformanceOrder }}" nav_txt="Performance"
@@ -126,14 +136,22 @@
     @can(UserPermission::VIEW_ALL_EMP_PERFORMANCE_EVAL)
     <x-layout.employee.nav.sidebar.nested-nav-items
         nav_txt="Performance"
-        :active="request()->routeIs($routePrefix . 'evaluations.*')"
+        :active="request()->routeIs($routePrefix . '.performance.evaluation.index')"
         class="order-10"
         :defaultIcon="['src' => 'performances', 'alt' => 'Performance']"
-        :activeIcon="['src' => 'performances', 'alt' => 'Relations']" :children="[
-            ['href' => route($routePrefix . '.hr.evaluation-results.probationary.all'), 'active' => request()->routeIs($routePrefix . '.hr.evaluation-results.probationary.all'), 'nav_txt' => 'Probationary'],
-            ['href' => route($routePrefix . '.hr.evaluation-results.regular.all'), 'active' => request()->routeIs($routePrefix . '.hr.evaluation-results.regular.all'), 'nav_txt' => 'Regular'],]">
+        :activeIcon="['src' => 'performances', 'alt' => 'Performance']" :children="[
+            ['href' => route($routePrefix . '.performance.evaluation.index', ['employeeStatus' => 'probationary']), 'active' => request()->routeIs($routePrefix . '.performance.evaluation.index'), 'nav_txt' => 'Probationary', 'employeeStatus' => 'pending'] ,
+            ['href' => route($routePrefix . '.performance.evaluation.index', ['employeeStatus' => 'regular']), 'active' => request()->routeIs($routePrefix . '.performance.evaluation.index'), 'nav_txt' => 'Regular', 'employeeStatus' => 'pending'],]"
+
+            :isActiveClosure="function($isActive, $child) use ($routePrefix) {
+                return request()->routeIs($routePrefix . '.performance.evaluation.index', ['employeeStatus' => $child['employeeStatus']]);
+            }"
+
+            >
     </x-layout.employee.nav.sidebar.nested-nav-items>
     @endcan
+
+
 
     {{-- Employee --}}
     @canAny([UserPermission::VIEW_EMP_PERFORMANCE_EVAL])
