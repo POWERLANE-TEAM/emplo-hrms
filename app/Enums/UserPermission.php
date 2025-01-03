@@ -33,9 +33,10 @@ enum UserPermission: string
     case CREATE_ATTENDANCE_TODAY = 'create attendance today';
     case CREATE_LEAVE_REQUEST = 'create leave request';
     case CREATE_OVERTIME_REQUEST = 'create overtime request';
-    case CREATE_ISSUE_COMPLAINT = 'create issue complaint';
+    case CREATE_ISSUE_REPORT = 'create issue report';
     case CREATE_PAYSLIPS = 'create payslips';
     case CREATE_BULK_PAYSLIPS = 'create bulk payslips';
+    case CREATE_INCIDENT_REPORT = 'create incident report';
 
         // View cases goes here
     case VIEW_APPLICATION_INFORMATION = 'view applicant/s information';
@@ -104,6 +105,8 @@ enum UserPermission: string
     case VIEW_RESIGNATION = 'view resignation';
     case VIEW_ALL_FILED_RESIGNATION_LETTERS = 'view all filed resignation letters';
     case VIEW_ALL_COE_REQUESTS = 'view all certificate of employment requests';
+    case VIEW_ANY_INCIDENT_REPORT = 'view any incident report';
+    case VIEW_REPORTS = 'view reports';
 
         // Update cases goes here
     case UDPATE_JOB_LISTING = 'update job listing';
@@ -125,10 +128,7 @@ enum UserPermission: string
     case UPDATE_ALL_OVERTIME_REQUEST = 'update every employee overtime request';
     case UPDATE_PENDING_OVERTIME_REQUEST_STATUS = 'update pending overtime request status';
     case UPDATE_APPROVED_OVERTIME_REQUEST_STATUS = 'update approved overtime request status';
-    case UPDATE_ISSUE_COMPLAINT = 'update issue complaint';
-    case UPDATE_ISSUE_COMPLAINT_STATUS = 'update issue complaint status';
-    case UPDATE_ISSUE_COMPLAINT_CLOSED = 'update issue complaint to closed';
-    case UPDATE_ISSUE_COMPLAINT_RESOLVED = 'update issue complaint to resolved';
+    case UPDATE_ISSUE_STATUS = 'update issue status';
     case UPDATE_BIOMETRIC_DEVICE = 'update biometric attendance device configuration';
     case UPDATE_SUBORDINATE_OVERTIME_REQUEST = 'update subordinate overtime request';
 
@@ -139,7 +139,6 @@ enum UserPermission: string
 
     // Others
     case ASSIGN_PERFORMANCE_EVAL_SCORE = 'assign performance evaluation score';
-
     case AUTHORIZE_OVERTIME_REQUEST = 'authorize overtime request';
     case APPROVE_OVERTIME_SUMMARY_INITIAL = 'initially approve overtime summary form';
     case APPROVE_OVERTIME_SUMMARY_SECONDARY = 'secondary approve overtime summary form';
@@ -148,6 +147,7 @@ enum UserPermission: string
     case APPROVE_LEAVE_REQUEST_SECOND = 'second approval for subordinate leave request';
     case APPROVE_LEAVE_REQUEST_THIRD = 'third approval for any leave request';
     case APPROVE_LEAVE_REQUEST_FOURTH = 'fourth or last approval for any leave request';
+    case MANAGE_INCIDENT_REPORT_COLLABORATORS = 'manage incident report collaborators';
 
     /**
      * Return user-friendly permission labels.
@@ -178,9 +178,10 @@ enum UserPermission: string
             self::CREATE_ATTENDANCE_TODAY => 'Set time-in attendance',
             self::CREATE_LEAVE_REQUEST => 'Create a leave request',
             self::CREATE_OVERTIME_REQUEST => 'Create an overtime request',
-            self::CREATE_ISSUE_COMPLAINT => 'Create an issue complaint',
+            self::CREATE_ISSUE_REPORT => 'Create an issue report',
             self::CREATE_PAYSLIPS => 'Create a payslip',
             self::CREATE_BULK_PAYSLIPS => 'Create payslips',
+            self::CREATE_INCIDENT_REPORT => 'Create an incident report',
 
             // View labels goes here
             self::VIEW_APPLICATION_INFORMATION => 'View application information',
@@ -248,6 +249,8 @@ enum UserPermission: string
             self::VIEW_RESIGNATION => 'View resignation',
             self::VIEW_ALL_FILED_RESIGNATION_LETTERS => 'view all filed resignation letters',
             self::VIEW_ALL_COE_REQUESTS => 'View all certificate of employment requests',
+            self::VIEW_ANY_INCIDENT_REPORT => 'View an incident report',
+            self::VIEW_REPORTS => 'View reports',
 
             // Update labels goes here
             self::UDPATE_JOB_LISTING => 'Update job listing/s',
@@ -269,10 +272,7 @@ enum UserPermission: string
             self::UPDATE_ALL_OVERTIME_REQUEST => 'Update every employee overtime request status',
             self::UPDATE_PENDING_OVERTIME_REQUEST_STATUS => 'Update pending overtime request status',
             self::UPDATE_APPROVED_OVERTIME_REQUEST_STATUS => 'Update approved overtime request status',
-            self::UPDATE_ISSUE_COMPLAINT => 'Update an issue complaint',
-            self::UPDATE_ISSUE_COMPLAINT_STATUS => 'Update issue complaint status',
-            self::UPDATE_ISSUE_COMPLAINT_CLOSED => 'Close an issue complaint',
-            self::UPDATE_ISSUE_COMPLAINT_RESOLVED => 'Mark an issue complaint as resolved',
+            self::UPDATE_ISSUE_STATUS => 'Update issue complaint status',
             self::UPDATE_BIOMETRIC_DEVICE => 'Update biometric attendance device configuration',
             self::UPDATE_SUBORDINATE_OVERTIME_REQUEST => 'Update (approve/deny) subordinate overtime request.',
 
@@ -292,6 +292,7 @@ enum UserPermission: string
             self::APPROVE_LEAVE_REQUEST_SECOND => 'Second approval of subordinate leave request',
             self::APPROVE_LEAVE_REQUEST_THIRD => 'Third approval of any leave request',
             self::APPROVE_LEAVE_REQUEST_FOURTH => 'Fourth or last approval of any leave request',
+            self::MANAGE_INCIDENT_REPORT_COLLABORATORS => 'Manage incident report collaborators',
         };
     }
 }

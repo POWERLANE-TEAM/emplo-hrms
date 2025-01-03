@@ -189,8 +189,8 @@
     {{-- Employee, Supervisor --}}
     @can(UserPermission::VIEW_ISSUES)
         <x-layout.employee.nav.sidebar.nav-item
-            href="{{ route($routePrefix . '.general.issues.all') }}"
-            :active="request()->routeIs($routePrefix . '.general.issues.*')"
+            href="{{ route($routePrefix . '.relations.issues.index') }}"
+            :active="request()->routeIs($routePrefix . '.relations.issues.*')"
             class="order-8"
             nav_txt="Issues"
             :defaultIcon="['src' => 'issues', 'alt' => '']"
@@ -251,13 +251,13 @@
             :activeIcon="['src' => 'relations', 'alt' => 'Relations']"
             :children="[
                 [
-                    'href' => route($routePrefix . '.hr.relations.incidents.all'),
+                    'href' => route($routePrefix . '.relations.incidents.index'),
                     'active' => request()->routeIs($routePrefix . '.hr.relations.incidents.*'),
                     'nav_txt' => 'Incidents'
                 ],
                 [
-                    'href' => route($routePrefix . '.hr.relations.issues.all'),
-                    'active' => request()->routeIs($routePrefix . '.hr.relations.issues.*'),
+                    'href' => route($routePrefix . '.relations.issues.general'),
+                    'active' => request()->routeIs($routePrefix . '.relations.issues.general'),
                     'nav_txt' => 'Issues'
                 ],
             ]">
@@ -287,6 +287,16 @@
             ['href' => route($routePrefix . '.separation.resignations'), 'active' => request()->routeIs($routePrefix . '.separation.resignations*'), 'nav_txt' => 'Resignations'],
             ['href' => route($routePrefix . '.separation.coe'), 'active' => request()->routeIs($routePrefix . '.separation.coe*'), 'nav_txt' => 'COEs'],]">
     </x-layout.employee.nav.sidebar.nested-nav-items>
+    @endcan
+
+    @can(UserPermission::VIEW_REPORTS)
+        <x-layout.employee.nav.sidebar.nav-item
+            href="{{ route($routePrefix . '.reports') }}"
+            :active="request()->routeIs($routePrefix . '.reports')"
+            class="order-13" nav_txt="Reports"
+            :defaultIcon="['src' => 'reports', 'alt' => '']"
+            :activeIcon="['src' => 'reports', 'alt' => '']">
+        </x-layout.employee.nav.sidebar.nav-item>
     @endcan
 
     {{-- Head Admin --}}

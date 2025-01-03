@@ -377,29 +377,6 @@ class Employee extends Model
 
     /*
     |--------------------------------------------------------------------------
-    | Complaint Records Management
-    |--------------------------------------------------------------------------
-    */
-
-    /**
-     * Get the complaint records where employee is the complainant.
-     */
-    public function complaintsAsComplainant(): HasMany
-    {
-        return $this->hasMany(EmployeeComplaint::class, 'complainant', 'employee_id');
-    }
-
-    /**
-     * The complaint records that belong to the complainee(employee).
-     */
-    public function complaintsAsComplainee(): BelongsToMany
-    {
-        return $this->belongsToMany(EmployeeComplaint::class, 'complaint_complainees', 'complainee', 'emp_complaint_id')
-            ->withTimestamps();
-    }
-
-    /*
-    |--------------------------------------------------------------------------
     | Overtime Records Management
     |--------------------------------------------------------------------------
     */
@@ -545,11 +522,74 @@ class Employee extends Model
     }
 
     /**
-     * Get the user employee who denied the leave request.
+     * Get the leave requests denied by the employee.
      */
     public function deniedLeaves(): HasMany
     {
         return $this->hasMany(EmployeeLeave::class, 'denier', 'employee_id');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Issue Records Management
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * Get the issues which statuses are marked by the employee.
+     */
+    public function markedStatusIssues(): HasMany
+    {
+        return $this->hasMany(Issue::class, 'status_marker', 'employee_id');
+    }
+
+    /**
+     * Get the issues reported by the employee.
+     */
+    public function reportedIssues(): HasMany
+    {
+        return $this->hasMany(Issue::class, 'issue_reporter', 'employee_id');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Incident Records Management
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * Get the incidents which are initiated by the employee.
+     */
+    public function initiatedIncidentReports(): HasMany
+    {
+        return $this->hasMany(Incident::class, 'initiator', 'employee_id');
+    }
+
+    /**
+     * Get the incidents reported by the employee.
+     */
+    public function reportedIncidents(): HasMany
+    {
+        return $this->hasMany(Incident::class, 'reporter', 'employee_id');
+    }
+
+    /**
+     * Get the incidents which statuses are marked by the employee.
+     */
+    public function markedStatusIncidents(): HasMany
+    {
+        return $this->hasMany(Incident::class, 'status_marker', 'employee_id');
+    }
+
+    /**
+     * Get incidents where employee is a collaborator
+     */
+    public function sharedIncidentRecords(): BelongsToMany
+    {
+        return $this->belongsToMany(Incident::class, 'incident_record_collaborators', 'employee_id', 'incident_id')
+            ->as('access')
+            ->using(IncidentRecordCollaborator::class)
+            ->withPivot('is_editor');
     }
 
     /**
