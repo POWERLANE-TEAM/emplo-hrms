@@ -89,9 +89,9 @@
     </x-layout.employee.nav.sidebar.nav-item>
     @endcan
 
-    {{-- Employee, HR Manager, Supervisor --}}
+    {{-- HR Manager --}}
 
-    @canAny([UserPermission::VIEW_DAILY_ATTENDANCE, UserPermission::VIEW_ALL_DAILY_ATTENDANCE])
+    @canAny([UserPermission::VIEW_ALL_DAILY_ATTENDANCE])
     <x-layout.employee.nav.sidebar.nested-nav-items
 
         :href="!$user->hasPermissionTo(UserPermission::VIEW_ALL_DAILY_ATTENDANCE) ? route($navAttendanceRoute) : null"
@@ -151,8 +151,6 @@
     </x-layout.employee.nav.sidebar.nested-nav-items>
     @endcan
 
-
-
     {{-- Employee --}}
     @canAny([UserPermission::VIEW_EMP_PERFORMANCE_EVAL])
     <x-layout.employee.nav.sidebar.nav-item
@@ -162,6 +160,17 @@
         nav_txt="Performance"
         :defaultIcon="['src' => 'performances', 'alt' => '']"
         :activeIcon="['src' => 'performances', 'alt' => '']">
+    </x-layout.employee.nav.sidebar.nav-item>
+    @endcan
+
+    @canAny([UserPermission::VIEW_EMP_PERFORMANCE_EVAL])
+    <x-layout.employee.nav.sidebar.nav-item
+        href="{{ route($routePrefix . '.attendance') }}"
+        :active="request()->routeIs($routePrefix . '.attendance')"
+        class="order-2"
+        nav_txt="Attendance"
+        :defaultIcon="['src' => 'attendance', 'alt' => '']"
+        :activeIcon="['src' => 'attendance', 'alt' => '']">
     </x-layout.employee.nav.sidebar.nav-item>
     @endcan
 
@@ -216,6 +225,7 @@
         </x-layout.employee.nav.sidebar.nav-item>
     @endcan
 
+    {{-- HR Manager --}}
     @can(UserPermission::VIEW_RESIGNATION)
         <x-layout.employee.nav.sidebar.nav-item
             href="{{ route($routePrefix . '.separation.index') }}"
@@ -307,6 +317,7 @@
     </x-layout.employee.nav.sidebar.nested-nav-items>
     @endcan
 
+    {{-- HR Manager --}}
     @can(UserPermission::VIEW_REPORTS)
         <x-layout.employee.nav.sidebar.nav-item
             href="{{ route($routePrefix . '.reports') }}"

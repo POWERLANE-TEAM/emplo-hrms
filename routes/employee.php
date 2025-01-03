@@ -106,6 +106,17 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
      */
     Route::get('/attendance/index', [AttendanceController::class, 'index'])
     ->name('attendance.index');
+
+    Route::get('{employee}/attendance', [AttendanceController::class, 'show'])
+    ->middleware(['permission:' . UserPermission::VIEW_ALL_DAILY_ATTENDANCE->value])
+    ->middleware(['permission:' . UserPermission::VIEW_ALL_DAILY_ATTENDANCE->value])
+    ->name('attendance.show');
+
+    Route::get('/attendance/{range}', [AttendanceController::class, 'index'])
+    ->middleware(['permission:' . UserPermission::VIEW_ALL_DAILY_ATTENDANCE->value])
+    ->middleware(['permission:' . UserPermission::VIEW_ALL_DAILY_ATTENDANCE->value])
+    ->where('range', 'daily|period')
+    ->name('attendance.index');
     
     /**
      * Performances
@@ -413,15 +424,11 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     /**
      * General: Attendance
      */
-    Route::get('{employee}/attendance', [AttendanceController::class, 'show'])
-    ->name('attendance.show');
 
-    Route::get('/attendance/{range}', [AttendanceController::class, 'index'])
-        ->where('range', 'daily|period')
-        ->name('attendance.index');
-
-
-
+    Route::get('/attendance', function () {
+            return view('employee.basic.attendance.index');
+    })->name('attendance');
+    
     /**
      * General: Payslip
      */

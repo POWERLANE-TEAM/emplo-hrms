@@ -27,8 +27,18 @@
     </div>
 
     @if($selectedView === 'summary')
-        <livewire:employee.attendance.summary :period="$selectedPeriod"/>
+        <livewire:employee.attendance.summary :period="$selectedPeriod" />
     @else
         <livewire:employee.attendance.workday-logs :period="$selectedPeriod" />
     @endif
 </div>
+
+@script
+<script>
+
+    Livewire.hook('morph.added', ({ el }) => {
+        initCalendar();
+    });
+</script>
+
+@endscript

@@ -3,6 +3,10 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 
 document.addEventListener("DOMContentLoaded", function () {
+    initCalendar();
+});
+
+export function initCalendar() {
     const calendarEl = document.getElementById("calendar");
 
     const calendar = new Calendar(calendarEl, {
@@ -149,4 +153,7 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
         console.log('Sidebar element not found');
     }
-});
+
+}
+
+window.initCalendar = initCalendar;

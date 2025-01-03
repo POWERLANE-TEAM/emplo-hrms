@@ -59,7 +59,7 @@
     <section class="mt-4 px-4">
         <div class="row">
             <div class="col-8">
-                <div class="mt-3 ms-3">
+                <div class="mt-3 ms-3" wire:ignore>
                     <div id="calendar"></div>
                 </div>
             </div>
@@ -73,7 +73,7 @@
                         This is monthly breakdown.
                         It should also be updated if the user
                         navigates to other months in the calendar. -->
-                        
+
                 </div>
 
                 <!-- Metrics -->
@@ -117,3 +117,13 @@
         </div>
     </section>
 </div>
+
+@script
+<script>
+    document.addEventListener('livewire:init', () => {
+        Livewire.on('refreshCalendar', () => {
+            initCalendar();
+        });
+    });
+</script>
+@endscript
