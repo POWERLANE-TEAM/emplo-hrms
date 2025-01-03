@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Enums\UserPermission;
 use App\Models\Employee;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Contracts\View\View;
@@ -34,6 +34,11 @@ if ($range == 'daily') {
     /* Get single resource */
     public function show(Employee $employee = null): ViewFactory|View
     {
+
+        if (!auth()->user()->hasPermissionTo(UserPermission::VIEW_ALL_DAILY_ATTENDANCE->value)) {
+            abort(403); // Forbidden
+        }
+        
         if(empty($employee)){
             $employee = auth()->user()->account;
         }

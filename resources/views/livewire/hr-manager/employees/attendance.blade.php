@@ -44,28 +44,28 @@
                     <p class="pb-3">
                         <i class="bi bi-circle-fill fs-5 text-primary me-2"></i>
                         <b>11</b> day(s) worked on <!-- BACK-END REPLACE: Total count of regular schedule work days -->
-                        <span class="text-primary">regular schedule</span>
+                        <span class="fw-bold text-primary">regular schedule</span>
                     </p>
 
                     <!-- Overtime -->
                     <p class="pb-3">
                         <i class="bi bi-circle-fill fs-5 text-info me-2"></i>
                         <b>2</b> day(s) of <!-- BACK-END REPLACE: Total count of days worked in overtime -->
-                        <span class="text-info">overtime</span> worked
+                        <span class="fw-bold text-info">overtime</span> worked
                     </p>
 
                     <!-- Documented Leave -->
                     <p class="pb-3">
                         <i class="bi bi-circle-fill fs-5 text-warning me-2"></i>
                         <b>1</b> day(s) documented <!-- BACK-END REPLACE: Total count of documented leave. -->
-                        <span class="text-warning">leave</span> day
+                        <span class="fw-bold text-warning">leave</span> day
                     </p>
 
                     <!-- Absents -->
                     <p class="pb-3">
                         <i class="bi bi-circle-fill fs-5 text-danger me-2"></i>
                         <b>1</b> <!-- BACK-END REPLACE: Total count of absents. -->
-                        <span class="text-danger">absents</span>(undocumented leave day)
+                        <span class="fw-bold text-danger">absents</span>(undocumented leave day)
                     </p>
                 </div>
             </div>
