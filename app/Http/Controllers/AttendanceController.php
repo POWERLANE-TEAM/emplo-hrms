@@ -2,15 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employee;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Contracts\View\View;
 
 class AttendanceController extends Controller
 {
     /* Show all resource */
-    public function index(): ViewFactory|View
+    public function index(string $range): ViewFactory|View
     {
-        return view('employee.attendance.index');
+if ($range == 'daily') {
+    return view('employee.attendance.daily');
+        }else{
+            return view('employee.attendance.tracking');
+        }
+
     }
 
     /* Show form page for creating resource */
@@ -26,10 +32,14 @@ class AttendanceController extends Controller
     }
 
     /* Get single resource */
-    // public function show(): ViewFactory|View
-    // {
-    //     return view();
-    // }
+    public function show(Employee $employee = null): ViewFactory|View
+    {
+        if(empty($employee)){
+            $employee = auth()->user()->account;
+        }
+
+        return view('employee.attendance.work-log', ['employee' => $employee]);
+    }
 
     /* Patch or edit */
     public function update()

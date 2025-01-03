@@ -396,8 +396,13 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     /**
      * General: Attendance
      */
-    Route::get('/attendance/index', [AttendanceController::class, 'index'])
+    Route::get('{employee}/attendance', [AttendanceController::class, 'show'])
+    ->name('attendance.show');
+
+    Route::get('/attendance/{range}', [AttendanceController::class, 'index'])
+        ->where('range', 'daily|period')
         ->name('attendance.index');
+
 
 
     /**
