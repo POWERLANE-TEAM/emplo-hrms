@@ -102,17 +102,6 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
 
     /**
-     * Performances
-     */
-    Route::prefix('performance')->name('performance.')->group(function () {
-        Route::prefix('evaluation')->name('evaluation.')->group(function () {
-            Route::get('/{employeeStatus}', [PerformanceDetailController::class, 'index'])
-                ->where('employeeStatus', 'probationary|regular')
-                ->name('index');
-        });
-    });
-
-    /**
      * Profile
      */
     Route::get('profile', function () {
@@ -145,12 +134,20 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
 
     /**
+     * Performance
+     */
+    Route::prefix('performance')->name('performance.')->group(function () {
+        Route::prefix('evaluation')->name('evaluation.')->group(function () {
+            Route::get('/{employeeStatus}', [PerformanceDetailController::class, 'index'])
+                ->where('employeeStatus', 'probationary|regular')
+                ->name('index');
+        });
+    });
+
+
+    /**
      * Performance Evaluation Results: Probationay
      */
-
-    Route::get('hr/evaluation-results/probationary/all', function () {
-        return view('/employee.hr-manager.evaluations.probationary.all');
-    })->name('hr.evaluation-results.probationary.all');
 
     Route::get('evaluation-results/probationary', function () {
         return view('/employee.hr-manager.evaluations.probationary.evaluation-results');
@@ -159,11 +156,6 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     /**
      * Performance Evaluation Results: Regular
      */
-
-    Route::get('hr/evaluation-results/regular/all', function () {
-        return view('/employee.hr-manager.evaluations.regular.all');
-    })->name('hr.evaluation-results.regular.all');
-
     Route::get('evaluation-results/regular', function () {
         return view('/employee.hr-manager.evaluations.regular.evaluation-results');
     })->name('evaluation-results.regular');
@@ -243,7 +235,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         Route::prefix('issues')->name('issues.')->group(function () {
             Route::get('/', [IssueController::class, 'index'])
                 ->name('index');
-        
+
             Route::get('create', [IssueController::class, 'create'])
                 ->name('create');
 
@@ -261,7 +253,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
             Route::get('general', [IssueController::class, 'general'])
                 ->can('viewAnyIssueReport')
                 ->name('general');
-        
+
             Route::get('{issue}/review', [IssueController::class, 'review'])
                 ->can('viewAnyIssueReport')
                 ->name('review');
@@ -272,7 +264,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
             Route::get('/', [IncidentController::class, 'index'])
                 ->can('updateIncidentReport')
                 ->name('index');
-        
+
             Route::get('create', [IncidentController::class, 'create'])
                 ->can('createIncidentReport')
                 ->name('create');
@@ -351,7 +343,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     Route::get('seperation/coe/request', function () {
         return view('employee.hr-manager.separation.coe.request');
     })->name('separation.coe.request');
-    
+
     /**
      * Reports
      */

@@ -180,7 +180,7 @@ class EvaluationTable extends DataTableComponent
 
         // Maybe add specific area restriction based on permission?
 
-        $this->limitSpecificArea($query);
+        // $this->limitSpecificArea($query);
 
         if (!$this->getAppliedFilterWithValue('attendance-date')) {
             //
