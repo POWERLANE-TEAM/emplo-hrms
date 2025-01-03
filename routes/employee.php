@@ -102,17 +102,6 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
 
     /**
-     * Performances
-     */
-    Route::prefix('performance')->name('performance.')->group(function () {
-        Route::prefix('evaluation')->name('evaluation.')->group(function () {
-            Route::get('/{employeeStatus}', [PerformanceDetailController::class, 'index'])
-                ->where('employeeStatus', 'probationary|regular')
-                ->name('index');
-        });
-    });
-
-    /**
      * Profile
      */
     Route::get('profile', function () {
@@ -145,12 +134,20 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
 
     /**
+     * Performance
+     */
+    Route::prefix('performance')->name('performance.')->group(function () {
+        Route::prefix('evaluation')->name('evaluation.')->group(function () {
+            Route::get('/{employeeStatus}', [PerformanceDetailController::class, 'index'])
+                ->where('employeeStatus', 'probationary|regular')
+                ->name('index');
+        });
+    });
+
+
+    /**
      * Performance Evaluation Results: Probationay
      */
-
-    Route::get('hr/evaluation-results/probationary/all', function () {
-        return view('/employee.hr-manager.evaluations.probationary.all');
-    })->name('hr.evaluation-results.probationary.all');
 
     Route::get('evaluation-results/probationary', function () {
         return view('/employee.hr-manager.evaluations.probationary.evaluation-results');
@@ -159,11 +156,6 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     /**
      * Performance Evaluation Results: Regular
      */
-
-    Route::get('hr/evaluation-results/regular/all', function () {
-        return view('/employee.hr-manager.evaluations.regular.all');
-    })->name('hr.evaluation-results.regular.all');
-
     Route::get('evaluation-results/regular', function () {
         return view('/employee.hr-manager.evaluations.regular.evaluation-results');
     })->name('evaluation-results.regular');
