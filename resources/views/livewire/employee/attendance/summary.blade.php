@@ -55,7 +55,7 @@
 
     <hr>
 
-    <!-- SECTION: Calendar & Attendance Breakdown -->
+    <!-- SECTION: Monthly Calendar & Attendance Breakdown -->
     <section class="mt-4 px-4">
         <div class="row">
             <div class="col-8">
@@ -68,6 +68,12 @@
 
                 <div class="d-flex justify-content-center pt-4">
                     <h2 class="fw-bold">Attendance Breakdown</h>
+
+                        <!-- BACK-END REPLACE NOTE:
+                        This is monthly breakdown.
+                        It should also be updated if the user
+                        navigates to other months in the calendar. -->
+                        
                 </div>
 
                 <!-- Metrics -->
@@ -88,16 +94,23 @@
 
                     <!-- Documented Leave -->
                     <p class="pb-1">
-                        <i class="bi bi-circle-fill fs-5 text-warning me-2"></i>
+                        <i class="bi bi-circle-fill fs-5 text-teal me-2"></i>
                         <b>1</b> day(s) documented <!-- BACK-END REPLACE: Total count of documented leave. -->
-                        <span class="fw-bold text-warning">leave</span> day
+                        <span class="fw-bold text-teal">leave</span> day
                     </p>
 
                     <!-- Absents -->
                     <p class="pb-1">
                         <i class="bi bi-circle-fill fs-5 text-danger me-2"></i>
                         <b>1</b> <!-- BACK-END REPLACE: Total count of absents. -->
-                        <span class="fw-bold text-danger">absents</span>(undocumented leave day)
+                        <span class="fw-bold text-danger">absents </span>(undocumented leave day)
+                    </p>
+
+                    <!-- Tardy -->
+                    <p class="pb-1">
+                        <i class="bi bi-circle-fill fs-5 text-warning me-2"></i>
+                        <b>1</b> <!-- BACK-END REPLACE: Total count of absents. -->
+                        <span class="fw-bold text-warning">tardy </span>(late)
                     </p>
                 </div>
             </div>
