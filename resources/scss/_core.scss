@@ -680,11 +680,17 @@ body {
 }
 
 [class*="tab-section"] {
-    display: none;
+    visibility: hidden;
+    height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 0.3s;
 }
 
 [class*="tab-section"].active-section {
-    display: block;
+    visibility: visible;
+    height: auto;
+    opacity: 1;
 }
 
 [class*="tab-section"] p {
