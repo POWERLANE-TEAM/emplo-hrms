@@ -37,7 +37,7 @@ class LeaveController extends Controller
 
     public function subordinateBalance()
     {
-        return view('employee.supervisor.leaves.balance');
+        return view('employee.supervisor.requests.leaves.balance');
     }
 
     public function generalBalance()
