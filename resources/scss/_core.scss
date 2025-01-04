@@ -679,15 +679,15 @@ body {
     font-size: 0.6rem;
 }
 
-.tab-section {
+[class*="tab-section"] {
     display: none;
 }
 
-.tab-section.active-section {
+[class*="tab-section"].active-section {
     display: block;
 }
 
-.tab-section p {
+[class*="tab-section"] p {
     margin-bottom: 0 !important;
 }
 
