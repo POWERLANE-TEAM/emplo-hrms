@@ -1,4 +1,4 @@
-<section id="attendance" class="tab-section">
+<section id="attendance" class="tab-section-employee">
 
     <!-- SECTION: Payroll Period Dropdown -->
     <section class="px-4">
