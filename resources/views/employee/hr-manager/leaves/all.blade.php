@@ -2,7 +2,7 @@
 @use ('Illuminate\View\ComponentAttributeBag')
 
 @section('head')
-<title>Employee Leave Requests</title>
+<title>Leave Requests</title>
 <script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 @endsection
@@ -23,13 +23,17 @@
 
 <x-headings.main-heading :isHeading="true">
     <x-slot:heading>
-        {{ __('Employee Leave Requests') }}
+        {{ __('Leave Requests') }}
     </x-slot:heading>
 
     <x-slot:description>
         {{ __('View and manage each employee\'s leave requests here.') }}
     </x-slot:description>
 </x-headings.main-heading>
+
+<div class="pb-2">
+    @include('components.includes.tab_navs.leaves.hr-leaves-navs')
+</div>
 
 <livewire:employee.tables.any-leave-requests-table :$routePrefix />
 
