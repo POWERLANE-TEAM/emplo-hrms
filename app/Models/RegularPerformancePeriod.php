@@ -3,25 +3,36 @@
 namespace App\Models;
 
 use Illuminate\Support\Str;
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class PerformancePeriod extends Model
+class RegularPerformancePeriod extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'perf_period_id';
+    protected $primaryKey = 'period_id';
 
     protected $fillable = [
-        'perf_period_name',
+        'period_name',
+        'start_date',
+        'end_date',
     ];
+
+    public function getIntervalAttribute()
+    {
+        $start = Carbon::make($this->start_date)->format('F d');
+        $end = Carbon::make($this->end_date)->format('F d, Y');
+
+        return "{$start} - {$end}";
+    }
 
     /**
      * Accessor / mutator for performance period name.
      */
-    protected function perfPeriodName(): Attribute
+    protected function periodName(): Attribute
     {
         return Attribute::make(
             get: fn (string $value) => ucwords($value),
@@ -30,10 +41,10 @@ class PerformancePeriod extends Model
     }
 
     /**
-     * Get the performance evaluation records during the performance period.
+     * Get regular employees performance evaluation records during the performance period.
      */
     public function details(): HasMany
     {
-        return $this->hasMany(PerformanceDetail::class, 'perf_period_id', 'perf_period_id');
+        return $this->hasMany(RegularPerformance::class, 'period_id', 'period_id');
     }
 }
