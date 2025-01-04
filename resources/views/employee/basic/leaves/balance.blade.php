@@ -21,15 +21,20 @@
 @endPushOnce
 @section('content')
 
-<x-headings.header-link heading="{{ __('Leaves') }}"
+<x-headings.header-link heading="{{ __('Leave Balance') }}"
     description="{{ __('Manage your leave balance and request leaves.') }}" label="Request Leave" nonce="{{ $nonce }}"
     href="{{ route($routePrefix . '.leaves.create') }}">
 </x-headings.header-link>
 
+
 <div class="pb-2">
-@include('components.includes.tab_navs.leaves.balance.general-leaves-navs')
+    @include('components.includes.tab_navs.leaves.general-leaves-navs')
 </div>
 
-<livewire:employee.tables.my-leaves-table />
+<!-- REPLACE STATIC PAGE LINK: Leave Policy -->
+
+<x-info_panels.callout type="info" :description="__('Leave balances reset annually on January 1st. Learn more about the company\'s <a href=\'#\' class=\'text-link-blue hover-opacity\'>leave policy</a>')"></x-info_panels.callout>
+
+<!-- BACK-END REPLACE TABLE: Replace with Leave Balance table -->
 
 @endsection

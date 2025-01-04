@@ -22,8 +22,6 @@
         : $routePrefix . '.attendance.show';
 
 
-
-
     /**
      * Payslip
      */
@@ -60,8 +58,8 @@
         ? $routePrefix . '.leaves.requests.general'
         : $routePrefix . '.leaves.index';
     $navLeavesActivePattern = $user->hasPermissionTo(UserPermission::VIEW_ALL_LEAVES)
-        ? $routePrefix . '.hr.leaves.*'
-        : $routePrefix . '.general.leaves.*';
+        ? $routePrefix . '.leaves.*'
+        : $routePrefix . '.leaves.*';
 
 @endphp
 
