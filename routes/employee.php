@@ -238,11 +238,11 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         Route::get('balance', [LeaveController::class, 'myBalance'])
             ->name('balance');
 
-        Route::get('balance/supervisor', [LeaveController::class, 'subordinateBalance'])
-        ->name('balance.general');
+        Route::get('balance/subordinates', [LeaveController::class, 'subordinateBalance'])
+        ->name('balance.subordinates');
         
         Route::get('balance/general', [LeaveController::class, 'generalBalance'])
-            ->name('balance.hr');
+            ->name('balance.general');
 
         Route::get('overview', [LeaveController::class, 'request'])
             ->name('overview');
