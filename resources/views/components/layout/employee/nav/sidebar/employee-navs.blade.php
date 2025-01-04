@@ -260,7 +260,7 @@
     @can(UserPermission::VIEW_ALL_EMPLOYEES)
         <x-layout.employee.nav.sidebar.nav-item
             href="{{ route($routePrefix . '.index') }}"
-            :active="request()->routeIs($routePrefix . '.employees')"
+            :active="request()->routeIs($routePrefix . '.employees.*')"
             class="order-3" nav_txt="Employees"
             :defaultIcon="['src' => 'employee', 'alt' => '']"
             :activeIcon="['src' => 'employee', 'alt' => '']">
