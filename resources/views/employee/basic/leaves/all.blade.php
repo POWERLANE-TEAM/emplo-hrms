@@ -27,7 +27,7 @@
 </x-headings.header-link>
 
 <div class="pb-2">
-@include('components.includes.tab_navs.leaves.balance.general-leaves-navs')
+@include('components.includes.tab_navs.leaves.general-leaves-navs')
 </div>
 
 <livewire:employee.tables.my-leaves-table />
