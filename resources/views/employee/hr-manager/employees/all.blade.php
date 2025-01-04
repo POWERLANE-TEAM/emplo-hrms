@@ -11,7 +11,7 @@
 @endPushOnce
 
 @pushOnce('scripts')
-    {{-- @vite(['resources/js/employee/.js']) --}}
+    @vite(['resources/js/employee/hr-manager/employee-info.js'])
 
     @rappasoftTableStyles
 
