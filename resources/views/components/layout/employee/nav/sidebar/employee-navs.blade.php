@@ -60,6 +60,7 @@
     $navLeavesActivePattern = $user->hasPermissionTo(UserPermission::VIEW_ALL_LEAVES)
         ? $routePrefix . '.leaves.*'
         : $routePrefix . '.leaves.*';
+        
 
 @endphp
 
@@ -174,7 +175,7 @@
 
     @canAny([UserPermission::VIEW_LEAVES, UserPermission::VIEW_ALL_LEAVES])
     <x-layout.employee.nav.sidebar.nav-item :href="route($navLeavesRoute)"
-        :active="request()->routeIs($navLeavesActivePattern)"
+        :active="request()->routeIs($routePrefix . '.leaves.*') && !request()->routeIs($routePrefix . '.leaves.requests')"
         class="order-{{ $navLeavesOrder }}"
         nav_txt="Leaves"
         :defaultIcon="['src' => 'leaves', 'alt' => '']"
