@@ -142,7 +142,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
 
     /**
-     * Settings & Privacy
+     * ALL: Settings & Privacy
      */
     Route::get('settings', function () {
         return view('employee.profile.settings');
@@ -151,6 +151,14 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     Route::get('activity-logs', function () {
         return view('employee.profile.activity-logs');
     })->name('activity-logs');
+
+    /**
+     * ALL: Archive
+     */
+    Route::get('archive', function () {
+        return view('employee.archive.index');
+    })->name('archive');
+
 
 
     /**
