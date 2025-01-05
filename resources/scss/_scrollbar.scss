@@ -29,6 +29,7 @@
     &:has(:focus-within) {
         &::-webkit-scrollbar-thumb {
             visibility: visible;
+            background-color: color-mix(in srgb, var(--scrollbar-show-color) , transparent);
         }
     }
 }
