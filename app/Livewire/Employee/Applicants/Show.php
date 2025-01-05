@@ -73,7 +73,7 @@ class Show extends Component
                     $this->notYetInterview = false;
                 }
 
-                if(!$this->isInitAssessment && $this->notYetExam || $this->notYetInterview){
+                if($this->isInitAssessment && $this->notYetExam || $this->notYetInterview){
                     $this->evaluationNotice = 'The assign button(s) are currently disabled. They will be available once the scheduled date arrives.';
                 }
 

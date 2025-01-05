@@ -6,6 +6,7 @@ use App\Enums\UserPermission;
 use App\Http\Controllers\InitialInterviewController;
 use App\Livewire\Forms\ScheduleForm;
 use App\Models\Application;
+use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -15,10 +16,8 @@ class SetInitInterviewDate extends Component
 
     public Application $application;
 
-    public function mount(Application $application)
-    {
-        $this->application = $application;
-    }
+    #[Locked]
+    public string $postMethod;
 
     #[On('submit-init-interview-sched-form')]
     public function store()

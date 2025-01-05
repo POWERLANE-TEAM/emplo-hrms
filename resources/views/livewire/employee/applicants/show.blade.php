@@ -71,28 +71,14 @@
             @if($isInitAssessment)
 
             <div class="d-flex gap-4 min-w-100 ">
-                <div class="bg-body-secondary rounded-3 col p-3 px-lg-5 py-md-4 text-center position-relative">
-                    <button class="btn position-absolute text-primary top-0 end-0 m-1" type="button">
-                        <i class="icon icon-large" data-lucide="pencil-line"></i>
-                    </button>
-                    <label for="applicant-exam-date" class="d-block text-uppercase text-primary fw-medium mt-2">Examination</label>
-                    <strong id="applicant-exam-date" class="applicant-exam-date fs-4 fw-bold">
-                        {{ $examSchedF }}
-                    </strong>
 
-                </div>
+                <x-employee.applicants.examination-card :application="$application">
+                    {{ $examSchedF }}
+                </x-employee.applicants.examination-card >
 
-                <div class="bg-body-secondary rounded-3 col p-3 px-lg-5 py-md-4 text-center position-relative">
-                    <button class="btn position-absolute text-primary top-0 end-0 m-1" type="button">
-                        <i class="icon icon-large" data-lucide="pencil-line"></i>
-                    </button>
-                    <label for="applicant-interview-date" class="d-block text-uppercase text-primary fw-medium mt-2">Initial
-                        Interview</label>
-                    <strong id="applicant-interview-date" class="applicant-interview-date fs-4 fw-bold">
-                        {{ $initialInterviewSchedF }}
-                    </strong>
-
-                </div>
+                <x-employee.applicants.init-interview-card :application="$application">
+                    {{ $initialInterviewSchedF }}
+                </x-employee.applicants.init-interview-card>
             </div>
 
             <div class="d-flex gap-4 min-w-100 ">
@@ -162,6 +148,6 @@
         </div>
     </div>
 
-    @include('livewire.employee.applicants.show-nav-btn')
+    <x-employee.applicants.show-nav-btn/>
 
 </div>
