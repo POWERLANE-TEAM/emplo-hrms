@@ -29,7 +29,7 @@
             </x-slot:description>
         </x-headings.main-heading>
     </div>
-    <div class="col-6 pt-2 text-end">
+    <div class="col-6 d-flex justify-content-end align-items-center">
         <button onclick="openModal('requestOvertimeModal')" class="btn btn-primary">
         <i data-lucide="plus-circle" class="icon icon-large me-2"></i>{{ __('Request Overtime') }}</button>
     </div>
