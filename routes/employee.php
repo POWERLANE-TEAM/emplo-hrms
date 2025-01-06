@@ -32,6 +32,50 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     // ==========================================
 
     /**
+     * Organization
+     */
+    Route::prefix('job-family')->name('job-family.')->group(function () {
+        Route::get('create', function () {
+            return view('employee.admin.job-family.create');
+        })
+            ->can(UserPermission::CREATE_JOB_FAMILY)
+            ->name('create');
+    });
+
+    Route::prefix('job-title')->name('job-title.')->group(function () {
+        Route::get('create', function () {
+            return view('employee.admin.job-title.create');
+        })
+            ->can(UserPermission::CREATE_JOB_TITLE)
+            ->name('create');
+    });
+
+    Route::prefix('job-board')->name('job-board.')->group(function () {
+        Route::get('create', function () {
+            return view('employee.admin.job-board.create');
+        })->name('create');
+    });
+
+
+    /**
+     * Calendar Manager
+     */
+    Route::get('calendar', function () {
+        return view('employee.admin.calendar');
+    })->name('calendar');
+
+    /**
+     * Announcement
+     */
+    Route::prefix('announcement')->name('announcement.')->group(function () {
+        Route::get('create', function () {
+            return view('employee.admin.announcements.create');
+        })
+            ->can(UserPermission::CREATE_ANNOUNCEMENT)
+            ->name('create');
+    });
+    
+    /**
      * Dashboard
      */
     Route::get('/dashboard', DashboardController::class)
