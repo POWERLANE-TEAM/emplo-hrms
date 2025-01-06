@@ -389,8 +389,8 @@
     @can(UserPermission::VIEW_ANNOUNCEMENT_MANAGER)
         @if($routePrefix === 'admin')
             <x-layout.employee.nav.sidebar.nav-item
-                href="{{ route($routePrefix . '.announcement.create') }}"
-                :active="request()->routeIs($routePrefix . '.announcement.create')"
+                href="{{ route($routePrefix . '.announcement.index') }}"
+                :active="request()->routeIs($routePrefix . '.announcement.*')"
                 class=""
                 nav_txt="Announcements"
                 :defaultIcon="['src' => 'announcements', 'alt' => '']"
@@ -412,13 +412,13 @@
 <x-layout.employee.nav.sidebar.nav-group :sidebar_expanded="$sidebar_expanded" class="" txt_collapsed="Managerial"
     txt_expanded="">
 
-    @can(UserPermission::VIEW_EMPLOYEE_MANAGER, UserPermission::VIEW_JOB_LISTING_MANAGER ,)
+    @can(UserPermission::VIEW_EMPLOYEE_MANAGER, UserPermission::VIEW_JOB_LISTING_MANAGER)
         <x-layout.employee.nav.sidebar.nested-nav-items
             nav_txt="Organization"
             :active="request()->routeIs([$routePrefix . '.job-family.*', $routePrefix . '.job-title.*'])"
             class=""
-            :defaultIcon="['src' => 'relations', 'alt' => 'Oragnization']"
-            :activeIcon="['src' => 'relations', 'alt' => 'Oragnization']"
+            :defaultIcon="['src' => 'jobboard', 'alt' => 'Oragnization']"
+            :activeIcon="['src' => 'jobboard', 'alt' => 'Oragnization']"
             :children="[
                 [
                     'href' => route($routePrefix . '.job-family.index'),
@@ -432,6 +432,15 @@
                 ],
             ]">
         </x-layout.employee.nav.sidebar.nested-nav-items>
+
+        <x-layout.employee.nav.sidebar.nav-item
+            href="{{ route($routePrefix . '.announcement.index') }}"
+            :active="request()->routeIs($routePrefix . '.announcement.*')"
+            class=""
+            nav_txt="Announcements"
+            :defaultIcon="['src' => 'announcements', 'alt' => '']"
+            :activeIcon="['src' => 'announcements', 'alt' => '']">
+        </x-layout.employee.nav.sidebar.nav-item>
     @endcan
 
 </x-layout.employee.nav.sidebar.nav-group>

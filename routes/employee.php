@@ -52,7 +52,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
             return view('employee.admin.job-title.index');
         })
             ->name('index');
-            
+
         Route::get('create', function () {
             return view('employee.admin.job-title.create');
         })
@@ -78,6 +78,11 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
      * Announcement
      */
     Route::prefix('announcement')->name('announcement.')->group(function () {
+        Route::get('/', function () {
+            return view('employee.admin.announcements.index');
+        })
+            ->name('index');
+
         Route::get('create', function () {
             return view('employee.admin.announcements.create');
         })
