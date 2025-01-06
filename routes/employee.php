@@ -70,9 +70,19 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     /**
      * Calendar Manager
      */
-    Route::get('calendar', function () {
-        return view('employee.admin.calendar');
-    })->name('calendar');
+
+     Route::prefix('calendar')->name('calendar.')->group(function () {
+        Route::get('monthly', function () {
+            return view('employee.admin.calendar.monthly');
+        })
+            ->name('monthly');
+
+        Route::get('list', function () {
+            return view('employee.admin.calendar.list');
+        })
+            ->name('list');
+    });
+
 
     /**
      * Announcement

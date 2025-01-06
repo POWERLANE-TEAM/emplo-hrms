@@ -69,7 +69,7 @@ Route::middleware('auth')->group(function () {
         })
             ->can(UserPermission::VIEW_ALL_ACCOUNTS)
             ->name('index');
-        
+
         Route::get('create', function () {
             return view('employee.admin.accounts.create');
         })
@@ -113,10 +113,18 @@ Route::middleware('auth')->group(function () {
     /**
      * Calendar
      */
-    Route::get('calendar', function () {
-        return view('employee.admin.calendar');
-    })->name('calendar');
 
+    Route::prefix('calendar')->name('calendar.')->group(function () {
+        Route::get('monthly', function () {
+            return view('employee.admin.calendar.monthly');
+        })
+            ->name('monthly');
+
+        Route::get('list', function () {
+            return view('employee.admin.calendar.list');
+        })
+            ->name('list');
+    });
 
     /**
      * Job Listings
@@ -136,7 +144,7 @@ Route::middleware('auth')->group(function () {
             return view('employee.admin.announcements.index');
         })
             ->name('index');
-            
+
         Route::get('create', function () {
             return view('employee.admin.announcements.create');
         })
@@ -186,17 +194,17 @@ Route::middleware('auth')->group(function () {
     /**
      * Attendance
      */
-    Route::middleware('can:'.UserPermission::UPDATE_BIOMETRIC_DEVICE->value)
+    Route::middleware('can:' . UserPermission::UPDATE_BIOMETRIC_DEVICE->value)
         ->prefix('attendance')->name('attendance.')->group(function () {
 
-        // Biometric Device Manager
-        Route::get('biometric-device', function () {
-            return view('employee.admin.attendance.biometric-device');
-        })->name('biometric-device');
+            // Biometric Device Manager
+            Route::get('biometric-device', function () {
+                return view('employee.admin.attendance.biometric-device');
+            })->name('biometric-device');
 
-        // Attendance Logs
-        Route::get('logs', function () {
-            return view('employee.admin.attendance.index');
-        })->name('logs');
-    });
+            // Attendance Logs
+            Route::get('logs', function () {
+                return view('employee.admin.attendance.index');
+            })->name('logs');
+        });
 });

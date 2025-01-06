@@ -361,8 +361,8 @@
     @can(UserPermission::VIEW_CALENDAR_MANAGER)
         @if($routePrefix === 'admin')
             <x-layout.employee.nav.sidebar.nav-item
-                href="{{ route($routePrefix . '.calendar') }}"
-                :active="request()->routeIs($routePrefix . '.calendar')"
+                href="{{ route($routePrefix . '.calendar.monthly') }}"
+                :active="request()->routeIs($routePrefix . '.calendar.*')"
                 class=""
                 nav_txt="Calendar"
                 :defaultIcon="['src' => 'calendar-manager', 'alt' => '']"
@@ -441,6 +441,16 @@
             :defaultIcon="['src' => 'announcements', 'alt' => '']"
             :activeIcon="['src' => 'announcements', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
+
+        <x-layout.employee.nav.sidebar.nav-item
+            href="{{ route($routePrefix . '.calendar.monthly') }}"
+            :active="request()->routeIs($routePrefix . '.calendar.*')"
+            class=""
+            nav_txt="Calendar"
+            :defaultIcon="['src' => 'calendar-manager', 'alt' => '']"
+            :activeIcon="['src' => 'calendar', 'alt' => '']">
+        </x-layout.employee.nav.sidebar.nav-item>
+
     @endcan
 
 </x-layout.employee.nav.sidebar.nav-group>
