@@ -36,29 +36,22 @@
         <ul class="nested-menu list-unstyled ">
             @foreach ($children as $child)
                 @php
-                    //  Determine if the current route matches the child's route
-                    $isActive = url()->current() == $child['href'];
-                    // dump($child['href']);
-                    // dump($isActive);
+                    // Check if active is a boolean or an array of routes
+                    $isActive = is_bool($child['active'])
+                        ? $child['active']
+                        : (is_array($child['active'])
+                            ? request()->routeIs($child['active'])
+                            : request()->routeIs($child['active']));
 
-                    // Optional additional check for active state
-                    if ($isActive && $isActiveClosure instanceof \Closure) {
+                    if ($isActiveClosure instanceof \Closure) {
                         $isActive = $isActiveClosure($isActive, $child);
                     }
-
-                    // dump($child['href']);
-                    // dump($isActive);
                 @endphp
 
                 <li class="nested-item {{ $isActive ? 'active' : '' }}
-                    {{ $isActive ? 'hovered' : '' }}" style="position: relative; padding-left: 20px;">
-
-                    {{-- Vertical Line  --}}
-
-                    <x-nav-link href="{{ $child['href'] }}" active="{{ $isActive }}"
-                        class="d-flex align-items-center nav-link">
+                            {{ $isActive ? 'hovered' : '' }}" style="position: relative; padding-left: 20px;">
+                    <x-nav-link href="{{ $child['href'] }}" :active="$isActive" class="d-flex align-items-center nav-link">
                         <span class="vertical-menu-line"></span>
-
                         <span class="nested-item-text fs-7 fw-light">{{ $child['nav_txt'] }}</span>
                     </x-nav-link>
                 </li>

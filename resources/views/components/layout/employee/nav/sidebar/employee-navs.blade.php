@@ -267,13 +267,13 @@
             :activeIcon="['src' => 'employee', 'alt' => 'Relations']"
             :children="[
                 [
-                    'href' => route($routePrefix . '.index'),
-                    'active' => request()->routeIs($routePrefix . '.employees'),
+                    'href' => route($routePrefix . '.employees.masterlist.all'),
+                    'active' => request()->routeIs($routePrefix . '.employees.masterlist.*'),
                     'nav_txt' => 'Employees'
                 ],
                 [
                     'href' => route($routePrefix . '.employees.archive'),
-                    'active' => request()->routeIs($routePrefix . '.employees.archive.*'),
+                    'active' => request()->routeIs($routePrefix . '.employees.archive*'),
                     'nav_txt' => 'Archived 201 Records'
                 ],
             ]">
@@ -302,7 +302,6 @@
                 ],
             ]">
         </x-layout.employee.nav.sidebar.nested-nav-items>
-
     @endcan
 
     {{-- HR Manager --}}
@@ -355,52 +354,61 @@
         </x-layout.employee.nav.sidebar.nested-nav-items>
     @endcan
 
+    
     {{-- Head Admin --}}
     @can(UserPermission::VIEW_EMPLOYEE_MANAGER)
-        <x-layout.employee.nav.sidebar.nav-item
-            href="{{ route($routePrefix . '.job-family.create') }}"
-            :active="request()->routeIs([$routePrefix . '.job-family.create', $routePrefix . '.job-title.create'])"
-            class=""
-            nav_txt="Organization"
-            :defaultIcon="['src' => 'employee', 'alt' => '']"
-            :activeIcon="['src' => 'employee', 'alt' => '']">
-        </x-layout.employee.nav.sidebar.nav-item>
+        @if($routePrefix === 'admin')
+            <x-layout.employee.nav.sidebar.nav-item
+                href="{{ route($routePrefix . '.job-family.index') }}"
+                :active="request()->routeIs([$routePrefix . '.job-family.*', $routePrefix . '.job-title.*'])"
+                class=""
+                nav_txt="Organization"
+                :defaultIcon="['src' => 'employee', 'alt' => '']"
+                :activeIcon="['src' => 'employee', 'alt' => '']">
+            </x-layout.employee.nav.sidebar.nav-item>
+        @endif
     @endcan
 
     {{-- Head Admin --}}
     @can(UserPermission::VIEW_CALENDAR_MANAGER)
-        <x-layout.employee.nav.sidebar.nav-item
-            href="{{ route($routePrefix . '.calendar') }}"
-            :active="request()->routeIs($routePrefix . '.calendar')"
-            class=""
-            nav_txt="Calendar"
-            :defaultIcon="['src' => 'calendar-manager', 'alt' => '']"
-            :activeIcon="['src' => 'calendar', 'alt' => '']">
-        </x-layout.employee.nav.sidebar.nav-item>
+        @if($routePrefix === 'admin')
+            <x-layout.employee.nav.sidebar.nav-item
+                href="{{ route($routePrefix . '.calendar.monthly') }}"
+                :active="request()->routeIs($routePrefix . '.calendar.*')"
+                class=""
+                nav_txt="Calendar"
+                :defaultIcon="['src' => 'calendar-manager', 'alt' => '']"
+                :activeIcon="['src' => 'calendar', 'alt' => '']">
+            </x-layout.employee.nav.sidebar.nav-item>
+        @endif
     @endcan
 
     {{-- Head Admin --}}
     @can(UserPermission::VIEW_JOB_LISTING_MANAGER)
-        <x-layout.employee.nav.sidebar.nav-item
-            href="{{ route($routePrefix . '.job-board.create') }}"
-            :active="request()->routeIs($routePrefix . '.job-board.create')"
-            class=""
-            nav_txt="Job Board"
-            :defaultIcon="['src' => 'jobboard', 'alt' => '']"
-            :activeIcon="['src' => 'job-listing', 'alt' => '']">
-        </x-layout.employee.nav.sidebar.nav-item>
+        @if($routePrefix === 'admin')
+            <x-layout.employee.nav.sidebar.nav-item
+                href="{{ route($routePrefix . '.job-board.create') }}"
+                :active="request()->routeIs($routePrefix . '.job-board.create')"
+                class=""
+                nav_txt="Job Board"
+                :defaultIcon="['src' => 'jobboard', 'alt' => '']"
+                :activeIcon="['src' => 'job-listing', 'alt' => '']">
+            </x-layout.employee.nav.sidebar.nav-item>
+        @endif
     @endcan
 
     {{-- Head Admin --}}
     @can(UserPermission::VIEW_ANNOUNCEMENT_MANAGER)
-        <x-layout.employee.nav.sidebar.nav-item
-            href="{{ route($routePrefix . '.announcement.create') }}"
-            :active="request()->routeIs($routePrefix . '.announcement.create')"
-            class=""
-            nav_txt="Announcements"
-            :defaultIcon="['src' => 'announcements', 'alt' => '']"
-            :activeIcon="['src' => 'announcements', 'alt' => '']">
-        </x-layout.employee.nav.sidebar.nav-item>
+        @if($routePrefix === 'admin')
+            <x-layout.employee.nav.sidebar.nav-item
+                href="{{ route($routePrefix . '.announcement.index') }}"
+                :active="request()->routeIs($routePrefix . '.announcement.*')"
+                class=""
+                nav_txt="Announcements"
+                :defaultIcon="['src' => 'announcements', 'alt' => '']"
+                :activeIcon="['src' => 'announcements', 'alt' => '']">
+            </x-layout.employee.nav.sidebar.nav-item>
+        @endif
     @endcan
 
 </x-layout.employee.nav.sidebar.nav-group>
@@ -408,12 +416,66 @@
 
 {{--
 * |--------------------------------------------------------------------------
+* | ADMINISTRATION
+* |--------------------------------------------------------------------------
+--}}
+
+@can(UserPermission::VIEW_ADMINISTRATION_SECTION)
+<x-layout.employee.nav.sidebar.nav-group :sidebar_expanded="$sidebar_expanded" class="" txt_collapsed="Admin"
+    txt_expanded="Administration">
+
+    @can(UserPermission::VIEW_EMPLOYEE_MANAGER, UserPermission::VIEW_JOB_LISTING_MANAGER)
+        <x-layout.employee.nav.sidebar.nested-nav-items
+            nav_txt="Organization"
+            :active="request()->routeIs([$routePrefix . '.job-family.*', $routePrefix . '.job-title.*'])"
+            class=""
+            :defaultIcon="['src' => 'jobboard', 'alt' => 'Oragnization']"
+            :activeIcon="['src' => 'jobboard', 'alt' => 'Oragnization']"
+            :children="[
+                [
+                    'href' => route($routePrefix . '.job-family.index'),
+                    'active' => [$routePrefix . '.job-family.*', $routePrefix . '.job-title.*'],
+                    'nav_txt' => 'Job Family & Positions'
+                ],
+                [
+                    'href' => route($routePrefix . '.job-board.create'),
+                    'active' => request()->routeIs($routePrefix . '.job-board.create'),
+                    'nav_txt' => 'Job Board'
+                ],
+            ]">
+        </x-layout.employee.nav.sidebar.nested-nav-items>
+
+        <x-layout.employee.nav.sidebar.nav-item
+            href="{{ route($routePrefix . '.announcement.index') }}"
+            :active="request()->routeIs($routePrefix . '.announcement.*')"
+            class=""
+            nav_txt="Announcements"
+            :defaultIcon="['src' => 'announcements', 'alt' => '']"
+            :activeIcon="['src' => 'announcements', 'alt' => '']">
+        </x-layout.employee.nav.sidebar.nav-item>
+
+        <x-layout.employee.nav.sidebar.nav-item
+            href="{{ route($routePrefix . '.calendar.monthly') }}"
+            :active="request()->routeIs($routePrefix . '.calendar.*')"
+            class=""
+            nav_txt="Calendar"
+            :defaultIcon="['src' => 'calendar-manager', 'alt' => '']"
+            :activeIcon="['src' => 'calendar', 'alt' => '']">
+        </x-layout.employee.nav.sidebar.nav-item>
+
+    @endcan
+
+</x-layout.employee.nav.sidebar.nav-group>
+@endcan
+
+{{--
+* |--------------------------------------------------------------------------
 * | Managerial
 * |--------------------------------------------------------------------------
 --}}
 
-<x-layout.employee.nav.sidebar.nav-group :sidebar_expanded="$sidebar_expanded" class="" txt_collapsed="Managerial"
-    txt_expanded="">
+<x-layout.employee.nav.sidebar.nav-group :sidebar_expanded="$sidebar_expanded" class="" txt_collapsed="Manage"
+    txt_expanded="Managerial">
 
     {{-- Supervisor / Head Dept --}}
     @can(UserPermission::VIEW_ALL_SUBORDINATE_REQUESTS)
@@ -492,8 +554,8 @@
 * |--------------------------------------------------------------------------
 --}}
 
-<x-layout.employee.nav.sidebar.nav-group :sidebar_expanded="$sidebar_expanded" class="" txt_collapsed="AI Tools"
-    txt_expanded="">
+<x-layout.employee.nav.sidebar.nav-group :sidebar_expanded="$sidebar_expanded" class="" txt_collapsed="AI"
+    txt_expanded="AI Tools">
 
     {{-- HR Manager --}}
     @can(UserPermission::VIEW_TALENT_EVALUATOR)
@@ -510,7 +572,8 @@
     {{-- HR Manager --}}
     @can(UserPermission::VIEW_PLAN_GENERATOR)
         <x-layout.employee.nav.sidebar.nav-item
-            href="#" :active="request()->is('#')"
+            href="{{ route($routePrefix . '.pip.index') }}"
+            :active="request()->routeIs($routePrefix . '.pip.*')"
             class=""
             nav_txt="Plan Generator"
             :defaultIcon="['src' => 'plan-generator', 'alt' => '']" :activeIcon="['src' => 'plan-generator', 'alt' => '']">

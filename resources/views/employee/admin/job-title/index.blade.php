@@ -26,10 +26,10 @@
 {{-- Body/Content Section --}}
 @section('content')
 
-<x-headings.header-link heading="{{ __('Announcements') }}"
-    description="{{ __('Create, edit and delete announcements.') }}" label="Add Announcement" nonce="{{ $nonce }}"
-    href="{{ route($routePrefix . '.announcement.create') }}" />
+<x-headings.header-link heading="{{ __('Organization') }}"
+    description="{{ __('Manage the organization\'s job family and positions.') }}" label="Create" nonce="{{ $nonce }}"
+    href="{{ route($routePrefix . '.job-family.create') }}" />
 
-<!-- BACK-END TABLE REPLACE: List of Announcements -->
+@include('components.includes.tab_navs.org-tab-navs')
 
 @endsection

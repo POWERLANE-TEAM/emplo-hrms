@@ -26,10 +26,9 @@
 {{-- Body/Content Section --}}
 @section('content')
 
-<x-headings.header-link heading="{{ __('Announcements') }}"
-    description="{{ __('Create, edit and delete announcements.') }}" label="Add Announcement" nonce="{{ $nonce }}"
-    href="{{ route($routePrefix . '.announcement.create') }}" />
+<x-headings.header-link heading="{{ __('Calendar') }}"
+    description="{{ __('Manage the company\'s holidays, events and schedules.') }}" label="View Monthly" nonce="{{ $nonce }}"
+    href="{{ route($routePrefix . '.calendar.monthly') }}" />
 
-<!-- BACK-END TABLE REPLACE: List of Announcements -->
-
+BACK-END REPLACE TABLE: List of all of the events, holidays, etc.
 @endsection

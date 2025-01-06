@@ -50,7 +50,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     })->name('activity-logs');
 
     /**
-     * Archive
+     * Recycle Bin
      */
     Route::get('recycle-bin', function () {
         return view('employee.recycle-bin.index');
@@ -69,6 +69,75 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     // HR MANAGER ROUTES
     // ==========================================
 
+    /**
+     * Organization
+     */
+    Route::prefix('job-family')->name('job-family.')->group(function () {
+        Route::get('/', function () {
+            return view('employee.admin.job-family.index');
+        })
+            ->name('index');
+
+        Route::get('create', function () {
+            return view('employee.admin.job-family.create');
+        })
+            ->can(UserPermission::CREATE_JOB_FAMILY)
+            ->name('create');
+    });
+
+    Route::prefix('job-title')->name('job-title.')->group(function () {
+        Route::get('/', function () {
+            return view('employee.admin.job-title.index');
+        })
+            ->name('index');
+
+        Route::get('create', function () {
+            return view('employee.admin.job-title.create');
+        })
+            ->can(UserPermission::CREATE_JOB_TITLE)
+            ->name('create');
+    });
+
+    Route::prefix('job-board')->name('job-board.')->group(function () {
+        Route::get('create', function () {
+            return view('employee.admin.job-board.create');
+        })->name('create');
+    });
+
+
+    /**
+     * Calendar Manager
+     */
+
+     Route::prefix('calendar')->name('calendar.')->group(function () {
+        Route::get('monthly', function () {
+            return view('employee.admin.calendar.monthly');
+        })
+            ->name('monthly');
+
+        Route::get('list', function () {
+            return view('employee.admin.calendar.list');
+        })
+            ->name('list');
+    });
+
+
+    /**
+     * Announcement
+     */
+    Route::prefix('announcement')->name('announcement.')->group(function () {
+        Route::get('/', function () {
+            return view('employee.admin.announcements.index');
+        })
+            ->name('index');
+
+        Route::get('create', function () {
+            return view('employee.admin.announcements.create');
+        })
+            ->can(UserPermission::CREATE_ANNOUNCEMENT)
+            ->name('create');
+    });
+    
     /**
      * Dashboard
      */
@@ -174,6 +243,24 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     Route::get('resume-evaluator/rankings', function () {
         return view('/employee.hr-manager.resume-evaluator.rankings');
     })->name('resume-evaluator.rankings');
+
+
+    /**
+     * PIP Generation
+     */
+    Route::prefix('pip')->name('pip.')->group(function () {
+        Route::get('/', function () {
+            return view('employee.hr-manager.pip.index');
+        })
+            ->can(UserPermission::VIEW_PLAN_GENERATOR)
+            ->name('index');
+
+        Route::get('generated', function () {
+            return view('employee.hr-manager.pip.generated');
+        })
+            ->can(UserPermission::VIEW_PLAN_GENERATOR)
+            ->name('generated');
+    });
 
 
     /**
@@ -357,13 +444,13 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
     Route::get('/employees/all', function () {
         return view('employee.hr-manager.employees.all');
-    })->name('employees.all');
+    })->name('employees.masterlist.all');
 
     Route::get('{employee}', function (Employee $employee) {
         return view('employee.hr-manager.employees.information', compact('employee'));
     })
         ->whereNumber('employee')
-        ->name('employees.information');
+        ->name('employees.masterlist.information');
 
 
     /**

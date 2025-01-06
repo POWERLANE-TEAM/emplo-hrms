@@ -108,6 +108,7 @@ enum UserPermission: string
     case VIEW_ANY_INCIDENT_REPORT = 'view any incident report';
     case VIEW_REPORTS = 'view reports';
     case VIEW_ARCHIVED_EMP_201_FILES = 'view archived employee 201 files';
+    case VIEW_ADMINISTRATION_SECTION = 'view administration';
 
         // Update cases goes here
     case UDPATE_JOB_LISTING = 'update job listing';
@@ -253,6 +254,7 @@ enum UserPermission: string
             self::VIEW_ANY_INCIDENT_REPORT => 'View an incident report',
             self::VIEW_REPORTS => 'View reports',
             self::VIEW_ARCHIVED_EMP_201_FILES => 'View archived employee 201 files',
+            self::VIEW_ADMINISTRATION_SECTION => 'View administration section',
 
             // Update labels goes here
             self::UDPATE_JOB_LISTING => 'Update job listing/s',
