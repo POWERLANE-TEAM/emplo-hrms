@@ -95,6 +95,13 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::VIEW_ALL_COE_REQUESTS->value,
             UserPermission::VIEW_ANY_INCIDENT_REPORT->value,
             UserPermission::VIEW_REPORTS->value,
+            UserPermission::VIEW_ADMINISTRATION_SECTION->value,
+            UserPermission::VIEW_EMPLOYEE_MANAGER->value,
+            UserPermission::VIEW_JOB_LISTING_MANAGER->value,
+            UserPermission::VIEW_CALENDAR_MANAGER->value,
+            UserPermission::VIEW_ANNOUNCEMENT_MANAGER->value,
+            UserPermission::CREATE_JOB_FAMILY->value,
+            UserPermission::CREATE_JOB_TITLE->value,
 
             // Create cases goes here
             UserPermission::CREATE_APPLICANT_EXAM_SCHEDULE->value,
