@@ -52,9 +52,9 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     /**
      * Archive
      */
-    Route::get('archive', function () {
-        return view('employee.archive.index');
-    })->name('archive');
+    Route::get('recycle-bin', function () {
+        return view('employee.recycle-bin.index');
+    })->name('recycle-bin');
 
 
     /**
@@ -398,9 +398,9 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     /**
      * Archive
      */
-    Route::get('hr/archive', function () {
+    Route::get('employees/archive', function () {
         return view('/employee.hr-manager.archive.index');
-    })->name('hr.archive');
+    })->name('employees.archive');
 
     // =========================================
     // SUPERVISOR ROUTES
