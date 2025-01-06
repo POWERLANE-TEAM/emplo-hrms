@@ -12,8 +12,8 @@ import "../../tooltip.js";
 // ================================
 
 document.addEventListener("DOMContentLoaded", () => {
-    const tabs = document.querySelectorAll(".tab-link");
-    const sections = document.querySelectorAll(".tab-section");
+    const tabs = document.querySelectorAll(".tab-link-employee");
+    const sections = document.querySelectorAll(".tab-section-employee");
 
     // Default active tab and section
     tabs[0].classList.add("fw-bold", "text-primary", "underline-padded");

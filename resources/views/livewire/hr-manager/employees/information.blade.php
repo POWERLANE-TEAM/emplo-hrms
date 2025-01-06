@@ -1,4 +1,4 @@
-<section id="information" class="tab-section">
+<section id="information" class="tab-section-employee">
     <div class="row">
         <!-- Left Column: Work / Personal Information -->
         <div class="col-md-6">

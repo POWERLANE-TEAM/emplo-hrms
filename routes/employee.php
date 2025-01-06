@@ -250,6 +250,18 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         Route::get('/', [LeaveController::class, 'index'])
             ->name('index');
 
+        Route::get('balance', [LeaveController::class, 'myBalance'])
+            ->name('balance');
+
+        Route::get('balance/subordinates', [LeaveController::class, 'subordinateBalance'])
+        ->name('balance.subordinates');
+        
+        Route::get('balance/general', [LeaveController::class, 'generalBalance'])
+            ->name('balance.general');
+
+        Route::get('overview', [LeaveController::class, 'request'])
+            ->name('overview');
+        
         Route::get('create', [LeaveController::class, 'create'])
             ->name('create');
 
