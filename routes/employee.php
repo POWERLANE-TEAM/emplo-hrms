@@ -50,7 +50,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     })->name('activity-logs');
 
     /**
-     * Archive
+     * Recycle Bin
      */
     Route::get('recycle-bin', function () {
         return view('employee.recycle-bin.index');
@@ -246,6 +246,24 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
 
     /**
+     * PIP Generation
+     */
+    Route::prefix('pip')->name('pip.')->group(function () {
+        Route::get('/', function () {
+            return view('employee.hr-manager.pip.index');
+        })
+            ->can(UserPermission::VIEW_PLAN_GENERATOR)
+            ->name('index');
+
+        Route::get('generated', function () {
+            return view('employee.hr-manager.pip.generated');
+        })
+            ->can(UserPermission::VIEW_PLAN_GENERATOR)
+            ->name('generated');
+    });
+
+
+    /**
      * Performance
      */
     Route::prefix('performance')->name('performance.')->group(function () {
@@ -426,13 +444,13 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
     Route::get('/employees/all', function () {
         return view('employee.hr-manager.employees.all');
-    })->name('employees.all');
+    })->name('employees.masterlist.all');
 
     Route::get('{employee}', function (Employee $employee) {
         return view('employee.hr-manager.employees.information', compact('employee'));
     })
         ->whereNumber('employee')
-        ->name('employees.information');
+        ->name('employees.masterlist.information');
 
 
     /**
