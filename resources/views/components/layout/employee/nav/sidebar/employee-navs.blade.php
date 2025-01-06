@@ -267,13 +267,13 @@
             :activeIcon="['src' => 'employee', 'alt' => 'Relations']"
             :children="[
                 [
-                    'href' => route($routePrefix . '.index'),
-                    'active' => request()->routeIs($routePrefix . '.employees'),
+                    'href' => route($routePrefix . '.employees.masterlist.all'),
+                    'active' => request()->routeIs($routePrefix . '.employees.masterlist.*'),
                     'nav_txt' => 'Employees'
                 ],
                 [
                     'href' => route($routePrefix . '.employees.archive'),
-                    'active' => request()->routeIs($routePrefix . '.employees.archive.*'),
+                    'active' => request()->routeIs($routePrefix . '.employees.archive*'),
                     'nav_txt' => 'Archived 201 Records'
                 ],
             ]">
@@ -572,7 +572,8 @@
     {{-- HR Manager --}}
     @can(UserPermission::VIEW_PLAN_GENERATOR)
         <x-layout.employee.nav.sidebar.nav-item
-            href="#" :active="request()->is('#')"
+            href="{{ route($routePrefix . '.pip.index') }}"
+            :active="request()->routeIs($routePrefix . '.pip.*')"
             class=""
             nav_txt="Plan Generator"
             :defaultIcon="['src' => 'plan-generator', 'alt' => '']" :activeIcon="['src' => 'plan-generator', 'alt' => '']">
