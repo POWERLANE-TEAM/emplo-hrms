@@ -30,6 +30,26 @@ class LeaveController extends Controller
         return view('employee.basic.leaves.view', compact('leave'));
     }
 
+    public function myBalance()
+    {
+        return view('employee.basic.leaves.balance');
+    }
+
+    public function subordinateBalance()
+    {
+        return view('employee.supervisor.requests.leaves.balance');
+    }
+
+    public function generalBalance()
+    {
+        return view('employee.hr-manager.leaves.balance');
+    }
+
+    public function overview()
+    {
+        return view('employee.basic.leaves.overview');
+    }
+
     public function request()
     {
         return view('employee.supervisor.requests.leaves.all');

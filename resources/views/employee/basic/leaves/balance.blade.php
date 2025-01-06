@@ -2,7 +2,7 @@
 @use ('Illuminate\View\ComponentAttributeBag')
 
 @section('head')
-<title>Leave Requests</title>
+<title>Balance</title>
 <script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 @endsection
@@ -11,30 +11,34 @@
 @endPushOnce
 
 @pushOnce('scripts')
-    @vite(['resources/js/employee/hr-manager/performance.js'])
+    @vite(['resources/js/employee/basic/leaves.js'])
 
 @endPushOnce
 
 @pushOnce('styles')
-    @vite(['resources/css/employee/hr-manager/performance.css'])
+    @vite(['resources/css/employee/basic/leaves.css'])
 
 @endPushOnce
 @section('content')
 
 <x-headings.main-heading :isHeading="true">
     <x-slot:heading>
-        {{ __('Leave Requests') }}
+        {{ __('Leave Balance') }}
     </x-slot:heading>
 
     <x-slot:description>
-        {{ __('View and manage each employee\'s leave requests here.') }}
+        {{ __('View and keep track of your leave balance.') }}
     </x-slot:description>
 </x-headings.main-heading>
 
 <div class="pb-2">
-    @include('components.includes.tab_navs.leaves.hr-leaves-navs')
+    @include('components.includes.tab_navs.leaves.general-leaves-navs')
 </div>
 
-<livewire:employee.tables.any-leave-requests-table :$routePrefix />
+<!-- REPLACE STATIC PAGE LINK: Leave Policy -->
+
+<x-info_panels.callout type="info" :description="__('Leave balances reset annually on January 1st. Learn more about the company\'s <a href=\'#\' class=\'text-link-blue hover-opacity\'>leave policy</a>')"></x-info_panels.callout>
+
+<!-- BACK-END REPLACE TABLE: Replace with Leave Balance table -->
 
 @endsection

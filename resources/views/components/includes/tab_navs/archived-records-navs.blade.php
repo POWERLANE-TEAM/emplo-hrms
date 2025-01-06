@@ -1,14 +1,16 @@
 {{-- 
 * |-------------------------------------------------------------------------- 
-* | @include for Employee Information's tabular navigation bars
+* | @include for Archive Employees 201 Records
 * |-------------------------------------------------------------------------- 
 --}}
 
-<x-sub-navs.in-page-tab-nav tabClass="tab-link-employee" :tabs="[
+<x-sub-navs.in-page-tab-nav :tabs="[
         ['title' => 'Information', 'section' => 'information'],
         ['title' => 'Attendance', 'section' => 'attendance'],
         ['title' => 'Payslips', 'section' => 'payslips'],
         ['title' => 'Contract', 'section' => 'contract'],
-        ['title' => 'Leave Balance', 'section' => 'leaves'],
-        ['title' => 'Overtime', 'section' => 'overtime'],
+        ['title' => 'Leaves', 'section' => 'leaves'],
+        ['title' => 'OT Summary', 'section' => 'overtime'],
+        ['title' => 'Evaluations', 'section' => 'evaluations'],
+        ['title' => 'Issues', 'section' => 'issues'],
 ]" />

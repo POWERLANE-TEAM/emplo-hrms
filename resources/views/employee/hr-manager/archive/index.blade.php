@@ -2,39 +2,37 @@
 @use ('Illuminate\View\ComponentAttributeBag')
 
 @section('head')
-<title>Leave Requests</title>
+<title>Archived 201 Records</title>
 <script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
+<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+
 @endsection
 
 @pushOnce('pre-scripts')
 @endPushOnce
 
 @pushOnce('scripts')
-    @vite(['resources/js/employee/hr-manager/performance.js'])
-
+    @vite(['resources/js/employee/hr-manager/archive.js'])
 @endPushOnce
 
 @pushOnce('styles')
-    @vite(['resources/css/employee/hr-manager/performance.css'])
+    @vite(['resources/css/employee/hr-manager/dashboard.css'])
 
 @endPushOnce
+
 @section('content')
 
 <x-headings.main-heading :isHeading="true">
     <x-slot:heading>
-        {{ __('Leave Requests') }}
+        {{__('Archived Employee 201 Records')}}
     </x-slot:heading>
 
     <x-slot:description>
-        {{ __('View and manage each employee\'s leave requests here.') }}
+        <p>{{ __('View and track resigned employees\' archived 201 records.') }}</p>
     </x-slot:description>
 </x-headings.main-heading>
 
-<div class="pb-2">
-    @include('components.includes.tab_navs.leaves.hr-leaves-navs')
-</div>
-
-<livewire:employee.tables.any-leave-requests-table :$routePrefix />
-
+<!-- BACK-END REPLACE: TABLE OF ALL RESIGNED EMPLOYEES -->
 @endsection

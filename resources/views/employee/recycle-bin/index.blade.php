@@ -1,40 +1,36 @@
-@extends('components.layout.employee.layout', ['description' => 'Employee Dashboard', 'nonce' => $nonce])
+@extends('components.layout.employee.layout', ['nonce' => $nonce])
 @use ('Illuminate\View\ComponentAttributeBag')
 
 @section('head')
-<title>Leave Requests</title>
+<title>Recycle Bin</title>
 <script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 @endsection
 
 @pushOnce('pre-scripts')
+    {{-- --}}
 @endPushOnce
 
 @pushOnce('scripts')
-    @vite(['resources/js/employee/hr-manager/performance.js'])
-
+    @vite(['resources/js/employee/hr/dashboard.js'])
 @endPushOnce
 
 @pushOnce('styles')
-    @vite(['resources/css/employee/hr-manager/performance.css'])
-
+    @vite(['resources/css/employee/main.css'])
 @endPushOnce
+
 @section('content')
 
 <x-headings.main-heading :isHeading="true">
     <x-slot:heading>
-        {{ __('Leave Requests') }}
+        {{__('Recycle Bin')}}
     </x-slot:heading>
 
     <x-slot:description>
-        {{ __('View and manage each employee\'s leave requests here.') }}
+        <p><span class="mb-0">Restore or permanently delete your previously deleted files.</p>
     </x-slot:description>
 </x-headings.main-heading>
 
-<div class="pb-2">
-    @include('components.includes.tab_navs.leaves.hr-leaves-navs')
-</div>
-
-<livewire:employee.tables.any-leave-requests-table :$routePrefix />
+<!-- BACK-END REPLACE TABLE: Recycle Bin per user -->
 
 @endsection

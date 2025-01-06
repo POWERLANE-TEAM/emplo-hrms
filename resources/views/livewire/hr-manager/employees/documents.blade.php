@@ -1,4 +1,4 @@
-<section id="documents" class="tab-section d-none">
+<section id="documents" class="tab-section-employee d-none">
     <div class="row">
         <div class="col d-flex align-items-center justify-content-start">
             <div class="hover-opacity pe-auto">

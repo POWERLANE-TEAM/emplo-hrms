@@ -58,8 +58,9 @@
         ? $routePrefix . '.leaves.requests.general'
         : $routePrefix . '.leaves.index';
     $navLeavesActivePattern = $user->hasPermissionTo(UserPermission::VIEW_ALL_LEAVES)
-        ? $routePrefix . '.hr.leaves.*'
-        : $routePrefix . '.general.leaves.*';
+        ? $routePrefix . '.leaves.*'
+        : $routePrefix . '.leaves.*';
+        
 
 @endphp
 
@@ -174,7 +175,7 @@
 
     @canAny([UserPermission::VIEW_LEAVES, UserPermission::VIEW_ALL_LEAVES])
     <x-layout.employee.nav.sidebar.nav-item :href="route($navLeavesRoute)"
-        :active="request()->routeIs($navLeavesActivePattern)"
+        :active="request()->routeIs($routePrefix . '.leaves.*') && !request()->routeIs($routePrefix . '.leaves.requests')"
         class="order-{{ $navLeavesOrder }}"
         nav_txt="Leaves"
         :defaultIcon="['src' => 'leaves', 'alt' => '']"
@@ -257,14 +258,27 @@
     @endcan
 
     {{-- HR Manager --}}
-    @can(UserPermission::VIEW_ALL_EMPLOYEES)
-        <x-layout.employee.nav.sidebar.nav-item
-            href="{{ route($routePrefix . '.index') }}"
-            :active="request()->routeIs($routePrefix . '.employees')"
-            class="order-3" nav_txt="Employees"
-            :defaultIcon="['src' => 'employee', 'alt' => '']"
-            :activeIcon="['src' => 'employee', 'alt' => '']">
-        </x-layout.employee.nav.sidebar.nav-item>
+    @can(UserPermission::VIEW_ALL_EMPLOYEES, UserPermission::VIEW_ARCHIVED_EMP_201_FILES)
+        <x-layout.employee.nav.sidebar.nested-nav-items
+            nav_txt="Employees"
+            :active="request()->routeIs($routePrefix . '.employees.*')"
+            class="order-3"
+            :defaultIcon="['src' => 'employee', 'alt' => 'Relations']"
+            :activeIcon="['src' => 'employee', 'alt' => 'Relations']"
+            :children="[
+                [
+                    'href' => route($routePrefix . '.index'),
+                    'active' => request()->routeIs($routePrefix . '.employees'),
+                    'nav_txt' => 'Employees'
+                ],
+                [
+                    'href' => route($routePrefix . '.employees.archive'),
+                    'active' => request()->routeIs($routePrefix . '.employees.archive.*'),
+                    'nav_txt' => 'Archived 201 Records'
+                ],
+            ]">
+        </x-layout.employee.nav.sidebar.nested-nav-items>
+
     @endcan
 
     {{-- HR Manager --}}

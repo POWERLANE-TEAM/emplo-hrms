@@ -1,4 +1,4 @@
-<section id="attendance" class="tab-section">
+<section id="attendance" class="tab-section-employee">
 
     <!-- SECTION: Payroll Period Dropdown -->
     <section class="px-4">
@@ -56,25 +56,38 @@
 
                     <!-- Documented Leave -->
                     <p class="pb-3">
-                        <i class="bi bi-circle-fill fs-5 text-warning me-2"></i>
+                        <i class="bi bi-circle-fill fs-5 text-teal me-2"></i>
                         <b>1</b> day(s) documented <!-- BACK-END REPLACE: Total count of documented leave. -->
-                        <span class="fw-bold text-warning">leave</span> day
+                        <span class="fw-bold text-teal">leave</span> day
                     </p>
 
                     <!-- Absents -->
                     <p class="pb-3">
                         <i class="bi bi-circle-fill fs-5 text-danger me-2"></i>
                         <b>1</b> <!-- BACK-END REPLACE: Total count of absents. -->
-                        <span class="fw-bold text-danger">absents</span>(undocumented leave day)
+                        <span class="fw-bold text-danger">absents </span>(undocumented leave day)
+                    </p>
+
+                    <!-- Tardy -->
+                    <p class="pb-3">
+                        <i class="bi bi-circle-fill fs-5 text-warning me-2"></i>
+                        <b>1</b> <!-- BACK-END REPLACE: Total count of absents. -->
+                        <span class="fw-bold text-warning">tardy </span>(late)
                     </p>
                 </div>
             </div>
 
             <div class="col-8">
                 <div class="mt-3 ms-3">
-                <div id="calendar"></div>
+                    <div id="calendar"></div>
                 </div>
             </div>
         </div>
     </section>
 </section>
+
+@script
+<script>
+initCalendar();
+</script>
+@endscript
