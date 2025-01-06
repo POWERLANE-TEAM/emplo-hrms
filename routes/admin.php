@@ -81,6 +81,12 @@ Route::middleware('auth')->group(function () {
      * Job Family
      */
     Route::prefix('job-family')->name('job-family.')->group(function () {
+
+        Route::get('/', function () {
+            return view('employee.admin.job-family.index');
+        })
+            ->name('index');
+
         Route::get('create', function () {
             return view('employee.admin.job-family.create');
         })
@@ -92,6 +98,11 @@ Route::middleware('auth')->group(function () {
      * Job Title
      */
     Route::prefix('job-title')->name('job-title.')->group(function () {
+        Route::get('/', function () {
+            return view('employee.admin.job-title.index');
+        })
+            ->name('index');
+
         Route::get('create', function () {
             return view('employee.admin.job-title.create');
         })

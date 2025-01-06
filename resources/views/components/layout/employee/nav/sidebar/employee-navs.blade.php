@@ -415,14 +415,14 @@
     @can(UserPermission::VIEW_EMPLOYEE_MANAGER, UserPermission::VIEW_JOB_LISTING_MANAGER ,)
         <x-layout.employee.nav.sidebar.nested-nav-items
             nav_txt="Organization"
-            :active="request()->routeIs($routePrefix . '.relations.*')"
+            :active="request()->routeIs([$routePrefix . '.job-family.*', $routePrefix . '.job-title.*'])"
             class=""
             :defaultIcon="['src' => 'relations', 'alt' => 'Oragnization']"
             :activeIcon="['src' => 'relations', 'alt' => 'Oragnization']"
             :children="[
                 [
-                    'href' => route($routePrefix . '.job-family.create'),
-                    'active' => request()->routeIs([$routePrefix . '.job-family.create', $routePrefix . '.job-title.create']),
+                    'href' => route($routePrefix . '.job-family.index'),
+                    'active' => request()->is($routePrefix . '/job-family*', $routePrefix . '/job-title*'),
                     'nav_txt' => 'Job Family & Positions'
                 ],
                 [
