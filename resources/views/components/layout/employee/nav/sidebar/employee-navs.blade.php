@@ -262,7 +262,7 @@
     @can(UserPermission::VIEW_ALL_EMPLOYEES, UserPermission::VIEW_ARCHIVED_EMP_201_FILES)
         <x-layout.employee.nav.sidebar.nested-nav-items
             nav_txt="Employees"
-            :active="request()->routeIs($routePrefix . 'employees.*')"
+            :active="request()->routeIs($routePrefix . '.employees.*')"
             class="order-3"
             :defaultIcon="['src' => 'employee', 'alt' => 'Relations']"
             :activeIcon="['src' => 'employee', 'alt' => 'Relations']"
@@ -274,7 +274,7 @@
                 ],
                 [
                     'href' => route($routePrefix . '.employees.archive'),
-                    'active' => request()->routeIs($routePrefix . '.employees.archive'),
+                    'active' => request()->routeIs($routePrefix . '.employees.archive.*'),
                     'nav_txt' => 'Archived 201 Records'
                 ],
             ]">
