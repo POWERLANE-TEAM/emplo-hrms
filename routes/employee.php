@@ -102,6 +102,23 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
 
     /**
+     * Attendance
+     */
+    Route::get('/attendance/index', [AttendanceController::class, 'index'])
+    ->name('attendance.index');
+
+    Route::get('{employee}/attendance', [AttendanceController::class, 'show'])
+    ->middleware(['permission:' . UserPermission::VIEW_ALL_DAILY_ATTENDANCE->value])
+    ->middleware(['permission:' . UserPermission::VIEW_ALL_DAILY_ATTENDANCE->value])
+    ->name('attendance.show');
+
+    Route::get('/attendance/{range}', [AttendanceController::class, 'index'])
+    ->middleware(['permission:' . UserPermission::VIEW_ALL_DAILY_ATTENDANCE->value])
+    ->middleware(['permission:' . UserPermission::VIEW_ALL_DAILY_ATTENDANCE->value])
+    ->where('range', 'daily|period')
+    ->name('attendance.index');
+    
+    /**
      * Performances
      */
     Route::prefix('performance')->name('performance.')->group(function () {
@@ -145,12 +162,20 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
 
     /**
+     * Performance
+     */
+    Route::prefix('performance')->name('performance.')->group(function () {
+        Route::prefix('evaluation')->name('evaluation.')->group(function () {
+            Route::get('/{employeeStatus}', [PerformanceDetailController::class, 'index'])
+                ->where('employeeStatus', 'probationary|regular')
+                ->name('index');
+        });
+    });
+
+
+    /**
      * Performance Evaluation Results: Probationay
      */
-
-    Route::get('hr/evaluation-results/probationary/all', function () {
-        return view('/employee.hr-manager.evaluations.probationary.all');
-    })->name('hr.evaluation-results.probationary.all');
 
     Route::get('evaluation-results/probationary', function () {
         return view('/employee.hr-manager.evaluations.probationary.evaluation-results');
@@ -159,11 +184,6 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     /**
      * Performance Evaluation Results: Regular
      */
-
-    Route::get('hr/evaluation-results/regular/all', function () {
-        return view('/employee.hr-manager.evaluations.regular.all');
-    })->name('hr.evaluation-results.regular.all');
-
     Route::get('evaluation-results/regular', function () {
         return view('/employee.hr-manager.evaluations.regular.evaluation-results');
     })->name('evaluation-results.regular');
@@ -243,7 +263,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         Route::prefix('issues')->name('issues.')->group(function () {
             Route::get('/', [IssueController::class, 'index'])
                 ->name('index');
-        
+
             Route::get('create', [IssueController::class, 'create'])
                 ->name('create');
 
@@ -261,7 +281,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
             Route::get('general', [IssueController::class, 'general'])
                 ->can('viewAnyIssueReport')
                 ->name('general');
-        
+
             Route::get('{issue}/review', [IssueController::class, 'review'])
                 ->can('viewAnyIssueReport')
                 ->name('review');
@@ -272,7 +292,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
             Route::get('/', [IncidentController::class, 'index'])
                 ->can('updateIncidentReport')
                 ->name('index');
-        
+
             Route::get('create', [IncidentController::class, 'create'])
                 ->can('createIncidentReport')
                 ->name('create');
@@ -351,7 +371,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     Route::get('seperation/coe/request', function () {
         return view('employee.hr-manager.separation.coe.request');
     })->name('separation.coe.request');
-    
+
     /**
      * Reports
      */
@@ -404,10 +424,11 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     /**
      * General: Attendance
      */
-    Route::get('/attendance/index', [AttendanceController::class, 'index'])
-        ->name('attendance.index');
 
-
+    Route::get('/attendance', function () {
+            return view('employee.basic.attendance.index');
+    })->name('attendance');
+    
     /**
      * General: Payslip
      */
