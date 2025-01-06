@@ -6,16 +6,16 @@
         // ===========================
         // Resignation Letter State
         // ===========================
-        $isEmpty = true;
+        $isEmpty = false;
         // Boolean flag indicating if the resignation letter is submitted.
         // If true, it triggers the empty state (no letter submitted).
         // Toggle this flag if a resignation letter is submitted.
 
-        $determinedOn = '';
+        $determinedOn = '2021-03-29';
         // Date when HR processed and made a decision on the resignation (approval/rejection).
         // Set when HR approves or rejects the resignation.
 
-        $status = 'pending';
+        $status = 'approved';
         // Current status of the resignation letter submission.
         // Possible values: 'pending' (letter submitted but not yet reviewed),
         // 'approved' (resignation letter approved by HR), or 'rejected' (resignation letter rejected).
@@ -28,21 +28,18 @@
         // ===========================
         // Employee Status
         // ===========================
-        $employeeStatus = 'regular';
+        $employeeStatus = 'resigned';
         // The current employment status of the employee.
         // This is updated to 'resigned' if the resignation letter is approved.
 
 
         // ===========================
-        // COE Request
+        // COE Issuance
         // ===========================
-        $requestCertificate = false;
-        // Boolean flag to track if the employee has requested a Certificate of Employment (COE).
-        // Set to true if the employee requests for a COE after resignation approval.
 
-        $requestCertificateStatus = '';
-        // Status of the COE request.
-        // Possible values: 'pending' (request made but not yet processed),
+        $certificateStatus = 'pending';
+        // Status of the COE issuance.
+        // Possible values: 'pending' (is being processed),
         // 'issued' (COE has been issued to the employee).
     @endphp
 
@@ -94,7 +91,7 @@
     @if (!$isEmpty)
 
         <!-- BACK-END REPLACE NOTE: This notice should be always at every page after the employee has been
-            resigned. It can be moved to the layout. -->
+                resigned. It can be moved to the layout. -->
 
         @if ($employeeStatus === 'resigned')
             @include('components.includes.callouts.data-retention-notice')
@@ -177,34 +174,23 @@
 
                                     <!-- Request of COE -->
                                     @if ($employeeStatus === 'resigned')
-                                        @if ($requestCertificate)
-                                            <div class="mt-4">
-                                                <button class="btn btn-primary btn-lg w-100 mb-2">
-                                                    <i data-lucide="download" class="icon icon-large me-2"></i>
-                                                    Download Certificate of Employee
-                                                </button>
+                                        <div class="mt-4">
+                                            <button class="btn btn-primary btn-lg w-100 mb-2" disabled>
+                                                <i data-lucide="download" class="icon icon-large me-2"></i>
+                                                Download Certificate of Employee
+                                            </button>
 
-                                                <!-- BACK-END REPLACE: Remove disabled of the button if $requestCertificateStatus === 'issued' -->
-                                            </div>
+                                            <!-- BACK-END REPLACE: Remove disabled of the button if $certificateStatus === 'issued' -->
+                                        </div>
 
-                                            <small>
-                                                @if ($requestCertificateStatus === 'pending')
-                                                    Your request is currently <span class="fw-bold text-info">pending</span>. Please check
-                                                    back here
-                                                    for further updates.
-                                                @elseif ($requestCertificateStatus === 'issued')
-                                                    Your Certificate of Employment has been successfully <span
-                                                        class="text-primary fw-bold">issued</span>. You can now download it.
-                                                @endif
-                                            </small>
-                                        @else
-                                            <div class="mt-4">
-                                                <button class="btn btn-primary btn-lg w-100">
-                                                    <i data-lucide="file-badge" class="icon icon-large me-2"></i>
-                                                    Request for Certificate of Employment
-                                                </button>
-                                            </div>
-                                        @endif
+                                        <small>
+                                            @if ($certificateStatus === 'pending')
+                                                Your certificate is currently <span class="fw-bold text-info">pending</span>. Your certificate will be processed within 15 days of completing your clearance rendering.
+                                            @elseif ($certificateStatus === 'issued')
+                                                Your Certificate of Employment has been successfully <span
+                                                    class="text-primary fw-bold">issued</span>. You can now download it.
+                                            @endif
+                                        </small>
                                     @endif
                                 @endif
                             </div>
