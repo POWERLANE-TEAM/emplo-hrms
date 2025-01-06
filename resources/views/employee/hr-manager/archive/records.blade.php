@@ -24,29 +24,33 @@
 
 @section('content')
 
+<x-breadcrumbs>
+    <x-slot:breadcrumbs>
+        <x-breadcrumb :href="route($routePrefix . '.employees.archive')">
+            {{ __('Archived Employee Records') }}
+        </x-breadcrumb>
+        <x-breadcrumb :active="request()->routeIs($routePrefix . '.employees.archive.records')">
+            {{ __('201 Record') }}
+        </x-breadcrumb>
+    </x-slot:breadcrumbs>
+</x-breadcrumbs>
+
 <x-headings.main-heading :isHeading="true">
     <x-slot:heading>
-        {{__('Archived Employee 201 Records')}}
+        {{__('Clark, Avery Mendiola')}}
     </x-slot:heading>
 
     <x-slot:description>
-        <p>{{ __('View and track resigned employees\' archived 201 records.') }}</p>
+        <!-- BACK-END REPLACE: Resigned Date & Remaining Time on Retention -->
+        <p><span class="fw-bold mb-0">{{ __('Resigned on:') }}</span> June 15, 2021</p>
+        <p><span class="fw-bold mb-0">{{ __('Remaining Data Retention Period:') }}</span> 3 years and 195 days</p>
     </x-slot:description>
 </x-headings.main-heading>
 
-<!-- BACK-END REPLACE: TABLE OF ALL RESIGNED EMPLOYEES -->
 
-<section class="row pt-2">
-    <div class="col-md-4 d-flex align-items-center">
-        <!-- BACK-END REPLACE: All Employees -->
-        <x-form.boxed-selectpicker id="employee" :nonce="$nonce" :required="true" :options="['employee_1' => 'Cristian Manalang', 'employee_2' => 'Jobert Owen']" placeholder="Select employee">
-        </x-form.boxed-selectpicker>
-    </div>
-
-    <div class="col-md-8 d-flex align-items-center">
-        @include('components.includes.tab_navs.archived-records')
-    </div>
-</section>
+<div class="col-md-12 d-flex align-items-center">
+    @include('components.includes.tab_navs.archived-records-navs')
+</div>
 
 <!-- Information Tab Section-->
 
