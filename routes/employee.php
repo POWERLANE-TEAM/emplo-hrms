@@ -23,9 +23,47 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth'/* , 'verified' */)->group(function () {
 
+    // =========================================
+    // ALL USER ROUTES
+    // ==========================================
+
+    /**
+     * Profile
+     */
+    Route::get('profile', function () {
+        return view('employee.profile.information.index');
+    })->name('profile');
+
+    Route::get('profile/edit', function () {
+        return view('employee.profile.information.edit');
+    })->name('profile.edit');
+
+    /**
+     * Settings & Privacy
+     */
+    Route::get('settings', function () {
+        return view('employee.profile.settings');
+    })->name('settings');
+
+    Route::get('activity-logs', function () {
+        return view('employee.profile.activity-logs');
+    })->name('activity-logs');
+
+    /**
+     * Archive
+     */
+    Route::get('recycle-bin', function () {
+        return view('employee.recycle-bin.index');
+    })->name('recycle-bin');
+
+
+    /**
+     * Notifications
+     */
     Route::get('notifications', function () {
         return view('employee.notifications.index');
     })->name('notifications');
+
 
     // =========================================
     // HR MANAGER ROUTES
@@ -128,29 +166,6 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
                 ->name('index');
         });
     });
-
-    /**
-     * Profile
-     */
-    Route::get('profile', function () {
-        return view('employee.profile.information.index');
-    })->name('profile');
-
-    Route::get('profile/edit', function () {
-        return view('employee.profile.information.edit');
-    })->name('profile.edit');
-
-
-    /**
-     * Settings & Privacy
-     */
-    Route::get('settings', function () {
-        return view('employee.profile.settings');
-    })->name('settings');
-
-    Route::get('activity-logs', function () {
-        return view('employee.profile.activity-logs');
-    })->name('activity-logs');
 
 
     /**
@@ -392,7 +407,19 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         return view('employee.hr-manager.reports.index');
     })->name('reports');
 
+    /**
+     * Archive
+     */
+    Route::get('/archive', function () {
+        return view('/employee.hr-manager.archive.index');
+    })->name('employees.archive');
 
+    Route::get('/archive/records', function () {
+        return view('/employee.hr-manager.archive.records');
+    })->name('employees.archive.records');
+
+
+    
     // =========================================
     // SUPERVISOR ROUTES
     // ==========================================

@@ -1,7 +1,7 @@
 <section id="information" class="tab-section-employee">
     <div class="row">
         <!-- Left Column: Work / Personal Information -->
-        <div class="col-md-6 text-secondary-emphasis">
+        <div class="col-md-6">
             <!-- SECTION: Image & Name, Job Title, Level -->
             <section class="text-center">
                 <img class="img-size-30 img-responsive rounded-circle w-100 h-auto object-fit-cover aspect-ratio--square"
