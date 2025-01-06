@@ -22,8 +22,6 @@
         : $routePrefix . '.attendance.show';
 
 
-
-
     /**
      * Payslip
      */
@@ -409,8 +407,8 @@
 --}}
 
 @can(UserPermission::VIEW_ADMINISTRATION_SECTION)
-<x-layout.employee.nav.sidebar.nav-group :sidebar_expanded="$sidebar_expanded" class="" txt_collapsed="Managerial"
-    txt_expanded="">
+<x-layout.employee.nav.sidebar.nav-group :sidebar_expanded="$sidebar_expanded" class="" txt_collapsed="Admin"
+    txt_expanded="Administration">
 
     @can(UserPermission::VIEW_EMPLOYEE_MANAGER, UserPermission::VIEW_JOB_LISTING_MANAGER)
         <x-layout.employee.nav.sidebar.nested-nav-items
@@ -462,8 +460,8 @@
 * |--------------------------------------------------------------------------
 --}}
 
-<x-layout.employee.nav.sidebar.nav-group :sidebar_expanded="$sidebar_expanded" class="" txt_collapsed="Managerial"
-    txt_expanded="">
+<x-layout.employee.nav.sidebar.nav-group :sidebar_expanded="$sidebar_expanded" class="" txt_collapsed="Manage"
+    txt_expanded="Managerial">
 
     {{-- Supervisor / Head Dept --}}
     @can(UserPermission::VIEW_ALL_SUBORDINATE_REQUESTS)
@@ -542,8 +540,8 @@
 * |--------------------------------------------------------------------------
 --}}
 
-<x-layout.employee.nav.sidebar.nav-group :sidebar_expanded="$sidebar_expanded" class="" txt_collapsed="AI Tools"
-    txt_expanded="">
+<x-layout.employee.nav.sidebar.nav-group :sidebar_expanded="$sidebar_expanded" class="" txt_collapsed="AI"
+    txt_expanded="AI Tools">
 
     {{-- HR Manager --}}
     @can(UserPermission::VIEW_TALENT_EVALUATOR)
