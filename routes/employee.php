@@ -398,9 +398,13 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     /**
      * Archive
      */
-    Route::get('employees/archive', function () {
+    Route::get('/archive', function () {
         return view('/employee.hr-manager.archive.index');
     })->name('employees.archive');
+
+    Route::get('/archive/records', function () {
+        return view('/employee.hr-manager.archive.records');
+    })->name('employees.archive.records');
 
     // =========================================
     // SUPERVISOR ROUTES
