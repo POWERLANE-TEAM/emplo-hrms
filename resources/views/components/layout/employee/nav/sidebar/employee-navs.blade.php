@@ -347,8 +347,8 @@
     @can(UserPermission::VIEW_EMPLOYEE_MANAGER)
         @if($routePrefix === 'admin')
             <x-layout.employee.nav.sidebar.nav-item
-                href="{{ route($routePrefix . '.job-family.create') }}"
-                :active="request()->routeIs([$routePrefix . '.job-family.create', $routePrefix . '.job-title.create'])"
+                href="{{ route($routePrefix . '.job-family.index') }}"
+                :active="request()->routeIs([$routePrefix . '.job-family.*', $routePrefix . '.job-title.*'])"
                 class=""
                 nav_txt="Organization"
                 :defaultIcon="['src' => 'employee', 'alt' => '']"
@@ -422,7 +422,7 @@
             :children="[
                 [
                     'href' => route($routePrefix . '.job-family.index'),
-                    'active' => request()->is($routePrefix . '/job-family*', $routePrefix . '/job-title*'),
+                    'active' => [$routePrefix . '.job-family.*', $routePrefix . '.job-title.*'],
                     'nav_txt' => 'Job Family & Positions'
                 ],
                 [
