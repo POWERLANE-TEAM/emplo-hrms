@@ -342,9 +342,10 @@
         </x-layout.employee.nav.sidebar.nested-nav-items>
     @endcan
 
+    
     {{-- Head Admin --}}
     @can(UserPermission::VIEW_EMPLOYEE_MANAGER)
-        @if($routePrefix === UserRole::ADVANCED->value)
+        @if($routePrefix === 'admin')
             <x-layout.employee.nav.sidebar.nav-item
                 href="{{ route($routePrefix . '.job-family.create') }}"
                 :active="request()->routeIs([$routePrefix . '.job-family.create', $routePrefix . '.job-title.create'])"
@@ -358,7 +359,7 @@
 
     {{-- Head Admin --}}
     @can(UserPermission::VIEW_CALENDAR_MANAGER)
-        @if($routePrefix === UserRole::ADVANCED->value)
+        @if($routePrefix === 'admin')
             <x-layout.employee.nav.sidebar.nav-item
                 href="{{ route($routePrefix . '.calendar') }}"
                 :active="request()->routeIs($routePrefix . '.calendar')"
@@ -372,7 +373,7 @@
 
     {{-- Head Admin --}}
     @can(UserPermission::VIEW_JOB_LISTING_MANAGER)
-        @if($routePrefix === UserRole::ADVANCED->value)
+        @if($routePrefix === 'admin')
             <x-layout.employee.nav.sidebar.nav-item
                 href="{{ route($routePrefix . '.job-board.create') }}"
                 :active="request()->routeIs($routePrefix . '.job-board.create')"
@@ -386,7 +387,7 @@
 
     {{-- Head Admin --}}
     @can(UserPermission::VIEW_ANNOUNCEMENT_MANAGER)
-        @if($routePrefix === UserRole::ADVANCED->value)
+        @if($routePrefix === 'admin')
             <x-layout.employee.nav.sidebar.nav-item
                 href="{{ route($routePrefix . '.announcement.create') }}"
                 :active="request()->routeIs($routePrefix . '.announcement.create')"
