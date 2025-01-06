@@ -22,8 +22,6 @@
         : $routePrefix . '.attendance.show';
 
 
-
-
     /**
      * Payslip
      */
@@ -60,8 +58,9 @@
         ? $routePrefix . '.leaves.requests.general'
         : $routePrefix . '.leaves.index';
     $navLeavesActivePattern = $user->hasPermissionTo(UserPermission::VIEW_ALL_LEAVES)
-        ? $routePrefix . '.hr.leaves.*'
-        : $routePrefix . '.general.leaves.*';
+        ? $routePrefix . '.leaves.*'
+        : $routePrefix . '.leaves.*';
+        
 
 @endphp
 
@@ -176,7 +175,7 @@
 
     @canAny([UserPermission::VIEW_LEAVES, UserPermission::VIEW_ALL_LEAVES])
     <x-layout.employee.nav.sidebar.nav-item :href="route($navLeavesRoute)"
-        :active="request()->routeIs($navLeavesActivePattern)"
+        :active="request()->routeIs($routePrefix . '.leaves.*') && !request()->routeIs($routePrefix . '.leaves.requests')"
         class="order-{{ $navLeavesOrder }}"
         nav_txt="Leaves"
         :defaultIcon="['src' => 'leaves', 'alt' => '']"
@@ -261,8 +260,8 @@
     {{-- HR Manager --}}
     @can(UserPermission::VIEW_ALL_EMPLOYEES)
         <x-layout.employee.nav.sidebar.nav-item
-            href="{{ route($routePrefix . '.index') }}"
-            :active="request()->routeIs($routePrefix . '.employees')"
+            href="{{ route($routePrefix . '.employees.all') }}"
+            :active="request()->routeIs($routePrefix . '.employees.*')"
             class="order-3" nav_txt="Employees"
             :defaultIcon="['src' => 'employee', 'alt' => '']"
             :activeIcon="['src' => 'employee', 'alt' => '']">

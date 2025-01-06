@@ -27,11 +27,11 @@
     </x-slot:heading>
 
     <x-slot:description>
-        {!! __('View and manage leave requests of ').
+        {!! __('View and keep track of ').
             '<span class="text-primary fw-semibold">' 
                 .auth()->user()->account->jobTitle->jobFamily->job_family_name. 
             '</span>'.
-            __(' employees here.') !!}
+            __(' employees\' leave balance.') !!}
     </x-slot:description>
 </x-headings.main-heading>
 
@@ -39,6 +39,10 @@
     @include('components.includes.tab_navs.leaves.supervisor-leaves-navs')
 </div>
 
-<livewire:employee.tables.subordinate-leave-requests-table :$routePrefix />
+<!-- REPLACE STATIC PAGE LINK: Leave Policy -->
+
+<x-info_panels.callout type="info" :description="__('Leave balances reset annually on January 1st. Learn more about the company\'s <a href=\'#\' class=\'text-link-blue hover-opacity\'>leave policy</a>')"></x-info_panels.callout>
+
+<!-- BACK-END REPLACE: Table of all subordinates' leave balance -->
 
 @endsection
