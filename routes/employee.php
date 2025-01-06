@@ -406,6 +406,8 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         return view('/employee.hr-manager.archive.records');
     })->name('employees.archive.records');
 
+
+    
     // =========================================
     // SUPERVISOR ROUTES
     // ==========================================
