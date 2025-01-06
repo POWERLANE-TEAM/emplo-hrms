@@ -1,3 +1,8 @@
-<div>
-    {{-- Care about people's approval and you will be their prisoner. --}}
-</div>
+<section id="evaluations" class="tab-section">
+    <div class="row pt-3">
+        <div class="col border">
+            <!-- BACK-END Replace: Employee's Evaluations Table. Remove the border class from the parent div. -->
+            Table of archived evaluations here. Refer to figma.
+        </div>
+    </div>
+</section>
