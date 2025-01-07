@@ -34,9 +34,15 @@ return new class extends Migration
 
         Schema::create('probationary_performance_periods', function (Blueprint $table) {
             $table->id('period_id');
+            
+            $table->foreignIdFor(Employee::class, 'evaluatee')
+                ->constrained('employees', 'employee_id')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+
             $table->string('period_name');
             $table->timestamp('start_date');
-            $table->timestamp('end_date');
+            $table->timestamp('end_date')->nullable();
             $table->timestamps();
         });
 
@@ -45,7 +51,7 @@ return new class extends Migration
             $table->string('period_name');
             $table->timestamp('start_date');
             $table->timestamp('end_date');
-            $table->timestamps();;
+            $table->timestamps();
         });
 
         Schema::create('regular_performances', function (Blueprint $table) {
@@ -92,14 +98,7 @@ return new class extends Migration
                 ->constrained('employees', 'employee_id')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-                
-            $table->timestamp('denied_at')->nullable();
-            $table->foreignIdFor(Employee::class, 'denied_by')
-                ->nullable()
-                ->constrained('employees', 'employee_id')
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
-
+            
             $table->boolean('is_employee_acknowledged')->default(false);
         });
 
@@ -108,11 +107,6 @@ return new class extends Migration
 
             $table->foreignIdFor(ProbationaryPerformancePeriod::class, 'period_id')
                 ->constrained('probationary_performance_periods', 'period_id')
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
-
-            $table->foreignIdFor(Employee::class, 'evaluatee')
-                ->constrained('employees', 'employee_id')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
@@ -143,13 +137,6 @@ return new class extends Migration
 
             $table->timestamp('fourth_approver_signed_at')->nullable();
             $table->foreignIdFor(Employee::class, 'fourth_approver')
-                ->nullable()
-                ->constrained('employees', 'employee_id')
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();    
-
-            $table->timestamp('denied_at')->nullable();
-            $table->foreignIdFor(Employee::class, 'denied_by')
                 ->nullable()
                 ->constrained('employees', 'employee_id')
                 ->cascadeOnUpdate()
