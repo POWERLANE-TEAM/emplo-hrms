@@ -22,14 +22,18 @@ class SetExaminationDate extends Component
 
     #[Locked]
     public string $postMethod;
-
-    public bool $overrideContainerClass = false;
-    
-    public bool $overrideContainerClass = false;
-
-    public array $dateWrapAttributes;
-
-    public array $timeWrapAttributes;
+    #[Locked]
+    public bool $overrideInputContainerClass = false;
+    #[Locked]
+    public bool $overrideDateWrapper = false;
+    #[Locked]
+    public bool $overrideTimeWrapper = false;
+    #[Locked]
+    public array $inputGroupAttributes = [];
+    #[Locked]
+    public array $dateWrapAttributes = [];
+    #[Locked]
+    public array $timeWrapAttributes = [];
 
     public function mount()
     {
@@ -37,14 +41,26 @@ class SetExaminationDate extends Component
         try {
 
             $exam = ApplicationExam::where('application_id', $this->application->application_id)->first();
-            $startTime = optional( $exam)->start_time;
+            $startTime = optional($exam)->start_time;
             $this->examination->date = $startTime ? Carbon::parse($startTime)->setTimezone(Timezone::get())->toDateString() : null;
             $this->examination->time = $startTime ? Carbon::parse($startTime)->setTimezone(Timezone::get())->toTimeString() : null;
 
-            if($exam){
-                $this->postMethod = 'PATCH';
+            if (!$this->overrideInputContainerClass) {
+                $this->inputGroupAttributes = array_merge($this->inputGroupAttributes, ['class' => 'input-group flex-md-nowrap gap-1 min-w-100']);
             }
 
+
+            if (!$this->overrideDateWrapper) {
+                $this->dateWrapAttributes = array_merge($this->dateWrapAttributes, ['class' => 'col-12 col-md-6']);
+            }
+
+            if (!$this->timeWrapAttributes) {
+                $this->timeWrapAttributes = array_merge($this->timeWrapAttributes, ['class' => 'col-12 col-md-6']);
+            }
+
+            if ($exam) {
+                $this->postMethod = 'PATCH';
+            }
         } catch (\Throwable $th) {
             report($th);
         }
@@ -69,11 +85,17 @@ class SetExaminationDate extends Component
     public function render()
     {
 
-        if (!$this->overrideContainerClass) {
-            $this->dateWrapAttributes = array_merge($this->dateWrapAttributes, ['class' => 'col-12 col-md-6']);
-        }
 
 
-        return view('livewire.employee.applicants.set-examination-date', ['applicationId' => $this->application->application_id]);
+
+        return view('livewire.employee.applicants.set-examination-date', [
+            'applicationId' => $this->application->application_id,
+            'overrideInputContainerClass' => $this->overrideInputContainerClass,
+            'overrideDateWrapper' => $this->overrideDateWrapper,
+            'overrideTimeWrapper' => $this->overrideTimeWrapper,
+            'inputGroupAttributes' => $this->inputGroupAttributes,
+            'dateWrapAttributes' => $this->dateWrapAttributes,
+            'timeWrapAttributes' => $this->timeWrapAttributes
+        ]);
     }
 }

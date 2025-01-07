@@ -1,3 +1,9 @@
+@php
+
+    $inputGroupAttributes = ['class' => 'input-group gap-1 min-w-100 px-5'];
+    $inputWrapperClasses = ['class' => 'col-12 text-start'];
+@endphp
+
 <div class="bg-body-secondary rounded-3 col p-3 px-lg-5 py-md-4 text-center position-relative">
     <button class="btn position-absolute text-primary top-0 end-0 m-1" type="button" data-bs-toggle="modal" data-bs-target="#edit-exam-sched">
         <i class="icon icon-large" data-lucide="pencil-line"></i>
@@ -16,8 +22,18 @@
 
         <x-slot:content>
             <div class="mx-auto">
-                @livewire('employee.applicants.set-examination-date', ['application' => $application, 'routePrefix' => $routePrefix, 'postMethod' => 'PATCH', 'dateWrapAttributes'=> ['class' => 'col-12'], 'overrideContainerClass' => true])
+                @livewire('employee.applicants.set-examination-date', ['application' => $application, 'routePrefix' => $routePrefix, 'postMethod' => 'PATCH',
+                'inputGroupAttributes'=> $inputGroupAttributes ,
+                'dateWrapAttributes'=> $inputWrapperClasses ,
+                'timeWrapAttributes'=> $inputWrapperClasses,
+                'overrideInputContainerClass' => true,
+                'overrideDateWrapper' => true,
+                'overrideTimeWrapper' => true
+                ])
             </div>
+
+            <button type="button" class="btn btn-success" wire:click="dispatch('submit-exam-sched-form')">Reschedule</button>
+
             {{-- @livewire('employee.applicants.set-init-interview-date', ['application' => $application, 'routePrefix' => $routePrefix]) --}}
         </x-slot:content>
 
