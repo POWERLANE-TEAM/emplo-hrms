@@ -28,14 +28,6 @@ class ProbationaryPerformance extends Model
     }
 
     /**
-     * Get the probationary employee who is being evaluated on the perfomance evaluation.
-     */
-    public function employeeEvaluatee(): BelongsTo
-    {
-        return $this->belongsTo(Employee::class, 'evaluatee', 'employee_id');
-    }
-
-    /**
      * Get the evaluator who approved/signed the performance evaluation.
      */
     public function employeeEvaluator(): BelongsTo

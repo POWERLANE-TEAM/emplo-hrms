@@ -21,6 +21,9 @@ class RegularPerformancePeriod extends Model
         'end_date',
     ];
 
+    /**
+     * Formatted attribute accessor for period interval (e.g: December 01 - December 12, 2025).
+     */
     public function getIntervalAttribute()
     {
         $start = Carbon::make($this->start_date)->format('F d');

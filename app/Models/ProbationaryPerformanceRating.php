@@ -10,9 +10,21 @@ class ProbationaryPerformanceRating extends Pivot
 {
     use HasFactory;
 
+    public $table = 'probationary_performance_ratings';
+
     public $timestamps = false;
 
     public $incrementing = false;
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(PerformanceCategory::class, 'perf_category_id', 'perf_category_id');
+    }
+
+    public function rating(): BelongsTo
+    {
+        return $this->belongsTo(PerformanceRating::class, 'perf_rating_id', 'perf_rating_id');
+    }
 
     /**
      * Get the performance detail that owns the entry.
