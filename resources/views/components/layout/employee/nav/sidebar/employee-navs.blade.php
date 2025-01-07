@@ -60,7 +60,7 @@
     $navLeavesActivePattern = $user->hasPermissionTo(UserPermission::VIEW_ALL_LEAVES)
         ? $routePrefix . '.leaves.*'
         : $routePrefix . '.leaves.*';
-        
+
 
 @endphp
 
@@ -105,6 +105,10 @@
             ['href' => route($navAttendanceRoute, ['range' => 'period']), 'active' => request()->routeIs($navAttendanceRoute, ['range' => 'period']), 'nav_txt' => 'Attendance Records', 'range' => 'period']
         ])"
 
+        :isActiveClosure="function($isActive, $child) use ($routePrefix, $navAttendanceRoute) {
+            return request()->routeIs( $navAttendanceRoute) && request()->route('range') === $child['range'];
+        }"
+
         >
     </x-layout.employee.nav.sidebar.nested-nav-items>
     @endcan
@@ -142,9 +146,9 @@
             ['href' => route($routePrefix . '.performance.evaluation.index', ['employeeStatus' => 'probationary']), 'active' => request()->routeIs($routePrefix . '.performance.evaluation.index'), 'nav_txt' => 'Probationary', 'employeeStatus' => 'pending'] ,
             ['href' => route($routePrefix . '.performance.evaluation.index', ['employeeStatus' => 'regular']), 'active' => request()->routeIs($routePrefix . '.performance.evaluation.index'), 'nav_txt' => 'Regular', 'employeeStatus' => 'pending'],]"
 
-            :isActiveClosure="function($isActive, $child) use ($routePrefix) {
-                return request()->routeIs($routePrefix . '.performance.evaluation.index', ['employeeStatus' => $child['employeeStatus']]);
-            }"
+        :isActiveClosure="function($isActive, $child) use ($routePrefix) {
+            return request()->routeIs($routePrefix . '.performance.evaluation.index', ['employeeStatus' => $child['employeeStatus']]);
+        }"
 
             >
     </x-layout.employee.nav.sidebar.nested-nav-items>
@@ -249,9 +253,10 @@
                 ['href' => route($routePrefix . '.applications', ['applicationStatus' => 'qualified']), 'active' => request()->routeIs($routePrefix . '.applications', ['applicationStatus' => 'qualified']), 'nav_txt' => 'Qualified', 'applicationStatus' => 'qualified'],
                 ['href' => route($routePrefix . '.applications', ['applicationStatus' => 'preemployed']), 'active' => request()->routeIs($routePrefix . '.applications', ['applicationStatus' => 'preemployed']), 'nav_txt' => 'Pre-employed', 'applicationStatus' => 'preemployed'],
             ]"
-            :isActiveClosure="function($isActive, $child) use ($routePrefix) {
-                return request()->routeIs($routePrefix . '.applications', ['applicationStatus' => $child['applicationStatus']]);
-            }"
+
+        :isActiveClosure="function($isActive, $child) use ($routePrefix) {
+            return request()->routeIs($routePrefix . '.applications') && request()->route('applicationStatus') === $child['applicationStatus'];
+        }"
 
             >
         </x-layout.employee.nav.sidebar.nested-nav-items>
@@ -354,7 +359,7 @@
         </x-layout.employee.nav.sidebar.nested-nav-items>
     @endcan
 
-    
+
     {{-- Head Admin --}}
     @can(UserPermission::VIEW_EMPLOYEE_MANAGER)
         @if($routePrefix === 'admin')
