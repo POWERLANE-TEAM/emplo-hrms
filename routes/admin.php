@@ -13,6 +13,13 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
 
+    /**
+     * Recycle Bin
+     */
+    Route::get('recycle-bin', function () {
+        return view('employee.recycle-bin.index');
+    })->name('recycle-bin');
+
     Route::get('notifications', function () {
         return view('employee.notifications.index');
     })->name('notifications');
