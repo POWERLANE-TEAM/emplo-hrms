@@ -95,6 +95,12 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::VIEW_ALL_COE_REQUESTS->value,
             UserPermission::VIEW_ANY_INCIDENT_REPORT->value,
             UserPermission::VIEW_REPORTS->value,
+            UserPermission::VIEW_ARCHIVED_EMP_201_FILES->value,
+            UserPermission::VIEW_ADMINISTRATION_SECTION->value,
+            UserPermission::VIEW_EMPLOYEE_MANAGER->value,
+            UserPermission::VIEW_JOB_LISTING_MANAGER->value,
+            UserPermission::VIEW_CALENDAR_MANAGER->value,
+            UserPermission::VIEW_ANNOUNCEMENT_MANAGER->value,
 
             // Create cases goes here
             UserPermission::CREATE_APPLICANT_EXAM_SCHEDULE->value,
@@ -105,6 +111,9 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::CREATE_PAYSLIPS->value,
             UserPermission::CREATE_BULK_PAYSLIPS->value,
             UserPermission::CREATE_INCIDENT_REPORT->value,
+            UserPermission::CREATE_JOB_FAMILY->value,
+            UserPermission::CREATE_JOB_TITLE->value,
+            UserPermission::CREATE_ANNOUNCEMENT->value,
 
             // Update cases goes here
             UserPermission::UPDATE_PENDING_APPLICATION_STATUS->value,

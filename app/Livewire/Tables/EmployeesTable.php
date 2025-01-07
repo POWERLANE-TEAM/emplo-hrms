@@ -46,7 +46,7 @@ class EmployeesTable extends DataTableComponent
         $this->setPrimaryKey('application_id')
             ->setTableRowUrl(function ($row) use ($routePrefix) {
 
-                return route($routePrefix . '.employees.information', ['employee' => $row->employee_id]) . '/#information';
+                return route($routePrefix . '.employees.masterlist.information', ['employee' => $row->employee_id]) . '/#information';
             })
             ->setTableRowUrlTarget(fn() => '__blank');
 

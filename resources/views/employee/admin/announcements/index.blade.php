@@ -3,9 +3,9 @@
 
 {{-- Head Section: Title, Scripts, & Styles --}}
 @section('head')
-    <title>Home Page</title>
-    <script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
-    <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
+<title>Home Page</title>
+<script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
+<script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 @endsection
 
 @pushOnce('pre-scripts')
@@ -25,7 +25,11 @@
 
 {{-- Body/Content Section --}}
 @section('content')
-    
-{{-- TABLES FOR ANNOUNCEMENTS --}}
+
+<x-headings.header-link heading="{{ __('Announcements') }}"
+    description="{{ __('Create, edit and delete announcements.') }}" label="Add Announcement" nonce="{{ $nonce }}"
+    href="{{ route($routePrefix . '.announcement.create') }}" />
+
+<!-- BACK-END TABLE REPLACE: List of Announcements -->
 
 @endsection

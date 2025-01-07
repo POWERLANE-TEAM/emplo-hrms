@@ -679,15 +679,21 @@ body {
     font-size: 0.6rem;
 }
 
-.tab-section {
-    display: none;
+[class*="tab-section"] {
+    visibility: hidden;
+    height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 0.3s;
 }
 
-.tab-section.active-section {
-    display: block;
+[class*="tab-section"].active-section {
+    visibility: visible;
+    height: auto;
+    opacity: 1;
 }
 
-.tab-section p {
+[class*="tab-section"] p {
     margin-bottom: 0 !important;
 }
 
@@ -726,4 +732,20 @@ ul#dropdown-menu > li.dropdown-item:hover {
     .modal-footer {
         border-top: none;
     }
+}
+
+.text-teal {
+    color: $teal;
+}
+
+.bg-teal {
+    background-color: $teal !important;
+}
+
+.text-yellow {
+    color: $yellow;
+}
+
+.bg-yellow {
+    background-color: $yellow !important;
 }

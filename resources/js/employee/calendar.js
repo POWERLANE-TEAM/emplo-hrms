@@ -3,6 +3,10 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 
 document.addEventListener("DOMContentLoaded", function () {
+    initCalendar();
+});
+
+export function initCalendar() {
     const calendarEl = document.getElementById("calendar");
 
     const calendar = new Calendar(calendarEl, {
@@ -23,8 +27,11 @@ document.addEventListener("DOMContentLoaded", function () {
         NOTE: Assign appropriate classNames based on the event type:
         - Worked Regular Schedule: Use 'bg-primary' for styling.
         - Worked Overtime: Use 'bg-info' for styling.
-        - Leave: Use 'bg-warning' for styling.
+        - Leave: Use 'bg-teal' for styling.
         - Absent: Use 'bg-danger' for styling.
+        - Tardy: Use 'bg-teal' for styling.
+
+        For the Leave, use start and end util. See the example below.
 
         */
 
@@ -67,12 +74,13 @@ document.addEventListener("DOMContentLoaded", function () {
             {
                 title: "Leave",
                 start: "2024-12-15",
-                classNames: ["bg-warning"], // Leave
+                end: "2024-12-18",
+                classNames: ["bg-teal"], // Leave
             },
             {
                 title: "Leave",
                 start: "2024-12-20",
-                classNames: ["bg-warning"], // Leave
+                classNames: ["bg-teal"], // Leave
             },
         
             // December 2024 - Absent
@@ -85,6 +93,18 @@ document.addEventListener("DOMContentLoaded", function () {
                 title: "Absent",
                 start: "2024-12-22",
                 classNames: ["bg-danger"], // Absent
+            },
+
+            {
+                title: "Tardy",
+                start: "2024-12-04",
+                classNames: ["bg-warning"], // Absent
+            },
+
+            {
+                title: "Tardy",
+                start: "2024-01-06",
+                classNames: ["bg-warning"], // Absent
             },
         ],     
 
@@ -133,4 +153,7 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
         console.log('Sidebar element not found');
     }
-});
+
+}
+
+window.initCalendar = initCalendar;

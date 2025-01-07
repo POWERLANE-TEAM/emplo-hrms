@@ -69,7 +69,7 @@ Route::middleware('auth')->group(function () {
         })
             ->can(UserPermission::VIEW_ALL_ACCOUNTS)
             ->name('index');
-        
+
         Route::get('create', function () {
             return view('employee.admin.accounts.create');
         })
@@ -81,6 +81,12 @@ Route::middleware('auth')->group(function () {
      * Job Family
      */
     Route::prefix('job-family')->name('job-family.')->group(function () {
+
+        Route::get('/', function () {
+            return view('employee.admin.job-family.index');
+        })
+            ->name('index');
+
         Route::get('create', function () {
             return view('employee.admin.job-family.create');
         })
@@ -92,6 +98,11 @@ Route::middleware('auth')->group(function () {
      * Job Title
      */
     Route::prefix('job-title')->name('job-title.')->group(function () {
+        Route::get('/', function () {
+            return view('employee.admin.job-title.index');
+        })
+            ->name('index');
+
         Route::get('create', function () {
             return view('employee.admin.job-title.create');
         })
@@ -102,10 +113,18 @@ Route::middleware('auth')->group(function () {
     /**
      * Calendar
      */
-    Route::get('calendar', function () {
-        return view('employee.admin.calendar');
-    })->name('calendar');
 
+    Route::prefix('calendar')->name('calendar.')->group(function () {
+        Route::get('monthly', function () {
+            return view('employee.admin.calendar.monthly');
+        })
+            ->name('monthly');
+
+        Route::get('list', function () {
+            return view('employee.admin.calendar.list');
+        })
+            ->name('list');
+    });
 
     /**
      * Job Listings
@@ -121,6 +140,11 @@ Route::middleware('auth')->group(function () {
      * Announcement
      */
     Route::prefix('announcement')->name('announcement.')->group(function () {
+        Route::get('/', function () {
+            return view('employee.admin.announcements.index');
+        })
+            ->name('index');
+
         Route::get('create', function () {
             return view('employee.admin.announcements.create');
         })
@@ -170,17 +194,17 @@ Route::middleware('auth')->group(function () {
     /**
      * Attendance
      */
-    Route::middleware('can:'.UserPermission::UPDATE_BIOMETRIC_DEVICE->value)
+    Route::middleware('can:' . UserPermission::UPDATE_BIOMETRIC_DEVICE->value)
         ->prefix('attendance')->name('attendance.')->group(function () {
 
-        // Biometric Device Manager
-        Route::get('biometric-device', function () {
-            return view('employee.admin.attendance.biometric-device');
-        })->name('biometric-device');
+            // Biometric Device Manager
+            Route::get('biometric-device', function () {
+                return view('employee.admin.attendance.biometric-device');
+            })->name('biometric-device');
 
-        // Attendance Logs
-        Route::get('logs', function () {
-            return view('employee.admin.attendance.index');
-        })->name('logs');
-    });
+            // Attendance Logs
+            Route::get('logs', function () {
+                return view('employee.admin.attendance.index');
+            })->name('logs');
+        });
 });

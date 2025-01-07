@@ -1,13 +1,14 @@
 @extends('components.layout.employee.layout', ['description' => 'Employee Dashboard', 'nonce' => $nonce])
+@use ('Illuminate\View\ComponentAttributeBag')
 
 @section('head')
-    <title>All Employees</title>
-
+    <title>Employees Attendance</title>
     <script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
     <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 @endsection
 
 @pushOnce('pre-scripts')
+    {{--  --}}
 @endPushOnce
 
 @pushOnce('scripts')
@@ -23,19 +24,19 @@
 @endPushOnce
 
 @pushOnce('styles')
-    @vite(['resources/css/employee/basic/dashboard.css'])
+    @vite(['resources/css/employee/attendance.css'])
 @endPushOnce
-
 @section('content')
-    <x-headings.main-heading :isHeading="true">
-        <x-slot:heading>
-            {{ __('Employees') }}
-        </x-slot:heading>
+<x-breadcrumbs>
+    <x-slot:breadcrumbs>
+        <x-breadcrumb :href="route($routePrefix . '.attendance.index' , ['range' => 'period'])">
+            {{ __('Attendance Tracking') }}
+        </x-breadcrumb>
+        <x-breadcrumb :active="request()->routeIs($routePrefix . '.attendance.show')">
+            {{ __('Employee Attendance') }}
+        </x-breadcrumb>
+    </x-slot:breadcrumbs>
+</x-breadcrumbs>
 
-        <x-slot:description>
-            {{ __('View and manage employees\' information and documents') }}
-        </x-slot:description>
-    </x-headings.main-heading>
-
-    <livewire:tables.employees-table />
+    <livewire:tables.attendance-breakdown-table :employee="$employee"/>
 @endsection

@@ -35,6 +35,10 @@
     </x-slot:description>
 </x-headings.main-heading>
 
+<div class="pb-2">
+    @include('components.includes.tab_navs.leaves.supervisor-leaves-navs')
+</div>
+
 <livewire:employee.tables.subordinate-leave-requests-table :$routePrefix />
 
 @endsection

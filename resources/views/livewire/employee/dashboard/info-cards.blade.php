@@ -29,9 +29,9 @@
                     </div>
                 </div>
                 <div class="pt-3">
-                    <!-- BACK-END REPLACE: Remaining balance + Total spent leaves. 20 is fixed, according to PH labor law -->
-                    <span><b>Remaining Days:</b> 4 days<br></span>
-                    <span><b>16</b> out of 20 days used</span>
+                    <!-- BACK-END REPLACE: Vacation + Sick Leave Balance -->
+                    <span><b>Vacation Leave:</b> 4 days left (12 total)</span><br>
+                    <span><b>Sick Leave:</b> 3 days left (13 total)</span>
                 </div>
             </div>
         </div>
