@@ -170,8 +170,7 @@ class ProbationarySubordinatesPerformancesTable extends DataTableComponent
         $scale = $performanceRatings->firstWhere('perf_rating', $avg)?->perf_rating_name;
 
         return compact('format', 'scale');
-    }
-    
+    } 
 
     public function columns(): array
     {

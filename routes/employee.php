@@ -1,21 +1,22 @@
 <?php
 
-use App\Http\Controllers\IncidentController;
-use App\Http\Controllers\IssueController;
-use App\Http\Controllers\ProbationaryPerformanceController;
-use App\Http\Controllers\RegularPerformanceController;
 use App\Models\Employee;
 use App\Enums\UserPermission;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\IssueController;
 use App\Http\Controllers\LeaveController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\IncidentController;
 use App\Http\Controllers\OvertimeController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\PerformanceController;
 use App\Http\Controllers\ApplicationExamController;
 use App\Http\Controllers\InitialInterviewController;
 use App\Http\Controllers\PerformanceDetailController;
 use App\Http\Controllers\Employee\DashboardController;
+use App\Http\Controllers\RegularPerformanceController;
 use App\Http\Controllers\Application\ApplicationController;
+use App\Http\Controllers\ProbationaryPerformanceController;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 
 Route::middleware('guest')->group(function () {
@@ -297,9 +298,14 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
     /** Performance resource */
     Route::prefix('performances')->name('performances.')->group(function () {
-        Route::get('/', function () {
-            return view('employee.performance-evaluations');
-        });
+        Route::get('regular', [PerformanceController::class, 'asRegular'])
+            ->name('regular');
+
+        Route::get('regular/{performance}', [PerformanceController::class, 'showAsRegular'])
+            ->name('regular.performance');
+
+        Route::get('probationary', [PerformanceController::class, 'asProbationary'])
+            ->name('probationary');
         
         /** Regulars */
         Route::prefix('regulars')->name('regulars.')->group(function () {
