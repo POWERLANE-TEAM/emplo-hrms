@@ -295,17 +295,22 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         });
     });
 
-
     /** Performance resource */
     Route::prefix('performances')->name('performances.')->group(function () {
+        Route::get('/', [PerformanceController::class, 'index'])
+            ->name('index');
+
         Route::get('regular', [PerformanceController::class, 'asRegular'])
             ->name('regular');
 
         Route::get('regular/{performance}', [PerformanceController::class, 'showAsRegular'])
-            ->name('regular.performance');
+            ->name('regular.show');
 
         Route::get('probationary', [PerformanceController::class, 'asProbationary'])
             ->name('probationary');
+
+        Route::get('probationary/{employee}', [PerformanceController::class, 'showAsProbationary'])
+            ->name('probationary.show');
         
         /** Regulars */
         Route::prefix('regulars')->name('regulars.')->group(function () {

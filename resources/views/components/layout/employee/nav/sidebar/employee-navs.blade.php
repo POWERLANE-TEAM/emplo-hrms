@@ -138,7 +138,7 @@
     {{-- Employee --}}
     @canAny([UserPermission::VIEW_EMP_PERFORMANCE_EVAL])
     <x-layout.employee.nav.sidebar.nav-item
-        :href="route($routePrefix.'.performances.regular')"
+        :href="route($routePrefix.'.performances.index')"
         :active="request()->routeIs([$routePrefix.'.performances.regular', $routePrefix.'.performances.probationary'])"
         class="order-4"
         nav_txt="Performance"

@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Employee\Tables;
 
-use App\Models\Employee;
 use Livewire\Attributes\Locked;
 use App\Models\RegularPerformance;
 use Illuminate\Support\Facades\Auth;
@@ -21,9 +20,11 @@ class MyPerformancesAsRegularTable extends DataTableComponent
     public function configure(): void
     {
         $this->setPrimaryKey('regular_performance_id')
-            ->setTableRowUrl(fn ($row) => route("{$this->routePrefix}.performances.regular.performance", [
-                'performance' => $row->performancesAsRegular->first()->regular_performance_id
-            ]))
+            ->setTableRowUrl(function ($row) {
+                return route("{$this->routePrefix}.performances.regular.show", [
+                    'performance' => $row->regular_performance_id
+                ]);
+            })
             ->setTableRowUrlTarget(fn () => '__blank');
         $this->setPageName('my-regular-performance');
         $this->setEagerLoadAllRelationsEnabled();
@@ -65,7 +66,7 @@ class MyPerformancesAsRegularTable extends DataTableComponent
 
         $this->setTdAttributes(function (Column $column, $row, $columnIndex, $rowIndex) {
             return [
-                'class' => $column->getTitle() === 'Evaluatee' ? 'text-md-start' :'text-md-center',
+                'class' => 'text-md-center',
             ];
         });
 
@@ -86,14 +87,16 @@ class MyPerformancesAsRegularTable extends DataTableComponent
 
     public function builder(): Builder
     {
-        return Employee::query()
+        return RegularPerformance::query()
             ->with([
-                'account',
-                'performancesAsRegular',
-                'performancesAsRegular.period',
-                'performancesAsRegular.categoryRatings.rating',
+                'employeeEvaluatee',
+                'period',
+                'categoryRatings.rating',
             ])
-            ->where('employee_id', Auth::user()->account->employee_id);
+            ->where('evaluatee', Auth::user()->account->employee_id)
+            ->whereHas('employeeEvaluatee', function ($query) {
+                $query->where('employee_id', Auth::user()->account->employee_id);
+            });
     }
 
     public function columns(): array
@@ -101,7 +104,7 @@ class MyPerformancesAsRegularTable extends DataTableComponent
         return [
             Column::make(__('Status'))
                 ->label(function ($row) {
-                    if ($row->performancesAsRegular->first()) {
+                    if ($row) {
                         return __('Completed');
                     } else {
                         return __('Incomplete');
@@ -110,8 +113,8 @@ class MyPerformancesAsRegularTable extends DataTableComponent
 
             Column::make(__('Results'))
                 ->label(function ($row) {
-                    if ($row->performancesAsRegular->first()) {
-                        if ($row->performancesAsRegular->first()->fourth_approver_signed_at) {
+                    if ($row) {
+                        if ($row->fourth_approver_signed_at) {
                             return __('Approved');
                         } else {
                             return __('Pending');
@@ -123,8 +126,8 @@ class MyPerformancesAsRegularTable extends DataTableComponent
 
             Column::make(__('Final Rating'))
                 ->label(function ($row) {
-                    if ($row->performancesAsRegular->first()) {
-                        $finalRating = $row->performancesAsRegular->first()->final_rating;  
+                    if ($row) {
+                        $finalRating = $row->final_rating;  
                         return $finalRating['ratingAvg'];
                     } else {
                         return '-';
@@ -133,8 +136,8 @@ class MyPerformancesAsRegularTable extends DataTableComponent
 
             Column::make(__('Performance Scale'))
                 ->label(function ($row) {
-                    if ($row->performancesAsRegular->first()) {
-                        $finalRating = $row->performancesAsRegular->first()->final_rating;  
+                    if ($row) {
+                        $finalRating = $row->final_rating;  
                         return $finalRating['performanceScale'];
                     } else {
                         return '-';
@@ -143,10 +146,10 @@ class MyPerformancesAsRegularTable extends DataTableComponent
 
             Column::make(__('Period'))
                 ->label(function ($row) {
-                    if (is_null($row->performancesAsRegular->first())) {
+                    if (is_null($row)) {
                         return ' - ';
                     } else {
-                        return $row->performancesAsRegular->first()->period->interval;
+                        return $row->period->interval;
                     }
                 }),
         ];
