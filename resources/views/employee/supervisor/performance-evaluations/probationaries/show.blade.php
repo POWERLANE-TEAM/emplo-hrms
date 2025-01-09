@@ -27,7 +27,7 @@
     </x-slot:breadcrumbs>
 </x-breadcrumbs>
 
-<x-headings.header-with-status title="{{ $employee->full_name }}" color="info" badge="Probationary">
+<x-headings.header-with-status title="{!! $employee->full_name !!}" color="info" badge="Probationary">
     <span class="fw-bold">{{ __('Job Title: ') }}</span>
     {{ $employee->jobTitle->job_title }}
 </x-profile-header>
