@@ -21,7 +21,7 @@ return new class extends Migration
                 ->cascadeOnDelete();
 
             $table->timestamp('started_at');
-            $table->timestamp('separated_at');
+            $table->timestamp('separated_at')->nullable();
             $table->timestamps();
         });
     }
