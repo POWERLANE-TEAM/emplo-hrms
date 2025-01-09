@@ -236,6 +236,14 @@ class Employee extends Model
     }
 
     /**
+     * Get the starting / separation date of the employee.
+     */
+    public function lifecycle(): HasOne
+    {
+        return $this->hasOne(EmployeeLifecycle::class, 'employee_id', 'employee_id');
+    }
+
+    /**
      * Get the area name where employee is the Area Manager.
      */
     public function areaManagerOf(): HasOne
@@ -428,35 +436,83 @@ class Employee extends Model
     */
 
     /**
-     * Get the performance evaluation records associated with the employee.
+     * Get the performance evaluation records associated with the regular employee.
      */
-    public function performances(): HasMany
+    public function performancesAsRegular(): HasMany
     {
-        return $this->hasMany(PerformanceDetail::class, 'evaluatee', 'employee_id');
+        return $this->hasMany(RegularPerformance::class, 'evaluatee', 'employee_id');
     }
 
     /**
-     * Get the performance evalation records where employee is the evaluator.
+     * Get the performance evaluation records associated with the probationary employee.
      */
-    public function evaluatedPerformances(): HasMany
+    public function performancesAsProbationary(): HasMany
     {
-        return $this->hasMany(PerformanceDetail::class, 'evaluator', 'employee_id');
+        return $this->hasMany(ProbationaryPerformancePeriod::class, 'evaluatee', 'employee_id');
     }
 
     /**
-     * Get the performance evaluation records where employee is the initial approver.
+     * Get the performance evalation records where employee is the evaluator of regular employees.
      */
-    public function initiallyApprovedPerformances(): HasMany
+    public function evaluatedRegularsPerformances(): HasMany
     {
-        return $this->hasMany(PerformanceDetail::class, 'initial_approver', 'employee_id');
+        return $this->hasMany(RegularPerformance::class, 'evaluator', 'employee_id');
     }
 
     /**
-     * Get the performance evaluation records where employee is the secondary approver.
+     * Get the performance evalation records where employee is the evaluator of probationary employees.
      */
-    public function secondaryApprovedPerformances(): HasMany
+    public function evaluatedProbationariesPerformances(): HasMany
     {
-        return $this->hasMany(PerformanceDetail::class, 'secondary_approver', 'employee_id');
+        return $this->hasMany(ProbationaryPerformance::class, 'evaluator', 'employee_id');
+    }
+
+    /**
+     * Get regular employees performance evaluation records where employee is the secondary approver.
+     */
+    public function secondaryApprovedRegularsPerformances(): HasMany
+    {
+        return $this->hasMany(RegularPerformance::class, 'secondary_approver', 'employee_id');
+    }
+
+    /**
+     * Get probationary employees performance evaluation records where employee is the secondary approver.
+     */
+    public function secondaryApprovedProbationariesPerformances(): HasMany
+    {
+        return $this->hasMany(ProbationaryPerformance::class, 'secondary_approver', 'employee_id');
+    }
+
+    /**
+     * Get regular employees performance evaluation records where employee is the third approver.
+     */
+    public function thirdApprovedRegularsPerformances(): HasMany
+    {
+        return $this->hasMany(RegularPerformance::class, 'third_approver', 'employee_id');
+    }
+
+    /**
+     * Get probationary employees performance evaluation records where employee is the third approver.
+     */
+    public function thirdApprovedProbationariesPerformances(): HasMany
+    {
+        return $this->hasMany(ProbationaryPerformance::class, 'third_approver', 'employee_id');
+    }
+
+    /**
+     * Get regular employees performance evaluation records where employee is the fourth approver.
+     */
+    public function fourthApprovedRegularsPerformances(): HasMany
+    {
+        return $this->hasMany(RegularPerformance::class, 'fourth_approver', 'employee_id');
+    }
+
+    /**
+     * Get probationaries employees performance evaluation records where employee is the fourth approver.
+     */
+    public function fourthApprovedProbationariesPerformances(): HasMany
+    {
+        return $this->hasMany(ProbationaryPerformance::class, 'fourth_approver', 'employee_id');
     }
 
     /**

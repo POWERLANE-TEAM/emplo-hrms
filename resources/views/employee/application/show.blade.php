@@ -30,8 +30,8 @@
 @section('content')
     <x-breadcrumbs>
         <x-slot:breadcrumbs>
-            <x-breadcrumb :href="route($routePrefix . '.applications', ['applicationStatus' => 'pending'])">
-                Applicants
+            <x-breadcrumb :href="route($routePrefix . '.applications', ['applicationStatus' => $status])">
+            {{ ucfirst($status != 'pending' ? $status : '') }} Applicants
             </x-breadcrumb>
             <x-breadcrumb :active="request()->routeIs($routePrefix . '.application.*')">
                 Applicant Profile
@@ -54,5 +54,13 @@
     @endphp
 
     @livewire('employee.applicants.show', ['application' => $application, 'modalId' => $modalId])
-    @livewire('employee.modal.applicant.resume.approve', ['application' => $application, 'modalId' => $modalId])
+
+    @if ($status == 'pending')
+        @livewire('employee.modal.applicant.resume.approve', ['application' => $application, 'modalId' => $modalId])
+
+        @elseif (true)
+
+
+    @endif
+
 @endsection

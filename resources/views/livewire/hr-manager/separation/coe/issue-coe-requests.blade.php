@@ -39,7 +39,6 @@
                         <p class="pb-2 fs-6"><b>Name:</b> Avery Mendiola, Clark</p>
                         <p class="pb-2 fs-6"><b>Department:</b> Human Resources</p>
                         <p class="pb-2 fs-6"><b>Position/Job Title:</b> Associate / Assistant Manager</p>
-                        <p class="pb-2 fs-6"><b>Employment:</b> Permanent</p>
                     </section>
                 </div>
 

@@ -105,4 +105,17 @@ return [
 
     'prefix' => env('CACHE_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_cache_'),
 
+    // For cache durations see AppServiceProvider
+    'keys' => [
+        'performance' => [
+            'ratings' => 'performance.ratings',
+            'categories' => 'performance.categories',
+            'regulars' => [
+                'evaluation' => 'regulars.performance.evaluation-%s'
+            ],
+            'probationaries' => [
+                'evaluation' => 'probationaries.performance.evaluation-%s'
+            ],
+        ],
+    ],
 ];
