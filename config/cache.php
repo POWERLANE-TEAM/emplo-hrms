@@ -117,5 +117,8 @@ return [
                 'evaluation' => 'probationaries.performance.evaluation-%s'
             ],
         ],
+        'profile' => [
+            'information' => 'profile.information-%s',
+        ],
     ],
 ];
