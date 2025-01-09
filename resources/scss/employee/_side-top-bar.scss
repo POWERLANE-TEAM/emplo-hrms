@@ -689,9 +689,19 @@ body {
                 }
             }
 
-            .nav-head .truncate {
+            .nav-head {
+
+                .collapse-text {
+                    opacity: 0;
+                }
+
+                .truncate {
                 opacity: 1;
+                display: block;
+                transition: width ease-in-out 0.2s;
+                }
             }
+            
 
             li.sidebar-item {
                 a {

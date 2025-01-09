@@ -24,9 +24,26 @@
 {{-- Body/Content Section --}}
 @section('content')
 
-<x-headings.header-link heading="{{ __('Create Job Title') }}" description="{{ __('Kindly fill-in the fields below.') }}" label="Bulk Creation"
-    nonce="{{ $nonce }}" href="#">
-</x-headings.header-link>
+<x-breadcrumbs>
+    <x-slot:breadcrumbs>
+        <x-breadcrumb :href="route($routePrefix . '.job-family.index')">
+            Organization List
+        </x-breadcrumb>
+        <x-breadcrumb :active="request()->routeIs($routePrefix . '.job-title.create')">
+            Create Job Title
+        </x-breadcrumb>
+    </x-slot:breadcrumbs>
+</x-breadcrumbs>
+
+<x-headings.main-heading :isHeading="true">
+    <x-slot:heading>
+        {{ __('Create Job Title') }}
+    </x-slot:heading>
+
+    <x-slot:description>
+        {{ __('Kindly fill-in the fields below.') }}
+    </x-slot:description>
+</x-headings.main-heading>
 
 @include('components.includes.tab_navs.job-tab-navs')
 

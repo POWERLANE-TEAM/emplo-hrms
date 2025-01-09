@@ -1,3 +1,5 @@
+@use ('Illuminate\View\ComponentAttributeBag')
+
 <form wire:submit.prevent="store" id="interview-sched-form"
     action="{{ route(($routePrefix ?: 'employee') . '.applicant.initial-inteview.store', ['application' => $applicationId]) }}"
     method="POST" nonce="{{ $nonce }}">
@@ -6,8 +8,8 @@
     @endisset
 
     <div id="interview-group">Interview</div>
-    <div class="input-group flex-md-nowrap gap-1 min-w-100" aria-labelledby="interview-group">
-        <div class="col-12 col-md-6">
+    <div {{new ComponentAttributeBag($inputGroupAttributes)}}  aria-labelledby="interview-group">
+        <div {{new ComponentAttributeBag($dateWrapAttributes)}}>
             <x-form.boxed-date label="Date" id="interview-date"
                 class=" {{ $errors->has('interview.date') ? 'is-invalid' : '' }}" name="interview.date"
                 placeholder="mm/dd/yyy" :nonce="$nonce">
@@ -21,7 +23,7 @@
             </x-form.boxed-date>
         </div>
 
-        <div class="col-12 col-md-6">
+        <div {{new ComponentAttributeBag($timeWrapAttributes)}}>
             <x-form.boxed-date type="time" label="Time" id="interview-time"
                 class=" {{ $errors->has('interview.time') ? 'is-invalid' : '' }}" name="interview.time"
                 placeholder="mm/dd/yyy" :nonce="$nonce">

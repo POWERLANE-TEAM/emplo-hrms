@@ -10,7 +10,7 @@
         
         Opted for redirection to a table instead of directly editing it in the calendar for less strenuous code  work.-->
 
-        <a class="text-link-blue hover-opacity" href="#">See and manage all events.
+        <a class="text-link-blue hover-opacity" href="{{ route($routePrefix . '.calendar.list') }}">See and manage all events.
         </a>
     </div>
 </div>

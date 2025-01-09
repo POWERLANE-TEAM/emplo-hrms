@@ -55,7 +55,20 @@ class ApplicationController extends Controller
     {
         $application->load('applicant.account', 'vacancy.jobTitle');
 
-        return view('employee.application.show', ['application' => $application]);
+        $routeApplicationCategory = [
+             ApplicationStatus::PENDING->value => 'pending',
+            ApplicationStatus::ASSESSMENT_SCHEDULED->value => 'qualified',
+            ApplicationStatus::FINAL_INTERVIEW_SCHEDULED->value => 'qualified',
+            ApplicationStatus::PRE_EMPLOYED->value => 'preemployed',
+        ];
+
+        $status = $routeApplicationCategory[$application->application_status_id];
+
+        return view('employee.application.show',
+        [
+            'application' => $application, 'status' => in_array($status, ['pending', 'qualified', 'preemployed']) ? $status : 'pending'
+        ]
+        );
     }
 
     /* Patch or edit */

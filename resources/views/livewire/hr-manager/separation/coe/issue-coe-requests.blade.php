@@ -2,13 +2,27 @@
 
     <!-- BACK-END REPLACE: Placeholder data, x-header, information -->
     @php
-        $requestCertificateStatus = 'issued';
+        $certificateStatus = 'issued';
+        // Status of the COE issuance.
+        // DEADLINE OF 15 DAYS OF PROCESSING.
+        // Possible values: 'pending' (is being processed),
+        // 'issued' (COE has been issued to the employee).
+
+        $statusConfig = [
+            'pending' => ['color' => 'info', 'badge' => 'Pending'],
+            'issued' => ['color' => 'success', 'badge' => 'Issued'],
+        ];
+
+        $color = $statusConfig[$certificateStatus]['color'] ?? 'secondary'; // Default to 'secondary' if status doesn't match
+        $badge = $statusConfig[$certificateStatus]['badge'] ?? 'Unknown';
+
     @endphp
 
 
     <div>
-        <x-headings.header-with-status title="Clark, Avery Mendiola" color="success" badge="Issued">
-            </x-profile-header>
+        <x-headings.header-with-status title="Clark, Avery Mendiola" color="{{ $color }}" badge="{{ $badge }}">
+            <!-- Attributes are dynamically replaced based on $certificateStatus -->
+        </x-headings.header-with-status>
     </div>
 
     <div class="mt-2">
@@ -41,17 +55,24 @@
             </div>
         </div>
 
-        <x-info_panels.note
-            note="{{ __('Under the Labor Code of the Philippines, Article 291, employers are required to issue a Certificate of Employment (COE) upon request of an employee.') }}" />
+        @if ($certificateStatus === 'pending')
 
-        @if ($requestCertificateStatus === 'pending')
+            <x-info_panels.note
+                note="{{ __('Please ensure that the certificate is issued within') }} <span class='text-danger fw-bold'>{{ __('15 days') }}</span> {{ __('after the employee has completed their clearance rendering.') }}" />
+
             <x-buttons.main-btn id="generate_certificate" label="Issue Certificate" wire:click="save" :nonce="$nonce"
                 :disabled="false" class="w-25" :loading="'Generating...'" />
         @else
-            <button class="btn btn-outline-primary btn-lg w-25">
+
+            <div class="mt-3 mb-2">
+                <small class="">Generated on <b>January 10, 2024</b></small>
+                <!-- BACK-END REPLACE: Date when HR issued/generated the Certificate -->
+            </div>
+
+            <button class="btn btn-primary btn-lg w-25 mt-3">
                 <i data-lucide="download" class="icon icon-large me-2"></i>
                 Download the Generated Certificate
             </button>
         @endif
     </div>
-</div>
+    </div>

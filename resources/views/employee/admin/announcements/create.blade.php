@@ -24,6 +24,18 @@
 
 {{-- Body/Content Section --}}
 @section('content')
+
+<x-breadcrumbs>
+    <x-slot:breadcrumbs>
+        <x-breadcrumb :href="route($routePrefix . '.announcement.index')">
+            Announcements
+        </x-breadcrumb>
+        <x-breadcrumb :active="request()->routeIs($routePrefix . '.announcement.create')">
+            Create
+        </x-breadcrumb>
+    </x-slot:breadcrumbs>
+</x-breadcrumbs>
+
 <x-headings.main-heading :isHeading="true">
     <x-slot:heading>
         {{ __('Post Announcement') }}

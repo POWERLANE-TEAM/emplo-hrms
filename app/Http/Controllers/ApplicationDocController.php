@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\AccountType;
 use App\Models\Application;
 use App\Models\ApplicationDoc;
 use App\Models\PreempRequirement;
@@ -24,7 +25,11 @@ class ApplicationDocController extends Controller
             return view('employee.pre-employment-copy');
         }
 
+        if(!auth()->user()->account_type ==  AccountType::APPLICANT->value)
+            return redirect()->route('employee.general.documents.all');
+
         return view('employee.pre-employment');
+
     }
 
     /* store a new resource */
