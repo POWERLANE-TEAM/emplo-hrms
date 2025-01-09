@@ -92,7 +92,6 @@ class ProbationarySubordinatesPerformancesTable extends DataTableComponent
     private function setRoute(Employee $employee)
     {   
         $evaluation = $employee->performancesAsProbationary;
-        // dd($evaluation);
 
         if ($this->isProbationaryFinalEvaluated($evaluation)) {
             session()->put('final_rating', 
@@ -105,7 +104,7 @@ class ProbationarySubordinatesPerformancesTable extends DataTableComponent
             ]);
         } else {
             return route("{$this->routePrefix}.performances.probationaries.create", [
-                'employee' => $employee->employee_id
+                'employee' => $employee->employee_id,
             ]);
         }
     }
@@ -125,7 +124,13 @@ class ProbationarySubordinatesPerformancesTable extends DataTableComponent
             })
             ->whereHas('jobTitle.jobFamily', function ($query) {
                 $query->where('job_family_id', Auth::user()->account->jobTitle->jobFamily->job_family_id);
-            });
+            })
+            ->whereHas('performancesAsProbationary', function ($query) {
+                $query->where('start_date', '<=', now())
+                      ->where(function ($subQuery) {
+                          $subQuery->where('end_date', '>=', now());
+                      });
+            });;
     }
 
     private function isProbationaryFinalEvaluated($evaluations)
@@ -133,6 +138,10 @@ class ProbationarySubordinatesPerformancesTable extends DataTableComponent
         $final = $evaluations->filter(function ($item) {
             return $item->period_name === PerformanceEvaluationPeriod::FINAL_MONTH->value;
         });
+
+        if (! $final->isNotEmpty()) {
+            return false;
+        }
 
         return $final->first()->details->isNotEmpty();
     }
