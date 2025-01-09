@@ -17,6 +17,7 @@ class ProbationaryPerformancePeriod extends Model
     protected $primaryKey = 'period_id';
 
     protected $fillable = [
+        'evaluatee',
         'period_name',
         'start_date',
         'end_date',
