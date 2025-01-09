@@ -4,6 +4,11 @@
     </IfModule>
 
     RewriteEngine On
+    RewriteBase /
+    
+    # Handle Livewire asset routes
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^livewire/(.*)$ index.php [L]
 
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
