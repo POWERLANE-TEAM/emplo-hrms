@@ -52,6 +52,7 @@ class DatabaseSeeder extends Seeder
                 IssueTypeSeeder::class,
                 // IssueSeeder::class
                 // IncidentSeeder::class,
+                EmployeeLifecycleSeeder::class,
                 ThirdMonthEvaluationSeeder::class,
                 FifthMonthEvaluationSeeder::class,
                 FinalMonthEvaluationSeeder::class,
