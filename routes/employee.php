@@ -140,7 +140,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
             ->can(UserPermission::CREATE_ANNOUNCEMENT)
             ->name('create');
     });
-    
+
     /**
      * Dashboard
      */
@@ -211,11 +211,6 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         ->name('applicant.exam.store');
 
 
-    /**
-     * Attendance
-     */
-    Route::get('/attendance/index', [AttendanceController::class, 'index'])
-    ->name('attendance.index');
 
     Route::get('{employee}/attendance', [AttendanceController::class, 'show'])
     ->middleware(['permission:' . UserPermission::VIEW_ALL_DAILY_ATTENDANCE->value])
@@ -227,7 +222,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     ->middleware(['permission:' . UserPermission::VIEW_ALL_DAILY_ATTENDANCE->value])
     ->where('range', 'daily|period')
     ->name('attendance.index');
-    
+
     /**
      * Performances
      */
@@ -345,13 +340,13 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
         Route::get('balance/subordinates', [LeaveController::class, 'subordinateBalance'])
         ->name('balance.subordinates');
-        
+
         Route::get('balance/general', [LeaveController::class, 'generalBalance'])
             ->name('balance.general');
 
         Route::get('overview', [LeaveController::class, 'request'])
             ->name('overview');
-        
+
         Route::get('create', [LeaveController::class, 'create'])
             ->name('create');
 
@@ -571,7 +566,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     })->name('employees.archive.records');
 
 
-    
+
     // =========================================
     // SUPERVISOR ROUTES
     // ==========================================
@@ -597,7 +592,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     Route::get('/attendance', function () {
             return view('employee.basic.attendance.index');
     })->name('attendance');
-    
+
     /**
      * General: Payslip
      */

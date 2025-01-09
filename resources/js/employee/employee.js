@@ -18,4 +18,3 @@ const initAll = () => {
 };
 
 document.addEventListener('livewire:navigated', initAll);
-
