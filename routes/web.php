@@ -99,18 +99,8 @@ Route::get('/vertex', function () {
 
     $credentialsPath = 'services/credentials/vertex-ai.json';
 
-    // default prefix of endpoint will be aiplatform.googleapis.com
-    // no custom endpoints prefix = response Error 404 page
     $clientOptions = [
-        // results { "message": "This endpoint is a dedicated endpoint via CloudESF and cannot be accessed through the Vertex AI API. Please access the endpoint using its dedicated dns name '{ENDPOINT_ID}.us-central1-{PROJECT_NUMBER}.prediction.vertexai.goog'", "code": 9, "status": "FAILED_PRECONDITION", "details": [] }
-        'apiEndpoint' => 'us-central1-aiplatform.googleapis.com:443',
-
-        // results cURL error 6: Could not resolve host: 6904274414968242176.us-central1-1003638908095.prediction.vertexai.goog (see https://curl.haxx.se/libcurl/c/libcurl-errors.html) for https://{ENDPOINT_ID}.us-central1-{PROJECT_NUMBER}.prediction.vertexai.goog/v1/projects/emplo-ocr/locations/us-central1/endpoints/{ENDPOINT_ID}:generateContent?%24alt=json%3Benum-encoding%3Dint
-        // 'apiEndpoint' => '6904274414968242176.us-central1-1003638908095.prediction.vertexai.goog',
-
-        // results cURL error 60: SSL: no alternative certificate subject name matches target host name '{ENDPOINT_ID}.us-central1-aiplatform.googleapis.com' (see https://curl.haxx.se/libcurl/c/libcurl-errors.html) for https://{ENDPOINT_ID}.us-central1-aiplatform.googleapis.com/v1/projects/emplo-ocr/locations/us-central1/endpoints/{ENDPOINT_ID}:generateContent?%24alt=json%3Benum-encoding%3Dint
-        // 'apiEndpoint' => '6904274414968242176.us-central1-aiplatform.googleapis.com',
-
+        'apiEndpoint' => 'us-central1-aiplatform.googleapis.com',
         'credentials' => Storage::path($credentialsPath),
     ];
 
@@ -301,18 +291,8 @@ Route::get('/gemini', function () {
 
     $credentialsPath = 'services/credentials/vertex-ai.json';
 
-    // default prefix of endpoint will be aiplatform.googleapis.com
-    // no custom endpoints prefix = response Error 404 page
     $clientOptions = [
-        // results { "message": "This endpoint is a dedicated endpoint via CloudESF and cannot be accessed through the Vertex AI API. Please access the endpoint using its dedicated dns name '{ENDPOINT_ID}.us-central1-{PROJECT_NUMBER}.prediction.vertexai.goog'", "code": 9, "status": "FAILED_PRECONDITION", "details": [] }
         'apiEndpoint' => 'us-central1-aiplatform.googleapis.com',
-
-        // results cURL error 6: Could not resolve host: 6904274414968242176.us-central1-1003638908095.prediction.vertexai.goog (see https://curl.haxx.se/libcurl/c/libcurl-errors.html) for https://{ENDPOINT_ID}.us-central1-{PROJECT_NUMBER}.prediction.vertexai.goog/v1/projects/emplo-ocr/locations/us-central1/endpoints/{ENDPOINT_ID}:generateContent?%24alt=json%3Benum-encoding%3Dint
-        // 'apiEndpoint' => '6904274414968242176.us-central1-1003638908095.prediction.vertexai.goog',
-
-        // results cURL error 60: SSL: no alternative certificate subject name matches target host name '{ENDPOINT_ID}.us-central1-aiplatform.googleapis.com' (see https://curl.haxx.se/libcurl/c/libcurl-errors.html) for https://{ENDPOINT_ID}.us-central1-aiplatform.googleapis.com/v1/projects/emplo-ocr/locations/us-central1/endpoints/{ENDPOINT_ID}:generateContent?%24alt=json%3Benum-encoding%3Dint
-        // 'apiEndpoint' => '6904274414968242176.us-central1-aiplatform.googleapis.com',
-
         'credentials' => Storage::path($credentialsPath),
     ];
 
@@ -390,18 +370,9 @@ Route::get('/vertex/list', function () {
 
     $credentialsPath = 'services/credentials/vertex-ai.json';
 
-    // default prefix of endpoint will be aiplatform.googleapis.com
-    // no custom endpoints prefix = response Error 404 page
+
     $clientOptions = [
-        // results { "message": "This endpoint is a dedicated endpoint via CloudESF and cannot be accessed through the Vertex AI API. Please access the endpoint using its dedicated dns name '{ENDPOINT_ID}.us-central1-{PROJECT_NUMBER}.prediction.vertexai.goog'", "code": 9, "status": "FAILED_PRECONDITION", "details": [] }
         'apiEndpoint' => 'us-central1-aiplatform.googleapis.com:443',
-
-        // results cURL error 6: Could not resolve host: 6904274414968242176.us-central1-1003638908095.prediction.vertexai.goog (see https://curl.haxx.se/libcurl/c/libcurl-errors.html) for https://{ENDPOINT_ID}.us-central1-{PROJECT_NUMBER}.prediction.vertexai.goog/v1/projects/emplo-ocr/locations/us-central1/endpoints/{ENDPOINT_ID}:generateContent?%24alt=json%3Benum-encoding%3Dint
-        // 'apiEndpoint' => '6904274414968242176.us-central1-1003638908095.prediction.vertexai.goog',
-
-        // results cURL error 60: SSL: no alternative certificate subject name matches target host name '{ENDPOINT_ID}.us-central1-aiplatform.googleapis.com' (see https://curl.haxx.se/libcurl/c/libcurl-errors.html) for https://{ENDPOINT_ID}.us-central1-aiplatform.googleapis.com/v1/projects/emplo-ocr/locations/us-central1/endpoints/{ENDPOINT_ID}:generateContent?%24alt=json%3Benum-encoding%3Dint
-        // 'apiEndpoint' => '6904274414968242176.us-central1-aiplatform.googleapis.com',
-
         'credentials' => Storage::path($credentialsPath),
     ];
 
