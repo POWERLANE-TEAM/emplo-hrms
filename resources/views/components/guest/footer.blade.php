@@ -1,8 +1,8 @@
-<footer class="external shadow-lg z-0 ">
+<footer class="external shadow-lg z-0 mt-5 ">
     <div class="d-flex footer-info row py-3 py-md-4 mx-1 mx-md-5">
         <section class="col-12 col-md-4 order-0 px-3 py-3  ">
             <header class="align-middle text-primary fs-4 fw-bold p-3 mb-3">
-                <span class="bg-white p-2 ms-n4">
+                <span class="bg-body p-2 ms-n4">
                     <x-html.pri-sm-logo></x-html.pri-sm-logo>
                 </span>
                 Powerlane

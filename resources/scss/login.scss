@@ -1,75 +1,13 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@import 'core';
-@import 'style';
+@import 'utils';
+@import 'guest/header-nav';
 @import 'icon/lucide';
 @import 'nav-link';
 @import 'nav-tabs';
 @import 'input/search';
+@import 'palette/text-colors';
 @import 'footer';
 @import 'btn-toggle-psw';
 @import 'input/checkbox';
-
-section.top-vector {
-    position: absolute;
-    width: 100vw;
-    height: 100vh;
-    contain: layout;
-
-    img.green-wave {
-        position: absolute;
-        min-width: 83svw;
-        width: 83svw;
-        height: auto;
-        top: calc((75px + 11.75vw) * -1);
-        left: 30%;
-        transform: rotate(355deg);
-
-        @media (min-width: 2560px) {
-            max-height: 600px;
-        }
-    }
-
-    svg.right-circle {
-        position: absolute;
-        right: calc(-96px + 1vw);
-        top: 60vh;
-        z-index: -10;
-    }
-
-    svg.left-circle {
-        position: absolute;
-        left: calc(-32px + 1vw);
-        top: 22vh;
-        z-index: -10;
-    }
-}
-
-header {
-    --v-offset: clamp(1rem, 0.5rem + 0.5vw + 0.75vh, 5rem);
-    transition: background-color 0.5s ease;
-    // animation: bgSwipeDown 0.75s ease forwards;
-
-    nav {
-        padding: var(--v-offset) clamp(2rem, 1rem + 6vw, 10rem);
-        color: var(--main-white);
-
-        div,
-        section {
-            &:has(.nav-link):not(.home) {
-                gap: 0 calc(1.5rem + 3.6vw);
-
-            }
-        }
-
-        .nav-link,
-        button {
-            @extend %nav-link;
-        }
-    }
-}
 
 .first-section {
 
@@ -257,7 +195,7 @@ header {
     form {
         .input-group {
             .icon {
-                margin-top: calc(0.5rem + 0.5vw);
+                margin-top: calc(.05rem + .05vw);
             }
         }
     }

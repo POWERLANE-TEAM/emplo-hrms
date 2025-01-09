@@ -17,14 +17,11 @@ class Department extends Model
         'department_function',
     ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | Define model relationships below
-    |--------------------------------------------------------------------------
-    */
-
-    public function employees(): HasMany
+    /**
+     * Get the job titles associated with the department.
+     */
+    public function jobTitles(): HasMany
     {
-        return $this->hasMany(Employee::class, 'department_id', 'department_id');
+        return $this->hasMany(JobTitle::class, 'department_id', 'department_id');
     }
 }

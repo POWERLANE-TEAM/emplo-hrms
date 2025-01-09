@@ -4,6 +4,7 @@ namespace App\Actions\Fortify;
 
 use App\Models\User;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
@@ -17,26 +18,61 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
      */
     public function update(User $user, array $input): void
     {
-        Validator::make($input, [
-            'name' => ['required', 'string', 'max:255'],
 
+        Validator::make($input, [
             'email' => [
-                'required',
+                'nullable',
                 'string',
-                'email',
-                'max:255',
-                Rule::unique('users')->ignore($user->id),
+                'email:rfc,dns,spoof',
+                'max:320',
+                Rule::unique('users')->ignore($user->user_id, 'user_id'),
             ],
+            'account_type' => [
+                'required_with:account_id',
+                'string',
+                'max:255'
+            ],
+            'account_id' => [
+                'required_with:account_type',
+                'integer'
+            ],
+            'photo' => ['nullable', 'image'],
+            'user_status_id' => ['nullable', 'integer'],
         ])->validateWithBag('updateProfileInformation');
 
-        if ($input['email'] !== $user->email &&
-            $user instanceof MustVerifyEmail) {
+        if (isset($input['photo'])) {
+
+            if ($input['photo'] instanceof UploadedFile) {
+                $hashedUserId = md5($user->user_id);
+                $photoPath = $input['photo']->storeAs(
+                    'accounts/' . $input['accountType'] . '/' . $hashedUserId,
+                    $input['photo']->hashName(),
+                    'public'
+                );
+                $input['photo'] = $photoPath;
+            } else {
+                report(new \Exception('Photo must be an instance of UploadedFile'));
+            }
+        }
+
+        if (
+            $input['email'] !== null &&
+            $input['email'] != $user->email &&
+            $user instanceof MustVerifyEmail
+        ) {
             $this->updateVerifiedUser($user, $input);
         } else {
-            $user->forceFill([
-                'name' => $input['name'],
-                'email' => $input['email'],
-            ])->save();
+            $user->forceFill(array_filter([
+                'account_type' => $input['accountType'] ?? null,
+                'account_id' => $input['accountId'] ?? null,
+                'user_status_id' => $input['userStatusId'] ?? null,
+            ], function ($value) {
+                return !is_null($value);
+            }))
+                ->fill([
+                    'photo' => $input['photo'] ?? null,
+                ])
+                ->save();
         }
     }
 
@@ -47,11 +83,23 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
      */
     protected function updateVerifiedUser(User $user, array $input): void
     {
-        $user->forceFill([
-            'name' => $input['name'],
+        $user->fill(array_filter([
             'email' => $input['email'],
-            'email_verified_at' => null,
-        ])->save();
+            'account_type' => $input['accountType'] ?? null,
+            'account_id' => $input['accountId'] ?? null,
+
+            'user_status_id' => $input['userStatusId'] ?? null,
+        ], function ($value) {
+            return !is_null($value);
+        }))
+            ->fill([
+                'photo' => $input['photo'] ?? null,
+            ])
+
+            // force resetting email_verified_at as it is guarded
+            ->forceFill([
+                'email_verified_at' => null,
+            ])->save();
 
         $user->sendEmailVerificationNotification();
     }

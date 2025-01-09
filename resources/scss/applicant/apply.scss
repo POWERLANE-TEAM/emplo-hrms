@@ -1,0 +1,112 @@
+@import '../utils';
+@import '../guest/header-nav';
+@import '../icon/lucide';
+@import '../nav-link';
+@import '../nav-tabs';
+@import '../input/search';
+@import '../footer';
+@import '../btn-toggle-psw';
+@import '../input/checkbox';
+@import '../input/address-form';
+@import '../filepond';
+@import '../guest/main';
+@import '../scrollbar';
+
+.boxed {
+    .filepond--root {
+        min-height: clamp(150px, 25dvh + 7.5vw, 10rem + 500px + 2.5vw);
+
+        div.filepond--drop-label {
+
+            min-height: 100%;
+        }
+
+        border-radius: calc(0.1rem + 0.15vw);
+        border: calc(0.063rem + 0.1vw) dashed var(--bs-primary);
+
+        div.filepond--panel {
+
+            [class^="filepond--panel-"] {
+                // This is buggy it affects the upload status bg
+                // background-color: color-mix(in srgb, var(--bs-primary-bg-subtle) 45%, white);
+            }
+
+        }
+    }
+}
+
+[role="heading"][aria-level="1"] {
+    position: relative;
+
+    @media screen and (min-width: 576px) {
+
+        &:hover {
+            .change-application {
+                visibility: visible;
+            }
+        }
+    }
+
+    .change-application {
+        position: absolute;
+
+        @media screen {
+            visibility: hidden;
+        }
+
+        @media not screen {
+            display: none;
+        }
+    }
+}
+
+.d-profile.rounded {
+    .filepond--root {
+        --filepond-radius: 45px;
+        min-height: var(--filepond-radius);
+        height: var(--filepond-radius);
+        min-width: var(--filepond-radius);
+        width: var(--filepond-radius);
+
+
+        div.filepond--drop-label {
+            min-height: 100%;
+        }
+
+        // border-radius: calc(0.1rem + 0.15vw);
+        // border: calc(0.063rem + 0.1vw) dashed var(--bs-primary);
+
+        div.filepond--panel {
+
+            [class^="filepond--panel-"] {
+                // This is buggy it affects the upload status bg
+                // background-color: color-mix(in srgb, var(--bs-primary-bg-subtle) 45%, white);
+            }
+
+        }
+    }
+}
+
+div:has(>.form-display-profile) {
+    --img-size: clamp(4rem, 2rem + 5vw, 10rem + 2.5vw);
+    padding: 0.1rem;
+    aspect-ratio: 1/1;
+    height: var(--img-size);
+    width: var(--img-size);
+    overflow: clip;
+
+    .form-display-profile {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1/1;
+
+    }
+}
+
+.checkbox-primary {
+    @include custom-checkbox(var(--bs-black), var(--bs-primary));
+}
+
+.checkbox-label {
+    padding-left: clamp(1.5rem, 0.5rem + 1.25vw, 5vw);
+}

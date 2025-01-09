@@ -2,11 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\TrainingProvider;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class OutsourcedTrainer extends Model
 {
@@ -20,23 +19,26 @@ class OutsourcedTrainer extends Model
         'updated_at',
     ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | Define model relationships below
-    |--------------------------------------------------------------------------
-    */
-
+    /**
+     * Get the trainings associated with the outsourced trainer.
+     */
     public function trainings(): MorphMany
     {
         return $this->morphMany(Training::class, 'trainer');
     }
 
+    /**
+     * Get the comments associated with the outsourced trainer.
+     */
     public function comments(): MorphMany
     {
         return $this->morphMany(Training::class, 'comment');
     }
 
-    public function trainingProviders(): BelongsTo
+    /**
+     * Get the training provider the outsourced trainer belongs to.
+     */
+    public function provider(): BelongsTo
     {
         return $this->belongsTo(TrainingProvider::class, 'training_provider', 'training_provider_id');
     }

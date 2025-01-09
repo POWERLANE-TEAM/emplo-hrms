@@ -1,19 +1,22 @@
-import addGlobalListener from '../global-event-listener.js';
+import addGlobalListener from 'globalListener-script';
 
 export function handleMobileSidebar(mainSideBar) {
 
-    if (window.innerWidth < 576 && mainSideBar.classList.contains('active')) {
+    document.addEventListener('click', (event) => {
 
-        document.addEventListener('click', (event) => {
+        if (window.innerWidth < 576 && mainSideBar.classList.contains('active') && !mainSideBar.classList.contains('opening')) {
             if (mainSideBar.contains(event.target)) {
                 return;
             }
 
             mainSideBar.classList.remove('active');
+        }
 
-        }, { once: true });
-    }
+    });
+
 }
+
+// Sidebar Toggle
 
 export default function initSidebar() {
     let mainMenuToggles = document.querySelectorAll(`button.main-menu`);
@@ -34,7 +37,7 @@ export default function initSidebar() {
             });
         }
 
-        handleMobileSidebar(mainSideBar);
+        // handleMobileSidebar(mainSideBar);
 
     });
 
@@ -51,6 +54,12 @@ export default function initSidebar() {
                         link.setAttribute('tabindex', '-1');
                     });
                 }
+
+                mainSideBar.classList.add('closing');
+
+                setTimeout(() => {
+                    mainSideBar.classList.remove('closing');
+                }, 250);
 
             } else {
                 mainSideBar.classList.add('active', 'opening');
@@ -77,4 +86,19 @@ export default function initSidebar() {
 
         e.target.classList.toggle("active");
     })
+}
+
+// Customized dropdown behavior for User Profile icon in the top bar
+function toggleUserDropdown() {
+    const dropdownMenu = document.getElementById('dropdown-menu');
+    dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+}
+
+window.onclick = function (event) {
+    const dropdownMenu = document.getElementById('dropdown-menu');
+    const dropdownButton = document.getElementById('user-prof-btn');
+
+    if (dropdownMenu.style.display === 'block' && !dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+        dropdownMenu.style.display = 'none';
+    }
 }

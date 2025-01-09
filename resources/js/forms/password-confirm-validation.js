@@ -1,6 +1,6 @@
-import addGlobalListener from '../global-event-listener.js';
+import addGlobalListener from 'globalListener-script';
 import InputValidator, { setInvalidMessage } from './input-validator.js';
-import debounce from '../debounce-fn.js';
+import debounce from 'debounce-script';
 
 const PASSWORD_CONFIRM_VALIDATION = {
     clear_invalid: false,
@@ -52,6 +52,7 @@ export function validateConfirmPassword(inputSelector, parent = document) {
 
 export default function initPasswordConfirmValidation(inputSelector, callback, result) {
     const debouncedValidation = debounce(function (event) {
+        event.target.classList.add('is-dirty');
         let isValid = validatePasswordConfirmElement(event.target);
         try {
             result.isPasswordMatch = isValid;

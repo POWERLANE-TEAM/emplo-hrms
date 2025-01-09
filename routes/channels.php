@@ -1,31 +1,43 @@
 <?php
 
-use App\Events\UserLoggedout;
 use App\Models\User;
+use App\Enums\AccountType;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Broadcast;
-use Illuminate\Support\Facades\Log;
 
 Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
 
-Broadcast::channel('user_auth.{user_broadcast_id}', function ($user, string $user_broadcast_id) {
+Broadcast::channel('user-auth.{userBroadcastId}', function ($user, string $userBroadcastId) {
 
-    $user_session = session()->getId();
-    $this_auth_broadcast_id =   hash('sha512', $user_session . $user->email . $user_session);
+    $userSession = session()->getId();
+    $userIdentity = $user->email ?? Auth::id();
+    $thisAuthBroadcastId = hash('sha512', $userSession . $userIdentity . $userSession);
 
-    return $this_auth_broadcast_id ==   $user_broadcast_id;
+    return $thisAuthBroadcastId == $userBroadcastId;
+});
 
-    // Log::info('Broadcast Channel Debugging: ', [
-    //     'user_session' => $user_session,
-    //     'user_email' => $user->email,
-    //     'this_auth_broadcast_id' => $this_auth_broadcast_id,
-    //     'user_broadcast_id' => $user_broadcast_id,
-    //     'comparison_result' => $this_auth_broadcast_id == $user_broadcast_id
-    // ]);
+Broadcast::channel('online-users', function (User $user) {
+    if (Auth::check()) {
+        $fullName = $user->account->full_name;
+        $userPhoto = $user->photo;
+        $user->load('account');
 
-    // Temporary exception to confirm execution
-    throw new \Exception('Debugging: The channel closure is being executed.');
-    return true;
+        return array_merge(
+            $user->only(['user_id', 'email']),
+            ['photo' => $userPhoto, 'fullName' => $fullName]
+        );
+    }
+
+    return false;
+});
+
+Broadcast::channel('applicant.applying.{userBroadcastId}', function ($user, string $userBroadcastId) {
+
+    $userSession = session()->getId();
+    $userIdentity = $user->email ?? Auth::id();
+    $thisAuthBroadcastId = hash('sha512', $userSession . $userIdentity . $userSession);
+
+    return $thisAuthBroadcastId == $userBroadcastId && $user->account_type != AccountType::EMPLOYEE->value;
 });

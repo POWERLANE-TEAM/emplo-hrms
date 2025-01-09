@@ -1,0 +1,38 @@
+section.top-vector {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    contain: layout;
+
+    img.green-wave {
+        position: absolute;
+        min-width: 83svw;
+        width: 83svw;
+        height: auto;
+        top: calc((75px + 11.75vw) * -1);
+        left: 30%;
+        transform: rotate(355deg);
+
+        @media (min-width: 2560px) {
+            max-height: 600px;
+        }
+
+        @media (max-width: 576px) {
+            top: calc((10px + 10vw)*-1);
+        }
+    }
+
+    svg.right-circle {
+        position: absolute;
+        right: calc(-96px + 1vw);
+        top: 60vh;
+        z-index: -10;
+    }
+
+    svg.left-circle {
+        position: absolute;
+        left: calc(-32px + 1vw);
+        top: 22vh;
+        z-index: -10;
+    }
+}

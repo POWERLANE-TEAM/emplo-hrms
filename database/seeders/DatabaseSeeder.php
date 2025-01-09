@@ -2,10 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,12 +11,49 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->create([
-            'email' => 'test@example.com',
-            'password' => Hash::make('P@ssw0rd'),
-        ]);
+        activity()->withoutLogs(function () {
 
-        User::factory(10)->create();
-        $this->call(PositionSeeder::class);
+            $this->call([
+                PsgcSeeder::class,
+                UserStatusSeeder::class,
+                ApplicationStatusSeeder::class,
+                RolesAndPermissionsSeeder::class,
+                ShiftSeeder::class,
+                EmploymentStatusSeeder::class,
+                DepartmentSeeder::class,
+                JobLevelSeeder::class,
+                SpecificAreaSeeder::class,
+                JobFamilySeeder::class,
+                JobTitleSeeder::class,
+                BasicUserSeeder::class,
+                IntermediateUserSeeder::class,
+                AdvancedUserSeeder::class,
+                JobVacancySeeder::class,
+                PreempRequirementSeeder::class,
+                PerformanceCategorySeeder::class,
+                PerformanceRatingSeeder::class,
+                PerformancePeriodSeeder::class,
+                HolidaySeeder::class,
+                LeaveCategorySeeder::class,
+                AttendanceLogSeeder::class,
+                // UserSeeder::class,
+                ApplicantSeeder::class,
+                ApplicationSeeder::class,
+                ApplicantEducationSeeder::class,
+                ApplicantExperienceSeeder::class,
+                ApplicantSkillSeeder::class,
+                JobEducationKeywordSeeder::class,
+                JobExperienceKeywordSeeder::class,
+                JobSkillKeywordSeeder::class,
+                ManagerialSeeder::class,
+                PayrollSeeder::class,
+                // OvertimeSeeder::class,
+                EmployeeJobDetailSeeder::class,
+                // EmployeeLeaveSeeder::class,
+                IssueTypeSeeder::class,
+                // IssueSeeder::class
+                // IncidentSeeder::class,
+            ]);
+        });
     }
 }

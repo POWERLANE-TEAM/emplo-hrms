@@ -1,0 +1,211 @@
+/* ==========================================================================
+   Color Variables
+   ========================================================================== */
+$border-color-default: #e0e0e2; /* Light default border */
+$border-color-focus: #b0d880;
+$highlight-color: #61b000;
+$hover-bg-color: #fafafa; /* Light hover background */
+$placeholder-color: #6c757d; /* Light placeholder color */
+$disabled-color: #888;
+$disabled-bg-color: #f5f5f5; /* Light background for disabled items */
+$error-color: #ff0000;
+$shadow-color: rgba(0, 0, 0, 0.1);
+
+/* ==========================================================================
+      No Choices Left (Hidden)
+      ========================================================================== */
+.has-no-choices {
+    display: none;
+}
+
+/* ==========================================================================
+      Default Styles (Light Theme)
+      ========================================================================== */
+
+.choices-custom, .choices,
+select {
+    width: 100% !important;
+    border-radius: 6px;
+    border: 2px solid $border-color-default;
+    background-color: #fff !important;
+    color: black; /* Black text */
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+
+.choices:not(.choices-custom) {
+    height: 5vh;
+}
+
+.choices:not(.choices-custom) .choices__inner {
+    padding: 3.3px 10px 0px;
+}
+
+.choices-custom:focus,
+.choices-custom.is-focused,
+.choices:focus,
+.choices:is-focused,
+select:focus {
+    border-color: $border-color-focus;
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba($highlight-color, 0.25);
+}
+
+/* ==========================================================================
+      Adjustments (Overriding Default Styles)
+      ========================================================================== */
+.choices__input {
+    border: none !important;
+    font-size: 0.8rem !important;
+    width: 50% !important;
+    background-color: #fff !important; 
+    color: black !important;
+    box-sizing: border-box;
+}
+
+/* ==========================================================================
+      Dropdown Container Styling
+      ========================================================================== */
+.choices__inner {
+    background-color: #fff !important; 
+    border-radius: 10px !important;
+    border: none !important;
+    outline: none !important;
+
+    &.is-focused {
+        border: none !important;
+        outline: none !important;
+    }
+
+    input {
+        padding-left: 6px !important;
+    }
+}
+
+/* ==========================================================================
+      Dropdown Box Styling
+      ========================================================================== */
+.choices__list--dropdown {
+    border: 1px solid $border-color-default;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 0.5rem;
+    box-shadow: 0 4px 8px $shadow-color;
+    max-height: 200px;
+    overflow-y: auto !important;
+    background: #fff !important;
+    color: black; 
+    transition: background-color 0.3s ease;
+}
+
+/* ==========================================================================
+      Selected State (Multiple Items)
+      ========================================================================== */
+.choices__list--multiple .choices__item {
+    background-color: $highlight-color !important;
+    color: white;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ==========================================================================
+      Hover Effects (Default & Keyboard)
+      ========================================================================== */
+.choices__list--dropdown .choices__item.is-highlighted {
+    background-color: $hover-bg-color !important; 
+    color: $highlight-color !important;
+    font-weight: 700;
+}
+
+.choices__list--dropdown .choices__item--selectable:hover {
+    background-color: $hover-bg-color !important; 
+    color: $highlight-color;
+    font-weight: 700;
+}
+
+/* ==========================================================================
+      X Icon (Removes Items)
+      ========================================================================== */
+.choices__button {
+    background-color: transparent;
+    color: $error-color;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* ==========================================================================
+      Placeholder Text Styling
+      ========================================================================== */
+.choices__placeholder {
+    color: $placeholder-color;
+    font-style: italic;
+}
+
+/* ==========================================================================
+      Disabled Items (Light Theme)
+      ========================================================================== */
+.choices__item--disabled.custom-disabled {
+    color: $disabled-color;
+    background-color: $disabled-bg-color;
+    transition: background-color 0.3s ease, color 0.3s ease;
+
+    /* Hover effect for disabled items */
+    &:hover {
+        color: $disabled-color;
+        background-color: $disabled-bg-color;
+    }
+}
+
+/* ==========================================================================
+      Dark Theme Styles (Applied Dynamically)
+      ========================================================================== */
+.choices-custom.dark, .choices.dark,
+select.dark {
+    background-color: #212429 !important;
+    color: white !important;
+    border: 2px solid #43464b;
+}
+
+.choices__input.dark {
+    background-color: #212429 !important;
+    color: white !important;
+}
+
+.choices__inner.dark {
+    background-color: #212429 !important;
+}
+
+.choices__list--dropdown.dark {
+    background: #212429 !important;
+    color: white !important;
+}
+
+.choices__list--multiple .choices__item.dark {
+    background-color: #61b000 !important;
+    color: white;
+}
+
+.choices__list--dropdown .choices__item.dark.is-highlighted {
+    background-color: #333 !important;
+    color: $highlight-color !important;
+    font-weight: 700;
+}
+
+.choices__list--dropdown .choices__item--selectable.dark:hover {
+    background-color: #333 !important;
+    color: $highlight-color;
+    font-weight: 700;
+}
+
+.choices__item--disabled.custom-disabled.dark {
+    color: #888;
+    background-color: #444;
+}
+
+.choices__button.dark {
+    color: $error-color;
+}
+
+.choices__placeholder.dark {
+    color: $placeholder-color;
+    font-style: italic;
+}

@@ -1,0 +1,61 @@
+:root {
+    --main-green: #61b000;
+    --main-lime: #eeee13;
+    --main-white: #fff;
+    --main-black: #000;
+    --main-muted-gray: #f6f6f6;
+    --info-blue: #0096DA;
+    --main-container-px: clamp(1.25rem, 5dvw, 30dvw);
+  }
+  
+  /* Additional color classes */
+  $colors: (
+    "green": #61b000,
+    "blue": #60A5FA,
+    "teal": #008080,
+    "purple": #CDA0D4
+  );
+  
+  @each $color-name, $color-value in $colors {
+    .text-#{$color-name} {
+      color: $color-value;
+    }
+    
+    .bg-#{$color-name}-subtle {
+      background-color: rgba($color-value, 0.1);
+    }
+  }
+  
+  /* Hover Effects */
+  .white-hover:hover,
+  .green-hover:hover,
+  .black-hover:hover {
+    color: var(--main-white) !important;
+  }
+  
+  .green-hover:hover {
+    color: var(--main-green) !important;
+  }
+  
+  .black-hover:hover {
+    color: var(--main-black) !important;
+  }
+  
+  .hover-opacity:hover {
+    opacity: 0.5 !important;
+  }
+
+  .text-blue-info {
+    color: var(--info-blue);
+  }
+  
+  a.text-link-blue {
+    color: var(--info-blue);
+    text-decoration: underline;
+    font-weight: 500;
+  }
+
+  .bg-green-hover-opacity:hover {
+    background-color: rgba(var(--main-green-rgb), 0.5) !important;
+  }
+  

@@ -1,0 +1,26 @@
+@import '../../utils';
+@import '../../scrollbar';
+@import '../../scales/icon-size';
+@import '../../scales/letter-spacing';
+@import '../../icon/lucide';
+@import '../side-top-bar';
+@import '../../palette/text-colors';
+@import '../../palette/start-borders';
+@import '../../footer';
+@import '../../input/checkbox';
+
+.scrollable-container {
+    max-height: 88vh;
+    overflow-y: auto; 
+    overflow-x: hidden; 
+    padding-right: 10px; 
+}
+
+
+.checkbox-primary {
+    @include custom-checkbox(var(--bs-black), var(--bs-primary));
+}
+
+.checkbox-label {
+    padding-left: clamp(1.5rem, 1rem + 1.25vw, 5vw);
+}

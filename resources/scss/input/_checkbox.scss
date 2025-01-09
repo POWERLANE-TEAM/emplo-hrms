@@ -6,15 +6,15 @@
 
     &input[type="checkbox"].checkbox {
         opacity: 0;
-        width: clamp(1.5rem, 0.75rem + 1vw, 5vw);
-        height: clamp(1.5rem, 0.75rem + 1vw, 5vw);
+        width: clamp(1.5em, 0.75em + 1vw, 5vw);
+        height: clamp(1.5em, 0.75em + 1vw, 5vw);
         margin: 5px 0 0 3px;
         // z-index: 9;
     }
 
     &.checkbox~label.checkbox-label::before {
-        width: clamp(1rem, 0.5rem + 0.75vw, 1.5vw);
-        height: clamp(1rem, 0.5rem + 0.75vw, 1.5vw);
+        width: clamp(1em, 0.5em + 0.75vw, 1.5vw);
+        height: clamp(1em, 0.5em + 0.75vw, 1.5vw);
     }
 
     &.checkbox~label.checkbox-label::before {
@@ -25,8 +25,8 @@
         display: inline-block;
         vertical-align: text-top;
         background: white;
-        border: 1px solid #bbb;
-        border-radius: 2px;
+        border: 2px solid #bbb;
+        border-radius: 6px;
         box-sizing: border-box;
         z-index: 2;
         // color: var(--main-color);
@@ -36,12 +36,13 @@
 
         &::before {
             background-color: var(--bs-primary);
+            border: 2px solid var(--bs-primary);
         }
 
         &::after {
             content: '\2713';
             inset: 0;
-            left: calc(0.15rem + 0.05vw);
+            left: calc(0.27rem + 0.05vw);
             position: absolute;
             color: var(--bs-white);
             font-weight: bold;

@@ -1,4 +1,6 @@
-import '/vendor/node_modules/bootstrap'; // Bootstrap Framework
 import './bootstrap'; // Laravel axios
+import '../../vendor/rappasoft/laravel-livewire-tables/resources/imports/laravel-livewire-tables-all.js'; 
 
-import "../css/app.css"
+import.meta.glob([
+    '../images/**',
+]);

@@ -2,6 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Enums\AccountType;
+use App\Models\Applicant;
+use App\Models\Employee;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 
@@ -23,23 +26,25 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
+            'account_type' => $this->faker->randomElement([AccountType::APPLICANT->value, AccountType::EMPLOYEE->value]),
+            'account_id' => function (array $attributes) {
+                $accountType = AccountType::from($attributes['account_type']);
+
+                return match ($accountType) {
+                    AccountType::EMPLOYEE => Employee::factory()->create()->employee_id,
+                    AccountType::APPLICANT => Applicant::factory()->create()->applicant_id,
+                };
+            },
             'email' => fake()->unique()->randomElement([
                 fake()->safeEmail(),
                 fake()->freeEmail(),
             ]),
-            'role' => $this->faker->randomElement(['GUEST', 'USER', 'MANAGER', 'SYSADMIN']),
-            'status' => $this->faker->randomElement(['ACTIVE', 'INACTIVE', 'BLOCKED']),
-            'password' => static::$password ??= Hash::make('p@ssw0rd'),
+            'password' => static::$password ??= Hash::make('UniqP@ssw0rd'),
+            'user_status_id' => $this->faker->randomElement([1, 2, 3]),
+            'email_verified_at' => fake()->unique()->randomElement([
+                null,
+                fake()->dateTimeBetween('-10days', 'now'),
+            ]),
         ];
     }
-
-    /**
-     * Indicate that the model's email address should be unverified.
-     */
-    // public function unverified(): static
-    // {
-    //     return $this->state(fn(array $attributes) => [
-    //         'email_verified_at' => null,
-    //     ]);
-    // }
 }

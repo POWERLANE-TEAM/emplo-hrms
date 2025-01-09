@@ -2,9 +2,16 @@
     'type' => 'search',
 ])
 
-@if ($type == 'search')
-    <input {{ $attributes->merge(['class' => 'col-12 rounded-pill search']) }} type="search" {{ $attributes }}
-        aria-placeholder="{{ $attributes->get('placeholder') }}">
-@elseif ($type == 'text')
-    <input {{ $attributes->merge(['class' => 'col-12 rounded-pill search']) }} {{ $attributes }}>
-@endif
+@aware(['nonce'])
+
+<form class="d-contents">
+
+    @if ($type == 'search')
+        <input {{ $attributes->merge(['class' => 'col-12 rounded-pill search']) }} type="search" autocomplete="off"
+            autocapitalize="off" {{ $attributes }} nonce="{{ $nonce }}">
+    @elseif ($type == 'text')
+        <input {{ $attributes->merge(['class' => 'col-12 rounded-pill search']) }} autocomplete="off" {{ $attributes }}
+            nonce="{{ $nonce }}">
+    @endif
+
+</form>

@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Shift extends Model
 {
@@ -17,15 +16,4 @@ class Shift extends Model
         'start_time',
         'end_time',
     ];
-
-    /*
-    |--------------------------------------------------------------------------
-    | Define model relationships below
-    |--------------------------------------------------------------------------
-    */
-
-    public function employees(): HasMany
-    {
-        return $this->hasMany(Employee::class, 'shift_id', 'shift_id');
-    }
 }

@@ -1,0 +1,396 @@
+@mixin table-common-styles {
+    border-collapse: separate;
+    border-spacing: 0 calc(1rem + 0.5vw);
+
+    tr.outline {
+        outline: clamp(1px, 0.031rem + 0.1vw, 0.5rem) solid var(--bs-table-border-color);
+    }
+}
+
+@mixin table-hover-styles {
+    tbody {
+        tr {
+
+            &:hover {
+                border-color: var(--bs-primary);
+            }
+
+            .no-hover:hover {
+                background-color: var(--bs-body-bg);
+                --bs-table-bg-state: var(--bs-body-bg);
+
+                &>* {
+                    background-color: var(--bs-body-bg);
+                    --bs-table-bg-state: var(--bs-body-bg);
+                }
+            }
+        }
+    }
+}
+
+.table-hover {
+
+    >tbody>tr>*,
+    >tbody>tr {
+        transition: all 0.3s ease-out 0.05s, color 0.1s ease-in-out, border-color 0.8s ease-in-out;
+    }
+}
+
+table.table {
+    @include table-common-styles;
+
+
+    &.table-hover {
+        @include table-hover-styles;
+
+        tr:not(:hover) td {
+            &.text-primary {
+                color: rgba(var(--bs-primary-rgb), var(--bs-text-opacity));
+            }
+
+            &.text-danger {
+                color: rgba(var(--bs-danger-rgb), var(--bs-text-opacity));
+            }
+        }
+    }
+
+    td {
+        font-size: 1.05em;
+
+    }
+
+    &:has(td.border-end.sticky) {
+        position: relative;
+
+        tr {
+
+            td:first-of-type,
+            th:first-of-type {
+
+                min-width: 30cqw;
+
+                @media (min-width: 768px) {
+                    min-width: calc(150px + 10cqw);
+                }
+
+                position: sticky;
+                z-index: 2;
+                left: 0;
+            }
+        }
+    }
+
+}
+
+/*
+ * |--------------------------------------------------------------------------
+ * | Rappasoft Table Specific Styles
+ * |--------------------------------------------------------------------------
+ * Description
+ */
+
+//  parent div
+div:has(div[wire\:\key="table-wrapper"]) {
+
+    // wrapper div
+    div[wire\:\key="table-wrapper"] {
+
+        // wrapper that contains tool bar etc.
+        div[id^="datatable-"] {
+
+            div:has(>div[wire\:click="clearSearch"]) {
+                // Hides clear button of datatable
+                // display: none !important;
+            }
+
+            /*
+             * |--------------------------------------------------------------------------
+             * | START of Top Toolbar Reordering of Elements
+             * |--------------------------------------------------------------------------
+             * Description
+             */
+
+            //  toolbar container
+            div:has(>div>div>[wire\:model\.live="search"]),
+            div:has(>div>div>div>.dropdown-menu>[wire\:key^="table-filter-"][wire\:key$="-toolbar"]),
+            div:has(>div>[x-show="reorderStatus"]>[x-on\:click="reorderToggle"]) {
+                justify-content: end;
+                gap: clamp(0.25rem, 0.075rem + 1dvw, 2rem + 48px);
+                align-content: center;
+
+                button {
+                    font-weight: 500;
+                }
+            }
+
+            // targets the container of left built in tools in toolbar (filter and search)
+            div:has(>div>[wire\:model\.live="search"]),
+            div:has(>div>div>.dropdown-menu>[wire\:key^="table-filter-"][wire\:key$="-toolbar"]) {
+                display: contents !important;
+            }
+
+            // targets the container of right built in tools in toolbar (per page item select and show/hide columns)
+            div:has(>div>div>[id="table-columnSelect"]),
+            div:has(>div>[wire\:model\.live="perPage"]) {
+                display: contents !important;
+            }
+
+            div:has(>div>.dropdown-menu>[wire\:key^="table-filter-"][wire\:key$="-toolbar"]) {
+                order: 8;
+
+                // START for position middle
+                display: flex;
+                align-content: center;
+                flex-wrap: wrap;
+                // END for position middle
+            }
+
+            .input-group:has(>[wire\:model\.live="search"]) {
+                @media screen and (min-width: 768px) {
+                    max-width: 15cqw;
+                }
+
+                order: 9;
+
+                // START for position middle
+                display: flex;
+                align-content: center;
+                flex-wrap: wrap;
+                // END for position middle
+            }
+
+            div:has(>div>[id="table-columnSelect"]) {
+                order: 10;
+
+                // START for position middle
+                display: flex;
+                align-content: center;
+                flex-wrap: wrap;
+                // END for position middle
+            }
+
+
+            div:has(>[wire\:model\.live="perPage"]) {
+                order: 11;
+                // display: none;
+
+                // START for position middle
+                display: flex;
+                align-content: center;
+                flex-wrap: wrap;
+                // END for position middle
+
+                [wire\:model\.live="perPage"] {
+                    width: min-content !important;
+                }
+            }
+
+            // targets reorder group of button use for drag and drop reordering
+            div[x-show="reorderStatus"]:has([x-on\:click="reorderToggle"]) {
+                margin-right: auto !important;
+                order: 3;
+
+                // START for position middle
+                display: flex;
+                align-content: center;
+                flex-wrap: wrap;
+                // END for position middle
+            }
+
+            /*
+             * |--------------------------------------------------------------------------
+             * | END of Top Toolbar Reordering of Elements
+             * |--------------------------------------------------------------------------
+             * Description
+             */
+
+            //  Style for custom <select> filter
+            [wire\:key="inst-select-filter-table"] {
+                label {
+                    @media screen and (max-width: 768px) {
+                        font-size: 0.875em;
+                    }
+
+
+                }
+
+                .input-group:has(select) {
+
+
+
+                    @media screen and (min-width: 992px) {
+                        // min-width: fit-content !important;
+                        // width: 100%;
+                        min-width: 300px;
+                        max-width: 60%;
+                    }
+
+                }
+            }
+
+            // center the Table head label
+            [wire\:key^="table-table-head"] {
+                div {
+                    justify-content: center;
+                }
+            }
+
+            div:has(>div>div>div>nav>.pagination) {
+
+                // Make the pagination button last
+                div:has(>div>nav>.pagination) {
+
+                    @media screen and (min-width: 768px) {
+                        order: 12;
+                    }
+                }
+
+                // Overiding the pagination class of showing result
+                .text-md-end {
+                    @media screen and (min-width: 768px) {
+                        text-align: start !important;
+                    }
+
+                }
+
+                div:has(>div>div>nav>.pagination) {
+
+                    // START removes the overflow caused by row class of bootstrap
+                    @media screen and (max-width: 576px) {
+                        min-width: calc(100% * 1);
+                        max-width: calc(104% * 1);
+                    }
+
+                    clip-path: polygon(0.75rem 0, calc(100% + 3cqw) 0, calc(100% + 3cqw) 100%, 0.75rem 100%);
+                    // END removes the overflow caused by row class of bootstrap
+
+                    @media screen and (min-width: 768px) {
+                        .col-md-6 {
+
+                            width: 33%;
+
+                            &.overflow-auto {
+                                width: 66.66666667%;
+                            }
+                        }
+                    }
+                }
+
+                nav {
+                    ul {
+                        column-gap: clamp(0.25rem, 0.1em + 1%, 3rem);
+                        padding-right: calc(0.25rem + 0.15cqw);
+
+
+                        .page-item {
+
+                            @media screen and (min-width: 768px) {
+                                &:first-of-type {
+                                    margin-left: auto;
+                                }
+                            }
+
+                            &.active span {
+                                font-weight: 900;
+                            }
+
+                            button,
+                            &.disabled span {
+                                border-radius: 0.3cqw;
+                                color: inherit;
+                                font-weight: 500;
+
+                            }
+
+                            // For next or previous paginate button
+                            button[aria-label*="Next"],
+                            button[aria-label*="Previous"] {
+                                border-color: var(--bs-primary);
+                                color: var(--bs-primary);
+
+                                // START bigger chevron icon
+                                padding-top: 0;
+                                padding-bottom: 0;
+                                line-height: 1.35;
+                                font-size: 1.75em;
+                                // END bigger chevron icon
+                            }
+
+                            // For DISABLED next or previous paginate button
+                            &[aria-label*="Next"],
+                            &[aria-label*="Previous"] {
+
+                                span {
+                                    // START bigger chevron icon
+                                    padding-top: 0;
+                                    padding-bottom: 0;
+                                    line-height: 1.35;
+                                    font-size: 1.75em;
+                                    // END bigger chevron icon
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+
+        }
+
+    }
+
+    // yuh table wrapper of the actual <table> inside
+    div[wire\:\key="table-twrap"] {
+
+        table {
+
+            @include table-hover-styles;
+
+            td {
+                min-width: 35cqw;
+
+                @media (min-width: 768px) {
+                    min-width: calc(100px + 5cqw);
+                }
+            }
+
+            tr {
+                min-height: fit-content;
+                --tr-padding-x: calc(0.25rem + 0.5vw);
+                --padding-y: calc(1rem + 0.5vw);
+
+                td,
+                th {
+                    padding-top: var(--padding-y);
+                    padding-bottom: var(--padding-y);
+                }
+
+                td:first-of-type,
+                td:last-of-type {
+                    padding-left: var(--tr-padding-x);
+                    padding-right: var(--tr-padding-x);
+
+                    &.border-end {
+                        border-right: none;
+
+                        &::after {
+                            content: "";
+                            border-radius: 1cqw;
+                            align-self: center;
+                            position: absolute;
+                            width: calc(0.1rem + 0.12vw);
+                            height: 60%;
+                            top: 20%;
+                            bottom: 20%;
+                            right: calc(var(--tr-padding-x) / 2);
+                            background-color: currentColor;
+                            opacity: 0.25;
+                        }
+                    }
+                }
+
+            }
+
+        }
+    }
+}

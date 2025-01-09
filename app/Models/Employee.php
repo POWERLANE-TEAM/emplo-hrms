@@ -2,18 +2,30 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Enums\Sex;
+use App\Enums\CivilStatus;
+use Illuminate\Support\Str;
+use App\Enums\ActivityLogName;
+use Illuminate\Support\Carbon;
+use Spatie\Activitylog\LogOptions;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use App\Http\Helpers\GovernmentMandateContributionsIdFormat;
 
 class Employee extends Model
 {
     use HasFactory;
+    use LogsActivity;
 
     protected $primaryKey = 'employee_id';
 
@@ -23,88 +35,298 @@ class Employee extends Model
         'updated_at',
     ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | Define model accessors(get) and mutators(set) below
-    |--------------------------------------------------------------------------
-    */
-
-    protected function firstName(): Attribute
+    /**
+     * Get the employee's full name.
+     *
+     * @return string
+     */
+    protected function fullName(): Attribute
     {
         return Attribute::make(
-            get: fn(string $value) => ucfirst($value),
-            set: fn(string $value) => strtolower($value),
+            get: fn (mixed $value, array $attributes) => $attributes['last_name'].', '.
+                $attributes['first_name'].' '.
+                $attributes['middle_name'],
         );
     }
 
-    protected function middleName(): Attribute
+    /**
+     * Accessor for contact number
+     */
+    protected function contactNumber(): Attribute
     {
         return Attribute::make(
-            get: fn(string $value) => ucfirst($value),
-            set: fn(string $value) => strtolower($value),
+            get: fn (mixed $value) => '+63-' . substr($value, 1, 3) . '-' . 
+                substr($value, 4, 3) . '-' . 
+                substr($value, 7, 4),
         );
     }
 
-    protected function lastName(): Attribute
+    /**
+     * Accessor for sex attribute.
+     */
+    protected function sex(): Attribute
     {
         return Attribute::make(
-            get: fn(string $value) => ucfirst($value),
-            set: fn(string $value) => strtolower($value),
+            get: function (string $value) {
+                $sex = Sex::tryFrom($value);
+                return $sex ? $sex->label() : ucwords($sex);
+            }
+        );
+    }
+    /**
+     * Accessor for civil status attribute.
+     */
+    protected function civilStatus(): Attribute
+    {
+        return Attribute::make(
+            get: function (string $value) {
+                $civilStatus = CivilStatus::tryFrom($value);
+                return $civilStatus ? $civilStatus->label() : ucwords($civilStatus);
+            }
         );
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Define model relationships below
-    |--------------------------------------------------------------------------
-    */
+    /**
+     * Accessor for SS number.
+     */
+    protected function sssNo(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value) => GovernmentMandateContributionsIdFormat::formatSsNumber($value),
+        );
+    }
 
-    // returns the account of this employee
+    /**
+     * Accessor for PhilHealth Id.
+     */
+    protected function philhealthNo(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value) => GovernmentMandateContributionsIdFormat::formatPhilhealthId($value),
+        );
+    }
+
+    /**
+     * Accessor for PagIbig MID.
+     */
+    protected function pagIbigNo(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value) => GovernmentMandateContributionsIdFormat::formatPagibigMid($value),
+        );
+    }
+
+    /**
+     * Accessor for TIN.
+     */
+    protected function tinNo(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value) => GovernmentMandateContributionsIdFormat::formatTin($value),
+        );
+    }
+
+    /**
+     * Accessor for employee's full present address.
+     */
+    protected function getFullPresentAddressAttribute()
+    {
+        $barangay = $this->presentBarangay->name;
+        $city = $this->presentBarangay->city->name ?? '';
+        $province = $this->presentBarangay->province->name ?? '';
+        $region = $this->presentBarangay->region->name ?? '';
+
+        return "{$this->present_address}, {$barangay}, {$city}, {$province} {$region}";
+    }
+
+    /**
+     * Accessor for employee's full permanent address.
+     */
+    protected function getFullPermanentAddressAttribute()
+    {
+        $barangay = $this->permanentBarangay->name;
+        $city = $this->permanentBarangay->city->name ?? '';
+        $province = $this->permanentBarangay->province->name ?? '';
+        $region = $this->permanentBarangay->region->name ?? '';
+
+        return "{$this->permanent_address}, {$barangay}, {$city}, {$province} {$region}";
+    }
+
+    /**
+     * Accessor for shift schedule attribute of start and end time.
+     */
+    protected function getShiftScheduleAttribute()
+    {
+        $start = Carbon::make($this->shift->start_time)->format('g:i A');
+        $end = Carbon::make($this->shift->end_time)->format('g:i A');
+
+        return "{$start} - {$end}";
+    }
+
+    /**
+     * Get the account associated with the employee.
+     */
     public function account(): MorphOne
     {
         return $this->morphOne(User::class, 'account');
     }
 
-    // returns employment status of employee
-    public function employmentStatus(): BelongsTo
+    /**
+     * Get the attendance records associated with the employee.
+     */
+    public function attendanceLogs(): HasMany
     {
-        return $this->belongsTo(EmploymentStatus::class, 'emp_status_id', 'emp_status_id');
+        return $this->hasMany(AttendanceLog::class, 'employee_id', 'employee_id');
     }
 
-    // returns attendance records of employee
-    public function attendances(): HasMany
+    /**
+     * Get the announcements where employee is the publisher.
+     */
+    public function publishedAnnouncements(): HasMany
     {
-        return $this->hasMany(Attendance::class, 'employee_id', 'employee_id');
+        return $this->hasMany(Announcement::class, 'published_by', 'employee_id');
     }
 
-    // returns the position of employee
-    public function position(): BelongsTo
+    /**
+     * Get the job detail of the employee.
+     */
+    public function jobDetail(): HasOne
     {
-        return $this->belongsTo(Position::class, 'position_id', 'position_id');
+        return $this->hasOne(EmployeeJobDetail::class, 'employee_id', 'employee_id');
     }
 
-    // returns the branch of employee
-    public function branch(): BelongsTo
+    /**
+     * Get the employment status of the employee through **EmployeeJobDetail** model.
+     */
+    public function status(): HasOneThrough
     {
-        return $this->belongsTo(Branch::class, 'branch_id', 'branch_id');
+        return $this->hasOneThrough(EmploymentStatus::class, EmployeeJobDetail::class, 'employee_id', 'emp_status_id', 'employee_id', 'emp_status_id');
     }
 
-    // returns the department of employee
-    public function department(): BelongsTo
+    /**
+     * Get the job application associated with the employee through **EmployeeJobDetail** model.
+     */
+    public function application(): HasOneThrough
     {
-        return $this->belongsTo(Department::class, 'department_id', 'department_id');
+        return $this->hasOneThrough(Application::class, EmployeeJobDetail::class, 'employee_id', 'application_id', 'employee_id', 'application_id');
     }
 
-    // returns the shift schedule of employee
-    public function shift(): BelongsTo
+    /**
+     * Get the job title of the employee through **EmployeeJobDetail** model.
+     */
+    public function jobTitle(): HasOneThrough
     {
-        return $this->belongsTo(Shift::class, 'shift_id', 'shift_id');
+        return $this->hasOneThrough(JobTitle::class, EmployeeJobDetail::class, 'employee_id', 'job_title_id', 'employee_id', 'job_title_id');
     }
 
-    // returns the documents of employee
-    public function documents(): BelongsToMany
+    /**
+     * Get the specific area destination of the employee.
+     */
+    public function specificArea(): HasOneThrough
     {
-        return $this->belongsToMany(Document::class, 'employee_docs', 'document_id', 'employee_id');
+        return $this->hasOneThrough(SpecificArea::class, EmployeeJobDetail::class, 'employee_id', 'area_id', 'employee_id', 'area_id');
+    }
+
+    /**
+     * Get the shift schedule of the employee.
+     */
+    public function shift(): HasOneThrough
+    {
+        return $this->hasOneThrough(Shift::class, EmployeeJobDetail::class, 'employee_id', 'shift_id', 'employee_id', 'shift_id');
+    }
+
+    /**
+     * Get the area name where employee is the Area Manager.
+     */
+    public function areaManagerOf(): HasOne
+    {
+        return $this->hasOne(SpecificArea::class, 'area_manager', 'employee_id');
+    }
+
+    /**
+     * Get the job family / office where employee is the supervisor.
+     */
+    public function supervisorOf(): HasOne
+    {
+        return $this->hasOne(JobFamily::class, 'supervisor', 'employee_id');
+    }
+
+    /**
+     * Get the job family / office where employee is the office_head / manager.
+     */
+    public function headOf(): HasOne
+    {
+        return $this->hasOne(JobFamily::class, 'office_head', 'employee_id');
+    }
+
+    /**
+     * Get the documents associated with the employee.
+     */
+    public function documents(): HasMany
+    {
+        return $this->hasMany(EmployeeDoc::class, 'employee_id', 'employee_id');
+    }
+
+    /**
+     * Get the overtime records associated with the employee
+     */
+    public function overtimes(): HasMany
+    {
+        return $this->hasMany(Overtime::class, 'employee_id', 'employee_id');
+    }
+
+    /**
+     * Get the leave records associated with the employee.
+     */
+    public function leaves(): HasMany
+    {
+        return $this->hasMany(EmployeeLeave::class, 'employee_id', 'employee_id');
+    }
+
+    /**
+     * Get the permanent barangay of the employee.
+     */
+    public function permanentBarangay(): BelongsTo
+    {
+        return $this->belongsTo(Barangay::class, 'permanent_barangay');
+    }
+
+    /**
+     * Get the present barangay of the employee.
+     */
+    public function presentBarangay(): BelongsTo
+    {
+        return $this->belongsTo(Barangay::class, 'present_barangay');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Recruitment Records Management
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * Get the initial interviews where employee is the initial interviewer.
+     */
+    public function asInitInterviewer(): HasMany
+    {
+        return $this->hasMany(InitialInterview::class, 'init_interviewer', 'employee_id');
+    }
+
+    /**
+     * Get the final interviews where employee is the final interviewer.
+     */
+    public function asFinalInterviewer(): HasMany
+    {
+        return $this->hasMany(FinalInterview::class, 'final_interviewer', 'employee_id');
+    }
+
+    /**
+     * Get the application documents where employee is the evaluator.
+     */
+    public function asApplicationDocsEvaluator(): HasMany
+    {
+        return $this->hasMany(ApplicationDoc::class, 'evaluated_by', 'employee_id');
     }
 
     /*
@@ -113,36 +335,45 @@ class Employee extends Model
     |--------------------------------------------------------------------------
     */
 
-    // returns training records of employee
+    /**
+     * Get the training records associated with the employee.
+     */
     public function trainings(): HasMany
     {
         return $this->hasMany(Training::class, 'trainee', 'employee_id');
     }
 
-    // returns training records where employee is trainer
+    /**
+     * Get the training records where employee is the trainer.
+     */
     public function trainingsAsTrainer(): MorphMany
     {
         return $this->morphMany(Training::class, 'trainer');
     }
 
-    // returns training comments where employee is trainer
+    /**
+     * Get the training comments where employee is the trainer.
+     */
     public function commentsAsTrainer(): MorphMany
     {
         return $this->morphMany(Training::class, 'comment');
     }
 
-    // returns prepared training records where employee is hr personnel
+    /**
+     * Get the prepared training records where employee is an HR Personnel.
+     */
     public function preparedTrainings(): HasMany
     {
         return $this->hasMany(Training::class, 'prepared_by', 'employee_id');
     }
 
-    // returns reviewed/approved training records where employee is hr manager
+    /**
+     * Get the reviewed/approved training records where employee is the HR Manager.
+     */
     public function reviewedTrainings(): HasMany
     {
         return $this->hasMany(Training::class, 'reviewed_by', 'employee_id');
     }
-
 
     /*
     |--------------------------------------------------------------------------
@@ -150,58 +381,44 @@ class Employee extends Model
     |--------------------------------------------------------------------------
     */
 
-    // returns the records of employee's overtime requests
-    public function overtimes(): HasMany
+    /**
+     * Get the overtime requests where employee is the authorizer.
+     */
+    public function authorizedOvertimes(): HasMany
     {
-        return $this->hasMany(Overtime::class, 'employee_id', 'employee_id');
+        return $this->hasMany(Overtime::class, 'authorizer', 'employee_id');
     }
 
-    // returns approved overtimes by supervisor
-    public function approvedOvertimesAsSupervisor(): HasMany
+    /**
+     * Get the overtime requests summaries where employee is the initial approver.
+     */
+    public function initiallyApprovedOvertimePayrolls(): HasMany
     {
-        return $this->hasMany(Overtime::class, 'supervisor', 'employee_id');
+        return $this->hasMany(OvertimePayrollApproval::class, 'initial_approver', 'employee_id');
     }
 
-    // returns approved overtimes by department head
-    public function approvedOvertimesAsDeptHead(): HasMany
+    /**
+     * Get the overtime requests summaries where employee is the secondary approver.
+     */
+    public function secondaryApprovedOvertimePayrolls(): HasMany
     {
-        return $this->hasMany(Overtime::class, 'dept_head', 'employee_id');
+        return $this->hasMany(OvertimePayrollApproval::class, 'secondary_approver', 'employee_id');
     }
 
-    // returns approved overtimes by hr manager
-    public function approvedOvertimesAsHrManager(): HasMany
+    /**
+     * Get the overtime requests summaries where employee is the third approver.
+     */
+    public function thirdApprovedOvertimePayrolls(): HasMany
     {
-        return $this->hasMany(Overtime::class, 'hr_manager', 'employee_id');
+        return $this->hasMany(OvertimePayrollApproval::class, 'third_approver', 'employee_id');
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Leave Records Management
-    |--------------------------------------------------------------------------
-    */
-
-    // returns the leave records of employee
-    public function leaves(): HasMany
+    /**
+     * Get the rejected / denied overtime requests by the employee.
+     */
+    public function deniedOvertimes(): HasMany
     {
-        return $this->hasMany(EmployeeLeave::class, 'employee_id', 'employee_id');
-    }
-
-    // returns approved leave records by supervisor
-    public function approvedLeavesAsSupervisor(): HasMany
-    {
-        return $this->hasMany(EmployeeLeave::class, 'supervisor', 'employee_id');
-    }
-
-    // returns approved leave records by department head
-    public function approvedLeavesAsDeptHead(): HasMany
-    {
-        return $this->hasMany(EmployeeLeave::class, 'dept_head', 'employee_id');
-    }
-
-    // returns approved leave records by hr manager
-    public function approvedLeavesAsHrManager(): HasMany
-    {
-        return $this->hasMany(EmployeeLeave::class, 'hr_manager', 'employee_id');
+        return $this->hasMany(Overtime::class, 'denier', 'employee_id');
     }
 
     /*
@@ -210,27 +427,188 @@ class Employee extends Model
     |--------------------------------------------------------------------------
     */
 
-    // returns the employee's performance records
+    /**
+     * Get the performance evaluation records associated with the employee.
+     */
     public function performances(): HasMany
     {
-        return $this->hasMany(PerformanceEvaluation::class, 'evaluatee', 'employee_id');
+        return $this->hasMany(PerformanceDetail::class, 'evaluatee', 'employee_id');
     }
 
-    // returns signed performance records where employee is supervisor
-    public function signedPerfEvalAsSupervisor(): HasMany
+    /**
+     * Get the performance evalation records where employee is the evaluator.
+     */
+    public function evaluatedPerformances(): HasMany
     {
-        return $this->hasMany(PerformanceEvaluation::class, 'supervisor', 'employee_id');
+        return $this->hasMany(PerformanceDetail::class, 'evaluator', 'employee_id');
     }
 
-    // returns signed performance records where employee is department head
-    public function signedPerfEvalAsDeptHead(): HasMany
+    /**
+     * Get the performance evaluation records where employee is the initial approver.
+     */
+    public function initiallyApprovedPerformances(): HasMany
     {
-        return $this->hasMany(PerformanceEvaluation::class, 'dept_head', 'employee_id');
+        return $this->hasMany(PerformanceDetail::class, 'initial_approver', 'employee_id');
     }
 
-    // returns signed performance records where employee is hr manager
-    public function signedPerfEvalAsHrManager(): HasMany
+    /**
+     * Get the performance evaluation records where employee is the secondary approver.
+     */
+    public function secondaryApprovedPerformances(): HasMany
     {
-        return $this->hasMany(PerformanceEvaluation::class, 'hr_manager', 'employee_id');
+        return $this->hasMany(PerformanceDetail::class, 'secondary_approver', 'employee_id');
+    }
+
+    /**
+     * Get the educational attainments of the employee.
+     */
+    public function educations(): HasMany
+    {
+        return $this->hasMany(EmployeeEducation::class, 'employee_id', 'employee_id');
+    }
+
+    /**
+     * Get the work experiences of the employee.
+     */
+    public function experiences(): HasMany
+    {
+        return $this->hasMany(EmployeeExperience::class, 'employee_id', 'employee_id');
+    }
+
+    /**
+     * Get the skills of the employee.
+     */
+    public function skills(): HasMany
+    {
+        return $this->hasMany(EmployeeSkill::class, 'employee_id', 'employee_id');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Leave Records Management
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * Get the leave requests where employee is the initial approver.
+     */
+    public function initiallyApprovedLeaves(): HasMany
+    {
+        return $this->hasMany(EmployeeLeave::class, 'initial_approver', 'employee_id');
+    }
+
+    /**
+     * Get the leave requests where employee is the secondary approver.
+     */
+    public function secondaryApprovedLeaves(): HasMany
+    {
+        return $this->hasMany(EmployeeLeave::class, 'secondary_approver', 'employee_id');
+    }
+
+    /**
+     * Get the leave requests where employee is the third approver.
+     */
+    public function thirdApprovedLeaves(): HasMany
+    {
+        return $this->hasMany(EmployeeLeave::class, 'third_approver', 'employee_id');
+    }
+
+    /**
+     * Get the leave requests where employee is the fourth approver.
+     */
+    public function fourthApprovedLeaves(): HasMany
+    {
+        return $this->hasMany(EmployeeLeave::class, 'fourth_approver', 'employee_id');
+    }
+
+    /**
+     * Get the leave requests denied by the employee.
+     */
+    public function deniedLeaves(): HasMany
+    {
+        return $this->hasMany(EmployeeLeave::class, 'denier', 'employee_id');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Issue Records Management
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * Get the issues which statuses are marked by the employee.
+     */
+    public function markedStatusIssues(): HasMany
+    {
+        return $this->hasMany(Issue::class, 'status_marker', 'employee_id');
+    }
+
+    /**
+     * Get the issues reported by the employee.
+     */
+    public function reportedIssues(): HasMany
+    {
+        return $this->hasMany(Issue::class, 'issue_reporter', 'employee_id');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Incident Records Management
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * Get the incidents which are initiated by the employee.
+     */
+    public function initiatedIncidentReports(): HasMany
+    {
+        return $this->hasMany(Incident::class, 'initiator', 'employee_id');
+    }
+
+    /**
+     * Get the incidents reported by the employee.
+     */
+    public function reportedIncidents(): HasMany
+    {
+        return $this->hasMany(Incident::class, 'reporter', 'employee_id');
+    }
+
+    /**
+     * Get the incidents which statuses are marked by the employee.
+     */
+    public function markedStatusIncidents(): HasMany
+    {
+        return $this->hasMany(Incident::class, 'status_marker', 'employee_id');
+    }
+
+    /**
+     * Get incidents where employee is a collaborator
+     */
+    public function sharedIncidentRecords(): BelongsToMany
+    {
+        return $this->belongsToMany(Incident::class, 'incident_record_collaborators', 'employee_id', 'incident_id')
+            ->as('access')
+            ->using(IncidentRecordCollaborator::class)
+            ->withPivot('is_editor');
+    }
+
+    /**
+     * Override default values for more controlled logging.
+     */
+    public function getActivityLogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logUnguarded()
+            ->useLogName(ActivityLogName::EMPLOYEE->value)
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(function (string $eventName) {
+                $causerFirstName = Str::ucfirst(Auth::user()->account->first_name);
+
+                return match ($eventName) {
+                    'created' => __($causerFirstName.' created a new employee record.'),
+                    'updated' => __($causerFirstName.' updated an employee\'s information.'),
+                    'deleted' => __($causerFirstName.' deleted an employee.'),
+                };
+            });
     }
 }

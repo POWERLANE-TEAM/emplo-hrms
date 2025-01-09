@@ -1,40 +1,90 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
+import { viteStaticCopy } from 'vite-plugin-static-copy';
+import { sync } from 'glob';
+import os from 'os';
+
+function getLocalIpAddress() {
+    const interfaces = os.networkInterfaces();
+
+    // Prioritize Wi-Fi adapters based on common names
+    const wifiNames = ['Wi-Fi', 'wlan', 'WiFi'];
+
+    // Check Wi-Fi interfaces first
+    for (const name of Object.keys(interfaces)) {
+        if (wifiNames.some(wifiName => name.toLowerCase().includes(wifiName.toLowerCase()))) {
+            for (const iface of interfaces[name]) {
+                if (iface.family === 'IPv4' && !iface.internal && iface.address !== '127.0.0.1' && !iface.address.endsWith('.1')) {
+                    return iface.address;
+                }
+            }
+        }
+    }
+
+    // If no Wi-Fi interface is found, fallback to the first NIC
+    for (const name of Object.keys(interfaces)) {
+        for (const iface of interfaces[name]) {
+            if (iface.family === 'IPv4' && !iface.internal && iface.address !== '127.0.0.1' && !iface.address.endsWith('.1')) {
+                return iface.address;
+            }
+        }
+    }
+
+    return 'localhost';
+}
+
+
+
+const localIpAddress = getLocalIpAddress();
 
 export default defineConfig({
     plugins: [
         laravel({
             input: [
-                'vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js',
-                'vendor/node_modules/jquery/dist/jquery.min.js',
-                'vendor/node_modules/jquery/dist/jquery.slim.min.js',
-                'vendor/node_modules/chartjs-plugin-annotation/dist/chartjs-plugin-annotation.min.js',
-                // 'vendor/node_modules/laravel-echo/dist/echo.js',
-                // 'vendor/node_modules/pusher-js',
-                'resources/js/app.js',
-                'resources/js/index.js',
-                'resources/js/login.js',
-                'resources/js/email-domain-list.json',
-                'resources/js/applicant/dashboard.js',
-                'resources/js/employee/dashboard.js',
-                // 'resources/js/forms/nbp.min.js',
-                // 'resources/js/forms/eval-password.js',
-                // 'resources/js/pasword-listcollections/mostcommon_1000000',
+                'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js',
+                'node_modules/chartjs-plugin-annotation/dist/chartjs-plugin-annotation.min.js',
+                ...sync('./resources/js/**/*.js',),
+                ...sync('./resources/css/**/*.css'),
             ],
             refresh: true,
         }),
+        viteStaticCopy({
+            targets: [
+                {
+                    src: 'resources/js/pasword-list/collections/mostcommon_1000000',
+                    dest: 'assets/pasword-list/collections'
+                },
+                {
+                    src: 'resources/js/email-domain-list.json',
+                    dest: 'assets/'
+                }
+            ]
+        })
     ],
     resolve: {
         alias: {
-            'laravel-echo': '/vendor/node_modules/laravel-echo/dist/echo.js',
-            'pusher-js': '/vendor/node_modules/pusher-js/dist/web/pusher.js',
+            'emp-sidebar-script': "/resources/js/employee/side-top-bar.js",
+            'theme-listener-script': "/resources/js/theme-listener.js",
+            'employee-page-script': "/resources/js/employee/employee.js",
+            'globalListener-script': "/resources/js/utils/global-event-listener.js",
+            'iframe-full-screener-script': "/resources/js/utils/iframe-full-screener.js",
+            'websocket-script': "/resources/js/websocket.js",
+            'debounce-script': "/resources/js/utils/debounce-fn.js",
+            'password-confirm-validation-script': "/resources/js/forms/password-confirm-validation.js",
+            'global-scroll-script': "/resources/js/utils/global-scroll-fn.js",
+            'toggle-password-script': "/resources/js/toggle-password.js",
+            'input-validator-script': "/resources/js/forms/input-validator.js",
+            'email-validation-script': "/resources/js/forms/email-validation.js",
+            'password-validation-script': "/resources/js/forms/password-validation.js",
+            'name-validator-script': "/resources/js/forms/name-validator.js",
+            'name-validate-rule': "/resources/js/forms/name-validate-rule.js",
+            'datatable': "/vendor/rappasoft/laravel-livewire-tables/resources/imports/laravel-livewire-tables-all.js",
         },
     },
     server: {
-        host: process.env.APP_URL,
+        host: localIpAddress,
         hmr: {
-            host: 'localhost',
+            host: localIpAddress,
         },
     },
-
 });

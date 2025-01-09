@@ -65,7 +65,7 @@ return [
     |
     */
 
-    'timezone' => env('APP_TIMEZONE', 'UTC'),
+    'timezone' => env('APP_TIMEZONE', 'Asia/Manila'),
 
     /*
     |--------------------------------------------------------------------------
@@ -79,6 +79,8 @@ return [
     */
 
     'locale' => env('APP_LOCALE', 'en'),
+
+    'supported_locales' => explode(',', env('APP_SUPPORTED_LOCALES', 'en')),
 
     'fallback_locale' => env('APP_FALLBACK_LOCALE', 'en'),
 
@@ -122,5 +124,24 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Regional Settings
+    |--------------------------------------------------------------------------
+    | This value is used for setting data format and etc.
+    | Supported: "local", "international"
+    */
+    'region_mode' => env('APP_REGION_MODE', 'local'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Server Timezone
+    |--------------------------------------------------------------------------
+    | This value is the timezone of the server where the application is hosted.
+    | Used in validation rules format and etc.
+    |
+    */
+    'server_timezone' => env('SERVER_TIMEZONE', 'Asia/Manila'),
 
 ];

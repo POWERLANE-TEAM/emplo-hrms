@@ -1,36 +1,73 @@
 <?php
 
-use App\Http\Controllers\ApplicantDocController;
-use App\Http\Controllers\EmployeeController;
-use App\Http\Controllers\JsonController;
-use App\Livewire\GoogleOAuth;
-use Illuminate\Broadcasting\BroadcastController;
+use App\Http\Controllers\Application\ApplicantController;
+use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\ContentController;
+use App\Http\Controllers\ApplicationDocController;
+use App\Http\Controllers\ResumeController;
+use App\Http\Controllers\WebThemeController;
+use App\Livewire\Auth\FacebookOAuth;
+use App\Livewire\Auth\GoogleOAuth;
+use App\Livewire\Auth\GoogleOneTap;
+use App\Livewire\Auth\Logout;
 use Illuminate\Support\Facades\Route;
+use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 
-Route::get('/', function () {
-    return view('index');
-}); // this should be change into a controller when about and contact components are created
+Route::group([], function () {
+    Route::get('/hiring', function () {
+        return view('hiring');
+    })->name('hiring');
+});
+
+Route::post('/theme-preference/set', [WebThemeController::class, 'create'])
+    ->middleware('throttle:4,1');
 
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/applicant', [ApplicantDocController::class, 'index']);
+    Route::get('/application/{application?}', [ApplicantController::class, 'show'])->name('applicant.dashboard');
+
+    Route::get('/apply/{job}', [ApplicantController::class, 'create'])->name('apply');
+
+    Route::get('/preemploy', [ApplicationDocController::class, 'create']);
+    Route::post('/preemploy', [ApplicationDocController::class, 'store']);
 });
 
 
+Route::post('/resume/process', [DocumentController::class, 'recognizeText'])
+    ->name('resume.process');
 
-Route::get('/employee/{page?}', [EmployeeController::class, 'employee'])->middleware(['auth', 'verified']);
+Route::middleware('guest')->group(function () {
 
-Route::get('api/json/{requestedData}', [JsonController::class, 'index']);
+    Route::get('/login', [AuthenticatedSessionController::class, 'create'])
+        ->name('login');
 
-/*
-|--------------------------------------------------------------------------
-| carl routes
-|--------------------------------------------------------------------------
-|
-*/
+    Route::get('/auth/google/redirect', [GoogleOAuth::class, 'googleOauth'])
+        ->name('auth.google.redirect');
 
-// Route::get('/signup', [SignUp::class, 'render']);
-Route::get('/auth/google/redirect', [GoogleOAuth::class, 'googleOauth'])
-    ->name('auth.google');
-Route::get('/auth/google/callback', [GoogleOAuth::class, 'googleCallback'])
-    ->name('auth.google.callback');
+    Route::get('/auth/google/callback', [GoogleOAuth::class, 'googleCallback']);
+
+    Route::post('/auth/googleonetap/callback', [GoogleOneTap::class, 'handleCallback']);
+
+    Route::get('/auth/facebook/redirect', [FacebookOAuth::class, 'facebookOauth'])
+        ->name('auth.facebook.redirect');
+
+    Route::get('/auth/facebook/callback', [FacebookOAuth::class, 'handleCallback']);
+});
+
+Route::post('/logout', [Logout::class, 'destroy'])
+    ->middleware('auth')
+    ->name('logout');
+
+Route::get('/test-pop-ups', function () {
+    return view('components.html.test-pop-ups');
+});
+
+Route::get('/information-centre', function () {
+    return view('help-centre.index');
+});
+
+Route::get('/modal-content/{modalKey}', [ContentController::class, 'getModalContent']);
+
+Route::get('/forgot-password', function () {
+    return view('password-recovery.index');
+});

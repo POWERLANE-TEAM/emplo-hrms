@@ -3,3 +3,35 @@
     height: auto;
     aspect-ratio: 1/1;
 }
+
+*>[data-lucide] {
+    pointer-events: none;
+}
+
+.icon-opacity {
+    opacity: 1;
+    transition: opacity 0.3s;
+}
+
+.icon-opacity:hover {
+    opacity: 0.5;
+}
+
+[data-lucide="download"] {
+
+    polyline,
+    line {
+        transition: transform 0.2s ease-in-out;
+        transform: translateY(-6%);
+    }
+}
+
+button:hover {
+    [data-lucide="download"] {
+
+        polyline,
+        line {
+            transform: translateY(0%);
+        }
+    }
+}
