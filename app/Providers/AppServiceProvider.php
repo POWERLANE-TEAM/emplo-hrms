@@ -184,12 +184,15 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('isEmployeeUnderJurisdiction', [RegularPerformancePolicy::class, 'isEmployeeUnderJurisdiction']);
         Gate::define('isEmployeeRegular', [RegularPerformancePolicy::class, 'isEmployeeRegular']);
         Gate::define('isMe', [RegularPerformancePolicy::class, 'isMe']);
+        Gate::define('hasRegularEvaluateeAcknowledged', [RegularPerformancePolicy::class, 'hasRegularEvaluateeAcknowledged']);
 
         /** Probationaries Performance Evaluation Policies */
         Gate::define('evaluateProbationaryPerformance', [ProbationaryPerformancePolicy::class, 'evaluateProbationaryPerformance']);
+        Gate::define('isEmployeeProbationary', [ProbationaryPerformancePolicy::class, 'isEmployeeProbationary']);
         Gate::define('signAnyProbationaryEvaluationForm', [ProbationaryPerformancePolicy::class, 'signAnyProbationaryEvaluationForm']);
         Gate::define('signProbationaryEvaluationFormFinal', [ProbationaryPerformancePolicy::class, 'signProbationaryEvaluationFormFinal']);
         Gate::define('signProbationarySubordinateEvaluationForm', [ProbationaryPerformancePolicy::class, 'signProbationarySubordinateEvaluationForm']);
+        Gate::define('hasProbationaryEvaluateeAcknowledged', [ProbationaryPerformancePolicy::class, 'hasProbationaryEvaluateeAcknowledged']);
 
         /** User Status Policies */
         Gate::define('isAccountActive', [UserStatusPolicy::class, 'isAccountActive']);

@@ -7,6 +7,7 @@ use App\Models\Employee;
 use App\Enums\UserPermission;
 use Illuminate\Support\Carbon;
 use App\Enums\EmploymentStatus;
+use App\Models\RegularPerformance;
 use Illuminate\Auth\Access\Response;
 use App\Models\RegularPerformancePeriod;
 
@@ -183,5 +184,17 @@ class RegularPerformancePolicy
     public function isMe(User $user, Employee $employee): bool
     {
         return $employee->account->is($user);
+    }
+
+    /**
+     * Check if evaluatee has acknowledged the result of performance evaluation. 
+     * 
+     * @param mixed $user
+     * @param \App\Models\RegularPerformance $performance
+     * @return bool
+     */
+    public function hasRegularEvaluateeAcknowledged(?User $user, RegularPerformance $performance): bool
+    {
+        return $performance->is_employee_acknowledged;
     }
 }
