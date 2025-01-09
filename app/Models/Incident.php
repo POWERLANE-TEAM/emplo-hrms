@@ -2,8 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Str;
+use App\Enums\ActivityLogName;
 use Illuminate\Support\Carbon;
+use Spatie\Activitylog\LogOptions;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,6 +18,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Incident extends Model
 {
     use HasFactory;
+    use LogsActivity;
 
     protected $primaryKey = 'incident_id';
 
@@ -99,5 +105,25 @@ class Incident extends Model
             ->as('access')
             ->using(IncidentRecordCollaborator::class)
             ->withPivot('is_editor');
+    }
+
+    /**
+     * Override default values for more controlled logging.
+     */
+    public function getActivityLogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logUnguarded()
+            ->useLogName(ActivityLogName::EMPLOYEE->value)
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(function (string $eventName) {
+                $causerFirstName = Str::ucfirst(Auth::user()->account->first_name);
+
+                return match ($eventName) {
+                    'created' => __("{$causerFirstName} created a new incident report."),
+                    'updated' => __("{$causerFirstName} updated an incident report information"),
+                    'deleted' => __("{$causerFirstName} removed an incident report."),
+                };
+            });
     }
 }

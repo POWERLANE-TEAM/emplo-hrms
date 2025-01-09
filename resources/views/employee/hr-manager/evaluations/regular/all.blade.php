@@ -1,8 +1,7 @@
-@extends('components.layout.employee.layout', ['description' => 'Employee Dashboard', 'nonce' => $nonce])
-@use ('Illuminate\View\ComponentAttributeBag')
+@extends('components.layout.employee.layout', ['description' => 'Regulars Performance Evaluation', 'nonce' => $nonce])
 
 @section('head')
-<title>Employee Name's Performance Evaluation Results</title><!-- Replace with Employee Name -->
+<title>Regular Employees | Performance Evaluation</title>
 <script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 @endsection
@@ -23,12 +22,14 @@
 
 <x-headings.main-heading :isHeading="true">
     <x-slot:heading>
-        {{ __('Regular Employees Performance Evals Table') }}
+        {{ __('Regulars Performance Evaluation Table') }}
     </x-slot:heading>
 
     <x-slot:description>
-        {{ __('View and manage.') }}
+        {{ __('View and manage regular employees performance evaluation form.') }}
     </x-slot:description>
 </x-headings.main-heading>
 
-    @endsection
+<livewire:employee.tables.any-regulars-performances-table :$routePrefix />
+
+@endsection

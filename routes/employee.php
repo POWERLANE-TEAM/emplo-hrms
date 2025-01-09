@@ -1,19 +1,22 @@
 <?php
 
-use App\Http\Controllers\IncidentController;
-use App\Http\Controllers\IssueController;
 use App\Models\Employee;
 use App\Enums\UserPermission;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\IssueController;
 use App\Http\Controllers\LeaveController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\IncidentController;
 use App\Http\Controllers\OvertimeController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\PerformanceController;
 use App\Http\Controllers\ApplicationExamController;
 use App\Http\Controllers\InitialInterviewController;
 use App\Http\Controllers\PerformanceDetailController;
 use App\Http\Controllers\Employee\DashboardController;
+use App\Http\Controllers\RegularPerformanceController;
 use App\Http\Controllers\Application\ApplicationController;
+use App\Http\Controllers\ProbationaryPerformanceController;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 
 Route::middleware('guest')->group(function () {
@@ -275,7 +278,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
      */
 
     Route::get('evaluation-results/probationary', function () {
-        return view('/employee.hr-manager.evaluations.probationary.evaluation-results');
+        return view('employee.hr-manager.evaluations.probationary.evaluation-results');
     })->name('evaluation-results.probationary');
 
     /**
@@ -421,6 +424,68 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         });
     });
 
+    /** Performance resource */
+    Route::prefix('performances')->name('performances.')->group(function () {
+        Route::get('/', [PerformanceController::class, 'index'])
+            ->name('index');
+
+        Route::get('regular', [PerformanceController::class, 'asRegular'])
+            ->name('regular');
+
+        Route::get('regular/{performance}', [PerformanceController::class, 'showAsRegular'])
+            ->name('regular.show');
+
+        Route::get('probationary', [PerformanceController::class, 'asProbationary'])
+            ->name('probationary');
+
+        Route::get('probationary/{employee}', [PerformanceController::class, 'showAsProbationary'])
+            ->name('probationary.show');
+        
+        /** Regulars */
+        Route::prefix('regulars')->name('regulars.')->group(function () {
+            Route::get('{employee}/create', [RegularPerformanceController::class, 'create'])
+                ->can('evaluateRegularsPerformance', 'employee')
+                ->name('create');
+
+            Route::get('/', [RegularPerformanceController::class, 'index'])
+                ->name('index');
+
+            Route::get('{performance}', [RegularPerformanceController::class, 'show'])
+                ->can('signAnyRegularEvaluationForm')
+                ->whereNumber('performance')
+                ->name('show');
+
+            Route::get('general', [RegularPerformanceController::class, 'general'])
+                ->name('general');
+
+            Route::get('{performance}/review', [RegularPerformanceController::class, 'review'])
+                ->can('signRegularEvaluationFormFinal')
+                ->name('review');
+        });
+
+        /** Probationaries */
+        Route::prefix('probationaries')->name('probationaries.')->group(function () {
+            Route::get('{employee}/create', [ProbationaryPerformanceController::class, 'create'])
+                ->can('evaluateProbationaryPerformance', 'employee')
+                ->name('create');
+
+            Route::get('/', [ProbationaryPerformanceController::class, 'index'])
+                ->name('index');
+
+            Route::get('{employee}', [ProbationaryPerformanceController::class, 'show'])
+                ->whereNumber('employee')
+                ->name('show');
+
+            Route::get('general', [ProbationaryPerformanceController::class, 'general'])
+                ->name('general');
+                
+            Route::get('{employee}/review', [ProbationaryPerformanceController::class, 'review'])
+                ->can('signProbationaryEvaluationFormFinal')
+                ->name('review');
+        });
+    });
+
+
     /**
      * Training
      */
@@ -505,28 +570,6 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     // =========================================
     // SUPERVISOR ROUTES
     // ==========================================
-
-
-    /**
-     * Performance Evaluations
-     */
-
-    Route::get('managerial/evaluations/all', function () {
-        return view('employee.supervisor.performance-evaluations.all');
-    })->name('managerial.evaluations.all');
-
-    /**
-     * Assign Score
-     */
-    Route::get('{employee}/performances/create', function (Employee $employee) {
-        $employee->with(['performances, jobTitle', 'status']);
-        return view('employee.supervisor.performance-evaluations.create', compact('employee'));
-    })->name('performances.create');
-
-
-    Route::get('/assign-score/regular', function () {
-        return view('employee.supervisor.evaluations.regular.assign-score');
-    })->name('assign-score.regular');
 
 
 

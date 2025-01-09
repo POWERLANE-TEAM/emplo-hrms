@@ -30,7 +30,7 @@ class JobFamily extends Model
     /**
      * Get the supervisor of the job family.
      */
-    public function supervisor(): BelongsTo
+    public function officeSupervisor(): BelongsTo
     {
         return $this->belongsTo(Employee::class, 'supervisor', 'employee_id');
     }

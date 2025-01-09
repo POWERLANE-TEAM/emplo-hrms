@@ -4,11 +4,11 @@
     "scripts": {
         "dev": "vite",
         "build": "vite build",
-        "start": "php artisan optimize:clear && npm run build && concurrently \"php artisan serve\" \"php artisan reverb:start --debug\" \"php artisan queue:work\" \"npm run dev\" ",
+        "start": "php artisan optimize:clear && npm run build && concurrently \"php artisan serve\" \"php artisan reverb:start --debug\" \"php artisan queue:work\" \"php artisan schedule:work\" \"npm run dev\" ",
         "start-bandilla-1": "php artisan optimize:clear && php artisan optimize && php artisan config:clear && php artisan route:clear && npm run build && concurrently \"php artisan reverb:start --debug\" \"npm run dev\" ",
         "start-bandilla-2": "concurrently \"php artisan serve --host 0.0.0.0\" \"php artisan queue:work\" ",
         "db-seed-bandilla": " php artisan migrate:fresh --seed && php artisan db:seed GuestSeeder && php artisan db:seed EmployeeSeeder && php artisan db:seed ApplicantSeeder",
-        "prod": " npm run build && concurrently \"php artisan serve\" \"php artisan reverb:start --debug\" \"php artisan queue:work\" "
+        "prod": " npm run build && concurrently \"php artisan serve\" \"php artisan reverb:start --debug\" \"php artisan queue:work\" \"php artisan schedule:run\" "
     },
     "devDependencies": {
         "@eslint/js": "^9.9.0",
