@@ -60,7 +60,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         return view('employee.notifications.index');
     })->name('notifications');
 
-    
+
     /**
      * Organization
      */
@@ -504,7 +504,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         return view('employee.hr-manager.employees.information', compact('employee'));
     })
         ->whereNumber('employee')
-        ->name('employees.masterlist.information');
+        ->name('employees.information');
 
 
     /**
@@ -552,11 +552,11 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
      * Archive
      */
     Route::get('/archive', function () {
-        return view('/employee.hr-manager.archive.index');
+        return view('employee.hr-manager.archive.index');
     })->name('employees.archive');
 
     Route::get('/archive/records', function () {
-        return view('/employee.hr-manager.archive.records');
+        return view('employee.hr-manager.archive.records');
     })->name('employees.archive.records');
 
 
