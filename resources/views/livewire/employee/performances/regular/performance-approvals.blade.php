@@ -3,10 +3,10 @@
 <section>
     <x-breadcrumbs>
         <x-slot:breadcrumbs>
-            <x-breadcrumb :href="route($routePrefix.'.performances.regular')">
+            <x-breadcrumb :href="route($this->routePrefix.'.performances.regular')">
                 {{ __('Performance Evaluations (Regular)') }}
             </x-breadcrumb>
-            <x-breadcrumb :active="request()->routeIs($routePrefix.'.performances.regular.show')">
+            <x-breadcrumb :active="request()->routeIs($this->routePrefix.'.performances.regular.show')">
                 {{ __('Your Performance') }}
             </x-breadcrumb>
         </x-slot:breadcrumbs>
@@ -17,7 +17,7 @@
             <x-info_panels.callout 
                 type="{{ $performance->is_employee_acknowledged ? 'success' : 'info' }}" 
                 :description="$performance->is_employee_acknowledged 
-                    ? __('Mark as received at '.Carbon::make($performance?->evaluatee_signed_at)?->format('F d, Y g:i A')) 
+                    ? __('Mark as acknowledged at '.Carbon::make($performance?->evaluatee_signed_at)?->format('F d, Y g:i A')) 
                     :__('Acknowledging this evaluation form will serve as your signature and approval.')">
             </x-info_panels.callout>
         </div>    

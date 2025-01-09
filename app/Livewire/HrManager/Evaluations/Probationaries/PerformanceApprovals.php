@@ -52,6 +52,7 @@ class PerformanceApprovals extends Component
         $probationary = $this->employee->performancesAsProbationary->last()->details->last();
 
         return (object) [
+            'details'                   => $probationary,
             'evaluator'                 => $probationary?->employeeEvaluator?->full_name,
             'evaluatorJobTitle'         => $probationary?->employeeEvaluator?->jobTitle?->job_title,
             'secondaryApprover'         => $probationary?->secondaryApprover?->full_name,
@@ -63,6 +64,8 @@ class PerformanceApprovals extends Component
             'fourthApprover'            => $probationary?->fourthApprover?->full_name,
             'fourthApproverJobTitle'    => $probationary?->fourthApprover?->jobTitle?->job_title,
             'fourthApproverSignedAt'    => $probationary?->fourth_approver_signed_at,
+            'isAcknowledged'            => $probationary?->is_employee_acknowledged,
+            'signedAt'                  => $probationary?->evaluatee_signed_at,
         ];
     }
 

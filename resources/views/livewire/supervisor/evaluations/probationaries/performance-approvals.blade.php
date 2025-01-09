@@ -1,4 +1,5 @@
 @use(App\Enums\PerformanceEvaluationPeriod)
+@use(Illuminate\Support\Carbon)
 
 <section class="mb-5 mt-3">
     <div class="d-flex mb-5 row align-items-stretch">
@@ -26,6 +27,17 @@
                                 {{ __("{$finalRating['format']} - {$finalRating['scale']}") }}
                             </p>
                             <p class="text-muted">{{ __('Final Rating & Performance Scale') }}</p>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <x-info_panels.callout 
+                                    type="{{ $performance->isAcknowledged ? 'success' : 'info' }}" 
+                                    :description="$performance->isAcknowledged 
+                                        ? __('Acknowledged by the employee evaluatee at '.Carbon::make($performance?->signedAt)?->format('F d, Y g:i A')) 
+                                        :__('The evaluatee has not yet acknowledged this performance evaluation result')">
+                                </x-info_panels.callout>
+                            </div>    
                         </div>
 
                         @php
@@ -200,16 +212,17 @@
     </div>
 
     {{-- Buttons --}}
-    @if (is_null($performance->secondaryApproverSignedAt))
-        <div class="col-5 ps-3 pe-4">
-            <button
-                wire:click="markAsReceived"
-                type="submit" 
-                name="submit"
-                class="btn btn-primary btn-lg fw-regular col-6 w-100"
-                >{{ __('Mark As Received') }}
-            </button>
-        </div>
-    @endif
-
+    @can('hasProbationaryEvaluateeAcknowledged', $performance->details)
+        @if (is_null($performance->secondaryApproverSignedAt))
+            <div class="col-5 ps-3 pe-4">
+                <button
+                    wire:click="markAsReceived"
+                    type="submit" 
+                    name="submit"
+                    class="btn btn-primary btn-lg fw-regular col-6 w-100"
+                    >{{ __('Mark As Received') }}
+                </button>
+            </div>
+        @endif        
+    @endcan
 </section>

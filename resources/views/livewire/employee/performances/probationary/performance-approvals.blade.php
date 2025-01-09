@@ -3,10 +3,10 @@
 <section>
     <x-breadcrumbs>
         <x-slot:breadcrumbs>
-            <x-breadcrumb :href="route($routePrefix.'.performances.probationary')">
+            <x-breadcrumb :href="route($this->routePrefix.'.performances.probationary')">
                 {{ __('Performance Evaluations (Probationary)') }}
             </x-breadcrumb>
-            <x-breadcrumb :active="request()->routeIs($routePrefix.'.performances.probationary.show')">
+            <x-breadcrumb :active="request()->routeIs($this->routePrefix.'.performances.probationary.show')">
                 {{ __('Your Performance') }}
             </x-breadcrumb>
         </x-slot:breadcrumbs>

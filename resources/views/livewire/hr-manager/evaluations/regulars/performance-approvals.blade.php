@@ -1,3 +1,4 @@
+@use(Illuminate\Support\Carbon)
 
 <section class="mb-5 mt-3">
     <div class="d-flex row align-items-stretch">
@@ -19,6 +20,17 @@
                                 {{ __("{$this->finalRating['ratingAvg']} - {$this->finalRating['performanceScale']}") }}
                             </p>
                             <p class="text-muted">{{ __('Final Rating & Performance Scale') }}</p>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <x-info_panels.callout 
+                                    type="{{ $performance->is_employee_acknowledged ? 'success' : 'info' }}" 
+                                    :description="$performance->is_employee_acknowledged 
+                                        ? __('Acknowledged by the employee evaluatee at '.Carbon::make($performance?->evaluatee_signed_at)?->format('F d, Y g:i A')) 
+                                        :__('The evaluatee has not yet acknowledged this performance evaluation result')">
+                                </x-info_panels.callout>
+                            </div>    
                         </div>
 
                         {{-- SECTION: Main Approvals --}}
@@ -152,15 +164,17 @@
     </div>
 
     {{-- Buttons --}}
-    @if (! $performance->third_approver_signed_at || ! $performance->fourth_approver_signed_at)
-        <div class="col-5 ps-3 pe-4">
-            <button
-                wire:click="markAsReceived"
-                type="submit" 
-                name="submit"
-                class="btn btn-primary btn-lg fw-regular col-6 w-100"
-                >{{ __('Mark As Received') }}
-            </button>
-        </div>
-    @endif
+    @can('hasRegularEvaluateeAcknowledged', $performance)
+        @if (! $performance->third_approver_signed_at || ! $performance->fourth_approver_signed_at)
+            <div class="col-5 ps-3 pe-4">
+                <button
+                    wire:click="markAsReceived"
+                    type="submit" 
+                    name="submit"
+                    class="btn btn-primary btn-lg fw-regular col-6 w-100"
+                    >{{ __('Mark As Received') }}
+                </button>
+            </div>
+        @endif        
+    @endcan
 </section>
