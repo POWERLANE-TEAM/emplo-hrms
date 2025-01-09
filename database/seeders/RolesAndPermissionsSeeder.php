@@ -135,6 +135,8 @@ class RolesAndPermissionsSeeder extends Seeder
 
             // other
             UserPermission::MANAGE_INCIDENT_REPORT_COLLABORATORS->value,
+            UserPermission::APPROVE_PERFORMANCE_EVALUATION_THIRD->value,
+            UserPermission::APPROVE_PERFORMANCE_EVALUATION_FOURTH->value,
         ];
     }
 
@@ -195,6 +197,22 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::APPROVE_LEAVE_REQUEST_FIRST->value,
             UserPermission::APPROVE_LEAVE_REQUEST_SECOND->value,
             UserPermission::APPROVE_LEAVE_REQUEST_THIRD->value,
+            UserPermission::APPROVE_PERFORMANCE_EVALUATION_SECOND->value,
+            UserPermission::APPROVE_PERFORMANCE_EVALUATION_THIRD->value,
         ];
+    }
+
+    public static function hrStaffPermissions()
+    {
+        return array_merge(self::basicPermissions(), [
+            UserPermission::AUTHORIZE_OVERTIME_REQUEST->value,
+            UserPermission::APPROVE_OVERTIME_SUMMARY_INITIAL->value,
+            UserPermission::APPROVE_OVERTIME_SUMMARY_SECONDARY->value,
+            UserPermission::APPROVE_LEAVE_REQUEST_FIRST->value,
+            UserPermission::APPROVE_LEAVE_REQUEST_SECOND->value,
+            UserPermission::APPROVE_LEAVE_REQUEST_THIRD->value,
+            UserPermission::APPROVE_PERFORMANCE_EVALUATION_SECOND->value,
+            UserPermission::APPROVE_PERFORMANCE_EVALUATION_THIRD->value,
+        ]);
     }
 }

@@ -16,11 +16,13 @@ class PerformanceCategorySeeder extends Seeder
     {
         $categories = collect(Storage::json('public/utils/performance-categories.json'));
 
-        $categories->each(function ($category) {
-            PerformanceCategory::create([
-                'perf_category_name' => Str::lower($category['name']),
-                'perf_category_desc' => Str::lower($category['description']),
-            ]);
+        activity()->withoutLogs(function () use ($categories) {
+            $categories->each(function ($category) {
+                PerformanceCategory::create([
+                    'perf_category_name' => Str::lower($category['name']),
+                    'perf_category_desc' => Str::lower($category['description']),
+                ]);
+            });
         });
     }
 }
