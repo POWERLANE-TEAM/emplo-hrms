@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d1d66505c305a5d5c138ecef35cdca80",
+    "content-hash": "7f14c256a1ec7ae68fbcbd8a615dec0e",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -1529,6 +1529,56 @@
                 "source": "https://github.com/googleapis/google-auth-library-php/tree/v1.45.0"
             },
             "time": "2024-12-11T02:10:48+00:00"
+        },
+        {
+            "name": "google/cloud-ai-platform",
+            "version": "v1.13.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/googleapis/google-cloud-php-ai-platform.git",
+                "reference": "0600079d0ab2e580e8419a2508beb29d5869a351"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/googleapis/google-cloud-php-ai-platform/zipball/0600079d0ab2e580e8419a2508beb29d5869a351",
+                "reference": "0600079d0ab2e580e8419a2508beb29d5869a351",
+                "shasum": ""
+            },
+            "require": {
+                "google/gax": "^1.36.0",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.0"
+            },
+            "suggest": {
+                "ext-grpc": "Enables use of gRPC, a universal high-performance RPC framework created by Google.",
+                "ext-protobuf": "Provides a significant increase in throughput over the pure PHP protobuf implementation. See https://cloud.google.com/php/grpc for installation instructions."
+            },
+            "type": "library",
+            "extra": {
+                "component": {
+                    "id": "cloud-ai-platform",
+                    "path": "AiPlatform",
+                    "entry": null,
+                    "target": "googleapis/google-cloud-php-ai-platform.git"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Google\\Cloud\\AIPlatform\\": "src",
+                    "GPBMetadata\\Google\\Cloud\\Aiplatform\\": "metadata"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "Google Cloud Ai Platform Client for PHP",
+            "support": {
+                "source": "https://github.com/googleapis/google-cloud-php-ai-platform/tree/v1.13.1"
+            },
+            "time": "2024-12-12T21:15:35+00:00"
         },
         {
             "name": "google/cloud-document-ai",
@@ -4717,79 +4767,6 @@
                 }
             ],
             "time": "2024-11-21T10:39:51+00:00"
-        },
-        {
-            "name": "omnia-digital/livewire-calendar",
-            "version": "3.1.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/omnia-digital/livewire-calendar.git",
-                "reference": "c04ed830df44d8b2d21353a883b650088026f992"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/omnia-digital/livewire-calendar/zipball/c04ed830df44d8b2d21353a883b650088026f992",
-                "reference": "c04ed830df44d8b2d21353a883b650088026f992",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/support": "^6.0|^7.0|^8.0|^9.0|^10.0|^11.0",
-                "livewire/livewire": "^2.0||^3.0",
-                "php": "^7.2|^8.0|^8.1|^8.2"
-            },
-            "require-dev": {
-                "orchestra/testbench": "^5.0|^6.0",
-                "phpunit/phpunit": "^8.0|^9.0|^10.0|^11.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "aliases": {
-                        "LivewireCalendar": "Omnia\\LivewireCalendar\\LivewireCalendarFacade"
-                    },
-                    "providers": [
-                        "Omnia\\LivewireCalendar\\LivewireCalendarServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Omnia\\LivewireCalendar\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Josh Torres",
-                    "email": "josht@omniadigital.io",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Andrés Santibáñez",
-                    "email": "santibanez.andres@gmail.com",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Osei Quashie",
-                    "email": "osei@omniadigital.io",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Laravel Livewire calendar component",
-            "homepage": "https://github.com/omnia-digital/livewire-calendar",
-            "keywords": [
-                "livewire-calendar",
-                "omnia",
-                "omnia-digital"
-            ],
-            "support": {
-                "issues": "https://github.com/omnia-digital/livewire-calendar/issues",
-                "source": "https://github.com/omnia-digital/livewire-calendar/tree/3.1.3"
-            },
-            "time": "2024-10-27T00:33:31+00:00"
         },
         {
             "name": "paragonie/constant_time_encoding",
