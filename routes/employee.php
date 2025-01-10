@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use App\Models\Employee;
 use App\Enums\UserPermission;
 use Illuminate\Support\Facades\Route;
@@ -25,32 +26,24 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth'/* , 'verified' */)->group(function () {
-
-    // =========================================
-    // ALL USER ROUTES
-    // ==========================================
-
+    
     /**
-     * Profile
+     * Profile Resource
      */
-    Route::get('profile', function () {
-        return view('employee.profile.information.index');
-    })->name('profile');
+    Route::prefix('profile')->name('profile.')->group(function () {
+        Route::get('/', [ProfileController::class, 'index'])
+            ->name('index');
 
-    Route::get('profile/edit', function () {
-        return view('employee.profile.information.edit');
-    })->name('profile.edit');
+        Route::get('edit', [ProfileController::class, 'edit'])
+            ->name('edit');
 
-    /**
-     * Settings & Privacy
-     */
-    Route::get('settings', function () {
-        return view('employee.profile.settings');
-    })->name('settings');
+        Route::get('settings', [ProfileController::class, 'settings'])
+            ->name('settings');
 
-    Route::get('activity-logs', function () {
-        return view('employee.profile.activity-logs');
-    })->name('activity-logs');
+        Route::get('activity-logs', [ProfileController::class, 'logs'])
+            ->name('logs');
+    });
+
 
     /**
      * Recycle Bin
@@ -67,10 +60,6 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         return view('employee.notifications.index');
     })->name('notifications');
 
-
-    // =========================================
-    // HR MANAGER ROUTES
-    // ==========================================
 
     /**
      * Organization
@@ -510,7 +499,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         return view('employee.hr-manager.employees.information', compact('employee'));
     })
         ->whereNumber('employee')
-        ->name('employees.masterlist.information');
+        ->name('employees.information');
 
 
     /**
@@ -558,11 +547,11 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
      * Archive
      */
     Route::get('/archive', function () {
-        return view('/employee.hr-manager.archive.index');
+        return view('employee.hr-manager.archive.index');
     })->name('employees.archive');
 
     Route::get('/archive/records', function () {
-        return view('/employee.hr-manager.archive.records');
+        return view('employee.hr-manager.archive.records');
     })->name('employees.archive.records');
 
 
