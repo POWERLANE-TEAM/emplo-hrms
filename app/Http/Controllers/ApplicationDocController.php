@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\AccountType;
+use App\Enums\FilePath;
 use App\Models\Application;
 use App\Models\ApplicationDoc;
 use App\Models\PreempRequirement;
@@ -79,7 +80,7 @@ class ApplicationDocController extends Controller
 
             $application_id = $preemployed_user->account->application->application_id;
 
-            $path = $file->storeAs("uploads/applicant/applications/pre-emp/$user_folder", $hashed_name, 'public');
+            $path = $file->storeAs(FilePath::PRE_EMPLOYMENT->value . "$user_folder", $hashed_name, 'public');
 
             /* Needs to be updated to store in application docs instead */
 
