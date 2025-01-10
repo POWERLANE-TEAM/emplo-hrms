@@ -22,7 +22,7 @@ class RegularPerformancePlanController extends Controller
         /**
      * Show the form for creating a new resource.
      */
-    public function create( int $performance)
+    public function create(int $performance)
     {
         $performanceEvalForm = RouteHelper::validateModel(RegularPerformance::class, $performance);
 

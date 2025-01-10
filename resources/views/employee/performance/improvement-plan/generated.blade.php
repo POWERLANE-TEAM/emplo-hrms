@@ -1,5 +1,6 @@
 @extends('components.layout.employee.layout', ['description' => 'Employee Dashboard', 'nonce' => $nonce])
 @use ('Illuminate\View\ComponentAttributeBag')
+@use ('App\Http\Helpers\Timezone')
 
 @section('head')
     <title>PIP Central Hub</title>
@@ -20,24 +21,36 @@
     @vite(['resources/css/employee/hr-manager/evaluator.css'])
 @endPushOnce
 @section('content')
+
+{{-- {{dd($performance)}} --}}
     <x-headings.main-heading :isHeading="true">
         <x-slot:heading>
-            {{ __('Generated Performance Improvement Plans') }}
+            {{ __('Performance Plan Generator') }}
         </x-slot:heading>
 
         <x-slot:description>
-            <p>{{ __('Central hub of all the generated performance improvement plans.') }}
+            <p>{{ __('Creates customized development plan by analyzing performance evaluation results.') }}s
             </p>
         </x-slot:description>
     </x-headings.main-heading>
 
-    {{-- {{dd($data)}} --}}
+    <div class="ms-n3 mt-n4 mb-5">
+        <x-headings.sparkle-callout>
+            <x-slot:description>
+                Generated a performance plan addressing <span> {{$performance->employeeEvaluatee->fullname}}'s</span> <a href="{{route($routePrefix .'.performances.regulars.review', ['performance'=> $performance->regular_performance_id])}}">{{ \Carbon\Carbon::parse($performance->period->start_date)->setTimezone(Timezone::get())->format('Y')}} {{__('evaluation')}}</a> . Check them out below.
+            </x-slot:description>
+        </x-headings.sparkle-callout>
+    </div>
 
-
+<div class="card border border-primary px-5 py-4">
     <x-markdown>
         {!! nl2br(e($data)) !!}
     </x-markdown>
+</div>
 
+<div class="col-4 mt-4 mx-auto">
 
-    <button type="button" class="btn btn-primary">Save</button>
+    <button type="button" class="btn btn-primary btn-lg w-100 ">Save</button>
+</div>
+
 @endsection
