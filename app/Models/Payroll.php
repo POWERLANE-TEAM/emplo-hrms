@@ -42,4 +42,12 @@ class Payroll extends Model
     {
         return $this->hasMany(OvertimePayrollApproval::class, 'payroll_id', 'payroll_id');
     }
+
+    /**
+     * Get the paylips associated with the payroll.
+     */
+    public function payslips(): HasMany
+    {
+        return $this->hasMany(Payslip::class, 'payroll_id', 'payroll_id');
+    }
 }
