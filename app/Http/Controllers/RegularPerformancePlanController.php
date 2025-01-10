@@ -7,6 +7,7 @@ use App\Models\RegularPerformance;
 use App\Http\Helpers\RouteHelper;
 use App\Models\PerformanceCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class RegularPerformancePlanController extends Controller
 {
@@ -18,12 +19,21 @@ class RegularPerformancePlanController extends Controller
         //
     }
 
-    /**
+        /**
      * Show the form for creating a new resource.
      */
-    public function create(Request $request, ?int $performance = null)
+    public function create( int $performance)
     {
-        $performanceEvaluation = RouteHelper::validateModel(RegularPerformance::class, $request->input('performance-form') ?? $performance);
+        $performanceEvalForm = RouteHelper::validateModel(RegularPerformance::class, $performance);
+
+        $data = Session::get('performance_plan_data_' . $performance);
+
+        return view('employee.performance.improvement-plan.generated', ['performance' => $performanceEvalForm, 'data' => $data]);
+    }
+
+    public function generate(Request $request)
+    {
+        $performanceEvaluation = RouteHelper::validateModel(RegularPerformance::class, $request->input('performance-form') ?? abort(400));
 
         $employee =[
             'evaluatee_name' => $performanceEvaluation->employeeEvaluatee->full_name,
@@ -52,19 +62,19 @@ class RegularPerformancePlanController extends Controller
         }
 
 
-        if(!$performance){
+
             $generator = new EmployeePipAiController();
 
-            $instruction = "";
+            $instruction = "Please conduct evaluations at annual evaluation. For each evaluation, indicate the employee's performance by writing a number between 1 and 4 on the blank line to the right of each performance category, in the appropriate column. Use the following scale: 1 = Needs Improvement, 2 = Meets Expectations, 3 = Exceeds Expectations, 4 = Outstanding.";
 
             $generateReq = array_merge($employee, ["performance_categories" => $performanceCategories], ['instructions' => $instruction]);
 
             $response = $generator->generatePerformancePlan($generateReq);
 
-            return redirect()->route('employee.performances.regulars.plan.improvement.show', ['data' => $response]);
-        }
+            Session::put('performance_plan_data_' . $performanceEvaluation->regular_performance_id, $response);
 
-        dump($performanceEvaluation);
+            return redirect()->route('employee.performances.regulars.plan.improvement.create', ['performance' => $performanceEvaluation]);
+
 
     }
 

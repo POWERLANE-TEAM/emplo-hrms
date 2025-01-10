@@ -474,7 +474,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
                 Route::get('view', [RegularPerformancePlanController::class, 'show'])->name('view');
 
                 // trigger post request to external api google vertex
-                Route::post('generate', [RegularPerformancePlanController::class, 'create'])->name('generate');
+                Route::post('generate', [RegularPerformancePlanController::class, 'generate'])->name('generate');
             });
         });
 
