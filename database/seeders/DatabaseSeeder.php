@@ -67,6 +67,7 @@ class DatabaseSeeder extends Seeder
                 PayrollEmployeesSeeder::class,
                 JobFamilyOfficerSeeder::class,
                 ProbationaryEmployeesSeeder::class,
+                // PayslipSeeder::class,
             ]);
         });
     }
