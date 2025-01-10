@@ -1,8 +1,7 @@
-@extends('components.layout.employee.layout', ['description' => 'Employee Dashboard', 'nonce' => $nonce])
-@use ('Illuminate\View\ComponentAttributeBag')
+@extends('components.layout.employee.layout', ['description' => 'Employees Payslips', 'nonce' => $nonce])
 
 @section('head')
-<title>Payslips Bulk Upload</title>
+<title>Employees Payslips</title>
 <script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xslt.js/0.5.1/xslt.min.js"></script>
 <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
@@ -39,5 +38,9 @@
         {{ __('View and manage payslips.') }}
     </x-slot:description>
 </x-headings.main-heading>
+
+<livewire:employee.tables.any-employee-payslips-table :$routePrefix />
+
+<livewire:employee.payslip.upload-payslip />
 
 @endsection
