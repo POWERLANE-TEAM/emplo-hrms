@@ -78,7 +78,7 @@ class CreateIssue extends Component
 
         foreach ($this->attachments as $attachment) {
 
-            $hashedVersion = $attachment->hashName();
+            $hashedVersion = sprintf('%s-%d', $attachment->hashName(), Auth::id());
             
             $attachment->storeAs(FilePath::ISSUES->value, $hashedVersion, 'local');
 
