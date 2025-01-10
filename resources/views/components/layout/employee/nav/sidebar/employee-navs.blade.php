@@ -29,12 +29,12 @@
     $navPayslipOrder = $user->hasPermissionTo(UserPermission::VIEW_ALL_PAYSLIPS) ? 7 : 3;
 
     $navPayslipRoute = $user->hasPermissionTo(UserPermission::VIEW_ALL_PAYSLIPS)
-        ? $routePrefix . '.hr.payslips.all'
-        : $routePrefix . '.general.payslips.all';
+        ? $routePrefix . '.payslips.general'
+        : $routePrefix . '.payslips.index';
 
     $navPayslipActivePattern = $user->hasPermissionTo(UserPermission::VIEW_ALL_PAYSLIPS)
         ? $routePrefix . '.hr.payslips.*'
-        : $routePrefix . '.general.payslips.*';
+        : $routePrefix . '.payslips.*';
 
 
     /**
@@ -203,8 +203,8 @@
     {{-- Employee, Supervisor --}}
     @canAny([UserPermission::VIEW_DOCUMENTS])
     <x-layout.employee.nav.sidebar.nav-item
-        href="{{ route($routePrefix . '.general.documents.all') }}"
-        :active="request()->routeIs($routePrefix . '.general.documents.*')"
+        href="{{ route($routePrefix . '.files.pre-employments') }}"
+        :active="request()->routeIs($routePrefix . '.files.*')"
         class="order-7"
         nav_txt="Documents"
         :defaultIcon="['src' => 'documents', 'alt' => '']"
