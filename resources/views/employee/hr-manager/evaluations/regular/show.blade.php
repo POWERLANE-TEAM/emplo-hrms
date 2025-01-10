@@ -18,18 +18,33 @@
 
 <x-breadcrumbs>
     <x-slot:breadcrumbs>
-        <x-breadcrumb :href="route($routePrefix.'.performances.probationaries.general')">
+        <x-breadcrumb :href="route($routePrefix.'.performances.regulars.general')">
             {{ __('Performance Evaluations') }}
         </x-breadcrumb>
-        <x-breadcrumb :active="request()->routeIs($routePrefix.'.performances.probationaries.review')">
+        <x-breadcrumb :active="request()->routeIs($routePrefix.'.performances.regulars.review')">
             {{ $performance->employeeevaluatee->full_name }}
         </x-breadcrumb>
     </x-slot:breadcrumbs>
 </x-breadcrumbs>
 
 <x-headings.header-with-status title="{{ $performance->employeeevaluatee->full_name }}" color="info" badge="Regular">
-    <span class="fw-bold">{{ __('Job Title: ') }}</span>
-    {{ $performance->employeeevaluatee->jobTitle->job_title }}
+    <div class="d-flex position-relative">
+        <div>
+            <span class="fw-bold">{{ __('Job Title: ') }}</span>
+            {{ $performance->employeeevaluatee->jobTitle->job_title }}
+        </div>
+
+        <form  action="{{route($routePrefix . '.performances.regulars.plan.improvement.generate')}}" method="post" class="d-contents">
+            @csrf
+            <input type="hidden" name="performance-form" value="{{$performance->regular_performance_id}}">
+            <input type="hidden" name="employee-status" value="{{$performance->employeeevaluatee->status->emp_status_id}}">
+
+            <button type="submit" class="btn btn-primary rounded-circle py-2 px-1 ms-auto translate-middle-y" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Click to generate a performance improvement plan for {{$performance->employeeevaluatee->first_name}}.">
+                <span class="m-2"><i class="icon icon-xxl "
+                    data-lucide="sparkle"></i></span>
+                </button>
+        </form>
+    </div>
 </x-profile-header>
 
 <livewire:hr-manager.evaluations.regulars.performance-approvals :$routePrefix :$performance />
