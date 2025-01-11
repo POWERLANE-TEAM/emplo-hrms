@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -100,5 +101,13 @@ class RegularPerformance extends Model
     public function categoryRatings(): HasMany
     {
         return $this->hasMany(RegularPerformanceRating::class, 'regular_performance_id', 'regular_performance_id');
+    }
+
+    /**
+     * Get the performance improvement plan associated with the performance.
+     */
+    public function pip(): HasOne
+    {
+        return $this->hasOne(PipPlan::class, 'regular_performance_id', 'regular_performance_id');
     }
 }
