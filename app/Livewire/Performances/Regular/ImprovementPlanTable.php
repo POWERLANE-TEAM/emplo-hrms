@@ -66,7 +66,7 @@ class ImprovementPlanTable extends DataTableComponent
     {
         return [
 
-            Column::make(__("Employee"))
+            Column::make(__("Employee Evaluated"))
                 ->label(
                     function ($row) {
 
