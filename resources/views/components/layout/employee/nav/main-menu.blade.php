@@ -73,12 +73,12 @@
                             onerror="this.onerror=null;this.src='http://placehold.it/45/45';" alt="">
                     </button>
                     <ul id="dropdown-menu" class="dropdown-menu dropdown-menu-end px-2" role="menu">
-                        <a href="{{ route($routePrefix . '.profile') }}" class="text-decoration-none">
+                        <a href="{{ route($routePrefix . '.profile.index') }}" class="text-decoration-none">
                             <li class="dropdown-item" role="button">
                                 Profile
                             </li>
                         </a>
-                        <a href="{{ route($routePrefix . '.settings') }}" class="text-decoration-none">
+                        <a href="{{ route($routePrefix . '.profile.settings') }}" class="text-decoration-none">
                             <li class="dropdown-item" role="button" class="mt-5">Settings & Privacy</li>
                         </a>
                         <a href="{{ route($routePrefix . '.recycle-bin') }}" class="text-decoration-none">

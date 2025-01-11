@@ -131,6 +131,14 @@ class Employee extends Model
      */
     protected function getFullPresentAddressAttribute()
     {
+        $this->loadMissing([
+            'presentBarangay' => [
+                'city',
+                'province',
+                'region'
+            ],
+        ]);
+
         $barangay = $this->presentBarangay->name;
         $city = $this->presentBarangay->city->name ?? '';
         $province = $this->presentBarangay->province->name ?? '';
@@ -144,6 +152,14 @@ class Employee extends Model
      */
     protected function getFullPermanentAddressAttribute()
     {
+        $this->loadMissing([
+            'permanentBarangay' => [
+                'city',
+                'province',
+                'region'
+            ],
+        ]);
+
         $barangay = $this->permanentBarangay->name;
         $city = $this->permanentBarangay->city->name ?? '';
         $province = $this->permanentBarangay->province->name ?? '';
