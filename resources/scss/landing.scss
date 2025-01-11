@@ -1,0 +1,149 @@
+@import 'utils';
+@import 'guest/landing-nav';
+@import 'icon/lucide';
+@import 'nav-link';
+@import 'nav-tabs';
+@import 'input/search';
+@import 'footer';
+@import 'btn-toggle-psw';
+@import 'input/checkbox';
+@import 'palette/text-colors';
+@import 'scales/img-size';
+@import "./scrollbar";
+
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+header.top-nav {
+    background-color: #61b000 !important;
+}
+
+body {
+    overflow-x: hidden;
+    background: white;
+}
+
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.content {
+    position: relative;
+    color: #333;
+    padding: 2rem;
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    
+}
+
+.hero .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 1rem 2rem;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+    border-bottom: 1px solid rgba(97, 176, 0, 0.2);
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #006390;
+}
+
+nav a {
+    margin-left: 2rem;
+    text-decoration: none;
+    color: #006390;
+    font-weight: 500;
+    position: relative;
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: #61b000;
+}
+
+nav a::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #61b000;
+    transition: width 0.3s;
+}
+
+nav a:hover::after {
+    width: 100%;
+}
+
+.hero {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 3rem;
+    border-radius: 1rem;
+    box-shadow: 0 10px 30px rgba(0, 99, 144, 0.1);
+    border: 1px solid rgba(97, 176, 0, 0.1);
+    transform: translateY(0);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.hero:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 99, 144, 0.15);
+}
+
+h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1.5rem;
+    color: #006390;
+}
+
+p {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: #333;
+    margin-bottom: 2rem;
+}
+
+.cta {
+    display: inline-block;
+    padding: 1rem 2rem;
+    background: #006390;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: all 0.3s;
+    border: 2px solid transparent;
+}
+
+.cta:hover {
+    background: #61b000;
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0, 99, 144, 0.2);
+}
+
+footer {
+    background-color: #fafcf7;
+}
