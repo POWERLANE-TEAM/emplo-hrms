@@ -29,7 +29,7 @@
         </x-slot:heading>
 
         <x-slot:description>
-            <p>{{ __('Creates customized development plan by analyzing performance evaluation results.') }}s
+            <p>{{ __('Creates customized development plan by analyzing performance evaluation results.') }}
             </p>
         </x-slot:description>
     </x-headings.main-heading>
@@ -48,7 +48,7 @@
     </x-markdown>
 </div>
 
-<div class="col-4 mt-4 mx-auto">
+<div class="col-2 mt-4 px-2">
 
     <button type="button" class="btn btn-primary btn-lg w-100 ">Save</button>
 </div>
