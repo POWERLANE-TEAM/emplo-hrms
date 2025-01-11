@@ -577,7 +577,7 @@
     @can(UserPermission::VIEW_PLAN_GENERATOR)
         <x-layout.employee.nav.sidebar.nav-item
             href="{{ route($routePrefix . '.performances.plan.improvement.index') }}"
-            :active="request()->routeIs($routePrefix . '.performances.plan.improvement.*')"
+            :active="request()->routeIs($routePrefix . '.performances.plan.improvement.index')"
             class=""
             nav_txt="Plan Generator"
             :defaultIcon="['src' => 'plan-generator', 'alt' => '']" :activeIcon="['src' => 'plan-generator', 'alt' => '']">
