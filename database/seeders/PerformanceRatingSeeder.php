@@ -19,11 +19,13 @@ class PerformanceRatingSeeder extends Seeder
             [4, 'outstanding'],
         ];
 
-        collect($ratings)->eachSpread(function (int $rating, string $description) {
-            PerformanceRating::create([
-                'perf_rating' => $rating,
-                'perf_rating_name' => $description,
-            ]);
+        activity()->withoutLogs(function () use ($ratings) {
+            collect($ratings)->eachSpread(function (int $rating, string $description) {
+                PerformanceRating::create([
+                    'perf_rating' => $rating,
+                    'perf_rating_name' => $description,
+                ]);
+            });
         });
     }
 }

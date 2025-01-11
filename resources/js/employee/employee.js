@@ -18,5 +18,3 @@ const initAll = () => {
 };
 
 document.addEventListener('livewire:navigated', initAll);
-document.addEventListener('DOMContentLoaded', initAll);
-

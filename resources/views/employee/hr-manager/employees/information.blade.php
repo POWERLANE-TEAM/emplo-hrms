@@ -10,9 +10,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 @endsection
 
-@pushOnce('pre-scripts')
-@endPushOnce
-
 @pushOnce('scripts')
     @vite(['resources/js/employee/hr-manager/employee-info.js'])
     @vite(['resources/js/employee/calendar.js'])
@@ -21,6 +18,7 @@
 @pushOnce('styles')
     @vite(['resources/css/employee/hr-manager/employee-info.css'])
 @endPushOnce
+
 @section('content')
     <x-breadcrumbs>
         <x-slot:breadcrumbs>

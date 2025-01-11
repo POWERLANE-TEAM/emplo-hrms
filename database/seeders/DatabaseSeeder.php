@@ -32,7 +32,6 @@ class DatabaseSeeder extends Seeder
                 PreempRequirementSeeder::class,
                 PerformanceCategorySeeder::class,
                 PerformanceRatingSeeder::class,
-                PerformancePeriodSeeder::class,
                 HolidaySeeder::class,
                 LeaveCategorySeeder::class,
                 AttendanceLogSeeder::class,
@@ -53,6 +52,21 @@ class DatabaseSeeder extends Seeder
                 IssueTypeSeeder::class,
                 // IssueSeeder::class
                 // IncidentSeeder::class,
+                EmployeeLifecycleSeeder::class,
+                ThirdMonthEvaluationSeeder::class,
+                FifthMonthEvaluationSeeder::class,
+                FinalMonthEvaluationSeeder::class,
+                RegularPerformancePeriodSeeder::class,
+                HrStaffSeeder::class,
+                HrManagerSeeder::class,
+                OperationsEmployeesSeeder::class,
+                AccountingEmployeesSeeder::class,
+                AdministrativeEmployeesSeeder::class,
+                GASupportEmployeesSeeder::class,
+                GAEmployeesSeeder::class,
+                PayrollEmployeesSeeder::class,
+                JobFamilyOfficerSeeder::class,
+                ProbationaryEmployeesSeeder::class,
             ]);
         });
     }
