@@ -34,7 +34,7 @@
             {{ $performance->employeeevaluatee->jobTitle->job_title }}
         </div>
 
-        <form  action="{{route($routePrefix . '.performances.regulars.plan.improvement.generate')}}" method="post" class="d-contents">
+        <form  action="{{route($routePrefix . '.performances.plan.improvement.regular.generate')}}" method="post" class="d-contents">
             @csrf
             <input type="hidden" name="performance-form" value="{{$performance->regular_performance_id}}">
             <input type="hidden" name="employee-status" value="{{$performance->employeeevaluatee->status->emp_status_id}}">

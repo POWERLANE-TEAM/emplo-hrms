@@ -27,7 +27,7 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth'/* , 'verified' */)->group(function () {
-    
+
     /**
      * Profile Resource
      */
@@ -236,19 +236,39 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     /**
      * PIP Generation
      */
-    Route::prefix('pip')->name('pip.')->group(function () {
-        Route::get('/', function () {
-            return view('employee.hr-manager.pip.index');
-        })
+    Route::prefix('performances')->name('performances.')->group(function () {
+
+        Route::get('{performance}/plan/improvement/regulars/create', [RegularPerformancePlanController::class, 'create'])->name('plan.improvement.regular.create');
+
+        Route::prefix('plan/improvement')->name('plan.improvement.')->group(function () {
+            Route::get('/', function(){
+                return view('employee.performance.improvement-plan.index');
+            })
             ->can(UserPermission::VIEW_PLAN_GENERATOR)
             ->name('index');
 
-        Route::get('generated', function () {
-            return view('employee.hr-manager.pip.generated');
-        })
-            ->can(UserPermission::VIEW_PLAN_GENERATOR)
-            ->name('generated');
+
+                    /** Regulars */
+            Route::prefix('regulars')->name('regular.')->group(function () {
+
+                Route::get('/{pip}',  [RegularPerformancePlanController::class, 'show'])
+                ->can(UserPermission::VIEW_PLAN_GENERATOR)
+                ->name('generated');
+
+                // trigger post request to external api google vertex
+                Route::post('generate', [RegularPerformancePlanController::class, 'generate'])->name('generate');
+
+                Route::post('save', [RegularPerformancePlanController::class, 'store'])->name('store');
+
+                Route::patch('replace', [RegularPerformancePlanController::class, 'update'])->name('update');
+            });
+
+        });
+
+
     });
+
+
 
 
     /**
@@ -451,20 +471,6 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
             Route::get('{performance}/review', [RegularPerformanceController::class, 'review'])
                 ->can('signRegularEvaluationFormFinal')
                 ->name('review');
-
-
-
-            /** Performance Improvement Plan */
-            Route::get('{performance}/plan/improvement/create', [RegularPerformancePlanController::class, 'create'])->name('plan.improvement.create');
-
-            Route::prefix('plan/improvement')->name('plan.improvement.')->group(function () {
-                Route::get('/', [RegularPerformancePlanController::class, 'index'])->name('index');
-
-                Route::get('view', [RegularPerformancePlanController::class, 'show'])->name('view');
-
-                // trigger post request to external api google vertex
-                Route::post('generate', [RegularPerformancePlanController::class, 'generate'])->name('generate');
-            });
         });
 
         /** Probationaries */
