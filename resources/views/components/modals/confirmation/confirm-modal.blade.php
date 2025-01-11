@@ -1,4 +1,4 @@
-@props(['label', 'header', 'message', 'type', 'actionButtonTitle' => 'Confirm'])
+@props(['label', 'header', 'message', 'type', 'actionButtonTitle' => 'Confirm', 'wireAction' => null])
 
 <div class="modal fade" {{ $attributes->merge(['class' => '',]) }} tabindex="-1" aria-label="{{ $label }}"
     aria-hidden="true">
@@ -29,9 +29,19 @@
                     <div class="text-center">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                             aria-label="Close">Cancel</button>
-                        <button onclick=""
-                            class="btn {{ $type === 'delete' ? 'btn-danger' : ($type === 'check' ? 'btn-success' : 'btn-warning') }}">
-                            {{ $actionButtonTitle }}
+                            
+                        <button @if($wireAction) wire:click="{{ $wireAction }}" wire:loading.attr="disabled"
+                                                wire:target="{{ $wireAction }}" class="btn 
+                                {{ $type === 'delete' ? 'btn-danger' :
+                            ($type === 'check' ? 'btn-success' : 'btn-warning') }} 
+                        position-relative" @endif>
+                            <span wire:loading.remove wire:target="{{ $wireAction }}">
+                                {{ $actionButtonTitle }}
+                            </span>
+                            <span wire:loading wire:target="{{ $wireAction }}">
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                Submitting...
+                            </span>
                         </button>
                     </div>
                 </div>

@@ -180,10 +180,10 @@ Route::middleware('auth')->group(function () {
                 return view('employee.admin.config.performance.rating-scales');
             })->name('rating-scales');
 
-            // Scorings
-            Route::get('scorings', function () {
-                return view('employee.admin.config.performance.scorings');
-            })->name('scorings');
+            // Period Set-Up
+            Route::get('period-setup', function () {
+                return view('employee.admin.config.performance.period-setup');
+            })->name('period-setup');
         });
 
         /**
