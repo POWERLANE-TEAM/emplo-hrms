@@ -65,9 +65,9 @@ class PerformanceApprovals extends Component
             'fourthApprover'            => $probationary?->fourthApprover?->full_name,
             'fourthApproverJobTitle'    => $probationary?->fourthApprover?->jobTitle?->job_title,
             'fourthApproverSignedAt'    => $probationary?->fourth_approver_signed_at,
-            'isAcknowledged'            => $probationary->is_employee_acknowledged,
-            'comments'                  => $probationary->evaluatee_comments,
-            'signedAt'                  => Carbon::make($probationary->evaluatee_signed_at)?->format('F d, Y g:i A'),
+            'isAcknowledged'            => $probationary?->is_employee_acknowledged,
+            'comments'                  => $probationary?->evaluatee_comments,
+            'signedAt'                  => Carbon::make($probationary?->evaluatee_signed_at)?->format('F d, Y g:i A') ?? null,
         ];
     }
 
