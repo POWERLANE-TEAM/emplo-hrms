@@ -10,6 +10,8 @@ document.addEventListener("DOMContentLoaded", function() {
     applyShakeEffect('.shake-text', 0.5, 10); // Apply shake effect with 0.5s duration and 10px shake distance
     applyLetterByLetterFadeInEffect('.letter-by-letter-text'); // Apply letter-by-letter fade-in effect
     applyWiggleEffect('.wiggle-text', 1); // Apply wiggle effect with 1s duration
+    applyTextLoop('.text-loop', 1, 0.5);
+    applyTypingLoop('.typing-loop', 0.1, 1);
 });
 
 function applyTypewriterEffect(targetClass) {
@@ -162,6 +164,111 @@ function applyWiggleEffect(targetClass, duration = 1, delay = 0) {
             duration: duration,
             delay: delay,
             ease: "power1.inOut",
+        });
+    }
+}
+
+function applyTextLoop(targetClass, duration = 2, delay = 0) {
+    const elements = document.querySelectorAll(targetClass);
+
+    if (elements.length > 0) {
+        elements.forEach(element => {
+            const originalText = element.textContent;
+            const texts = [
+                originalText,
+                "Welcome Back!",
+                "Ready to Work?",
+                "Let's Get Started!"
+            ];
+            
+            let currentIndex = 0;
+
+            // Create the timeline with initial delay
+            const tl = gsap.timeline({
+                repeat: -1,
+                repeatDelay: 1,
+                delay: delay // Add initial delay
+            });
+
+            // Function to create animation for each text
+            function createTextAnimation() {
+                tl.to(element, {
+                    duration: duration * 0.3, // Fade out duration
+                    opacity: 0,
+                    y: -20,
+                    ease: "power2.in",
+                    onComplete: () => {
+                        currentIndex = (currentIndex + 1) % texts.length;
+                        element.textContent = texts[currentIndex];
+                    }
+                })
+                .to(element, {
+                    duration: duration * 0.3, // Fade in duration
+                    opacity: 1,
+                    y: 0,
+                    ease: "power2.out"
+                })
+                .to(element, {
+                    duration: duration * 0.4, // Display duration
+                    ease: "none"
+                });
+            }
+
+            // Create animations for each text
+            texts.forEach(() => {
+                createTextAnimation();
+            });
+        });
+    }
+}
+
+function applyTypingLoop(targetClass, typingSpeed = 0.1, delayBetweenLoops = 1) {
+    const elements = document.querySelectorAll(targetClass);
+
+    if (elements.length > 0) {
+        elements.forEach(element => {
+            const originalText = element.textContent.trim(); // Get the original text
+            let currentIndex = 0;
+            let isTyping = true; // State to toggle between typing and backspacing
+
+            // Wrap content and add a cursor
+            element.innerHTML = `<span class="text"></span><span class="cursor">|</span>`;
+            const textSpan = element.querySelector('.text');
+            const cursorSpan = element.querySelector('.cursor');
+
+            // Add blinking animation to the cursor
+            gsap.to(cursorSpan, {
+                opacity: 0,
+                repeat: -1,
+                yoyo: true,
+                duration: 0.5
+            });
+
+            const type = () => {
+                if (isTyping) {
+                    // Typing forward
+                    if (currentIndex < originalText.length) {
+                        textSpan.textContent += originalText[currentIndex];
+                        currentIndex++;
+                        setTimeout(type, typingSpeed * 1000);
+                    } else {
+                        isTyping = false;
+                        setTimeout(type, delayBetweenLoops * 1000); // Delay before backspacing
+                    }
+                } else {
+                    // Backspacing
+                    if (currentIndex > 0) {
+                        textSpan.textContent = textSpan.textContent.slice(0, -1);
+                        currentIndex--;
+                        setTimeout(type, typingSpeed * 1000);
+                    } else {
+                        isTyping = true;
+                        setTimeout(type, delayBetweenLoops * 1000); // Delay before typing again
+                    }
+                }
+            };
+
+            type(); // Start the typing loop
         });
     }
 }
