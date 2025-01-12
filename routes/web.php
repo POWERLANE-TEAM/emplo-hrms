@@ -76,34 +76,4 @@ Route::get('/forgot-password', function () {
     return view('password-recovery.index');
 });
 
-Route::get('/vertex/list', function () {
 
-    // adds logging shomn at the top of the paga
-    if (app()->environment('local')) {
-        putenv('GOOGLE_SDK_PHP_LOGGING=true');
-    }
-
-    if (!Storage::exists('services/credentials/vertex-ai.json')) {
-        return 'File not found';
-    }
-
-    $credentialsPath = 'services/credentials/vertex-ai.json';
-
-
-    $clientOptions = [
-        'apiEndpoint' => 'us-central1-aiplatform.googleapis.com:443',
-        'credentials' => Storage::path($credentialsPath),
-    ];
-
-    $client = new ModelServiceClient($clientOptions);
-
-    putenv('GOOGLE_APPLICATION_CREDENTIALS=Storage::path($credentialsPath)');
-
-    $request = new ListModelsRequest();
-    $request->setParent('projects/1003638908095/locations/us-central1');
-
-    $response = $client->listModels($request);
-
-
-    dd($response);
-});
