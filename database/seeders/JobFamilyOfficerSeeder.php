@@ -41,7 +41,7 @@ class JobFamilyOfficerSeeder extends Seeder
             'office_head' => [
                 'Accounting' => ['Acctg. Asst. Manager', 'acctg.manager'],
                 'Administrative' => ['Admin Manager', 'admin.manager'],
-                // 'Human Resources-Operations' => ['HRD Manager', 'hrd.manager'],
+                'Human Resources-Operations' => ['HRD Manager', 'hrd.manager'],
                 'General Affairs' => ['GA Asst. Manager', 'ga.manager'],
                 'Payroll' => ['Payroll Asst. Manager', 'payroll.manager'],
                 'Operations' => ['GA Asst. Manager', 'ops.manager'],
