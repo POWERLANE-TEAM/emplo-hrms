@@ -42,11 +42,11 @@
 
 @section('content')
 <div class="content">
-    <div class="hero">
+    <div class="hero hidden-until-load fadein-text">
         <div class="hero__visual">
             <!-- Three.js canvas -->
         </div>
-        <div class="hero__content hidden-until-load">
+        <div class="hero__content">
 
             <header class="typing-loop display-5 fw-bold text-primary mb-3 d-none d-md-block">
                 {{ __('Welcome to EMPLO!') }}
@@ -70,7 +70,7 @@
 
 <section class="section-below">
     <!-- Your next section content here -->
-    <h2>Next Section</h2>
-    <p>This section won't have the animation following it.</p>
+    <h2>next section daddy</h2>
+    <p>ano laman nito</p>
 </section>
 @endsection

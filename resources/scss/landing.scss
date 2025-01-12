@@ -1,17 +1,20 @@
-@import 'utils';
-@import 'guest/landing-nav';
-@import 'icon/lucide';
-@import 'nav-link';
-@import 'nav-tabs';
-@import 'input/search';
-@import 'footer';
-@import 'btn-toggle-psw';
-@import 'input/checkbox';
-@import 'palette/text-colors';
-@import 'scales/img-size';
+@import "utils";
+@import "guest/landing-nav";
+@import "icon/lucide";
+@import "nav-link";
+@import "nav-tabs";
+@import "input/search";
+@import "footer";
+@import "btn-toggle-psw";
+@import "input/checkbox";
+@import "palette/text-colors";
+@import "scales/img-size";
 @import "./scrollbar";
 
-
+html main.main {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
 
 * {
     margin: 0;
@@ -44,7 +47,7 @@ canvas {
     color: #333;
     padding: 0rem 2rem 2rem 2rem;
     min-height: 100vh;
-    
+
     canvas {
         position: absolute;
         top: 0;
@@ -57,17 +60,18 @@ canvas {
 .hero {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    padding-left: 1rem !important;
     gap: 4rem;
     max-width: 1200px;
     margin: 0 auto;
     min-height: 90vh;
-    
+
     &__visual {
         display: flex;
         align-items: center;
         justify-content: center;
     }
-    
+
     &__content {
         padding: 0rem 3rem;
         display: flex;
@@ -78,10 +82,11 @@ canvas {
 
 .section-below {
     min-height: 100vh;
-    background: white;
+    background: #61b000;
     position: relative;
     z-index: 2;
     padding: 4rem 2rem;
+    margin: 0 !important;
 }
 
 .logo {
@@ -91,7 +96,6 @@ canvas {
 }
 
 nav a {
-    margin-left: 2rem;
     text-decoration: none;
     color: #006390;
     font-weight: 500;
@@ -104,7 +108,7 @@ nav a:hover {
 }
 
 nav a::after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: -5px;
     left: 0;
@@ -117,7 +121,6 @@ nav a::after {
 nav a:hover::after {
     width: 100%;
 }
-
 
 // .hero:hover {
 //     transform: translateY(-10px);

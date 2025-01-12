@@ -78,7 +78,7 @@ function createRing(radius, tubeRadius, color) {
     });
     const ring = new THREE.Mesh(geometry, material);
     // Offset rings to the left side
-    ring.position.x = -6.5;
+    ring.position.x = -5;
     return ring;
 }
 
@@ -98,6 +98,20 @@ for (let i = 0; i < numRings; i++) {
     rings.push(ring);
     scene.add(ring);
 }
+
+    // GSAP animations
+    gsap.to(particleSystem1.material, { opacity: 0.8, duration: 2, ease: "power2.out" });
+    gsap.to(particleSystem2.material, { opacity: 0.8, duration: 2, ease: "power2.out" });
+
+    rings.forEach((ring, i) => {
+        gsap.to(ring.scale, {
+            x: 1,
+            y: 1,
+            z: 1,
+            duration: 2 + i * 0.5, // Add delay per ring
+            ease: "power2.out"
+        });
+    });
 
 // Lighting
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
@@ -164,7 +178,3 @@ window.addEventListener('resize', () => {
 });
 
 animate();
-
-
-
-
