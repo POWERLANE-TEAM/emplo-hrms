@@ -29,12 +29,12 @@
     $navPayslipOrder = $user->hasPermissionTo(UserPermission::VIEW_ALL_PAYSLIPS) ? 7 : 3;
 
     $navPayslipRoute = $user->hasPermissionTo(UserPermission::VIEW_ALL_PAYSLIPS)
-        ? $routePrefix . '.hr.payslips.all'
-        : $routePrefix . '.general.payslips.all';
+        ? $routePrefix . '.payslips.general'
+        : $routePrefix . '.payslips.index';
 
     $navPayslipActivePattern = $user->hasPermissionTo(UserPermission::VIEW_ALL_PAYSLIPS)
         ? $routePrefix . '.hr.payslips.*'
-        : $routePrefix . '.general.payslips.*';
+        : $routePrefix . '.payslips.*';
 
 
     /**
@@ -60,7 +60,7 @@
     $navLeavesActivePattern = $user->hasPermissionTo(UserPermission::VIEW_ALL_LEAVES)
         ? $routePrefix . '.leaves.*'
         : $routePrefix . '.leaves.*';
-        
+
 
 @endphp
 
@@ -105,6 +105,10 @@
             ['href' => route($navAttendanceRoute, ['range' => 'period']), 'active' => request()->routeIs($navAttendanceRoute, ['range' => 'period']), 'nav_txt' => 'Attendance Records', 'range' => 'period']
         ])"
 
+        :isActiveClosure="function($isActive, $child) use ($routePrefix, $navAttendanceRoute) {
+            return request()->routeIs( $navAttendanceRoute) && request()->route('range') === $child['range'];
+        }"
+
         >
     </x-layout.employee.nav.sidebar.nested-nav-items>
     @endcan
@@ -138,23 +142,19 @@
         :active="request()->routeIs($routePrefix . '.performance.evaluation.index')"
         class="order-10"
         :defaultIcon="['src' => 'performances', 'alt' => 'Performance']"
-        :activeIcon="['src' => 'performances', 'alt' => 'Performance']" :children="[
-            ['href' => route($routePrefix . '.performance.evaluation.index', ['employeeStatus' => 'probationary']), 'active' => request()->routeIs($routePrefix . '.performance.evaluation.index'), 'nav_txt' => 'Probationary', 'employeeStatus' => 'pending'] ,
-            ['href' => route($routePrefix . '.performance.evaluation.index', ['employeeStatus' => 'regular']), 'active' => request()->routeIs($routePrefix . '.performance.evaluation.index'), 'nav_txt' => 'Regular', 'employeeStatus' => 'pending'],]"
 
-            :isActiveClosure="function($isActive, $child) use ($routePrefix) {
-                return request()->routeIs($routePrefix . '.performance.evaluation.index', ['employeeStatus' => $child['employeeStatus']]);
-            }"
+        :activeIcon="['src' => 'performances', 'alt' => 'Relations']" :children="[
+            ['href' => route($routePrefix . '.performances.probationaries.general'), 'active' => request()->routeIs($routePrefix . '.performances.probationaries.general'), 'nav_txt' => 'Probationary - All'],
+            ['href' => route($routePrefix . '.performances.regulars.general'), 'active' => request()->routeIs($routePrefix . '.performances.regulars.general'), 'nav_txt' => 'Regular - All'],]">
 
-            >
     </x-layout.employee.nav.sidebar.nested-nav-items>
     @endcan
 
     {{-- Employee --}}
     @canAny([UserPermission::VIEW_EMP_PERFORMANCE_EVAL])
     <x-layout.employee.nav.sidebar.nav-item
-        href="#"
-        :active="request()->routeIs($routePrefix . '.leaves')"
+        :href="route($routePrefix.'.performances.index')"
+        :active="request()->routeIs([$routePrefix.'.performances.regular', $routePrefix.'.performances.probationary'])"
         class="order-4"
         nav_txt="Performance"
         :defaultIcon="['src' => 'performances', 'alt' => '']"
@@ -203,8 +203,8 @@
     {{-- Employee, Supervisor --}}
     @canAny([UserPermission::VIEW_DOCUMENTS])
     <x-layout.employee.nav.sidebar.nav-item
-        href="{{ route($routePrefix . '.general.documents.all') }}"
-        :active="request()->routeIs($routePrefix . '.general.documents.*')"
+        href="{{ route($routePrefix . '.files.pre-employments') }}"
+        :active="request()->routeIs($routePrefix . '.files.*')"
         class="order-7"
         nav_txt="Documents"
         :defaultIcon="['src' => 'documents', 'alt' => '']"
@@ -249,9 +249,10 @@
                 ['href' => route($routePrefix . '.applications', ['applicationStatus' => 'qualified']), 'active' => request()->routeIs($routePrefix . '.applications', ['applicationStatus' => 'qualified']), 'nav_txt' => 'Qualified', 'applicationStatus' => 'qualified'],
                 ['href' => route($routePrefix . '.applications', ['applicationStatus' => 'preemployed']), 'active' => request()->routeIs($routePrefix . '.applications', ['applicationStatus' => 'preemployed']), 'nav_txt' => 'Pre-employed', 'applicationStatus' => 'preemployed'],
             ]"
-            :isActiveClosure="function($isActive, $child) use ($routePrefix) {
-                return request()->routeIs($routePrefix . '.applications', ['applicationStatus' => $child['applicationStatus']]);
-            }"
+
+        :isActiveClosure="function($isActive, $child) use ($routePrefix) {
+            return request()->routeIs($routePrefix . '.applications') && request()->route('applicationStatus') === $child['applicationStatus'];
+        }"
 
             >
         </x-layout.employee.nav.sidebar.nested-nav-items>
@@ -354,7 +355,7 @@
         </x-layout.employee.nav.sidebar.nested-nav-items>
     @endcan
 
-    
+
     {{-- Head Admin --}}
     @can(UserPermission::VIEW_EMPLOYEE_MANAGER)
         @if($routePrefix === 'admin')
@@ -502,12 +503,15 @@
 
     {{-- Supervisor / Head Dept --}}
     @can(UserPermission::VIEW_ALL_SUBORDINATE_PERFORMANCE_EVAL_FORM)
-        <x-layout.employee.nav.sidebar.nav-item href="{{ route($routePrefix . '.managerial.evaluations.all') }}"
-            :active="request()->routeIs($routePrefix . '.managerial.evaluations.all')"
-            class="" nav_txt="Evaluations"
-            :defaultIcon="['src' => 'evaluations', 'alt' => '']"
-            :activeIcon="['src' => 'evaluations', 'alt' => '']">
-        </x-layout.employee.nav.sidebar.nav-item>
+        <x-layout.employee.nav.sidebar.nested-nav-items
+            nav_txt="Evaluations"
+            :active="request()->routeIs([$routePrefix.'.performance.regulars.*', $routePrefix.'performance.probationaries.*'])"
+            class="order-10"
+            :defaultIcon="['src' => 'evaluations', 'alt' => 'performance evaluations icon']"
+            :activeIcon="['src' => 'evaluations', 'alt' => 'performance evaluations icon']" :children="[
+                ['href' => route($routePrefix .'.performances.probationaries.index'), 'active' => request()->routeIs($routePrefix . '.performances.probationaries.index'), 'nav_txt' => 'Probationary'],
+                ['href' => route($routePrefix .'.performances.regulars.index'), 'active' => request()->routeIs($routePrefix . '.performances.regulars.index'), 'nav_txt' => 'Regular'],]">
+        </x-layout.employee.nav.sidebar.nested-nav-items>
     @endcan
 
 </x-layout.employee.nav.sidebar.nav-group>
@@ -572,8 +576,8 @@
     {{-- HR Manager --}}
     @can(UserPermission::VIEW_PLAN_GENERATOR)
         <x-layout.employee.nav.sidebar.nav-item
-            href="{{ route($routePrefix . '.pip.index') }}"
-            :active="request()->routeIs($routePrefix . '.pip.*')"
+            href="{{ route($routePrefix . '.performances.plan.improvement.index') }}"
+            :active="request()->routeIs($routePrefix . '.performances.plan.improvement.index')"
             class=""
             nav_txt="Plan Generator"
             :defaultIcon="['src' => 'plan-generator', 'alt' => '']" :activeIcon="['src' => 'plan-generator', 'alt' => '']">

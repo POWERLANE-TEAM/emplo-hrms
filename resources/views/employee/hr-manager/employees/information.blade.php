@@ -10,9 +10,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 @endsection
 
-@pushOnce('pre-scripts')
-@endPushOnce
-
 @pushOnce('scripts')
     @vite(['resources/js/employee/hr-manager/employee-info.js'])
     @vite(['resources/js/employee/calendar.js'])
@@ -21,10 +18,11 @@
 @pushOnce('styles')
     @vite(['resources/css/employee/hr-manager/employee-info.css'])
 @endPushOnce
+
 @section('content')
     <x-breadcrumbs>
         <x-slot:breadcrumbs>
-            <x-breadcrumb :href="route($routePrefix . '.index')">
+            <x-breadcrumb :href="route($routePrefix . '.employees.masterlist.all')">
                 {{ __('Employee Masterlist') }}
             </x-breadcrumb>
             <x-breadcrumb :active="request()->routeIs($routePrefix . '.employees.information')">
@@ -41,7 +39,7 @@
             </x-form.boxed-selectpicker>
         </div>
 
-        <div class="col-md-8 d-flex align-items-center">
+        <div class="col-md-8 d-flex align-items-center" wire:ignore>
             @include('components.includes.tab_navs.employees-navs')
         </div>
     </section>
@@ -52,9 +50,9 @@
             <!-- Information Tab Section-->
 
             <!-- Sub-section: Employee Information -->
-            <livewire:hr-manager.employees.information :employee="$employee" />
+            <livewire:hr-manager.employees.information :$employee />
             <!-- Sub-section: Documents -->
-            <livewire:hr-manager.employees.documents :employee="$employee" />
+            <livewire:hr-manager.employees.documents :$employee />
 
             <!-- Attendance Tab Section -->
             <livewire:hr-manager.employees.attendance />
@@ -63,7 +61,7 @@
             <livewire:hr-manager.employees.payslips />
 
             <!-- Contract Tab Section -->
-            <livewire:hr-manager.employees.contract />
+            <livewire:hr-manager.employees.contract :$routePrefix :$employee />
 
             <!-- Leaves Tab Section -->
             <livewire:hr-manager.employees.leaves />

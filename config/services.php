@@ -41,12 +41,30 @@ return [
         'redirect' => env('GOOGLE_REDIRECT'),
         'one_tap_redirect' => env('GOOGLE_ONE_TAP_URI'),
 
+        'cloud_project' => [
+            'id' => env('GOOGLE_CLOUD_PROJECT_ID'),
+            'number' => env('GOOGLE_CLOUD_PROJECT_NUMBER'),
+        ],
+
         'document_ai' => [
             'enabled' => env('GOOGLE_DOCUMENT_AI_TOGGLE', false),
             'credential_path' => env('GOOGLE_DOCUMENT_AI_CREDENTIALS_PATH'),
             'processor_id' => env('GOOGLE_DOCUMENT_AI_PROCESSOR_ID'),
             'processor_ver' => env('GOOGLE_DOCUMENT_AI_PROCESSOR_VER'),
             'processor_loc' => env('GOOGLE_DOCUMENT_AI_PROCESSOR_LOCATION'),
+        ],
+
+        'vertex_ai' => [
+            'enabled' => env('GOOGLE_VERTEX_AI_TOGGLE', false),
+        ],
+
+        'employee_pip_ai' => [
+            'enabled' => env('EMPLOYEE_PIP_AI_TOGGLE', false),
+            'project_number' => env('GOOGLE_PIP_AI_PROJECT_NUMBER', env('GOOGLE_CLOUD_PROJECT_NUMBER')),
+            'credential_path' => env('GOOGLE_PIP_AI_CREDENTIALS_PATH'),
+            'endpoint_id' => env('GOOGLE_PIP_AI_ENDPOINT_ID'),
+            'model_ver' => env('GOOGLE_PIP_AI_MODEL_VER'),
+            'endpoint_loc' => env('GOOGLE_PIP_AI_ENDPOINT_LOCATION'),
         ],
 
     ],

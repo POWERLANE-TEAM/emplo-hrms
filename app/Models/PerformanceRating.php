@@ -36,12 +36,21 @@ class PerformanceRating extends Model
     }
 
     /**
-     * The performance category parameter that belong to the rating/scale.
+     * The regular employee's performance category parameter that belong to the rating/scale.
      */
-    public function categories(): BelongsToMany
+    public function regularCategories(): BelongsToMany
     {
-        return $this->belongsToMany(PerformanceCategory::class, 'performance_category_ratings', 'perf_rating_id', 'perf_category_id')
-            ->withPivot('perf_detail_id');
+        return $this->belongsToMany(PerformanceCategory::class, 'regular_performance_ratings', 'perf_rating_id', 'perf_category_id')
+            ->withPivot('regular_performance_id');
+    }
+
+    /**
+     * The probationary employee's performance category parameter that belong to the rating/scale.
+     */
+    public function probationaryCategories(): BelongsToMany
+    {
+        return $this->belongsToMany(PerformanceCategory::class, 'probationary_performances', 'perf_rating_id', 'perf_category_id')
+            ->withPivot('probationary_performance_id');
     }
 
     /**

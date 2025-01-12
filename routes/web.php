@@ -10,14 +10,22 @@ use App\Livewire\Auth\FacebookOAuth;
 use App\Livewire\Auth\GoogleOAuth;
 use App\Livewire\Auth\GoogleOneTap;
 use App\Livewire\Auth\Logout;
+use Google\Cloud\AIPlatform\V1\Client\ModelServiceClient;
+use Google\Cloud\AIPlatform\V1\ListModelsRequest;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
+
 
 Route::group([], function () {
     Route::get('/hiring', function () {
         return view('hiring');
     })->name('hiring');
 });
+
+Route::get('/', function () {
+    return view('landing');
+})->name('landing');
 
 Route::post('/theme-preference/set', [WebThemeController::class, 'create'])
     ->middleware('throttle:4,1');
@@ -71,3 +79,5 @@ Route::get('/modal-content/{modalKey}', [ContentController::class, 'getModalCont
 Route::get('/forgot-password', function () {
     return view('password-recovery.index');
 });
+
+

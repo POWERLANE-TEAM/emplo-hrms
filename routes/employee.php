@@ -1,19 +1,26 @@
 <?php
 
-use App\Http\Controllers\IncidentController;
-use App\Http\Controllers\IssueController;
+use App\Http\Controllers\FileManagerController;
+use App\Http\Controllers\PayslipController;
+use App\Http\Controllers\ProfileController;
 use App\Models\Employee;
 use App\Enums\UserPermission;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\IssueController;
 use App\Http\Controllers\LeaveController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\IncidentController;
 use App\Http\Controllers\OvertimeController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\PerformanceController;
 use App\Http\Controllers\ApplicationExamController;
 use App\Http\Controllers\InitialInterviewController;
 use App\Http\Controllers\PerformanceDetailController;
 use App\Http\Controllers\Employee\DashboardController;
+use App\Http\Controllers\RegularPerformanceController;
 use App\Http\Controllers\Application\ApplicationController;
+use App\Http\Controllers\ProbationaryPerformanceController;
+use App\Http\Controllers\RegularPerformancePlanController;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 
 Route::middleware('guest')->group(function () {
@@ -23,31 +30,23 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth'/* , 'verified' */)->group(function () {
 
-    // =========================================
-    // ALL USER ROUTES
-    // ==========================================
-
     /**
-     * Profile
+     * Profile Resource
      */
-    Route::get('profile', function () {
-        return view('employee.profile.information.index');
-    })->name('profile');
+    Route::prefix('profile')->name('profile.')->group(function () {
+        Route::get('/', [ProfileController::class, 'index'])
+            ->name('index');
 
-    Route::get('profile/edit', function () {
-        return view('employee.profile.information.edit');
-    })->name('profile.edit');
+        Route::get('edit', [ProfileController::class, 'edit'])
+            ->name('edit');
 
-    /**
-     * Settings & Privacy
-     */
-    Route::get('settings', function () {
-        return view('employee.profile.settings');
-    })->name('settings');
+        Route::get('settings', [ProfileController::class, 'settings'])
+            ->name('settings');
 
-    Route::get('activity-logs', function () {
-        return view('employee.profile.activity-logs');
-    })->name('activity-logs');
+        Route::get('activity-logs', [ProfileController::class, 'logs'])
+            ->name('logs');
+    });
+
 
     /**
      * Recycle Bin
@@ -64,10 +63,6 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         return view('employee.notifications.index');
     })->name('notifications');
 
-
-    // =========================================
-    // HR MANAGER ROUTES
-    // ==========================================
 
     /**
      * Organization
@@ -109,7 +104,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
      * Calendar Manager
      */
 
-     Route::prefix('calendar')->name('calendar.')->group(function () {
+    Route::prefix('calendar')->name('calendar.')->group(function () {
         Route::get('monthly', function () {
             return view('employee.admin.calendar.monthly');
         })
@@ -137,7 +132,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
             ->can(UserPermission::CREATE_ANNOUNCEMENT)
             ->name('create');
     });
-    
+
     /**
      * Dashboard
      */
@@ -208,23 +203,18 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         ->name('applicant.exam.store');
 
 
-    /**
-     * Attendance
-     */
-    Route::get('/attendance/index', [AttendanceController::class, 'index'])
-    ->name('attendance.index');
 
     Route::get('{employee}/attendance', [AttendanceController::class, 'show'])
-    ->middleware(['permission:' . UserPermission::VIEW_ALL_DAILY_ATTENDANCE->value])
-    ->middleware(['permission:' . UserPermission::VIEW_ALL_DAILY_ATTENDANCE->value])
-    ->name('attendance.show');
+        ->middleware(['permission:' . UserPermission::VIEW_ALL_DAILY_ATTENDANCE->value])
+        ->middleware(['permission:' . UserPermission::VIEW_ALL_DAILY_ATTENDANCE->value])
+        ->name('attendance.show');
 
     Route::get('/attendance/{range}', [AttendanceController::class, 'index'])
-    ->middleware(['permission:' . UserPermission::VIEW_ALL_DAILY_ATTENDANCE->value])
-    ->middleware(['permission:' . UserPermission::VIEW_ALL_DAILY_ATTENDANCE->value])
-    ->where('range', 'daily|period')
-    ->name('attendance.index');
-    
+        ->middleware(['permission:' . UserPermission::VIEW_ALL_DAILY_ATTENDANCE->value])
+        ->middleware(['permission:' . UserPermission::VIEW_ALL_DAILY_ATTENDANCE->value])
+        ->where('range', 'daily|period')
+        ->name('attendance.index');
+
     /**
      * Performances
      */
@@ -248,19 +238,39 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     /**
      * PIP Generation
      */
-    Route::prefix('pip')->name('pip.')->group(function () {
-        Route::get('/', function () {
-            return view('employee.hr-manager.pip.index');
-        })
+    Route::prefix('performances')->name('performances.')->group(function () {
+
+        Route::get('{performance}/plan/improvement/regulars/create', [RegularPerformancePlanController::class, 'create'])->name('plan.improvement.regular.create');
+
+        Route::prefix('plan/improvement')->name('plan.improvement.')->group(function () {
+            Route::get('/', function(){
+                return view('employee.performance.improvement-plan.index');
+            })
             ->can(UserPermission::VIEW_PLAN_GENERATOR)
             ->name('index');
 
-        Route::get('generated', function () {
-            return view('employee.hr-manager.pip.generated');
-        })
-            ->can(UserPermission::VIEW_PLAN_GENERATOR)
-            ->name('generated');
+
+                    /** Regulars */
+            Route::prefix('regulars')->name('regular.')->group(function () {
+
+                Route::get('/{pip}',  [RegularPerformancePlanController::class, 'show'])
+                ->can(UserPermission::VIEW_PLAN_GENERATOR)
+                ->name('generated');
+
+                // trigger post request to external api google vertex
+                Route::post('generate', [RegularPerformancePlanController::class, 'generate'])->name('generate');
+
+                Route::post('save', [RegularPerformancePlanController::class, 'store'])->name('store');
+
+                Route::patch('replace', [RegularPerformancePlanController::class, 'update'])->name('update');
+            });
+
+        });
+
+
     });
+
+
 
 
     /**
@@ -280,7 +290,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
      */
 
     Route::get('evaluation-results/probationary', function () {
-        return view('/employee.hr-manager.evaluations.probationary.evaluation-results');
+        return view('employee.hr-manager.evaluations.probationary.evaluation-results');
     })->name('evaluation-results.probationary');
 
     /**
@@ -341,14 +351,14 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
             ->name('balance');
 
         Route::get('balance/subordinates', [LeaveController::class, 'subordinateBalance'])
-        ->name('balance.subordinates');
-        
+            ->name('balance.subordinates');
+
         Route::get('balance/general', [LeaveController::class, 'generalBalance'])
             ->name('balance.general');
 
         Route::get('overview', [LeaveController::class, 'request'])
             ->name('overview');
-        
+
         Route::get('create', [LeaveController::class, 'create'])
             ->name('create');
 
@@ -426,6 +436,68 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         });
     });
 
+    /** Performance resource */
+    Route::prefix('performances')->name('performances.')->group(function () {
+        Route::get('/', [PerformanceController::class, 'index'])
+            ->name('index');
+
+        Route::get('regular', [PerformanceController::class, 'asRegular'])
+            ->name('regular');
+
+        Route::get('regular/{performance}', [PerformanceController::class, 'showAsRegular'])
+            ->name('regular.show');
+
+        Route::get('probationary', [PerformanceController::class, 'asProbationary'])
+            ->name('probationary');
+
+        Route::get('probationary/{employee}', [PerformanceController::class, 'showAsProbationary'])
+            ->name('probationary.show');
+
+        /** Regulars */
+        Route::prefix('regulars')->name('regulars.')->group(function () {
+            Route::get('{employee}/create', [RegularPerformanceController::class, 'create'])
+                ->can('evaluateRegularsPerformance', 'employee')
+                ->name('create');
+
+            Route::get('/', [RegularPerformanceController::class, 'index'])
+                ->name('index');
+
+            Route::get('{performance}', [RegularPerformanceController::class, 'show'])
+                ->can('signAnyRegularEvaluationForm')
+                ->whereNumber('performance')
+                ->name('show');
+
+            Route::get('general', [RegularPerformanceController::class, 'general'])
+                ->name('general');
+
+            Route::get('{performance}/review', [RegularPerformanceController::class, 'review'])
+                ->can('signRegularEvaluationFormFinal')
+                ->name('review');
+        });
+
+        /** Probationaries */
+        Route::prefix('probationaries')->name('probationaries.')->group(function () {
+            Route::get('{employee}/create', [ProbationaryPerformanceController::class, 'create'])
+                ->can('evaluateProbationaryPerformance', 'employee')
+                ->name('create');
+
+            Route::get('/', [ProbationaryPerformanceController::class, 'index'])
+                ->name('index');
+
+            Route::get('{employee}', [ProbationaryPerformanceController::class, 'show'])
+                ->whereNumber('employee')
+                ->name('show');
+
+            Route::get('general', [ProbationaryPerformanceController::class, 'general'])
+                ->name('general');
+
+            Route::get('{employee}/review', [ProbationaryPerformanceController::class, 'review'])
+                ->can('signProbationaryEvaluationFormFinal')
+                ->name('review');
+        });
+    });
+
+
     /**
      * Training
      */
@@ -450,26 +522,12 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         return view('employee.hr-manager.employees.information', compact('employee'));
     })
         ->whereNumber('employee')
-        ->name('employees.masterlist.information');
-
-
-    /**
-     * Payslips
-     */
-
-    Route::get('hr/payslips/all', function () {
-        return view('employee.hr-manager.payslips.all');
-    })->name('hr.payslips.all');
-
-    Route::get('/payslips/bulk-upload', function () {
-        return view('employee.hr-manager.payslips.bulk-upload');
-    })->name('payslips.bulk-upload');
+        ->name('employees.information');
 
 
     /**
      * Separation
      */
-
     Route::get('seperation/resignations', function () {
         return view('employee.hr-manager.separation.resignation.all');
     })->name('separation.resignations');
@@ -490,7 +548,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
      * Reports
      */
 
-     Route::get('reports', function () {
+    Route::get('reports', function () {
         return view('employee.hr-manager.reports.index');
     })->name('reports');
 
@@ -498,46 +556,12 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
      * Archive
      */
     Route::get('/archive', function () {
-        return view('/employee.hr-manager.archive.index');
+        return view('employee.hr-manager.archive.index');
     })->name('employees.archive');
 
     Route::get('/archive/records', function () {
-        return view('/employee.hr-manager.archive.records');
+        return view('employee.hr-manager.archive.records');
     })->name('employees.archive.records');
-
-
-    
-    // =========================================
-    // SUPERVISOR ROUTES
-    // ==========================================
-
-
-    /**
-     * Performance Evaluations
-     */
-
-    Route::get('managerial/evaluations/all', function () {
-        return view('employee.supervisor.performance-evaluations.all');
-    })->name('managerial.evaluations.all');
-
-    /**
-     * Assign Score
-     */
-    Route::get('{employee}/performances/create', function (Employee $employee) {
-        $employee->with(['performances, jobTitle', 'status']);
-        return view('employee.supervisor.performance-evaluations.create', compact('employee'));
-    })->name('performances.create');
-
-
-    Route::get('/assign-score/regular', function () {
-        return view('employee.supervisor.evaluations.regular.assign-score');
-    })->name('assign-score.regular');
-
-
-
-    // =========================================
-    // GENERAL EMPLOYEE ROUTES
-    // ==========================================
 
 
     /**
@@ -550,33 +574,57 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     /**
      * General: Attendance
      */
-
     Route::get('/attendance', function () {
-            return view('employee.basic.attendance.index');
+        return view('employee.basic.attendance.index');
     })->name('attendance');
-    
-    /**
-     * General: Payslip
-     */
-
-    Route::get('general/payslips/all', function () {
-        return view('employee.basic.payslips.all');
-    })->name('general.payslips.all');
 
 
     /**
-     * General: Documents
+     * Payslip resource
      */
-    Route::get('general/documents/all', function () {
+    Route::prefix('payslips')->name('payslips.')->group(function () {
+        Route::get('/', [PayslipController::class, 'index'])
+            ->name('index');
 
-        try {
-            return view('employee.basic.documents.all', [
-                'employee' => auth()->user()->account
-            ]);
-        } catch (\Throwable $th) {
-           abort(401);
-        }
-    })->name('general.documents.all');
+        Route::get('attachments/{attachment}', [PayslipController::class, 'viewAttachment'])
+            ->name('attachments.show');
+
+        Route::get('{attachment}/download', [PayslipController::class, 'download'])
+            ->name('attachments.download');
+
+        Route::get('general', [PayslipController::class, 'general'])
+            ->name('general');
+
+        Route::get('bulk-upload', [PayslipController::class])
+            ->name('bulk');
+    });
+
+
+    /**
+     * File Manager Resource
+     */
+    Route::prefix('files')->name('files.')->group(function () {
+        Route::get('contracts', [FileManagerController::class, 'contracts'])
+            ->name('contracts');
+
+        Route::get('contracts/{attachment}', [FileManagerController::class, 'viewContractAttachment'])
+            ->name('contracts.attachments');
+
+        Route::get('pre-employments', [FileManagerController::class, 'preEmployments'])
+            ->name('pre-employments');
+
+        Route::get('trainings', [FileManagerController::class, 'trainings'])
+            ->name('trainings');
+
+        Route::get('incidents', [FileManagerController::class, 'incidents'])
+            ->name('incidents');
+
+        Route::get('issues', [FileManagerController::class, 'issues'])
+            ->name('issues');
+
+        Route::get('leaves', [FileManagerController::class, 'leaves'])
+            ->name('leaves');
+    });
 
     /**
      * General: Separation

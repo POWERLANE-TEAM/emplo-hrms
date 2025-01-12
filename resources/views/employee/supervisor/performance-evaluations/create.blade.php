@@ -40,6 +40,7 @@
             </x-profile-header>
     </div>
     <div class="col-6 pt-2">
+        <!-- REPLACE STATIC PAGE LINK: Performance Details -->
         <x-info_panels.callout type="info" :description="__('Learn more about the <a href=\'#\' class=\'text-link-blue\'>scoring evaluation</a> metrics and details.')">
         </x-info_panels.callout>
 

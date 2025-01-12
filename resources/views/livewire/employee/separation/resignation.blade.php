@@ -6,7 +6,7 @@
         // ===========================
         // Resignation Letter State
         // ===========================
-        $isEmpty = false;
+        $isEmpty = true;
         // Boolean flag indicating if the resignation letter is submitted.
         // If true, it triggers the empty state (no letter submitted).
         // Toggle this flag if a resignation letter is submitted.
@@ -28,7 +28,7 @@
         // ===========================
         // Employee Status
         // ===========================
-        $employeeStatus = 'resigned';
+        $employeeStatus = 'regular';
         // The current employment status of the employee.
         // This is updated to 'resigned' if the resignation letter is approved.
 

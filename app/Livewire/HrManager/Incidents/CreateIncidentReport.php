@@ -78,7 +78,7 @@ class CreateIncidentReport extends Component
 
         foreach ($this->attachments as $attachment) {
 
-            $hashedVersion = $attachment->hashName();
+            $hashedVersion = sprintf('%s-%d', $attachment->hashName(), Auth::id());
             
             $attachment->storeAs(FilePath::INCIDENTS->value, $hashedVersion, 'local');
 

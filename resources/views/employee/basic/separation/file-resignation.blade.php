@@ -57,10 +57,10 @@
 
     <!-- REPLACE STATIC PAGE LINK: Separation Process Policy & Company Policies -->
     <div class="pt-2 px-3">
-        <x-info_panels.note :note="'Please ensure that your resignation letter is final and complete before submission. We recommend reviewing the
-        <a href=\'#\' class=\'text-link-blue hover-opacity\'>separation process</a> and
-        <a href=\'#\' class=\'text-link-blue hover-opacity\'>company policies</a>
-        to ensure you\'re fully informed. Once submitted, this action will initiate the resignation process.'" />
+    <x-info_panels.note :note="'Ensure your resignation letter is complete before submission. Review the
+    <a href=\'#\' class=\'text-link-blue hover-opacity\'>separation process</a> and
+    <a href=\'#\' class=\'text-link-blue hover-opacity\'>company policies</a>
+    to understand the legal implications of separation. Once submitted, this will initiate the resignation process.'" />
     </div>
 
     <div class="pt-4  d-flex align-items-center text-end">

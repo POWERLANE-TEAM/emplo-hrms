@@ -150,6 +150,10 @@ enum UserPermission: string
     case APPROVE_LEAVE_REQUEST_THIRD = 'third approval for any leave request';
     case APPROVE_LEAVE_REQUEST_FOURTH = 'fourth or last approval for any leave request';
     case MANAGE_INCIDENT_REPORT_COLLABORATORS = 'manage incident report collaborators';
+    case APPROVE_PERFORMANCE_EVALUATION_SECOND = 'second approval for performance evaluation form';
+    case APPROVE_PERFORMANCE_EVALUATION_THIRD = 'third approval for performance evaluation form';
+    case APPROVE_PERFORMANCE_EVALUATION_FOURTH = 'fourth approval for performance evaluation form';
+    case UPLOAD_EMPLOYEE_CONTRACT = 'upload employee contract';
 
     /**
      * Return user-friendly permission labels.
@@ -297,6 +301,10 @@ enum UserPermission: string
             self::APPROVE_LEAVE_REQUEST_THIRD => 'Third approval of any leave request',
             self::APPROVE_LEAVE_REQUEST_FOURTH => 'Fourth or last approval of any leave request',
             self::MANAGE_INCIDENT_REPORT_COLLABORATORS => 'Manage incident report collaborators',
+            self::APPROVE_PERFORMANCE_EVALUATION_SECOND => 'Second approval for performance evaluation form',
+            self::APPROVE_PERFORMANCE_EVALUATION_THIRD => 'Third approval for performance evaluation form',
+            self::APPROVE_PERFORMANCE_EVALUATION_FOURTH => 'Fourth or last approval for performance evaluation form',
+            self::UPLOAD_EMPLOYEE_CONTRACT => 'Upload employee contracts',
         };
     }
 }
