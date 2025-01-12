@@ -2,7 +2,7 @@
 @use ('Illuminate\View\ComponentAttributeBag')
 
 @section('head')
-<title>Employee's Training Records</title>
+<title>Files | Pre-employment Requirements</title>
 <script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
@@ -24,13 +24,15 @@
 
 <x-headings.main-heading :isHeading="true">
     <x-slot:heading>
-        {{ __('Documents') }}
+        {{ __('Pre-Employment Files') }}
     </x-slot:heading>
 
     <x-slot:description>
         {{ __('Manage and update all of your documents.') }}
     </x-slot:description>
 </x-headings.main-heading>
+
+@include('components.includes.tab_navs.file-manager')
 
 <!-- BACK-END TABLE NOTE:
     The employee id should be passed to: training/records.blade.php -->

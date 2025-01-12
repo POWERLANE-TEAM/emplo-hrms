@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\FileManagerController;
+use App\Http\Controllers\PayslipController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Employee;
 use App\Enums\UserPermission;
@@ -524,22 +526,8 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
 
     /**
-     * Payslips
-     */
-
-    Route::get('hr/payslips/all', function () {
-        return view('employee.hr-manager.payslips.all');
-    })->name('hr.payslips.all');
-
-    Route::get('/payslips/bulk-upload', function () {
-        return view('employee.hr-manager.payslips.bulk-upload');
-    })->name('payslips.bulk-upload');
-
-
-    /**
      * Separation
      */
-
     Route::get('seperation/resignations', function () {
         return view('employee.hr-manager.separation.resignation.all');
     })->name('separation.resignations');
@@ -576,18 +564,6 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     })->name('employees.archive.records');
 
 
-
-    // =========================================
-    // SUPERVISOR ROUTES
-    // ==========================================
-
-
-
-    // =========================================
-    // GENERAL EMPLOYEE ROUTES
-    // ==========================================
-
-
     /**
      * General: Dashboard
      */
@@ -598,33 +574,57 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     /**
      * General: Attendance
      */
-
     Route::get('/attendance', function () {
         return view('employee.basic.attendance.index');
     })->name('attendance');
 
-    /**
-     * General: Payslip
-     */
-
-    Route::get('general/payslips/all', function () {
-        return view('employee.basic.payslips.all');
-    })->name('general.payslips.all');
-
 
     /**
-     * General: Documents
+     * Payslip resource
      */
-    Route::get('general/documents/all', function () {
+    Route::prefix('payslips')->name('payslips.')->group(function () {
+        Route::get('/', [PayslipController::class, 'index'])
+            ->name('index');
 
-        try {
-            return view('employee.basic.documents.all', [
-                'employee' => auth()->user()->account
-            ]);
-        } catch (\Throwable $th) {
-            abort(401);
-        }
-    })->name('general.documents.all');
+        Route::get('attachments/{attachment}', [PayslipController::class, 'viewAttachment'])
+            ->name('attachments.show');
+
+        Route::get('{attachment}/download', [PayslipController::class, 'download'])
+            ->name('attachments.download');
+
+        Route::get('general', [PayslipController::class, 'general'])
+            ->name('general');
+
+        Route::get('bulk-upload', [PayslipController::class])
+            ->name('bulk');
+    });
+
+
+    /**
+     * File Manager Resource
+     */
+    Route::prefix('files')->name('files.')->group(function () {
+        Route::get('contracts', [FileManagerController::class, 'contracts'])
+            ->name('contracts');
+
+        Route::get('contracts/{attachment}', [FileManagerController::class, 'viewContractAttachment'])
+            ->name('contracts.attachments');
+
+        Route::get('pre-employments', [FileManagerController::class, 'preEmployments'])
+            ->name('pre-employments');
+
+        Route::get('trainings', [FileManagerController::class, 'trainings'])
+            ->name('trainings');
+
+        Route::get('incidents', [FileManagerController::class, 'incidents'])
+            ->name('incidents');
+
+        Route::get('issues', [FileManagerController::class, 'issues'])
+            ->name('issues');
+
+        Route::get('leaves', [FileManagerController::class, 'leaves'])
+            ->name('leaves');
+    });
 
     /**
      * General: Separation

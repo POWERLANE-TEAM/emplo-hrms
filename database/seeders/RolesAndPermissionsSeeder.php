@@ -137,6 +137,7 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::MANAGE_INCIDENT_REPORT_COLLABORATORS->value,
             UserPermission::APPROVE_PERFORMANCE_EVALUATION_THIRD->value,
             UserPermission::APPROVE_PERFORMANCE_EVALUATION_FOURTH->value,
+            UserPermission::UPLOAD_EMPLOYEE_CONTRACT->value,
         ];
     }
 

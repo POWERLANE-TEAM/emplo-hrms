@@ -260,6 +260,38 @@ class Employee extends Model
     }
 
     /**
+     * Get the payslips associated with the employee.
+     */
+    public function payslips(): HasMany
+    {
+        return $this->hasMany(Payslip::class, 'employee_id', 'employee_id');
+    }
+
+    /**
+     * Get the payslips uploaded by the employee.
+     */
+    public function uploadedPayslips(): HasMany
+    {
+        return $this->hasMany(Payslip::class, 'uploaded_by', 'employee_id');
+    }
+
+    /**
+     * Get the contracts associated with the employee.
+     */
+    public function contracts(): HasMany
+    {
+        return $this->hasMany(Contract::class, 'employee_id', 'employee_id');
+    }
+
+    /**
+     * Get the contracts uploaded by the employee.
+     */
+    public function uploadedContracts(): HasMany
+    {
+        return $this->hasMany(Contract::class, 'uploaded_by', 'employee_id');
+    }
+
+    /**
      * Get the area name where employee is the Area Manager.
      */
     public function areaManagerOf(): HasOne
