@@ -16,6 +16,27 @@ html main.main {
     padding-right: 0 !important;
 }
 
+section.top-vector {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    contain: layout;
+
+    svg.right-circle {
+        position: absolute;
+        right: calc(-96px + 1vw);
+        top: 20vh;
+        z-index: -10;
+    }
+
+    svg.left-circle {
+        position: absolute;
+        left: calc(-32px + 1vw);
+        top: 80vh;
+        z-index: -20;
+    }
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -73,6 +94,7 @@ canvas {
     }
 
     &__content {
+        top: -1;
         padding: 0rem 3rem;
         display: flex;
         flex-direction: column;
@@ -138,24 +160,6 @@ p {
     line-height: 1.6;
     color: #333;
     margin-bottom: 2rem;
-}
-
-.cta {
-    display: inline-block;
-    padding: 1rem 2rem;
-    background: #006390;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    font-weight: bold;
-    transition: all 0.3s;
-    border: 2px solid transparent;
-}
-
-.cta:hover {
-    background: #61b000;
-    transform: scale(1.05);
-    box-shadow: 0 5px 15px rgba(0, 99, 144, 0.2);
 }
 
 footer {
