@@ -50,7 +50,7 @@ class DatabaseSeeder extends Seeder
                 EmployeeJobDetailSeeder::class,
                 // EmployeeLeaveSeeder::class,
                 IssueTypeSeeder::class,
-                // IssueSeeder::class
+                // IssueSeeder::class,
                 // IncidentSeeder::class,
                 EmployeeLifecycleSeeder::class,
                 ThirdMonthEvaluationSeeder::class,
@@ -67,7 +67,8 @@ class DatabaseSeeder extends Seeder
                 PayrollEmployeesSeeder::class,
                 JobFamilyOfficerSeeder::class,
                 ProbationaryEmployeesSeeder::class,
-                // PayslipSeeder::class,
+                PayslipSeeder::class,
+                ContractSeeder::class,
             ]);
         });
     }
