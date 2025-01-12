@@ -18,6 +18,7 @@ use App\Http\Controllers\Employee\DashboardController;
 use App\Http\Controllers\RegularPerformanceController;
 use App\Http\Controllers\Application\ApplicationController;
 use App\Http\Controllers\ProbationaryPerformanceController;
+use App\Http\Controllers\RegularPerformancePlanController;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 
 Route::middleware('guest')->group(function () {
@@ -26,7 +27,7 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth'/* , 'verified' */)->group(function () {
-    
+
     /**
      * Profile Resource
      */
@@ -101,7 +102,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
      * Calendar Manager
      */
 
-     Route::prefix('calendar')->name('calendar.')->group(function () {
+    Route::prefix('calendar')->name('calendar.')->group(function () {
         Route::get('monthly', function () {
             return view('employee.admin.calendar.monthly');
         })
@@ -202,15 +203,15 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
 
     Route::get('{employee}/attendance', [AttendanceController::class, 'show'])
-    ->middleware(['permission:' . UserPermission::VIEW_ALL_DAILY_ATTENDANCE->value])
-    ->middleware(['permission:' . UserPermission::VIEW_ALL_DAILY_ATTENDANCE->value])
-    ->name('attendance.show');
+        ->middleware(['permission:' . UserPermission::VIEW_ALL_DAILY_ATTENDANCE->value])
+        ->middleware(['permission:' . UserPermission::VIEW_ALL_DAILY_ATTENDANCE->value])
+        ->name('attendance.show');
 
     Route::get('/attendance/{range}', [AttendanceController::class, 'index'])
-    ->middleware(['permission:' . UserPermission::VIEW_ALL_DAILY_ATTENDANCE->value])
-    ->middleware(['permission:' . UserPermission::VIEW_ALL_DAILY_ATTENDANCE->value])
-    ->where('range', 'daily|period')
-    ->name('attendance.index');
+        ->middleware(['permission:' . UserPermission::VIEW_ALL_DAILY_ATTENDANCE->value])
+        ->middleware(['permission:' . UserPermission::VIEW_ALL_DAILY_ATTENDANCE->value])
+        ->where('range', 'daily|period')
+        ->name('attendance.index');
 
     /**
      * Performances
@@ -235,19 +236,39 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     /**
      * PIP Generation
      */
-    Route::prefix('pip')->name('pip.')->group(function () {
-        Route::get('/', function () {
-            return view('employee.hr-manager.pip.index');
-        })
+    Route::prefix('performances')->name('performances.')->group(function () {
+
+        Route::get('{performance}/plan/improvement/regulars/create', [RegularPerformancePlanController::class, 'create'])->name('plan.improvement.regular.create');
+
+        Route::prefix('plan/improvement')->name('plan.improvement.')->group(function () {
+            Route::get('/', function(){
+                return view('employee.performance.improvement-plan.index');
+            })
             ->can(UserPermission::VIEW_PLAN_GENERATOR)
             ->name('index');
 
-        Route::get('generated', function () {
-            return view('employee.hr-manager.pip.generated');
-        })
-            ->can(UserPermission::VIEW_PLAN_GENERATOR)
-            ->name('generated');
+
+                    /** Regulars */
+            Route::prefix('regulars')->name('regular.')->group(function () {
+
+                Route::get('/{pip}',  [RegularPerformancePlanController::class, 'show'])
+                ->can(UserPermission::VIEW_PLAN_GENERATOR)
+                ->name('generated');
+
+                // trigger post request to external api google vertex
+                Route::post('generate', [RegularPerformancePlanController::class, 'generate'])->name('generate');
+
+                Route::post('save', [RegularPerformancePlanController::class, 'store'])->name('store');
+
+                Route::patch('replace', [RegularPerformancePlanController::class, 'update'])->name('update');
+            });
+
+        });
+
+
     });
+
+
 
 
     /**
@@ -328,7 +349,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
             ->name('balance');
 
         Route::get('balance/subordinates', [LeaveController::class, 'subordinateBalance'])
-        ->name('balance.subordinates');
+            ->name('balance.subordinates');
 
         Route::get('balance/general', [LeaveController::class, 'generalBalance'])
             ->name('balance.general');
@@ -429,7 +450,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
         Route::get('probationary/{employee}', [PerformanceController::class, 'showAsProbationary'])
             ->name('probationary.show');
-        
+
         /** Regulars */
         Route::prefix('regulars')->name('regulars.')->group(function () {
             Route::get('{employee}/create', [RegularPerformanceController::class, 'create'])
@@ -467,7 +488,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
             Route::get('general', [ProbationaryPerformanceController::class, 'general'])
                 ->name('general');
-                
+
             Route::get('{employee}/review', [ProbationaryPerformanceController::class, 'review'])
                 ->can('signProbationaryEvaluationFormFinal')
                 ->name('review');
@@ -539,7 +560,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
      * Reports
      */
 
-     Route::get('reports', function () {
+    Route::get('reports', function () {
         return view('employee.hr-manager.reports.index');
     })->name('reports');
 
@@ -579,7 +600,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
      */
 
     Route::get('/attendance', function () {
-            return view('employee.basic.attendance.index');
+        return view('employee.basic.attendance.index');
     })->name('attendance');
 
     /**
@@ -601,7 +622,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
                 'employee' => auth()->user()->account
             ]);
         } catch (\Throwable $th) {
-           abort(401);
+            abort(401);
         }
     })->name('general.documents.all');
 
