@@ -28,7 +28,7 @@ class AnyProbationariesPerformancesTable extends DataTableComponent
     public function configure(): void
     {
         $this->setPrimaryKey('employee_id')
-            ->setTableRowUrl(fn ($row) => $this->setRoute($row))
+        ->setTableRowUrl(fn($row) => $this->setRoute($row) . '/#overview')
             ->setTableRowUrlTarget(fn () => '__blank');
         $this->setPageName('any-regulars-performance');
         $this->setEagerLoadAllRelationsEnabled();

@@ -36,7 +36,7 @@
                     <div class="card border-primary mt-1 px-5 py-4 w-100">
 
                         <!-- Overview Tab Section-->
-                        <section id="overview" class="tab-section">
+                        <section id="overview" class="tab-section-perf">
 
                             <!-- Section Title -->
                             <div class="text-primary fs-3 fw-bold text-center">
@@ -186,7 +186,7 @@
                             </div>
                         </section>
                         
-                        <section id="comments" class="tab-section">
+                        <section id="comments" class="tab-section-perf">
                             @foreach ($employee->performancesAsProbationary as $evaluation)
                                 <div class="d-flex justify-content-between">
                                     <div class="me-auto d-flex align-items-start">
