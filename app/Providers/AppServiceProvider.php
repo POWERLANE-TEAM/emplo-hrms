@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\User;
 use App\Enums\UserRole;
+use App\Policies\ContractPolicy;
 use App\Policies\IssuePolicy;
 use App\Policies\ProbationaryPerformancePolicy;
 use Illuminate\Support\Carbon;
@@ -196,6 +197,9 @@ class AppServiceProvider extends ServiceProvider
 
         /** User Status Policies */
         Gate::define('isAccountActive', [UserStatusPolicy::class, 'isAccountActive']);
+
+        /** Contract Policies */
+        Gate::define('uploadContractAttachment', [ContractPolicy::class, 'uploadContractAttachment']);
 
         Vite::useAggressivePrefetching();
 
