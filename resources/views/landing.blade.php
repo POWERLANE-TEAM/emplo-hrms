@@ -58,10 +58,12 @@
                     growth.</p>
 
                 <div class="d-flex align-items-center justify-content-start">
-                    <a href="#demo" class="btn btn-primary w-50">
+                    <a href="/hiring" class="btn btn-primary w-50">
                         Apply Now
                         <i data-lucide="rocket" class="icon icon-large ms-2"></i>
                     </a>
+
+                    
                 </div>
             </div>
         </div>

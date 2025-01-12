@@ -61,7 +61,7 @@ function createParticleSystem(color, size, count, spread) {
         color: color,
         size: size,
         transparent: true,
-        opacity: 0.8,
+        opacity: 0.7,
         blending: THREE.AdditiveBlending
     });
 
@@ -98,20 +98,6 @@ for (let i = 0; i < numRings; i++) {
     rings.push(ring);
     scene.add(ring);
 }
-
-    // GSAP animations
-    gsap.to(particleSystem1.material, { opacity: 0.8, duration: 2, ease: "power2.out" });
-    gsap.to(particleSystem2.material, { opacity: 0.8, duration: 2, ease: "power2.out" });
-
-    rings.forEach((ring, i) => {
-        gsap.to(ring.scale, {
-            x: 1,
-            y: 1,
-            z: 1,
-            duration: 2 + i * 0.5, // Add delay per ring
-            ease: "power2.out"
-        });
-    });
 
 // Lighting
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
