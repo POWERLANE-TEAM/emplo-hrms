@@ -541,19 +541,19 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
      */
 
     Route::get('seperation/resignations', function () {
-        return view('employee.hr-manager.separation.resignation.all');
+        return view('employee.separation.resignation.all');
     })->name('separation.resignations');
 
     Route::get('seperation/resignations/review', function () {
-        return view('employee.hr-manager.separation.resignation.review');
+        return view('employee.separation.resignation.review');
     })->name('separation.resignations.review');
 
     Route::get('seperation/coe', function () {
-        return view('employee.hr-manager.separation.coe.all');
+        return view('employee.separation.coe.all');
     })->name('separation.coe');
 
     Route::get('seperation/coe/request', function () {
-        return view('employee.hr-manager.separation.coe.request');
+        return view('employee.separation.coe.request');
     })->name('separation.coe.request');
 
     /**
@@ -630,10 +630,10 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
      * General: Separation
      */
     Route::get('/separation/index', function () {
-        return view('employee.basic.separation.index');
+        return view('employee.separation.basic.index');
     })->name('separation.index');
 
     Route::get('/separation/file-resignation', function () {
-        return view('employee.basic.separation.file-resignation');
+        return view('employee.separation.basic.file-resignation');
     })->name('separation.file-resignation');
 });
