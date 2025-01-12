@@ -67,6 +67,8 @@ class DatabaseSeeder extends Seeder
                 ThirdMonthEvaluationSeeder::class,
                 FifthMonthEvaluationSeeder::class,
                 FinalMonthEvaluationSeeder::class,
+                TrainingProviderSeeder::class,
+                TrainingSeeder::class,
             ]);
         });
     }

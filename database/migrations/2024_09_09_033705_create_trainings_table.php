@@ -32,7 +32,7 @@ return new class extends Migration
             $table->string('training_title');
             $table->morphs('trainer');
             $table->longText('description')->nullable();
-            $table->enum('completion_status', ['ONGOING', 'FINISHED']);
+            $table->string('completion_status');
             $table->dateTime('start_date');
             $table->dateTime('end_date');
             $table->dateTime('expiry_date')->nullable();
@@ -72,8 +72,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('training_providers');
         Schema::dropIfExists('trainings');
         Schema::dropIfExists('outsourced_trainers');
+        Schema::dropIfExists('training_providers');
     }
 };

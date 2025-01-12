@@ -3,6 +3,7 @@
 use App\Http\Controllers\FileManagerController;
 use App\Http\Controllers\PayslipController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TrainingController;
 use App\Models\Employee;
 use App\Enums\UserPermission;
 use Illuminate\Support\Facades\Route;
@@ -498,16 +499,15 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     });
 
 
-    /**
-     * Training
-     */
-    Route::get('/training/all', function () {
-        return view('employee.hr-manager.training.all');
-    })->name('training.all');
+    /** Training resource */
+    Route::prefix('trainings')->name('trainings.')->group(function () {
+        Route::get('/', [TrainingController::class, 'index'])
+            ->name('index');
 
-    Route::get('/training/records', function () {
-        return view('employee.hr-manager.training.records');
-    })->name('training.records');
+        Route::get('{employee}', [TrainingController::class, 'show'])
+            ->whereNumber('employee')
+            ->name('employee');
+    });
 
 
     /**
