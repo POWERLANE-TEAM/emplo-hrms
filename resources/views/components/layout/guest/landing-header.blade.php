@@ -25,12 +25,6 @@
                         :active="request()->is('login')">Sign
                         In</x-nav-link>
 
-                    <a href="#" class="nav-link bg-white text-primary border border-white" aria-controls="signUpForm"
-                        data-bs-toggle="modal" data-bs-target="#signUpForm">
-                        Sign Up
-
-                    </a>
-
                 @endguest
 
                 @auth

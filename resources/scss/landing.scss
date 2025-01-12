@@ -19,6 +19,10 @@
     box-sizing: border-box;
 }
 
+.main {
+    margin-bottom: 0;
+}
+
 header.top-nav {
     background-color: #61b000 !important;
 }
@@ -38,27 +42,46 @@ canvas {
 .content {
     position: relative;
     color: #333;
-    padding: 2rem;
-    min-height: 90vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    padding: 0rem 2rem 2rem 2rem;
+    min-height: 100vh;
     
+    canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        pointer-events: none;
+    }
 }
 
-.hero .header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    padding: 1rem 2rem;
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(10px);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 100;
-    border-bottom: 1px solid rgba(97, 176, 0, 0.2);
+.hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    min-height: 90vh;
+    
+    &__visual {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    &__content {
+        padding: 0rem 3rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+}
+
+.section-below {
+    min-height: 100vh;
+    background: white;
+    position: relative;
+    z-index: 2;
+    padding: 4rem 2rem;
 }
 
 .logo {
@@ -95,23 +118,11 @@ nav a:hover::after {
     width: 100%;
 }
 
-.hero {
-    max-width: 800px;
-    margin: 0 auto;
-    text-align: center;
-    background: rgba(255, 255, 255, 0.9);
-    padding: 3rem;
-    border-radius: 1rem;
-    box-shadow: 0 10px 30px rgba(0, 99, 144, 0.1);
-    border: 1px solid rgba(97, 176, 0, 0.1);
-    transform: translateY(0);
-    transition: transform 0.3s, box-shadow 0.3s;
-}
 
-.hero:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(0, 99, 144, 0.15);
-}
+// .hero:hover {
+//     transform: translateY(-10px);
+//     box-shadow: 0 20px 40px rgba(0, 99, 144, 0.15);
+// }
 
 h1 {
     font-size: 3.5rem;
