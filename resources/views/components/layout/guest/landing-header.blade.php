@@ -1,4 +1,4 @@
-<header class="top-nav sticky-md-top">
+<header class="top-nav">
     <nav class="d-flex justify-content-between align-items-center">
         <div class="d-flex site-name home ms-md-5">
             <div class="align-content-center">
@@ -7,8 +7,8 @@
                 </div>
             </div>
 
-            <x-nav-link href="/" :active="request()->is('/')" class="no-hover ps-0  nav-link">
-                <h1 class="fs-2  mb-0 fw-bold text-white">Powerlane</h1>
+            <x-nav-link href="/" :active="request()->is('/')" class="no-hover ps-0">
+                <h1 class="fs-2 mb-0 fw-bold text-white">Powerlane</h1>
             </x-nav-link>
         </div>
         <div class="d-flex align-items-center fw-bold">
@@ -24,12 +24,6 @@
                     <x-nav-link href="/login" class="nav-link btn btn-lg btn-outline-secondary border border-white"
                         :active="request()->is('login')">Sign
                         In</x-nav-link>
-
-                    <a href="#" class="nav-link bg-white text-primary border border-white" aria-controls="signUpForm"
-                        data-bs-toggle="modal" data-bs-target="#signUpForm">
-                        Sign Up
-
-                    </a>
 
                 @endguest
 

@@ -23,6 +23,10 @@ Route::group([], function () {
     })->name('hiring');
 });
 
+Route::get('/', function () {
+    return view('landing');
+})->name('landing');
+
 Route::post('/theme-preference/set', [WebThemeController::class, 'create'])
     ->middleware('throttle:4,1');
 
