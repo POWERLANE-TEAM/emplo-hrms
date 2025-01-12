@@ -45,7 +45,7 @@
                             $final = PerformanceEvaluationPeriod::FINAL_MONTH->value;
                         @endphp
                         @if ($loop->index === 0)
-                            @if ($preview->scores[$final])
+                            @if (! $preview->scores[$final])
                                 @for ($i = 0; $i < 2; $i++)
                                     <div class="col-1 px-2 d-flex align-items-center">
                                         <div class="fw-bold text-center text-muted">
@@ -53,7 +53,7 @@
                                         </div>                           
                                     </div>                                            
                                 @endfor
-                            @elseif ($preview->scores[$fifth])
+                            @elseif (! $preview->scores[$fifth])
                                 <div class="col-1 px-2 d-flex align-items-center">
                                     <div class="fw-bold text-center text-muted">
                                         {{ 0 }}

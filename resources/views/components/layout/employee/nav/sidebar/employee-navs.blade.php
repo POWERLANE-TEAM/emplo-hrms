@@ -576,8 +576,8 @@
     {{-- HR Manager --}}
     @can(UserPermission::VIEW_PLAN_GENERATOR)
         <x-layout.employee.nav.sidebar.nav-item
-            href="{{ route($routePrefix . '.pip.index') }}"
-            :active="request()->routeIs($routePrefix . '.pip.*')"
+            href="{{ route($routePrefix . '.performances.plan.improvement.index') }}"
+            :active="request()->routeIs($routePrefix . '.performances.plan.improvement.index')"
             class=""
             nav_txt="Plan Generator"
             :defaultIcon="['src' => 'plan-generator', 'alt' => '']" :activeIcon="['src' => 'plan-generator', 'alt' => '']">

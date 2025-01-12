@@ -33,4 +33,6 @@
     </x-slot:description>
 </x-headings.main-heading>
 
+<livewire:performances.regular.improvement-plan-table routePrefix="{{$routePrefix}}"/>
+
 @endsection
