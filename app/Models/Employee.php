@@ -276,6 +276,22 @@ class Employee extends Model
     }
 
     /**
+     * Get the contracts associated with the employee.
+     */
+    public function contracts(): HasMany
+    {
+        return $this->hasMany(Contract::class, 'employee_id', 'employee_id');
+    }
+
+    /**
+     * Get the contracts uploaded by the employee.
+     */
+    public function uploadedContracts(): HasMany
+    {
+        return $this->hasMany(Contract::class, 'uploaded_by', 'employee_id');
+    }
+
+    /**
      * Get the area name where employee is the Area Manager.
      */
     public function areaManagerOf(): HasOne
