@@ -1,5 +1,5 @@
 @extends('components.layout.employee.layout', ['description' => 'Employee Dashboard', 'nonce' => $nonce])
-@use ('Illuminate\View\ComponentAttributeBag')
+@use ('App\Enums\Payroll')
 
 @section('head')
 <title>Payslips</title>
@@ -9,20 +9,17 @@
 <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 @endsection
 
-@pushOnce('pre-scripts')
-@endPushOnce
-
 @pushOnce('scripts')
     @vite(['resources/js/employee/basic/dashboard.js'])
 @endPushOnce
 
 @pushOnce('styles')
     @vite(['resources/css/employee/hr-manager/style.css'])
-
 @endPushOnce
+
 @section('content')
 
-<div class="row pt-2">
+<div class="row my-2">
     <div class="col-md-8">
         <x-headings.main-heading :isHeading="true">
             <x-slot:heading>
@@ -36,15 +33,15 @@
     </div>
 
     <div class="col-md-4 d-flex justify-content-end align-items-center">
-        <div class="card bg-primary-subtle border-0 py-4 px-5">
+        <div class="card bg-primary-subtle rounded-3 border-0 py-3 px-5">
             <div class="d-flex flex-column align-items-center justify-content-center">
-                <p class="mb-0 fs-3 fw-bold fs-6">📌  Next Pay Date:                 </p>
-                <p class="mb-0 fs-6">September 25, 2024</p>
+                <p class="mb-0 fs-3 fw-bold fs-6">📌{{ __('Next Pay Date:') }}</p>
+                <p class="mb-0 fs-6">{{ Payroll::getPayoutDate(isReadableFormat: true) }}</p>
             </div>
         </div>
     </div>
 </div>
 
-<!-- BACK-END REPLACE: Payslips table -->
+<livewire:employee.tables.my-payslips-table :$routePrefix />
 
 @endsection

@@ -4,7 +4,7 @@
 * |-------------------------------------------------------------------------- 
 --}}
 
-<x-sub-navs.in-page-tab-nav :tabs="[
+<x-sub-navs.in-page-tab-nav tabClass="tab-link-perf" :tabs="[
         ['title' => 'Overview', 'section' => 'overview'],
         ['title' => 'Comments', 'section' => 'comments']
 ]" />

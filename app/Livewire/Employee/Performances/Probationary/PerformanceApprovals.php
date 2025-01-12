@@ -67,7 +67,7 @@ class PerformanceApprovals extends Component
             'fourthApproverSignedAt'    => $probationary?->fourth_approver_signed_at,
             'isAcknowledged'            => $probationary?->is_employee_acknowledged,
             'comments'                  => $probationary?->evaluatee_comments,
-            'signedAt'                  => Carbon::make($probationary?->evaluatee_signed_at)?->format('F d, Y g:i A') ?? null,
+            'signedAt'                  => Carbon::make($probationary?->evaluatee_signed_at)?->format('F d, Y g:i A'),
         ];
     }
 

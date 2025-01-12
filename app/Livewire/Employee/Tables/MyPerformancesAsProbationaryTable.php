@@ -25,7 +25,7 @@ class MyPerformancesAsProbationaryTable extends DataTableComponent
     public function configure(): void
     {
         $this->setPrimaryKey('probationary_performance_id')
-            ->setTableRowUrl(fn ($row) => $this->setRoute($row))
+            ->setTableRowUrl(fn ($row) => $this->setRoute($row). '/#overview')
             ->setTableRowUrlTarget(fn () => '__blank');
         $this->setPageName('my-regular-performance');
         $this->setEagerLoadAllRelationsEnabled();
