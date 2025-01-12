@@ -76,11 +76,17 @@ class CspPolicy extends CustomSpatiePolicy
         $this->addDirective(Directive::STYLE, 'https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta2/dist/css/bootstrap-select.min.css');
         $this->addDirective(Directive::STYLE, 'fonts.bunny.net');
         $this->addDirective(Directive::STYLE, 'https://accounts.google.com');
+        $this->addDirective(Directive::STYLE, 'https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css');
+        $this->addDirective(Directive::STYLE, 'https://unpkg.com/filepond-plugin-pdf-preview/dist/filepond-plugin-pdf-preview.min.css');
+        $this->addDirective(Directive::STYLE, 'https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css');
 
         $this->addDirective(Directive::FONT, 'data:');
         $this->addDirective(Directive::FONT, 'fonts.bunny.net');
+        $this->addDirective(Directive::FONT, 'https://cdn.jsdelivr.net/npm/bootstrap-icons/font/fonts/bootstrap-icons.woff');
+        $this->addDirective(Directive::FONT, 'https://cdn.jsdelivr.net/npm/bootstrap-icons/font/fonts/bootstrap-icons.woff2');
 
         $this->addDirective(Directive::IMG, 'data:');
+        $this->addDirective(Directive::IMG, 'https://ui-avatars.com');
 
         $this->addDirective(Directive::SCRIPT, 'unsafe-eval'); /* Di ko talaga mapagana livewire without this */
         // $this->addDirective(Directive::SCRIPT, 'strict-dynamic');
@@ -93,6 +99,8 @@ class CspPolicy extends CustomSpatiePolicy
         $this->addDirective(Directive::SCRIPT, 'https://www.google.com');
         $this->addDirective(Directive::SCRIPT, 'https://www.gstatic.com');
         $this->addDirective(Directive::SCRIPT, 'https://cdn.jsdelivr.net/npm/chart.js');
+        $this->addDirective(Directive::SCRIPT, 'https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js');
+        $this->addDirective(Directive::SCRIPT, 'https://unpkg.com/filepond-plugin-pdf-preview/dist/filepond-plugin-pdf-preview.min.js');
 
         $this->addDirective(Directive::FRAME, 'self');
         $this->addDirective(Directive::FRAME_ANCESTORS, 'self');
