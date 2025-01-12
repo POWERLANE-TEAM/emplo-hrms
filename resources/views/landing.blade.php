@@ -90,9 +90,7 @@
     </div>
 </div>
 
-<section class="section-below">
-    <!-- Your next section content here -->
-    <h2>next section daddy</h2>
-    <p>ano laman nito</p>
-</section>
+<!-- <section class="section-below">
+    
+</section> -->
 @endsection

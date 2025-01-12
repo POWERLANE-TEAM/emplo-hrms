@@ -19,7 +19,7 @@ Route::group([], function () {
     })->name('hiring');
 });
 
-Route::get('/landing', function () {
+Route::get('/', function () {
     return view('landing');
 })->name('landing');
 
