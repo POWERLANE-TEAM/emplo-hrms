@@ -38,36 +38,32 @@
                     <div class="col-2 d-flex justify-content-center">
                         <div class="vertical-line"></div>
                     </div>
-
-                    @foreach ($preview->scores as $key => $score)
-                        @php
-                            $fifth = PerformanceEvaluationPeriod::FIFTH_MONTH->value;
-                            $final = PerformanceEvaluationPeriod::FINAL_MONTH->value;
-                        @endphp
-                        @if ($loop->index === 0)
-                            @if (! $preview->scores[$final])
-                                @for ($i = 0; $i < 2; $i++)
-                                    <div class="col-1 px-2 d-flex align-items-center">
-                                        <div class="fw-bold text-center text-muted">
-                                            {{ 0 }}
-                                        </div>                           
-                                    </div>                                            
-                                @endfor
-                            @elseif (! $preview->scores[$fifth])
-                                <div class="col-1 px-2 d-flex align-items-center">
-                                    <div class="fw-bold text-center text-muted">
-                                        {{ 0 }}
-                                    </div>                           
-                                </div>
-                            @endif
-                        @endif 
+    
+                    @php
+                        $third = PerformanceEvaluationPeriod::THIRD_MONTH->value;
+                        $fifth = PerformanceEvaluationPeriod::FIFTH_MONTH->value;
+                        $final = PerformanceEvaluationPeriod::FINAL_MONTH->value;
+                    @endphp
+    
+                    <div class="col-3 d-flex justify-content-between">
                         <div class="col-1 px-2 d-flex align-items-center">
-                            <div class="fw-bold text-center 
-                                {{ $key === $final ? 'text-primary justify-content-center' : '' }}">
-                                {{ $score }}
-                           </div>                           
+                            <div class="fw-bold text-center text-muted">
+                                {{ $preview->scores->has($third) ? $preview->scores[$third] : 0 }}
+                            </div>                           
                         </div>
-                    @endforeach
+                        
+                        <div class="col-1 px-2 d-flex align-items-center">
+                            <div class="fw-bold text-center text-muted">
+                                {{ $preview->scores->has($fifth) ? $preview->scores[$fifth] : 0 }}
+                            </div>                           
+                        </div>
+    
+                        <div class="col-1 px-2 d-flex align-items-center">
+                            <div class="fw-bold text-center text-muted">
+                                {{ $preview->scores->has($final) ? $preview->scores[$final] : 0 }}
+                            </div>                           
+                        </div>
+                    </div>
                 </div>
             </div>
         @endforeach
