@@ -607,6 +607,9 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         Route::get('contracts', [FileManagerController::class, 'contracts'])
             ->name('contracts');
 
+        Route::get('contracts/{attachment}', [FileManagerController::class, 'viewContractAttachment'])
+            ->name('contracts.attachments');
+
         Route::get('pre-employments', [FileManagerController::class, 'preEmployments'])
             ->name('pre-employments');
 
