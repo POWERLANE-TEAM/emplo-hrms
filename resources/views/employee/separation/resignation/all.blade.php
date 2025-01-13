@@ -34,4 +34,7 @@
 </x-headings.main-heading>
 
 <!-- BACK-END REPLACE: TABLE FOR ALL RESIGNATION LETTERS -->
+
+<livewire:resignation-table :routePrefix="$routePrefix"/>
+
 @endsection
