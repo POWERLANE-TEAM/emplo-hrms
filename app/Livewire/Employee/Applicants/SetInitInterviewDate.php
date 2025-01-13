@@ -55,6 +55,10 @@ class SetInitInterviewDate extends Component
             $this->timeWrapAttributes = array_merge($this->timeWrapAttributes, ['class' => 'col-12 col-md-6']);
         }
 
+        if ($startTime) {
+            $this->postMethod = 'PATCH';
+        }
+
     }
 
     #[On('submit-init-interview-sched-form')]
@@ -71,7 +75,11 @@ class SetInitInterviewDate extends Component
 
         $controller = new InitialInterviewController;
 
-        $controller->store($validated, true);
+        if($this->postMethod == 'PATCH'){
+            $controller->update($validated, true);
+        }else{
+            $controller->store($validated, true);
+        }
     }
 
     /**

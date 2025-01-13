@@ -7,6 +7,7 @@ use App\Http\Helpers\Timezone;
 use App\Models\Application;
 use App\Models\ApplicationExam;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
 
@@ -25,6 +26,8 @@ class Show extends Component
     protected $examSchedF;
 
     protected $initialInterviewSchedF;
+
+    protected $resume;
 
     #[Locked]
     public bool $notYetExam;
@@ -47,6 +50,16 @@ class Show extends Component
 
         try {
             $this->applicationId = 'APL-' . $this->application->application_id;
+
+
+
+            $this->resume = $this->application->documents->where('preemp_req_id', 17)->first()->file_path;
+
+            // dd($this->resume);
+            // if(!Storage::exists($this->resume)){
+            //     throw new \Exception('Resume not found');
+            // }
+
             $this->isPending = $this->application->application_status_id == ApplicationStatus::PENDING->value;
 
             $this->isInitAssessment = $this->application->application_status_id == ApplicationStatus::ASSESSMENT_SCHEDULED->value;
@@ -98,6 +111,7 @@ class Show extends Component
             'livewire.employee.applicants.show',
             [
                 'applicationId' => $this->applicationId,
+                'resume' => $this->resume,
                 'isPending' => $this->isPending,
                 'isInitAssessment' => $this->isInitAssessment,
                 'examSchedF' => $this->examSchedF,

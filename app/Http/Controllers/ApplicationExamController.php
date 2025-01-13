@@ -121,9 +121,28 @@ class ApplicationExamController extends Controller
     // }
 
     /* Patch or edit */
-    public function update()
+    public function update($request, bool $isValidated = false)
     {
-        //
+
+        $applicationId = is_array($request) ? $request['applicationId'] : $request->input('applicationId');
+
+        $application = Application::with(['applicant.account'])->findOrFail($applicationId);
+
+        if (is_array($request)) {
+            $examStartDate = $request['date'];
+            $examStartTime = $request['time'];
+        } else {
+
+        }
+
+        $examStart = $examStartDate . ' ' . $examStartTime;
+
+        $exam = ApplicationExam::where('application_id', $application->application_id)->first();
+
+        $exam->update([
+            'start_time' => $examStart,
+        ]);
+
     }
 
     /* Delete */
