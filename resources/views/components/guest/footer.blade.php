@@ -15,9 +15,8 @@
                 Company
             </header>
             <nav aria-labelledby="footer-company-links" class=" d-flex flex-column gap-0 row-gap-3">
-                <x-nav-link href="/about" class="small unstyled" d-block :active="request()->is('#')">About Us</x-nav-link>
-                <x-nav-link href="#" class="small d-block unstyled" :active="request()->is('#')">Careers</x-nav-link>
-                <x-nav-link href="#" class="small d-block unstyled" :active="request()->is('#')">Background</x-nav-link>
+                <a href="/" class="small d-block unstyled">About Us</a>
+                <a href="/information-centre?section=about" class="small d-block unstyled">Background</a>
             </nav>
         </section>
         <section class="col-6 col-md-2 order-3  px-3 py-3 ">
@@ -25,8 +24,8 @@
                 Legal Links
             </header>
             <nav aria-labelledby="footer-legal-links" class="d-flex flex-column gap-0 row-gap-3">
-                <x-nav-link href="#" class="small d-block unstyled" :active="request()->is('#')">Terms of Use</x-nav-link>
-                <x-nav-link href="#" class="small d-block unstyled" :active="request()->is('#')">Privacy Policy</x-nav-link>
+                <a href="/information-centre?section=terms-usage" class="small d-block unstyled">Terms of Use</a>
+                <a href="/information-centre?section=privacy-policy" class="small d-block unstyled">Privacy Policy</a>
             </nav>
         </section>
         <section class=" d-grid flex-column col-12 col-md-4 order-1 order-md-4 px-3 py-3   gap-3">

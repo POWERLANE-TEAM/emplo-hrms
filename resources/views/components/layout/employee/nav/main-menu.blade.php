@@ -39,11 +39,9 @@
                 </div>
             </aside>
 
-            <x-notif-dropdown>
+            <!-- <x-notif-dropdown>
                 @if (!request()->routeIs($routePrefix . '.notifications'))
                     <div class="card border-0 py-3 notification-container visible-gray-scrollbar show">
-
-                        <!-- Header -->
                         <div>
                             <div class="row px-4">
                                 <div class="col-md-10">
@@ -62,7 +60,7 @@
                         <livewire:notifications.notifs />
                     </div>
                 @endif
-            </x-notif-dropdown>
+            </x-notif-dropdown> -->
 
             <div class="overflow-hidden">
                 <div class="user-menu px-2">

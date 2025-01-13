@@ -77,7 +77,7 @@
 
                     <!-- REPLACE STATIC PAGE LINK: separation Process Policy -->
                     <div class="col-12 text-center">
-                        <a href="#" id="toggle-information" class="text-link-blue text-decoration-underline fs-7">
+                        <a href="/information-centre?section=seperation-process" id="toggle-information" class="text-link-blue text-decoration-underline fs-7">
                             Learn more about the separation process
                         </a>
                     </div>
