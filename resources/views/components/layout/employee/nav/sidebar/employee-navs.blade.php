@@ -329,7 +329,7 @@
     </x-layout.employee.nav.sidebar.nested-nav-items>
     @endcan
 
-    {{-- HR Manager --}}
+    <!-- {{-- HR Manager --}}
     @can(UserPermission::VIEW_REPORTS)
         <x-layout.employee.nav.sidebar.nav-item
             href="{{ route($routePrefix . '.reports') }}"
@@ -338,7 +338,7 @@
             :defaultIcon="['src' => 'reports', 'alt' => '']"
             :activeIcon="['src' => 'reports', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
-    @endcan
+    @endcan -->
 
     {{-- Head Admin --}}
     @can(UserPermission::VIEW_ALL_ACCOUNTS)
@@ -371,7 +371,7 @@
     @endcan
 
     {{-- Head Admin --}}
-    @can(UserPermission::VIEW_CALENDAR_MANAGER)
+    <!-- @can(UserPermission::VIEW_CALENDAR_MANAGER)
         @if($routePrefix === 'admin')
             <x-layout.employee.nav.sidebar.nav-item
                 href="{{ route($routePrefix . '.calendar.monthly') }}"
@@ -382,7 +382,7 @@
                 :activeIcon="['src' => 'calendar', 'alt' => '']">
             </x-layout.employee.nav.sidebar.nav-item>
         @endif
-    @endcan
+    @endcan -->
 
     {{-- Head Admin --}}
     @can(UserPermission::VIEW_JOB_LISTING_MANAGER)
@@ -434,7 +434,7 @@
             :activeIcon="['src' => 'jobboard', 'alt' => 'Oragnization']"
             :children="[
                 [
-                    'href' => route($routePrefix . '.job-family.index'),
+                    'href' => route($routePrefix . '.job-family.create'),
                     'active' => [$routePrefix . '.job-family.*', $routePrefix . '.job-title.*'],
                     'nav_txt' => 'Job Family & Positions'
                 ],
@@ -455,14 +455,14 @@
             :activeIcon="['src' => 'announcements', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
 
-        <x-layout.employee.nav.sidebar.nav-item
+        <!-- <x-layout.employee.nav.sidebar.nav-item
             href="{{ route($routePrefix . '.calendar.monthly') }}"
             :active="request()->routeIs($routePrefix . '.calendar.*')"
             class=""
             nav_txt="Calendar"
             :defaultIcon="['src' => 'calendar-manager', 'alt' => '']"
             :activeIcon="['src' => 'calendar', 'alt' => '']">
-        </x-layout.employee.nav.sidebar.nav-item>
+        </x-layout.employee.nav.sidebar.nav-item> -->
 
     @endcan
 

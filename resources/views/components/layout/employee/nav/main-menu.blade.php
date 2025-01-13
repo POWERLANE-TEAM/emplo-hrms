@@ -39,29 +39,6 @@
                 </div>
             </aside>
 
-            <!-- <x-notif-dropdown>
-                @if (!request()->routeIs($routePrefix . '.notifications'))
-                    <div class="card border-0 py-3 notification-container visible-gray-scrollbar show">
-                        <div>
-                            <div class="row px-4">
-                                <div class="col-md-10">
-                                    <h4 class="mb-0 fw-bold">Notifications</h4>
-                                </div>
-                                <div class="col-md-2 text-end mb-3">
-                                    <a wire:navigate href="{{ route($routePrefix . '.notifications') }}"
-                                        class="text-muted green-hover">
-                                        <span data-bs-toggle="tooltip" title="See all notifications">
-                                            <i data-lucide="list" class="icon icon-large"></i>
-                                        </span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <livewire:notifications.notifs />
-                    </div>
-                @endif
-            </x-notif-dropdown> -->
-
             <div class="overflow-hidden">
                 <div class="user-menu px-2">
                     <button id="user-prof-btn" class="bg-transparent border-0" type="button" aria-label="User Menu"
