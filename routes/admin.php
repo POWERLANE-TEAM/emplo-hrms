@@ -214,4 +214,4 @@ Route::middleware('auth')->group(function () {
                 return view('employee.admin.attendance.index');
             })->name('logs');
         });
-});
+})
