@@ -11,7 +11,7 @@ class FileManagerController extends Controller
 {
     public function contracts()
     {
-        //
+        return view('employee.basic.documents.contracts.index');
     }
 
     public function preEmployments()

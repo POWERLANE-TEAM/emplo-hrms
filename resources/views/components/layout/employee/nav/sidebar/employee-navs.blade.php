@@ -203,7 +203,7 @@
     {{-- Employee, Supervisor --}}
     @canAny([UserPermission::VIEW_DOCUMENTS])
     <x-layout.employee.nav.sidebar.nav-item
-        href="{{ route($routePrefix . '.files.pre-employments') }}"
+        href="{{ route($routePrefix . '.files.contracts') }}"
         :active="request()->routeIs($routePrefix . '.files.*')"
         class="order-7"
         nav_txt="Documents"
@@ -308,8 +308,8 @@
     {{-- HR Manager --}}
     @can(UserPermission::VIEW_ALL_TRAINING)
         <x-layout.employee.nav.sidebar.nav-item
-            href="{{ route($routePrefix . '.training.all') }}"
-            :active="request()->routeIs($routePrefix . '.training.all')"
+            href="{{ route($routePrefix . '.trainings.index') }}"
+            :active="request()->routeIs($routePrefix . '.trainings.index')"
             class="order-11" nav_txt="Training"
             :defaultIcon="['src' => 'training', 'alt' => '']"
             :activeIcon="['src' => 'training', 'alt' => '']">

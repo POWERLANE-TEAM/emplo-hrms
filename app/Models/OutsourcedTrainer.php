@@ -2,22 +2,37 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class OutsourcedTrainer extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'training_provider_id';
+    protected $primaryKey = 'trainer_id';
 
     protected $guarded = [
         'trainer_id',
         'created_at',
         'updated_at',
     ];
+
+    /**
+     * Get the outsources trainer's full name.
+     *
+     * @return string
+     */
+    protected function fullName(): Attribute
+    {
+        return Attribute::make(
+            get: fn (mixed $value, array $attributes) => $attributes['last_name'].', '.
+                $attributes['first_name'].' '.
+                $attributes['middle_name'],
+        );
+    }
 
     /**
      * Get the trainings associated with the outsourced trainer.
