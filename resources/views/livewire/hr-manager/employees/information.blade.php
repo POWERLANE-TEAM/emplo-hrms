@@ -39,8 +39,6 @@
                 <div class="left-col pt-2 align-items-center">
                     <div class="fw-bold">{{ __('Job Family: ') }}</div>
                     <p>{{ $employee->jobFamily }}</p>
-                    <div class="fw-bold">{{ __('Supervisor:  ') }}</div>
-                    <p>Supervisor Name here</p>
                     <div class="fw-bold">{{ __('Employment Status: ') }}</div>
                     <p>{{ $employee->employmentStatus }}</p>
                     <div class="fw-bold">{{ __('Shift Schedule: ') }}</div>

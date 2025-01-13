@@ -1,0 +1,39 @@
+header {
+    --v-offset: clamp(0.8rem, 0.20rem + 0.20vw + 0.35vh, 2rem);
+
+    nav {
+        padding: var(--v-offset) clamp(1rem, 0.8rem + 2vw, 8rem) !important;
+        color: var(--main-white);
+
+        div,
+        section {
+            &:has(.nav-link):not(.home) {
+                gap: 0 calc(1.5rem + 3.6vw);
+
+            }
+        }
+
+        .nav-link,
+        button {
+            @extend %nav-link;
+
+            &.active {
+                font-weight: 900;
+                -webkit-text-stroke: 0.1px var(--bs-white);
+                text-stroke: 0.1px var(--bs-white);
+            }
+        }
+    }
+}
+
+img.icon {
+    width: calc(0.2rem + 1vw) !important;
+}
+
+.nav-link {
+    padding: 0 0 0 .5em !important;
+}
+
+button:hover {
+    background-color: transparent !important;
+}

@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('training_providers', function (Blueprint $table) {
             $table->id('training_provider_id');
             $table->string('training_provider_name');
-            $table->longText('training_provider_desc');
             $table->timestamps();
         });
 
@@ -28,22 +27,23 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
-            $table->dateTime('training_date');
             $table->string('training_title');
             $table->morphs('trainer');
             $table->longText('description')->nullable();
-            $table->enum('completion_status', ['ONGOING', 'FINISHED']);
+            $table->string('completion_status');
             $table->dateTime('start_date');
             $table->dateTime('end_date');
             $table->dateTime('expiry_date')->nullable();
             $table->nullableMorphs('comment');
 
             $table->foreignIdFor(Employee::class, 'prepared_by')
+                ->nullable()
                 ->constrained('employees', 'employee_id')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
             $table->foreignIdFor(Employee::class, 'reviewed_by')
+                ->nullable()
                 ->constrained('employees', 'employee_id')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
@@ -72,8 +72,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('training_providers');
         Schema::dropIfExists('trainings');
         Schema::dropIfExists('outsourced_trainers');
+        Schema::dropIfExists('training_providers');
     }
 };

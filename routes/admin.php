@@ -3,6 +3,7 @@
 use App\Enums\UserPermission;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Livewire\Auth\Logout;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 
@@ -32,26 +33,21 @@ Route::middleware('auth')->group(function () {
         ->name('dashboard');
 
     /**
-     * Profile
+     * Profile Resource
      */
-    Route::get('profile', function () {
-        return view('employee.profile.information.index');
-    })->name('profile');
+    Route::prefix('profile')->name('profile.')->group(function () {
+        Route::get('/', [ProfileController::class, 'index'])
+            ->name('index');
 
-    Route::get('profile/edit', function () {
-        return view('employee.profile.information.edit');
-    })->name('profile.edit');
+        Route::get('edit', [ProfileController::class, 'edit'])
+            ->name('edit');
 
-    /**
-     * Settings & Privacy
-     */
-    Route::get('settings', function () {
-        return view('employee.profile.settings');
-    })->name('settings');
+        Route::get('settings', [ProfileController::class, 'settings'])
+            ->name('settings');
 
-    Route::get('activity-logs', function () {
-        return view('employee.profile.activity-logs');
-    })->name('activity-logs');
+        Route::get('activity-logs', [ProfileController::class, 'logs'])
+            ->name('logs');
+    });
 
     /**
      * Log out

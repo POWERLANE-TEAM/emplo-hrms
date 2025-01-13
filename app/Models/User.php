@@ -83,10 +83,12 @@ class User extends Authenticatable implements MustVerifyEmail
      * Accessor for photo attribute.
      *
      * If null, generate a random user avatar based on full name.
+     * 
+     * TODO: save photo url to table and set a file path for retrieval.
      */
     protected function photo(): Attribute
     {
-        $this->loadMissing('account');
+        // $this->loadMissing('account');
         
         $username = "{$this->account->last_name}, {$this->account->first_name}";
 

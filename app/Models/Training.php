@@ -28,6 +28,14 @@ class Training extends Model
     }
 
     /**
+     * Get the employee trainee that owns the training record.
+     */
+    public function employeeTrainee(): BelongsTo
+    {
+        return $this->belongsTo(Employee::class, 'trainee', 'employee_id');
+    }
+
+    /**
      * Get the parent model (Employee or OutsourcedTrainer) that the training record belongs to.
      */
     public function comment(): MorphTo

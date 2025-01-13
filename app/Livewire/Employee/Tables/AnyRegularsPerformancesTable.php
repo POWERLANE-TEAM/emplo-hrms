@@ -27,7 +27,8 @@ class AnyRegularsPerformancesTable extends DataTableComponent
         $this->setPrimaryKey('employee_id')
             ->setTableRowUrl(fn ($row) => route("{$this->routePrefix}.performances.regulars.review", [
                 'performance' => $row->performancesAsRegular->first()->regular_performance_id,
-            ]))
+            ] . '/#overview' ))
+            
             ->setTableRowUrlTarget(fn () => '__blank');
         $this->setPageName('any-regulars-performance');
         $this->setEagerLoadAllRelationsEnabled();

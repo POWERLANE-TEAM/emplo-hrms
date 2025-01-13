@@ -9,4 +9,6 @@ enum FilePath: string
     case PRE_EMPLOYMENT = 'uploads/applicant/applications/pre-emp';
     case RESUME = 'uploads/applicant/applications/resume';
     case RESIGNATION = 'uploads/employee/resignation';
+    case PAYSLIPS = 'payslips';
+    case CONTRACTS = 'contracts/';
 }
