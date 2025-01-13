@@ -22,7 +22,7 @@
 @section('content')
     <x-breadcrumbs>
         <x-slot:breadcrumbs>
-            <x-breadcrumb :href="route($routePrefix . '.index')">
+            <x-breadcrumb :href="route($routePrefix . '.employees.masterlist.all')">
                 {{ __('Employee Masterlist') }}
             </x-breadcrumb>
             <x-breadcrumb :active="request()->routeIs($routePrefix . '.employees.information')">
@@ -39,7 +39,7 @@
             </x-form.boxed-selectpicker>
         </div>
 
-        <div class="col-md-8 d-flex align-items-center">
+        <div class="col-md-8 d-flex align-items-center" wire:ignore>
             @include('components.includes.tab_navs.employees-navs')
         </div>
     </section>
@@ -50,9 +50,9 @@
             <!-- Information Tab Section-->
 
             <!-- Sub-section: Employee Information -->
-            <livewire:hr-manager.employees.information :employee="$employee" />
+            <livewire:hr-manager.employees.information :$employee />
             <!-- Sub-section: Documents -->
-            <livewire:hr-manager.employees.documents :employee="$employee" />
+            <livewire:hr-manager.employees.documents :$employee />
 
             <!-- Attendance Tab Section -->
             <livewire:hr-manager.employees.attendance />
@@ -61,7 +61,7 @@
             <livewire:hr-manager.employees.payslips />
 
             <!-- Contract Tab Section -->
-            <livewire:hr-manager.employees.contract />
+            <livewire:hr-manager.employees.contract :$routePrefix :$employee />
 
             <!-- Leaves Tab Section -->
             <livewire:hr-manager.employees.leaves />

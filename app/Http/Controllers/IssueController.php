@@ -32,7 +32,9 @@ class IssueController extends Controller
 
     public function download(string $attachment)
     {
-        return Storage::disk('local')->download(FilePath::ISSUES->value.'/'.$attachment);
+        $path = sprintf('%s/%s', FilePath::ISSUES->value, $attachment);
+
+        return Storage::disk('local')->download($path);
     }
 
     public function show(Issue $issue)
@@ -42,7 +44,7 @@ class IssueController extends Controller
 
     public function viewAttachment(string $attachment)
     {
-        $path = FilePath::ISSUES->value.'/'.$attachment;
+        $path = sprintf('%s/%s', FilePath::ISSUES->value, $attachment);
 
         if (Storage::disk('local')->missing($path)) {
             abort(404);

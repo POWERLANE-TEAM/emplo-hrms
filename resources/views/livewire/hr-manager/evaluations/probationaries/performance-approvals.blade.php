@@ -13,7 +13,7 @@
                 <div class="card border-primary mt-1 px-5 py-4 w-100">
 
                     <!-- Overview Tab Section-->
-                    <section id="overview" class="tab-section">
+                    <section id="overview" class="tab-section-perf">
 
                         <!-- Section Title -->
                         <div class="text-primary fs-3 fw-bold text-center">

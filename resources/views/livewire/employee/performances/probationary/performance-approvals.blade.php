@@ -36,90 +36,99 @@
                     <div class="card border-primary mt-1 px-5 py-4 w-100">
 
                         <!-- Overview Tab Section-->
-                        <section id="overview" class="tab-section">
+                        <section id="overview" class="tab-section-perf">
 
                             <!-- Section Title -->
                             <div class="text-primary fs-3 fw-bold text-center">
                                 {{ __('Overview') }}
                             </div>
 
-                            <div class="text-center pt-3 pb-4">
-                                <p class="fw-bold fs-4">
-                                    @php $finalRating = session()->get('final_rating'); @endphp
-                                    
-                                    {{ __("{$finalRating['format']} - {$finalRating['scale']}") }}
-                                </p>
-                                <p class="text-muted">{{ __('Final Rating & Performance Scale') }}</p>
-                            </div>
-
-                            @php
-                                $icon = $isRecommendedRegular ? 'badge-check' : 'badge-alert';
-                                $textColor = $isRecommendedRegular ? 'text-success' : 'text-danger';
-                                $text = $isRecommendedRegular 
-                                    ? __('Recommended to become a regular employee.') 
-                                    : __('Do not recommend to become a regular employee.');
-                            @endphp
-
-                            <div class="pb-3">
-                                <p class="fw-medium fs-5">{{ __('Supervisor’s Final Recommendation') }}</p>
-
-                                <div class="row py-3 d-flex align-items-center {{ $textColor }}">
-                                    <div class="col-2 d-flex justify-content-end p-0">
-                                        <i data-lucide="{{ $icon }}" class="icon icon-xlarge"></i>
-                                    </div>
-                                    <div class="col justify-content-start">
-                                        <span class="fs-5">{{ $text }} </span>
-                                    </div>
+                            @if ($employee->performancesAsProbationary->last()->details->isNotEmpty())
+                                <div class="text-center pt-3 pb-4">
+                                    <p class="fw-bold fs-4">
+                                        @php $finalRating = session()->get('final_rating'); @endphp
+                                        
+                                        {{ __("{$finalRating['format']} - {$finalRating['scale']}") }}
+                                    </p>
+                                    <p class="text-muted">{{ __('Final Rating & Performance Scale') }}</p>
                                 </div>
-                            </div>                            
+
+                                @php
+                                    $icon = $isRecommendedRegular ? 'badge-check' : 'badge-alert';
+                                    $textColor = $isRecommendedRegular ? 'text-success' : 'text-danger';
+                                    $text = $isRecommendedRegular 
+                                        ? __('Recommended to become a regular employee.') 
+                                        : __('Do not recommend to become a regular employee.');
+                                @endphp
+
+                                <div class="pb-3">
+                                    <p class="fw-medium fs-5">{{ __('Supervisor’s Final Recommendation') }}</p>
+
+                                    <div class="row py-3 d-flex align-items-center {{ $textColor }}">
+                                        <div class="col-2 d-flex justify-content-end p-0">
+                                            <i data-lucide="{{ $icon }}" class="icon icon-xlarge"></i>
+                                        </div>
+                                        <div class="col justify-content-start">
+                                            <span class="fs-5">{{ $text }} </span>
+                                        </div>
+                                    </div>
+                                </div>                            
+                            @endif
 
                             <!-- SECTION: Main Approvals -->
                             <div class="pb-3">
                                 <p class="fw-medium fs-5">{{ __('Main Approvals') }}</p>
-                                <div class="ps-4 pe-2 py-3">
-                                    <x-form.checkbox container_class="" :nonce="$nonce" id="supervisor_approval" name="supervisor_approval"
-                                        class="checkbox checkbox-primary" disabled="true" checked>
 
-                                        <x-slot:label>
-                                            <div class="d-flex flex-column">
-                                                <div class="fs-5">{{ $performance->evaluator }}</div>
-                                                <div class="text-primary">{{ $performance->evaluatorJobTitle }}</div>
-                                            </div>
-                                        </x-slot:label>
-                                    </x-form.checkbox>
-                                </div>
+                                @if ($employee->performancesAsProbationary->last()->details->isNotEmpty())
+                                    <div class="ps-4 pe-2 py-3">
+                                        <x-form.checkbox container_class="" :nonce="$nonce" id="supervisor_approval" name="supervisor_approval"
+                                            class="checkbox checkbox-primary" disabled="true" checked>
 
-                                <!-- Head Department Approval -->
-                                <div class="ps-4 pe-2 py-2">
-                                    <div class="row">
-                                        <div class="col-9">
-                                            <x-form.checkbox container_class="" :nonce="$nonce" id="head_dept_approval" name="head_dept_approval"
-                                                class="checkbox checkbox-primary" disabled :checked="$performance->secondaryApproverSignedAt">
-
-                                                <x-slot:label>
-                                                    <div class="d-flex flex-column">
-                                                        <div class="fs-5">
-                                                            {{ $performance->secondaryApprover ?? 
-                                                                $employee->jobTitle->jobFamily->head->full_name ??
-                                                                __('Awaiting Approval')
-                                                            }}
-                                                        </div>
-                                                        <div class="text-primary">
-                                                            {{ $performance->secondaryApproverJobTitle ?? 
-                                                                $employee->jobTitle->jobFamily?->head?->jobTitle?->job_title
-                                                            }}
-                                                        </div>
-                                                    </div>
-                                                </x-slot:label>
-                                            </x-form.checkbox>                                        
-                                        </div>
-                                        @if (is_null($performance->secondaryApproverSignedAt))
-                                            <div class="col-3">
-                                                <x-status-badge color="info">Pending</x-status-badge>
-                                            </div>
-                                        @endif   
+                                            <x-slot:label>
+                                                <div class="d-flex flex-column">
+                                                    <div class="fs-5">{{ $performance->evaluator }}</div>
+                                                    <div class="text-primary">{{ $performance->evaluatorJobTitle }}</div>
+                                                </div>
+                                            </x-slot:label>
+                                        </x-form.checkbox>
                                     </div>
-                                </div>
+
+                                    <!-- Head Department Approval -->
+                                    <div class="ps-4 pe-2 py-2">
+                                        <div class="row">
+                                            <div class="col-9">
+                                                <x-form.checkbox container_class="" :nonce="$nonce" id="head_dept_approval" name="head_dept_approval"
+                                                    class="checkbox checkbox-primary" disabled :checked="$performance->secondaryApproverSignedAt">
+
+                                                    <x-slot:label>
+                                                        <div class="d-flex flex-column">
+                                                            <div class="fs-5">
+                                                                {{ $performance->secondaryApprover ?? 
+                                                                    $employee->jobTitle->jobFamily->head->full_name ??
+                                                                    __('Awaiting Approval')
+                                                                }}
+                                                            </div>
+                                                            <div class="text-primary">
+                                                                {{ $performance->secondaryApproverJobTitle ?? 
+                                                                    $employee->jobTitle->jobFamily?->head?->jobTitle?->job_title
+                                                                }}
+                                                            </div>
+                                                        </div>
+                                                    </x-slot:label>
+                                                </x-form.checkbox>                                        
+                                            </div>
+                                            @if (is_null($performance->secondaryApproverSignedAt))
+                                                <div class="col-3">
+                                                    <x-status-badge color="info">Pending</x-status-badge>
+                                                </div>
+                                            @endif   
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="ps-4 pe-2 py-3">
+                                        {{ __('Final period is not over yet.') }}
+                                    </div>
+                                @endif
                             </div>
 
                             <!-- SECTION: HR Approvals -->
@@ -186,7 +195,7 @@
                             </div>
                         </section>
                         
-                        <section id="comments" class="tab-section">
+                        <section id="comments" class="tab-section-perf">
                             @foreach ($employee->performancesAsProbationary as $evaluation)
                                 <div class="d-flex justify-content-between">
                                     <div class="me-auto d-flex align-items-start">
@@ -241,7 +250,9 @@
                 @enderror
 
                 {{-- Buttons --}}
-                @if (! $performance->isAcknowledged)
+                @if (! $performance->isAcknowledged && 
+                    $employee->performancesAsProbationary->last()->details->isNotEmpty()
+                )
                     <div class="">
                         <button
                             wire:click="markAsAcknowledged"

@@ -33,7 +33,7 @@
                     </div>
                     
                     <div class="card border-primary mt-1 px-5 py-4 w-100">
-                        <section id="overview" class="tab-section">
+                        <section id="overview" class="tab-section-perf">
                             <div class="text-primary fs-3 fw-bold text-center">
                                 {{ __('Overview') }}
                             </div>
@@ -156,7 +156,7 @@
                             </div>
                         </section>
     
-                        <section id="comments" class="tab-section">
+                        <section id="comments" class="tab-section-perf">
                             {{ $performance->evaluator_comments ?? __('No further comments') }}
                         </section>
                     </div>
