@@ -8,8 +8,10 @@ use App\Enums\TrainingStatus;
 use Illuminate\Support\Carbon;
 use Livewire\Attributes\Locked;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\View\ComponentAttributeBag;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class IndividualEmployeeTrainingsTable extends DataTableComponent
 {
@@ -29,11 +31,11 @@ class IndividualEmployeeTrainingsTable extends DataTableComponent
         $this->enableAllEvents();
         $this->setQueryStringEnabled();
         $this->setOfflineIndicatorEnabled();
-        // $this->setDefaultSort('filed_at', 'desc');
+        $this->setDefaultSort('created_at', 'desc');
         $this->setSearchDebounce(1000);
         $this->setTrimSearchStringEnabled();
         $this->setEmptyMessage(__('No results found.'));
-        $this->setPerPageAccepted([10, 25, 50, 100, -1]);
+        $this->setPerPageAccepted([5, 10, 25, 50, -1]);
         $this->setToolBarAttributes(['class' => ' d-md-flex my-md-2']);
         $this->setToolsAttributes(['class' => ' bg-body-secondary border-0 rounded-3 px-5 py-2']);
 
@@ -66,6 +68,20 @@ class IndividualEmployeeTrainingsTable extends DataTableComponent
                 'class' => 'text-md-center',
             ];
         });
+
+        $this->setConfigurableAreas([
+            'toolbar-left-start' => [
+                'components.headings.main-heading',
+                [
+                    'overrideClass' => true,
+                    'overrideContainerClass' => true,
+                    'attributes' => new ComponentAttributeBag([
+                        'class' => 'fs-5 py-1 text-secondary-emphasis fw-semibold text-underline',
+                    ]),
+                    'heading' => __('Training Records'),
+                ],
+            ],
+        ]);
     }
 
     public function builder(): Builder
@@ -92,6 +108,14 @@ class IndividualEmployeeTrainingsTable extends DataTableComponent
             Column::make(__('Training Provider'))
                 ->label(fn ($row) => $row->trainer?->provider?->training_provider_name ?? __('N/A')),
 
+            Column::make(__('Start Date'))
+                ->label(fn ($row) => Carbon::make($row->start_date)->format('F d, Y g:i A'))
+                ->deselected(),
+
+            Column::make(__('End Date'))
+                ->label(fn ($row) => Carbon::make($row->end_date)->format('F d, Y g:i A'))
+                ->deselected(),
+
             Column::make(__('Status'))
                 ->label(fn ($row) => TrainingStatus::from($row->completion_status)->getLabel()),
 
@@ -105,6 +129,17 @@ class IndividualEmployeeTrainingsTable extends DataTableComponent
 
             Column::make(__('Expiry'))
                 ->label(fn ($row) => Carbon::make($row->expiry_date)->format('F d, Y g:i A')),
+        ];
+    }
+
+    public function filters(): array
+    {
+        return [
+            SelectFilter::make(__('Completion'))
+                ->options(TrainingStatus::options())
+                ->filter(function (Builder $query, $value) {
+                    $query->where('completion_status', $value);
+                }),
         ];
     }
 }

@@ -32,5 +32,4 @@
 
 <livewire:hr-manager.training.employee-records :$routePrefix :$employee />
 
-<x-modals.create_dialogues.add-training-record />
 @endsection

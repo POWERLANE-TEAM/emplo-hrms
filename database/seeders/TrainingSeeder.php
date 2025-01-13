@@ -64,7 +64,6 @@ class TrainingSeeder extends Seeder
                 'trainer_id' => $trainerId,
                 'prepared_by' => $employees->random()->employee_id,
                 'reviewed_by' => $employees->random()->employee_id,
-                'training_date' => Carbon::now()->subDays(rand(1, 30)),
                 'start_date' => Carbon::now()->subDays(rand(31, 60)),
                 'end_date' => Carbon::now()->subDays(rand(1, 30)),
                 'expiry_date' => Carbon::now()->addDays(rand(30, 365)),

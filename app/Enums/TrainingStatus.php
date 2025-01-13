@@ -18,4 +18,12 @@ enum TrainingStatus: string
             self::NOT_STARTED => 'Not Started',
         };
     }
+
+    public static function options(): array
+    {
+        return array_reduce(self::cases(), function ($carry, $case) {
+            $carry[$case->value] = $case->getLabel();
+            return $carry;
+        }, []);
+    }
 }

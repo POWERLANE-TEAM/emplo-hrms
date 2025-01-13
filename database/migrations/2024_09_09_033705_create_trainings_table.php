@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('training_providers', function (Blueprint $table) {
             $table->id('training_provider_id');
             $table->string('training_provider_name');
-            $table->longText('training_provider_desc');
             $table->timestamps();
         });
 
@@ -28,7 +27,6 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
-            $table->dateTime('training_date');
             $table->string('training_title');
             $table->morphs('trainer');
             $table->longText('description')->nullable();
@@ -39,11 +37,13 @@ return new class extends Migration
             $table->nullableMorphs('comment');
 
             $table->foreignIdFor(Employee::class, 'prepared_by')
+                ->nullable()
                 ->constrained('employees', 'employee_id')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
             $table->foreignIdFor(Employee::class, 'reviewed_by')
+                ->nullable()
                 ->constrained('employees', 'employee_id')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
