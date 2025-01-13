@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Helpers\RouteHelper;
 use App\Models\Applicant;
 use App\Models\Application;
+use App\Models\ApplicationDoc;
 use App\Models\JobVacancy;
 use App\Models\User;
 use App\Notifications\Applicant\AccountCreated;
@@ -18,6 +19,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Enums\FilePath;
 use Propaganistas\LaravelPhone\PhoneNumber;
 
 class ApplicantController extends Controller
@@ -141,6 +143,20 @@ class ApplicantController extends Controller
             // add save resume file
 
             $application = $applicationController->create($application, true);
+
+            $resumeFile = is_array($request) ? $request['resumeFile'] : $request->input('resumeFile');
+
+            $hashedResume = $resumeFile->hashName();
+
+            $path = $resumeFile->storeAs(FilePath::RESUME->value, $hashedResume, 'public');
+
+            ApplicationDoc::create([
+                'application_id' => $application->application_id,
+                'file_path' => $path,
+                'preemp_req_id' => 17, //resume
+            ]);
+
+
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();

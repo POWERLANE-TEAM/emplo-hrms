@@ -20,6 +20,9 @@ class ScheduleDateRule
         $minDate = $minDate ?? (new \DateTime('now', $dateTimeZone))->format('Y-m-d');
         $maxDate = $maxDate ?? (new \DateTime('now', $dateTimeZone))->modify('+1 month')->format('Y-m-d');
 
+        if(app()->environment() == 'local'){
+            return '';
+        }
         return 'date|after_or_equal:' . $minDate . '|before_or_equal:' . $maxDate;
     }
 }

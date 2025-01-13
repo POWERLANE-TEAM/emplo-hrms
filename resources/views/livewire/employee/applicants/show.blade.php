@@ -142,7 +142,7 @@
                             data-lucide="expand"></i></button>
                 </div>
                 <iframe id="iframe-applicant-resume" name="applicant-resume" class="rounded-3 " allowfullscreen='yes'
-                    src="{{ Storage::url('hardware-and-software-components.pdf') }}" height="100.5%" width="100%"
+                    src="{{ Storage::url($resume) }}" height="100.5%" width="100%"
                     frameborder="0" allowpaymentrequest="false" loading="lazy"></iframe>
             </div>
         </div>

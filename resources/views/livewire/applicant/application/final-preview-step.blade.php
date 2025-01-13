@@ -67,7 +67,7 @@
                 $contactNumbers = explode(',', $contactNumberString);
             }
         } catch (\Exception $e) {
-            $contactNumber = 'Contact number information is missing';
+            $contactNumbers = 'Contact number information is missing';
         }
 
         try {

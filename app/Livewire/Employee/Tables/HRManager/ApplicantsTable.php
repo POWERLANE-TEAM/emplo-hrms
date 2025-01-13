@@ -197,9 +197,10 @@ class ApplicantsTable extends DataTableComponent
                 ->label(fn($row) => $row->vacancy->jobTitle->job_title)
                 ->sortable(function ($query, $direction) {
                     return $query->orderBy('job_title', $direction);
-                })->searchable(function (Builder $query, $searchTerm) {
-                    return $this->applyJobPositionSearch($query, $searchTerm);
                 }),
+                // ->searchable(function (Builder $query, $searchTerm) {
+                //     return $this->applyJobPositionSearch($query, $searchTerm);
+                // }),
 
             Column::make('Examination')
                 ->label(function ($row) {
@@ -232,9 +233,9 @@ class ApplicantsTable extends DataTableComponent
                 ->sortable(function ($query, $direction) {
                     return $query->orderBy('applicants.created_at', $direction);
                 })
-                ->searchable(function (Builder $query, $searchTerm) {
-                    return $this->applyDateSearch($query, $searchTerm);
-                })
+                // ->searchable(function (Builder $query, $searchTerm) {
+                //     return $this->applyDateSearch($query, $searchTerm);
+                // })
                 ->deselectedIf(fn() => !empty(array_filter($this->status, fn($status) => $status > 1))),
 
             /**
