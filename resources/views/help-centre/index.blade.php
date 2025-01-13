@@ -36,6 +36,11 @@
             </section>
 
             <!-- Using Emplo -->
+
+            <section class="content-section" id="about">
+                @include('help-centre.usage.about')
+            </section>
+
             <section class="content-section" id="terms-usage">
                 @include('help-centre.usage.terms-conditions')
             </section>
@@ -61,6 +66,9 @@
             </section>
             <section class="content-section" id="evaluation-policy">
                 @include('help-centre.policy.company.evaluation')
+            </section>
+            <section class="content-section" id="leave-policy">
+                @include('help-centre.policy.company.leave')
             </section>
         </main>
     </div>

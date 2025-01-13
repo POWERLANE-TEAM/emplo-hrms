@@ -93,4 +93,4 @@
     message="Proceed with caution?" actionButtonTitle="Proceed" />
 @endsection
 
-<a href="/help-centre?section=system-policies">Go to System Policy</a>
+<a href="/information-centre?section=privacy-policy">Go to System Policy</a>
