@@ -20,7 +20,7 @@
         ' .
             (auth()->guest() ? 'aria-controls="signUpForm" data-bs-toggle="modal" data-bs-target="#signUpForm"' : '') .
             '
-        wire:ignore>
+        >
         Apply
         <span><i data-lucide="external-link"></i></span>
     </a>

@@ -29,6 +29,7 @@ class PreempRequirementSeeder extends Seeder
             ['preemp_req_name' => 'PAG-IBIG Registration Record (MDF/ID)'],
             ['preemp_req_name' => 'PHILHEALTH Registration Record (MDR/ID)-if previously employed'],
             ['preemp_req_name' => 'BIR Registration Record (TIN/ID)-if previously employed'],
+            ['preemp_req_name' => 'Resume'],
 
         ];
 
