@@ -22,6 +22,7 @@ use App\Http\Controllers\RegularPerformanceController;
 use App\Http\Controllers\Application\ApplicationController;
 use App\Http\Controllers\ProbationaryPerformanceController;
 use App\Http\Controllers\RegularPerformancePlanController;
+use App\Http\Controllers\Separation\ResignationController;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 
 Route::middleware('guest')->group(function () {
@@ -529,19 +530,18 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
      * Separation
      */
     Route::get('seperation/resignations', function () {
-        return view('employee.hr-manager.separation.resignation.all');
+        return view('employee.separation.resignation.all');
     })->name('separation.resignations');
 
-    Route::get('seperation/resignations/review', function () {
-        return view('employee.hr-manager.separation.resignation.review');
-    })->name('separation.resignations.review');
+    Route::get('{employee}/separation/resignations/review', [ResignationController::class, 'edit'])
+    ->name('separation.resignations.review');
 
     Route::get('seperation/coe', function () {
-        return view('employee.hr-manager.separation.coe.all');
+        return view('employee.separation.coe.all');
     })->name('separation.coe');
 
     Route::get('seperation/coe/request', function () {
-        return view('employee.hr-manager.separation.coe.request');
+        return view('employee.separation.coe.request');
     })->name('separation.coe.request');
 
     /**
@@ -629,11 +629,10 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     /**
      * General: Separation
      */
-    Route::get('/separation/index', function () {
-        return view('employee.basic.separation.index');
+    Route::get('/separation', function () {
+        return view('employee.separation.basic.index');
     })->name('separation.index');
 
-    Route::get('/separation/file-resignation', function () {
-        return view('employee.basic.separation.file-resignation');
-    })->name('separation.file-resignation');
+    Route::get('/separation/resignation/file/request', [ResignationController::class, 'create'])
+    ->name('separation.resignation.create');
 });

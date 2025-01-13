@@ -6,7 +6,7 @@
         // ===========================
         // Resignation Letter State
         // ===========================
-        $isEmpty = true;
+        $isEmpty = !$hasResignation;
         // Boolean flag indicating if the resignation letter is submitted.
         // If true, it triggers the empty state (no letter submitted).
         // Toggle this flag if a resignation letter is submitted.
@@ -68,7 +68,7 @@
                 <!-- Row for Buttons -->
                 <div class="row justify-content-center">
                     <div class="col-12 text-center mb-3">
-                        <a href="file-resignation"
+                        <a href="{{route($routePrefix.'.separation.resignation.create')}}"
                             class="btn btn-primary btn-lg w-25 d-flex align-items-center justify-content-center mx-auto">
                             <i data-lucide="file-plus-2" class="icon icon-large me-2"></i>
                             File Resignation Letter
@@ -108,7 +108,7 @@
                                         data-lucide="expand"></i></button>
                             </div>
                             <iframe id="iframe-resignation-letter" name="applicant-resume" class="rounded-3 "
-                                allowfullscreen='yes' src="{{ Storage::url('hardware-and-software-components.pdf') }}"
+                                allowfullscreen='yes' src="{{ Storage::url($resignation->file_path) }}"
                                 height="100%" width="100%" frameborder="0" allowpaymentrequest="false"
                                 loading="lazy"></iframe>
                             <!-- BACK-END REPLACE: PDF of the Resignation Letter -->
