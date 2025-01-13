@@ -203,7 +203,7 @@
     {{-- Employee, Supervisor --}}
     @canAny([UserPermission::VIEW_DOCUMENTS])
     <x-layout.employee.nav.sidebar.nav-item
-        href="{{ route($routePrefix . '.files.pre-employments') }}"
+        href="{{ route($routePrefix . '.files.contracts') }}"
         :active="request()->routeIs($routePrefix . '.files.*')"
         class="order-7"
         nav_txt="Documents"
