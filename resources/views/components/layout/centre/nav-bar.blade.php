@@ -7,6 +7,12 @@
             </header>
             <section class="nav-items-section">
                 <div>
+                    <div class="nav-item" data-target="about" onclick="showContent('about', 'about-emplo')">
+                        About Us
+                    </div>
+                </div>
+
+                <div>
                     <div class="nav-item" data-target="terms-usage" onclick="showContent('terms-usage', 'about-emplo')">
                         Terms and Conditions
                     </div>
@@ -56,6 +62,12 @@
                     <div class="nav-item" data-target="evaluation-policy"
                         onclick="showContent('evaluation-policy', 'company-policies')">
                         Performance Evaluations
+                    </div>
+                </div>
+                <div>
+                    <div class="nav-item" data-target="leave-policy"
+                        onclick="showContent('leave-policy', 'company-policies')">
+                        Leave Policy
                     </div>
                 </div>
             </section>
