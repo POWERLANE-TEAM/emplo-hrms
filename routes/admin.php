@@ -35,19 +35,15 @@ Route::middleware('auth')->group(function () {
     /**
      * Profile Resource
      */
-    Route::get('profile', function () {
-        return view('employee.profile.information.index');
-    })->name('profile.index');
+    Route::prefix('profile')->name('profile.')->group(function () {
+        Route::get('/', [ProfileController::class, 'index'])
+            ->name('index');
 
         Route::get('edit', [ProfileController::class, 'edit'])
             ->name('edit');
 
-    /**
-     * Settings & Privacy
-     */
-    Route::get('settings', function () {
-        return view('employee.profile.settings');
-    })->name('profile.settings');
+        Route::get('settings', [ProfileController::class, 'settings'])
+            ->name('settings');
 
         Route::get('activity-logs', [ProfileController::class, 'logs'])
             ->name('logs');
@@ -214,4 +210,4 @@ Route::middleware('auth')->group(function () {
                 return view('employee.admin.attendance.index');
             })->name('logs');
         });
-})
+});
