@@ -108,7 +108,8 @@ class AppServiceProvider extends ServiceProvider
             'holiday'                   => 'App\Models\Holiday',
             'attendance_log'            => 'App\Models\AttendanceLog',
             'incident_attachment'       => 'App\Models\IncidentAttachment',
-            'incident'                  => 'App\Models\Incident'
+            'incident'                  => 'App\Models\Incident',
+            'payroll'                   => 'App\Models\Payroll',
         ]);
 
         BroadcastServiceProvider::class;

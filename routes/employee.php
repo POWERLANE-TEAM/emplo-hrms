@@ -616,14 +616,14 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         Route::get('trainings', [FileManagerController::class, 'trainings'])
             ->name('trainings');
 
-        Route::get('incidents', [FileManagerController::class, 'incidents'])
-            ->name('incidents');
+        // Route::get('incidents', [FileManagerController::class, 'incidents'])
+        //     ->name('incidents');
 
         Route::get('issues', [FileManagerController::class, 'issues'])
             ->name('issues');
 
-        Route::get('leaves', [FileManagerController::class, 'leaves'])
-            ->name('leaves');
+        // Route::get('leaves', [FileManagerController::class, 'leaves'])
+        //     ->name('leaves');
     });
 
     /**

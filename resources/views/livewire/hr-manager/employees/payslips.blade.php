@@ -1,8 +1,7 @@
 <section id="payslips" class="tab-section-employee">
     <div class="row pt-3">
         <div class="col border">
-            <!-- BACK-END Replace: Employee's Documents Table. Remove the border class from the parent div. -->
-            Table of payslips here. Refer to Figma.
+            <livewire:employee.tables.individual-employee-payslips-table :$employee :$routePrefix />
         </div>
     </div>
 </section>

@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Schedule;
 /**
  * To-dos
  * 
- * Command that creates a new record for payroll period.
  * Command that execute every January 1 to reset the leave balance of every employee to 10(default).
  * Command that clears the activity log. I don't know if this should be set annually to execute.
  * Command that executes daily which checks and permanently deletes employee records who are already separated for 5 years.
@@ -21,5 +20,9 @@ Schedule::command('sync-attlogs-from-biometric-device')
     ->daily();
 
 Schedule::command('check-probationary-evaluation-period-opening')
+    ->timezone('Asia/Manila')
+    ->daily();
+
+Schedule::command('check-payroll-period-opening')
     ->timezone('Asia/Manila')
     ->daily();

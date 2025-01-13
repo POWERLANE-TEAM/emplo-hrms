@@ -22,10 +22,10 @@ class DailyTimeRecord extends Component
         $this->dateToday = Carbon::today();
     }
 
-    // public function boot()
-    // {
-    //     $this->zkInstance = new BiometricDevice();
-    // }
+    public function boot()
+    {
+        $this->zkInstance = new BiometricDevice();
+    }
 
     private function getTodayDtr()
     {   
@@ -46,8 +46,6 @@ class DailyTimeRecord extends Component
                     'state' => $punch->state,
                     'checkIn' => $type->checkIn,
                     'checkOut' => $type->checkOut,
-                    'overtimeIn' => $type->overtimeIn,
-                    'overtimeOut' => $type->overtimeOut,
                     'employee' => optional($employee, function ($puncher) {
                         return (object) [
                             'id' => $puncher->employee_id,
@@ -86,19 +84,22 @@ class DailyTimeRecord extends Component
         return $group->reduce(function ($carry, $log) {
             $time = Carbon::parse($log->timestamp)->format('g:i A');
 
+            if (in_array($log->type, [
+                BiometricPunchType::OVERTIME_IN->value,
+                BiometricPunchType::OVERTIME_OUT->value,
+            ])) {
+                return $carry;
+            }    
+
             match ($log->type) {
                 BiometricPunchType::CHECK_IN->value => $carry->checkIn = $time,
                 BiometricPunchType::CHECK_OUT->value => $carry->checkOut = $time,
-                BiometricPunchType::OVERTIME_IN->value => $carry->overtimeIn = $time,
-                BiometricPunchType::OVERTIME_OUT->value => $carry->overtimeOut = $time,
             };
 
             return $carry;
         }, (object) [
             'checkIn' => null,
             'checkOut' => null,
-            'overtimeIn' => null,
-            'overtimeOut' => null,
         ]);
     }
 
@@ -117,8 +118,6 @@ class DailyTimeRecord extends Component
                     'state' => $punch->state,
                     'checkIn' => $type->checkIn,
                     'checkOut' => $type->checkOut,
-                    'overtimeIn' => $type->overtimeIn,
-                    'overtimeOut' => $type->overtimeOut,
                     'employee' => optional($employee, function ($puncher) {
                         return (object) [
                             'id' => $puncher->employee_id,
@@ -132,10 +131,10 @@ class DailyTimeRecord extends Component
 
     public function render()
     {
-        // $dtrLogs = $this->getTodayDtr();
-        // $totalDtr = $dtrLogs->count();
-        $dtrLogs = $this->generateFakeData();
+        $dtrLogs = $this->getTodayDtr();
         $totalDtr = $dtrLogs->count();
+        // $dtrLogs = $this->generateFakeData();
+        // $totalDtr = $dtrLogs->count();
         
         return view('livewire.admin.dashboard.daily-time-record', [
             'dtrDate' => $this->dateToday->format('F, d Y')

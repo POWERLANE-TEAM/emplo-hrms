@@ -3,24 +3,17 @@
 namespace App\Livewire\Employee\Attendance;
 
 use Livewire\Component;
+use App\Models\Employee;
+use Livewire\Attributes\Locked;
+use Livewire\Attributes\Reactive;
 
 class WorkdayLogs extends Component
 {
-
+    #[Reactive]
+    #[Locked]
     public $period;
-    protected $listeners = ['periodSelected'];
 
-
-    public function mount()
-    {
-        logger()->info('Workday Logs Mount:', ['period' => $this->period]);
-    }
-
-    public function periodSelected($period)
-    {
-        $this->period = $period;
-        logger()->info('Workday Logs Received Period:', ['period' => $period]);
-    }
+    public Employee $employee;
 
     public function render()
     {
