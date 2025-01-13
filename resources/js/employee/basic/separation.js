@@ -44,16 +44,22 @@ new GlobalListener('click', document, `[aria-controls="iframe-resignation-letter
     }
 });
 
+document.addEventListener('livewire:init', () => {
+    LivewireFilePond.registerPlugin(FilePondPluginPdfPreview);
+});
+
+new GlobalListener('input', document, `#submit-resignation`, () => {
+    Livewire.dispatch('file-resignation');
+});
 
 document.addEventListener('DOMContentLoaded', () => {
     if (typeof FilePond !== 'undefined') {
 
         // Plugins
-        FilePond.registerPlugin(FilePondPluginFileValidateType);
         FilePond.registerPlugin(FilePondPluginPdfPreview);
 
         const pond = FilePond.create(document.querySelector('.filepond'), {
-            allowMultiple: false, 
+            allowMultiple: false,
             maxFiles: 1,
             acceptedFileTypes: [
                 'application/pdf'

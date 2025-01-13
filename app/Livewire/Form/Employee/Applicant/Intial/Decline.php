@@ -36,6 +36,7 @@ class Decline extends Component
 
         $controller->update($update, true);
 
+
         $user = $this->application->applicant->account;
 
         $notification = new ResumeRejected(

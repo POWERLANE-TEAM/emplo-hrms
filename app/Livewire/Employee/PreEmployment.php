@@ -23,7 +23,13 @@ class PreEmployment extends Component
 
     public function render()
     {
-        $requirements = PreempRequirement::offset($this->chunk * $this->loads)->limit($this->chunk)->get();
+        $requirements = PreempRequirement::offset($this->chunk * $this->loads)
+        ->limit($this->chunk)
+        ->where(function($query) {
+            $query->where('preemp_req_name', '!=', 'Resume')
+                  ->orWhere('preemp_req_name', '!=', 'resume');
+        })
+        ->get();
 
         if ($requirements->count() < $this->chunk) {
             $this->dispatch('pre-employment-docs-loaded');

@@ -54,7 +54,7 @@
                         <b>For probationary employees:</b> their start date will be automatically opened based on their
                         date of employment.
 
-                        <a href="#" id="toggle-information"
+                        <a href="/information-centre?section=evaluation-policy" id="toggle-information"
                             class="text-link-blue text-decoration-underline fs-7 hover-opacity">
                             Learn more about performance evaluations.
                         </a>

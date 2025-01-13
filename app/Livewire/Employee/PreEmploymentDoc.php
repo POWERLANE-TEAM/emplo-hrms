@@ -29,9 +29,9 @@ class PreEmploymentDoc extends Component
 
         $user = Auth::user();
 
-        if (! $user->hasAllPermissions([UserPermission::CREATE_PRE_EMPLOYMENT_DOCUMENT])) {
-            abort(403, 'You are not authorized to perform this action yet');
-        }
+        // if (! $user->hasAllPermissions([UserPermission::CREATE_PRE_EMPLOYMENT_DOCUMENT])) {
+        //     abort(403, 'You are not authorized to perform this action yet');
+        // }
 
         try {
             $this->validate();

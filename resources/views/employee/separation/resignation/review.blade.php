@@ -23,15 +23,27 @@
 @endPushOnce
 @section('content')
 
+<x-breadcrumbs>
+    <x-slot:breadcrumbs>
+        <x-breadcrumb :href="route($routePrefix . '.separation.resignations')">
+            Resignations
+        </x-breadcrumb>
+        <x-breadcrumb :active="request()->routeIs($routePrefix . '.separation.resignations.review')">
+            Review Resignation Letter
+        </x-breadcrumb>
+    </x-slot:breadcrumbs>
+</x-breadcrumbs>
+
 <x-headings.main-heading :isHeading="true">
     <x-slot:heading>
-        {{__('Resignation Letters')}}
+        {{__('Review Resignation Letter')}}
     </x-slot:heading>
 
     <x-slot:description>
-        <p>{{ __('Manage and approve submitted resignation letters.') }}</p>
+        <p>{{ __('Kindly review the filed resignation letter thoroughly.') }}</p>
     </x-slot:description>
 </x-headings.main-heading>
 
-<!-- BACK-END REPLACE: TABLE FOR ALL RESIGNATION LETTERS -->
+<livewire:hr-manager.separation.resignation.review-resignation :employee="$employee"/>
+
 @endsection

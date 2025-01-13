@@ -1,8 +1,10 @@
+@use('App\Http\Helpers\Timezone')
+
 <div>
 
     <!-- BACK-END REPLACE: Placeholder datas -->
     @php
-        $determinedOn = '';
+        $determinedOn = $employee->lifecycle->separated_at;
         // Date when HR processed and made a decision on the resignation (approval/rejection).
         // Set when HR approves or rejects the resignation.
 
@@ -185,7 +187,7 @@
                             @if (!empty($determinedOn))
                                 <p class="fw-bold mt-3 fs-5">Determined on:
                                     <span
-                                        class="fw-medium">{{ \Carbon\Carbon::parse($determinedOn)->format('F j, Y') }}</span>
+                                        class="fw-medium">{{ \Carbon\Carbon::parse($determinedOn)->setTimezone(Timezone::get())->format('F j, Y') }}</span>
                                 </p>
                             @endif
 
@@ -241,7 +243,7 @@
 Livewire.on('changes-saved', (event) => {
     console.log('Event object:', event);
     const modalId = event[0].modalId;
-    
+
     if (modalId) {
         const modalEl = document.getElementById(modalId);
         if (modalEl) {
