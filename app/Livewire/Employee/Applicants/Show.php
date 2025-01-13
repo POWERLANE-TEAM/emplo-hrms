@@ -75,13 +75,15 @@ class Show extends Component
 
 
                 if ($this->applicationExam->start_time) {
-                    $this->notYetExam = !Carbon::now()->greaterThanOrEqualTo(Carbon::parse($this->applicationExam->start_time)->addMinutes(5));
+                    $examTime = Carbon::parse($this->applicationExam->start_time);
+$this->notYetExam = Carbon::now()->greaterThanOrEqualTo($examTime) && Carbon::now()->lessThan($examTime->addMinutes(5));
                 } else {
                     $this->notYetExam = false;
                 }
 
                 if ($this->application->initialInterview->init_interview_at) {
-                    $this->notYetInterview = !Carbon::now()->greaterThanOrEqualTo(Carbon::parse($this->application->initialInterview->init_interview_at)->addMinutes(5));
+                    $interviewTime = Carbon::parse($this->application->initialInterview->init_interview_at);
+                    $this->notYetInterview = Carbon::now()->greaterThanOrEqualTo($interviewTime) && Carbon::now()->lessThan($interviewTime->addMinutes(5));
                 } else {
                     $this->notYetInterview = false;
                 }
