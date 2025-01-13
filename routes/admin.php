@@ -36,7 +36,7 @@ Route::middleware('auth')->group(function () {
      */
     Route::get('profile', function () {
         return view('employee.profile.information.index');
-    })->name('profile');
+    })->name('profile.index');
 
     Route::get('profile/edit', function () {
         return view('employee.profile.information.edit');
@@ -47,7 +47,7 @@ Route::middleware('auth')->group(function () {
      */
     Route::get('settings', function () {
         return view('employee.profile.settings');
-    })->name('settings');
+    })->name('profile.settings');
 
     Route::get('activity-logs', function () {
         return view('employee.profile.activity-logs');

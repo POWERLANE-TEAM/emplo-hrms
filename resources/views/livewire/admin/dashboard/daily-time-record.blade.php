@@ -29,8 +29,6 @@
                         <th class="ps-5 pt-4 pb-2">{{ __('Employee') }}</th>
                         <th class="text-center pt-4 pb-2">{{ __('Check-In') }}</th>
                         <th class="text-center pt-4 pb-2">{{ __('Check-Out') }}</th>
-                        <th class="text-center pt-4 pb-2">{{ __('Overtime-In') }}</th>
-                        <th class="text-center pe-2 pt-4 pb-2">{{ __('Overtime-Out') }}</th>
                     </tr>
                 </thead>
 
@@ -50,8 +48,6 @@
                             </td>
                             <td class="text-center">{{ $dtrLog->checkIn ?? '-' }}</td>
                             <td class="text-center">{{ $dtrLog->checkOut ?? '-' }}</td>
-                            <td class="text-center">{{ $dtrLog->overtimeIn ?? '-' }}</td>
-                            <td class="text-center pe-2 ">{{ $dtrLog->overtimeOut ?? '-' }}</td>
                         </tr>
                     @endforeach
 

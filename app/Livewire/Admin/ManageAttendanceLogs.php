@@ -29,16 +29,12 @@ class ManageAttendanceLogs extends Component
     
                 $checkIn = null;
                 $checkOut = null;
-                $overtimeIn = null;
-                $overtimeOut = null;
 
                 foreach ($group as $log) {
                     $time = Carbon::parse($log->timestamp)->format('g:i A');
                     match ($log->type) {
                         BiometricPunchType::CHECK_IN->value => $checkIn = $time,
                         BiometricPunchType::CHECK_OUT->value => $checkOut = $time,
-                        BiometricPunchType::OVERTIME_IN->value => $overtimeIn = $time,
-                        BiometricPunchType::OVERTIME_OUT->value => $overtimeOut = $time,
                     };
                 }
                 $firstLog = $group->first(); 
@@ -48,8 +44,6 @@ class ManageAttendanceLogs extends Component
                     'state' => $firstLog->state,
                     'checkIn' => $checkIn,
                     'checkOut' => $checkOut,
-                    'overtimeIn' => $overtimeIn,
-                    'overtimeOut' => $overtimeOut,
                     'date' => Carbon::parse($firstLog->timestamp)->format('F d, Y'),
                     'employee' => Employee::find((int) $firstLog->id),
                 ];

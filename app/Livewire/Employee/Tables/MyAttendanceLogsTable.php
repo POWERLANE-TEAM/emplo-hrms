@@ -1,26 +1,33 @@
 <?php
 
-namespace App\Livewire\Admin;
+namespace App\Livewire\Employee\Tables;
 
-use Illuminate\Support\Str;
+use App\Models\Payroll;
+use App\Models\Employee;
 use App\Models\AttendanceLog;
 use Illuminate\Support\Carbon;
+use Livewire\Attributes\Locked;
 use App\Enums\BiometricPunchType;
-use App\Http\Helpers\BiometricDevice;
+use Livewire\Attributes\Reactive;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\View\ComponentAttributeBag;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 
-class AttendanceLogsTable extends DataTableComponent
+class MyAttendanceLogsTable extends DataTableComponent
 {
     protected $model = AttendanceLog::class;
 
-    private BiometricDevice $zkInstance;
+    #[Reactive]
+    #[Locked]
+    public $period;
+
+    public Employee $employee;
 
     public function configure(): void
     {
         $this->setPrimaryKey('uid');
-        $this->setPageName('attendance-logs');
+        $this->setPageName('my-attendance-logs');
         $this->setEagerLoadAllRelationsEnabled();
         $this->setSingleSortingDisabled();
         $this->setQueryStringEnabled();
@@ -59,66 +66,50 @@ class AttendanceLogsTable extends DataTableComponent
 
         $this->setTdAttributes(function (Column $column, $row, $columnIndex, $rowIndex) {
             return [
-                'class' => $column->getTitle() === 'Employee' ? 'text-md-start' : 'text-md-center',
+                'class' => 'text-md-center',
             ];
         });
-    }
 
-    // found this somewhere, alternative to boot is to resolve using service container.
-    public function initialize()
-    {
-        if (! isset($this->zkInstance)) {
-            $this->zkInstance = app(BiometricDevice::class);
-        }
+        $this->setConfigurableAreas([
+            'toolbar-left-start' => [
+                'components.headings.main-heading',
+                [
+                    'overrideClass' => true,
+                    'overrideContainerClass' => true,
+                    'attributes' => new ComponentAttributeBag([
+                        'class' => 'fs-5 py-1 text-secondary-emphasis fw-semibold text-underline',
+                    ]),
+                    'heading' => __('Attendance Timesheet'),
+                ],
+            ],
+        ]);
     }
 
     public function builder(): Builder
     {
-        $this->initialize();
+        $period = Payroll::find($this->period);
 
         return AttendanceLog::query()
-            ->with([
-                'employee',
-                'employee.account'
-            ])
+            ->where('employee_id', $this->employee->employee_id)
+            ->whereBetween('timestamp', [$period->cut_off_start, $period->cut_off_end])
             ->select('*');
     }
 
     public function columns(): array
     {
-        return [
-            Column::make(__('Employee Id'), 'employee_id')
+        return [  
+            Column::make(__('Workday Date'), 'timestamp')
                 ->sortable()
-                ->searchable(),
-    
-            Column::make(__('Employee'))
-                ->label(function ($row) {
-                    $name = Str::headline($row->employee->full_name);
-                    $photo = $row->employee->account->photo;
-            
-                    return '<div class="d-flex justify-content-center align-items-center">
-                                <img src="' . e($photo) . '" alt="User Picture" style="width: 33px; height: 33px; border-radius: 50%; margin-right: 10px;">
-                                <span>' . e($name) . '</span>
-                            </div>';
-                })
-                ->html(),
-    
-            Column::make(__('Type'))
-                ->label(function ($row) {
-                    $type = BiometricPunchType::tryFrom($row->type);
+                ->searchable()
+                ->format(fn ($value, $row, Column $column) => Carbon::make($row->timestamp)->format('F d, Y')),
 
-                    return $type = $type ? $type->getDescription() : 'Not valid';
-                }),
+            Column::make(__('Type'))
+                ->label(fn ($row) => BiometricPunchType::from($row->type)->getDescription()),
 
             Column::make(__('Time'), 'timestamp')
                 ->sortable()
                 ->searchable()
                 ->format(fn ($value, $row, Column $column) => Carbon::make($row->timestamp)->format('g:i A')),
-
-            Column::make(__('Date'), 'timestamp')
-                ->sortable()
-                ->searchable()
-                ->format(fn ($value, $row, Column $column) => Carbon::make($row->timestamp)->format('F d, Y')),
         ];
     }
 }
