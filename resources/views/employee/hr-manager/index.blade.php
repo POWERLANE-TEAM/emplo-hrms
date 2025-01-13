@@ -18,6 +18,7 @@
 
 @pushOnce('styles')
     @vite(['resources/css/employee/hr-manager/dashboard.css'])
+    @vite(['resources/css/employee/admin/dashboard.css'])
 @endPushOnce
 
 @section('content')
@@ -74,6 +75,8 @@
     </div>
 </section>
 
+
+<livewire:admin.dashboard.info-cards />
 
 <x-section-wrapper>
     
