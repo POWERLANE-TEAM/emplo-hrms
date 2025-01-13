@@ -18,7 +18,6 @@ class TrainingProviderFactory extends Factory
     {
         return [
             'training_provider_name' => fake()->company(),
-            'training_provider_desc' => fake()->paragraph(),
         ];
     }
 }
