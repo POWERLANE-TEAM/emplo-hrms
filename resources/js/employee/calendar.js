@@ -2,11 +2,7 @@ import { Calendar } from "@fullcalendar/core";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 
-document.addEventListener("DOMContentLoaded", function () {
-    initCalendar();
-});
-
-export function initCalendar() {
+export function initCalendar(attendanceLogs) {
     const calendarEl = document.getElementById("calendar");
 
     const calendar = new Calendar(calendarEl, {
@@ -18,96 +14,10 @@ export function initCalendar() {
             calendar.updateSize();
         },
         buttonText: {
-            today: 'Go to Current Month'  // Change the text of the "Today" button
+            today: 'Go to Current Month'
         },
 
-        /*
-        BACK-END REPLACE: Replace the event array section with event data fetched from the database.
-
-        NOTE: Assign appropriate classNames based on the event type:
-        - Worked Regular Schedule: Use 'bg-primary' for styling.
-        - Worked Overtime: Use 'bg-info' for styling.
-        - Leave: Use 'bg-teal' for styling.
-        - Absent: Use 'bg-danger' for styling.
-        - Tardy: Use 'bg-teal' for styling.
-
-        For the Leave, use start and end util. See the example below.
-
-        */
-
-        events: [
-            // December 2024 - Worked Regular Schedule
-            {
-                title: "Worked Regular Schedule",
-                start: "2024-12-01",
-                classNames: ["bg-primary"], // Worked Regular Schedule
-            },
-            {
-                title: "Worked Regular Schedule",
-                start: "2024-12-25",
-                classNames: ["bg-primary"], // Worked Regular Schedule
-            },
-            {
-                title: "Worked Regular Schedule",
-                start: "2024-12-30",
-                classNames: ["bg-primary"], // Worked Regular Schedule
-            },
-            {
-                title: "Worked Regular Schedule",
-                start: "2024-12-31",
-                classNames: ["bg-primary"], // Worked Regular Schedule
-            },
-        
-            // December 2024 - Worked Overtime
-            {
-                title: "Worked Overtime",
-                start: "2024-12-08",
-                classNames: ["bg-info"], // Worked Overtime
-            },
-            {
-                title: "Worked Overtime",
-                start: "2024-12-24",
-                classNames: ["bg-info"], // Worked Overtime
-            },
-        
-            // December 2024 - Leave
-            {
-                title: "Leave",
-                start: "2024-12-15",
-                end: "2024-12-18",
-                classNames: ["bg-teal"], // Leave
-            },
-            {
-                title: "Leave",
-                start: "2024-12-20",
-                classNames: ["bg-teal"], // Leave
-            },
-        
-            // December 2024 - Absent
-            {
-                title: "Absent",
-                start: "2024-12-10",
-                classNames: ["bg-danger"], // Absent
-            },
-            {
-                title: "Absent",
-                start: "2024-12-22",
-                classNames: ["bg-danger"], // Absent
-            },
-
-            {
-                title: "Tardy",
-                start: "2024-12-04",
-                classNames: ["bg-warning"], // Absent
-            },
-
-            {
-                title: "Tardy",
-                start: "2024-01-06",
-                classNames: ["bg-warning"], // Absent
-            },
-        ],     
-
+        events: attendanceLogs,
         expandRows: true,
         dayMaxEvents: 2,
         eventContent: function (info) {
@@ -121,7 +31,14 @@ export function initCalendar() {
     });
     calendar.render();
 
-    // Resizing calendar in opening/closing sidebar
+    document.addEventListener("periodChanged", (event) => {
+        const { startDate } = event.detail;
+
+        if (startDate) {
+            const parsedDate = new Date(startDate);
+            calendar.gotoDate(parsedDate);
+        }
+    });
 
     const resizeCalendar = () => {
         console.log('Resizing calendar...');
