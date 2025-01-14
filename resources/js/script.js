@@ -13,6 +13,9 @@ function disableSubmit() {
         )
         .forEach((button) => {
             if (!button.closest('form[action*="logout"]')) {
+                if (button.classList.contains('ndsbl')) {
+                    return;
+                }
                 button.disabled = true;
             }
         });
