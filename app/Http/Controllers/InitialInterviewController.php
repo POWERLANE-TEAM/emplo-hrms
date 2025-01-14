@@ -91,9 +91,33 @@ class InitialInterviewController extends Controller
     // }
 
     /* Patch or edit */
-    public function update()
+    public function update($request, bool $isValidated = false)
     {
-        //
+        $applicationId = is_array($request) ? $request['applicationId'] : $request->input('applicationId');
+
+        $application = Application::findOrFail($applicationId);
+
+        if (is_array($request)) {
+            $interviewStartDate = $request['date'];
+            $interviewStartTime = $request['time'];
+        } else {
+            // $interviewStartDate = $validated('interview.date');
+            // $interviewStartTime = $validated('interview.time');
+        }
+
+        $initalInterview = $application->initialInterview;
+
+        $data = [
+            'init_interview_at' => $interviewStartDate . ' ' . $interviewStartTime,
+            'init_interviewer' => auth()->user()->user_id,
+            'is_init_interview_passed' => $request['isPassed'] ?? false,
+        ];
+
+        $filteredData = array_filter($data, function ($value) {
+            return !is_null($value);
+        });
+
+        $initalInterview->update($filteredData);
     }
 
     /* Delete */

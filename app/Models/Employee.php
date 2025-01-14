@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use App\Http\Helpers\GovernmentMandateContributionsIdFormat;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Employee extends Model
 {
@@ -54,8 +55,8 @@ class Employee extends Model
     protected function contactNumber(): Attribute
     {
         return Attribute::make(
-            get: fn (mixed $value) => '+63-' . substr($value, 1, 3) . '-' . 
-                substr($value, 4, 3) . '-' . 
+            get: fn (mixed $value) => '+63-' . substr($value, 1, 3) . '-' .
+                substr($value, 4, 3) . '-' .
                 substr($value, 7, 4),
         );
     }
@@ -689,6 +690,24 @@ class Employee extends Model
             ->as('access')
             ->using(IncidentRecordCollaborator::class)
             ->withPivot('is_editor');
+    }
+
+
+    /**
+     * Get all of the resignations for the employee through the employee documents.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     */
+    public function resignations(): HasManyThrough
+    {
+        return $this->hasManyThrough(
+            Resignation::class,
+            EmployeeDoc::class,
+            'employee_id',
+            'emp_resignation_doc_id',
+            'employee_id',
+            'emp_doc_id'
+        );
     }
 
     /**

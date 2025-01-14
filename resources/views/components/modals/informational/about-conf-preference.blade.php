@@ -26,11 +26,6 @@
                         </li>
 
                         <li>
-                            <b>Anonymous: </b>
-                            The complaint can be submitted without disclosing your/the complainant’s identity, ensuring privacy while addressing the issue.
-                        </li>
-
-                        <li>
                             <b>Discreet Handling: </b>
                             The complaint will be handled discreetly by HR with minimal sharing, focusing on resolving the issue while maintaining confidentiality as much as possible.
                         </li>
