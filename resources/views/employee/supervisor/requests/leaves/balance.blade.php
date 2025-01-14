@@ -43,6 +43,6 @@
 
 <x-info_panels.callout type="info" :description="__('Leave balances reset annually on January 1st. Learn more about the company\'s <a href=\'#\' class=\'text-link-blue hover-opacity\'>leave policy</a>')"></x-info_panels.callout>
 
-<!-- BACK-END REPLACE: Table of all subordinates' leave balance -->
+<livewire:employee.tables.subordinate-sil-credits-table />
 
 @endsection

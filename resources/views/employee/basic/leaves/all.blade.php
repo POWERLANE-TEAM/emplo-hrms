@@ -26,6 +26,21 @@
     href="{{ route($routePrefix . '.leaves.create') }}">
 </x-headings.header-link>
 
+<div class="mb-3">
+    <div class="fs-6">
+        {{ __('Vacation Leave Credits: ') }}
+        <span class="fw-semibold">
+            {{ auth()->user()->account->silCredit->vacation_leave_credits }}
+        </span>
+    </div>
+    <div class="fs-6">
+        {{ __('Sick Leave Credits: ') }}
+        <span class="fw-semibold">
+            {{ auth()->user()->account->silCredit->sick_leave_credits }}
+        </span>
+    </div>
+</div>
+
 <div class="pb-2">
 @include('components.includes.tab_navs.leaves.general-leaves-navs')
 </div>

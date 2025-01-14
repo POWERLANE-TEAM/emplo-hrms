@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Employee\Leaves;
 
+use App\Models\ServiceIncentiveLeaveCredit;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use App\Models\EmployeeLeave;
@@ -19,6 +20,9 @@ class LeaveInfo extends Component
 
     #[Locked]
     public $approvingStage;
+
+    #[Locked]
+    public $routePrefix;
 
     public $feedback;
 
@@ -63,9 +67,17 @@ class LeaveInfo extends Component
             ]);
 
             if ($this->approvingStage === 'fourth') {
-                $this->leave->employee->jobDetail()
-                    ->where('leave_balance', '>', 0)
-                    ->decrement('leave_balance');
+                if (is_null($this->leave->category->allotted_days)) {
+                    $sil = ServiceIncentiveLeaveCredit::find($this->leave->employee->employee_id);
+                    
+                    if ($this->leave->category->leave_category_name === 'Sick Leave') {
+                        $sil->where('sick_leave_credits', '>', 0)
+                            ->decrement('sick_leave_credits');
+                    } elseif ($this->leave->category->leave_category_name === 'Vacation Leave') {
+                        $sil->where('vacation_leave_credits', '>', 0)
+                            ->decrement('vacation_leave_credits');
+                    }
+                }
             }
         });
 
@@ -96,7 +108,7 @@ class LeaveInfo extends Component
         $this->dispatch('showSuccessToast', compact('message', 'type'));
         $this->dispatch('changesSaved')->self();
 
-        $this->resetExcept('leave');
+        $this->resetExcept('leave', 'routePrefix');
     }
 
     #[Computed]

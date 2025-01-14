@@ -36,6 +36,7 @@
                 :nonce="$nonce"
                 :required="true" 
                 placeholder=""
+                min="{{ today()->format('Y-m-d') }}"
             />
             @error('state.applicationDeadline')
                 <div class="invalid-feedback" role="alert">{{ $message }}</div>
@@ -54,14 +55,14 @@
                 <p><strong>{{ __('Job Family: ') }}</strong>{{ $jobDetail->family }}</p>
                 <p><strong>{{ __('Job Level: ') }}</strong>{{ $jobDetail->levelName.' (Level '.$jobDetail->level.')' }}</p>
                 <p><strong>{{ __('Job Description: ') }}</strong>{{ $jobDetail->description ?? __('Not specified') }}</p>
-                <p><strong>{{ __('Qualifications: ') }}</strong></p>
+                {{-- <p><strong>{{ __('Qualifications: ') }}</strong></p>
                 <ul>
                     @if ($jobDetail->qualifications)
                         @foreach($jobDetail->qualifications as $qualification)
                             <li>{{ $qualification }}</li>
                         @endforeach                        
                     @endif
-                </ul>
+                </ul> --}}
             @endforeach
         @endif
 

@@ -348,14 +348,14 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         Route::get('/', [LeaveController::class, 'index'])
             ->name('index');
 
-        Route::get('balance', [LeaveController::class, 'myBalance'])
-            ->name('balance');
+        Route::get('balances', [LeaveController::class, 'subordinateBalance'])
+            ->can('approveSubordinateLeaveRequest')
+            ->name('balances');
 
-        Route::get('balance/subordinates', [LeaveController::class, 'subordinateBalance'])
-            ->name('balance.subordinates');
-
-        Route::get('balance/general', [LeaveController::class, 'generalBalance'])
-            ->name('balance.general');
+        Route::get('balances/general', [LeaveController::class, 'generalBalance'])
+            // ->can('approveAnyLeaveRequest')
+            ->can('approveLeaveRequestFinal')
+            ->name('balances.general');
 
         Route::get('overview', [LeaveController::class, 'request'])
             ->name('overview');
@@ -367,6 +367,12 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
             ->can('viewLeaveRequest', 'leave')
             ->whereNumber('leave')
             ->name('show');
+
+        Route::get('attachments/{attachment}', [LeaveController::class, 'viewAttachment'])
+            ->name('attachments.show');
+
+        Route::get('{attachment}/download', [LeaveController::class, 'downloadAttachment'])
+            ->name('attachments.download');
 
         Route::get('requests', [LeaveController::class, 'request'])
             ->name('requests');

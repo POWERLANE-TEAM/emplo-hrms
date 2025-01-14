@@ -17,6 +17,8 @@ return new class extends Migration
             $table->id('leave_category_id');
             $table->string('leave_category_name', 255);
             $table->longText('leave_category_desc')->nullable();
+            $table->integer('allotted_days')->nullable();
+            $table->boolean('is_proof_required')->default(false);
             $table->timestamps();
         });
 
@@ -74,7 +76,6 @@ return new class extends Migration
                 ->cascadeOnDelete();
 
             $table->longText('feedback')->nullable();
-
             $table->timestamp('filed_at');
             $table->timestamp('modified_at');
         });

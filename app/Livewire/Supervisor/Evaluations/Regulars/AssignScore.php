@@ -26,6 +26,8 @@ class AssignScore extends Component
 
     public $comments;
 
+    public $performanceScale;
+
     public function mount()
     {
         $this->employee->loadMissing([

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\Sex;
 use App\Enums\CivilStatus;
 use Illuminate\Support\Str;
 use App\Enums\ActivityLogName;
@@ -61,18 +60,6 @@ class Employee extends Model
         );
     }
 
-    /**
-     * Accessor for sex attribute.
-     */
-    protected function sex(): Attribute
-    {
-        return Attribute::make(
-            get: function (string $value) {
-                $sex = Sex::tryFrom($value);
-                return $sex ? $sex->label() : ucwords($sex);
-            }
-        );
-    }
     /**
      * Accessor for civil status attribute.
      */
@@ -289,6 +276,14 @@ class Employee extends Model
     public function uploadedContracts(): HasMany
     {
         return $this->hasMany(Contract::class, 'uploaded_by', 'employee_id');
+    }
+
+    /**
+     * Get the service incentive leave credit associtaed with the employee.
+     */
+    public function silCredit(): HasOne
+    {
+        return $this->hasOne(ServiceIncentiveLeaveCredit::class, 'employee_id', 'employee_id');
     }
 
     /**

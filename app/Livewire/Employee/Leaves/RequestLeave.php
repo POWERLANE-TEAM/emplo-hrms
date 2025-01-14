@@ -2,18 +2,24 @@
 
 namespace App\Livewire\Employee\Leaves;
 
+use App\Enums\Sex;
+use App\Enums\FilePath;
 use Livewire\Component;
 use App\Models\EmployeeLeave;
 use App\Models\LeaveCategory;
+use Livewire\WithFileUploads;
 use Illuminate\Support\Carbon;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class RequestLeave extends Component
 {
+    use WithFileUploads;
+
     #[Validate]
     public $state = [
         'leaveType' => null,
@@ -21,6 +27,12 @@ class RequestLeave extends Component
         'endDate' => null,
         'reason' => '',
     ];
+
+    public $disabledEndDate = false;
+
+    public $showLeaveDescription = false;
+
+    public $attachments = [];
 
     #[Locked]
     public $totalDaysLeave = 0;
@@ -41,6 +53,38 @@ class RequestLeave extends Component
                 $this->totalDaysLeave = $start->diffInDays($end);
             }
         }
+
+        if ($prop === 'state.leaveType') {
+            $this->showLeaveDescription = true;
+
+            if ($this->isLeaveRequireProof()) {
+                $this->disabledEndDate = true;
+            } else {
+                $this->disabledEndDate = false;
+            }
+        }
+
+        if ($prop === 'state.startDate' && $this->state['startDate']) {
+            if ($this->isLeaveRequireProof()) {
+                $allottedDays = $this->leaveCategories
+                    ->where('leave_category_id', $this->state['leaveType'])
+                    ->first()
+                    ->allotted_days;
+
+                $start = Carbon::parse($this->state['startDate']);
+                $end = $start->copy()->addDays($allottedDays);
+
+                $this->state['endDate'] = $end->format('Y-m-d');
+                $this->totalDaysLeave = $start->diffInDays($end);
+            }
+        }
+    }
+
+    private function isLeaveRequireProof(): bool
+    {
+        return $this->leaveCategories
+            ->where('is_proof_required')
+            ->contains($this->state['leaveType']);
     }
     
     public function rules()
@@ -50,6 +94,11 @@ class RequestLeave extends Component
             'state.startDate'   => 'required|after:today|before:state.endDate',
             'state.endDate'     => 'required|after:state.startDate',
             'state.reason'      => 'required',
+            'attachments'       => [function ($attribute, $value, $fail) {
+                if ($this->isLeaveRequireProof() && empty($value)) {
+                    $fail(__('Attachments are required for the selected leave type.'));
+                }
+            }],
         ];
     }
 
@@ -63,6 +112,7 @@ class RequestLeave extends Component
             'state.startDate.before'    => __('The start date must be before the end date.'),
             'state.endDate.after'       => __('The end date must be after the start date.'),
             'state.reason.required'     => __('Write your reason for leave.'),
+            'attachments.required'      => __('Attachments are required for the selected leave type.'),
         ];
     }
 
@@ -73,13 +123,15 @@ class RequestLeave extends Component
         $this->validate();
 
         DB::transaction(function () {
-            EmployeeLeave::create([
+            $leave = EmployeeLeave::create([
                 'employee_id' => $this->employee->employee_id,
                 'leave_category_id' => $this->state['leaveType'],
                 'reason' => $this->state['reason'],
                 'start_date' => $this->state['startDate'],
                 'end_date' => $this->state['endDate'],
             ]);
+
+            $this->storeAttachments($leave);
         });
         
         $this->reset();
@@ -91,12 +143,48 @@ class RequestLeave extends Component
         ]);
     }
 
+    public function storeAttachments(EmployeeLeave $leave): void
+    {
+        Storage::disk('local')->makeDirectory(FilePath::LEAVES->value);
+
+        $leaveAttachments = [];
+
+        foreach ($this->attachments as $attachment) {
+
+            $hashedVersion = sprintf('%s-%d', $attachment->hashName(), Auth::id());
+            
+            $attachment->storeAs(FilePath::LEAVES->value, $hashedVersion, 'local');
+
+            array_push($leaveAttachments, [
+                'emp_leave_id'      => $leave->emp_leave_id,
+                'hashed_attachment' => $hashedVersion,
+                'attachment_name'   => $attachment->getClientOriginalName(),
+            ]); 
+        }
+
+        DB::table('employee_leave_attachments')->insert($leaveAttachments); 
+    }
+
+    public function removeAttachment(int $index)
+    {
+        unset($this->attachments[$index]);
+    }
+
     #[Computed]
     public function leaveCategories()
     {
         return LeaveCategory::all()
-            ->pluck('leave_category_name', 'leave_category_id')
-            ->toArray();
+            ->reject(function ($type) {
+                if (Sex::from($this->employee->sex)->value === Sex::MALE->value) {
+                    return in_array($type->leave_category_name, [
+                        'Maternity Leave',
+                        'Victims of Violence Against Women and Their Children (VAWC) Leave',
+                        'Special Leave Benefits for Women',
+                    ]);
+                } else {
+                    return $type->leave_category_name === 'Paternity Leave'; 
+                }
+        });
     }
 
     #[Computed]
@@ -104,7 +192,19 @@ class RequestLeave extends Component
     {
         return Auth::user()->account;
     }
-    
+
+    #[Computed]
+    public function vacationLeaveCredits()
+    {
+        return Auth::user()->account->silCredit->vacation_leave_credits;
+    }
+
+    #[Computed]
+    public function sickLeaveCredits()
+    {
+        return Auth::user()->account->silCredit->sick_leave_credits;
+    }
+
     public function render()
     {
         return view('livewire.employee.leaves.request-leave');
