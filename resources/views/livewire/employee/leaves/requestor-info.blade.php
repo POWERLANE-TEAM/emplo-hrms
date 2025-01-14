@@ -4,8 +4,6 @@
     $otherRequest = "{$this->routePrefix}.leaves.employee.requests";
 
     array_push($activeRoutes, $ownedRequest, $otherRequest);
-
-    $leaveBalance = $leave->employee->jobDetail->leave_balance;
 @endphp
 
 <section>
@@ -35,35 +33,37 @@
                 </div>
 
                 <div class="col-5 text-end">
-                    <a wire:navigate.hover 
-                        @isset ($previousLeaveId)
-                            href="{{ route("{$this->routePrefix}.leaves.employee.requests", ['leave' => $previousLeaveId]) }}">
-                        @endif
-                        <button 
-                            class="btn btn-outline-primary text-center h-100 px-4"
-                            @if (is_null($previousLeaveId)) 
-                                disabled
+                    {{-- @can('approveSubordinateLeaveRequest')
+                        <a wire:navigate.hover 
+                            @isset ($previousLeaveId)
+                                href="{{ route("{$this->routePrefix}.leaves.employee.requests", ['leave' => $previousLeaveId]) }}">
                             @endif
-                        >
-                            <i class="icon icon-large mx-1" data-lucide="arrow-left"></i>
-                            {{ __('Previous') }}
-                        </button>
-                    </a>
+                            <button 
+                                class="btn btn-outline-primary text-center h-100 px-4"
+                                @if (is_null($previousLeaveId)) 
+                                    disabled
+                                @endif
+                            >
+                                <i class="icon icon-large mx-1" data-lucide="arrow-left"></i>
+                                {{ __('Previous') }}
+                            </button>
+                        </a>                        
 
-                    <a wire:navigate.hover 
-                        @isset ($nextLeaveId)
-                            href="{{ route("{$this->routePrefix}.leaves.employee.requests", ['leave' => $nextLeaveId]) }}">
-                        @endif
-                        <button 
-                            class="btn btn-outline-primary text-center h-100 px-4" 
-                            @if (is_null($nextLeaveId)) 
-                                disabled 
+                        <a wire:navigate.hover 
+                            @isset ($nextLeaveId)
+                                href="{{ route("{$this->routePrefix}.leaves.employee.requests", ['leave' => $nextLeaveId]) }}">
                             @endif
-                        >
-                            {{ __('Next') }}
-                            <i class="icon icon-large mx-1" data-lucide="arrow-right"></i>
-                        </button>
-                    </a>
+                            <button 
+                                class="btn btn-outline-primary text-center h-100 px-4" 
+                                @if (is_null($nextLeaveId)) 
+                                    disabled 
+                                @endif
+                            >
+                                {{ __('Next') }}
+                                <i class="icon icon-large mx-1" data-lucide="arrow-right"></i>
+                            </button>
+                        </a>
+                    @endcan --}}
                 </div>
             </div>
         </x-slot:heading>
@@ -94,14 +94,6 @@
                         </div>
                     </div>
                     <div class="col-3">
-                        <div class="">
-                            <span class="fw-semibold text-secondary-emphasis">
-                                {{ __('Leave Balance: ') }}
-                            </span>
-                            <span class="fw-bold {{ $leaveBalance > 0 ? 'text-success' : 'text-danger' }}">
-                                {{ $leaveBalance }}
-                            </span>
-                        </div>
                         <div class="">
                             <span class="fw-semibold text-secondary-emphasis">
                                 {{ __('Filed On: ') }}

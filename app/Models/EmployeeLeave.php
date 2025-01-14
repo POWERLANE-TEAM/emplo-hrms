@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -170,5 +171,13 @@ class EmployeeLeave extends Model
     public function deniedBy(): BelongsTo
     {
         return $this->belongsTo(Employee::class, 'denier', 'employee_id');
+    }
+
+    /**
+     * Get the attachments associated with the leave request.
+     */
+    public function attachments(): HasMany
+    {
+        return $this->hasMany(EmployeeLeaveAttachment::class, 'emp_leave_id', 'emp_leave_id');
     }
 }

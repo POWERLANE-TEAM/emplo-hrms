@@ -37,7 +37,7 @@
 
         <section class="col-md-7 d-flex">
             <div class="w-100">
-                <livewire:employee.leaves.leave-info :$leave />
+                <livewire:employee.leaves.leave-info :$routePrefix :$leave />
             </div>
         </section>
     </div>

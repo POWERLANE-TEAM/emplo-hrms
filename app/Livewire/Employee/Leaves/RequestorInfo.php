@@ -94,7 +94,7 @@ class RequestorInfo extends Component
     #[On('leaveRequestApproved')]
     public function render()
     {
-        $this->getRemainingLeaves();
+        // $this->getRemainingLeaves();
         $this->getLeaveRequestStatus();
 
         return view('livewire.employee.leaves.requestor-info');
