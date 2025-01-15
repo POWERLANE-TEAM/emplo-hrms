@@ -191,7 +191,7 @@
     ])
     <x-layout.employee.nav.sidebar.nav-item
         :href="route($navOvertimeRoute[0])"
-        :active="request()->routeIs($navOvertimeRoute)"
+        :active="request()->routeIs($routePrefix . '.overtimes.*')"
         class="order-{{ $navOvertimeOrder }}"
         nav_txt="Overtime"
         :defaultIcon="['src' => 'overtime', 'alt' => '']"
