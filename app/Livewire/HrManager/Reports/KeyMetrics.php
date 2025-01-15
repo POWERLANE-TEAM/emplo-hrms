@@ -8,19 +8,19 @@ class KeyMetrics extends Component
 {
     /*
      * BACK-END REPLACE / REQUIREMENTS:
-     * 
+     *
      * ONLY FETCH ROWS FROM SELECTED YEAR ($selectedYear).
-     * 
+     *
      * FETCH FROM DATABASE:
      * 1. Fetch incidents, issues, training.
      * 2. 'completed': Total count of rows with completed/resolved/etc value.
      * 3. 'total': Total count each incidents, issues, training.
-     * 
+     *
      * 4. After fetching, replace/populate the $data in mount() function.
-     * 
+     *
      * ADDITIONAL NOTES
      * ► This just needs fetching from the database. The logic is already implemented.
-     * 
+     *
      */
 
     public $selectedYear;
@@ -35,16 +35,16 @@ class KeyMetrics extends Component
         $data = [
             'incidents' => [
                 'completed' => 8,
-                'total' => 19
+                'total' => 19,
             ],
             'issues' => [
                 'completed' => 34,
-                'total' => 34
+                'total' => 34,
             ],
             'training' => [
                 'completed' => 11,
-                'total' => 19
-            ]
+                'total' => 19,
+            ],
         ];
 
         // Calculate percentages and prepare metrics
@@ -56,7 +56,7 @@ class KeyMetrics extends Component
                 'percentage' => $this->calculatePercentage(
                     $data['incidents']['completed'],
                     $data['incidents']['total']
-                )
+                ),
             ],
             'issues' => [
                 'type' => 'Issues',
@@ -65,7 +65,7 @@ class KeyMetrics extends Component
                 'percentage' => $this->calculatePercentage(
                     $data['issues']['completed'],
                     $data['issues']['total']
-                )
+                ),
             ],
             'training' => [
                 'type' => 'Training',
@@ -74,29 +74,31 @@ class KeyMetrics extends Component
                 'percentage' => $this->calculatePercentage(
                     $data['training']['completed'],
                     $data['training']['total']
-                )
-            ]
+                ),
+            ],
         ];
     }
 
     private function calculatePercentage($completed, $total)
     {
-        if ($total == 0)
+        if ($total == 0) {
             return 0;
+        }
+
         return round(($completed / $total) * 100);
     }
 
     public function updated($name)
     {
-        if ($name === 'selectedYear' && !empty($this->selectedYear)) {
-            logger('KEY METRICS - Selected Year updated to: ' . $this->selectedYear);
+        if ($name === 'selectedYear' && ! empty($this->selectedYear)) {
+            logger('KEY METRICS - Selected Year updated to: '.$this->selectedYear);
         }
     }
 
     public function render()
     {
         return view('livewire.hr-manager.reports.key-metrics', [
-            'metrics' => $this->metrics
+            'metrics' => $this->metrics,
         ]);
     }
 }

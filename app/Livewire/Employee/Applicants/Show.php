@@ -36,7 +36,7 @@ class Show extends Component
     public bool $notYetInterview;
 
     #[Locked]
-    public  string $evaluationNotice;
+    public string $evaluationNotice;
 
     #[Locked]
     public bool $isReadyForInitEvaluation;
@@ -44,14 +44,11 @@ class Show extends Component
     #[Locked]
     public $modalId;
 
-
     public function boot()
     {
 
         try {
-            $this->applicationId = 'APL-' . $this->application->application_id;
-
-
+            $this->applicationId = 'APL-'.$this->application->application_id;
 
             $this->resume = $this->application->documents->where('preemp_req_id', 17)->first()->file_path;
 
@@ -64,7 +61,7 @@ class Show extends Component
 
             $this->isInitAssessment = $this->application->application_status_id == ApplicationStatus::ASSESSMENT_SCHEDULED->value;
 
-            if($this->isInitAssessment){
+            if ($this->isInitAssessment) {
 
                 $this->application->load('initialInterview');
 
@@ -73,10 +70,9 @@ class Show extends Component
                 $this->examSchedF = $this->formatSchedule(optional($this->applicationExam)->start_time);
                 $this->initialInterviewSchedF = $this->formatSchedule(optional($this->application->initialInterview)->init_interview_at);
 
-
                 if ($this->applicationExam->start_time) {
                     $examTime = Carbon::parse($this->applicationExam->start_time);
-$this->notYetExam = Carbon::now()->greaterThanOrEqualTo($examTime) && Carbon::now()->lessThan($examTime->addMinutes(5));
+                    $this->notYetExam = Carbon::now()->greaterThanOrEqualTo($examTime) && Carbon::now()->lessThan($examTime->addMinutes(5));
                 } else {
                     $this->notYetExam = false;
                 }
@@ -88,15 +84,15 @@ $this->notYetExam = Carbon::now()->greaterThanOrEqualTo($examTime) && Carbon::no
                     $this->notYetInterview = false;
                 }
 
-                if($this->isInitAssessment && $this->notYetExam || $this->notYetInterview){
+                if ($this->isInitAssessment && $this->notYetExam || $this->notYetInterview) {
                     $this->evaluationNotice = 'The assign button(s) are currently disabled. They will be available once the scheduled date arrives.';
                 }
 
-                if(
+                if (
                     $this->notYetExam && $this->notYetInterview &&
                     $this->application->initialInterview->init_interviewer &&
                     $examPassed = true
-                ){
+                ) {
                     $this->isReadyForInitEvaluation = true;
                 }
             }
@@ -117,7 +113,7 @@ $this->notYetExam = Carbon::now()->greaterThanOrEqualTo($examTime) && Carbon::no
                 'isPending' => $this->isPending,
                 'isInitAssessment' => $this->isInitAssessment,
                 'examSchedF' => $this->examSchedF,
-                'initialInterviewSchedF' => $this->initialInterviewSchedF
+                'initialInterviewSchedF' => $this->initialInterviewSchedF,
             ]
         );
     }

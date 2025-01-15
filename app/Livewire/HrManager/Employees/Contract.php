@@ -4,13 +4,13 @@ namespace App\Livewire\HrManager\Employees;
 
 use App\Enums\ContractType;
 use App\Enums\FilePath;
-use Livewire\Component;
 use App\Models\Employee;
-use Livewire\WithFileUploads;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Locked;
+use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class Contract extends Component
 {
@@ -34,22 +34,22 @@ class Contract extends Component
         Storage::disk('local')->makeDirectory(FilePath::CONTRACTS->value);
 
         $hashedVersion = sprintf(
-            "%s-%s", $this->contract->hashName(), $this->employee->employee_id
+            '%s-%s', $this->contract->hashName(), $this->employee->employee_id
         );
 
         $this->contract->storeAs(FilePath::CONTRACTS->value, $hashedVersion, 'local');
 
         DB::transaction(function () use ($hashedVersion) {
             $this->employee->contracts()->create([
-                'type'              => ContractType::CONTRACT,
-                'uploaded_by'       => Auth::user()->account->employee_id,
+                'type' => ContractType::CONTRACT,
+                'uploaded_by' => Auth::user()->account->employee_id,
                 'hashed_attachment' => $hashedVersion,
-                'attachment_name'   => $this->contract->getClientOriginalName(),
+                'attachment_name' => $this->contract->getClientOriginalName(),
             ]);
         });
 
         $this->resetExcept('employee');
-    
+
         $this->dispatch('contractUploaded', [
             'type' => 'success',
             'message' => __("{$this->employee->last_name}'s contract was uploaded successfully."),
@@ -67,22 +67,22 @@ class Contract extends Component
         Storage::disk('local')->makeDirectory(FilePath::CONTRACTS->value);
 
         $hashedVersion = sprintf(
-            "%s-%s", $this->addendum->hashName(), $this->employee->employee_id
+            '%s-%s', $this->addendum->hashName(), $this->employee->employee_id
         );
 
         $this->addendum->storeAs(FilePath::CONTRACTS->value, $hashedVersion, 'local');
 
         DB::transaction(function () use ($hashedVersion) {
             $this->employee->contracts()->create([
-                'type'              => ContractType::ADDENDUM,
-                'uploaded_by'       => Auth::user()->account->employee_id,
+                'type' => ContractType::ADDENDUM,
+                'uploaded_by' => Auth::user()->account->employee_id,
                 'hashed_attachment' => $hashedVersion,
-                'attachment_name'   => $this->addendum->getClientOriginalName(),
+                'attachment_name' => $this->addendum->getClientOriginalName(),
             ]);
         });
 
         $this->resetExcept('employee');
-    
+
         $this->dispatch('addendumUploaded', [
             'type' => 'success',
             'message' => __("{$this->employee->last_name}'s contract addendum was uploaded successfully."),
@@ -102,12 +102,12 @@ class Contract extends Component
     public function messages(): array
     {
         return [
-            'contract.file'     => __('Contract file must be a valid file.'),
-            'contract.max'      => __('Contract file must not exceed 10 mb'),
-            'contract.mimes'    => __('Contract file must be a .pdf extension.'),
-            'addendum.file'     => __('Addendum file must be a valid file.'),
-            'addendum.max'      => __('Addendum file must not exceed 10 mb'),
-            'addendum.mimes'    => __('Addendum file must be a .pdf extension.'),
+            'contract.file' => __('Contract file must be a valid file.'),
+            'contract.max' => __('Contract file must not exceed 10 mb'),
+            'contract.mimes' => __('Contract file must be a .pdf extension.'),
+            'addendum.file' => __('Addendum file must be a valid file.'),
+            'addendum.max' => __('Addendum file must not exceed 10 mb'),
+            'addendum.mimes' => __('Addendum file must be a .pdf extension.'),
         ];
     }
 

@@ -2,19 +2,19 @@
 
 namespace App\Livewire\Employee\Tables;
 
+use App\Enums\OvertimeRequestStatus;
 use App\Enums\Payroll;
 use App\Models\Overtime;
-use Illuminate\Support\Str;
-use Livewire\Attributes\On;
-use Illuminate\Support\Carbon;
-use App\Enums\OvertimeRequestStatus;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Illuminate\View\ComponentAttributeBag;
-use Rappasoft\LaravelLivewireTables\Views\Column;
+use Livewire\Attributes\On;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
-use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateRangeFilter;
+use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class OvertimeRequestsTable extends DataTableComponent
 {
@@ -109,7 +109,7 @@ class OvertimeRequestsTable extends DataTableComponent
     {
         $this->dispatch('refreshDatatable');
     }
-    
+
     private function getDefaultCutOff()
     {
         return Payroll::getCutOffPeriod(now());
@@ -137,12 +137,12 @@ class OvertimeRequestsTable extends DataTableComponent
                     $name = Str::headline($row->employee->full_name);
                     $photo = $row->employee->account->photo;
                     $id = $row->employee->employee_id;
-            
+
                     return '<div class="d-flex align-items-center">
-                                <img src="' . e($photo) . '" alt="User Picture" class="rounded-circle me-3" style="width: 38px; height: 38px;">
+                                <img src="'.e($photo).'" alt="User Picture" class="rounded-circle me-3" style="width: 38px; height: 38px;">
                                 <div>
-                                    <div>' . e($name) . '</div>
-                                    <div class="text-muted fs-6">Employee ID: ' . e($id) . '</div>
+                                    <div>'.e($name).'</div>
+                                    <div class="text-muted fs-6">Employee ID: '.e($id).'</div>
                                 </div>
                             </div>';
                 })
@@ -171,19 +171,19 @@ class OvertimeRequestsTable extends DataTableComponent
             Column::make(__('End Time'))
                 ->sortable()
                 ->deselected(),
-            
+
             Column::make(__('Date Requested'), 'date')
                 ->format(fn ($row) => Carbon::parse($row)->format('F d, Y'))
                 ->sortable()
                 ->searchable()
                 ->setSortingPillDirections('Asc', 'Desc')
                 ->setSortingPillTitle(__('Request Date')),
-            
+
             Column::make(__('Hours Requested'))
                 ->label(fn ($row) => $row->hoursRequested)
                 ->sortable(function (Builder $query, $direction) {
                     return $query->selectRaw('abs(extract(epoch from (start_time - end_time))) / 60 as time_diff')
-                                 ->orderBy('time_diff', $direction);
+                        ->orderBy('time_diff', $direction);
                 })
                 ->setSortingPillDirections('Asc', 'Desc'),
 
@@ -217,7 +217,7 @@ class OvertimeRequestsTable extends DataTableComponent
 
     public function filters(): array
     {
-        return [            
+        return [
             DateRangeFilter::make(__('Cut-Off Period'))
                 ->config([
                     'allowInput' => true,
@@ -269,7 +269,7 @@ class OvertimeRequestsTable extends DataTableComponent
                         $query->whereNotNull('denied_at');
                     }
                 })
-                ->setFilterDefaultValue(OvertimeRequestStatus::PENDING->value)
-        ];        
+                ->setFilterDefaultValue(OvertimeRequestStatus::PENDING->value),
+        ];
     }
 }

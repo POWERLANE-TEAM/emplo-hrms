@@ -4,11 +4,11 @@ namespace App\Livewire\Employee\Tables;
 
 use App\Models\EmployeeLeave;
 use App\Models\LeaveCategory;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\ComponentAttributeBag;
-use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class MyLeavesTable extends DataTableComponent
@@ -21,7 +21,7 @@ class MyLeavesTable extends DataTableComponent
 
         $this->setPrimaryKey('emp_leave_id')
             ->setTableRowUrl(fn ($row) => route("{$routePrefix}.leaves.show", [
-                'leave' => $row->emp_leave_id
+                'leave' => $row->emp_leave_id,
             ]))
             ->setTableRowUrlTarget(fn () => '__blank');
         $this->setPageName('my_leave_requests');

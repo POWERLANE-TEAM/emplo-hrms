@@ -2,18 +2,17 @@
 
 namespace App\Livewire\Tables;
 
-use Illuminate\View\ComponentAttributeBag;
-use Rappasoft\LaravelLivewireTables\DataTableComponent;
-use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Livewire\Tables\Defaults as DefaultTableConfig;
 use App\Models\Employee;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\Log;
+use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Traits\Helpers\ColumnHelpers;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Columns\LinkColumn;
 
 /**
  * Implemented Methods:
+ *
  * @method  configure(): void
  * @method  columns(): array
  * @method  builder(): Builder
@@ -21,12 +20,12 @@ use Rappasoft\LaravelLivewireTables\Views\Columns\LinkColumn;
  */
 class EmployeesAttendancePeriodTable extends DataTableComponent
 {
-    use DefaultTableConfig, ColumnHelpers;
+    use ColumnHelpers, DefaultTableConfig;
 
     protected $model = Employee::class;
 
     /**
-     * @var array $customFilterOptions contains the dropdown values and keys.
+     * @var array contains the dropdown values and keys.
      */
     protected $customFilterOptions;
 
@@ -85,11 +84,11 @@ class EmployeesAttendancePeriodTable extends DataTableComponent
     public function columns(): array
     {
         return [
-            Column::make("Employee")
-                ->label(fn($row) => $row->fullname)
+            Column::make('Employee')
+                ->label(fn ($row) => $row->fullname)
                 ->sortable(),
 
-            Column::make("Total Hours")
+            Column::make('Total Hours')
                 ->label(function ($row) {
                     $totalSeconds = $row->attendanceLogs->sum(function ($log) {
                         return strtotime($log->timestamp);
@@ -103,7 +102,7 @@ class EmployeesAttendancePeriodTable extends DataTableComponent
                 })
                 ->sortable(),
             // ->hideIf(true),
-            Column::make("Regular Hours")
+            Column::make('Regular Hours')
                 ->label(function ($row) {
                     $totalSeconds = 36000; // Dummy data: 10 hours, 0 minutes, 0 seconds
 
@@ -115,7 +114,7 @@ class EmployeesAttendancePeriodTable extends DataTableComponent
                 })
                 ->sortable(),
 
-            Column::make("Rest Day Hours")
+            Column::make('Rest Day Hours')
                 ->label(function ($row) {
                     $totalSeconds = 7200; // Dummy data: 2 hours, 0 minutes, 0 seconds
 
@@ -127,7 +126,7 @@ class EmployeesAttendancePeriodTable extends DataTableComponent
                 })
                 ->sortable(),
 
-            Column::make("Regular Holiday")
+            Column::make('Regular Holiday')
                 ->label(function ($row) {
                     $totalSeconds = 14400; // Dummy data: 4 hours, 0 minutes, 0 seconds
 
@@ -139,7 +138,7 @@ class EmployeesAttendancePeriodTable extends DataTableComponent
                 })
                 ->sortable(),
 
-            Column::make("Special Holiday")
+            Column::make('Special Holiday')
                 ->label(function ($row) {
                     $totalSeconds = 18000; // Dummy data: 5 hours, 0 minutes, 0 seconds
 
@@ -151,7 +150,7 @@ class EmployeesAttendancePeriodTable extends DataTableComponent
                 })
                 ->sortable(),
 
-            Column::make("Absence Hours")
+            Column::make('Absence Hours')
                 ->label(function ($row) {
                     $totalSeconds = 18000; // Dummy data: 5 hours, 0 minutes, 0 seconds
 
@@ -163,7 +162,7 @@ class EmployeesAttendancePeriodTable extends DataTableComponent
                 })
                 ->sortable(),
 
-            Column::make("Undertime Hours")
+            Column::make('Undertime Hours')
                 ->label(function ($row) {
                     $totalSeconds = 18000; // Dummy data: 5 hours, 0 minutes, 0 seconds
 
@@ -176,10 +175,10 @@ class EmployeesAttendancePeriodTable extends DataTableComponent
                 ->sortable(),
 
             LinkColumn::make('')
-                ->title(fn($row) => 'Full Details')
+                ->title(fn ($row) => 'Full Details')
                 // Route to the view > work hours
                 // use routePrefix
-                ->location(fn($row) => route('employee.attendance.show', $row)),
+                ->location(fn ($row) => route('employee.attendance.show', $row)),
         ];
     }
 
@@ -241,8 +240,8 @@ class EmployeesAttendancePeriodTable extends DataTableComponent
      * - 'DD-MM-YYYY'
      * - 'DD/MM/YYYY'
      *
-     * @param \Illuminate\Database\Query\Builder $query The query builder instance.
-     * @param string $searchTerm The search term to filter by.
+     * @param  \Illuminate\Database\Query\Builder  $query  The query builder instance.
+     * @param  string  $searchTerm  The search term to filter by.
      * @return \Illuminate\Database\Query\Builder The modified query builder instance.
      */
     // public function applyDateSearch(Builder $query, $searchTerm)

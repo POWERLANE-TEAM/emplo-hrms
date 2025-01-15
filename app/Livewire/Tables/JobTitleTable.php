@@ -4,8 +4,8 @@ namespace App\Livewire\Tables;
 
 use App\Models\JobTitle;
 use Illuminate\Database\Eloquent\Builder;
-use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 
 class JobTitleTable extends DataTableComponent
 {

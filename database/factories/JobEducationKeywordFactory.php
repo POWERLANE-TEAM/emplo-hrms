@@ -2,10 +2,10 @@
 
 namespace Database\Factories;
 
-use App\Models\JobTitle;
-use Illuminate\Support\Facades\Storage;
 use App\Enums\JobQualificationPriorityLevel;
+use App\Models\JobTitle;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\JobEducationKeyword>
@@ -26,7 +26,7 @@ class JobEducationKeywordFactory extends Factory
         }, $educations);
 
         $keywords = array_merge(...$keywords);
-        
+
         return [
             'job_title_id' => JobTitle::inRandomOrder()->first()->job_title_id,
             'keyword' => fake()->randomElement($keywords),

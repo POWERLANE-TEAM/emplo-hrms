@@ -2,14 +2,14 @@
 
 namespace App\Policies;
 
-use App\Models\User;
-use App\Models\Employee;
-use App\Enums\UserPermission;
-use Illuminate\Support\Carbon;
 use App\Enums\EmploymentStatus;
+use App\Enums\UserPermission;
+use App\Models\Employee;
 use App\Models\RegularPerformance;
-use Illuminate\Auth\Access\Response;
 use App\Models\RegularPerformancePeriod;
+use App\Models\User;
+use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Carbon;
 
 class RegularPerformancePolicy
 {
@@ -23,9 +23,6 @@ class RegularPerformancePolicy
 
     /**
      * Check if evaluation period being set is not of same year with the finished period.
-     * 
-     * @param \App\Models\User $user
-     * @return \Illuminate\Auth\Access\Response
      */
     public function openRegularsEvaluationPeriod(User $user): Response
     {
@@ -38,7 +35,7 @@ class RegularPerformancePolicy
 
     /**
      * Checks for the ff:
-     * 
+     *
      * - if user can receive / sign a subordionate performance evaluation form.
      * - if user can receive / sign any regular employee evaluation form.
      * - if user can / is the last one to receive /sign regular employee evaluation form.
@@ -47,13 +44,9 @@ class RegularPerformancePolicy
      * - if employee is under the same job family as the user.
      * - if employee is of "Regular" employment status.
      * - if user is trying to access his own evaluation form.
-     * 
-     * @param \App\Models\User $user
-     * @param \App\Models\Employee $employee
-     * @return \Illuminate\Auth\Access\Response
      */
     public function evaluateRegularsPerformance(User $user, Employee $employee): Response
-    {        
+    {
         if (! $this->isEmployeeAccountActive($employee)) {
             return Response::deny(__('This employee\'s account is inactive.'));
         }
@@ -67,7 +60,7 @@ class RegularPerformancePolicy
         }
 
         if (! $this->isEmployeeUnderJurisdiction($user, $employee)) {
-            return Response::deny(__("This employee is not under the job family."));
+            return Response::deny(__('This employee is not under the job family.'));
         }
 
         if (! $user->hasPermissionTo(UserPermission::ASSIGN_PERFORMANCE_EVAL_SCORE)) {
@@ -83,9 +76,6 @@ class RegularPerformancePolicy
 
     /**
      * Check if user can receive / sign a subordionate performance evaluation form.
-     * 
-     * @param \App\Models\User $user
-     * @return \Illuminate\Auth\Access\Response
      */
     public function signRegularSubordinateEvaluationForm(User $user): Response
     {
@@ -96,35 +86,30 @@ class RegularPerformancePolicy
 
     /**
      * Check if user can receive / sign any regular employee evaluation form.
-     * 
-     * @param \App\Models\User $user
+     *
      * @return Response
      */
     public function signAnyRegularEvaluationForm(User $user)
     {
         return $user->hasPermissionTo(UserPermission::APPROVE_PERFORMANCE_EVALUATION_THIRD)
             ? Response::allow()
-            : Response::deny();  
+            : Response::deny();
     }
 
     /**
      * Check if user can / is the last one to receive /sign regular employee evaluation form.
-     * 
-     * @param \App\Models\User $user
+     *
      * @return Response
      */
     public function signRegularEvaluationFormFinal(User $user)
     {
         return $user->hasPermissionTo(UserPermission::APPROVE_PERFORMANCE_EVALUATION_FOURTH)
             ? Response::allow()
-            : Response::deny();  
+            : Response::deny();
     }
 
     /**
      * Check if employee / evaluatee account is active.
-     * 
-     * @param \App\Models\Employee $employee
-     * @return bool
      */
     public function isEmployeeAccountActive(Employee $employee): bool
     {
@@ -135,7 +120,7 @@ class RegularPerformancePolicy
 
     /**
      * Check if evaluation period is still open.
-     * 
+     *
      * @return bool
      */
     public function isEvaluationPeriodOpen()
@@ -150,10 +135,6 @@ class RegularPerformancePolicy
 
     /**
      * Check if employee is under the same job family as the user.
-     * 
-     * @param \App\Models\User $user
-     * @param \App\Models\Employee $employee
-     * @return bool
      */
     public function isEmployeeUnderJurisdiction(User $user, Employee $employee): bool
     {
@@ -165,9 +146,6 @@ class RegularPerformancePolicy
 
     /**
      * Check if employee is of "Regular" employment status.
-     * 
-     * @param \App\Models\Employee $employee
-     * @return bool
      */
     public function isEmployeeRegular(Employee $employee): bool
     {
@@ -176,10 +154,6 @@ class RegularPerformancePolicy
 
     /**
      * Check if user is trying to access his own evaluation form.
-     * 
-     * @param \App\Models\User $user
-     * @param \App\Models\Employee $employee
-     * @return bool
      */
     public function isMe(User $user, Employee $employee): bool
     {
@@ -187,11 +161,9 @@ class RegularPerformancePolicy
     }
 
     /**
-     * Check if evaluatee has acknowledged the result of performance evaluation. 
-     * 
-     * @param mixed $user
-     * @param \App\Models\RegularPerformance $performance
-     * @return bool
+     * Check if evaluatee has acknowledged the result of performance evaluation.
+     *
+     * @param  mixed  $user
      */
     public function hasRegularEvaluateeAcknowledged(?User $user, RegularPerformance $performance): bool
     {

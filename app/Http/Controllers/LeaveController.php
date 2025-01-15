@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Enums\FilePath;
 use App\Models\EmployeeLeave;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Storage;
 
 class LeaveController extends Controller
 {
@@ -78,7 +78,7 @@ class LeaveController extends Controller
     }
 
     public function downloadAttachment(string $attachment)
-    {   
+    {
         $path = sprintf('%s/%s', FilePath::LEAVES->value, $attachment);
 
         return Storage::disk('local')->download($path);

@@ -4,12 +4,12 @@ namespace App\Livewire\Employee\Tables;
 
 use App\Livewire\Employee\Overtimes\Basic\CutOffPayOutPeriods;
 use App\Models\Overtime;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\ComponentAttributeBag;
-use Rappasoft\LaravelLivewireTables\Views\Column;
-use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class CutOffOvertimeSummaryApprovalsTable extends DataTableComponent
@@ -47,7 +47,7 @@ class CutOffOvertimeSummaryApprovalsTable extends DataTableComponent
                 'wire:click' => "\$dispatchTo(
                     'employee.overtimes.overtime-summary-approval', 
                     'showOvertimeSummaryApproval', 
-                    { eventPayload: ".json_encode($eventPayload)."})",
+                    { eventPayload: ".json_encode($eventPayload).'})',
             ];
         });
 
@@ -87,19 +87,19 @@ class CutOffOvertimeSummaryApprovalsTable extends DataTableComponent
     private function createEventPayload($row)
     {
         return [
-            'payroll'               => $row->payrollApproval->payroll->cut_off,
-            'work_performed'        => $row->work_performed,
-            'date'                  => Carbon::make($row->date)->format('F d, Y'),
-            'start_time'            => $row->start_time,
-            'end_time'              => $row->end_time,
-            'hours_requested'       => $row->hours_requested,
-            'authorizer_signed_at'  => $row->authorizer_signed_at,
-            'authorizer'            => $row?->authorizedBy?->full_name,
-            'denied_at'             => $row->denied_at,
-            'denier'                => $row?->deniedBy?->full_name,
-            'feedback'              => $row->feedback,
-            'filed_at'              => $row->filed_at,
-            'modified_at'           => $row->modified_at,
+            'payroll' => $row->payrollApproval->payroll->cut_off,
+            'work_performed' => $row->work_performed,
+            'date' => Carbon::make($row->date)->format('F d, Y'),
+            'start_time' => $row->start_time,
+            'end_time' => $row->end_time,
+            'hours_requested' => $row->hours_requested,
+            'authorizer_signed_at' => $row->authorizer_signed_at,
+            'authorizer' => $row?->authorizedBy?->full_name,
+            'denied_at' => $row->denied_at,
+            'denier' => $row?->deniedBy?->full_name,
+            'feedback' => $row->feedback,
+            'filed_at' => $row->filed_at,
+            'modified_at' => $row->modified_at,
         ];
     }
 
@@ -181,7 +181,7 @@ class CutOffOvertimeSummaryApprovalsTable extends DataTableComponent
                     });
 
                     $this->dispatch('payrollDateModified', $value)->to(CutOffPayOutPeriods::class);
-                })
+                }),
         ];
     }
 }

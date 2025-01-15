@@ -3,7 +3,6 @@
 namespace App\Rules;
 
 use Closure;
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Support\Facades\Validator;
 
 class ProfilePhotoValidationRule extends PhotoValidationRule
@@ -12,7 +11,7 @@ class ProfilePhotoValidationRule extends PhotoValidationRule
     // But it doent accept photo
     protected $dimensionsRule;
 
-    public function __construct(string $minSize = null, string $maxSize = 'sm', bool $required = true, string $dimensionsRule = 'dimensions:min_width=160,min_height=160,max_width=2160,max_height=2160')
+    public function __construct(?string $minSize = null, string $maxSize = 'sm', bool $required = true, string $dimensionsRule = 'dimensions:min_width=160,min_height=160,max_width=2160,max_height=2160')
     {
         parent::__construct($minSize, $maxSize, $required);
         $this->dimensionsRule = $dimensionsRule;
@@ -25,14 +24,15 @@ class ProfilePhotoValidationRule extends PhotoValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $rules = $this->getRule() . '|' . $this->dimensionsRule;
+        $rules = $this->getRule().'|'.$this->dimensionsRule;
 
         $validator = Validator::make([$attribute => $value], ['file' => $rules]);
     }
 
     public function getRule(): string
     {
-        $rule = parent::getRule() . '|' . $this->dimensionsRule;
+        $rule = parent::getRule().'|'.$this->dimensionsRule;
+
         return $rule;
     }
 
@@ -45,6 +45,6 @@ class ProfilePhotoValidationRule extends PhotoValidationRule
 
     public function getDimensionsRule()
     {
-        return '|' . $this->dimensionsRule;
+        return '|'.$this->dimensionsRule;
     }
 }

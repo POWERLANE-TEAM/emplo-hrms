@@ -4,12 +4,12 @@ namespace App\Livewire\Employee\Tables\Basic;
 
 use App\Enums\OvertimeRequestStatus;
 use App\Models\Overtime;
-use Livewire\Attributes\On;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Builder;
-use Rappasoft\LaravelLivewireTables\Views\Column;
+use Livewire\Attributes\On;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateFilter;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
@@ -51,7 +51,7 @@ class RecentOvertimesTable extends DataTableComponent
                     'employee.overtimes.basic.edit-overtime-request', 
                     'showOvertimeRequest', 
                     { overtimeId: $row->overtime_id,
-                      isEditable: ".json_encode($isEditable)." })",
+                      isEditable: ".json_encode($isEditable).' })',
             ];
         });
 
@@ -71,7 +71,7 @@ class RecentOvertimesTable extends DataTableComponent
             return [
                 'class' => 'text-md-center',
             ];
-        });        
+        });
     }
 
     public function builder(): Builder
@@ -105,11 +105,11 @@ class RecentOvertimesTable extends DataTableComponent
             Column::make(__('End Time'))
                 ->sortable()
                 ->setSortingPillDirections('Asc', 'Desc'),
-            
+
             Column::make(__('Hours Requested'))
                 ->label(fn ($row) => $row->hoursRequested)
                 ->setSortingPillDirections('Asc', 'Desc'),
-            
+
             Column::make(__('Date Filed'))
                 ->label(fn ($row) => $row->filed_at)
                 ->sortable(function (Builder $query, $direction) {
@@ -117,7 +117,7 @@ class RecentOvertimesTable extends DataTableComponent
                 })
                 ->setSortingPillDirections('Asc', 'Desc'),
 
-                Column::make(__('Authorization'))
+            Column::make(__('Authorization'))
                 ->label(function ($row) {
                     if ($row->authorizer_signed_at) {
                         return $row->authorizedBy->full_name;
@@ -159,7 +159,7 @@ class RecentOvertimesTable extends DataTableComponent
                     } elseif ($value === OvertimeRequestStatus::DENIED->value) {
                         $query->whereNotNull('denied_at');
                     }
-                })
+                }),
         ];
     }
 }

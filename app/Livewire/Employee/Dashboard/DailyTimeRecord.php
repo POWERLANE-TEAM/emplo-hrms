@@ -2,12 +2,12 @@
 
 namespace App\Livewire\Employee\Dashboard;
 
-use Livewire\Component;
+use App\Enums\BiometricPunchType;
 use App\Models\AttendanceLog;
 use Illuminate\Support\Carbon;
-use App\Enums\BiometricPunchType;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 
 class DailyTimeRecord extends Component
 {
@@ -21,15 +21,15 @@ class DailyTimeRecord extends Component
             return (object) [
                 'checkIn' => null,
                 'checkOut' => null,
-            ];            
-        }    
+            ];
+        }
 
         $type = $this->getPunchesTime($dtr);
 
         return (object) [
             'check_in' => $type->checkIn,
             'check_out' => $type->checkOut,
-        ];            
+        ];
     }
 
     private function getPunchesTime(Collection $group)
@@ -42,7 +42,7 @@ class DailyTimeRecord extends Component
                 BiometricPunchType::OVERTIME_OUT->value,
             ])) {
                 return $carry;
-            }    
+            }
 
             match ($log->type) {
                 BiometricPunchType::CHECK_IN->value => $carry->checkIn = $time,
@@ -55,7 +55,6 @@ class DailyTimeRecord extends Component
             'checkOut' => null,
         ]);
     }
-
 
     public function render()
     {

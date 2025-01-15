@@ -2,8 +2,8 @@
 
 namespace App\Livewire\HrManager\Employees;
 
-use Livewire\Component;
 use App\Models\Employee;
+use Livewire\Component;
 
 class Overtime extends Component
 {

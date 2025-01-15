@@ -2,16 +2,13 @@
 
 namespace App\Livewire\Employee\Separation;
 
-use Livewire\Attributes\Locked;
 use App\Enums\FilePath;
-use App\Models\Employee;
 use App\Models\EmployeeDoc;
+use Livewire\Attributes\Locked;
 use Livewire\Component;
 
 class Resignation extends Component
 {
-
-
     #[Locked]
     public bool $hasResignation;
 
@@ -19,11 +16,11 @@ class Resignation extends Component
 
     public function mount()
     {
-        $this->hasResignation = auth()->user()->account->documents()->where('file_path', 'like', '%' . FilePath::RESIGNATION->value . '%')->exists();
+        $this->hasResignation = auth()->user()->account->documents()->where('file_path', 'like', '%'.FilePath::RESIGNATION->value.'%')->exists();
 
-        if($this->hasResignation){
+        if ($this->hasResignation) {
             auth()->user()->loadMissing('account.documents');
-            $this->resignation = auth()->user()->account->documents()->where('file_path', 'like', '%' . FilePath::RESIGNATION->value . '%')->first();
+            $this->resignation = auth()->user()->account->documents()->where('file_path', 'like', '%'.FilePath::RESIGNATION->value.'%')->first();
         }
     }
 

@@ -2,11 +2,11 @@
 
 namespace App\Livewire\Admin\Dashboard;
 
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Livewire\WithPagination;
-use Illuminate\Support\Carbon;
-use Livewire\Attributes\Computed;
-use Illuminate\Support\Facades\Auth;
 use Spatie\Activitylog\Models\Activity;
 
 class RecentActivityLogs extends Component

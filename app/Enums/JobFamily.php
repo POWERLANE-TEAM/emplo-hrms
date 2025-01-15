@@ -9,7 +9,7 @@ enum JobFamily: string
     case GA_SUPPORT = 'General Affairs-Support';
     case HR_OPERATIONS = 'Human Resources Operations';
     case ACCOUNTING = 'Accounting';
-    
+
     public function getColor(): string
     {
         return match ($this) {
