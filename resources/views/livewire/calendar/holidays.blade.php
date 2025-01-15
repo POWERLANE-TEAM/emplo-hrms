@@ -1,6 +1,6 @@
 @use(Illuminate\Support\Carbon)
 
-<div class="card border-primary mt-1 p-3 w-100 h-100">
+<div class="card border-primary mt-1 p-3 w-100">
     <section>
         <!-- Section Title -->
         <div class="row">
