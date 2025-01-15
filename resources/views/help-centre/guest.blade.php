@@ -25,7 +25,7 @@
 
 <div class="row hidden-until-load">
     <div class="col-md-4 centre-side-nav fadein-text">
-        <x-layout.centre.nav-bar />
+        <x-layout.centre.guest-nav-bar />
     </div>
 
     <div class="col-md-8 content-container">

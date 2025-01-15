@@ -10,10 +10,7 @@
                 </div>
             </div>
 
-            <x-nav-link href="/information-centre" :active="request()->is('/information-centre')"
-                class="no-hover ps-0 fw-semibold d-flex align-items-center text-decoration-none">
                 <h3 class="fw-bolder text-white mb-0">Information Centre</h1>
-            </x-nav-link>
         </div>
         <div class="d-flex align-items-center fw-bold ">
             <section class="desktop-topnav d-none d-md-flex">
