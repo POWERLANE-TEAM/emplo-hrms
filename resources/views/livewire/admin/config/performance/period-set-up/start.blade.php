@@ -30,11 +30,11 @@
     <div class="col-md-4">
         <section>
             <p class="fs-3 fw-bold">
-                Evaluations Start Date
+                Evaluation Period
             </p>
 
             <p>
-                Configure the commencement date for employees' performance evaluations.
+                Configure the opening date for employees' performance evaluations.
             </p>
         </section>
     </div>
