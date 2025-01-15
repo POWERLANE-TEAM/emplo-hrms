@@ -69,9 +69,11 @@ class DatabaseSeeder extends Seeder
                 FinalMonthEvaluationSeeder::class,
                 TrainingProviderSeeder::class,
                 TrainingSeeder::class,
-                ServiceIncentiveLeaveCreditSeeder::class,
                 SeparatedEmployeeSeeder::class,
+                ServiceIncentiveLeaveCreditSeeder::class,
                 AnnouncementSeeder::class,
+                PayslipSeeder::class,
+                ContractSeeder::class,
             ]);
         });
     }
