@@ -52,29 +52,6 @@
         </x-slot:footer>
     </x-modals.dialog>
 
-    <x-modals.dialog id="approveResignation">
-        <x-slot:title>
-            <h1 class="modal-title fs-5">{{ __('Approve Resignation') }}</h1>
-            <button data-bs-toggle="modal" class="btn-close" aria-label="Close"></button>
-        </x-slot:title>
-        <x-slot:content>
-            <div class="mt-3">
-                <x-form.boxed-textarea id="comment" label="Comments" :nonce="$nonce" :rows="6" :required="false"
-                    placeholder="{{ __('Provide any feedback or additional instructions for the employee.') }}" />
-            </div>
-            <div class="fs-7">
-                <p class="fs-7 fw-medium">
-                    <b>Note</b>: Once approved, the resignation approval cannot be edited. Ensure all necessary
-                    discussions with the employee have been completed.
-                </p>
-            </div>
-        </x-slot:content>
-        <x-slot:footer>
-            <button class="btn btn-primary"
-                onclick="switchModal('approveResignation', 'confirmApproval')">{{ __('Proceed with Approval') }}</button>
-        </x-slot:footer>
-    </x-modals.dialog>
-
     <x-modals.dialog id="rejectResignation">
         <x-slot:title>
             <h1 class="modal-title fs-5" style="color:#dc3030">{{ __('Reject Resignation') }}</h1>
