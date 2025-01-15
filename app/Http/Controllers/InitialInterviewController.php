@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\UserPermission;
 use App\Models\Application;
 use App\Models\InitialInterview;
+use App\Models\InitialInterviewRating;
 use App\Rules\ScheduleDateRule;
 use App\Rules\ScheduleTimeRule;
 use Illuminate\Contracts\View\Factory as ViewFactory;
@@ -97,18 +98,27 @@ class InitialInterviewController extends Controller
 
         $application = Application::findOrFail($applicationId);
 
+        dump($request);
+
         if (is_array($request)) {
-            $interviewStartDate = $request['date'];
-            $interviewStartTime = $request['time'];
+            $interviewStartDate = $request['date'] ?? null;
+            $interviewStartTime = $request['time'] ?? null;
+
         } else {
             // $interviewStartDate = $validated('interview.date');
             // $interviewStartTime = $validated('interview.time');
         }
 
+        $interviewStart = null;
+        if (!is_null($interviewStartDate) && !is_null($interviewStartTime)) {
+            $interviewStart = $interviewStartDate . ' ' . $interviewStartTime;
+        }
+
         $initalInterview = $application->initialInterview;
+        $initalInterviewRatings = is_array($request) ? $request['initInterviewRatings'] : $request->input('initInterviewRatings');
 
         $data = [
-            'init_interview_at' => $interviewStartDate . ' ' . $interviewStartTime,
+            'init_interview_at' => $interviewStart,
             'init_interviewer' => auth()->user()->user_id,
             'is_init_interview_passed' => $request['isPassed'] ?? false,
         ];
@@ -116,6 +126,23 @@ class InitialInterviewController extends Controller
         $filteredData = array_filter($data, function ($value) {
             return !is_null($value);
         });
+
+        if(!empty($initalInterviewRatings)){
+            foreach ($initalInterviewRatings as $key => $parameter) {
+                $isExist = InitialInterviewRating::parameter($key)->interview($initalInterview)->exists();
+
+                if($isExist){
+                    $initalInterview->ratings()->updateExistingPivot($key, ['rating_id' => $parameter]);
+                }else{
+                    InitialInterviewRating::create([
+                        'init_interview_id' => $initalInterview->init_interview_id,
+                        'parameter_id' => $key,
+                        'rating_id' => $parameter,
+                    ]);
+                }
+            }
+
+        }
 
         $initalInterview->update($filteredData);
     }

@@ -42,7 +42,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(BiometricDevice::class, function () {
             return new BiometricDevice();
         });
-        
+
         $this->app->register(FormWizardServiceProvider::class);
     }
 
@@ -110,6 +110,7 @@ class AppServiceProvider extends ServiceProvider
             'incident_attachment'       => 'App\Models\IncidentAttachment',
             'incident'                  => 'App\Models\Incident',
             'payroll'                   => 'App\Models\Payroll',
+            'interview_parameter'                   => 'App\Models\InterviewParameter',
         ]);
 
         BroadcastServiceProvider::class;
@@ -212,7 +213,7 @@ class AppServiceProvider extends ServiceProvider
         config([
             'duration' => [
                 'annual' => Carbon::now()->addYear(),
-            ],                
+            ],
         ]);
     }
 }

@@ -1,4 +1,7 @@
 @use('App\Enums\ApplicationStatus')
+@use('Illuminate\View\ComponentAttributeBag')
+@use('App\Enums\BasicEvalStatus')
+@use('App\Enums\InterviewRating')
 
 <div>
     <div class="d-flex justify-content-xl-between justify-content-xxl-start flex-wrap flex-md-nowrap px-md-1 px-lg-3 mb-4 mb-lg-5 min-w-100"
@@ -68,52 +71,118 @@
             </div>
 
             {{-- TODO add checks if atleast one of the schedule is set or what --}}
-            @if($isInitAssessment)
+            @if ($isInitAssessment || $application->application_status_id == ApplicationStatus::FINAL_INTERVIEW_SCHEDULED->value)
+                <div class="d-flex gap-4 min-w-100 ">
 
-            <div class="d-flex gap-4 min-w-100 ">
+                    <x-employee.applicants.examination-card :application="$application" :isInitAssessment="$isInitAssessment">
+                        {{ $examSchedF }}
+                    </x-employee.applicants.examination-card>
 
-                <x-employee.applicants.examination-card :application="$application">
-                    {{ $examSchedF }}
-                </x-employee.applicants.examination-card >
+                    <x-employee.applicants.init-interview-card :application="$application" :isInitAssessment="$isInitAssessment">
+                        {{ $initialInterviewSchedF }}
+                    </x-employee.applicants.init-interview-card>
+                </div>
+                <x-modals.dialog id="modal-assign-exam-result">
+                    <x-slot:title>
+                        <h1 class="modal-title fs-5"></h1>
+                        <button data-bs-toggle="modal" class="btn-close" aria-label="Close"></button>
+                    </x-slot:title>
+                    <x-slot:content>
+                        <x-headings.main-heading :isHeading="true" :containerAttributes="new ComponentAttributeBag(['class' => 'text-center fs-5'])" :overrideClass="true"
+                            class="text-primary fs-3 fw-bold mb-2">
+                            <x-slot:heading>
+                                {{ __('Assign Result ') }}
+                            </x-slot:heading>
 
-                <x-employee.applicants.init-interview-card :application="$application">
-                    {{ $initialInterviewSchedF }}
-                </x-employee.applicants.init-interview-card>
-            </div>
+                            <x-slot:description>
+                                <label for="exam-result">{{ __('Select if the candidate passed or not') }}</label>
+                            </x-slot:description>
+                        </x-headings.main-heading>
+                        <livewire:employee.applicants.set-exam-result :application="$application" />
 
-            <div class="d-flex gap-4 min-w-100 ">
-                <div class="bg-body-tertiary rounded-3 col p-3 position-relative">
-                    <label for="applicant-exam-result" class="d-block text-uppercase text-primary fw-medium mb-2">Examination Result</label>
-                    <div id="applicant-exam-result" class="applicant-exam-result d-flex align-items-center fw-bold">
-                        <span class="flex-1">No Result</span>
-                        <button class="btn btn-sm btn-outline-secondary px-3 px-md-4" type="button"  {!! when($notYetExam, 'disabled') !!}>
-                            Assign
-                        </button>
+                    </x-slot:content>
+                    <x-slot:footer>
+
+                    </x-slot:footer>
+                </x-modals.dialog>
+
+
+                <div class="d-flex gap-4 min-w-100 ">
+                    <div class="bg-body-tertiary rounded-3 col p-3 position-relative">
+                        <label for="applicant-exam-result"
+                            class="d-block text-uppercase text-primary fw-medium mb-2">Examination Result</label>
+                        <div id="applicant-exam-result" class="applicant-exam-result d-flex align-items-center fw-bold">
+                            <span
+                                class="flex-1">{{ BasicEvalStatus::labelForValue($application->exam->passed) }}</span>
+                            <button class="btn btn-sm btn-outline-secondary px-3 px-md-4" type="button"
+                                id="toggle-assign-exam-modal" {!! when($notYetExam, 'disabled') !!}>
+                                {{ is_null($application->exam->passed) ? 'Assign' : 'Edit' }}
+                            </button>
+                        </div>
+
+                    </div>
+
+                    <x-modals.dialog id="modal-assign-init-interview-result">
+                        <x-slot:title>
+                            <h1 class="modal-title fs-5"></h1>
+                            <button data-bs-toggle="modal" class="btn-close" aria-label="Close"></button>
+                        </x-slot:title>
+                        <x-slot:content>
+                            <x-headings.main-heading :isHeading="true" :containerAttributes="new ComponentAttributeBag(['class' => 'text-center fs-5'])" :overrideClass="true"
+                                class="text-primary fs-3 fw-bold mb-2">
+                                <x-slot:heading>
+                                    {{ __('Assign Results') }}
+                                </x-slot:heading>
+
+                                <x-slot:description>
+                                    {{ __('Enter initial interview results of the applicant') }}
+                                </x-slot:description>
+                                {{-- INSERT notice --}}
+                            </x-headings.main-heading>
+                            <div class="d-grid mx-auto px-md-5 row-gap-4 row-gap-md-3 overflow-y-auto"
+                                style="max-height: 50cqh;">
+
+                                @if ($isReadyForInitEvaluation)
+                                    <livewire:employee.applicants.set-init-interview-result :initInterview="$application->initialInterview"
+                                        :interviewParameters="$interviewParameters" />
+                                @endif
+
+                            </div>
+                        </x-slot:content>
+                        <x-slot:footer>
+
+                        </x-slot:footer>
+                    </x-modals.dialog>
+
+                    <div class="bg-body-tertiary rounded-3 col p-3 position-relative">
+                        <label for="applicant-exam-result"
+                            class="d-block text-uppercase text-primary fw-medium mb-2">Initial Interview</label>
+                        <div id="applicant-exam-result" class="applicant-exam-result d-flex align-items-center fw-bold">
+                            <span
+                                class="flex-1 text-capitalize">{{ BasicEvalStatus::labelForValue(optional($application->initialInterview)->is_init_interview_passed) }}</span>
+                            <button class="btn btn-sm btn-outline-secondary px-3 px-md-4" type="button"
+                                id="toggle-assign-init-interview-modal" {!! when(!$isReadyForInitEvaluation, 'disabled') !!}>
+                                Assign
+                            </button>
+                        </div>
+
                     </div>
 
                 </div>
-
-                <div class="bg-body-tertiary rounded-3 col p-3 position-relative">
-                    <label for="applicant-exam-result" class="d-block text-uppercase text-primary fw-medium mb-2">Initial Interview</label>
-                    <div id="applicant-exam-result" class="applicant-exam-result d-flex align-items-center fw-bold">
-                        <span class="flex-1 text-capitalize">{{ optional($application->initialInterview)->is_init_interview_passed == null ? 'No Result' : ($application->initialInterview->is_init_interview_passed ? 'passed' : 'failed') }}</span>
-                        <button class="btn btn-sm btn-outline-secondary px-3 px-md-4" type="button"  {!! when($notYetInterview, 'disabled') !!}>
-                            Assign
-                        </button>
-                    </div>
-
-                </div>
-
-            </div>
             @endif
 
             @isset($evaluationNotice)
-            <p><span class="text-primary fw-bold">Note</span> {{$evaluationNotice}}</p>
+                <p><span class="text-primary fw-bold">Note</span> {{ $evaluationNotice }}</p>
             @endisset
 
             {{-- TODO add check if has result in exam --}}
-            @if ($isInitAssessment && (!$notYetExam || !$notYetInterview && false || $application->initialInterview->is_init_interview_passed == null))
-                <p><i class="icon icon-xl text-info mx-2" data-lucide="badge-check"></i> No final result yet. Please assign all the result. </p>
+            @if (
+                $isInitAssessment &&
+                    (!$notYetExam ||
+                        (!$notYetInitInterview && false) ||
+                        $application->initialInterview->is_init_interview_passed == null))
+                <p><i class="icon icon-xl text-info mx-2" data-lucide="badge-check"></i> No final result yet. Please
+                    assign all the result. </p>
             @endif
 
             <div class="d-flex  column-gap-2 column-gap-md-3 w-100 px-2">
@@ -121,12 +190,16 @@
                 @livewire('form.employee.applicant.intial.decline', ['application' => $application])
 
                 @if ($isPending)
-                <button class="btn btn-lg btn-success flex-grow-1-25" data-bs-toggle="modal"
-                data-bs-target="#{{ $modalId }}">Approve Resume</button>
-
+                    <button class="btn btn-lg btn-success flex-grow-1-25" data-bs-toggle="modal"
+                        data-bs-target="#{{ $modalId }}">Approve Resume</button>
                 @elseif ($application->application_status_id == ApplicationStatus::ASSESSMENT_SCHEDULED->value)
-                <button class="btn btn-lg btn-secondary flex-grow-1-25" {!! when(!$isReadyForInitEvaluation, 'disabled') !!} data-bs-toggle="modal"
-                data-bs-target="#{{ $modalId }}">Proceed</button>
+                    <button class="btn btn-lg flex-grow-1-25 ndsbl {!! $isReadyForInitEvaluation && optional($this->application->initialInterview)->is_init_interview_passed
+                        ? 'btn-primary'
+                        : 'btn-secondary' !!} " {!! when(!optional($this->application->initialInterview)->is_init_interview_passed, 'disabled') !!}
+                        data-bs-toggle="modal" data-bs-target="#{{ $modalId }}"
+                        wire:click="setFinalInterview">Proceed</button>
+                @elseif ($application->application_status_id == ApplicationStatus::FINAL_INTERVIEW_SCHEDULED->value)
+                        <button></button>
                 @endif
             </div>
 
@@ -135,19 +208,24 @@
 
 
         <div class="container d-flex mx-0 col-12 col-md-7 px-0 mt-3 mt-md-n1">
-            <div class="flex-grow-1 border border-1 rounded-3 ">
-                <div class="flex-grow-1 px-4 position-relative">
-                    <button type="button" aria-controls="iframe-applicant-resume"
-                        class="btn text-dark shadow rounded-circle btn-full-screen"><i class="icon-medium"
-                            data-lucide="expand"></i></button>
+            @if (!is_null($resume) && Storage::exists($resume))
+                <div class="flex-grow-1 border border-1 rounded-3 ">
+                    <div class="flex-grow-1 px-4 position-relative">
+                        <button type="button" aria-controls="iframe-applicant-resume"
+                            class="btn text-dark shadow rounded-circle btn-full-screen"><i class="icon-medium"
+                                data-lucide="expand"></i></button>
+                    </div>
+
+                    <iframe id="iframe-applicant-resume" name="applicant-resume" class="rounded-3 "
+                        allowfullscreen='yes' src="{{ Storage::url($resume) }}" height="100.5%" width="100%"
+                        frameborder="0" allowpaymentrequest="false" loading="lazy"></iframe>
                 </div>
-                <iframe id="iframe-applicant-resume" name="applicant-resume" class="rounded-3 " allowfullscreen='yes'
-                    src="{{ Storage::url($resume) }}" height="100.5%" width="100%"
-                    frameborder="0" allowpaymentrequest="false" loading="lazy"></iframe>
-            </div>
+            @endif
         </div>
+
+
     </div>
 
-    <x-employee.applicants.show-nav-btn/>
+    <x-employee.applicants.show-nav-btn />
 
 </div>
