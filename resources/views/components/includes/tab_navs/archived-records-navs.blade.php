@@ -4,13 +4,11 @@
 * |-------------------------------------------------------------------------- 
 --}}
 
-<x-sub-navs.in-page-tab-nav :tabs="[
+<x-sub-navs.in-page-tab-nav tabClass="tab-link-employee" :tabs="[
         ['title' => 'Information', 'section' => 'information'],
-        ['title' => 'Attendance', 'section' => 'attendance'],
+        ['title' => 'Attendances', 'section' => 'attendance'],
         ['title' => 'Payslips', 'section' => 'payslips'],
-        ['title' => 'Contract', 'section' => 'contract'],
+        ['title' => 'Contracts', 'section' => 'contract'],
         ['title' => 'Leaves', 'section' => 'leaves'],
-        ['title' => 'OT Summary', 'section' => 'overtime'],
-        ['title' => 'Evaluations', 'section' => 'evaluations'],
-        ['title' => 'Issues', 'section' => 'issues'],
+        ['title' => 'Overtimes', 'section' => 'overtime'],
 ]" />

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EmployeeArchiveController;
 use App\Http\Controllers\FileManagerController;
 use App\Http\Controllers\PayslipController;
 use App\Http\Controllers\ProfileController;
@@ -561,14 +562,13 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     /**
      * Archive
      */
-    Route::get('/archive', function () {
-        return view('employee.hr-manager.archive.index');
-    })->name('employees.archive');
+    Route::prefix('archives')->name('archives.')->group(function () {
+        Route::get('/', [EmployeeArchiveController::class, 'index'])
+            ->name('index');
 
-    Route::get('/archive/records', function () {
-        return view('employee.hr-manager.archive.records');
-    })->name('employees.archive.records');
-
+        Route::get('{employee}', [EmployeeArchiveController::class, 'show'])
+            ->name('employee');
+    });
 
     /**
      * General: Dashboard
