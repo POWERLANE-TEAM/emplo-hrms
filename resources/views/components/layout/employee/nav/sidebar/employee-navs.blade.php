@@ -402,8 +402,8 @@
     @can(UserPermission::VIEW_ANNOUNCEMENT_MANAGER)
         @if($routePrefix === 'admin')
             <x-layout.employee.nav.sidebar.nav-item
-                href="{{ route($routePrefix . '.announcement.index') }}"
-                :active="request()->routeIs($routePrefix . '.announcement.*')"
+                href="{{ route($routePrefix . '.announcements.index') }}"
+                :active="request()->routeIs($routePrefix . '.announcements.*')"
                 class=""
                 nav_txt="Announcements"
                 :defaultIcon="['src' => 'announcements', 'alt' => '']"
@@ -434,9 +434,9 @@
             :activeIcon="['src' => 'jobboard', 'alt' => 'Oragnization']"
             :children="[
                 [
-                    'href' => route($routePrefix . '.job-family.create'),
+                    'href' => route($routePrefix . '.job-family.index'),
                     'active' => [$routePrefix . '.job-family.*', $routePrefix . '.job-title.*'],
-                    'nav_txt' => 'Job Family & Positions'
+                    'nav_txt' => 'Job Families & Titles'
                 ],
                 [
                     'href' => route($routePrefix . '.job-board.create'),
@@ -447,8 +447,8 @@
         </x-layout.employee.nav.sidebar.nested-nav-items>
 
         <x-layout.employee.nav.sidebar.nav-item
-            href="{{ route($routePrefix . '.announcement.index') }}"
-            :active="request()->routeIs($routePrefix . '.announcement.*')"
+            href="{{ route($routePrefix . '.announcements.index') }}"
+            :active="request()->routeIs($routePrefix . '.announcements.*')"
             class=""
             nav_txt="Announcements"
             :defaultIcon="['src' => 'announcements', 'alt' => '']"

@@ -13,7 +13,7 @@
                 </div>
 
                 <!-- Button Link to Create Announcement -->
-                <a wire:navigate href="{{ route('admin.announcement.create') }}" class="icon-link"
+                <a wire:navigate href="{{ route('admin.announcements.create') }}" class="icon-link"
                     data-bs-toggle="tooltip" title="Post an announcement">
                     <div class="icon-container">
                         <i data-lucide="plus" class="icon-with-border"></i>
