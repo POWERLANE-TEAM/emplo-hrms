@@ -293,12 +293,12 @@
             :children="[
                 [
                     'href' => route($routePrefix . '.relations.incidents.index'),
-                    'active' => request()->routeIs($routePrefix . '.hr.relations.incidents.*'),
+                    'active' => request()->routeIs($routePrefix . '.relations.incidents*'),
                     'nav_txt' => 'Incidents'
                 ],
                 [
                     'href' => route($routePrefix . '.relations.issues.general'),
-                    'active' => request()->routeIs($routePrefix . '.relations.issues.general'),
+                    'active' => request()->routeIs($routePrefix . '.relations.issues*'),
                     'nav_txt' => 'Issues'
                 ],
             ]">
