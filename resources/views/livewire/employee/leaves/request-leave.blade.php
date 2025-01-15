@@ -51,14 +51,11 @@
         @if ($showLeaveDescription)
             <div class="row mb-3">
                 <div class="col">
-                    <textarea class="form-control" rows="7" readonly>
-                        {{ 
-                            $this->leaveCategories
-                                ->where('leave_category_id', $state['leaveType'])
-                                ->first()
-                                ->leave_category_desc
-                        }}
-                    </textarea>
+                    <textarea class="form-control gray-custom-scrollbar" rows="5" readonly>{{ 
+                        trim(optional($this->leaveCategories
+                        ->where('leave_category_id', $state['leaveType'])
+                        ->first())->leave_category_desc) 
+                    }}</textarea>
                 </div>
             </div>
         @endif

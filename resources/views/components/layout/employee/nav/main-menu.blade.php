@@ -59,6 +59,9 @@
                         <a href="{{ route($routePrefix . '.recycle-bin') }}" class="text-decoration-none">
                             <li class="dropdown-item" role="button" class="mt-5">Recycle Bin</li>
                         </a>
+                        <a href="/information-centre" target="blank" class="text-decoration-none">
+                            <li class="dropdown-item" role="button" class="mt-5">Info Centre</li>
+                        </a>
                         <li class="dropdown-item" role="button">@livewire('auth.logout')</li>
                     </ul>
                 </div>
