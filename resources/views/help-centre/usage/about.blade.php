@@ -1,16 +1,18 @@
+@use ('Illuminate\View\ComponentAttributeBag')
+
 <div>
     <header>
-        <x-headings.main-heading :isHeading="true">
+        <x-headings.main-heading :isHeading="true" :containerAttributes="new ComponentAttributeBag(['class' => 'pb-0 text-center'])" :overrideContainerClass="true" class="text-primary fs-1 fw-bold">
             <x-slot:heading>
-                {{__('About')}}
+                {{__('About Powerlane Resources, Inc.')}}
             </x-slot:heading>
         </x-headings.main-heading>
     </header>
 
     <body>
-        <h4 class="mt-0">1.1 Company Profile</h4>
+        <h4 class="fw-bold mt-0" class="mt-0">1.1 Company Profile</h4>
 
-        <h4>1.1.1 History</h4>
+        <h4 class="fw-bold">1.1.1 History</h4>
         <p>
             POWERLANE RESOURCES, INC. (PRI) began its journey in March 1992, serving its first client, FEDCO PAPER.
             The company quickly gained momentum, adding THE REGION BANK (now known as PLANTERS BANK) to its roster
@@ -45,7 +47,7 @@
             Clark Freeport Zone, Pampanga, and Batangas.
         </p>
 
-        <h4>1.1.2 Our Vision</h4>
+        <h4 class="fw-bold">1.1.2 Our Vision</h4>
         <p>
             POWERLANE RESOURCES, INC. (PRI). aims to be a leader and innovator in the field of manpower sourcing and
             human resources
@@ -54,7 +56,7 @@
             corporate social responsibility.
         </p>
 
-        <h4>1.1.3 Our Mission</h4>
+        <h4 class="fw-bold">1.1.3 Our Mission</h4>
         <p>POWERLANE RESOURCES, INC. (PRI), seeks to:</p>
         <ul>
             <li>Provide a highly skilled and motivated workforce to meet the fast-paced and evolving organizational
@@ -64,7 +66,7 @@
                 partnerships with local governments and NGO’s.</li>
         </ul>
 
-        <h4>1.1.4 Our Core Values</h4>
+        <h4 class="fw-bold">1.1.4 Our Core Values</h4>
         <ul>
             <li><strong>P - Professionalism:</strong> We deliver exceptional service through a team of highly trained
                 and dedicated professionals, fostering a positive and productive work environment.</li>

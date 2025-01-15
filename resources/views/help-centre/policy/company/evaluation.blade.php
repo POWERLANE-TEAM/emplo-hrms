@@ -1,8 +1,10 @@
+@use ('Illuminate\View\ComponentAttributeBag')
+
 <div>
     <header>
-        <x-headings.main-heading :isHeading="true">
+        <x-headings.main-heading :isHeading="true" :containerAttributes="new ComponentAttributeBag(['class' => 'pb-0 text-center'])" :overrideContainerClass="true" class="text-primary fs-1 fw-bold">
             <x-slot:heading>
-                {{__('Evaluation Policy')}}
+                {{__('Performance Evaluations')}}
             </x-slot:heading>
         </x-headings.main-heading>
     </header>
