@@ -10,7 +10,7 @@
         <x-slot:content>
             <div class="my-2">
                 <!-- BACK-END REPLACE: This can be configured. Companies typically always opts for weeks, instead of specific dates. -->
-                <x-form.boxed-dropdown id="timeframe" label="{{ __('Choose a timeframe') }}" :required="true" :nonce="$nonce"
+                <x-form.boxed-dropdown name="interval" id="timeframe" label="{{ __('Choose a timeframe') }}" :required="true" :nonce="$nonce"
                     :options="['1' => '1 week', '2' => '2 weeks', '3' => '3 weeks']"
                     placeholder="Select type of event" />
             </div>
