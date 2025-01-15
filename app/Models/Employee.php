@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\CivilStatus;
+use App\Enums\ServiceIncentiveLeave;
 use Illuminate\Support\Str;
 use App\Enums\ActivityLogName;
 use Illuminate\Support\Carbon;
@@ -33,6 +34,10 @@ class Employee extends Model
         'employee_id',
         'created_at',
         'updated_at',
+    ];
+
+    protected $with = [
+        'jobDetail',
     ];
 
     /**
@@ -119,14 +124,6 @@ class Employee extends Model
      */
     protected function getFullPresentAddressAttribute()
     {
-        $this->loadMissing([
-            'presentBarangay' => [
-                'city',
-                'province',
-                'region'
-            ],
-        ]);
-
         $barangay = $this->presentBarangay->name;
         $city = $this->presentBarangay->city->name ?? '';
         $province = $this->presentBarangay->province->name ?? '';
@@ -140,14 +137,6 @@ class Employee extends Model
      */
     protected function getFullPermanentAddressAttribute()
     {
-        $this->loadMissing([
-            'permanentBarangay' => [
-                'city',
-                'province',
-                'region'
-            ],
-        ]);
-
         $barangay = $this->permanentBarangay->name;
         $city = $this->permanentBarangay->city->name ?? '';
         $province = $this->permanentBarangay->province->name ?? '';
@@ -165,6 +154,49 @@ class Employee extends Model
         $end = Carbon::make($this->shift->end_time)->format('g:i A');
 
         return "{$start} - {$end}";
+    }
+
+    protected function getActualSilCreditsAttribute()
+    {
+        $dateHired = Carbon::parse($this->jobDetail->hired_at);
+
+        $serviceDuration = now()->diff($dateHired);
+
+        if ($serviceDuration->copy()->y < 1) {
+            if (in_array($dateHired->copy()->month, ServiceIncentiveLeave::Q1->getFirstQuarter())) {
+                return ServiceIncentiveLeave::Q1->value;
+            }
+
+            if (in_array($dateHired->copy()->month, ServiceIncentiveLeave::Q2->getSecondQuarter())) {
+                return ServiceIncentiveLeave::Q2->value;
+            }
+
+            if (in_array($dateHired->copy()->month, ServiceIncentiveLeave::Q3->getThirdQuarter())) {
+                return ServiceIncentiveLeave::Q3->value;
+            }
+
+            if (in_array($dateHired->copy()->month, ServiceIncentiveLeave::Q4->getFourthQuarter())) {
+                return ServiceIncentiveLeave::Q4->value;
+            }
+        }
+
+        if ($serviceDuration->copy()->y >= 5) {
+            return 16;
+        }
+
+        if ($serviceDuration->copy()->y >= 3) {
+            return 14;
+        }
+
+        if ($serviceDuration->copy()->y >= 2) {
+            return 11; 
+        }
+
+        if ($serviceDuration->copy()->y >= 1) {
+            return 9;
+        }
+
+        return 0;
     }
 
     /**

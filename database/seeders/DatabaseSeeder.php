@@ -37,7 +37,7 @@ class DatabaseSeeder extends Seeder
                 AttendanceLogSeeder::class,
                 UserSeeder::class,
                 ApplicantSeeder::class,
-                ApplicationSeeder::class,
+                // ApplicationSeeder::class,
                 ApplicantEducationSeeder::class,
                 ApplicantExperienceSeeder::class,
                 ApplicantSkillSeeder::class,
@@ -74,6 +74,10 @@ class DatabaseSeeder extends Seeder
                 AnnouncementSeeder::class,
                 PayslipSeeder::class,
                 ContractSeeder::class,
+                RegularPerformanceEvaluation2024Seeder::class,
+                ProbationaryPerformanceEvaluation2024Seeder::class,
+                Issue2024Seeder::class,
+                AttendanceLog2024Seeder::class,
             ]);
         });
     }
