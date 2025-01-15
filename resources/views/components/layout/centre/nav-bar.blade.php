@@ -25,7 +25,6 @@
                         Privacy Policy
                     </div>
                 </div>
-
             </section>
         </section>
 
@@ -72,6 +71,14 @@
                     <div class="nav-item" data-target="about-rankings"
                         onclick="showContent('about-rankings', 'system-tools')">
                         Resume Evaluator Rankings
+                    </div>
+                </div>
+            </section>
+            <section class="nav-items-section">
+                <div>
+                    <div class="nav-item" data-target="about-reports"
+                        onclick="showContent('about-reports', 'system-tools')">
+                        Annual Reports
                     </div>
                 </div>
             </section>

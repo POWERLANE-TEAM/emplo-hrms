@@ -24,7 +24,7 @@
 @section('content')
 
 <div class="row hidden-until-load">
-    <div class="col-md-4 centre-side-nav fadein-text">
+    <div class="col-md-4 centre-side-nav fcadein-text">
         <x-layout.centre.nav-bar />
     </div>
 
@@ -81,7 +81,9 @@
             <section class="content-section" id="about-rankings">
                 @include('help-centre.tools.rankings')
             </section>
-
+            <section class="content-section" id="about-reports">
+                @include('help-centre.tools.reports')
+            </section>
             <!-- Tools -->
         </main>
     </div>

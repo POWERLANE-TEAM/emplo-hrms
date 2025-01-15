@@ -79,7 +79,7 @@
             <div class="row justify-content-center">
                 <!-- REPLACE STATIC PAGE LINK: Annual Reports Information -->
                 <div class="col-12 text-center">
-                    <a href="#" id="toggle-information" class="text-link-blue text-decoration-underline fs-7 hover-opacity">
+                    <a href="/information-centre?section=about-reports" id="toggle-information" class="text-link-blue text-decoration-underline fs-7 hover-opacity">
                         Learn more about the Annual Report generation.
                     </a>
                 </div>

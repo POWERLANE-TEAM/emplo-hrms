@@ -46,43 +46,11 @@
                 @include('help-centre.usage.guest.terms-conditions')
             </section>
 
-            <!-- Terms: Employees -->
-            <section class="content-section" id="employee-terms-usage">
-                @include('help-centre.usage.employee.terms-conditions')
-            </section>
-
             <!-- PRIVACY: Guest -->
             <section class="content-section" id="guest-privacy-policy">
                 @include('help-centre.usage.guest.privacy-policy')
             </section>
 
-            <!-- PRIAVACY: Employees -->
-            <section class="content-section" id="employee-privacy-policy">
-                @include('help-centre.usage.employee.privacy-policy')
-            </section>
-
-
-            <!-- POLICIES -->
-            <section class="content-section" id="seperation-process">
-                @include('help-centre.policy.company.separation-process')
-            </section>
-            <section class="content-section" id="evaluation-policy">
-                @include('help-centre.policy.company.evaluation')
-            </section>
-            <section class="content-section" id="leave-policy">
-                @include('help-centre.policy.company.leave')
-            </section>
-            <section class="content-section" id="data-retention">
-                @include('help-centre.policy.company.data-retention')
-            </section>
-
-
-            <!-- TOOLS -->
-            <section class="content-section" id="about-rankings">
-                @include('help-centre.tools.rankings')
-            </section>
-
-            <!-- Tools -->
         </main>
     </div>
 </div>
