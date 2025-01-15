@@ -26,10 +26,10 @@ class SetEducation extends Component
         'qualification' => null,
     ];
 
-    #[On('job-title-created')]
+    #[On('createdJobTitle')]
     public function resetQualifications()
     {
-        $this->items = [];
+        $this->reset('items');
     }
 
     public function save()
@@ -40,8 +40,8 @@ class SetEducation extends Component
             $this->items[$this->state['index']]['qualification'] = $this->editState['qualification'];
             $this->items[$this->state['index']]['priority'] = $this->editState['priority'];
 
-            $this->dispatch('close-qualification-modal');
-            $this->dispatch('qualification-updated',
+            $this->dispatch('closeEducationQualificationModal');
+            $this->dispatch('updatedEducationQualification',
                 $this->state['index'],
                 $this->editState['qualification'],
                 $this->editState['priority'],
@@ -52,7 +52,7 @@ class SetEducation extends Component
                 'priority' => $this->state['priority'],
             ];
 
-            $this->dispatch('qualification-added',
+            $this->dispatch('addedEducationQualification',
                 $this->state['qualification'],
                 $this->state['priority'],
             )->to(CreateJobTitleForm::class);
@@ -74,13 +74,21 @@ class SetEducation extends Component
         $this->editState['qualification'] = $this->items[$index]['qualification'];
         $this->editState['priority'] = $this->items[$index]['priority'];
 
-        $this->dispatch('open-qualification-modal');
+        $this->dispatch('openEducationQualificationModal');
     }
 
     public function discard()
     {
         $this->isEditMode = false;
-        $this->dispatch('close-qualification-modal');
+        $this->dispatch('closeEducationQualificationModal');
+    }
+
+    public function removeQualification(int $index)
+    {
+        unset($this->items[$index]);
+        
+        $this->dispatch('removeEducationQualification', $index)
+            ->to(CreateJobTitleForm::class);
     }
 
     public function rules()

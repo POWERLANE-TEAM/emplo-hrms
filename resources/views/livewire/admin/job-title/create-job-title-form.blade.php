@@ -44,7 +44,7 @@
                 @enderror
             </div>
             <div class="col-5">
-                <x-form.boxed-input-text id="salary" label="{{ __('Base Salary') }}" name="state.baseSalary"
+                <x-form.boxed-input-text type="number" id="salary" label="{{ __('Base Salary') }}" name="state.baseSalary"
                     :nonce="$nonce" placeholder="Enter base salary" />
                 @error('state.baseSalary')
                     <div class="invalid-feedback" role="alert">{{ $message }}</div>

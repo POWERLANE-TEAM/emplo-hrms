@@ -110,6 +110,9 @@ class AppServiceProvider extends ServiceProvider
             'incident_attachment'       => 'App\Models\IncidentAttachment',
             'incident'                  => 'App\Models\Incident',
             'payroll'                   => 'App\Models\Payroll',
+            'job_skill_keyword'         => 'App\Models\JobSkillKeyword',
+            'job_education_keyword'     => 'App\Models\JobEducationKeyword',
+            'job_experience_keyword'    => 'App\Models\JobExperienceKeyword',
         ]);
 
         BroadcastServiceProvider::class;

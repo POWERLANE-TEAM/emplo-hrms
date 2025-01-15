@@ -1,86 +1,141 @@
+@use(App\Enums\JobQualificationPriorityLevel)
 @props(['toastId' => 'jobListingToast'])
 
 <div>
-    <div class="row mb-3">
+    <div class="row">
         <div class="col-4">
-            <div class="mb-1 fw-semibold text-secondary-emphasis">{{ __('Job Position') }}</div>
-            <select id="job_position" class="form-control form-select" wire:model.live="state.selectedJob">
-                <option value="">{{ __('Select an option') }}</option>
-                @foreach ($this->jobTitles as $jobTitle)
-                    <option value="{{ $jobTitle->id }}">{{ $jobTitle->title }}</option>
+            <div class="row mb-3">
+                <div class="col">
+                    <div class="mb-1 fw-semibold text-secondary-emphasis">{{ __('Job Position') }}</div>
+                    <select id="job_position" class="form-control form-select" wire:model.live="state.selectedJob">
+                        <option value="">{{ __('Select an option') }}</option>
+                        @foreach ($this->jobTitles as $jobTitle)
+                            <option value="{{ $jobTitle->id }}">{{ $jobTitle->title }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <x-form.boxed-input-text
+                        id="vacancyCount"
+                        label="{{ __('Vacancy Count') }}"
+                        name="state.vacancyCount" 
+                        type="number"
+                        :nonce="$nonce" 
+                        :required="true" 
+                    />
+                    @error('state.vacancyCount')
+                        <div class="invalid-feedback" role="alert">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <x-form.boxed-date 
+                        id="applicationDeadline"
+                        label="{{ __('Application Deadline') }}" 
+                        name="state.applicationDeadline" 
+                        :nonce="$nonce"
+                        :required="true" 
+                        placeholder=""
+                        min="{{ today()->format('Y-m-d') }}"
+                    />
+                    @error('state.applicationDeadline')
+                        <div class="invalid-feedback" role="alert">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>                    
+        </div>
+
+        <div class="col-3">
+            @if($isJobSelected)
+                <header class="mt-2">
+                    <x-headings.section-title title="{{ __('Job Information') }}" />
+                </header>
+
+                @foreach ($jobDetails as $jobDetail)
+                    <p><strong>{{ __('Department: ') }}</strong>{{ $jobDetail->department }}</p>
+                    <p><strong>{{ __('Job Family: ') }}</strong>{{ $jobDetail->family }}</p>
+                    <p><strong>{{ __('Job Level: ') }}</strong>{{ $jobDetail->levelName.' (Level '.$jobDetail->level.')' }}</p>
+                    <p><strong>{{ __('Job Description: ') }}</strong>{{ $jobDetail->description ?? __('Not specified') }}</p>
                 @endforeach
-            </select>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-4">
-            <x-form.boxed-input-text
-                id="vacancyCount"
-                label="{{ __('Vacancy Count') }}"
-                name="state.vacancyCount" 
-                type="number"
-                :nonce="$nonce" 
-                :required="true" 
-            />
-            @error('state.vacancyCount')
-                <div class="invalid-feedback" role="alert">{{ $message }}</div>
-            @enderror
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-4">
-            <x-form.boxed-date 
-                id="applicationDeadline"
-                label="{{ __('Application Deadline') }}" 
-                name="state.applicationDeadline" 
-                :nonce="$nonce"
-                :required="true" 
-                placeholder=""
-                min="{{ today()->format('Y-m-d') }}"
-            />
-            @error('state.applicationDeadline')
-                <div class="invalid-feedback" role="alert">{{ $message }}</div>
-            @enderror
-        </div>
-    </div>
 
-    @if($isJobSelected)
-        <header class="mt-2">
-            <x-headings.section-title title="{{ __('Job Information') }}" />
-        </header>
+                <x-buttons.main-btn 
+                    id="add_open_position" 
+                    label="Add Open Job Position" 
+                    wire:click="save" 
+                    :nonce="$nonce"
+                    :disabled="false" 
+                    class="w-25" 
+                    :loading="'Creating...'" 
+                />
+            @else
+                <p class="pt-3 fst-italic">{{ __('Please select a job position to see the details.') }}</p>
+            @endif
+        </div>
 
-        @if ($jobDetails)
+        @if($isJobSelected)
             @foreach ($jobDetails as $jobDetail)
-                <p><strong>{{ __('Department: ') }}</strong>{{ $jobDetail->department }}</p>
-                <p><strong>{{ __('Job Family: ') }}</strong>{{ $jobDetail->family }}</p>
-                <p><strong>{{ __('Job Level: ') }}</strong>{{ $jobDetail->levelName.' (Level '.$jobDetail->level.')' }}</p>
-                <p><strong>{{ __('Job Description: ') }}</strong>{{ $jobDetail->description ?? __('Not specified') }}</p>
-                {{-- <p><strong>{{ __('Qualifications: ') }}</strong></p>
-                <ul>
-                    @if ($jobDetail->qualifications)
-                        @foreach($jobDetail->qualifications as $qualification)
-                            <li>{{ $qualification }}</li>
-                        @endforeach                        
-                    @endif
-                </ul> --}}
+                <div class="col-5 text-start">
+                    <header class="mt-2">
+                        <x-headings.section-title title="{{ __('Qualifications') }}" />
+                    </header>
+                    <p><strong>{{ __('Skills: ') }}</strong></p>
+                    <ul>
+                        @if ($jobDetail->skills)
+                            @foreach($jobDetail->skills as $skill)
+                                <div class="d-flex align-items-center my-2">
+                                    <li class="pe-2 fw-medium">{{ $skill->keyword }}</li>
+                                    <span>
+                                        @php $priority = JobQualificationPriorityLevel::from($skill->priority); @endphp
+
+                                        <x-status-badge :color="$priority->getColor()">
+                                            {{ $priority->label() }}
+                                        </x-status-badge>
+                                    </span>                                    
+                                </div>
+                            @endforeach                        
+                        @endif
+                    </ul>
+                    <p><strong>{{ __('Educations: ') }}</strong></p>
+                    <ul>
+                        @if ($jobDetail->educations)
+                            @foreach($jobDetail->educations as $education)
+                                <div class="d-flex align-items-center my-2">
+                                    <li class="pe-2 fw-medium">{{ $education->keyword }}</li>
+                                    <span>
+                                        @php $priority = JobQualificationPriorityLevel::from($education->priority); @endphp
+
+                                        <x-status-badge :color="$priority->getColor()">
+                                            {{ $priority->label() }}
+                                        </x-status-badge>
+                                    </span>                                    
+                                </div>
+                            @endforeach                        
+                        @endif
+                    </ul>
+                    <p><strong>{{ __('Experiences: ') }}</strong></p>
+                    <ul>
+                        @if ($jobDetail->experiences)
+                            @foreach($jobDetail->experiences as $experience)
+                                <div class="d-flex align-items-center my-2">
+                                    <li class="pe-2 fw-medium">{{ $experience->keyword }}</li>
+                                    <span>
+                                        @php $priority = JobQualificationPriorityLevel::from($experience->priority); @endphp
+
+                                        <x-status-badge :color="$priority->getColor()">
+                                            {{ $priority->label() }}
+                                        </x-status-badge>
+                                    </span>                                    
+                                </div>
+                            @endforeach                        
+                        @endif
+                    </ul>
+                </div>
             @endforeach
         @endif
-
-        {{-- Submit Button --}}
-        <section class="my-2"></section>
-        <x-buttons.main-btn 
-            id="add_open_position" 
-            label="Add Open Job Position" 
-            wire:click="save" 
-            :nonce="$nonce"
-            :disabled="false" 
-            class="w-25" 
-            :loading="'Creating...'" 
-        />
-        </section>
-    @else
-        <p class="pt-3 fst-italic">{{ __('Please select a job position to see the details.') }}</p>
-    @endif
+    </div>
 
     {{-- Toast --}}
     <div class="toast-container position-fixed bottom-0 end-0 p-3">

@@ -2,6 +2,8 @@
 
 namespace App\Enums;
 
+use Illuminate\Support\Carbon;
+
 enum EmploymentStatus: int
 {
     case PROBATIONARY = 1;
@@ -40,6 +42,21 @@ enum EmploymentStatus: int
             }
         }
         return null;
+    }
+
+    /**
+     * Add 4 years to employee date of separation for data retention policy period.
+     * 
+     * @param \Illuminate\Support\Carbon|string $separationDate
+     * @return \Carbon\Carbon|\Carbon\CarbonInterface
+     */
+    public static function separatedEmployeeDataRetentionPeriod(Carbon|string $separationDate)
+    {   
+        $separationDate = is_string($separationDate) 
+            ? Carbon::parse($separationDate) 
+            : $separationDate;
+
+        return $separationDate->addYears(4);
     }
 
     /**
