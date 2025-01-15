@@ -4,19 +4,18 @@
     <header>
         <x-headings.main-heading :isHeading="true" :containerAttributes="new ComponentAttributeBag(['class' => 'pb-0 text-center'])" :overrideContainerClass="true" class="text-primary fs-1 fw-bold">
             <x-slot:heading>
-                {{__('Separation Policy')}}
+                {{__('Data Retention')}}
             </x-slot:heading>
         </x-headings.main-heading>
     </header>
 
-    <body>
-
+    <section>
         <p>This policy outlines the procedures for retaining and disposing of employee accounts and associated data
             following resignation, ensuring compliance with company policies, Philippine data retention laws, and
             practical operational requirements. We retain personal data only for as long as necessary to fulfill its
             purpose.</p>
 
-        <h4>1. <strong>Account Retention Period</strong></h4>
+        <h4><strong>Account Retention Period</strong></h4>
         <ul>
             <li><strong>Duration:</strong> Employee accounts will be retained for <strong>4 years</strong> from the date
                 of resignation, aligning with the company's document retention policy.</li>
@@ -24,7 +23,7 @@
                 records, tax documentation, or references that might be needed during this time frame.</li>
         </ul>
 
-        <h4>2. <strong>Implementation Options</strong></h4>
+        <h4><strong>Implementation Options</strong></h4>
         <ol>
             <li><strong>Active but Limited Access (Grace Period):</strong>
                 <ul>
@@ -54,10 +53,10 @@
             </li>
         </ol>
 
-        <h4>3. <strong>Compliance with Philippine Data Retention Laws</strong></h4>
+        <h4><strong>Compliance with Philippine Data Retention Laws</strong></h4>
+        <p>In accordance with Philippine regulations, particularly the Data Privacy Act of 2012, and advisories from the
+            National Privacy Commission, the following practices are observed:</p>
         <ul>
-            <li><strong>In accordance with Philippine regulations, particularly the Data Privacy Act of 2012, and
-                    advisories from the National Privacy Commission, the following practices are observed:</strong></li>
             <ul>
                 <li><strong>Employment Records:</strong> Employers are required to retain employment records for a
                     minimum of <strong>three years</strong> from the date of the last entry.</li>
@@ -66,7 +65,7 @@
             </ul>
         </ul>
 
-        <h4>4. <strong>Data Security and Access Control</strong></h4>
+        <h4><strong>Data Security and Access Control</strong></h4>
         <ul>
             <li><strong>Security Measures:</strong> All retained accounts and data are safeguarded with appropriate
                 security measures to prevent unauthorized access, alteration, or disclosure.</li>
@@ -74,12 +73,14 @@
                 administrative personnel for legitimate business purposes only.</li>
         </ul>
 
-        <h4>5. <strong>Policy Review and Updates</strong></h4>
+        <h4><strong>Policy Review and Updates</strong></h4>
         <p>This Account Retention Policy will be reviewed annually or upon significant changes in relevant laws or
             company procedures. Updates will be communicated to all stakeholders and incorporated into the company's
             data management documentation.</p>
         <p>By adhering to this policy, Powerlane Resources, Inc. ensures responsible management of former employee
             accounts, balancing operational needs with legal compliance and the privacy rights of individuals.</p>
-    </body>
+        </body>
+    </section>
+
 
 </div>
