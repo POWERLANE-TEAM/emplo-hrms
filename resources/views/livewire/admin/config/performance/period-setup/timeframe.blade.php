@@ -30,11 +30,11 @@
     <div class="col-md-4">
         <section>
             <p class="fs-3 fw-bold">
-                Timeframe
+                Extend Timeframe
             </p>
 
             <p>
-                Manage the duration and timeframe for the assessment period to ensure evaluations are completed
+                Manage and extend the duration of timeframe for the assessment period to ensure evaluations are completed
                 within
                 the designated schedule.
             </p>
@@ -45,7 +45,6 @@
         <section>
             <div class="card p-4 pb-3 border-0 bg-secondary-subtle">
                 <div>
-                    <!-- BACK-END REPLACE: Default Commencement Date -->
                     <h5 class="text-primary fw-bold">Default Timeframe: 1 week</h5>
 
                     <p>
