@@ -1,3 +1,6 @@
+@use('App\Enums\UserRole')
+@use('App\Enums\UserPermission')
+
 <footer class="external shadow-lg z-0 mt-5 ">
     <div class="d-flex footer-info row py-3 py-md-4 mx-1 mx-md-5">
         <section class="col-12 col-md-4 order-0 px-3 py-3  ">
@@ -24,8 +27,9 @@
                 Legal Links
             </header>
             <nav aria-labelledby="footer-legal-links" class="d-flex flex-column gap-0 row-gap-3">
-                <a href="/information-centre?section=terms-usage" class="small d-block unstyled">Terms of Use</a>
-                <a href="/information-centre?section=privacy-policy" class="small d-block unstyled">Privacy Policy</a>
+            <a href="/guest/information-centre?section=<?php echo $routePrefix === 'guest' ? 'guest-terms-usage' : 'employee-terms-usage'; ?>" class="small d-block unstyled">Terms of Use</a>
+            <a href="/information-centre?section=<?php echo $routePrefix === 'guest' ? 'guest-privacy-policy' : 'employee-privacy-policy'; ?>" class="small d-block unstyled">Privacy Policy</a>
+
             </nav>
         </section>
         <section class=" d-grid flex-column col-12 col-md-4 order-1 order-md-4 px-3 py-3   gap-3">
