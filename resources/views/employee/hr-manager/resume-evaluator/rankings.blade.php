@@ -28,10 +28,11 @@
     </x-slot:heading>
 
     <x-slot:description>
-        <p>{{ __('Tool that analyzes skills and qualifications in resumes to identify the most suitable and best-fit candidates for the open job positions.') }}
-        </p>
-        {{-- <x-info_panels.callout type="info" :description="__('Learn more about the <a href=\'#\' class=\'text-link-blue\'>weighted computation</a> using keyword-based analysis of resume content.')">
-        </x-info_panels.callout> --}}
+    <p>Tool that analyzes skills and qualifications in resumes to identify the most suitable and best-fit candidates for the open job positions.
+        
+        <a href="/information-centre?section=about-rankings" target="blank" class="tooltip-link">
+                    <x-tooltips.custom-tooltip title="Learn more" icon="info" placement="top" color="text-info" />
+                </a></p>
     </x-slot:description>
 </x-headings.main-heading>
 
