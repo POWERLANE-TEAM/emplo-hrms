@@ -273,8 +273,8 @@
                     'nav_txt' => 'Employees'
                 ],
                 [
-                    'href' => route($routePrefix . '.employees.archive'),
-                    'active' => request()->routeIs($routePrefix . '.employees.archive*'),
+                    'href' => route($routePrefix . '.archives.index'),
+                    'active' => request()->routeIs($routePrefix . '.archives.*'),
                     'nav_txt' => 'Archived 201 Records'
                 ],
             ]">

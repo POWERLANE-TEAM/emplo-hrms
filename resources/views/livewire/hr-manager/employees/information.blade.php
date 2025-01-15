@@ -56,7 +56,7 @@
                         <div class="fw-bold">{{ __('Date of Birth: ') }}</div>
                         <p>{{ $employee->dob }}</p>
                         <div class="fw-bold">{{ __('Sex: ') }}</div>
-                        <p>{{ $employee->sex }}</p>
+                        <p>{{ \App\Enums\Sex::from($employee->sex)->label() }}</p>
                         <div class="fw-bold">{{ __('Civil Status: ') }}</div>
                         <p>{{ $employee->civilStatus }}</p>
                     </div>

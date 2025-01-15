@@ -21,7 +21,7 @@ class CheckPayrollPeriodOpening extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Check if a payroll period open for today.';
 
     /**
      * Execute the console command.
