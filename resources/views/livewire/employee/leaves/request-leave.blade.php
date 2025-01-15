@@ -5,13 +5,13 @@
 <div>
     <div class="row px-3 mb-4">
 
-        <div class="callout callout-info bg-body-{{ $this->vacationLeaveCredits > 0 ? 'info' : 'danger' }}">
+        <div class="callout {{ $this->vacationLeaveCredits > 0 ? 'callout-info bg-body-tertiary' : 'callout-danger' }}">
             <div class="fs-5 px-2">{{ __('Vacation Leave Credit(s)') }}:
                 <span class="fw-bold text-primary">{{ $this->vacationLeaveCredits }}</span>
             </div>
         </div>
 
-        <div class="callout my-3 callout-info bg-body-{{ $this->sickLeaveCredits > 0 ? 'info' : 'danger' }}">
+        <div class="callout my-3 {{ $this->sickLeaveCredits > 0 ? 'callout-info bg-body-tertiary' : 'callout-danger' }}">
             <div class="fs-5 px-2">{{ __('Sick Leave Credit(s)') }}:
                 <span class="fw-bold text-primary">{{ $this->sickLeaveCredits }}</span>
             </div>
@@ -51,14 +51,11 @@
         @if ($showLeaveDescription)
             <div class="row mb-3">
                 <div class="col">
-                    <textarea class="form-control" rows="7" readonly>
-                        {{ 
-                            $this->leaveCategories
-                                ->where('leave_category_id', $state['leaveType'])
-                                ->first()
-                                ->leave_category_desc
-                        }}
-                    </textarea>
+                    <textarea class="form-control gray-custom-scrollbar" rows="5" readonly>{{ 
+                        trim(optional($this->leaveCategories
+                        ->where('leave_category_id', $state['leaveType'])
+                        ->first())->leave_category_desc) 
+                    }}</textarea>
                 </div>
             </div>
         @endif
