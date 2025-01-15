@@ -33,7 +33,6 @@ return new class extends Migration
             $table->id('job_title_id');
             $table->string('job_title');
             $table->text('job_desc')->nullable();
-            $table->longText('qualification_desc')->nullable();
             $table->decimal('base_salary')->nullable();
 
             $table->foreignIdFor(Department::class, 'department_id')

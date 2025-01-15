@@ -42,9 +42,13 @@ class SeparatedEmployeeSeeder extends Seeder
             ]);
     
             $employee->lifecycle()->create([
-                'started_at' => now()->addYears(5)->toDateTimeString(),
-                'separated_at' => now()->subYears(4)->toDateTimeString(),
-                'created_at' => now()->addYears(5)->toDateTimeString(),
+                'started_at' => now()->subYears(5)->toDateTimeString(),
+                'separated_at' => fake()->randomElement([
+                    now()->subYears(3)->toDateTimeString(),
+                    now()->subYears(2)->toDateTimeString(),
+                    now()->subYears(1)->toDateTimeString(),
+                ]),
+                'created_at' => now()->subYears(5)->toDateTimeString(),
                 'updated_at' => now()->subYears(4)->toDateTimeString(),
             ]);
     
