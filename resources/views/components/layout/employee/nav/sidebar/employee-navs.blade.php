@@ -33,7 +33,7 @@
         : $routePrefix . '.payslips.index';
 
     $navPayslipActivePattern = $user->hasPermissionTo(UserPermission::VIEW_ALL_PAYSLIPS)
-        ? $routePrefix . '.hr.payslips.*'
+        ? $routePrefix . '.payslips.*'
         : $routePrefix . '.payslips.*';
 
 
@@ -191,7 +191,7 @@
     ])
     <x-layout.employee.nav.sidebar.nav-item
         :href="route($navOvertimeRoute[0])"
-        :active="request()->routeIs($navOvertimeRoute)"
+        :active="request()->routeIs($routePrefix . '.overtimes.*')"
         class="order-{{ $navOvertimeOrder }}"
         nav_txt="Overtime"
         :defaultIcon="['src' => 'overtime', 'alt' => '']"
@@ -293,12 +293,12 @@
             :children="[
                 [
                     'href' => route($routePrefix . '.relations.incidents.index'),
-                    'active' => request()->routeIs($routePrefix . '.hr.relations.incidents.*'),
+                    'active' => request()->routeIs($routePrefix . '.relations.incidents*'),
                     'nav_txt' => 'Incidents'
                 ],
                 [
                     'href' => route($routePrefix . '.relations.issues.general'),
-                    'active' => request()->routeIs($routePrefix . '.relations.issues.general'),
+                    'active' => request()->routeIs($routePrefix . '.relations.issues*'),
                     'nav_txt' => 'Issues'
                 ],
             ]">
@@ -309,7 +309,7 @@
     @can(UserPermission::VIEW_ALL_TRAINING)
         <x-layout.employee.nav.sidebar.nav-item
             href="{{ route($routePrefix . '.trainings.index') }}"
-            :active="request()->routeIs($routePrefix . '.trainings.index')"
+            :active="request()->routeIs($routePrefix . '.trainings*')"
             class="order-11" nav_txt="Training"
             :defaultIcon="['src' => 'training', 'alt' => '']"
             :activeIcon="['src' => 'training', 'alt' => '']">

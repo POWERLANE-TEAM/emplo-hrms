@@ -115,7 +115,7 @@
 
     <x-breadcrumbs>
         <x-slot:breadcrumbs>
-            <x-breadcrumb :href="'#'">
+            <x-breadcrumb :href="route($routePrefix . '.relations.issues.general')">
                 {{ __('Issues') }}
             </x-breadcrumb>
             <x-breadcrumb :active="request()->routeIs($routePrefix . '.relations.issues.review')">

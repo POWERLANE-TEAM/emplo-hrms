@@ -27,9 +27,8 @@
                 Legal Links
             </header>
             <nav aria-labelledby="footer-legal-links" class="d-flex flex-column gap-0 row-gap-3">
-            <a href="/guest/information-centre?section=<?php echo $routePrefix === 'guest' ? 'guest-terms-usage' : 'employee-terms-usage'; ?>" class="small d-block unstyled">Terms of Use</a>
-            <a href="/information-centre?section=<?php echo $routePrefix === 'guest' ? 'guest-privacy-policy' : 'employee-privacy-policy'; ?>" class="small d-block unstyled">Privacy Policy</a>
-
+            <a href="<?php echo $routePrefix === 'employee' ? '/information-centre?section=employee-terms-usage' : '/guest/information-centre?section=guest-terms-usage'; ?>" class="small d-block unstyled">Terms of Use</a>
+            <a href="<?php echo $routePrefix === 'employee' ? '/information-centre?section=employee-privacy-policy' : '/guest/information-centre?section=guest-privacy-policy'; ?>" class="small d-block unstyled">Privacy Policy</a>
             </nav>
         </section>
         <section class=" d-grid flex-column col-12 col-md-4 order-1 order-md-4 px-3 py-3   gap-3">
