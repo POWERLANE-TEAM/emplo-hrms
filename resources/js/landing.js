@@ -61,7 +61,7 @@ function createParticleSystem(color, size, count, spread) {
         color: color,
         size: size,
         transparent: true,
-        opacity: 0.7,
+        opacity: 0.8,
         blending: THREE.AdditiveBlending
     });
 
@@ -74,7 +74,7 @@ function createRing(radius, tubeRadius, color) {
     const material = new THREE.MeshPhongMaterial({
         color: color,
         transparent: true,
-        opacity: 0.7
+        opacity: 0.76
     });
     const ring = new THREE.Mesh(geometry, material);
     // Offset rings to the left side
