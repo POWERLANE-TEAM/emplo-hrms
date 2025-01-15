@@ -51,7 +51,7 @@ class Information extends Component
                     'employmentStatus'      => $user->account->status->emp_status_name,
                     'shift'                 => $user->account->shift->shift_name,
                     'shiftSched'            => $user->account->shift_schedule,
-                    'hiredAt'               => $user->account?->application?->hired_at,
+                    'hiredAt'               => $user->account?->jobDetail?->hired_at,
                     'dob'                   => $user->account->date_of_birth,
                     'sss'                   => $user->account->sss_no,
                     'philHealth'            => $user->account->philhealth_no,

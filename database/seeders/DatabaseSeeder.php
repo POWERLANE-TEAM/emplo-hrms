@@ -48,7 +48,7 @@ class DatabaseSeeder extends Seeder
                 PayrollSeeder::class,
                 OvertimeSeeder::class,
                 EmployeeJobDetailSeeder::class,
-                EmployeeLeaveSeeder::class,
+                // EmployeeLeaveSeeder::class,
                 IssueTypeSeeder::class,
                 IssueSeeder::class,
                 IncidentSeeder::class,
@@ -69,6 +69,7 @@ class DatabaseSeeder extends Seeder
                 FinalMonthEvaluationSeeder::class,
                 TrainingProviderSeeder::class,
                 TrainingSeeder::class,
+                ServiceIncentiveLeaveCreditSeeder::class,
             ]);
         });
     }

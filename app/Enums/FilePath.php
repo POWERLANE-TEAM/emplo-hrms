@@ -11,4 +11,5 @@ enum FilePath: string
     case RESIGNATION = 'uploads/employee/resignation';
     case PAYSLIPS = 'payslips';
     case CONTRACTS = 'contracts/';
+    case LEAVES = 'leaves/';
 }
