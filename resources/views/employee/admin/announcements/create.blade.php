@@ -27,10 +27,10 @@
 
 <x-breadcrumbs>
     <x-slot:breadcrumbs>
-        <x-breadcrumb :href="route($routePrefix . '.announcement.index')">
+        <x-breadcrumb :href="route($routePrefix . '.announcements.index')">
             Announcements
         </x-breadcrumb>
-        <x-breadcrumb :active="request()->routeIs($routePrefix . '.announcement.create')">
+        <x-breadcrumb :active="request()->routeIs($routePrefix . '.announcements.create')">
             Create
         </x-breadcrumb>
     </x-slot:breadcrumbs>

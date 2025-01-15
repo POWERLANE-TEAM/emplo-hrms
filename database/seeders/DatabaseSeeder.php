@@ -71,6 +71,7 @@ class DatabaseSeeder extends Seeder
                 TrainingSeeder::class,
                 ServiceIncentiveLeaveCreditSeeder::class,
                 SeparatedEmployeeSeeder::class,
+                AnnouncementSeeder::class,
             ]);
         });
     }
