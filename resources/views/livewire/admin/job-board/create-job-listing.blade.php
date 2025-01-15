@@ -48,7 +48,7 @@
             </div>                    
         </div>
 
-        <div class="col-4">
+        <div class="col-3">
             @if($isJobSelected)
                 <header class="mt-2">
                     <x-headings.section-title title="{{ __('Job Information') }}" />
@@ -77,7 +77,7 @@
 
         @if($isJobSelected)
             @foreach ($jobDetails as $jobDetail)
-                <div class="col-4 text-start">
+                <div class="col-5 text-start">
                     <header class="mt-2">
                         <x-headings.section-title title="{{ __('Qualifications') }}" />
                     </header>
