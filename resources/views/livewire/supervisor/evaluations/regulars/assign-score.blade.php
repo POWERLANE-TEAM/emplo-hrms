@@ -123,17 +123,10 @@
                 </div>
 
                 <section class="col-md-12">
-                    <div class="row">
-                        <!-- Note -->
-                        <div class="col-5 ps-3">
-                            <x-info_panels.note
-                                note="{{ __('This form requires your signature. By clicking submit, your signature will be automatically added to the downloadable file.') }}" />
-                        </div>
-                        <!-- Button -->
-                        <div class="col-7 d-flex align-items-center text-end">
-                            <x-buttons.main-btn label="Submit Evaluation" wire:click.prevent="save" :nonce="$nonce"
-                                :disabled="false" class="w-50" :loading="'Submitting...'" />
-                        </div>
+                    <!-- Button -->
+                    <div class="d-flex align-items-center text-end">
+                        <x-buttons.main-btn label="Submit Evaluation" wire:click.prevent="save" :nonce="$nonce"
+                            :disabled="false" class="w-50" :loading="'Submitting...'" />
                     </div>
                 </section>
             </section>
