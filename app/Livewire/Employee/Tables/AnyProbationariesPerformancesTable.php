@@ -2,20 +2,19 @@
 
 namespace App\Livewire\Employee\Tables;
 
-use App\Models\Employee;
-use Illuminate\Support\Str;
-use Illuminate\Support\Carbon;
 use App\Enums\EmploymentStatus;
-use Livewire\Attributes\Locked;
+use App\Models\Employee;
 use App\Models\PerformanceRating;
+use App\Models\ProbationaryPerformancePeriod;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Database\Eloquent\Builder;
-use App\Enums\PerformanceEvaluationPeriod;
+use Illuminate\Support\Str;
 use Illuminate\View\ComponentAttributeBag;
-use App\Models\ProbationaryPerformancePeriod;
-use Rappasoft\LaravelLivewireTables\Views\Column;
+use Livewire\Attributes\Locked;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class AnyProbationariesPerformancesTable extends DataTableComponent
@@ -28,7 +27,7 @@ class AnyProbationariesPerformancesTable extends DataTableComponent
     public function configure(): void
     {
         $this->setPrimaryKey('employee_id')
-        ->setTableRowUrl(fn($row) => $this->setRoute($row) . '/#overview')
+            ->setTableRowUrl(fn ($row) => $this->setRoute($row).'/#overview')
             ->setTableRowUrlTarget(fn () => '__blank');
         $this->setPageName('any-regulars-performance');
         $this->setEagerLoadAllRelationsEnabled();
@@ -70,7 +69,7 @@ class AnyProbationariesPerformancesTable extends DataTableComponent
 
         $this->setTdAttributes(function (Column $column, $row, $columnIndex, $rowIndex) {
             return [
-                'class' => $column->getTitle() === 'Evaluatee' ? 'text-md-start' :'text-md-center',
+                'class' => $column->getTitle() === 'Evaluatee' ? 'text-md-start' : 'text-md-center',
             ];
         });
 
@@ -90,10 +89,10 @@ class AnyProbationariesPerformancesTable extends DataTableComponent
     }
 
     private function setRoute(Employee $employee)
-    {   
+    {
         $evaluation = $employee->performancesAsProbationary;
 
-        session()->put('final_rating', 
+        session()->put('final_rating',
             $this->computeFinalRating($evaluation),
         );
 
@@ -127,30 +126,30 @@ class AnyProbationariesPerformancesTable extends DataTableComponent
             $categoryRatings = $item->details->first()?->categoryRatings;
 
             if ($categoryRatings) {
-                $totalRatings = $categoryRatings->sum(fn($subitem) => $subitem->rating->perf_rating);
+                $totalRatings = $categoryRatings->sum(fn ($subitem) => $subitem->rating->perf_rating);
                 $countRatings = $categoryRatings->count();
-                
+
                 $carry['total'] += $totalRatings;
                 $carry['count'] += $countRatings;
             }
 
             return $carry;
         }, ['total' => 0, 'count' => 0]);
-    
+
         $sum = $totals['total'];
         $countSum = $totals['count'];
-    
+
         $mean = $countSum > 0 ? $sum / $countSum : 0;
         $format = number_format($mean, 2, '.');
         $rounded = round($mean);
         $avg = (int) $rounded;
 
         $key = config('cache.keys.performance.ratings');
-    
+
         $performanceRatings = Cache::rememberForever($key, function () {
             return PerformanceRating::all();
         });
-    
+
         $scale = $performanceRatings->firstWhere('perf_rating', $avg)?->perf_rating_name;
 
         return compact('format', 'scale');
@@ -164,22 +163,22 @@ class AnyProbationariesPerformancesTable extends DataTableComponent
                     $name = Str::headline($row->full_name);
                     $photo = $row->account->photo;
                     $id = $row->employee_id;
-            
+
                     return '<div class="d-flex align-items-center">
-                                <img src="' . e($photo) . '" alt="User Picture" class="rounded-circle me-3" style="width: 38px; height: 38px;">
+                                <img src="'.e($photo).'" alt="User Picture" class="rounded-circle me-3" style="width: 38px; height: 38px;">
                                 <div>
-                                    <div>' . e($name) . '</div>
-                                    <div class="text-muted fs-6">Employee ID: ' . e($id) . '</div>
+                                    <div>'.e($name).'</div>
+                                    <div class="text-muted fs-6">Employee ID: '.e($id).'</div>
                                 </div>
                             </div>';
                 })
                 ->html()
-                ->sortable(fn (Builder $query, $direction) => $query->orderBy('last_name' ,$direction))
+                ->sortable(fn (Builder $query, $direction) => $query->orderBy('last_name', $direction))
                 ->searchable(function (Builder $query, $searchTerm) {
                     return $query->whereLike('first_name', "%{$searchTerm}%")
                         ->orWhereLike('middle_name', "%{$searchTerm}%")
                         ->orWhereLike('last_name', "%{$searchTerm}%");
-                }),    
+                }),
 
             Column::make(__('Results'))
                 ->label(function ($row) {
@@ -193,12 +192,14 @@ class AnyProbationariesPerformancesTable extends DataTableComponent
             Column::make(__('Final Rating'))
                 ->label(function ($row) {
                     $finalRating = $this->computeFinalRating($row->performancesAsProbationary);
+
                     return $finalRating['format'];
                 }),
 
             Column::make(__('Performance Scale'))
                 ->label(function ($row) {
                     $finalRating = $this->computeFinalRating($row->performancesAsProbationary);
+
                     return $finalRating['scale'];
                 }),
 
@@ -212,7 +213,7 @@ class AnyProbationariesPerformancesTable extends DataTableComponent
             //     }),
         ];
     }
-    
+
     public function filters(): array
     {
         return [
@@ -223,11 +224,11 @@ class AnyProbationariesPerformancesTable extends DataTableComponent
                         $subQuery->where('period_id', $value);
                     });
                 })
-                ->setFilterPillTitle('Period')
-                // ->setFilterDefaultValue(RegularPerformancePeriod::latest()->first()->period_id)
+                ->setFilterPillTitle('Period'),
+            // ->setFilterDefaultValue(RegularPerformancePeriod::latest()->first()->period_id)
         ];
     }
-    
+
     private function getPeriodOptions(): array
     {
         return ProbationaryPerformancePeriod::all()

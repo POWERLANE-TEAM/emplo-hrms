@@ -46,7 +46,7 @@ class JobsListCard extends Component
             return $text;
         }
 
-        return preg_replace_callback('/(' . preg_quote($search, '/') . ')/i', function ($matches) {
+        return preg_replace_callback('/('.preg_quote($search, '/').')/i', function ($matches) {
             return "<mark>{$matches[1]}</mark>";
         }, $text);
     }
@@ -62,14 +62,14 @@ class JobsListCard extends Component
     {
         $query->where(function ($query) use ($search) {
             $query->WhereHas('jobTitle', function ($query) use ($search) {
-                $query->where('job_title', 'ilike', '%' . $search . '%')
-                    ->orWhere('job_desc', 'ilike', '%' . $search . '%');
+                $query->where('job_title', 'ilike', '%'.$search.'%')
+                    ->orWhere('job_desc', 'ilike', '%'.$search.'%');
             })
                 // ->orWhereHas('jobTitle.specificAreas', function ($query) use ($search) {
                 //     $query->where('area_name', 'ilike', '%' . $search . '%');
                 // })
                 ->orWhereHas('jobTitle.jobFamily', function ($query) use ($search) {
-                    $query->where('job_family_name', 'ilike', '%' . $search . '%');
+                    $query->where('job_family_name', 'ilike', '%'.$search.'%');
                 });
         });
     }

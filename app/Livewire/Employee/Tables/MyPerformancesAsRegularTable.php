@@ -2,13 +2,13 @@
 
 namespace App\Livewire\Employee\Tables;
 
-use Livewire\Attributes\Locked;
 use App\Models\RegularPerformance;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\ComponentAttributeBag;
-use Rappasoft\LaravelLivewireTables\Views\Column;
+use Livewire\Attributes\Locked;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 
 class MyPerformancesAsRegularTable extends DataTableComponent
 {
@@ -23,9 +23,9 @@ class MyPerformancesAsRegularTable extends DataTableComponent
             ->setTableRowUrl(function ($row) {
                 return route("{$this->routePrefix}.performances.regular.show", [
                     'performance' => $row->regular_performance_id,
-                ]) . '/#overview';
+                ]).'/#overview';
             })
-            ->setTableRowUrlTarget(fn() => '__blank');
+            ->setTableRowUrlTarget(fn () => '__blank');
         $this->setPageName('my-regular-performance');
         $this->setEagerLoadAllRelationsEnabled();
         $this->setSingleSortingDisabled();
@@ -79,7 +79,7 @@ class MyPerformancesAsRegularTable extends DataTableComponent
                     'attributes' => new ComponentAttributeBag([
                         'class' => 'fs-5 py-1 text-secondary-emphasis fw-medium text-underline',
                     ]),
-                    'heading' => __('Current Period: ') . now()->format('F d, Y'),
+                    'heading' => __('Current Period: ').now()->format('F d, Y'),
                 ],
             ],
         ]);
@@ -128,6 +128,7 @@ class MyPerformancesAsRegularTable extends DataTableComponent
                 ->label(function ($row) {
                     if ($row) {
                         $finalRating = $row->final_rating;
+
                         return $finalRating['ratingAvg'];
                     } else {
                         return '-';
@@ -138,6 +139,7 @@ class MyPerformancesAsRegularTable extends DataTableComponent
                 ->label(function ($row) {
                     if ($row) {
                         $finalRating = $row->final_rating;
+
                         return $finalRating['performanceScale'];
                     } else {
                         return '-';

@@ -5,11 +5,10 @@ namespace App\Http\Controllers\Separation;
 use App\Enums\AccountType;
 use App\Enums\FilePath;
 use App\Enums\ResignationStatus;
-use App\Http\Helpers\RouteHelper;
 use App\Http\Controllers\Controller;
+use App\Http\Helpers\RouteHelper;
 use App\Models\Employee;
 use App\Models\EmployeeDoc;
-use App\Models\Resignation;
 use Illuminate\Http\Request;
 
 class ResignationController extends Controller
@@ -48,34 +47,31 @@ class ResignationController extends Controller
 
             $hashedName = $resignationLetter->hashName();
 
-
             $user = auth()->user();
-
 
             if ($user->account_type != AccountType::EMPLOYEE->value) {
                 abort(403);
             }
 
-            if ($user->account->documents()->where('file_path', 'like', '%' . FilePath::RESIGNATION->value . '%')->exists()) {
-                 abort(400, 'Resignation letter already exists.');
+            if ($user->account->documents()->where('file_path', 'like', '%'.FilePath::RESIGNATION->value.'%')->exists()) {
+                abort(400, 'Resignation letter already exists.');
             }
 
             $path = $resignationLetter->storeAs(FilePath::RESIGNATION->value, $hashedName, 'public');
-
 
             $employeeDoc = EmployeeDoc::create([
                 'employee_id' => auth()->user()->account->employee_id,
                 'file_path' => $path,
             ]);
 
-            $resignation =  $employeeDoc->resignation()->create([
+            $resignation = $employeeDoc->resignation()->create([
                 'emp_resignation_doc_id' => $employeeDoc->emp_doc_id,
                 'resignation_status_id' => ResignationStatus::PENDING->value,
             ]);
 
-            if(!$isValidated){
+            if (! $isValidated) {
                 return redirect()->route('employee.separation.index');
-            }else{
+            } else {
                 return $resignation;
             }
 
@@ -104,7 +100,7 @@ class ResignationController extends Controller
 
         $employee = RouteHelper::validateModel(Employee::class, $employee);
 
-        if(true){
+        if (true) {
             return view('employee.separation.resignation.review', ['employee' => $employee]);
         }
     }

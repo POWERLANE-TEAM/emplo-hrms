@@ -6,25 +6,26 @@ use Livewire\Component;
 
 class IssueResolutionChart extends Component
 {
-
     /*
      * BACK-END REPLACE / REQUIREMENTS:
-     * 
+     *
      * ONLY FETCH ROWS FROM SELECTED YEAR.
-     * 
+     *
      * FETCH FROM DATABASE:
      * 1. Fetch all of the completed issues' columns: date_submitted & date_completed.
      * 2. After fetching, replace/populate the $data in mount() function.
-     * 
+     *
      * ADDITIONAL NOTES
      * ► This just needs fetching from the database. The logic is already implemented.
-     * 
+     *
      */
 
     public $selectedYear;
 
     public $issueResolutionData;
+
     public $yearlyData;
+
     public $monthlyData;
 
     public function mount()
@@ -221,14 +222,14 @@ class IssueResolutionChart extends Component
             $month = date('Y-m', $dateResolved); // 'YYYY-MM' format for monthly breakdown
 
             // Sum up the days by year and increment the issue count
-            if (!isset($this->yearlyData[$year])) {
+            if (! isset($this->yearlyData[$year])) {
                 $this->yearlyData[$year] = ['total_days' => 0, 'count' => 0];
             }
             $this->yearlyData[$year]['total_days'] += $resolvedDays;
             $this->yearlyData[$year]['count']++;
 
             // Sum up the days by month and increment the issue count
-            if (!isset($this->monthlyData[$month])) {
+            if (! isset($this->monthlyData[$month])) {
                 $this->monthlyData[$month] = ['total_days' => 0, 'count' => 0];
             }
             $this->monthlyData[$month]['total_days'] += $resolvedDays;
@@ -262,17 +263,17 @@ class IssueResolutionChart extends Component
 
     public function updated($name)
     {
-        if ($name === 'selectedYear' && !empty($this->selectedYear)) {
-            logger('ISSUE CHART - Selected Year updated to: ' . $this->selectedYear);
+        if ($name === 'selectedYear' && ! empty($this->selectedYear)) {
+            logger('ISSUE CHART - Selected Year updated to: '.$this->selectedYear);
         }
     }
 
     public function render()
-    {   
+    {
         return view('livewire.hr-manager.reports.issue-resolution-chart', [
             'issueResolutionData' => $this->issueResolutionData,
             'yearlyData' => $this->yearlyData,
-            'monthlyData' => $this->monthlyData
+            'monthlyData' => $this->monthlyData,
         ]);
     }
 }

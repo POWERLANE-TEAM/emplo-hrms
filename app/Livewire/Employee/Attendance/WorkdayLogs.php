@@ -2,10 +2,10 @@
 
 namespace App\Livewire\Employee\Attendance;
 
-use Livewire\Component;
 use App\Models\Employee;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Reactive;
+use Livewire\Component;
 
 class WorkdayLogs extends Component
 {

@@ -26,8 +26,9 @@ class ApplicationDocController extends Controller
             return view('employee.pre-employment-copy');
         }
 
-        if(!auth()->user()->account_type ==  AccountType::APPLICANT->value)
+        if (! auth()->user()->account_type == AccountType::APPLICANT->value) {
             return redirect()->route('employee.general.documents.all');
+        }
 
         return view('employee.pre-employment');
 
@@ -61,7 +62,7 @@ class ApplicationDocController extends Controller
             $doc_id = $request->input('doc_id');
             echo $doc_id;
 
-            $hashed_name = $prefix . '_' . dechex($doc_id) . '_' . $file->hashName();
+            $hashed_name = $prefix.'_'.dechex($doc_id).'_'.$file->hashName();
             echo $hashed_name;
 
             $user = Auth::user();
@@ -76,11 +77,11 @@ class ApplicationDocController extends Controller
             $first_name = $preemployed_user->account->first_name;
             $last_name = $preemployed_user->account->last_name;
 
-            $user_folder = $first_name . '_' . $last_name . '_' . dechex($user_id);
+            $user_folder = $first_name.'_'.$last_name.'_'.dechex($user_id);
 
             $application_id = $preemployed_user->account->application->application_id;
 
-            $path = $file->storeAs(FilePath::PRE_EMPLOYMENT->value . "$user_folder", $hashed_name, 'public');
+            $path = $file->storeAs(FilePath::PRE_EMPLOYMENT->value."$user_folder", $hashed_name, 'public');
 
             /* Needs to be updated to store in application docs instead */
 

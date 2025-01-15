@@ -2,14 +2,14 @@
 
 namespace App\Livewire\Employee\Tables\Basic;
 
-use App\Models\Overtime;
-use Livewire\Attributes\On;
-use Illuminate\Support\Carbon;
 use App\Enums\OvertimeRequestStatus;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Overtime;
 use Illuminate\Database\Eloquent\Builder;
-use Rappasoft\LaravelLivewireTables\Views\Column;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\On;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateFilter;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
@@ -46,7 +46,7 @@ class ArchiveOvertimesTable extends DataTableComponent
                 'wire:click' => "\$dispatchTo(
                     'employee.overtimes.overtime-summary-approval', 
                     'showOvertimeSummaryApproval', 
-                    { eventPayload: ".json_encode($eventPayload)."})",
+                    { eventPayload: ".json_encode($eventPayload).'})',
             ];
         });
 
@@ -72,19 +72,19 @@ class ArchiveOvertimesTable extends DataTableComponent
     private function createEventPayload($row)
     {
         return [
-            'payroll'               => $row->payrollApproval->payroll->cut_off,
-            'work_performed'        => $row->work_performed,
-            'date'                  => Carbon::make($row->date)->format('F d, Y'),
-            'start_time'            => $row->start_time,
-            'end_time'              => $row->end_time,
-            'hours_requested'       => $row->hours_requested,
-            'authorizer_signed_at'  => $row->authorizer_signed_at,
-            'authorizer'            => $row?->authorizedBy?->full_name,
-            'denied_at'             => $row->denied_at,
-            'denier'                => $row?->deniedBy?->full_name,
-            'feedback'              => $row->feedback,
-            'filed_at'              => $row->filed_at,
-            'modified_at'           => $row->modified_at,
+            'payroll' => $row->payrollApproval->payroll->cut_off,
+            'work_performed' => $row->work_performed,
+            'date' => Carbon::make($row->date)->format('F d, Y'),
+            'start_time' => $row->start_time,
+            'end_time' => $row->end_time,
+            'hours_requested' => $row->hours_requested,
+            'authorizer_signed_at' => $row->authorizer_signed_at,
+            'authorizer' => $row?->authorizedBy?->full_name,
+            'denied_at' => $row->denied_at,
+            'denier' => $row?->deniedBy?->full_name,
+            'feedback' => $row->feedback,
+            'filed_at' => $row->filed_at,
+            'modified_at' => $row->modified_at,
         ];
     }
 
@@ -99,7 +99,7 @@ class ArchiveOvertimesTable extends DataTableComponent
             ->select('*')
             ->where('employee_id', Auth::user()->account->employee_id);
     }
-    
+
     #[On('changesSaved')]
     public function refreshComponent()
     {
@@ -111,6 +111,7 @@ class ArchiveOvertimesTable extends DataTableComponent
         return $this->builder()->get()
             ->mapWithKeys(function ($item) {
                 $payroll = $item->payrollApproval->payroll;
+
                 return [$payroll->payroll_id => $payroll->cut_off];
             })
             ->toArray();
@@ -132,10 +133,10 @@ class ArchiveOvertimesTable extends DataTableComponent
             Column::make(__('End Time'))
                 ->sortable()
                 ->setSortingPillDirections('Asc', 'Desc'),
-            
+
             Column::make(__('Hours Requested'))
                 ->label(fn ($row) => $row->hoursRequested),
-            
+
             Column::make(__('Date Filed'))
                 ->label(fn ($row) => $row->filed_at)
                 ->sortable(function (Builder $query, $direction) {
@@ -195,7 +196,7 @@ class ArchiveOvertimesTable extends DataTableComponent
                             $subquery->whereNotNull('denied_at');
                         }
                     });
-                })
+                }),
         ];
     }
 }

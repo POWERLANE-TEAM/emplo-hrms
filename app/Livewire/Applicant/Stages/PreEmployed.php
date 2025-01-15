@@ -14,11 +14,14 @@ class PreEmployed extends Component
 
     public Application $application;
 
-    protected /* ApplicationDoc */ $pendingDocuments;
+    /* ApplicationDoc */
+    protected $pendingDocuments;
 
-    protected /* ApplicationDoc */ $verifiedDocuments;
+    /* ApplicationDoc */
+    protected $verifiedDocuments;
 
-    protected /* ApplicationDoc */ $rejectedDocuments;
+    /* ApplicationDoc */
+    protected $rejectedDocuments;
 
     public function mount()
     {
@@ -40,14 +43,12 @@ class PreEmployed extends Component
         $this->dataChecks();
     }
 
-
     public function dataChecks()
     {
-        if (($this->pendingDocuments->count() + $this->pendingDocuments->count() + $this->pendingDocuments->count()) >  $this->premploymentRequirements->count()) {
+        if (($this->pendingDocuments->count() + $this->pendingDocuments->count() + $this->pendingDocuments->count()) > $this->premploymentRequirements->count()) {
             report('Document count is greater than the pre-employment requirements count');
         }
     }
-
 
     /**
      * Computes the overall status of the applicant based on the document verification process.
@@ -63,17 +64,17 @@ class PreEmployed extends Component
         if ($this->pendingDocuments->count() == $this->premploymentRequirements->count()) {
             return [
                 'pending',
-                'info'
+                'info',
             ];
         } elseif ($this->verifiedDocuments->count() == $this->premploymentRequirements->count()) {
             return [
                 'complete',
-                'success'
+                'success',
             ];
         } else {
             return [
                 'incomplete',
-                'danger'
+                'danger',
             ];
         }
     }
@@ -82,11 +83,10 @@ class PreEmployed extends Component
     public function premploymentRequirements()
     {
         return PreempRequirement::select('preemp_req_name')
-        ->where('preemp_req_name', '!=', 'Resume')
-        ->where('preemp_req_name', '!=', 'resume')
-        ->get();
+            ->where('preemp_req_name', '!=', 'Resume')
+            ->where('preemp_req_name', '!=', 'resume')
+            ->get();
     }
-
 
     public function render()
     {

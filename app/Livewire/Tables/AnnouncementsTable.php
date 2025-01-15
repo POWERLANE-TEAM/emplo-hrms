@@ -2,12 +2,12 @@
 
 namespace App\Livewire\Tables;
 
-use Illuminate\Support\Str;
 use App\Models\Announcement;
-use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
-use Rappasoft\LaravelLivewireTables\Views\Column;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 
 class AnnouncementsTable extends DataTableComponent
 {
@@ -65,7 +65,7 @@ class AnnouncementsTable extends DataTableComponent
         return Announcement::query()
             ->with([
                 'publisher' => [
-                    'account'
+                    'account',
                 ],
                 'offices',
             ]);
@@ -86,17 +86,17 @@ class AnnouncementsTable extends DataTableComponent
                     $name = Str::headline($row->publisher->full_name);
                     $photo = $row->publisher->account->photo;
                     $id = $row->publisher->employee_id;
-            
+
                     return '<div class="d-flex align-items-center">
-                                <img src="' . e($photo) . '" alt="User Picture" class="rounded-circle me-3" style="width: 38px; height: 38px;">
+                                <img src="'.e($photo).'" alt="User Picture" class="rounded-circle me-3" style="width: 38px; height: 38px;">
                                 <div>
-                                    <div>' . e($name) . '</div>
-                                    <div class="text-muted fs-6">Employee ID: ' . e($id) . '</div>
+                                    <div>'.e($name).'</div>
+                                    <div class="text-muted fs-6">Employee ID: '.e($id).'</div>
                                 </div>
                             </div>';
                 })
                 ->html()
-                ->sortable(fn (Builder $query, $direction) => $query->orderBy('last_name' ,$direction))
+                ->sortable(fn (Builder $query, $direction) => $query->orderBy('last_name', $direction))
                 ->searchable(function (Builder $query, $searchTerm) {
                     return $query->whereHas('publisher', function ($subquery) use ($searchTerm) {
                         $subquery->whereLike('first_name', "%{$searchTerm}%")

@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Employee;
 use App\Models\AttendanceLog;
+use App\Models\Employee;
 use Illuminate\Database\Seeder;
 
 class AttendanceLogSeeder extends Seeder

@@ -1,21 +1,16 @@
 <?php
 
 use App\Http\Controllers\Application\ApplicantController;
-use App\Http\Controllers\DocumentController;
-use App\Http\Controllers\ContentController;
 use App\Http\Controllers\ApplicationDocController;
-use App\Http\Controllers\ResumeController;
+use App\Http\Controllers\ContentController;
+use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\WebThemeController;
 use App\Livewire\Auth\FacebookOAuth;
 use App\Livewire\Auth\GoogleOAuth;
 use App\Livewire\Auth\GoogleOneTap;
 use App\Livewire\Auth\Logout;
-use Google\Cloud\AIPlatform\V1\Client\ModelServiceClient;
-use Google\Cloud\AIPlatform\V1\ListModelsRequest;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Storage;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
-
 
 Route::group([], function () {
     Route::get('/hiring', function () {
@@ -30,7 +25,6 @@ Route::get('/', function () {
 Route::post('/theme-preference/set', [WebThemeController::class, 'create'])
     ->middleware('throttle:4,1');
 
-
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/application/{application?}', [ApplicantController::class, 'show'])->name('applicant.dashboard');
 
@@ -39,7 +33,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/preemploy', [ApplicationDocController::class, 'create']);
     Route::post('/preemploy', [ApplicationDocController::class, 'store']);
 });
-
 
 Route::post('/resume/process', [DocumentController::class, 'recognizeText'])
     ->name('resume.process');
@@ -83,5 +76,3 @@ Route::get('/modal-content/{modalKey}', [ContentController::class, 'getModalCont
 Route::get('/forgot-password', function () {
     return view('password-recovery.index');
 });
-
-

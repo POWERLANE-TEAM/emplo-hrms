@@ -3,10 +3,10 @@
 namespace App\Livewire\Admin\Dashboard;
 
 use App\Models\User;
-use Livewire\Component;
 use Illuminate\Support\Carbon;
-use Livewire\Attributes\Locked;
 use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\Locked;
+use Livewire\Component;
 
 class InfoCards extends Component
 {

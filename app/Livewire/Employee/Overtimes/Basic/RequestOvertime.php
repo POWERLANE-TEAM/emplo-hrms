@@ -3,19 +3,19 @@
 namespace App\Livewire\Employee\Overtimes\Basic;
 
 use App\Enums\Payroll;
+use App\Livewire\Employee\Tables\Basic\ArchiveOvertimesTable;
 use App\Livewire\Employee\Tables\Basic\OvertimeSummariesTable;
+use App\Livewire\Employee\Tables\Basic\RecentOvertimesTable;
+use App\Models\Overtime;
 use App\Models\OvertimePayrollApproval;
 use App\Models\Payroll as PayrollModel;
-use Livewire\Component;
-use App\Models\Overtime;
-use Livewire\Attributes\On;
 use Illuminate\Support\Carbon;
-use Livewire\Attributes\Locked;
-use Livewire\Attributes\Computed;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use App\Livewire\Employee\Tables\Basic\RecentOvertimesTable;
-use App\Livewire\Employee\Tables\Basic\ArchiveOvertimesTable;
+use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\Locked;
+use Livewire\Attributes\On;
+use Livewire\Component;
 
 class RequestOvertime extends Component
 {
@@ -59,15 +59,15 @@ class RequestOvertime extends Component
         $this->authorize('submitOvertimeRequest', Auth::user());
         $this->authorize('submitOvertimeRequestToday', $this->employee);
         $this->authorize('submitNewOrAnotherOvertimeRequest', $this->employee);
-        
+
         $this->validate();
-            
+
         DB::transaction(function () {
-            $payroll            = $this->getOrStoreNewPayrollRecord();
-            $payrollApproval    = $this->storePayrollApproval($payroll);
+            $payroll = $this->getOrStoreNewPayrollRecord();
+            $payrollApproval = $this->storePayrollApproval($payroll);
             $this->storeOvertimeRequest($payrollApproval);
         });
-    
+
         $this->reset();
         $this->resetErrorBag();
 
@@ -97,8 +97,8 @@ class RequestOvertime extends Component
 
         return PayrollModel::firstOrCreate([
             'cut_off_start' => $cutoffAndPayout['start']->toDateString(),
-            'cut_off_end'   => $cutoffAndPayout['end']->toDateString(),
-            'payout'        => Payroll::getPayoutDate($this->state['date'])->toDateString(),
+            'cut_off_end' => $cutoffAndPayout['end']->toDateString(),
+            'payout' => Payroll::getPayoutDate($this->state['date'])->toDateString(),
         ]);
     }
 
@@ -117,12 +117,12 @@ class RequestOvertime extends Component
     private function storeOvertimeRequest(OvertimePayrollApproval $payrollApproval): Overtime
     {
         return $payrollApproval->overtimes()->create([
-            'employee_id'           => $this->employee->employee_id,
-            'payroll_approval_id'   => $payrollApproval->payroll_approval_id,
-            'work_performed'        => $this->state['workToPerform'],
-            'date'                  => $this->state['date'],
-            'start_time'            => $this->state['startTime'],
-            'end_time'              => $this->state['endTime'],
+            'employee_id' => $this->employee->employee_id,
+            'payroll_approval_id' => $payrollApproval->payroll_approval_id,
+            'work_performed' => $this->state['workToPerform'],
+            'date' => $this->state['date'],
+            'start_time' => $this->state['startTime'],
+            'end_time' => $this->state['endTime'],
         ]);
     }
 
@@ -135,27 +135,27 @@ class RequestOvertime extends Component
     public function rules(): array
     {
         return [
-            'state.workToPerform'   => 'required|string|max:100',
-            'state.date'            => 'required|date|after_or_equal:today',
-            'state.startTime'       => 'required|date_format:H:i',
-            'state.endTime'         => 'required|date_format:H:i|after:state.startTime',
+            'state.workToPerform' => 'required|string|max:100',
+            'state.date' => 'required|date|after_or_equal:today',
+            'state.startTime' => 'required|date_format:H:i',
+            'state.endTime' => 'required|date_format:H:i|after:state.startTime',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'state.workToPerform.required'  => __('Please provide a description.'),
-            'state.workToPerform.string'    => __('Description must be a valid string.'),
-            'state.workToPerform.max'       => __('Description must not exceed 100 characters.'),
-            'state.date.required'           => __('Please provide a valid date.'),
-            'state.date.date'               => __('The date must be a valid format.'),
-            'state.date.after_or_equal'     => __('The date must not be in the past.'),
-            'state.startTime.required'      => __('Please provide a start time.'),
-            'state.startTime.date_format'   => __('The start time must be in the format HH:mm.'),
-            'state.endTime.required'        => __('Please provide an end time.'),
-            'state.endTime.date_format'     => __('The end time must be in the format HH:mm.'),
-            'state.endTime.after'           => __('The end time must be after the start time.'),
+            'state.workToPerform.required' => __('Please provide a description.'),
+            'state.workToPerform.string' => __('Description must be a valid string.'),
+            'state.workToPerform.max' => __('Description must not exceed 100 characters.'),
+            'state.date.required' => __('Please provide a valid date.'),
+            'state.date.date' => __('The date must be a valid format.'),
+            'state.date.after_or_equal' => __('The date must not be in the past.'),
+            'state.startTime.required' => __('Please provide a start time.'),
+            'state.startTime.date_format' => __('The start time must be in the format HH:mm.'),
+            'state.endTime.required' => __('Please provide an end time.'),
+            'state.endTime.date_format' => __('The end time must be in the format HH:mm.'),
+            'state.endTime.after' => __('The end time must be after the start time.'),
         ];
     }
 

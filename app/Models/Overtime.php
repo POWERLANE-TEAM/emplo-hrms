@@ -2,16 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Str;
 use App\Enums\ActivityLogName;
-use Illuminate\Support\Carbon;
-use Spatie\Activitylog\LogOptions;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Overtime extends Model
 {
@@ -40,7 +40,7 @@ class Overtime extends Model
             set: fn (mixed $value) => Carbon::make($value)->format('H:i:s'),
         );
     }
-    
+
     /**
      * Accessor / mutator for end time attribute.
      */
@@ -69,10 +69,10 @@ class Overtime extends Model
     {
         $start = Carbon::createFromFormat('g:i A', $this->start_time);
         $end = Carbon::createFromFormat('g:i A', $this->end_time);
-    
+
         return $start->diff($end)->format('%h hours and %i minutes');
     }
-    
+
     public function date(): Attribute
     {
         return Attribute::make(
@@ -110,7 +110,7 @@ class Overtime extends Model
      */
     public function authorizedBy(): BelongsTo
     {
-        return $this->belongsTo(Employee::class, 'authorizer', 'employee_id'); 
+        return $this->belongsTo(Employee::class, 'authorizer', 'employee_id');
     }
 
     /**

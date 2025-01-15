@@ -2,15 +2,13 @@
 
 namespace Database\Seeders;
 
-use App\Models\Employee;
-use App\Models\Applicant;
-use App\Models\JobVacancy;
-use App\Models\Application;
-use Illuminate\Support\Carbon;
-use Illuminate\Database\Seeder;
-use App\Enums\ApplicationStatus;
-use Illuminate\Support\Facades\DB;
 use App\Enums\ServiceIncentiveLeave;
+use App\Models\Applicant;
+use App\Models\Application;
+use App\Models\Employee;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class ServiceIncentiveLeaveCreditSeeder extends Seeder
 {
@@ -52,16 +50,16 @@ class ServiceIncentiveLeaveCreditSeeder extends Seeder
                 ) {
                     $increase = 12;
 
-                // => 3 yrs and < 4 yrs is increase of 10
-                } else if ($dateHired->copy()->between($now->copy()->subYears(4), $now->copy()->subYears(3), false)) {
+                    // => 3 yrs and < 4 yrs is increase of 10
+                } elseif ($dateHired->copy()->between($now->copy()->subYears(4), $now->copy()->subYears(3), false)) {
                     $increase = 10;
 
-                // => 2 yrs and < 3 yrs is increase of 7
-                } else if ($dateHired->copy()->between($now->copy()->subYears(3), $now->copy()->subYears(2), false)) {
+                    // => 2 yrs and < 3 yrs is increase of 7
+                } elseif ($dateHired->copy()->between($now->copy()->subYears(3), $now->copy()->subYears(2), false)) {
                     $increase = 7;
 
-                // => 1 yr and < 2 yrs is increase of 5
-                } else if ($dateHired->copy()->between($now->copy()->subYears(2), $now->copy()->subYear(), false)) {
+                    // => 1 yr and < 2 yrs is increase of 5
+                } elseif ($dateHired->copy()->between($now->copy()->subYears(2), $now->copy()->subYear(), false)) {
                     $increase = 5;
                 }
 

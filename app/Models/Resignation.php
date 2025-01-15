@@ -19,7 +19,6 @@ class Resignation extends Model
         'resignation_id',
     ];
 
-
     // Need modify relationship if applicable
 
     public function resignationLetter()

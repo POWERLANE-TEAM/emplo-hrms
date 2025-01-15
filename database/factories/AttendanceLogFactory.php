@@ -19,14 +19,14 @@ class AttendanceLogFactory extends Factory
     public function definition(): array
     {
         $type = fake()->randomElement(array_map(fn ($case) => $case->value, BiometricPunchType::cases()));
-    
+
         $timestamp = match ($type) {
             BiometricPunchType::CHECK_IN->value => fake()->dateTimeBetween('8:00', '10:00')->format('Y-m-d H:i:s'),
             BiometricPunchType::CHECK_OUT->value => fake()->dateTimeBetween('16:00', '18:00')->format('Y-m-d H:i:s'),
             BiometricPunchType::OVERTIME_IN->value => fake()->dateTimeBetween('18:00', '20:00')->format('Y-m-d H:i:s'),
             BiometricPunchType::OVERTIME_OUT->value => fake()->dateTimeBetween('20:00', '23:00')->format('Y-m-d H:i:s'),
         };
-    
+
         return [
             'uid' => fake()->unique()->randomNumber(),
             'employee_id' => Employee::inRandomOrder()->first()->employee_id,
@@ -34,5 +34,5 @@ class AttendanceLogFactory extends Factory
             'type' => $type,
             'timestamp' => $timestamp,
         ];
-    }    
+    }
 }

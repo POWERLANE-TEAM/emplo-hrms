@@ -2,11 +2,11 @@
 
 namespace App\Livewire\Tables;
 
+use App\Livewire\Tables\Defaults as DefaultTableConfig;
 use App\Models\Employee;
 use App\Models\EmploymentStatus;
 use App\Models\JobTitle;
 use Carbon\Carbon;
-use App\Livewire\Tables\Defaults as DefaultTableConfig;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\View\ComponentAttributeBag;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
@@ -46,15 +46,13 @@ class EmployeesTable extends DataTableComponent
         $this->setPrimaryKey('application_id')
             ->setTableRowUrl(function ($row) use ($routePrefix) {
 
-                return route($routePrefix . '.employees.information', ['employee' => $row->employee_id]) . '/#information';
+                return route($routePrefix.'.employees.information', ['employee' => $row->employee_id]).'/#information';
             })
-            ->setTableRowUrlTarget(fn() => '__blank');
-
+            ->setTableRowUrlTarget(fn () => '__blank');
 
         $this->configuringStandardTableMethods();
 
         // $this->setDefaultSort('applications.hired_at', 'desc');
-
 
         $this->setConfigurableAreas([
             'toolbar-left-start' => [
@@ -92,7 +90,7 @@ class EmployeesTable extends DataTableComponent
     {
         return [
             Column::make('Full Name')
-                ->label(fn($row) => $row->fullname)
+                ->label(fn ($row) => $row->fullname)
                 ->sortable(function ($query, $direction) {
                     return $query->orderBy('last_name', $direction)
                         ->orderBy('first_name', $direction)
@@ -103,15 +101,15 @@ class EmployeesTable extends DataTableComponent
                 })
                 ->excludeFromColumnSelect(),
             Column::make('Job Title')
-                ->label(fn($row) => $row->jobTitle->job_title)
+                ->label(fn ($row) => $row->jobTitle->job_title)
                 ->searchable(function (Builder $query, $searchTerm) {
                     return $this->applyJobPositionSearch($query, $searchTerm);
                 }),
             Column::make('Department')
-                ->label(fn($row) => $row->jobTitle->department->department_name),
+                ->label(fn ($row) => $row->jobTitle->department->department_name),
 
             Column::make('Employment')
-                ->label(fn($row) => $row->status->emp_status_name),
+                ->label(fn ($row) => $row->status->emp_status_name),
 
             /**
              * |--------------------------------------------------------------------------
@@ -120,11 +118,11 @@ class EmployeesTable extends DataTableComponent
              * Description
              */
             Column::make('Shift')
-                ->label(fn($row) => $row->shift->shift_name)
+                ->label(fn ($row) => $row->shift->shift_name)
                 ->deselected(),
 
             Column::make('Hired Date')
-                ->label(fn($row) => $row->application ? Carbon::parse($row->application->hired_at)->format('F j, Y') : 'No recorded.')
+                ->label(fn ($row) => $row->application ? Carbon::parse($row->application->hired_at)->format('F j, Y') : 'No recorded.')
                 ->setSortingPillDirections('Oldest first', 'Latest first')
                 ->sortable(function ($query, $direction) {
                     return $query->orderBy('applications.hired_at', $direction);
@@ -190,7 +188,6 @@ class EmployeesTable extends DataTableComponent
      * |--------------------------------------------------------------------------
      * Description
      */
-
 
     /**
      * Apply a case-insensitive search using the 'ILIKE' operator on the 'job_title' field in the query.

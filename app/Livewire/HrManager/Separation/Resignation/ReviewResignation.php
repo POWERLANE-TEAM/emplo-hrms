@@ -8,17 +8,16 @@ use Livewire\Component;
 
 class ReviewResignation extends Component
 {
-
     public Employee $employee;
 
     public bool $hasResignation;
 
     public function mount()
     {
-        $this->hasResignation = $this->employee->documents()->where('file_path', 'like', '%' . FilePath::RESIGNATION->value . '%')->exists();
+        $this->hasResignation = $this->employee->documents()->where('file_path', 'like', '%'.FilePath::RESIGNATION->value.'%')->exists();
 
         if ($this->hasResignation) {
-            $this->employee->loadMissing('lifecycle','documents');
+            $this->employee->loadMissing('lifecycle', 'documents');
         }
     }
 

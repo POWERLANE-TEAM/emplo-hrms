@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 
 class OvertimePayrollApproval extends Model
 {
@@ -56,7 +56,7 @@ class OvertimePayrollApproval extends Model
         return $this->belongsTo(Payroll::class, 'payroll_id', 'payroll_id');
     }
 
-        /**
+    /**
      * Get the initial approver who approved/signed the overtime.
      */
     public function initialApprover(): BelongsTo
