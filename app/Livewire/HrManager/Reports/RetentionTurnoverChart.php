@@ -3,63 +3,51 @@
 namespace App\Livewire\HrManager\Reports;
 
 use Livewire\Component;
+use App\Models\EmployeeLifecycle;
 
 class RetentionTurnoverChart extends Component
 {
-
-    /*
-     * BACK-END REPLACE / REQUIREMENTS:
-     * 
-     * ONLY FETCH ROWS FROM SELECTED YEAR.
-     * 
-     * FETCH FROM DATABASE:
-     * 1. 'total_employees_start': Start of year total count of employees.
-     * 2. 'total_employees_end': End of year total employees count.
-     * --> These needs to be store somewhere in the db.
-     * 
-     * 3. 'employees_left': Employees who left during the year. This is determined by their resigned_date.
-     * 
-     * 
-     * ADDITIONAL NOTES
-     * ► This just needs fetching from the database. The logic is already implemented.
-     * 
-     */
-
-    public $selectedYear;
-
+    public $year;
     public $retentionData;
 
     public function mount()
     {
+        $this->fetchRetentionData();
+    }
 
-        $this->selectedYear;
+    /**
+     * Fetch retention data for the selected year.
+     */
+    public function fetchRetentionData()
+    {
+        $totalEmployeesStart = EmployeeLifecycle::whereYear('started_at', $this->year)
+            ->count();
 
-        // Sample yearly data
+        $employeesLeft = EmployeeLifecycle::whereYear('separated_at', $this->year)
+            ->whereNotNull('separated_at')
+            ->count();
+
+        $totalEmployeesEnd = $totalEmployeesStart - $employeesLeft;
+
         $data = [
-            'total_employees_start' => 150,    // Start of year
-            'employees_left' => 3,            // Left during the year
-            'total_employees_end' => 147        // End of year
+            'total_employees_start' => $totalEmployeesStart,
+            'employees_left' => $employeesLeft,
+            'total_employees_end' => $totalEmployeesEnd,
         ];
 
-        // Calculate rates
-        $turnover_rate = ($data['employees_left'] / $data['total_employees_start']) * 100;
-        $retention_rate = 100 - $turnover_rate;
+        $turnoverRate = ($totalEmployeesStart > 0)
+            ? ($employeesLeft / $totalEmployeesStart) * 100
+            : 0;
+        $retentionRate = 100 - $turnoverRate;
 
         $this->retentionData = [
-            'year' => date('Y'),
+            'year' => $this->year,
             'total_start' => $data['total_employees_start'],
             'total_left' => $data['employees_left'],
             'total_stayed' => $data['total_employees_end'],
-            'turnover_rate' => round($turnover_rate, 1),
-            'retention_rate' => round($retention_rate, 1)
+            'turnover_rate' => round($turnoverRate, 1),
+            'retention_rate' => round($retentionRate, 1)
         ];
-    }
-
-    public function updated($name)
-    {
-        if ($name === 'selectedYear' && !empty($this->selectedYear)) {
-            logger('RETENTION CHART - Selected Year updated to: ' . $this->selectedYear);
-        }
     }
 
     public function render()

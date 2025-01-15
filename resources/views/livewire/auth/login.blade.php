@@ -90,6 +90,6 @@
 
         @livewire('auth.google-o-auth')
 
-        @livewire('auth.facebook-o-auth')
+        <!-- @livewire('auth.facebook-o-auth') -->
     </form>
 </section>

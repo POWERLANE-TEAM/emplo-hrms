@@ -1,3 +1,6 @@
+@use('App\Enums\UserRole')
+@use('App\Enums\UserPermission')
+
 <footer class="external shadow-lg z-0 mt-5 ">
     <div class="d-flex footer-info row py-3 py-md-4 mx-1 mx-md-5">
         <section class="col-12 col-md-4 order-0 px-3 py-3  ">
@@ -15,9 +18,8 @@
                 Company
             </header>
             <nav aria-labelledby="footer-company-links" class=" d-flex flex-column gap-0 row-gap-3">
-                <x-nav-link href="/about" class="small unstyled" d-block :active="request()->is('#')">About Us</x-nav-link>
-                <x-nav-link href="#" class="small d-block unstyled" :active="request()->is('#')">Careers</x-nav-link>
-                <x-nav-link href="#" class="small d-block unstyled" :active="request()->is('#')">Background</x-nav-link>
+                <a href="/" class="small d-block unstyled">About Us</a>
+                <a href="/information-centre?section=about" class="small d-block unstyled">Background</a>
             </nav>
         </section>
         <section class="col-6 col-md-2 order-3  px-3 py-3 ">
@@ -25,8 +27,8 @@
                 Legal Links
             </header>
             <nav aria-labelledby="footer-legal-links" class="d-flex flex-column gap-0 row-gap-3">
-                <x-nav-link href="#" class="small d-block unstyled" :active="request()->is('#')">Terms of Use</x-nav-link>
-                <x-nav-link href="#" class="small d-block unstyled" :active="request()->is('#')">Privacy Policy</x-nav-link>
+            <a href="<?php echo $routePrefix === 'employee' ? '/information-centre?section=employee-terms-usage' : '/guest/information-centre?section=guest-terms-usage'; ?>" class="small d-block unstyled">Terms of Use</a>
+            <a href="<?php echo $routePrefix === 'employee' ? '/information-centre?section=employee-privacy-policy' : '/guest/information-centre?section=guest-privacy-policy'; ?>" class="small d-block unstyled">Privacy Policy</a>
             </nav>
         </section>
         <section class=" d-grid flex-column col-12 col-md-4 order-1 order-md-4 px-3 py-3   gap-3">

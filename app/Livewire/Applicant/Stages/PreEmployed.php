@@ -81,7 +81,10 @@ class PreEmployed extends Component
     #[Computed(persist: true)]
     public function premploymentRequirements()
     {
-        return PreempRequirement::select('preemp_req_name')->get();
+        return PreempRequirement::select('preemp_req_name')
+        ->where('preemp_req_name', '!=', 'Resume')
+        ->where('preemp_req_name', '!=', 'resume')
+        ->get();
     }
 
 

@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\EmployeeArchiveController;
 use App\Http\Controllers\FileManagerController;
 use App\Http\Controllers\PayslipController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TrainingController;
 use App\Models\Employee;
 use App\Enums\UserPermission;
 use Illuminate\Support\Facades\Route;
@@ -21,6 +23,7 @@ use App\Http\Controllers\RegularPerformanceController;
 use App\Http\Controllers\Application\ApplicationController;
 use App\Http\Controllers\ProbationaryPerformanceController;
 use App\Http\Controllers\RegularPerformancePlanController;
+use App\Http\Controllers\Separation\ResignationController;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 
 Route::middleware('guest')->group(function () {
@@ -120,7 +123,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     /**
      * Announcement
      */
-    Route::prefix('announcement')->name('announcement.')->group(function () {
+    Route::prefix('announcements')->name('announcements.')->group(function () {
         Route::get('/', function () {
             return view('employee.admin.announcements.index');
         })
@@ -347,14 +350,14 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         Route::get('/', [LeaveController::class, 'index'])
             ->name('index');
 
-        Route::get('balance', [LeaveController::class, 'myBalance'])
-            ->name('balance');
+        Route::get('balances', [LeaveController::class, 'subordinateBalance'])
+            ->can('approveSubordinateLeaveRequest')
+            ->name('balances');
 
-        Route::get('balance/subordinates', [LeaveController::class, 'subordinateBalance'])
-            ->name('balance.subordinates');
-
-        Route::get('balance/general', [LeaveController::class, 'generalBalance'])
-            ->name('balance.general');
+        Route::get('balances/general', [LeaveController::class, 'generalBalance'])
+            // ->can('approveAnyLeaveRequest')
+            ->can('approveLeaveRequestFinal')
+            ->name('balances.general');
 
         Route::get('overview', [LeaveController::class, 'request'])
             ->name('overview');
@@ -366,6 +369,12 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
             ->can('viewLeaveRequest', 'leave')
             ->whereNumber('leave')
             ->name('show');
+
+        Route::get('attachments/{attachment}', [LeaveController::class, 'viewAttachment'])
+            ->name('attachments.show');
+
+        Route::get('{attachment}/download', [LeaveController::class, 'downloadAttachment'])
+            ->name('attachments.download');
 
         Route::get('requests', [LeaveController::class, 'request'])
             ->name('requests');
@@ -498,16 +507,15 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     });
 
 
-    /**
-     * Training
-     */
-    Route::get('/training/all', function () {
-        return view('employee.hr-manager.training.all');
-    })->name('training.all');
+    /** Training resource */
+    Route::prefix('trainings')->name('trainings.')->group(function () {
+        Route::get('/', [TrainingController::class, 'index'])
+            ->name('index');
 
-    Route::get('/training/records', function () {
-        return view('employee.hr-manager.training.records');
-    })->name('training.records');
+        Route::get('{employee}', [TrainingController::class, 'show'])
+            ->whereNumber('employee')
+            ->name('employee');
+    });
 
 
     /**
@@ -529,19 +537,18 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
      * Separation
      */
     Route::get('seperation/resignations', function () {
-        return view('employee.hr-manager.separation.resignation.all');
+        return view('employee.separation.resignation.all');
     })->name('separation.resignations');
 
-    Route::get('seperation/resignations/review', function () {
-        return view('employee.hr-manager.separation.resignation.review');
-    })->name('separation.resignations.review');
+    Route::get('{employee}/separation/resignations/review', [ResignationController::class, 'edit'])
+    ->name('separation.resignations.review');
 
     Route::get('seperation/coe', function () {
-        return view('employee.hr-manager.separation.coe.all');
+        return view('employee.separation.coe.all');
     })->name('separation.coe');
 
     Route::get('seperation/coe/request', function () {
-        return view('employee.hr-manager.separation.coe.request');
+        return view('employee.separation.coe.request');
     })->name('separation.coe.request');
 
     /**
@@ -555,14 +562,13 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     /**
      * Archive
      */
-    Route::get('/archive', function () {
-        return view('employee.hr-manager.archive.index');
-    })->name('employees.archive');
+    Route::prefix('archives')->name('archives.')->group(function () {
+        Route::get('/', [EmployeeArchiveController::class, 'index'])
+            ->name('index');
 
-    Route::get('/archive/records', function () {
-        return view('employee.hr-manager.archive.records');
-    })->name('employees.archive.records');
-
+        Route::get('{employee}', [EmployeeArchiveController::class, 'show'])
+            ->name('employee');
+    });
 
     /**
      * General: Dashboard
@@ -616,24 +622,23 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         Route::get('trainings', [FileManagerController::class, 'trainings'])
             ->name('trainings');
 
-        Route::get('incidents', [FileManagerController::class, 'incidents'])
-            ->name('incidents');
+        // Route::get('incidents', [FileManagerController::class, 'incidents'])
+        //     ->name('incidents');
 
         Route::get('issues', [FileManagerController::class, 'issues'])
             ->name('issues');
 
-        Route::get('leaves', [FileManagerController::class, 'leaves'])
-            ->name('leaves');
+        // Route::get('leaves', [FileManagerController::class, 'leaves'])
+        //     ->name('leaves');
     });
 
     /**
      * General: Separation
      */
-    Route::get('/separation/index', function () {
-        return view('employee.basic.separation.index');
+    Route::get('/separation', function () {
+        return view('employee.separation.basic.index');
     })->name('separation.index');
 
-    Route::get('/separation/file-resignation', function () {
-        return view('employee.basic.separation.file-resignation');
-    })->name('separation.file-resignation');
+    Route::get('/separation/resignation/file/request', [ResignationController::class, 'create'])
+    ->name('separation.resignation.create');
 });

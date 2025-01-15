@@ -1,5 +1,5 @@
 @extends('components.layout.employee.layout', ['description' => 'Employee Dashboard', 'nonce' => $nonce])
-@use ('Illuminate\View\ComponentAttributeBag')
+@use ('App\Models\Employee')
 
 @section('head')
     <title> {{ $employee->last_name }} | Employee Information</title>
@@ -33,10 +33,22 @@
 
     <section class="row pt-2">
         <div class="col-md-4">
-            <!-- BACK-END REPLACE: All Employees -->
-            <x-form.boxed-selectpicker id="incident_type" :nonce="$nonce" :required="true" :options="['employee_1' => 'Cristian Manalang', 'employee_2' => 'Jobert Owen']"
+            <x-form.boxed-selectpicker 
+                id="incident_type" 
+                :nonce="$nonce" 
+                :options="Employee::all()->mapWithKeys(fn ($item) => [$item->employee_id => $item->full_name])->toArray()"
+                onchange="handleEmployeeChange(this.value)"
                 placeholder="Select employee">
             </x-form.boxed-selectpicker>
+
+            <script>
+                const handleEmployeeChange = (employeeId) => {
+                    if (employeeId) {
+                        const url = `{{ route($routePrefix.'.employees.information', ['employee' => ':employeeId']) }}`.replace(':employeeId', employeeId);
+                        window.location.href = url;
+                    }                
+                }
+            </script>
         </div>
 
         <div class="col-md-8 d-flex align-items-center" wire:ignore>
@@ -55,19 +67,19 @@
             <livewire:hr-manager.employees.documents :$employee />
 
             <!-- Attendance Tab Section -->
-            <livewire:hr-manager.employees.attendance />
+            <livewire:hr-manager.employees.attendance :$employee />
 
             <!-- Payslips Tab Section -->
-            <livewire:hr-manager.employees.payslips />
+            <livewire:hr-manager.employees.payslips :$routePrefix :$employee />
 
             <!-- Contract Tab Section -->
             <livewire:hr-manager.employees.contract :$routePrefix :$employee />
 
             <!-- Leaves Tab Section -->
-            <livewire:hr-manager.employees.leaves />
+            <livewire:hr-manager.employees.leaves :$routePrefix :$employee />
 
             <!-- Overtime Tab Section -->
-            <livewire:hr-manager.employees.overtime />
+            <livewire:hr-manager.employees.overtime :$employee />
         </div>
     </section>
 @endsection

@@ -35,10 +35,6 @@
     @include('components.includes.tab_navs.leaves.general-leaves-navs')
 </div>
 
-<!-- REPLACE STATIC PAGE LINK: Leave Policy -->
-
-<x-info_panels.callout type="info" :description="__('Leave balances reset annually on January 1st. Learn more about the company\'s <a href=\'#\' class=\'text-link-blue hover-opacity\'>leave policy</a>')"></x-info_panels.callout>
-
-<!-- BACK-END REPLACE TABLE: Replace with Leave Balance table -->
+<x-info_panels.callout type="info" :description="__('Leave balances reset annually on January 1st. Learn more about the company\'s <a href=\'/information-centre?section=leave-policy\' class=\'text-link-blue hover-opacity\' target=\'blank\' >leave policy</a>')"></x-info_panels.callout>
 
 @endsection

@@ -8,19 +8,7 @@
 @endsection
 
 @pushOnce('pre-scripts')
-    {{--  --}}
-@endPushOnce
-
-@pushOnce('scripts')
-    {{-- @vite(['resources/js/employee/.js']) --}}
-
-    @rappasoftTableStyles
-
-    @rappasoftTableThirdPartyStyles
-
-    @rappasoftTableScripts
-
-    @rappasoftTableThirdPartyScripts
+    @vite(['resources/js/employee/hr-manager/dashboard.js'])
 @endPushOnce
 
 @pushOnce('styles')

@@ -18,7 +18,7 @@
                 <x-nav-link href="/hiring" class="nav-link" :active="request()->is('hiring')" activeLink="#job-listtings">Job
                     Listings</x-nav-link>
 
-                <x-nav-link href="/contact-us" class="nav-link" :active="request()->is('contact-us')">Contact</x-nav-link>
+                <!-- <x-nav-link href="/contact-us" class="nav-link" :active="request()->is('contact-us')">Contact</x-nav-link> -->
 
                 @guest
                     <x-nav-link href="/login" class="nav-link btn btn-lg btn-outline-secondary border border-white"

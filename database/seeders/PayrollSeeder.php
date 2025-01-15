@@ -37,7 +37,17 @@ class PayrollSeeder extends Seeder
                 'cut_off_start' => '2024-12-11',
                 'cut_off_end' => '2024-12-25',
                 'payout' => '2024-12-31',
-            ]
+            ],
+            [
+                'cut_off_start' => '2024-12-26',
+                'cut_off_end' => '2025-01-10',
+                'payout' => '2025-01-15',
+            ],
+            [
+                'cut_off_start' => '2025-01-11',
+                'cut_off_end' => '2025-01-25',
+                'payout' => '2025-01-31',
+            ],
         ];
 
         Payroll::insert($fakes);        

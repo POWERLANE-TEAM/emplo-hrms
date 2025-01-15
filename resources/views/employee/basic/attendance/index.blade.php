@@ -10,9 +10,6 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 @endsection
 
-@pushOnce('pre-scripts')
-@endPushOnce
-
 @pushOnce('scripts')
     @vite(['resources/js/employee/basic/attendance.js'])
 @endPushOnce
@@ -20,8 +17,8 @@
 @pushOnce('styles')
     @vite(['resources/css/employee/basic/attendance.css'])
     @vite(['resources/js/employee/calendar.js'])
-
 @endPushOnce
+
 @section('content')
 
 <x-headings.main-heading :isHeading="true">

@@ -1,9 +1,9 @@
 {{-- Extends layout --}}
-@extends('components.layout.employee.layout', ['description' => 'Admin Dashboard', 'nonce' => $nonce])
+@extends('components.layout.employee.layout', ['description' => 'Job Families', 'nonce' => $nonce])
 
 {{-- Head Section: Title, Scripts, & Styles --}}
 @section('head')
-<title>Home Page</title>
+<title>Job Families</title>
 <script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 @endsection
@@ -31,5 +31,7 @@
     href="{{ route($routePrefix . '.job-family.create') }}" />
 
 @include('components.includes.tab_navs.org-tab-navs')
+
+<livewire:tables.job-family-table />
 
 @endsection

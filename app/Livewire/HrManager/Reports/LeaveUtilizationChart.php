@@ -3,6 +3,10 @@
 namespace App\Livewire\HrManager\Reports;
 
 use Livewire\Component;
+use App\Models\Employee;
+use App\Models\EmployeeLeave;
+use App\Models\LeaveCategory;
+use App\Enums\EmploymentStatus;
 
 class LeaveUtilizationChart extends Component
 {
@@ -29,29 +33,55 @@ class LeaveUtilizationChart extends Component
      * 
      */
 
-
-    public $selectedYear;
+    public $year;
 
     public $leaveData;
 
     public function mount()
     {
+        $employees = Employee::whereHas('status', function ($query) {
+            $query->whereIn('emp_status_name', [
+                EmploymentStatus::PROBATIONARY->label(),
+                EmploymentStatus::REGULAR->label(),
+            ]);
+        })->get();
 
-        $this->selectedYear;
+        $silCredits = $employees->sum(fn ($employee) => $employee->actual_sil_credits);
+
+        $totalSilCredits = $silCredits * 2;
+        
+        $usedVacationCredits = EmployeeLeave::whereHas('category', function ($query) {
+            $query->where('leave_category_name', 'Vacation Leave');
+        })
+            ->whereYear('filed_at', $this->year)
+            ->whereYear('fourth_approver_signed_at', $this->year)
+            ->get()
+            ->count();
+
+        $usedSickCredits = EmployeeLeave::whereHas('category', function ($query) {
+            $query->where('leave_category_name', 'Sick Leave');
+        })
+            ->whereYear('filed_at', $this->year)
+            ->whereYear('fourth_approver_signed_at', $this->year)
+            ->get()
+            ->count();
+
+        $totalUsedSilCredits = $usedVacationCredits + $usedSickCredits;
 
         $this->leaveData = [
-            'all' => ['used' => 10342, 'total' => 10666],
-            'sick' => ['used' => 900, 'total' => 1500],
-            'vacation' => ['used' => 1350, 'total' => 1500],
-            'paternity' => ['used' => 1050, 'total' => 1500],
+            'all' => [
+                'used' => $totalUsedSilCredits, 
+                'total' => $totalSilCredits
+            ],
+            'sick' => [
+                'used' => $usedSickCredits, 
+                'total' => $totalSilCredits
+            ],
+            'vacation' => [
+                'used' => $usedVacationCredits, 
+                'total' => $totalSilCredits
+            ],
         ];
-    }
-
-    public function updated($name)
-    {
-        if ($name === 'selectedYear' && !empty($this->selectedYear)) {
-            logger('LEAVE CHART - Selected Year updated to: ' . $this->selectedYear);
-        }
     }
 
     public function render()

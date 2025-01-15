@@ -2,10 +2,26 @@
 
 namespace App\Livewire\HrManager\Separation\Resignation;
 
+use App\Enums\FilePath;
+use App\Models\Employee;
 use Livewire\Component;
 
 class ReviewResignation extends Component
 {
+
+    public Employee $employee;
+
+    public bool $hasResignation;
+
+    public function mount()
+    {
+        $this->hasResignation = $this->employee->documents()->where('file_path', 'like', '%' . FilePath::RESIGNATION->value . '%')->exists();
+
+        if ($this->hasResignation) {
+            $this->employee->loadMissing('lifecycle','documents');
+        }
+    }
+
     public function saveApproval()
     {
         $this->dispatch('show-toast', [

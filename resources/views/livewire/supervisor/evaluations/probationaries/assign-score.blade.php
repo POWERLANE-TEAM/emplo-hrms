@@ -27,7 +27,7 @@
                 </x-profile-header>
         </div>
         <div class="col-6 pt-2">
-            <x-info_panels.callout type="info" :description="__('Learn more about the <a href=\'#\' class=\'text-link-blue\'>scoring evaluation</a> metrics and details.')">
+            <x-info_panels.callout type="info" :description="__('Learn more about the <a href=\'/information-centre?section=evaluation-policy\' class=\'text-link-blue\'>scoring evaluation</a> metrics and details.')">
             </x-info_panels.callout>
 
         </div>
@@ -69,7 +69,7 @@
                                         @foreach ($this->thirdMonthEvaluation as $evaluation)
                                             @if ($evaluation->category === $category->id)
                                                 <div class="col-4 px-2 justify-content-center d-flex align-items-center">
-                                                    <div class="fw-bold text-secondary-emphasis">
+                                                    <div class="fw-bold text-secondary-emphasis pre-populated-score">
                                                         {{ "{$evaluation->ratingScale} - {$evaluation->ratingName}" }}
                                                     </div>
                                                 </div>
@@ -78,6 +78,7 @@
                                     @else
                                         <div class="col-4 px-2 text-center d-flex align-items-center">
                                             <x-form.boxed-dropdown 
+                                                class="score-dropdown"
                                                 id="score{{ $category->id }}"
                                                 wire:model="ratings.{{ $category->id }}"
                                                 :nonce="$nonce"
@@ -92,7 +93,7 @@
                                         @foreach ($this->fifthMonthEvaluation as $evaluation)
                                             @if ($evaluation->category === $category->id)
                                                 <div class="col-4 px-2 justify-content-center d-flex align-items-center">
-                                                    <div class="fw-bold text-secondary-emphasis">
+                                                    <div class="fw-bold text-secondary-emphasis pre-populated-score">
                                                         {{ "{$evaluation->ratingScale} - {$evaluation->ratingName}" }}
                                                     </div>
                                                 </div>
@@ -101,6 +102,7 @@
                                     @else
                                         <div class="col-4 px-2 text-center d-flex align-items-center">
                                             <x-form.boxed-dropdown 
+                                                class="score-dropdown"
                                                 id="score{{ $category->id }}"
                                                 wire:model="ratings.{{ $category->id }}"
                                                 :nonce="$nonce"
@@ -113,6 +115,7 @@
                                     
                                     <div class="col-4 text-start">
                                         <x-form.boxed-dropdown 
+                                            class="score-dropdown"
                                             id="score{{ $category->id }}"
                                             wire:model="ratings.{{ $category->id }}"
                                             :nonce="$nonce"
@@ -181,7 +184,7 @@
                 <div class="col-6">
                     <div class="card bg-body-secondary border-0">
                         <div class="p-4 align-items-center text-center">
-                            <div class="fw-bold fs-3 text-primary">{{ $finalRating ?? __('0.00') }}</div>
+                            <div class="fw-bold fs-3 text-primary" id="averageScore">{{ __('0.00') }}</div>
                             <div class="fw-medium fs-6 pt-1">{{ __('Final Rating') }}</div>
                         </div>
                     </div>
@@ -190,7 +193,7 @@
                 <div class="col-6">
                     <div class="card bg-body-secondary border-0">
                         <div class="p-4 align-items-center text-center">
-                            <div class="fw-bold fs-3 text-primary">{{ $performanceScale ?? __('Not finalized') }}</div>
+                            <div class="fw-bold fs-3 text-primary" id="performanceScale">{{ __('Not finalized') }}</div>
                             <div class="fw-medium fs-6 pt-1">{{ __('Performance Scale') }}</div>
                         </div>
                     </div>
@@ -212,17 +215,62 @@
     </div>
 
     <section class="col-md-12">
-        <div class="row">
-            <!-- Note -->
-            <div class="col-5 ps-3">
-                <x-info_panels.note
-                    note="{{ __('This form requires your signature. By clicking submit, your signature will be automatically added to the downloadable file.') }}" />
-            </div>
-            <!-- Button -->
-            <div class="col-7 d-flex align-items-center text-end">
-                <x-buttons.main-btn label="Submit Evaluation" wire:click.prevent="save" :nonce="$nonce"
-                    :disabled="false" class="w-50" :loading="'Submitting...'" />
-            </div>
+        <div class="d-flex align-items-center text-end">
+            <x-buttons.main-btn label="Submit Evaluation" wire:click.prevent="save" :nonce="$nonce"
+                :disabled="false" class="w-50" :loading="'Submitting...'" />
         </div>
     </section>
 </section>
+
+<script>
+    window.isFinalMonth = @json($isFinalMonth);
+
+    if (window.isFinalMonth) {
+        const dropdowns = document.querySelectorAll('.score-dropdown');
+        const prePopulatedScores = document.querySelectorAll('.pre-populated-score');
+
+        function calculateAverage() {
+            let total = 0;
+            let count = 0;
+
+            dropdowns.forEach(dropdown => {
+                const value = parseInt(dropdown.value);
+                if (!isNaN(value)) {
+                    total += value;
+                    count++;
+                }
+            });
+
+            prePopulatedScores.forEach(score => {
+                const value = parseInt(score.innerText.split(' - ')[0]);
+                if (!isNaN(value)) {
+                    total += value;
+                    count++;
+                }
+            });
+
+            const average = count > 0 ? total / count : 0;
+
+            document.getElementById('averageScore').innerText = average.toFixed(2);
+
+            let performanceScale = '';
+            if (average >= 1 && average < 2) {
+                performanceScale = 'Needs Improvement';
+            } else if (average >= 2 && average < 3) {
+                performanceScale = 'Meets Expectation';
+            } else if (average >= 3 && average < 4) {
+                performanceScale = 'Exceeds Expectation';
+            } else if (average >= 4 && average <= 5) {
+                performanceScale = 'Outstanding';
+            }
+
+            document.getElementById('performanceScale').textContent = performanceScale;
+        }
+
+            dropdowns.forEach(dropdown => {
+                dropdown.addEventListener('change', calculateAverage);
+        });
+
+        calculateAverage();
+    }
+</script>

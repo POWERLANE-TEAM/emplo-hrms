@@ -29,9 +29,11 @@ class RegularPerformancePolicy
      */
     public function openRegularsEvaluationPeriod(User $user): Response
     {
-        $evaluationPeriod = RegularPerformancePeriod::latest()->first();
+        $latestFinishedPeriod = RegularPerformancePeriod::latest('start_date')->first();
 
-        return Carbon::isSameYear($evaluationPeriod->end_date)
+        $latestFinishedPeriodDate = Carbon::parse($latestFinishedPeriod->end_date);
+        
+        return $latestFinishedPeriodDate->year === now()->year
             ? Response::deny(__('Sorry, annual performance evaluation for this period is finished.'))
             : Response::allow();
     }

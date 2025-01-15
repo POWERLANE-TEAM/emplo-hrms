@@ -2,167 +2,121 @@
 
 namespace App\Livewire\HrManager\Reports;
 
+use App\Models\Holiday;
 use Livewire\Component;
+use App\Models\Employee;
+use App\Models\AttendanceLog;
+use Illuminate\Support\Carbon;
+use App\Enums\EmploymentStatus;
+use Livewire\Attributes\Locked;
+use App\Enums\BiometricPunchType;
+use Livewire\Attributes\Reactive;
 
 class AverageAttendanceChart extends Component
 {
-
-    /*
-     * BACK-END REPLACE / REQUIREMENTS:
-     * 
-     * ONLY FETCH ROWS FROM SELECTED YEAR.
-     * 
-     * FETCH FROM DATABASE:
-     * 1. 'month': The current month.
-     * 1. 'workdays': Total count of work days in a month. (Exclude the weekends, holidays)
-     * 2. 'total_employees': Total employees.
-     * 3. 'days_attended': Total count of "present" value in "date" column per month.
-     * 
-     * 4. After fetching, replace/populate the $data in mount() function.
-     * 
-     * ADDITIONAL NOTES
-     * ► This just needs fetching from the database. The logic is already implemented.
-     * 
-     */
-
-    public $selectedYear;
+    // #[Reactive]
+    public $year;
 
     public $attendanceData;
-    public $yearlyData;
-    public $monthlyData;
+
+    public $yearlyData = [];
+
+    public $monthlyData = [];
+
+    #[Locked]
+    public $holidays;
 
     public function mount()
     {
+        // $key = sprintf(config('cache.keys.reports.attendance_rate'), $this->year);
+        // implement caching
 
-        $this->selectedYear;
-
-        $data = [
-            [
-                'month' => '2024-01',
-                'total_employees' => 50,
-                'workdays' => 22,
-                'days_attended' => 1078 // Example: Out of 1100 possible days (50 employees × 22 days)
-            ],
-            [
-                'month' => '2024-02',
-                'total_employees' => 50,
-                'workdays' => 20,
-                'days_attended' => 990  // Out of 1000 possible days
-            ],
-            [
-                'month' => '2024-03',
-                'total_employees' => 50,
-                'workdays' => 21,
-                'days_attended' => 1029 // Out of 1050 possible days
-            ],
-            [
-                'month' => '2024-04',
-                'total_employees' => 50,
-                'workdays' => 22,
-                'days_attended' => 1056 // Out of 1100 possible days
-            ],
-            [
-                'month' => '2024-05',
-                'total_employees' => 50,
-                'workdays' => 23,
-                'days_attended' => 1127 // Out of 1150 possible days
-            ],
-            [
-                'month' => '2024-06',
-                'total_employees' => 50,
-                'workdays' => 20,
-                'days_attended' => 980  // Out of 1000 possible days
-            ],
-            [
-                'month' => '2024-07',
-                'total_employees' => 50,
-                'workdays' => 23,
-                'days_attended' => 1104 // Out of 1150 possible days
-            ],
-            [
-                'month' => '2024-08',
-                'total_employees' => 50,
-                'workdays' => 22,
-                'days_attended' => 1078 // Out of 1100 possible days
-            ],
-            [
-                'month' => '2024-09',
-                'total_employees' => 50,
-                'workdays' => 21,
-                'days_attended' => 1029 // Out of 1050 possible days
-            ],
-            [
-                'month' => '2024-10',
-                'total_employees' => 50,
-                'workdays' => 23,
-                'days_attended' => 1127 // Out of 1150 possible days
-            ],
-            [
-                'month' => '2024-11',
-                'total_employees' => 50,
-                'workdays' => 21,
-                'days_attended' => 1019 // Out of 1050 possible days
-            ],
-            [
-                'month' => '2024-12',
-                'total_employees' => 50,
-                'workdays' => 19,
-                'days_attended' => 931  // Out of 950 possible days
-            ],
-        ];
-
-        // Initialize arrays for storing yearly and monthly data
+        $attendanceLogs = AttendanceLog::whereYear('timestamp', $this->year)
+            ->where('type', BiometricPunchType::CHECK_IN)
+            ->whereHas('employee', function ($query) {
+                $query->whereNotIn('timestamp', function ($subQuery) {
+                    $subQuery->select('date')
+                        ->from('holidays')
+                        ->whereRaw('EXTRACT(MONTH FROM date) = ?', [Carbon::parse($this->year)->month]);
+                });
+            })
+            ->get()
+            ->groupBy(function($date) {
+                return Carbon::parse($date->timestamp)->format('Y-m');
+            });    
+    
         $this->yearlyData = [];
         $this->monthlyData = [];
-
+    
         $yearlyTotalAttended = 0;
         $yearlyTotalScheduled = 0;
+    
+        $totalEmployees = Employee::whereHas('status', 
+            fn ($query) => $query->whereIn('emp_status_name', [
+                EmploymentStatus::REGULAR->label(),
+                EmploymentStatus::PROBATIONARY->label(),
+            ]))
+            ->get()
+            ->count();
 
-        // Process the data
-        foreach ($data as $record) {
-            $year = substr($record['month'], 0, 4);
-            $month = $record['month'];
+        foreach ($attendanceLogs as $month => $logs) {
+    
+            $totalWorkdays = $this->getWorkdaysInMonth($month);
 
-            // Calculate total scheduled workdays for the month
-            $totalScheduledDays = $record['total_employees'] * $record['workdays'];
-            
-            // Calculate attendance rate for the month
-            $attendanceRate = ($record['days_attended'] / $totalScheduledDays) * 100;
+            $daysAttended = $logs->count();
+            $totalScheduledDays = $totalEmployees * $totalWorkdays;
+    
+            $totalScheduledDays = $totalEmployees * $totalWorkdays;
+            $attendanceRate = ($daysAttended / $totalScheduledDays) * 100;
+    
+            $yearlyTotalAttended += $daysAttended;
+            $yearlyTotalScheduled += $totalScheduledDays;
 
-            // Store monthly data
             $this->monthlyData[$month] = [
                 'attendance_rate' => round($attendanceRate, 2),
-                'days_attended' => $record['days_attended'],
+                'total_employees' => $totalEmployees,
+                'workdays' => $totalWorkdays,
+                'days_attended' => $daysAttended,
                 'total_scheduled' => $totalScheduledDays,
-                'workdays' => $record['workdays'],
-                'total_employees' => $record['total_employees']
             ];
-
-            // Accumulate yearly totals
-            $yearlyTotalAttended += $record['days_attended'];
-            $yearlyTotalScheduled += $totalScheduledDays;
         }
+    
+        $year = substr($this->year, 0, 4);
+        $attendanceRate = $yearlyTotalAttended > 0
+            ? round(($yearlyTotalAttended / $yearlyTotalScheduled) * 100, 2)
+            : 0;
 
-        // Calculate yearly attendance rate
         $this->yearlyData[$year] = [
-            'attendance_rate' => round(($yearlyTotalAttended / $yearlyTotalScheduled) * 100, 2),
+            'attendance_rate' => $attendanceRate,
             'total_days_attended' => $yearlyTotalAttended,
             'total_scheduled_days' => $yearlyTotalScheduled
         ];
-
-        // Pass the data to the view
+    
         $this->attendanceData = [
             'yearly' => $this->yearlyData,
             'monthly' => $this->monthlyData,
         ];
     }
 
-    
-    public function updated($name)
+    public function getWorkdaysInMonth($month)
     {
-        if ($name === 'selectedYear' && !empty($this->selectedYear)) {
-            logger('ATTENDANCE CHART - Selected Year updated to: ' . $this->selectedYear);
+        $startDate = Carbon::parse($month . '-01');
+        $endDate = $startDate->copy()->endOfMonth();
+
+        $workdays = 0;
+        $currentDate = $startDate;
+
+        $holidays = $this->holidays->whereBetween('date', [$startDate, $endDate])
+            ->pluck('date')->toArray();
+
+        while ($currentDate <= $endDate) {
+            if ($currentDate->isWeekday() && ! in_array($currentDate->toDateString(), $holidays)) {
+                $workdays++;
+            }
+            $currentDate->addDay();
         }
+    
+        return $workdays;
     }
 
     public function render()

@@ -24,7 +24,7 @@
 @section('content')
 
 <div class="row hidden-until-load">
-    <div class="col-md-4 centre-side-nav fadein-text">
+    <div class="col-md-4 centre-side-nav fcadein-text">
         <x-layout.centre.nav-bar />
     </div>
 
@@ -35,33 +35,56 @@
                 @include('help-centre.default.landing')
             </section>
 
-            <!-- Using Emplo -->
-            <section class="content-section" id="terms-usage">
-                @include('help-centre.usage.terms-conditions')
+            <!-- USING EMPLO -->
+
+            <section class="content-section" id="about">
+                @include('help-centre.usage.about')
             </section>
 
-            <section class="content-section" id="about-rankings">
-                @include('help-centre.about.rankings')
+            <!-- Terms: Guest -->
+            <section class="content-section" id="guest-terms-usage">
+                @include('help-centre.usage.guest.terms-conditions')
+            </section>
+
+            <!-- Terms: Employees -->
+            <section class="content-section" id="employee-terms-usage">
+                @include('help-centre.usage.employee.terms-conditions')
+            </section>
+
+            <!-- PRIVACY: Guest -->
+            <section class="content-section" id="guest-privacy-policy">
+                @include('help-centre.usage.guest.privacy-policy')
+            </section>
+
+            <!-- PRIAVACY: Employees -->
+            <section class="content-section" id="employee-privacy-policy">
+                @include('help-centre.usage.employee.privacy-policy')
             </section>
 
 
-            <!-- System Policy -->
-            <section class="content-section" id="privacy-policy">
-                @include('help-centre.policy.system.privacy-policy')
-            </section>
-
-            <section class="content-section" id="data-retention">
-                @include('help-centre.policy.system.data-retention')
-            </section>
-
-
-            <!-- Company Polcies -->
+            <!-- POLICIES -->
             <section class="content-section" id="seperation-process">
                 @include('help-centre.policy.company.separation-process')
             </section>
             <section class="content-section" id="evaluation-policy">
                 @include('help-centre.policy.company.evaluation')
             </section>
+            <section class="content-section" id="leave-policy">
+                @include('help-centre.policy.company.leave')
+            </section>
+            <section class="content-section" id="data-retention">
+                @include('help-centre.policy.company.data-retention')
+            </section>
+
+
+            <!-- TOOLS -->
+            <section class="content-section" id="about-rankings">
+                @include('help-centre.tools.rankings')
+            </section>
+            <section class="content-section" id="about-reports">
+                @include('help-centre.tools.reports')
+            </section>
+            <!-- Tools -->
         </main>
     </div>
 </div>

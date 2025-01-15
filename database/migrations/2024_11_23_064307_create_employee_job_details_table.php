@@ -51,7 +51,7 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->nullOnDelete();
 
-            $table->unsignedInteger('leave_balance')->default(10);
+            $table->timestamp('hired_at')->nullable();
 
             $table->index([
                 'employee_id',

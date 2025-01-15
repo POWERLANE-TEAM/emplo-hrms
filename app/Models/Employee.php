@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Enums\Sex;
 use App\Enums\CivilStatus;
+use App\Enums\ServiceIncentiveLeave;
 use Illuminate\Support\Str;
 use App\Enums\ActivityLogName;
 use Illuminate\Support\Carbon;
@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use App\Http\Helpers\GovernmentMandateContributionsIdFormat;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Employee extends Model
 {
@@ -33,6 +34,10 @@ class Employee extends Model
         'employee_id',
         'created_at',
         'updated_at',
+    ];
+
+    protected $with = [
+        'jobDetail',
     ];
 
     /**
@@ -55,24 +60,12 @@ class Employee extends Model
     protected function contactNumber(): Attribute
     {
         return Attribute::make(
-            get: fn (mixed $value) => '+63-' . substr($value, 1, 3) . '-' . 
-                substr($value, 4, 3) . '-' . 
+            get: fn (mixed $value) => '+63-' . substr($value, 1, 3) . '-' .
+                substr($value, 4, 3) . '-' .
                 substr($value, 7, 4),
         );
     }
 
-    /**
-     * Accessor for sex attribute.
-     */
-    protected function sex(): Attribute
-    {
-        return Attribute::make(
-            get: function (string $value) {
-                $sex = Sex::tryFrom($value);
-                return $sex ? $sex->label() : ucwords($sex);
-            }
-        );
-    }
     /**
      * Accessor for civil status attribute.
      */
@@ -131,14 +124,6 @@ class Employee extends Model
      */
     protected function getFullPresentAddressAttribute()
     {
-        $this->loadMissing([
-            'presentBarangay' => [
-                'city',
-                'province',
-                'region'
-            ],
-        ]);
-
         $barangay = $this->presentBarangay->name;
         $city = $this->presentBarangay->city->name ?? '';
         $province = $this->presentBarangay->province->name ?? '';
@@ -152,14 +137,6 @@ class Employee extends Model
      */
     protected function getFullPermanentAddressAttribute()
     {
-        $this->loadMissing([
-            'permanentBarangay' => [
-                'city',
-                'province',
-                'region'
-            ],
-        ]);
-
         $barangay = $this->permanentBarangay->name;
         $city = $this->permanentBarangay->city->name ?? '';
         $province = $this->permanentBarangay->province->name ?? '';
@@ -177,6 +154,49 @@ class Employee extends Model
         $end = Carbon::make($this->shift->end_time)->format('g:i A');
 
         return "{$start} - {$end}";
+    }
+
+    protected function getActualSilCreditsAttribute()
+    {
+        $dateHired = Carbon::parse($this->jobDetail->hired_at);
+
+        $serviceDuration = now()->diff($dateHired);
+
+        if ($serviceDuration->copy()->y < 1) {
+            if (in_array($dateHired->copy()->month, ServiceIncentiveLeave::Q1->getFirstQuarter())) {
+                return ServiceIncentiveLeave::Q1->value;
+            }
+
+            if (in_array($dateHired->copy()->month, ServiceIncentiveLeave::Q2->getSecondQuarter())) {
+                return ServiceIncentiveLeave::Q2->value;
+            }
+
+            if (in_array($dateHired->copy()->month, ServiceIncentiveLeave::Q3->getThirdQuarter())) {
+                return ServiceIncentiveLeave::Q3->value;
+            }
+
+            if (in_array($dateHired->copy()->month, ServiceIncentiveLeave::Q4->getFourthQuarter())) {
+                return ServiceIncentiveLeave::Q4->value;
+            }
+        }
+
+        if ($serviceDuration->copy()->y >= 5) {
+            return 16;
+        }
+
+        if ($serviceDuration->copy()->y >= 3) {
+            return 14;
+        }
+
+        if ($serviceDuration->copy()->y >= 2) {
+            return 11; 
+        }
+
+        if ($serviceDuration->copy()->y >= 1) {
+            return 9;
+        }
+
+        return 0;
     }
 
     /**
@@ -289,6 +309,14 @@ class Employee extends Model
     public function uploadedContracts(): HasMany
     {
         return $this->hasMany(Contract::class, 'uploaded_by', 'employee_id');
+    }
+
+    /**
+     * Get the service incentive leave credit associtaed with the employee.
+     */
+    public function silCredit(): HasOne
+    {
+        return $this->hasOne(ServiceIncentiveLeaveCredit::class, 'employee_id', 'employee_id');
     }
 
     /**
@@ -694,6 +722,24 @@ class Employee extends Model
             ->as('access')
             ->using(IncidentRecordCollaborator::class)
             ->withPivot('is_editor');
+    }
+
+
+    /**
+     * Get all of the resignations for the employee through the employee documents.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     */
+    public function resignations(): HasManyThrough
+    {
+        return $this->hasManyThrough(
+            Resignation::class,
+            EmployeeDoc::class,
+            'employee_id',
+            'emp_resignation_doc_id',
+            'employee_id',
+            'emp_doc_id'
+        );
     }
 
     /**

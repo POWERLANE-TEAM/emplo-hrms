@@ -46,7 +46,7 @@ class PerformanceApprovals extends Component
             ->filter(fn ($item) => $item->period_name === PerformanceEvaluationPeriod::FINAL_MONTH->value)
             ->map(fn ($item) => $item->details->last())
             ->pluck('is_final_recommend')
-            ->first();
+            ->first() ?? null;
     }
 
     private function makeKeysReadable()

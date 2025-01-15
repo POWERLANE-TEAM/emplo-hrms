@@ -25,7 +25,7 @@
 
 <x-headings.main-heading :isHeading="true">
     <x-slot:heading>
-        {{ __('Training Table') }}
+        {{ __('Training') }}
     </x-slot:heading>
 
     <x-slot:description>
@@ -33,6 +33,5 @@
     </x-slot:description>
 </x-headings.main-heading>
 
-<!-- BACK-END TABLE NOTE:
-    The employee id should be passed to: training/records.blade.php -->
+    <livewire:employee.tables.any-trainings-table :$routePrefix />
 @endsection

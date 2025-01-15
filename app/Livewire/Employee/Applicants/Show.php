@@ -7,6 +7,7 @@ use App\Http\Helpers\Timezone;
 use App\Models\Application;
 use App\Models\ApplicationExam;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
 
@@ -25,6 +26,8 @@ class Show extends Component
     protected $examSchedF;
 
     protected $initialInterviewSchedF;
+
+    protected $resume;
 
     #[Locked]
     public bool $notYetExam;
@@ -47,6 +50,16 @@ class Show extends Component
 
         try {
             $this->applicationId = 'APL-' . $this->application->application_id;
+
+
+
+            $this->resume = $this->application->documents->where('preemp_req_id', 17)->first()->file_path;
+
+            // dd($this->resume);
+            // if(!Storage::exists($this->resume)){
+            //     throw new \Exception('Resume not found');
+            // }
+
             $this->isPending = $this->application->application_status_id == ApplicationStatus::PENDING->value;
 
             $this->isInitAssessment = $this->application->application_status_id == ApplicationStatus::ASSESSMENT_SCHEDULED->value;
@@ -62,13 +75,15 @@ class Show extends Component
 
 
                 if ($this->applicationExam->start_time) {
-                    $this->notYetExam = !Carbon::now()->greaterThanOrEqualTo(Carbon::parse($this->applicationExam->start_time)->addMinutes(5));
+                    $examTime = Carbon::parse($this->applicationExam->start_time);
+$this->notYetExam = Carbon::now()->greaterThanOrEqualTo($examTime) && Carbon::now()->lessThan($examTime->addMinutes(5));
                 } else {
                     $this->notYetExam = false;
                 }
 
                 if ($this->application->initialInterview->init_interview_at) {
-                    $this->notYetInterview = !Carbon::now()->greaterThanOrEqualTo(Carbon::parse($this->application->initialInterview->init_interview_at)->addMinutes(5));
+                    $interviewTime = Carbon::parse($this->application->initialInterview->init_interview_at);
+                    $this->notYetInterview = Carbon::now()->greaterThanOrEqualTo($interviewTime) && Carbon::now()->lessThan($interviewTime->addMinutes(5));
                 } else {
                     $this->notYetInterview = false;
                 }
@@ -98,6 +113,7 @@ class Show extends Component
             'livewire.employee.applicants.show',
             [
                 'applicationId' => $this->applicationId,
+                'resume' => $this->resume,
                 'isPending' => $this->isPending,
                 'isInitAssessment' => $this->isInitAssessment,
                 'examSchedF' => $this->examSchedF,

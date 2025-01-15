@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Employee;
 use App\Models\AttendanceLog;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class AttendanceLogSeeder extends Seeder
 {
@@ -13,6 +13,6 @@ class AttendanceLogSeeder extends Seeder
      */
     public function run(): void
     {
-        AttendanceLog::factory(20)->create();
+        AttendanceLog::factory(Employee::count() * 5)->create();
     }
 }

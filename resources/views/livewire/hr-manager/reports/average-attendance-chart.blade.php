@@ -53,8 +53,8 @@
                         },
                         scales: {
                             y: {
-                                beginAtZero: false,
-                                min: 80,
+                                beginAtZero: true,
+                                min: 0,
                                 max: 100,
                                 title: {
                                     display: true,
@@ -121,7 +121,7 @@
 <script>
     window.addEventListener('year-changed', event => {
         console.log('Year changed event detected:', event.detail);
-        @this.set('selectedYear', event.detail);
+        @this.set('year', event.detail);
     });
 </script>
 @endscript

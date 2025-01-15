@@ -72,7 +72,10 @@ function createEmployee($chunkStart, $chunk, $freeEmailDomain)
                             'hired_at' => $timestamp->modify('+' . rand(3, 14) . ' days'),
                         ]);
 
-                        PreempRequirement::all()->each(function ($requirement) use ($application) {
+                        PreempRequirement::where(function ($query) {
+                            $query->where('preemp_req_name', '!=', 'Resume')
+                                ->orWhere('preemp_req_name', '!=', 'resume');
+                        })->get()->each(function ($requirement) use ($application) {
                             $application->documents()->create([
                                 'preemp_req_id' => $requirement->preemp_req_id,
                                 'file_path' => 'storage/',

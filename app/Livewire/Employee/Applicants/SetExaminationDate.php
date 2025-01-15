@@ -79,7 +79,11 @@ class SetExaminationDate extends Component
 
         $controller = new ApplicationExamController;
 
-        $controller->store($validated, true);
+        if($this->postMethod == 'PATCH'){
+            $controller->update($validated, true);
+        }else{
+            $controller->store($validated, true);
+        }
     }
 
     public function render()

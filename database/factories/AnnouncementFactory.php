@@ -20,7 +20,7 @@ class AnnouncementFactory extends Factory
         return [
             'announcement_title' => fake()->sentence(),
             'announcement_description' => fake()->paragraph(),
-            'published_by' => Employee::factory(),
+            'published_by' => Employee::inRandomOrder()->first()->employee_id,
         ];
     }
 }

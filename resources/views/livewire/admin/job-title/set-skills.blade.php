@@ -71,7 +71,7 @@
                         </button>
 
                         <!-- Delete -->
-                        <button data-bs-toggle="tooltip"
+                        <button wire:click="removeQualification( {{ $index }} )" data-bs-toggle="tooltip"
                             class="btn no-hover-border me-2" data-bs-title="Delete">
                             <i class="icon p-1 mx-2 text-danger" data-lucide="trash-2"></i>
                         </button>
@@ -148,11 +148,11 @@
     const modalEl = document.getElementById('{{ $modalId }}');
     const qualificationModal = new bootstrap.Modal(modalEl);
 
-    Livewire.on('open-qualification-modal', () => {
+    Livewire.on('openSkillQualificationModal', () => {
         qualificationModal.show();
     });
 
-    Livewire.on('close-qualification-modal', () => {
+    Livewire.on('closeSkillQualificationModal', () => {
         qualificationModal.hide();
     });
 

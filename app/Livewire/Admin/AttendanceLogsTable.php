@@ -59,10 +59,9 @@ class AttendanceLogsTable extends DataTableComponent
 
         $this->setTdAttributes(function (Column $column, $row, $columnIndex, $rowIndex) {
             return [
-                'class' => 'text-md-center',
+                'class' => $column->getTitle() === 'Employee' ? 'text-md-start' : 'text-md-center',
             ];
         });
-
     }
 
     // found this somewhere, alternative to boot is to resolve using service container.
@@ -78,7 +77,10 @@ class AttendanceLogsTable extends DataTableComponent
         $this->initialize();
 
         return AttendanceLog::query()
-            ->with('employee')
+            ->with([
+                'employee',
+                'employee.account'
+            ])
             ->select('*');
     }
 
@@ -89,10 +91,10 @@ class AttendanceLogsTable extends DataTableComponent
                 ->sortable()
                 ->searchable(),
     
-            Column::make(__('Employee Name'))
+            Column::make(__('Employee'))
                 ->label(function ($row) {
                     $name = Str::headline($row->employee->full_name);
-                    $photo = $row->photo;
+                    $photo = $row->employee->account->photo;
             
                     return '<div class="d-flex justify-content-center align-items-center">
                                 <img src="' . e($photo) . '" alt="User Picture" style="width: 33px; height: 33px; border-radius: 50%; margin-right: 10px;">
