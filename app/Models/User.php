@@ -79,6 +79,10 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
+    protected $with = [
+        'account',
+    ];
+
     /**
      * Accessor for photo attribute.
      *
@@ -88,8 +92,6 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected function photo(): Attribute
     {
-        // $this->loadMissing('account');
-        
         $username = "{$this->account->last_name}, {$this->account->first_name}";
 
         return Attribute::make(

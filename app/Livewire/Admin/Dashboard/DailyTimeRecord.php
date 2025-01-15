@@ -22,10 +22,11 @@ class DailyTimeRecord extends Component
         $this->dateToday = Carbon::today();
     }
 
-    public function boot()
-    {
-        $this->zkInstance = new BiometricDevice();
-    }
+    // always uncomment if need demo for checkin
+    // public function boot()
+    // {
+    //     $this->zkInstance = new BiometricDevice();
+    // }
 
     private function getTodayDtr()
     {   
@@ -131,10 +132,10 @@ class DailyTimeRecord extends Component
 
     public function render()
     {
-        $dtrLogs = $this->getTodayDtr();
-        $totalDtr = $dtrLogs->count();
-        // $dtrLogs = $this->generateFakeData();
+        // $dtrLogs = $this->getTodayDtr();
         // $totalDtr = $dtrLogs->count();
+        $dtrLogs = $this->generateFakeData();
+        $totalDtr = $dtrLogs->count();
         
         return view('livewire.admin.dashboard.daily-time-record', [
             'dtrDate' => $this->dateToday->format('F, d Y')

@@ -329,7 +329,7 @@
     </x-layout.employee.nav.sidebar.nested-nav-items>
     @endcan
 
-    <!-- {{-- HR Manager --}}
+    {{-- HR Manager --}}
     @can(UserPermission::VIEW_REPORTS)
         <x-layout.employee.nav.sidebar.nav-item
             href="{{ route($routePrefix . '.reports') }}"
@@ -338,7 +338,7 @@
             :defaultIcon="['src' => 'reports', 'alt' => '']"
             :activeIcon="['src' => 'reports', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
-    @endcan -->
+    @endcan
 
     {{-- Head Admin --}}
     @can(UserPermission::VIEW_ALL_ACCOUNTS)

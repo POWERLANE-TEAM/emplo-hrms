@@ -1,42 +1,27 @@
 <?php
 
 namespace App\Livewire\HrManager\Reports;
-use \Carbon\Carbon;
+
 use Livewire\Component;
+use App\Models\Employee;
+use App\Models\Applicant;
+use Illuminate\Support\Carbon;
+use Livewire\Attributes\Reactive;
+use App\Models\RegularPerformance;
+use Illuminate\Support\Facades\DB;
+use App\Models\RegularPerformancePeriod;
+use App\Models\ProbationaryPerformancePeriod;
 
 class EmployeeMetrics extends Component
 {
+    #[Reactive]
+    public $year;
 
-    /*
-     * BACK-END REPLACE / REQUIREMENTS:
-     * 
-     * ONLY FETCH ROWS FROM SELECTED YEAR.
-     * 
-     * FETCH FROM DATABASE:
-     * 
-     * In calculateEmployeeTenure()
-     * 1. 'date_start': Date start of ALL employees.
-     * 2. Fetch all of the rows.
-     * 
-     * In calculateNewHires()
-     * 1. 'hires':  All of the applicants that has been hired.
-     *              This can be based if their start_date is on the selected year.
-     * 2. 'applicants':  Total count of applicants in that year.
-     * 
-     * In calculateEvaluationSuccess()
-     * 1. 'passed': Total count of rows of regular employees that passed on their annual evaluation.
-     * 2. 'total': Total number of regular employees.
-     * 
-     * ► After fetching, replace the placeholder datas.
-     * ► This just needs proper fetching from the database. The logic is already implemented.
-     * 
-     */
-    public $selectedYear;
     public $metrics = [];
 
     public function mount()
     {
-        $this->selectedYear;
+        $this->year;
 
         $this->metrics = [
             'employee_tenure' => $this->calculateEmployeeTenure(),
@@ -47,51 +32,122 @@ class EmployeeMetrics extends Component
 
     private function calculateEmployeeTenure()
     {
-        $employees = [
-            ['date_start' => '2020-01-15'],
-            ['date_start' => '2018-06-01'],
-            ['date_start' => '2022-03-20'],
-        ];
-    
+        $employees = Employee::query()
+            ->with('lifecycle')
+            ->whereHas('lifecycle', function ($query) {
+                $query->whereYear('started_at', $this->year);
+            })
+            ->get()
+            ->map(function ($employee) {
+                return (object) [
+                    'date_start' => $employee->lifecycle->started_at
+                ];
+            });
+
         $totalTenure = 0;
-        $currentDate = Carbon::now();
     
         foreach ($employees as $employee) {
-            $startDate = Carbon::parse($employee['date_start']);
-            $tenure = abs($currentDate->diffInDays($startDate)) / 365.25;
+            $startDate = Carbon::parse($employee->date_start);
+            $tenure = abs(now()->diffInDays($startDate)) / 365.25;
     
             if ($tenure > 0) {
                 $totalTenure += $tenure;
             }
         }
     
-        return round($totalTenure / count($employees), 1); // Average tenure in years
+        return $totalTenure > 0 
+            ? round($totalTenure / count($employees), 1) 
+            : 0;
     }
 
     private function calculateNewHires()
     {
-        $hires = 8; // Example value
-        $applicants = 40; // Example value
+        $applicants = Applicant::whereYear('created_at', $this->year)
+            ->with('application')
+            ->get();
+
+        $hires = $applicants->filter(function ($applicant) {
+            return $applicant->application->is_passed;
+        });
 
         return [
-            'hires' => $hires,
-            'applicants' => $applicants,
+            'hires' => $hires->count(),
+            'applicants' => $applicants->count(),
         ];
     }
 
     private function calculateEvaluationSuccess()
     {
-        $passed = 45; // Example count of passed employees
-        $total = 100; // Example total employees evaluated
+        $probationary = $this->getProbationaryEvaluationMetrics();
+        $regular = $this->getRegularEvaluationMetrics();
 
-        return round(($passed / $total) * 100, 1); // Passing rate in percentage
+        $passed = $probationary->passed + $regular->passed;
+        $total = $probationary->total + $probationary->total;
+
+        return round(($passed / $total) * 100, 1);
     }
 
-    public function updated($name)
+    private function getRegularEvaluationMetrics()
     {
-        if ($name === 'selectedYear' && !empty($this->selectedYear)) {
-            logger('EMPLOYEE METRICS - Selected Year updated to: ' . $this->selectedYear);
+        $performancePeriod = RegularPerformancePeriod::query()
+            ->whereYear('start_date', $this->year)
+            ->whereYear('end_date', $this->year)
+            ->first();
+
+        $regularPerformances = RegularPerformance::query()
+            ->where('period_id', $performancePeriod->period_id)
+            ->with('categoryRatings.rating')
+            ->get();
+
+        $total = $regularPerformances->count();
+        $passed = 0;
+
+        foreach ($regularPerformances as $performance) {
+            $finalRating = $performance->getFinalRatingAttribute();
+
+            if ($finalRating['ratingAvg'] >= 2) {
+                $passed++;
+            }
         }
+
+        return (object) compact('total', 'passed');
+    }
+
+    private function getProbationaryEvaluationMetrics()
+    {
+        $evaluationData = ProbationaryPerformancePeriod::query()
+            ->whereYear('start_date', $this->year)
+            ->whereYear('end_date', $this->year)
+            ->with([
+                'details.categoryRatings' => function ($query) {
+                    $query->select([
+                        'probationary_performance_id',
+                        DB::raw('AVG(perf_rating_id) as average_rating'),
+                    ])->groupBy('probationary_performance_id');
+                },
+                'probationaryEvaluatee'
+            ])
+            ->get()
+            ->map(function ($period) {
+                $averageRatings = $period->details
+                    ->pluck('categoryRatings.*.average_rating')
+                    ->flatten()->avg();
+        
+                return [
+                    'evaluatee' => $period->probationaryEvaluatee,
+                    'period_name' => $period->period_name,
+                    'start_date' => $period->start_date,
+                    'average_rating' => round($averageRatings, 2),
+                ];
+            });
+
+        $total = $evaluationData->count();
+
+        $passed = $evaluationData->filter(function ($data) {
+            return $data['average_rating'] >= 2;
+        })->count();
+
+        return (object) compact('total', 'passed');
     }
 
     public function render()

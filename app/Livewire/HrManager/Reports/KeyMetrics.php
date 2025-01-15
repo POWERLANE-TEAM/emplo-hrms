@@ -2,52 +2,72 @@
 
 namespace App\Livewire\HrManager\Reports;
 
+use App\Models\Issue;
 use Livewire\Component;
+use App\Models\Incident;
+use App\Models\Training;
+use App\Enums\IssueStatus;
+use App\Enums\TrainingStatus;
+use Livewire\Attributes\Reactive;
 
 class KeyMetrics extends Component
 {
-    /*
-     * BACK-END REPLACE / REQUIREMENTS:
-     * 
-     * ONLY FETCH ROWS FROM SELECTED YEAR ($selectedYear).
-     * 
-     * FETCH FROM DATABASE:
-     * 1. Fetch incidents, issues, training.
-     * 2. 'completed': Total count of rows with completed/resolved/etc value.
-     * 3. 'total': Total count each incidents, issues, training.
-     * 
-     * 4. After fetching, replace/populate the $data in mount() function.
-     * 
-     * ADDITIONAL NOTES
-     * ► This just needs fetching from the database. The logic is already implemented.
-     * 
-     */
-
-    public $selectedYear;
+    #[Reactive]
+    public $year;
 
     public $metrics;
 
     public function mount()
     {
-        $this->selectedYear;
+        $this->year;
 
-        // Sample data - replace with actual database queries
+        $incidents = Incident::whereYear('created_at', $this->year)
+            ->get()
+            ->map(function ($incident) {
+                $completed = in_array($incident->status, [IssueStatus::OPEN->value, IssueStatus::CLOSED->value]);
+
+                return [
+                    'completed' => $completed ? 1 : 0,
+                    'total' => 1,
+                ];
+            });
+
+        $issues = Issue::whereYear('filed_at', $this->year)
+            ->get()
+            ->map(function ($issue) {
+                $completed = in_array($issue->status, [IssueStatus::OPEN->value, IssueStatus::CLOSED->value]);
+
+                return [
+                    'completed' => $completed ? 1 : 0,
+                    'total' => 1,
+                ];
+            });
+
+        $trainings = Training::whereYear('created_at', $this->year)
+            ->get()
+            ->map(function ($training) {
+                return [
+                    'completed' => $training->completion_status === TrainingStatus::COMPLETED->value ? 1 : 0,
+                    'total' => 1,
+                ];
+            });
+
+    
         $data = [
             'incidents' => [
-                'completed' => 8,
-                'total' => 19
+                'completed' => $incidents->sum('completed'),
+                'total' => $incidents->count(),
             ],
             'issues' => [
-                'completed' => 34,
-                'total' => 34
+                'completed' => $issues->sum('completed'),
+                'total' => $issues->count(),
             ],
             'training' => [
-                'completed' => 11,
-                'total' => 19
+                'completed' => $trainings->sum('completed'),
+                'total' => $trainings->count(),
             ]
         ];
 
-        // Calculate percentages and prepare metrics
         $this->metrics = [
             'incidents' => [
                 'type' => 'Incidents',
@@ -84,13 +104,6 @@ class KeyMetrics extends Component
         if ($total == 0)
             return 0;
         return round(($completed / $total) * 100);
-    }
-
-    public function updated($name)
-    {
-        if ($name === 'selectedYear' && !empty($this->selectedYear)) {
-            logger('KEY METRICS - Selected Year updated to: ' . $this->selectedYear);
-        }
     }
 
     public function render()

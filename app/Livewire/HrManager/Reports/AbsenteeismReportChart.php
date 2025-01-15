@@ -2,85 +2,112 @@
 
 namespace App\Livewire\HrManager\Reports;
 
+use App\Models\Holiday;
 use Livewire\Component;
+use App\Models\Employee;
+use App\Models\AttendanceLog;
+use Illuminate\Support\Carbon;
+use App\Enums\EmploymentStatus;
+use Livewire\Attributes\Locked;
+use App\Enums\BiometricPunchType;
 
 class AbsenteeismReportChart extends Component
 {
-
-    /*
-     * BACK-END REPLACE / REQUIREMENTS:
-     * 
-     * ONLY FETCH ROWS FROM SELECTED YEAR.
-     * 
-     * FETCH FROM DATABASE:
-     * 1. 'month': The current month.
-     * 3. 'absences': Total count of "absent" value in "date" column per month.
-     * 
-     * 4. After fetching, replace/populate the $data in mount() function.
-     * 
-     * ADDITIONAL NOTES
-     * ► This just needs fetching from the database. The logic is already implemented.
-     * 
-     */
-
-
-    public $selectedYear;
+    // #[Reactive]
+    public $year;
 
     public $absenteeismData;
-    public $yearlyData;
-    public $monthlyData;
+
+    public $yearlyData = [];
+
+    public $monthlyData = [];
+
+    #[Locked]
+    public $holidays;
 
     public function mount()
     {
-        $this->selectedYear;
-
-        $data = [
-            ['month' => '2024-01', 'absences' => 4],
-            ['month' => '2024-02', 'absences' => 10],
-            ['month' => '2024-03', 'absences' => 6],
-            ['month' => '2024-04', 'absences' => 8],
-            ['month' => '2024-05', 'absences' => 5],
-            ['month' => '2024-06', 'absences' => 7],
-            ['month' => '2024-07', 'absences' => 9],
-            ['month' => '2024-08', 'absences' => 3],
-            ['month' => '2024-09', 'absences' => 6],
-            ['month' => '2024-10', 'absences' => 5],
-            ['month' => '2024-11', 'absences' => 8],
-            ['month' => '2024-12', 'absences' => 7]
-        ];
-
+        $attendanceLogs = AttendanceLog::whereYear('timestamp', $this->year)
+            ->where('type', BiometricPunchType::CHECK_IN)
+            ->whereHas('employee', function ($query) {
+                $query->whereNotIn('timestamp', function ($subQuery) {
+                    $subQuery->select('date')
+                        ->from('holidays')
+                        ->whereRaw('EXTRACT(MONTH FROM date) = ?', [Carbon::parse($this->year)->month]);
+                });
+            })
+            ->get()
+            ->groupBy(function($date) {
+                return Carbon::parse($date->timestamp)->format('Y-m');
+            });    
+    
         $this->yearlyData = [];
         $this->monthlyData = [];
+    
+        $yearlyTotalAbsences = 0;
+        $yearlyTotalScheduled = 0;
+    
+        $monthlyAbsences = [];
 
-        foreach ($data as $record) {
-            $year = substr($record['month'], 0, 4);
-            $month = $record['month'];
+        $totalEmployees = Employee::whereHas('status', 
+            fn ($query) => $query->whereIn('emp_status_name', [
+                EmploymentStatus::REGULAR->label(),
+                EmploymentStatus::PROBATIONARY->label(),
+            ]))
+            ->get()
+            ->count();
+    
+        foreach ($attendanceLogs as $month => $logs) {
+            $totalWorkdays = $this->getWorkdaysInMonth($month);
 
-            if (!isset($this->yearlyData[$year])) {
-                $this->yearlyData[$year] = ['total_absences' => 0];
-            }
-            $this->yearlyData[$year]['total_absences'] += $record['absences'];
+            $daysAttended = $logs->count();
 
-            $this->monthlyData[$month] = ['absences' => $record['absences']];
+            $totalScheduledDays = $totalEmployees * $totalWorkdays;
+
+            $daysAbsent = $totalScheduledDays - $daysAttended;
+    
+            $yearlyTotalAbsences += $daysAbsent;
+            $yearlyTotalScheduled += $totalScheduledDays;
+
+            $monthlyAbsences[$month] = $daysAbsent;
+
+            $this->monthlyData[$month] = [
+                'absences' => $daysAbsent,
+            ];
         }
 
-        // Calculate yearly average
-        foreach ($this->yearlyData as $year => &$data) {
-            $data['monthly_average'] = $data['total_absences'] / 12;
-        }
-
-        // Pass the data to the view
+        $year = substr($this->year, 0, 4);
+    
+        $this->yearlyData[$year] = [
+            'total_absences' => $yearlyTotalAbsences,
+            'monthly_average' => round($yearlyTotalAbsences / 12, 2), // Calculate monthly average absences
+        ];
+    
         $this->absenteeismData = [
             'yearly' => $this->yearlyData,
             'monthly' => $this->monthlyData,
         ];
     }
 
-    public function updated($name)
+    public function getWorkdaysInMonth($month)
     {
-        if ($name === 'selectedYear' && !empty($this->selectedYear)) {
-            logger('ABSENTEEISM CHART - Selected Year updated to: ' . $this->selectedYear);
+        $startDate = Carbon::parse($month . '-01');
+        $endDate = $startDate->copy()->endOfMonth();
+
+        $workdays = 0;
+        $currentDate = $startDate;
+
+        $holidays = $this->holidays->whereBetween('date', [$startDate, $endDate])
+            ->pluck('date')->toArray();
+
+        while ($currentDate <= $endDate) {
+            if ($currentDate->isWeekday() && ! in_array($currentDate->toDateString(), $holidays)) {
+                $workdays++;
+            }
+            $currentDate->addDay();
         }
+        
+        return $workdays;
     }
 
     public function render()
@@ -92,3 +119,4 @@ class AbsenteeismReportChart extends Component
         ]);
     }
 }
+
