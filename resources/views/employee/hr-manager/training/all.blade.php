@@ -25,7 +25,7 @@
 
 <x-headings.main-heading :isHeading="true">
     <x-slot:heading>
-        {{ __('Training Table') }}
+        {{ __('Training') }}
     </x-slot:heading>
 
     <x-slot:description>
