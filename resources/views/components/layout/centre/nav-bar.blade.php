@@ -13,23 +13,9 @@
                 </div>
 
                 <div>
-                    <!-- Terms: Guest -->
-                    <div class="nav-item" data-target="guest-terms-usage" onclick="showContent('guest-terms-usage', 'about-emplo')">
-                        Terms and Conditions
-                    </div>
-                </div>
-
-                <div>
                     <!-- Terms: Employees -->
                     <div class="nav-item" data-target="employee-terms-usage" onclick="showContent('employee-terms-usage', 'about-emplo')">
                         Terms and Conditions
-                    </div>
-                </div>
-
-                <div>
-                    <!-- PRIVACY: Guest -->
-                    <div class="nav-item" data-target="guest-privacy-policy" onclick="showContent('guest-privacy-policy', 'about-emplo')">
-                        Privacy Policy
                     </div>
                 </div>
 

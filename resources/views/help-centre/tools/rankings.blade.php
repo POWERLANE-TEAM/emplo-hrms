@@ -41,7 +41,7 @@
         <h4 class="fw-bold">Formula:</h4>
         <p>The scoring formula is based on the following principles:</p>
 
-        <h4 class="fw-bold">Property Weights (each weight is required by the system)</h4>
+        <h4 class="fw-bold">Property Weights</h4>
         <ul>
             <li>High Priority (HP): 50% of 100 points</li>
             <li>Medium Priority (MP): 30% of 100 points</li>

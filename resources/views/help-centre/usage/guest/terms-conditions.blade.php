@@ -87,7 +87,7 @@
             third-party services.</p>
 
         <h4><strong>9. Data Retention and Deletion</strong></h4>
-        <p>For details on data retention, please refer to our <a href="/information-centre?section=guest-privacy-policy" class="text-link-blue hover-opacity">Privacy Policy</a>.</p>
+        <p>For details on data retention, please refer to our <a href="/guest/information-centre?section=guest-privacy-policy" class="text-link-blue hover-opacity">Privacy Policy</a>.</p>
 
         <h4><strong>10. Termination of Account</strong></h4>
         <p>We reserve the right to suspend or terminate your account if:</p>
