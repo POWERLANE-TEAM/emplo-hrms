@@ -5,7 +5,6 @@ namespace App\Livewire\HrManager\Separation\Resignation;
 use App\Enums\FilePath;
 use App\Models\Resignation;
 use App\Enums\ResignationStatus;
-use App\Events\ResignationApproved;
 use App\Http\Controllers\Separation\ResignationController;
 use Livewire\Component;
 
@@ -39,11 +38,6 @@ class ReviewResignation extends Component
             'resignation_status_id' => $approvalStatus,
             'initial_approver_comments' => $approvalStatus === ResignationStatus::APPROVED->value ? $this->approvalComment : $this->rejectionComment,
         ], validated: true);
-
-        dump($this->resignation);
-        dump($this->resignation->resignee);
-
-        ResignationApproved::dispatch($this->resignation->resignee);
 
         $this->resignation->refresh();
 

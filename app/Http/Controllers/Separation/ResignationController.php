@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Separation;
 use App\Enums\AccountType;
 use App\Enums\FilePath;
 use App\Enums\ResignationStatus;
+use App\Events\ResignationApproved;
 use App\Http\Helpers\RouteHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Employee;
@@ -144,6 +145,10 @@ class ResignationController extends Controller
         }
 
         $resignation->update($data);
+
+        if($request['resignation_status_id'] == ResignationStatus::APPROVED->value){
+            ResignationApproved::dispatch($resignation->resignee);
+        }
 
     }
 
