@@ -3,7 +3,7 @@
 namespace App\Livewire\Employee\Applicants;
 
 use App\Enums\UserPermission;
-use App\Http\Controllers\InitialInterviewController;
+use App\Http\Controllers\FinalInterviewController;
 use App\Http\Helpers\Timezone;
 use App\Livewire\Forms\ScheduleForm;
 use App\Models\Application;
@@ -12,7 +12,7 @@ use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
-class SetInitInterviewDate extends Component
+class SetFinalInterviewDate extends Component
 {
     public ScheduleForm $interview;
 
@@ -37,7 +37,7 @@ class SetInitInterviewDate extends Component
     public function mount()
     {
 
-        $startTime = optional($this->application->initialInterview)->init_interview_at;
+        $startTime = optional($this->application->finalInterview)->final_interview_at;
         $this->interview->date = $startTime ? Carbon::parse($startTime)->setTimezone(Timezone::get())->toDateString() : null;
         $this->interview->time = $startTime ? Carbon::parse($startTime)->setTimezone(Timezone::get())->toTimeString() : null;
 
@@ -61,11 +61,11 @@ class SetInitInterviewDate extends Component
 
     }
 
-    #[On('submit-init-interview-sched-form')]
+    #[On('submit-final-interview-sched-form')]
     public function store()
     {
 
-        if (! auth()->user()->hasPermissionTo(UserPermission::CREATE_APPLICANT_INIT_INTERVIEW_SCHEDULE)) {
+        if (! auth()->user()->hasPermissionTo(UserPermission::CREATE_APPLICANT_FINAL_INTERVIEW_SCHEDULE)) {
             abort(403);
         }
 
@@ -73,7 +73,7 @@ class SetInitInterviewDate extends Component
 
         $validated['applicationId'] = $this->application->application_id;
 
-        $controller = new InitialInterviewController;
+        $controller = new FinalInterviewController;
 
         if($this->postMethod == 'PATCH'){
             $controller->update($validated, true);
@@ -92,23 +92,8 @@ class SetInitInterviewDate extends Component
         $this->dispatch('refreshChanges');
     }
 
-    /**
-     * Handle the Examination date must not be the same as the Interview date.
-     *
-     * @return void
-     */
-    #[On('examination-date-event')]
-    public function setInterviewMinDate($minDate)
-    {
-
-        $tomorrow = date('Y-m-d', strtotime('+1 day', strtotime($minDate)));
-        if (strtotime($minDate) >= strtotime(date('Y-m-d'))) {
-            $this->interview->setMinDate($minDate);
-        }
-    }
-
     public function render()
     {
-        return view('livewire.employee.applicants.set-init-interview-date', ['applicationId' => $this->application->application_id]);
+        return view('livewire.employee.applicants.set-final-interview-date');
     }
 }

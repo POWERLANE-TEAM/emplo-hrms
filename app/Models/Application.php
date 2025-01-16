@@ -65,6 +65,16 @@ class Application extends Model
         return $this->belongsTo(ApplicationStatus::class, 'application_status_id', 'application_status_id');
     }
 
+        /**
+     * Get the examination associated with the job application.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function exam(): HasOne
+    {
+        return $this->hasOne(ApplicationExam::class, 'application_id', 'application_id');
+    }
+
     /**
      * Get the initial interview associated with the job application.
      */

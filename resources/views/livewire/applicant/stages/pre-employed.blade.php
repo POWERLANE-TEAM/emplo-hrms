@@ -7,7 +7,8 @@
 <div>
     <section class="mb-5">
         <header class="fs-4 fw-bold mb-4" role="heading" aria-level="2">
-            <span class="fs-2 fw-bold ps-1 pe-3">Pre-Employment Requirements</span>
+            {{-- <span class="fs-2 fw-bold ps-1 pe-3">Pre-Employment Requirements</span> --}}
+            <span class="fs-2 fw-bold ps-1 pe-3">Employment Requirements</span>
             <x-status-badge :color="$statusColor">{{ $statusText }}</x-status-badge>
         </header>
 

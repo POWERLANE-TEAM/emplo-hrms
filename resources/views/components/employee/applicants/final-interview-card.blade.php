@@ -6,30 +6,31 @@
 @endphp
 
 <div class="bg-body-secondary rounded-3 col p-3 px-lg-5 py-md-4 text-center position-relative">
-    @if ($isInitAssessment)
+    @if ($isFinalAssessment)
         <button class="btn position-absolute text-primary top-0 end-0 m-1" type="button" data-bs-toggle="modal"
             data-bs-target="#edit-init-interview">
             <i class="icon icon-large" data-lucide="pencil-line"></i>
         </button>
     @endif
 
-    <label for="applicant-interview-date" class="d-block text-uppercase text-primary fw-medium mt-2">{{-- Initial --}}
+    <label for="applicant-interview-date" class="d-block text-uppercase text-primary fw-medium mt-2">Final
         Interview</label>
     <strong id="applicant-interview-date" class="applicant-interview-date fs-4 fw-bold">
         {{ $slot }}
     </strong>
 
-    <x-modals.dialog id="edit-init-interview">
+    <x-modals.dialog id="edit-final-interview">
         <x-slot:title>
             <h1 class="modal-title fs-5">{{ __('Set Schedule') }}</h1>
             <button data-bs-toggle="modal" class="btn-close" aria-label="Close"></button>
         </x-slot:title>
 
         <x-slot:content>
-            @livewire('employee.applicants.set-init-interview-date', ['application' => $application, 'routePrefix' => $routePrefix, 'inputGroupAttributes' => $inputGroupAttributes, 'dateWrapAttributes' => $inputWrapperClasses, 'timeWrapAttributes' => $inputWrapperClasses, 'overrideInputContainerClass' => true, 'overrideDateWrapper' => true, 'overrideTimeWrapper' => true])
+
+            @livewire('employee.applicants.set-final-interview-date', ['application' => $application, 'routePrefix' => $routePrefix, 'inputGroupAttributes' => $inputGroupAttributes, 'dateWrapAttributes' => $inputWrapperClasses, 'timeWrapAttributes' => $inputWrapperClasses, 'overrideInputContainerClass' => true, 'overrideDateWrapper' => true, 'overrideTimeWrapper' => true])
 
             <button type="button" class="btn btn-success"
-                wire:click="dispatch('submit-init-interview-sched-form')">Reschedule</button>
+                wire:click="dispatch('submit-final-interview-sched-form')">Reschedule</button>
         </x-slot:content>
 
         <x-slot:footer>
