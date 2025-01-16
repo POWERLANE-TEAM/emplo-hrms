@@ -113,6 +113,7 @@
     </x-layout.employee.nav.sidebar.nested-nav-items>
     @endcan
 
+    @can(UserPermission::VIEW_EMP_PERFORMANCE_TRAINING)
     {{-- Regular Employee --}}
     <x-layout.employee.nav.sidebar.nav-item
         href="{{ route($routePrefix . '.trainings.index') }}"
@@ -121,6 +122,8 @@
         :defaultIcon="['src' => 'training', 'alt' => '']"
         :activeIcon="['src' => 'training', 'alt' => '']">
     </x-layout.employee.nav.sidebar.nav-item>
+    @endcan
+
 
     {{-- Employee, HR Manager, Supervisor --}}
     @canAny([UserPermission::VIEW_PAYSLIPS, UserPermission::VIEW_ALL_PAYSLIPS])

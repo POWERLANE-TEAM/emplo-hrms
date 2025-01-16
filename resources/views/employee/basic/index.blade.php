@@ -12,6 +12,13 @@
 
 @pushOnce('styles')
     @vite(['resources/css/employee/basic/style.css'])
+
+    <style>
+.indiv-grid-container-2 {
+    max-height: 30vh;
+}
+    </style>
+
 @endPushOnce
 
 @section('content')

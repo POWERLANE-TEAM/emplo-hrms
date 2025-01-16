@@ -19,6 +19,12 @@
 @pushOnce('styles')
     @vite(['resources/css/employee/hr-manager/dashboard.css'])
     @vite(['resources/css/employee/admin/dashboard.css'])
+
+    <style>
+.indiv-grid-container-1 {
+    max-height: 50vh;
+}
+    </style>
 @endPushOnce
 
 @section('content')
