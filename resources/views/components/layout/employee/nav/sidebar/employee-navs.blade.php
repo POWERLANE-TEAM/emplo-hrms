@@ -118,7 +118,7 @@
     <x-layout.employee.nav.sidebar.nav-item
         href="{{ route($routePrefix . '.trainings.index') }}"
         :active="request()->routeIs($routePrefix . '.trainings.index*')"
-        class="order-11" nav_txt="Trainings"
+        class="order-5" nav_txt="Trainings"
         :defaultIcon="['src' => 'training', 'alt' => '']"
         :activeIcon="['src' => 'training', 'alt' => '']">
     </x-layout.employee.nav.sidebar.nav-item>
