@@ -21,6 +21,8 @@ class LeaveCategorySeeder extends Seeder
                 LeaveCategory::create([
                     'leave_category_name' => $item->name,
                     'leave_category_desc' => $item->description,
+                    'allotted_days' => $item?->days_allowed ?? null,
+                    'is_proof_required' => $item->is_proof_required ?? false,
                 ]);
             });
         });

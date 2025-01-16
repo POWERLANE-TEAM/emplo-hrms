@@ -10,13 +10,13 @@
         <x-slot:content>
             <div class="my-2">
                 <!-- BACK-END REPLACE: Start Date -->
-                <x-form.boxed-date id="expiry_date" label="{{ __('Date') }}" :nonce="$nonce" :required="true"
-                    placeholder="Date of Overtime" />
+                <x-form.boxed-date wire:model="period" id="expiry_date" label="{{ __('Date') }}" :nonce="$nonce" :required="true"
+                    placeholder="Date of Overtime" min="{{ today()->toDateString() }}" max="{{ today()->endOfYear()->subDay()->toDateString() }}" />
             </div>
         </x-slot:content>
         <x-slot:footer>
             <button type="button" class="btn btn-primary"
-                onclick="switchModal('changeStartDate', 'confirmStartDate')">{{ __('Change Start Date') }}</button>
+                onclick="switchModal('changeStartDate', 'confirmStartDate')">{{ __('Open Evaluation Period') }}</button>
         </x-slot:footer>
     </x-modals.dialog>
 
@@ -30,11 +30,11 @@
     <div class="col-md-4">
         <section>
             <p class="fs-3 fw-bold">
-                Evaluations Start Date
+                Evaluation Period
             </p>
 
             <p>
-                Configure the commencement date for employees' performance evaluations.
+                Configure the opening date for employees' performance evaluations.
             </p>
         </section>
     </div>
@@ -60,11 +60,13 @@
                         </a>
                     </p>
                 </div>
-                <div class="d-inline-flex pt-2">
-                    <button type="button" onclick="openModal('changeStartDate')" class="btn btn-primary me-3 py-2">
-                        {{ __('Change Start Date') }}
-                    </button>
-                </div>
+                @can('openRegularsEvaluationPeriod')
+                    <div class="d-inline-flex pt-2">
+                        <button type="button" onclick="openModal('changeStartDate')" class="btn btn-primary me-3 py-2">
+                            {{ __('Change Start Date') }}
+                        </button>
+                    </div>                    
+                @endcan
             </div>
         </section>
     </div>

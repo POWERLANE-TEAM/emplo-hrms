@@ -142,7 +142,7 @@ Route::middleware('auth')->group(function () {
     /**
      * Announcement
      */
-    Route::prefix('announcement')->name('announcement.')->group(function () {
+    Route::prefix('announcements')->name('announcements.')->group(function () {
         Route::get('/', function () {
             return view('employee.admin.announcements.index');
         })

@@ -1,3 +1,5 @@
+@use(Illuminate\Support\Carbon)
+
 <section>
     <style>
         .left-col {
@@ -45,7 +47,7 @@
                     <div class="fw-bold">{{ __('Shift Schedule: ') }}</div>
                     <p>{{ $employee->shift.' ('.$employee->shiftSched.')' }}</p>
                     <div class="fw-bold">{{ __('Date Hired: ') }}</div>
-                    <p>{{ $employee->hiredAt ?? __('No record found.') }}</p>
+                    <p>{{ Carbon::make($employee->hiredAt)->format('F d, Y') ?? __('No record found.') }}</p>
                 </div>
 
                 <div class="mt-3">
@@ -129,19 +131,6 @@
                     </div>
                 </div>
             </section>
-
-            <div class="row">
-                <div class="col d-flex align-items-center justify-content-end">
-                    <div class="hover-opacity pe-auto">
-                        <!-- BACK-END REPLACE: Link to the current employee's profile -->
-                        <a href="#" id="toggle-documents" class="text-link-blue text-decoration-underline fs-5">
-                            View Documents
-                        </a>
-
-                        <i data-lucide="arrow-right" class="icon icon-slarge ms-2 text-blue-info"></i>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </section>

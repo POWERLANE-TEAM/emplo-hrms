@@ -10,6 +10,7 @@ use App\Livewire\Auth\FacebookOAuth;
 use App\Livewire\Auth\GoogleOAuth;
 use App\Livewire\Auth\GoogleOneTap;
 use App\Livewire\Auth\Logout;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Google\Cloud\AIPlatform\V1\Client\ModelServiceClient;
 use Google\Cloud\AIPlatform\V1\ListModelsRequest;
 use Illuminate\Support\Facades\Route;
@@ -70,6 +71,10 @@ Route::get('/test-pop-ups', function () {
     return view('components.html.test-pop-ups');
 });
 
+Route::get('/guest/information-centre', function () {
+    return view('help-centre.guest');
+});
+
 Route::get('/information-centre', function () {
     return view('help-centre.index');
 });
@@ -80,4 +85,18 @@ Route::get('/forgot-password', function () {
     return view('password-recovery.index');
 });
 
+Route::get('/canvas', function () {
+    return view('canvas');
+});
+
+Route::get('/pdf', function () {
+    Pdf::setOption(['dpi' => 300]);
+    $coe = Pdf::loadView('coe');
+    $coe->setPaper('a4', 'landscape');
+    return $coe->download('coe.pdf');
+});
+
+Route::get('/coe', function () {
+    return view('coe');
+});
 

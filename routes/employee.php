@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EmployeeArchiveController;
 use App\Http\Controllers\FileManagerController;
 use App\Http\Controllers\PayslipController;
 use App\Http\Controllers\ProfileController;
@@ -123,7 +124,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     /**
      * Announcement
      */
-    Route::prefix('announcement')->name('announcement.')->group(function () {
+    Route::prefix('announcements')->name('announcements.')->group(function () {
         Route::get('/', function () {
             return view('employee.admin.announcements.index');
         })
@@ -359,14 +360,14 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         Route::get('/', [LeaveController::class, 'index'])
             ->name('index');
 
-        Route::get('balance', [LeaveController::class, 'myBalance'])
-            ->name('balance');
+        Route::get('balances', [LeaveController::class, 'subordinateBalance'])
+            ->can('approveSubordinateLeaveRequest')
+            ->name('balances');
 
-        Route::get('balance/subordinates', [LeaveController::class, 'subordinateBalance'])
-            ->name('balance.subordinates');
-
-        Route::get('balance/general', [LeaveController::class, 'generalBalance'])
-            ->name('balance.general');
+        Route::get('balances/general', [LeaveController::class, 'generalBalance'])
+            // ->can('approveAnyLeaveRequest')
+            ->can('approveLeaveRequestFinal')
+            ->name('balances.general');
 
         Route::get('overview', [LeaveController::class, 'request'])
             ->name('overview');
@@ -378,6 +379,12 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
             ->can('viewLeaveRequest', 'leave')
             ->whereNumber('leave')
             ->name('show');
+
+        Route::get('attachments/{attachment}', [LeaveController::class, 'viewAttachment'])
+            ->name('attachments.show');
+
+        Route::get('{attachment}/download', [LeaveController::class, 'downloadAttachment'])
+            ->name('attachments.download');
 
         Route::get('requests', [LeaveController::class, 'request'])
             ->name('requests');
@@ -515,9 +522,12 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         Route::get('/', [TrainingController::class, 'index'])
             ->name('index');
 
+        Route::get('general', [TrainingController::class, 'general'])
+            ->name('general');
+
         Route::get('{employee}', [TrainingController::class, 'show'])
             ->whereNumber('employee')
-            ->name('employee');
+            ->name('general.employee');
     });
 
 
@@ -543,7 +553,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         return view('employee.separation.resignation.all');
     })->name('separation.resignations');
 
-    Route::get('{employee}/separation/resignations/review', [ResignationController::class, 'edit'])
+    Route::get('/separation/resignations/{resignation}/review', [ResignationController::class, 'edit'])
     ->name('separation.resignations.review');
 
     Route::get('seperation/coe', function () {
@@ -565,14 +575,13 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     /**
      * Archive
      */
-    Route::get('/archive', function () {
-        return view('employee.hr-manager.archive.index');
-    })->name('employees.archive');
+    Route::prefix('archives')->name('archives.')->group(function () {
+        Route::get('/', [EmployeeArchiveController::class, 'index'])
+            ->name('index');
 
-    Route::get('/archive/records', function () {
-        return view('employee.hr-manager.archive.records');
-    })->name('employees.archive.records');
-
+        Route::get('{employee}', [EmployeeArchiveController::class, 'show'])
+            ->name('employee');
+    });
 
     /**
      * General: Dashboard

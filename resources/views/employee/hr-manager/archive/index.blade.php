@@ -30,9 +30,10 @@
     </x-slot:heading>
 
     <x-slot:description>
-        <p>{{ __('View and track resigned employees\' archived 201 records.') }}</p>
+        <p>{{ __('View and track separated employees\' archived 201 records.') }}</p>
     </x-slot:description>
 </x-headings.main-heading>
 
-<!-- BACK-END REPLACE: TABLE OF ALL RESIGNED EMPLOYEES -->
+<livewire:employee.tables.any-separated-employees-table :$routePrefix />
+
 @endsection

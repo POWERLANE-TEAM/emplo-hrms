@@ -35,4 +35,6 @@
 
 <!-- BACK-END REPLACE: TABLE FOR ALL RESIGNATION LETTERS -->
 
+<livewire:coe-requests-table />
+
 @endsection

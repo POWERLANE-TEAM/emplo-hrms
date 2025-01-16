@@ -44,7 +44,7 @@
                 @enderror
             </div>
             <div class="col-5">
-                <x-form.boxed-input-text id="salary" label="{{ __('Base Salary') }}" name="state.baseSalary"
+                <x-form.boxed-input-text type="number" id="salary" label="{{ __('Base Salary') }}" name="state.baseSalary"
                     :nonce="$nonce" placeholder="Enter base salary" />
                 @error('state.baseSalary')
                     <div class="invalid-feedback" role="alert">{{ $message }}</div>
@@ -65,7 +65,9 @@
         <header>
             <p class="mb-0 fs-4 text-primary fw-bold">Qualification</p>
             <p>Set the job title qualifications/requirements here.
-                <x-tooltips.modal-tooltip icon="help-circle" color="text-info"  modalId="aboutQualification" /></p>
+                <a href="/information-centre?section=about-rankings" target="blank" class="tooltip-link">
+                    <x-tooltips.custom-tooltip title="Learn more" icon="info" placement="top" color="text-info" />
+                </a>
         </header>
 
         <livewire:admin.job-title.set-education />

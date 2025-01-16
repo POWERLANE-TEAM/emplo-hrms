@@ -28,7 +28,7 @@
 
     <div class="col-md-4 text-end d-flex justify-content-end align-items-center">
         <div>
-            <a href="{{ route($routePrefix . '.profile') }}" class="hover-opacity" data-bs-toggle="tooltip" title="Close">
+            <a href="{{ route($routePrefix . '.profile.index') }}" class="hover-opacity" data-bs-toggle="tooltip" title="Close">
                 <i data-lucide="circle-x" class="text-black-50 icon icon-xlarge"></i>
             </a>
         </div>

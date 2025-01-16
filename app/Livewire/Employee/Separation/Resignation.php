@@ -6,6 +6,7 @@ use Livewire\Attributes\Locked;
 use App\Enums\FilePath;
 use App\Models\Employee;
 use App\Models\EmployeeDoc;
+use App\Models\Resignation as ModelsResignation;
 use Livewire\Component;
 
 class Resignation extends Component
@@ -15,16 +16,22 @@ class Resignation extends Component
     #[Locked]
     public bool $hasResignation;
 
-    public EmployeeDoc $resignation;
+    public Employee $employee;
+
+    public ?ModelsResignation $resignation;
 
     public function mount()
     {
-        $this->hasResignation = auth()->user()->account->documents()->where('file_path', 'like', '%' . FilePath::RESIGNATION->value . '%')->exists();
+        $this->employee = auth()->user()->account;
 
-        if($this->hasResignation){
-            auth()->user()->loadMissing('account.documents');
-            $this->resignation = auth()->user()->account->documents()->where('file_path', 'like', '%' . FilePath::RESIGNATION->value . '%')->first();
+        $this->resignation = optional(optional(auth()->user()->account->resignations())->latest())->first();
+
+        $this->hasResignation = $this->employee->resignations()->exists();
+
+        if ($this->hasResignation) {
+            $this->resignation->loadMissing('resigneeLifecycle','resignationLetter');
         }
+
     }
 
     public function render()

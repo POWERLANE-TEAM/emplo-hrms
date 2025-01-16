@@ -91,17 +91,26 @@ class CreateJobListing extends Component
     public function renderSelectedJob()
     {
         $this->jobDetails = JobTitle::where('job_title_id', $this->state['selectedJob'])
-            ->with(['department', 'qualifications', 'jobFamily', 'jobLevel'])
+            ->with([
+                'department', 
+                'skills',
+                'educations',
+                'experiences',
+                'jobFamily', 
+                'jobLevel'
+            ])
             ->get()
-            ->map(function ($item) {
+            ->map(function ($job) {
                 return (object) [
-                    'title' => $item->job_title,
-                    'description' => $item->job_title_desc,
-                    'department' => $item->department->department_name,
-                    'qualifications' => $item->qualifications,
-                    'family' => $item->jobFamily->job_family_name,
-                    'level' => $item->jobLevel->job_level,
-                    'levelName' => $item->jobLevel->job_level_name,
+                    'title'         => $job->job_title,
+                    'description'   => $job->job_title_desc,
+                    'department'    => $job->department->department_name,
+                    'family'        => $job->jobFamily->job_family_name,
+                    'level'         => $job->jobLevel->job_level,
+                    'levelName'     => $job->jobLevel->job_level_name,
+                    'skills'        => $job->skills,
+                    'educations'    => $job->educations,
+                    'experiences'   => $job->experiences,
                 ];
             });
     }

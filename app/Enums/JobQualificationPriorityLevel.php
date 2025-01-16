@@ -26,6 +26,16 @@ enum JobQualificationPriorityLevel: string
         };
     }
 
+    public function getColor(): string
+    {
+        return match ($this) {
+            self::HP => 'danger',
+            self::MP => 'warning',
+            self::LP => 'success',
+            default => 'danger',
+        };
+    }
+
     /**
      * Return array of each cases and scalar values.
      */
