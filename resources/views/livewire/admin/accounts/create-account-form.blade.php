@@ -101,6 +101,7 @@ generated password was sent to email. --Carl
                             :nonce="$nonce"
                             :required="true" 
                             placeholder="Birthdate"
+                            max="{{ now()->subYears(18)->format('Y-m-d') }}"
                         />
                         @error('form.birthDate')
                             <div class="invalid-feedback" role="alert">{{ $message }}</div>
@@ -388,6 +389,21 @@ generated password was sent to email. --Carl
                 {{-- Role, Employment Status, Schedule/Shift --}}
                 <div class="row">
                     <div class="col">
+                        <x-form.boxed-date 
+                            id="dateHired" 
+                            label="{{ __('Date Hired') }}" 
+                            name="form.hiredAt" 
+                            :nonce="$nonce"
+                            :required="true" 
+                            placeholder="Date Hired"
+                            max="{{ today()->format('Y-m-d') }}"
+                        />
+                        @error('form.hiredAt')
+                            <div class="invalid-feedback" role="alert">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    
+                    <div class="col">
                         <x-form.boxed-dropdown 
                             id="role" 
                             label="{{ __('Role') }}" 
@@ -432,6 +448,64 @@ generated password was sent to email. --Carl
                         @enderror
                     </div>
                 </div>
+
+                <div class="row">
+                    <div class="col">
+                        <x-form.boxed-date 
+                            id="dateHired" 
+                            label="{{ __('Starting Date') }}" 
+                            name="form.startedAt" 
+                            :nonce="$nonce"
+                            :required="true" 
+                            placeholder="Date Hired"
+                            max="{{ today()->format('Y-m-d') }}"
+                        />
+                        @error('form.startedAt')
+                            <div class="invalid-feedback" role="alert">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="col">
+                        <x-form.boxed-dropdown 
+                            id="vLCredits" 
+                            label="{{ __('Vacation Leave Credits') }}" 
+                            name="form.vacationLeaveCredits" 
+                            :nonce="$nonce" 
+                            :required="true"
+                            :options="[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]"
+                            placeholder="Select option">
+                        </x-form.boxed-dropdown>
+                        @error('form.vacationLeaveCredits')
+                            <div class="invalid-feedback" role="alert">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="col">
+                        <x-form.boxed-dropdown 
+                            id="sLCredits" 
+                            label="{{ __('Sick Leave Credits') }}" 
+                            name="form.sickLeaveCredits" 
+                            :nonce="$nonce" 
+                            :required="true"
+                            :options="[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]"
+                            placeholder="Select option">
+                        </x-form.boxed-dropdown>
+                        @error('form.sickLeaveCredits')
+                            <div class="invalid-feedback" role="alert">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="col">
+                        <label for="contract"
+                            class="btn no-hover-border btn-sm hover-opacity text-primary">Contract
+                        </label>
+                        <input type="file" wire:model="form.contract" name="contract" id="contract">
+                        @error('form.contract')
+                            <div class="invalid-feedback" role="alert">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+                
             </section>
 
             {{-- Section: Statutory Requirements --}}
