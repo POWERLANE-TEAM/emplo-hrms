@@ -8,9 +8,10 @@
         file:///./../../../../../app/Livewire/Employee/Modal/PreEmploymentPreview.php
 --}}
 
-<div x-data="modal_preemp_req('{{ $doc_id }}')" wire:ignore.self class="modal fade" id="preemp-doc-{{ $doc_id }}-attachment"
+<div x-data="modal_preemp_req('{{ $doc_id, $file }}')" wire:ignore.self class="modal fade" id="preemp-doc-{{ $doc_id }}-attachment"
     tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
-
+{{-- {{dump($file)}}
+{{dump($doc_id)}} --}}
 
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -35,7 +36,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary submit" @click="submitFile()">Submit</button>
+                <button type="button" class="btn btn-primary ndsbl" @click="submitFile()">Submit</button>
             </div>
         </div>
     </div>
