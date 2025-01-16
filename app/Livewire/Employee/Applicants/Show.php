@@ -35,6 +35,8 @@ class Show extends Component
 
     protected $initialInterviewSchedF;
 
+    protected $finalInterviewSchedF;
+
     protected $resume;
 
     #[Locked]
@@ -42,6 +44,9 @@ class Show extends Component
 
     #[Locked]
     public bool $notYetInitInterview = false;
+
+    #[Locked]
+    public bool $notYetFinalInterview = false;
 
     #[Locked]
     public  string $evaluationNotice;
@@ -85,6 +90,7 @@ class Show extends Component
 
                 $this->examSchedF = $this->formatSchedule(optional($this->applicationExam)->start_time);
                 $this->initialInterviewSchedF = $this->formatSchedule(optional($this->application->initialInterview)->init_interview_at);
+                $this->finalInterviewSchedF = $this->formatSchedule(optional($this->application->finalInterview)->final_interview_at);
 
 
                 if ($this->applicationExam->start_time) {
@@ -123,6 +129,14 @@ class Show extends Component
                     $this->isReadyForInitEvaluation = true;
                 }
 
+                if (optional($this->application->finalInterview)->final_interview_at) {
+                    $interviewTime = Carbon::parse($this->application->finalInterview->final_interview_at);
+                    $this->notYetFinalInterview = !Carbon::now()->greaterThanOrEqualTo($interviewTime) && Carbon::now()->lessThan($interviewTime->addMinutes(5));
+                } else {
+                    // ung interview time nakalipas na
+                    $this->notYetFinalInterview = false;
+                }
+
             }
 
         // } catch (\Throwable $th) {
@@ -145,7 +159,8 @@ class Show extends Component
                 'isPending' => $this->isPending,
                 'isInitAssessment' => $this->isInitAssessment,
                 'examSchedF' => $this->examSchedF,
-                'initialInterviewSchedF' => $this->initialInterviewSchedF
+                'initialInterviewSchedF' => $this->initialInterviewSchedF,
+                'isFinalAssessment' => $this->isFinalAssessment
             ]
         );
     }

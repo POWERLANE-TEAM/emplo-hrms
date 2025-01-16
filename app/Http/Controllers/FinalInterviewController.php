@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Enums\UserPermission;
 use App\Models\Application;
+use App\Models\FinalInterview;
+use App\Models\FinalInterviewRating;
 use App\Models\InitialInterview;
 use App\Models\InitialInterviewRating;
 use App\Rules\ScheduleDateRule;
@@ -12,7 +14,7 @@ use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
-class InitialInterviewController extends Controller
+class FinalInterviewController extends Controller
 {
     protected $minDate;
 
@@ -41,11 +43,11 @@ class InitialInterviewController extends Controller
     {
 
         if (! $isValidated) {
-            if (! auth()->user()->hasPermissionTo(UserPermission::CREATE_APPLICANT_INIT_INTERVIEW_SCHEDULE)) {
+            if (! auth()->user()->hasPermissionTo(UserPermission::CREATE_APPLICANT_FINAL_INTERVIEW_SCHEDULE)) {
                 abort(403);
             }
 
-            $this->date = $request->input('examination.date');
+            $this->date = now();
 
             $validated = $request->validate([
                 'interview.date' => 'required|' . ScheduleDateRule::get($this->minDate, $this->maxDate),
@@ -62,7 +64,7 @@ class InitialInterviewController extends Controller
 
         $application = Application::findOrFail($applicationId);
 
-        if (InitialInterview::where('application_id', $applicationId)->exists()) {
+        if (FinalInterview::where('application_id', $applicationId)->exists()) {
             abort(409, 'Initial interview already scheduled.');
         }
 
@@ -74,11 +76,11 @@ class InitialInterviewController extends Controller
             $interviewStartTime = $validated('interview.time');
         }
 
-        InitialInterview::create([
+        FinalInterview::create([
             'application_id' => $application->application_id,
-            'init_interview_at' => $interviewStartDate . ' ' . $interviewStartTime,
-            'init_interviewer' => auth()->user()->user_id,
-            'is_init_interview_passed' => false,
+            'final_interview_at' => $interviewStartDate . ' ' . $interviewStartTime,
+            'final_interviewer' => auth()->user()->user_id,
+            'is_final_interview_passed' => false,
         ]);
 
         // Insert Interview Notification Event Here
@@ -118,9 +120,9 @@ class InitialInterviewController extends Controller
         $initalInterviewRatings = is_array($request) ? $request['interviewRatings'] : $request->input('interviewRatings');
 
         $data = [
-            'init_interview_at' => $interviewStart,
-            'init_interviewer' => auth()->user()->user_id,
-            'is_init_interview_passed' => $request['isPassed'] ?? false,
+            'final_interview_at' => $interviewStart,
+            'final_interviewer' => auth()->user()->user_id,
+            'is_final_interview_passed' => $request['isPassed'] ?? false,
         ];
 
         $filteredData = array_filter($data, function ($value) {
@@ -129,15 +131,15 @@ class InitialInterviewController extends Controller
 
         if(!empty($initalInterviewRatings)){
             foreach ($initalInterviewRatings as $key => $parameter) {
-                $isExist = InitialInterviewRating::parameter($key)->interview($initalInterview)->exists();
+                $isExist = FinalInterviewRating::parameter($key)->interview($initalInterview)->exists();
 
                 if($isExist){
-                    InitialInterviewRating::parameter($key)->interview($initalInterview)->update([
+                    FinalInterviewRating::parameter($key)->interview($initalInterview)->update([
                         'rating_id' => $parameter,
                     ]);
                 }else{
-                    InitialInterviewRating::create([
-                        'init_interview_id' => $initalInterview->init_interview_id,
+                    FinalInterviewRating::create([
+                        'final_interview_id' => $initalInterview->init_interview_id,
                         'parameter_id' => $key,
                         'rating_id' => $parameter,
                     ]);

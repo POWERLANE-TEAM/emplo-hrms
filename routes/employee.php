@@ -20,6 +20,7 @@ use App\Http\Controllers\PerformanceDetailController;
 use App\Http\Controllers\Employee\DashboardController;
 use App\Http\Controllers\RegularPerformanceController;
 use App\Http\Controllers\Application\ApplicationController;
+use App\Http\Controllers\FinalInterviewController;
 use App\Http\Controllers\ProbationaryPerformanceController;
 use App\Http\Controllers\RegularPerformancePlanController;
 use App\Http\Controllers\Separation\ResignationController;
@@ -203,6 +204,15 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         ->middleware(['permission:' . UserPermission::CREATE_APPLICANT_EXAM_SCHEDULE->value])
         ->middleware(['permission:' . UserPermission::CREATE_APPLICANT_EXAM_SCHEDULE->value])
         ->name('applicant.exam.store');
+
+
+            /**
+     * Schedule Final Interview
+     */
+    Route::post('/applicant/interview/final/{application}', [FinalInterviewController::class, 'store'])
+    ->middleware(['permission:' . UserPermission::CREATE_APPLICANT_INIT_INTERVIEW_SCHEDULE->value])
+    ->middleware(['permission:' . UserPermission::CREATE_APPLICANT_INIT_INTERVIEW_SCHEDULE->value])
+    ->name('applicant.final-inteview.store');
 
 
 

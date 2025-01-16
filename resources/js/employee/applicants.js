@@ -21,6 +21,16 @@ new GlobalListener('click', document, `#toggle-assign-exam-modal`, (event) => {
     window.openModal(`modal-assign-exam-result`);
 });
 
+new GlobalListener('click', document, `[data-bs-target="#edit-final-interview"]`, (event) => {
+    console.log('clicked');
+    window.openModal(`edit-final-interview`);
+});
+
+new GlobalListener('click', document, `#toggle-assign-final-interview-modal`, (event) => {
+    // Todo make livewire and listen to this evente
+    window.openModal(`modal-assign-exam-result`);
+});
+
 // new GlobalListener('click', document, `#`, (event) => {
 //     // Todo make livewire and listen to this event
 //     Livewire.dispatch('exam-result-event');

@@ -23,6 +23,7 @@ class InterviewRating extends Model
     {
         parent::boot();
 
+        // ewan basta baka need to
         static::saved(function ($rating) {
             cache()->forget('interviewRatingOptions');
         });

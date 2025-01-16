@@ -1,7 +1,7 @@
 @use('Illuminate\View\ComponentAttributeBag')
 
 <form action="" wire:submit.prevet="save" class="d-contents">
-    @foreach ($interviewParameters as $parameter)
+    @foreach ($interviewParameterItems as $parameter)
         <div class="row flex-nowrap align-items-center min-w-100  justify-content-between">
             <label for="exam-result " class="col-7">
                 <div class="text-wrap ">
@@ -10,13 +10,13 @@
 
             </label>
 
-            <input type="hidden" name="initInterviewParameters" value="{{ $parameter->parameter_id }}">
+            <input type="hidden" name="initForm.interviewParameters" value="{{ $parameter->parameter_id }}">
             <x-form.boxed-dropdown id="exam-result"
             :overrideContainerClass="true"
             :containerAttributes="new ComponentAttributeBag(['class' => 'mb-3 position-relative col-3 '])"
-            class="{{$errors->has('initInterviewRatings.' . $parameter->parameter_id) ? 'is-invalid' : ''}}"
-            name="initInterviewRatings.{{ $parameter->parameter_id }}"
-                :nonce="$nonce"  :options="$this->interviewRatingOptionsF(true)" placeholder="Select type">
+            class="{{$errors->has('initForm.interviewRatings.' . $parameter->parameter_id) ? 'is-invalid' : ''}}"
+            name="initForm.interviewRatings.{{ $parameter->parameter_id }}"
+                :nonce="$nonce"  :options="$this->initForm->interviewRatingOptionsF(true)" placeholder="Select type">
             </x-form.boxed-dropdown>
         </div>
     @endforeach

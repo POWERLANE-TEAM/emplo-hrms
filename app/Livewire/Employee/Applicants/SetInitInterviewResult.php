@@ -4,6 +4,7 @@ namespace App\Livewire\Employee\Applicants;
 
 use App\Models\InterviewRating;
 use App\Http\Controllers\InitialInterviewController;
+use App\Livewire\Forms\Applicant\InterviewForm;
 use App\Models\InitialInterview;
 use App\Models\InterviewParameter;
 use App\Rules\ValidApplicantInterviewRating;
@@ -17,80 +18,34 @@ class SetInitInterviewResult extends Component
 
     public InitialInterview $initInterview;
 
-    public $interviewParameters;
+    public InterviewForm $initForm;
 
-    #[Locked]
-    public $initInterviewParameters = [];
-
-    #[Validate]
-    public $initInterviewRatings = [];
+    public $interviewParameterItems;
 
     public function mount()
     {
-        $this->initInterviewRatings = InterviewParameter::all()->pluck('parameter_id')->mapWithKeys(function ($id) {
-            return [$id => ''];
-        })->toArray();
-    }
-
-    #[Computed(persist: true, cache: true, key: 'interviewRatingOptions')]
-    public function interviewRatingOptions()
-    {
-        return InterviewRating::getRatingValues();
-    }
-
-    public function interviewRatingOptionsF($reverse = false)
-    {
-        $options =InterviewRating::getRatings();
-        return $reverse ? array_reverse($options, true) : $options;
+        $this->initForm->interviewRatings = $this->initForm->initializeInterviewRatings();
     }
 
 
     public function rules()
     {
         return [
-            'initInterviewRatings' => 'required',
-            'initInterviewRatings.*' => 'bail|required|' . ValidApplicantInterviewRating::getRule(),
+            'initForm.interviewRatings' => 'required',
+            'initForm.interviewRatings.*' => 'bail|required|' . ValidApplicantInterviewRating::getRule(),
         ];
-    }
-
-    public function ratingIsPassing($value)
-    {
-        // assume ko nlng ganto
-        return round($value) >= 2.0;
-    }
-
-    public function averageRating()
-    {
-        $total = 0;
-        $count = 0;
-        $ratingPassedCount = 0;
-        $values = InterviewRating::getRatingValues();
-
-        foreach ($this->initInterviewRatings as $rating) {
-            if ($rating) {
-                $ratingVal = $values[$rating];
-                if ($this->ratingIsPassing($ratingVal)) $ratingPassedCount++;
-                $total += $ratingVal;
-                $count++;
-            }
-        }
-        dump($this->initInterviewRatings);
-        dump($values);
-        dump($total);
-        $average = $count ? rtrim(rtrim(number_format($total / $count, 10), '0'), '.') : 0;
-        return  [$average, $ratingPassedCount];
     }
 
     public function save(InitialInterviewController $controller)
     {
 
-        $validated = $this->validate();
+        $validated = $this->initForm->validate();
 
-        [$averageRating, $countPassed] = $this->averageRating();
+        [$averageRating, $countPassed] = $this->initForm->averageRating();
 
         // assume ko nlng ganto
         // passed if average rating is 2.0 or higher and at least 5 ratings are passed
-        $isPassed = $this->ratingIsPassing($averageRating) && $countPassed >= 5;
+        $isPassed = $this->initForm->ratingIsPassing($averageRating) && $countPassed >= 5;
 
         $validated['applicationId'] = $this->initInterview->application->application_id;
         $validated['isPassed'] = $isPassed;
@@ -109,7 +64,7 @@ class SetInitInterviewResult extends Component
     {
         dump($this->getErrorBag());
         dump($this->rules());
-        dump($this->initInterviewRatings);
+        dump($this->initForm->interviewRatings);
         return view('livewire.employee.applicants.set-init-interview-result');
     }
 }

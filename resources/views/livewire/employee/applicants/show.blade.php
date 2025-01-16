@@ -82,6 +82,8 @@
                         {{ $initialInterviewSchedF }}
                     </x-employee.applicants.init-interview-card>
                 </div>
+
+                {{-- SET EXAM RESULT MODAL --}}
                 <x-modals.dialog id="modal-assign-exam-result">
                     <x-slot:title>
                         <h1 class="modal-title fs-5"></h1>
@@ -106,6 +108,7 @@
                     </x-slot:footer>
                 </x-modals.dialog>
 
+                {{-- ASSIGN EXAM RESULT BUTTON --}}
 
                 <div class="d-flex gap-4 min-w-100 ">
                     <div class="bg-body-tertiary rounded-3 col p-3 position-relative">
@@ -121,6 +124,8 @@
                         </div>
 
                     </div>
+
+                    {{-- SET INTERVIEW RESULT  MODAL --}}
 
                     <x-modals.dialog id="modal-assign-init-interview-result">
                         <x-slot:title>
@@ -144,7 +149,7 @@
 
                                 @if ($isReadyForInitEvaluation)
                                     <livewire:employee.applicants.set-init-interview-result :initInterview="$application->initialInterview"
-                                        :interviewParameters="$interviewParameters" />
+                                        :interviewParameterItems="$interviewParameters" />
                                 @endif
 
                             </div>
@@ -153,6 +158,8 @@
 
                         </x-slot:footer>
                     </x-modals.dialog>
+
+                    {{-- ASSIGN INTERVIEW RESULT BUTTON --}}
 
                     <div class="bg-body-tertiary rounded-3 col p-3 position-relative">
                         <label for="applicant-exam-result"
@@ -170,6 +177,73 @@
 
                 </div>
             @endif
+
+            <hr>
+
+            <div class="d-flex gap-4 min-w-100 ">
+                {{-- FINAL INTERVIEW  SET SCHEDULE CARD --}}
+                @if ($isReadyForInitEvaluation)
+                    <section>
+                        <x-employee.applicants.final-interview-card :application="$application" :isFinalAssessment="$isFinalAssessment">
+                            {{ $isFinalAssessment ?? null }}
+                        </x-employee.applicants.final-interview-card>
+                    </section>
+                @endif
+
+                {{-- FINAL INTERVIEW ASSIGN RESULT BUTTON --}}
+
+                <div class="bg-body-tertiary rounded-3 col p-3 position-relative">
+                    <label for="applicant-exam-result" class="d-block text-uppercase text-primary fw-medium mb-2">Final
+                        Interview Result</label>
+                    <div id="applicant-exam-result" class="applicant-exam-result d-flex align-items-center fw-bold">
+                        <span
+                            class="flex-1">{{ BasicEvalStatus::labelForValue(optional($application->finalInterview)->is_final_interview_passed) }}</span>
+                        <button class="btn btn-sm btn-outline-secondary px-3 px-md-4" type="button"
+                            id="toggle-assign-exam-modal" {!! when($notYetFinalInterview, 'disabled') !!}>
+                            Assign
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+
+            {{-- SET FINAL INTERVIEW RESULT  MODAL --}}
+
+            <x-modals.dialog id="modal-assign-final-interview-result">
+                <x-slot:title>
+                    <h1 class="modal-title fs-5"></h1>
+                    <button data-bs-toggle="modal" class="btn-close" aria-label="Close"></button>
+                </x-slot:title>
+                <x-slot:content>
+                    <x-headings.main-heading :isHeading="true" :containerAttributes="new ComponentAttributeBag(['class' => 'text-center fs-5'])" :overrideClass="true"
+                        class="text-primary fs-3 fw-bold mb-2">
+                        <x-slot:heading>
+                            {{ __('Assign Results') }}
+                        </x-slot:heading>
+
+                        <x-slot:description>
+                            {{ __('Enter Final interview results of the applicant') }}
+                        </x-slot:description>
+                        {{-- INSERT notice --}}
+                    </x-headings.main-heading>
+                    <div class="d-grid mx-auto px-md-5 row-gap-4 row-gap-md-3 overflow-y-auto"
+                        style="max-height: 50cqh;">
+
+                        {{-- SET FINAL INTERVIEW RESULT FORM --}}
+                        @if ($notYetFinalInterview)
+                            <livewire:employee.applicants.set-final-interview-result :initInterview="$application->initialInterview"
+                                :interviewParameterItems="$interviewParameters" />
+                        @endif
+
+                    </div>
+                </x-slot:content>
+                <x-slot:footer>
+
+                </x-slot:footer>
+            </x-modals.dialog>
+
+
 
             @isset($evaluationNotice)
                 <p><span class="text-primary fw-bold">Note</span> {{ $evaluationNotice }}</p>
@@ -196,12 +270,15 @@
                     <button class="btn btn-lg flex-grow-1-25 ndsbl {!! $isReadyForInitEvaluation && optional($this->application->initialInterview)->is_init_interview_passed
                         ? 'btn-primary'
                         : 'btn-secondary' !!} " {!! when(!optional($this->application->initialInterview)->is_init_interview_passed, 'disabled') !!}
-                        data-bs-toggle="modal" data-bs-target="#{{ $modalId }}"
-                        wire:click="setFinalInterview">Proceed</button>
+                        data-bs-toggle="modal" data-bs-target="#edit-final-interview"
+                        {{-- wire:click="setFinalInterview" --}}>Proceed</button>
                 @elseif ($application->application_status_id == ApplicationStatus::FINAL_INTERVIEW_SCHEDULED->value)
-                        <button></button>
+                    <button></button>
                 @endif
             </div>
+
+
+
 
 
         </div>
