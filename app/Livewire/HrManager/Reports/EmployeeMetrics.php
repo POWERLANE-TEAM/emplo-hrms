@@ -84,7 +84,11 @@ class EmployeeMetrics extends Component
         $passed = $probationary->passed + $regular->passed;
         $total = $probationary->total + $probationary->total;
 
-        return round(($passed / $total) * 100, 1);
+        if ($passed > 0 && $total > 0) {
+            return round(($passed / $total) * 100, 1);            
+        } else {
+            return 0;
+        }
     }
 
     private function getRegularEvaluationMetrics()
