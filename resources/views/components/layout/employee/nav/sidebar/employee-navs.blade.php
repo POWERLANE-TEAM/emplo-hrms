@@ -113,6 +113,15 @@
     </x-layout.employee.nav.sidebar.nested-nav-items>
     @endcan
 
+    {{-- Regular Employee --}}
+    <x-layout.employee.nav.sidebar.nav-item
+        href="{{ route($routePrefix . '.trainings.index') }}"
+        :active="request()->routeIs($routePrefix . '.trainings.index*')"
+        class="order-11" nav_txt="Trainings"
+        :defaultIcon="['src' => 'training', 'alt' => '']"
+        :activeIcon="['src' => 'training', 'alt' => '']">
+    </x-layout.employee.nav.sidebar.nav-item>
+
     {{-- Employee, HR Manager, Supervisor --}}
     @canAny([UserPermission::VIEW_PAYSLIPS, UserPermission::VIEW_ALL_PAYSLIPS])
     <x-layout.employee.nav.sidebar.nav-item
@@ -308,9 +317,9 @@
     {{-- HR Manager --}}
     @can(UserPermission::VIEW_ALL_TRAINING)
         <x-layout.employee.nav.sidebar.nav-item
-            href="{{ route($routePrefix . '.trainings.index') }}"
-            :active="request()->routeIs($routePrefix . '.trainings*')"
-            class="order-11" nav_txt="Training"
+            href="{{ route($routePrefix . '.trainings.general') }}"
+            :active="request()->routeIs($routePrefix . '.trainings.general.*')"
+            class="order-11" nav_txt="Trainings"
             :defaultIcon="['src' => 'training', 'alt' => '']"
             :activeIcon="['src' => 'training', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>

@@ -21,10 +21,10 @@
 
 <x-breadcrumbs>
     <x-slot:breadcrumbs>
-        <x-breadcrumb :href="route($routePrefix.'.trainings.index')"> 
+        <x-breadcrumb :href="route($routePrefix.'.trainings.general')"> 
             {{ __('Training Records') }}
         </x-breadcrumb>
-        <x-breadcrumb :active="request()->routeIs($routePrefix.'.trainings.employee')">
+        <x-breadcrumb :active="request()->routeIs($routePrefix.'.trainings.general.employee')">
             {{ __("{$employee->last_name}'s Records") }}
         </x-breadcrumb>
     </x-slot:breadcrumbs>

@@ -18,19 +18,15 @@ class TrainingSeeder extends Seeder
      */
     public function run(): void
     {
-        // Get all the training providers
         $providers = TrainingProvider::all();
     
-        // Get employees who are either probationary or regular
         $employees = Employee::whereHas('status', function ($query) {
             $query->where('emp_status_name', EmploymentStatus::PROBATIONARY->label())
                   ->orWhere('emp_status_name', EmploymentStatus::REGULAR->label());
         })->get();
     
-        // Array to hold outsourced trainers
         $outsourcedTrainers = [];
     
-        // Create 3 outsourced trainers per provider and add them to the $outsourcedTrainers array
         foreach ($providers as $provider) {
             $outsourcedTrainers = array_merge(
                 $outsourcedTrainers,
@@ -40,15 +36,11 @@ class TrainingSeeder extends Seeder
             );
         }
     
-        // Combine employees and outsourced trainers into a single array
         $trainers = $employees->merge($outsourcedTrainers);
     
-        // For each employee, randomly assign a trainer from the combined $trainers array
         foreach ($employees as $employee) {
-            // Pick a random trainer (could be an employee or outsourced trainer)
             $randomTrainer = $trainers->random();
     
-            // Determine if the trainer is an Employee or Outsourced Trainer
             if ($randomTrainer instanceof Employee) {
                 $trainerType = 'employee';
                 $trainerId = $randomTrainer->employee_id;
@@ -57,7 +49,6 @@ class TrainingSeeder extends Seeder
                 $trainerId = $randomTrainer['trainer_id'];
             }
     
-            // Create the training record
             Training::create([
                 'trainee' => $employee->employee_id,
                 'trainer_type' => $trainerType,

@@ -512,9 +512,12 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         Route::get('/', [TrainingController::class, 'index'])
             ->name('index');
 
+        Route::get('general', [TrainingController::class, 'general'])
+            ->name('general');
+
         Route::get('{employee}', [TrainingController::class, 'show'])
             ->whereNumber('employee')
-            ->name('employee');
+            ->name('general.employee');
     });
 
 
