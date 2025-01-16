@@ -134,7 +134,7 @@ class ApplicantSeeder extends Seeder
      */
     public function run(?int $count = null, ?int $start = null, ?int $concurrencyCount = null): void
     {
-        $count ??= env('APP_USER_SEEDING_COUNT', 30);
+        $count ??= env('APP_USER_SEEDING_COUNT', 70);
 
         if ($count > 100) {
             $count = $count / 2;

@@ -3,11 +3,25 @@
 ])
 
 @php
-    $leaveBalance = $leave->employee->jobDetail->leave_balance;
+    $vacationLeaveCredits = $leave->employee->silCredit->vacation_leave_credits;
+    $sickLeaveCredits = $leave->employee->silCredit->sick_leave_credits;
 @endphp
 
 <div>
     <div class="row px-3 mb-4">
+
+        <div class="callout callout-info bg-body-{{ $vacationLeaveCredits > 0 ? 'info' : 'danger' }}">
+            <div class="fs-5 px-2">{{ __('Vacation Leave Credit(s)') }}:
+                <span class="fw-bold text-primary">{{ $vacationLeaveCredits }}</span>
+            </div>
+        </div>
+
+        <div class="callout my-3 callout-info bg-body-{{ $sickLeaveCredits > 0 ? 'info' : 'danger' }}">
+            <div class="fs-5 px-2">{{ __('Sick Leave Credit(s)') }}:
+                <span class="fw-bold text-primary">{{ $sickLeaveCredits }}</span>
+            </div>
+        </div>
+
         <div class="row">
             <div class="col">
 
@@ -34,6 +48,31 @@
             </div>
         </div>
 
+        @forelse ($leave->attachments as $attachment)
+            <div class="attachment-item d-inline-flex align-items-center me-2">
+                <a 
+                    href="{{ route("{$this->routePrefix}.leaves.attachments.show", ['attachment' => $attachment->hashed_attachment]) }}" 
+                    target="__blank" 
+                    class="text-info text-decoration-underline me-1" 
+                    title="File Name">{{ $attachment->attachment_name }}
+            
+                </a>
+                <a 
+                    href="{{ route("{$this->routePrefix}.leaves.attachments.download", ['attachment' => $attachment->hashed_attachment]) }}"
+                    target="__blank"
+                >
+                    <button
+                        type="button"
+                        class="btn btn-sm py-0 px-1 no-hover-border hover-opacity"
+                        data-bs-toggle="tooltip" title="Download">
+                        <i class="icon icon-large text-info" data-lucide="download"></i>
+                    </button>
+                </a>                                
+            </div>
+        @empty
+            <div class="text-muted mb-2">{{ __('No attachments provided.') }}</div>
+        @endforelse
+
         <div class="pe-4 my-2">
             <div class="col-md-12 pe-2">
                 <div class="callout callout-success bg-body-tertiary">
@@ -41,15 +80,6 @@
                         <span class="fw-bold text-primary"> {{ $leave->total_days_requested }} </span>
                     </div>
                 </div>
-                @if ($this->user->account->employee_id === $leave->employee_id)
-                    <div class="callout mt-2 callout-{{ $leaveBalance > 0 ? 'success' : 'danger' }} bg-body-tertiary">
-                        <div class="fs-5 px-2">{{ __('Remaining Leave Balance: ') }}
-                            <span class="fw-bold text-{{ $leaveBalance > 0 ? 'success' : 'danger' }}"> 
-                                {{ $leaveBalance }} 
-                            </span>
-                        </div>
-                    </div> 
-                @endif
             </div>
         </div>
 

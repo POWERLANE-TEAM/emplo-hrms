@@ -10,9 +10,4 @@
         'icon' => 'shield-plus',
         'route' => 'profile.settings',
     ],
-    [
-        'title' => 'Activity Log',
-        'icon' => 'list',
-        'route' => 'profile.logs',
-    ],
 ]" />

@@ -120,5 +120,13 @@ return [
         'profile' => [
             'information' => 'profile.information-%s',
         ],
+        'reports' => [
+            'employee_metrics' => 'reports.employee_metrics-%s',
+            'key_metrics' => 'reports.key_metrics-%s',
+            'attendance_rate' => 'reports.attendance_rate-%s',
+            'absenteeism' => 'reports.absenteeism_rate-%s',
+            'retention_turnover_rate' => 'reports.retention_turnover_rate-%s',
+            'issue_resolution_time_rate' => 'reports.issue_resolution_time_rate-%s'
+        ],
     ],
 ];

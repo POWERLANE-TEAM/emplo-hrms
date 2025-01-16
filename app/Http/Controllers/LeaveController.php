@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\FilePath;
 use App\Models\EmployeeLeave;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Response;
 
 class LeaveController extends Controller
 {
@@ -58,5 +61,26 @@ class LeaveController extends Controller
     public function general()
     {
         return view('employee.hr-manager.leaves.all');
+    }
+
+    public function viewAttachment(string $attachment)
+    {
+        $path = sprintf('%s/%s', FilePath::LEAVES->value, $attachment);
+
+        if (Storage::disk('local')->missing($path)) {
+            abort(404);
+        }
+
+        return Response::make(Storage::disk('local')->get($path), 200, [
+            'Content-Type' => Storage::disk('local')->mimeType($path),
+            'Content-Disposition' => 'inline; filename="'.basename($path).'"',
+        ]);
+    }
+
+    public function downloadAttachment(string $attachment)
+    {   
+        $path = sprintf('%s/%s', FilePath::LEAVES->value, $attachment);
+
+        return Storage::disk('local')->download($path);
     }
 }

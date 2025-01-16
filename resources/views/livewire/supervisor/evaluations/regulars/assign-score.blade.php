@@ -67,6 +67,9 @@
                                                             id="score.{{ $category->id . $rating->id }}" 
                                                             value="{{ $rating->id }}"
                                                             required
+                                                            data-rating="{{ $rating->id }}" 
+                                                            data-scale="{{ $rating->scale }}"
+                                                            onclick="calculateAverage()"
                                                         />
                                                         <label 
                                                             class="form-check-label" 
@@ -89,7 +92,7 @@
                             <div class="col-6">
                                 <div class="card bg-body-secondary border-0">
                                     <div class="p-4 align-items-center text-center">
-                                        <div class="fw-bold fs-3 text-primary">{{ $finalRating ?? __('0.00') }}</div>
+                                        <div class="fw-bold fs-3 text-primary"><span id="averageValue">0.00</span></div>
                                         <div class="fw-medium fs-6 pt-1">{{ __('Final Rating') }}</div>
                                     </div>
                                 </div>
@@ -98,7 +101,7 @@
                             <div class="col-6">
                                 <div class="card bg-body-secondary border-0">
                                     <div class="p-4 align-items-center text-center">
-                                        <div class="fw-bold fs-3 text-primary">{{ $performanceScale ?? __('Not finalized') }}</div>
+                                        <div class="fw-bold fs-3 text-primary"><span id="performanceScale">{{ __('Not Finalized') }}</span></div>
                                         <div class="fw-medium fs-6 pt-1">{{ __('Performance Scale') }}</div>
                                     </div>
                                 </div>
@@ -120,20 +123,45 @@
                 </div>
 
                 <section class="col-md-12">
-                    <div class="row">
-                        <!-- Note -->
-                        <div class="col-5 ps-3">
-                            <x-info_panels.note
-                                note="{{ __('This form requires your signature. By clicking submit, your signature will be automatically added to the downloadable file.') }}" />
-                        </div>
-                        <!-- Button -->
-                        <div class="col-7 d-flex align-items-center text-end">
-                            <x-buttons.main-btn label="Submit Evaluation" wire:click.prevent="save" :nonce="$nonce"
-                                :disabled="false" class="w-50" :loading="'Submitting...'" />
-                        </div>
+                    <!-- Button -->
+                    <div class="d-flex align-items-center text-end">
+                        <x-buttons.main-btn label="Submit Evaluation" wire:click.prevent="save" :nonce="$nonce"
+                            :disabled="false" class="w-50" :loading="'Submitting...'" />
                     </div>
                 </section>
             </section>
         </div>
     </section>
 </div>
+
+{{-- @script --}}
+<script>
+    const calculateAverage = () => {
+        let totalRating = 0;
+        let totalVotes = 0;
+
+        const selectedRatings = document.querySelectorAll('input[type="radio"]:checked');
+
+        selectedRatings.forEach(rating => {
+            totalRating += parseFloat(rating.value);
+            totalVotes++;
+        });
+
+        const average = totalVotes > 0 ? (totalRating / totalVotes).toFixed(2) : 0;
+        document.getElementById('averageValue').textContent = average;
+
+        let performanceScale = '';
+        if (average >= 1 && average < 2) {
+            performanceScale = 'Needs Improvement';
+        } else if (average >= 2 && average < 3) {
+            performanceScale = 'Meets Expectation';
+        } else if (average >= 3 && average < 4) {
+            performanceScale = 'Exceeds Expectation';
+        } else if (average >= 4 && average <= 5) {
+            performanceScale = 'Outstanding';
+        }
+
+        document.getElementById('performanceScale').textContent = performanceScale;
+    }
+</script>
+{{-- @endscript --}}

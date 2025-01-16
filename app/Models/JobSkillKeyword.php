@@ -15,6 +15,7 @@ class JobSkillKeyword extends Model
     protected $fillable = [
         'job_title_id',
         'keyword',
+        'priority',
     ];
 
     /**

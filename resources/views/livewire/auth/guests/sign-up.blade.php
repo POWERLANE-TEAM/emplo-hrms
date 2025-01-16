@@ -30,7 +30,7 @@
 
     <div class="my-3"></div>
 
-    @livewire('auth.facebook-o-auth')
+    <!-- @livewire('auth.facebook-o-auth') -->
 
     <div class="my-5 d-flex align-items-center  border-bottom position-relative">
         <div class="position-absolute start-50 bg-body px-3 text-body fw-medium text-uppercase translate-middle-x"

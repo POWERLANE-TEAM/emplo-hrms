@@ -28,7 +28,7 @@ return new class extends Migration
                 ->cascadeOnDelete();
 
             $table->string('training_title');
-            $table->morphs('trainer');
+            $table->nullableMorphs('trainer');
             $table->longText('description')->nullable();
             $table->string('completion_status');
             $table->dateTime('start_date');

@@ -21,7 +21,7 @@ class AnyTrainingsTable extends DataTableComponent
     public function configure(): void
     {
         $this->setPrimaryKey('employee_id')
-            ->setTableRowUrl(fn ($row) => route("{$this->routePrefix}.trainings.employee", [
+            ->setTableRowUrl(fn ($row) => route("{$this->routePrefix}.trainings.general.employee", [
                 'employee' => $row->employee_id
             ]))
             ->setTableRowUrlTarget(fn () => '__blank');

@@ -63,19 +63,13 @@
             </x-slot:feedback>
         </x-form.password>
 
-        <div class="d-flex flex-wrap gap-4 gap-md-5">
+        <div class="d-flex flex-wrap gap-4 gap-md-5  mb-3">
             <div class="position-relative d-flex col-12 col-md-5 order-0">
                 <input type="checkbox" id="remember-toggle" name="remember" wire:model="remember"
                     class="checkbox checkbox-primary">
                 <label for="remember-toggle" class="checkbox-label d-flex flex-wrap">
                     Remember me
                 </label>
-            </div>
-
-            <div class=" col-md-auto mx-auto me-md-0 ms-md-auto order-2 order-md-1">
-                <button type="button" class="border-0 bg-transparent text-decoration-underline  green-hover" onclick="openModal('forgotPassword')">
-                    Forgot your password?
-                </button>
             </div>
 
             <button type="submit" nonce="{{ $nonce }}" id="userLoginBtn"
@@ -90,6 +84,6 @@
 
         @livewire('auth.google-o-auth')
 
-        @livewire('auth.facebook-o-auth')
+        <!-- @livewire('auth.facebook-o-auth') -->
     </form>
 </section>

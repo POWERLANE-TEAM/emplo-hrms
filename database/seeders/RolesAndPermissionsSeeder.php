@@ -54,7 +54,7 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::VIEW_DOCUMENTS->value,
             UserPermission::VIEW_ISSUES->value,
             UserPermission::VIEW_RESIGNATION->value,
-
+            UserPermission::VIEW_EMP_PERFORMANCE_TRAINING->value,
             UserPermission::CREATE_LEAVE_REQUEST->value,
             UserPermission::CREATE_OVERTIME_REQUEST->value,
             UserPermission::CREATE_ISSUE_REPORT->value,
@@ -114,6 +114,7 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::CREATE_JOB_FAMILY->value,
             UserPermission::CREATE_JOB_TITLE->value,
             UserPermission::CREATE_ANNOUNCEMENT->value,
+            UserPermission::CREATE_JOB_LISTING->value,
 
             // Update cases goes here
             UserPermission::UPDATE_PENDING_APPLICATION_STATUS->value,
