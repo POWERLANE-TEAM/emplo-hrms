@@ -1,19 +1,21 @@
+@use('Carbon\Carbon')
 @use('App\Http\Helpers\Timezone')
 
 <div>
 
-    <!-- BACK-END REPLACE: Placeholder datas -->
+    {{-- BACK-END REPLACE: Placeholder datas  --}}
     @php
-        $determinedOn = $employee->lifecycle->separated_at;
+        $determinedOn = $resignation->finalDecisionAt;
         // Date when HR processed and made a decision on the resignation (approval/rejection).
         // Set when HR approves or rejects the resignation.
 
-        $status = 'pending';
+        $status = $resignation->resignationStatus->resignation_status_name;
+
         // Current status of the resignation letter submission.
         // Possible values: 'pending' (letter submitted but not yet reviewed),
         // 'approved' (resignation letter approved by HR), or 'rejected' (resignation letter rejected).
 
-        $hasComments = false;
+        $hasComments = !empty($resignation->initial_approver_comments);
         // Indicates whether HR has left comments on the resignation letter.
         // Set to true if HR provided comments, false if no comments are given.
         // This should only appear if the resignation has been approved/rejected.
@@ -22,9 +24,12 @@
         // ===========================
         // Employee Status
         // ===========================
-        $employeeStatus = 'regular';
+
+        $employeeStatus = $resignation->resignee->status->emp_status_name;
         // The current employment status of the employee.
         // This is updated to 'resigned' if the resignation letter is approved.
+
+        $resignee = $resignation->resignee;
     @endphp
 
     <!-- Dialogues -->
@@ -97,7 +102,7 @@
                                     data-lucide="expand"></i></button>
                         </div>
                         <iframe id="iframe-resignation-letter" name="applicant-resume" class="rounded-3 "
-                            allowfullscreen='yes' src="{{ Storage::url('hardware-and-software-components.pdf') }}"
+                            allowfullscreen='yes' src="{{ Storage::url($resignation->resignationLetter->file_path) }}"
                             height="100%" width="100%" frameborder="0" allowpaymentrequest="false"
                             loading="lazy"></iframe>
                         <!-- BACK-END REPLACE: PDF of the Resignation Letter -->
@@ -110,8 +115,8 @@
                     <div class="px-lg-5 mb-4 flex-grow-1">
                         <header>
                             <div>
-                                <p class="fw-bold fs-3 text-primary mb-0">Blackwell, Kelly Princess J.</p>
-                                <p class="fs-5 fw-medium">Associate / Assistant Manager</p>
+                                <p class="fw-bold fs-3 text-primary mb-0">{{$resignee->fullname}}</p>
+                                <p class="fs-5 fw-medium">{{$resignee->jobTitle->jobLevel->job_level_name}} / {{$resignee->jobTitle->job_title}}</p>
                             </div>
 
                             <!-- View Contact Information -->
@@ -127,14 +132,15 @@
                                     <div id="contact-info" class="collapse px-2">
                                         <p class="pt-3 pb-2"><i data-lucide="mail" class="icon icon-large me-2"></i>
                                             <b>Email:</b>
-                                            <x-gmail-redirect email="blackwell.kpj@gmail.com" />
+                                            <x-gmail-redirect email="{{$resignee->account->email}}" />
                                         </p>
                                         <p class="pb-2"><i data-lucide="phone" class="icon icon-large me-2"></i>
                                             <b>Contact
-                                                Number:</b> +63 912 345 6789
+                                                Number:</b> <x-phone-link class="d-inline-block unstyled" :phone="[$resignee->contact_number]"
+                                                separator=" / "></x-phone-link>
                                         </p>
                                         <small>
-                                            <a class="text-link-blue hover-opacity" href="#">Go to Profile</a>
+                                            <a class="text-link-blue hover-opacity" href="{{route('employee'.'.employees.information', ['employee'=> $resignee])}}">Go to Profile</a>
                                         </small>
                                     </div>
                                 </div>
@@ -157,14 +163,14 @@
                             </p>
 
                             <!-- Submitted on -->
-                            <p class="fw-bold mt-3 fs-5">Submitted on: <span class="fw-medium">January 20, 2024</span>
+                            <p class="fw-bold mt-3 fs-5">Submitted on: <span class="fw-medium">{{ Carbon::parse($resignation->filed_at)->setTimezone(Timezone::get())->format('F j, Y') }}</span>
                             </p>
 
                             <!-- Determined on. If determinedOn date is not null -->
                             @if (!empty($determinedOn))
                                 <p class="fw-bold mt-3 fs-5">Determined on:
                                     <span
-                                        class="fw-medium">{{ \Carbon\Carbon::parse($determinedOn)->setTimezone(Timezone::get())->format('F j, Y') }}</span>
+                                        class="fw-medium">{{ when($determinedOn, Carbon::parse($determinedOn)->setTimezone(Timezone::get())->format('F j, Y')) }}</span>
                                 </p>
                             @endif
 
@@ -174,7 +180,7 @@
 
                                     <div class="row">
                                         <div class="col">
-                                            <p class="fw-bold fs-5">Comments</p>
+                                            <p class="fw-bold fs-5">{{$resignation->initial_approver_comments}}</p>
                                         </div>
 
                                         <div class="col text-end">
@@ -215,25 +221,5 @@
 </div>
 
 @script
-
-<script>
-Livewire.on('changes-saved', (event) => {
-    console.log('Event object:', event);
-    const modalId = event[0].modalId;
-
-    if (modalId) {
-        const modalEl = document.getElementById(modalId);
-        if (modalEl) {
-            const modalInstance = bootstrap.Modal.getOrCreateInstance(modalEl);
-            modalInstance.hide();
-            console.log(`Modal with ID ${modalId} hidden successfully.`);
-        } else {
-            console.error(`Modal with ID ${modalId} not found!`);
-        }
-    } else {
-        console.error('Modal ID not found in event data');
-    }
-});
-
-</script>
+    <x-modals.script-changes-saved />
 @endscript

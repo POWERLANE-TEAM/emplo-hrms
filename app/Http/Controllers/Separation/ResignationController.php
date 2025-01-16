@@ -57,7 +57,7 @@ class ResignationController extends Controller
             }
 
             if ($user->account->documents()->where('file_path', 'like', '%' . FilePath::RESIGNATION->value . '%')->exists()) {
-                 abort(400, 'Resignation letter already exists.');
+                abort(400, 'Resignation letter already exists.');
             }
 
             $path = $resignationLetter->storeAs(FilePath::RESIGNATION->value, $hashedName, 'public');
@@ -73,12 +73,11 @@ class ResignationController extends Controller
                 'resignation_status_id' => ResignationStatus::PENDING->value,
             ]);
 
-            if(!$isValidated){
+            if (!$isValidated) {
                 return redirect()->route('employee.separation.index');
-            }else{
+            } else {
                 return $resignation;
             }
-
         } catch (\Throwable $th) {
             if (app()->environment('local')) {
                 throw $th;
@@ -99,22 +98,53 @@ class ResignationController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $employee)
+    public function edit(string $resignation)
     {
 
-        $employee = RouteHelper::validateModel(Employee::class, $employee);
+        $resignation = RouteHelper::validateModel(Resignation::class, $resignation);
 
-        if(true){
-            return view('employee.separation.resignation.review', ['employee' => $employee]);
+        if (true) {
+            return view('employee.separation.resignation.review', ['resignation' => $resignation]);
         }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update($request, bool $validated = false)
     {
-        //
+
+        $resignationId = when(is_array($request), $request['resignation_id']);
+        $resignation = RouteHelper::validateModel(Resignation::class, $resignationId);
+
+        if (!$validated) {
+            // $validated = $request->validate([
+            //     'resignation_status_id' => 'required|integer',
+            //     'initial_approver_comments' => 'required|string',
+            // ]);
+        }
+
+        // add authorization
+        if (!auth()->user()->is($resignation->resignee) && true) {
+
+            if (is_array($request) && $validated) {
+                $data = [
+                    'resignation_status_id' => $request['resignation_status_id'],
+                    'initial_approver' => auth()->user()->account->employee_id,
+                    'initial_approver_comments' => $request['initial_approver_comments'],
+                ];
+            }
+
+        }else{
+            if (is_array($request) && $validated && true) {
+                $data = [
+                    'retracted_at' => $request['retracted_at'],
+                ];
+            }
+        }
+
+        $resignation->update($data);
+
     }
 
     /**

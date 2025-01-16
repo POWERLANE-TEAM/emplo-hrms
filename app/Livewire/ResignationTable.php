@@ -89,13 +89,19 @@ class ResignationTable extends DataTableComponent
 
                         if ($status ==  strtolower(ResignationStatus::APPROVED->label()) && $row->resignationLetter->employee == EmploymentStatus::RESIGNED) {
                             $status = EmploymentStatus::RESIGNED->label();
+                        }else if ($row->retracted_at) {
+                            if($status !=  strtolower(ResignationStatus::PENDING->label())){
+                                report('Resignation error');
+                            }
+                            $status = 'Retracted';
                         }
 
                         if ($status ==  strtolower(ResignationStatus::REJECTED->label())) {
                             $color = 'danger';
                         } else if ($status ==  strtolower(ResignationStatus::APPROVED->label())) {
                             $color = 'success';
-                        } else {
+                        } else
+                         {
                             $color = 'info';
                         }
 
@@ -117,7 +123,7 @@ class ResignationTable extends DataTableComponent
             Column::make("Determined On")
                 ->label(function ($row) {
 
-                    $decisionAt = $row->retracted_at ?? $row->initial_approver_signed_at;
+                    $decisionAt = $row->finalDecisionAt;
 
                     if (!$decisionAt) {
                         return '--';

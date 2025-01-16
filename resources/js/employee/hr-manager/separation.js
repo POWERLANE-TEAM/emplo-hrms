@@ -48,11 +48,11 @@ new GlobalListener('click', document, `[aria-controls="iframe-resignation-letter
 // Collapse Chevron
 
 const collapseTrigger = document.querySelector('[data-bs-toggle="collapse"]');
-    
-if (collapseTrigger) { 
+
+if (collapseTrigger) {
     collapseTrigger.addEventListener('click', function () {
         const chevronIcon = this.querySelector('[data-lucide="chevron-down"]') || this.querySelector('[data-lucide="chevron-up"]');
-        
+
         if (chevronIcon) {
             if (this.getAttribute('aria-expanded') === 'true') {
                 chevronIcon.setAttribute('data-lucide', 'chevron-up');

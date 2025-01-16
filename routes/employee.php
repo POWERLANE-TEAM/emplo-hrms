@@ -533,7 +533,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         return view('employee.separation.resignation.all');
     })->name('separation.resignations');
 
-    Route::get('{employee}/separation/resignations/review', [ResignationController::class, 'edit'])
+    Route::get('/separation/resignations/{resignation}/review', [ResignationController::class, 'edit'])
     ->name('separation.resignations.review');
 
     Route::get('seperation/coe', function () {
