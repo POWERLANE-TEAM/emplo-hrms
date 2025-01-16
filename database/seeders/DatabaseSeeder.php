@@ -34,7 +34,7 @@ class DatabaseSeeder extends Seeder
                 PerformanceRatingSeeder::class,
                 HolidaySeeder::class,
                 LeaveCategorySeeder::class,
-                AttendanceLogSeeder::class,
+                // AttendanceLogSeeder::class,
                 UserSeeder::class,
                 ApplicantSeeder::class,
                 // ApplicationSeeder::class,
