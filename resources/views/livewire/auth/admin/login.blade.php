@@ -76,7 +76,7 @@
         <div class="d-flex flex-wrap gap-4 gap-md-5">
 
             <button type="submit" nonce="{{ $nonce }}" id="userLoginBtn"
-                class="btn btn-primary btn-lg col-12 order-1 order-md-2">
+                class="btn btn-primary btn-lg col-12 order-1 order-md-2 mt-3">
                 {{ __('Sign In') }}
             </button>
         </div>
