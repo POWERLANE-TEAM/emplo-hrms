@@ -3,6 +3,7 @@
 namespace App\Livewire\Tables;
 
 use App\Models\JobTitle;
+use Livewire\Attributes\Locked;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
@@ -11,9 +12,16 @@ class JobTitleTable extends DataTableComponent
 {
     protected $model = JobTitle::class;
 
+    #[Locked]
+    public $routePrefix;
+
     public function configure(): void
     {
-        $this->setPrimaryKey('job_title_id');
+        $this->setPrimaryKey('job_title_id')
+            ->setTableRowUrl(fn ($row) => route("{$this->routePrefix}.job-titles.show", [
+                'jobTitle' => $row,
+            ]))
+            ->setTableRowUrlTarget(fn () => '__blank');
         $this->setEagerLoadAllRelationsEnabled();
         $this->setSingleSortingDisabled();
         $this->enableAllEvents();

@@ -373,7 +373,7 @@
         @if($routePrefix === 'admin')
             <x-layout.employee.nav.sidebar.nav-item
                 href="{{ route($routePrefix . '.job-family.index') }}"
-                :active="request()->routeIs([$routePrefix . '.job-family.*', $routePrefix . '.job-title.*'])"
+                :active="request()->routeIs([$routePrefix . '.job-family.*', $routePrefix . '.job-titles.*'])"
                 class=""
                 nav_txt="Organization"
                 :defaultIcon="['src' => 'employee', 'alt' => '']"
@@ -440,14 +440,14 @@
     @can(UserPermission::VIEW_EMPLOYEE_MANAGER, UserPermission::VIEW_JOB_LISTING_MANAGER)
         <x-layout.employee.nav.sidebar.nested-nav-items
             nav_txt="Organization"
-            :active="request()->routeIs([$routePrefix . '.job-family.*', $routePrefix . '.job-title.*'])"
+            :active="request()->routeIs([$routePrefix . '.job-family.*', $routePrefix . '.job-titles.*'])"
             class=""
             :defaultIcon="['src' => 'jobboard', 'alt' => 'Oragnization']"
             :activeIcon="['src' => 'jobboard', 'alt' => 'Oragnization']"
             :children="[
                 [
                     'href' => route($routePrefix . '.job-family.index'),
-                    'active' => [$routePrefix . '.job-family.*', $routePrefix . '.job-title.*'],
+                    'active' => [$routePrefix . '.job-family.*', $routePrefix . '.job-titles.*'],
                     'nav_txt' => 'Job Families & Titles'
                 ],
                 [

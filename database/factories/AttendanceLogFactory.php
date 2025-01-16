@@ -41,7 +41,7 @@ class AttendanceLogFactory extends Factory
                 EmploymentStatus::REGULAR->label(),
                 EmploymentStatus::PROBATIONARY->label(),
             ]);
-        })->first();
+        })->inRandomOrder()->first();
     
         return [
             'uid' => $uid,
