@@ -1,3 +1,5 @@
+
+
 <div class="col-md-5 flex">
     <div class="text-black-50 indiv-grid-container-1 overflow-auto thin-custom-scrollbar">
         <!-- Header -->
@@ -13,7 +15,7 @@
                 </div>
 
                 <!-- Button Link to Create Announcement -->
-                <a wire:navigate href="{{ route('admin.announcements.create') }}" class="icon-link"
+                <a href="{{ route($routePrefix . '.announcements.create') }}" class="icon-link"
                     data-bs-toggle="tooltip" title="Post an announcement">
                     <div class="icon-container">
                         <i data-lucide="plus" class="icon-with-border"></i>

@@ -1,5 +1,5 @@
 <div class="col-md-7 ">
-    <div class="h-100">
+    <div class="indiv-grid-container-2 overflow-auto thin-custom-scrollbar">
         <div class="flex announcement-box">
             <!-- Header -->
             <div class="px-4 pb-4">

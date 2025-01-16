@@ -512,9 +512,12 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         Route::get('/', [TrainingController::class, 'index'])
             ->name('index');
 
+        Route::get('general', [TrainingController::class, 'general'])
+            ->name('general');
+
         Route::get('{employee}', [TrainingController::class, 'show'])
             ->whereNumber('employee')
-            ->name('employee');
+            ->name('general.employee');
     });
 
 
@@ -540,7 +543,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         return view('employee.separation.resignation.all');
     })->name('separation.resignations');
 
-    Route::get('{employee}/separation/resignations/review', [ResignationController::class, 'edit'])
+    Route::get('/separation/resignations/{resignation}/review', [ResignationController::class, 'edit'])
     ->name('separation.resignations.review');
 
     Route::get('seperation/coe', function () {

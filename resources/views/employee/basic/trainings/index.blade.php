@@ -1,40 +1,33 @@
-@extends('components.layout.employee.layout', ['description' => 'Employee Dashboard', 'nonce' => $nonce])
-@use ('Illuminate\View\ComponentAttributeBag')
+@extends('components.layout.employee.layout', ['description' => 'Employee Trainings', 'nonce' => $nonce])
 
 @section('head')
-<title>Separation</title>
+<title>My Training Records</title>
 <script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
 <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
-
 @endsection
 
-@pushOnce('pre-scripts')
-@endPushOnce
-
 @pushOnce('scripts')
-    @vite(['resources/js/employee/hr-manager/separation.js'])
+    @vite(['resources/js/employee/hr-manager/issue.js'])
+
 @endPushOnce
 
 @pushOnce('styles')
-    @vite(['resources/css/employee/separation.css'])
-
+    @vite(['resources/css/employee/hr-manager/incident.css'])
 @endPushOnce
-@section('content')
 
+@section('content')
 <x-headings.main-heading :isHeading="true">
     <x-slot:heading>
-        {{__('Certificate of Employment (COE) Requests')}}
+        {{ __('My Training Records') }}
     </x-slot:heading>
 
     <x-slot:description>
-        <p>{{ __('Manage and issue Certificate of Employment (COE) requests') }}</p>
+        {{ __('View and manage your training records here.') }}
     </x-slot:description>
 </x-headings.main-heading>
 
-<!-- BACK-END REPLACE: TABLE FOR ALL RESIGNATION LETTERS -->
-
-<livewire:coe-requests-table />
+<livewire:employee.tables.my-trainings-table :$routePrefix />
 
 @endsection

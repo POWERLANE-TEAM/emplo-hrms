@@ -26,8 +26,8 @@
 
 <x-breadcrumbs>
     <x-slot:breadcrumbs>
-        <x-breadcrumb :href="route($routePrefix . '.job-family.index')">
-            Organization List
+        <x-breadcrumb :href="route($routePrefix . '.job-title.index')">
+            Job Title List
         </x-breadcrumb>
         <x-breadcrumb :active="request()->routeIs($routePrefix . '.job-title.create')">
             Create Job Title

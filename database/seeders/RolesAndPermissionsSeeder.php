@@ -54,7 +54,7 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::VIEW_DOCUMENTS->value,
             UserPermission::VIEW_ISSUES->value,
             UserPermission::VIEW_RESIGNATION->value,
-
+            UserPermission::VIEW_EMP_PERFORMANCE_TRAINING->value,
             UserPermission::CREATE_LEAVE_REQUEST->value,
             UserPermission::CREATE_OVERTIME_REQUEST->value,
             UserPermission::CREATE_ISSUE_REPORT->value,

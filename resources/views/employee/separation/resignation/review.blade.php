@@ -44,6 +44,6 @@
     </x-slot:description>
 </x-headings.main-heading>
 
-<livewire:hr-manager.separation.resignation.review-resignation :employee="$employee"/>
+<livewire:hr-manager.separation.resignation.review-resignation :resignation="$resignation"/>
 
 @endsection

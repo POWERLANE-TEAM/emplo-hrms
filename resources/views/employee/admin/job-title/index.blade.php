@@ -28,7 +28,7 @@
 
 <x-headings.header-link heading="{{ __('Organization') }}"
     description="{{ __('Manage the organization\'s job family and positions.') }}" label="Create" nonce="{{ $nonce }}"
-    href="{{ route($routePrefix . '.job-family.create') }}" />
+    href="{{ route($routePrefix . '.job-title.create') }}" />
 
 @include('components.includes.tab_navs.org-tab-navs')
 

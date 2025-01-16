@@ -3,27 +3,50 @@
 namespace App\Livewire\HrManager\Separation\Resignation;
 
 use App\Enums\FilePath;
-use App\Models\Employee;
+use App\Models\Resignation;
+use App\Enums\ResignationStatus;
+use App\Http\Controllers\Separation\ResignationController;
 use Livewire\Component;
 
 class ReviewResignation extends Component
 {
 
-    public Employee $employee;
+    public Resignation $resignation;
+
+    public string $approvalComment = '';
+
+    public string $rejectionComment = '';
 
     public bool $hasResignation;
 
     public function mount()
     {
-        $this->hasResignation = $this->employee->documents()->where('file_path', 'like', '%' . FilePath::RESIGNATION->value . '%')->exists();
+        $this->hasResignation = $this->resignation->resignationLetter->employee->documents()->where('file_path', 'like', '%' . FilePath::RESIGNATION->value . '%')->exists();
 
         if ($this->hasResignation) {
-            $this->employee->loadMissing('lifecycle','documents');
+            $this->resignation->loadMissing('resigneeLifecycle','resignationLetter');
         }
+    }
+
+    private function save($approvalStatus)
+    {
+
+        $controller = new ResignationController();
+
+        $controller->update([
+            'resignation_id' => $this->resignation->resignation_id,
+            'resignation_status_id' => $approvalStatus,
+            'initial_approver_comments' => $approvalStatus === ResignationStatus::APPROVED->value ? $this->approvalComment : $this->rejectionComment,
+        ], validated: true);
+
+        $this->resignation->refresh();
+
     }
 
     public function saveApproval()
     {
+        $this->save(ResignationStatus::APPROVED->value);
+
         $this->dispatch('show-toast', [
             'type' => 'success',
             'message' => 'Resignation approved successfully.',
@@ -34,6 +57,8 @@ class ReviewResignation extends Component
 
     public function saveRejection()
     {
+        $this->save(ResignationStatus::REJECTED->value);
+
         $this->dispatch('show-toast', [
             'type' => 'danger',
             'message' => 'Resignation rejected.',
