@@ -26,10 +26,10 @@
 
 <x-breadcrumbs>
     <x-slot:breadcrumbs>
-        <x-breadcrumb :href="route($routePrefix . '.job-title.index')">
+        <x-breadcrumb :href="route($routePrefix . '.job-titles.index')">
             Job Title List
         </x-breadcrumb>
-        <x-breadcrumb :active="request()->routeIs($routePrefix . '.job-title.create')">
+        <x-breadcrumb :active="request()->routeIs($routePrefix . '.job-titles.create')">
             Create Job Title
         </x-breadcrumb>
     </x-slot:breadcrumbs>

@@ -38,7 +38,7 @@ class RegularPerformancePlanController extends Controller
 
         $employee = [
             'evaluatee_name' => $performanceEvaluation->employeeEvaluatee->full_name,
-            'evaluatee_hire_date' => $performanceEvaluation->employeeEvaluatee->application->hired_at ? \Carbon\Carbon::parse($performanceEvaluation->employeeEvaluatee->application->hired_at)->format('F j, Y') : 'No record',
+            'evaluatee_hire_date' => optional($performanceEvaluation->employeeEvaluatee->application)->hired_at ? \Carbon\Carbon::parse($performanceEvaluation->employeeEvaluatee->application->hired_at)->format('F j, Y') : 'No record',
             'evaluatee_position' => $performanceEvaluation->employeeEvaluatee->jobTitle->job_title,
             'department_name' => $performanceEvaluation->employeeEvaluatee->jobTitle->department->department_name,
             'branch_name' => $performanceEvaluation->employeeEvaluatee->specificArea->area_name,

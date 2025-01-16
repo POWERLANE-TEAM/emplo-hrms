@@ -9,9 +9,11 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
+    @env('production')
     <style nonce="{{ $nonce }}">
         {!! Vite::content('resources/css/input/disable-submit.css') !!}
     </style>
+    @endenv
 
     <!-- Preload style.css -->
     <link rel="preload" href="{{ Vite::asset('resources/css/style.css') }}" as="style"

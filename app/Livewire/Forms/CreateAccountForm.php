@@ -2,29 +2,36 @@
 
 namespace App\Livewire\Forms;
 
-use App\Enums\AccountType;
-use App\Enums\UserStatus;
+use Livewire\Form;
+use App\Models\User;
+use App\Models\Shift;
+use App\Enums\FilePath;
 use App\Models\Barangay;
 use App\Models\Employee;
-use App\Models\EmploymentStatus;
-use App\Models\JobDetail;
-use App\Models\JobFamily;
 use App\Models\JobLevel;
 use App\Models\JobTitle;
-use App\Models\Shift;
-use App\Models\SpecificArea;
-use App\Models\User;
-use App\Notifications\EmployeeAccountCreated;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
+use App\Enums\UserStatus;
+use App\Models\JobDetail;
+use App\Models\JobFamily;
+use App\Enums\AccountType;
+use App\Enums\ContractType;
 use Illuminate\Support\Str;
+use App\Models\SpecificArea;
+use Livewire\WithFileUploads;
+use App\Models\EmploymentStatus;
 use Livewire\Attributes\Validate;
-use Livewire\Form;
-use Spatie\Activitylog\Facades\LogBatch;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Spatie\Activitylog\Facades\LogBatch;
+use App\Notifications\EmployeeAccountCreated;
 
 class CreateAccountForm extends Form
 {
+    use WithFileUploads;
+
     /** @var string $firstName */
     #[Validate('required')]
     public $firstName;
@@ -189,6 +196,18 @@ class CreateAccountForm extends Form
      */
     private User $newUser;
 
+    #[Validate('max:10240', message: '10 mb maximum per upload only.')]
+    #[Validate('mimes:pdf', message: 'Only pdf is allowed.')]
+    public $contract;
+
+    public $hiredAt;
+
+    public $startedAt;
+
+    public $vacationLeaveCredits;
+
+    public $sickLeaveCredits;
+
     /**
      * Begin db transaction and perform insertions and stuff.
      *
@@ -198,11 +217,23 @@ class CreateAccountForm extends Form
     {
         DB::transaction(function () {
             LogBatch::startBatch();
-            $jobDetail = $this->storeJobDetails();
-            $employee = $this->storeEmployee($jobDetail);
+
+            $employee = $this->storeEmployee();
+
+            $this->storeJobDetails($employee);
+
+            $this->storeContract($employee);
+
+            $this->storeStartingDate($employee);
+
+            $this->storeSilCredits($employee);
+
             $newUser = $this->storeUser($employee);
+
             $this->assignRole($newUser);
+
             $this->newUser = $newUser;
+
             LogBatch::endBatch();
         });
 
@@ -227,6 +258,39 @@ class CreateAccountForm extends Form
         ]);
     }
 
+    private function storeContract(Employee $employee)
+    {
+        Storage::disk('local')->makeDirectory(FilePath::CONTRACTS->value);
+
+        $hashedVersion = sprintf(
+            "%s-%s", $this->contract->hashName(), $employee->employee_id
+        );
+
+        $this->contract->storeAs(FilePath::CONTRACTS->value, $hashedVersion, 'local');
+
+        return $employee->contracts()->create([
+            'type' => ContractType::CONTRACT,
+            'uploaded_by'       => Auth::user()->account->employee_id,
+            'hashed_attachment' => $hashedVersion,
+            'attachment_name'   => $this->contract->getClientOriginalName(),
+        ]);
+    }
+
+    private function storeStartingDate(Employee $employee)
+    {
+        return $employee->lifecycle()->create([
+            'started_at' => $this->startedAt,
+        ]);
+    }
+
+    private function storeSilCredits(Employee $employee)
+    {
+        return $employee->silCredit()->create([
+            'vacation_leave_credits' => $this->vacationLeaveCredits,
+            'sick_leave_credits' => $this->sickLeaveCredits,
+        ]);
+    }
+
     /**
      * Assign role to the newly created user.
      *
@@ -244,28 +308,25 @@ class CreateAccountForm extends Form
      *
      * @return \App\Models\Employee
      */
-    private function storeEmployee(JobDetail $jobDetail)
+    private function storeEmployee()
     {
-        return $jobDetail->employee()->create([
-            'first_name' => $this->firstName,
-            'middle_name' => $this->middleName,
-            'last_name' => $this->lastName,
-            'job_detail_id' => $jobDetail->job_detail_id,
-            'emp_status_id' => EmploymentStatus::findOrFail($this->employmentStatus)->emp_status_id,
-            'shift_id' => Shift::findOrFail($this->shift)->shift_id,
-            'present_address' => $this->presentAddress,
-            'present_barangay' => Barangay::findOrFail($this->presentBarangay)->id,
-            'permanent_address' => $this->permanentAddress,
-            'permanent_barangay' => Barangay::findOrFail($this->permanentBarangay)->id,
-            'contact_number' => $this->contactNumber,
-            'sex' => $this->sex,
-            'civil_status' => $this->civilStatus,
-            'date_of_birth' => $this->birthDate,
-            'sss_no' => $this->sss,
-            'philhealth_no' => $this->philhealth,
-            'tin_no' => $this->tin,
-            'pag_ibig_no' => $this->pagibig,
-            'leave_balance' => 0,
+        return Employee::create([
+            'first_name'            => $this->firstName,
+            'middle_name'           => $this->middleName,
+            'last_name'             => $this->lastName,
+
+            'present_address'       => $this->presentAddress,
+            'present_barangay'      => Barangay::findOrFail($this->presentBarangay)->id,
+            'permanent_address'     => $this->permanentAddress,
+            'permanent_barangay'    => Barangay::findOrFail($this->permanentBarangay)->id,
+            'contact_number'        => $this->contactNumber,
+            'sex'                   => $this->sex,
+            'civil_status'          => $this->civilStatus,
+            'date_of_birth'         => $this->birthDate,
+            'sss_no'                => $this->sss,
+            'philhealth_no'         => $this->philhealth,
+            'tin_no'                => $this->tin,
+            'pag_ibig_no'           => $this->pagibig,
         ]);
     }
 
@@ -274,13 +335,16 @@ class CreateAccountForm extends Form
      *
      * @return \App\Models\JobDetail
      */
-    private function storeJobDetails()
+    private function storeJobDetails(Employee $employee)
     {
-        return JobDetail::create([
-            'job_title_id' => JobTitle::findOrFail($this->jobTitle)->job_title_id,
-            'job_level_id' => JobLevel::findOrFail($this->jobLevel)->job_level_id,
+        return $employee->jobDetail()->create([
+            'job_title_id'  => JobTitle::findOrFail($this->jobTitle)->job_title_id,
+            'job_level_id'  => JobLevel::findOrFail($this->jobLevel)->job_level_id,
             'job_family_id' => JobFamily::findOrFail($this->jobFamily)->job_family_id,
-            'area_id' => SpecificArea::findOrFail($this->area)->area_id,
+            'area_id'       => SpecificArea::findOrFail($this->area)->area_id,
+            'shift_id'      => Shift::findOrFail($this->shift)->shift_id,
+            'emp_status_id' => EmploymentStatus::findOrFail($this->employmentStatus)->emp_status_id,
+            'hired_at'      => $this->hiredAt,
         ]);
     }
 }

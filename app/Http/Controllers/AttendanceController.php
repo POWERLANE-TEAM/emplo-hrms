@@ -11,12 +11,11 @@ class AttendanceController extends Controller
     /* Show all resource */
     public function index(string $range): ViewFactory|View
     {
-if ($range == 'daily') {
-    return view('employee.attendance.daily');
-        }else{
-            return view('employee.attendance.tracking');
+        if ($range == 'daily') {
+            return view('employee.attendance.daily');
+        } else{
+                return view('employee.attendance.tracking');
         }
-
     }
 
     /* Show form page for creating resource */

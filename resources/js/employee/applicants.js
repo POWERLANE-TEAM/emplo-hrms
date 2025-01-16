@@ -5,9 +5,37 @@ import '../auth-listener.js';
 import 'employee-page-script';
 
 
-
+// submit exam schedule
 new GlobalListener('change', document, `#examination-date`, (event) => {
     Livewire.dispatch('examination-date-event', { minDate: event.target.value });
+});
+
+// submit exam result
+new GlobalListener('click', document, `#submit-exam-result`, (event) => {
+    // Todo make livewire and listen to this event
+    Livewire.dispatch('exam-result-event');
+});
+
+new GlobalListener('click', document, `#toggle-assign-exam-modal`, (event) => {
+    // Todo make livewire and listen to this evente
+    window.openModal(`modal-assign-exam-result`);
+});
+
+new GlobalListener('click', document, `[data-bs-target="#edit-final-interview"]`, (event) => {
+    console.log('clicked');
+    window.openModal(`edit-final-interview`);
+});
+
+new GlobalListener('click', document, `#toggle-assign-final-interview-modal`, (event) => {
+    // Todo make livewire and listen to this evente
+    window.openModal(`modal-assign-exam-result`);
+});
+
+
+
+new GlobalListener('click', document, `#toggle-assign-init-interview-modal`, (event) => {
+    // Todo make livewire and listen to this evente
+    // window.openModal(`modal-assign-init-interview-result`);
 });
 
 new GlobalListener('click', document, `#applicant-profile-sched[name="submit"]`, () => {

@@ -87,7 +87,7 @@ function createEmployee($chunkStart, $chunk, $freeEmailDomain)
                             'job_title_id' => JobTitle::inRandomOrder()->first()->job_title_id,
                             'area_id' => SpecificArea::inRandomOrder()->first()->area_id,
                             'shift_id' => Shift::inRandomOrder()->first()->shift_id,
-                            'emp_status_id' => EmploymentStatus::inRandomOrder()->first()->emp_status_id,
+                            'emp_status_id' => EmploymentStatus::inRandomOrder()->skip(4)->first()->emp_status_id,
                             'application_id' => $application->application_id,
                         ]);
 

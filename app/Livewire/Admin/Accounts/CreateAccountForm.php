@@ -20,10 +20,13 @@ use App\Models\SpecificArea;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use Spatie\Permission\Models\Role;
 
 class CreateAccountForm extends Component
 {
+    use WithFileUploads;
+
     /**
      * Create new instance of livewire form object.
      */
