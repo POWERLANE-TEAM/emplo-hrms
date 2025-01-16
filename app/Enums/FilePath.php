@@ -12,4 +12,5 @@ enum FilePath: string
     case PAYSLIPS = 'payslips';
     case CONTRACTS = 'contracts/';
     case LEAVES = 'leaves/';
+    case DOC_TEMPLATE = 'templates/documents/';
 }

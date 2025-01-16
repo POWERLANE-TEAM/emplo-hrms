@@ -1,3 +1,5 @@
+@use('Carbon\Carbon')
+@use('App\Http\Helpers\Timezone')
 <div>
 
     <!-- BACK-END REPLACE: Replace placeholder datas. -->
@@ -11,16 +13,16 @@
         // If true, it triggers the empty state (no letter submitted).
         // Toggle this flag if a resignation letter is submitted.
 
-        $determinedOn = '2021-03-29';
+        $determinedOn = optional($resignation)->finalDecisionAt;
         // Date when HR processed and made a decision on the resignation (approval/rejection).
         // Set when HR approves or rejects the resignation.
 
-        $status = 'approved';
+        $status = optional(optional($resignation)->resignationStatus)->resignation_status_name;
         // Current status of the resignation letter submission.
         // Possible values: 'pending' (letter submitted but not yet reviewed),
         // 'approved' (resignation letter approved by HR), or 'rejected' (resignation letter rejected).
 
-        $hasComments = false;
+        $hasComments = !empty($resignation->initial_approver_comments);
         // Indicates whether HR has left comments on the resignation letter.
         // Set to true if HR provided comments, false if no comments are given.
 
@@ -28,16 +30,17 @@
         // ===========================
         // Employee Status
         // ===========================
-        $employeeStatus = 'regular';
+        $employeeStatus = $employee->status->emp_status_name;
         // The current employment status of the employee.
         // This is updated to 'resigned' if the resignation letter is approved.
 
+        $resignee = optional($resignation)->resignee;
 
         // ===========================
         // COE Issuance
         // ===========================
 
-        $certificateStatus = 'pending';
+        $certificateStatus = 'issued';
         // Status of the COE issuance.
         // Possible values: 'pending' (is being processed),
         // 'issued' (COE has been issued to the employee).
@@ -108,7 +111,7 @@
                                         data-lucide="expand"></i></button>
                             </div>
                             <iframe id="iframe-resignation-letter" name="applicant-resume" class="rounded-3 "
-                                allowfullscreen='yes' src="{{ Storage::url($resignation->file_path) }}"
+                                allowfullscreen='yes' src="{{ Storage::url($resignation->resignationLetter->file_path) }}"
                                 height="100%" width="100%" frameborder="0" allowpaymentrequest="false"
                                 loading="lazy"></iframe>
                             <!-- BACK-END REPLACE: PDF of the Resignation Letter -->
@@ -140,14 +143,16 @@
                                 </p>
 
                                 <!-- Submitted on -->
-                                <p class="fw-bold mt-3 fs-5">Submitted on: <span class="fw-medium">January 20, 2024</span>
+                                {{-- TODO handle when null bug on Carbon --}}
+                                <p class="fw-bold mt-3 fs-5">Submitted on: <span class="fw-medium">{{ Carbon::parse($resignation->filed_at)->setTimezone(Timezone::get())->format('F j, Y') }}</span>
                                 </p>
 
                                 <!-- Determined on. If determinedOn date is not null -->
+                                {{-- TODO handle when null bug on Carbon --}}
                                 @if (!empty($determinedOn))
                                     <p class="fw-bold mt-3 fs-5">Determined on:
                                         <span
-                                            class="fw-medium">{{ \Carbon\Carbon::parse($determinedOn)->format('F j, Y') }}</span>
+                                            class="fw-medium">{{ when($determinedOn, Carbon::parse($determinedOn)->setTimezone(Timezone::get())->format('F j, Y')) }}</span>
                                     </p>
                                 @endif
 
@@ -166,16 +171,14 @@
                                     @if ($hasComments)
                                         <div class="card border-primary mt-4 p-4 w-100">
                                             <p class="fw-bold fs-5">Comments</p>
-                                            <p>Your resignation has been approved. Please check your email or contact HR for the
-                                                next steps in the separation process. We appreciate your contributions and wish you
-                                                the best in your future endeavors.</p>
+                                            <p class="fw-bold fs-5">{{$resignation->initial_approver_comments}}</p>
                                         </div>
                                     @endif
 
                                     <!-- Request of COE -->
                                     @if ($employeeStatus === 'resigned')
                                         <div class="mt-4">
-                                            <button class="btn btn-primary btn-lg w-100 mb-2" disabled>
+                                            <button class="btn btn-primary btn-lg w-100 mb-2" {{when($certificateStatus === 'issued', 'disabled') }}>
                                                 <i data-lucide="download" class="icon icon-large me-2"></i>
                                                 Download Certificate of Employee
                                             </button>

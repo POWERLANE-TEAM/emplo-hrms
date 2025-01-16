@@ -43,6 +43,7 @@ export default defineConfig({
             input: [
                 'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js',
                 'node_modules/chartjs-plugin-annotation/dist/chartjs-plugin-annotation.min.js',
+                'node_modules/bootstrap/dist/css/bootstrap.css',
                 ...sync('./resources/js/**/*.js',),
                 ...sync('./resources/css/**/*.css'),
             ],
