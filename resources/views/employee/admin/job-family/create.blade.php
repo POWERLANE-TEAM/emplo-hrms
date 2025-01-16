@@ -29,7 +29,7 @@
 <x-breadcrumbs>
     <x-slot:breadcrumbs>
         <x-breadcrumb :href="route($routePrefix . '.job-family.index')">
-            Organization List
+            Job Family List
         </x-breadcrumb>
         <x-breadcrumb :active="request()->routeIs($routePrefix . '.job-family.create')">
             Create Job Family
