@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use App\Livewire\Tables\Defaults as DefaultTableConfig;
 use App\Models\CoeRequest;
 use Illuminate\Database\Eloquent\Builder;
+use Livewire\Attributes\Locked;
 
 /**
  * Implemented Methods:
@@ -21,6 +22,9 @@ class CoeRequestsTable extends DataTableComponent
 {
     use DefaultTableConfig;
 
+    #[Locked]
+    public $routePrefix;
+
     protected $model = CoeRequest::class;
 
     /**
@@ -30,7 +34,9 @@ class CoeRequestsTable extends DataTableComponent
 
     public function configure(): void
     {
-        $this->setPrimaryKey('coe_request_id');
+        $this->setPrimaryKey('coe_request_id')
+        ->setTableRowUrl(fn ($row) => route("{$this->routePrefix}.separation.coe.request", $row))
+        ->setTableRowUrlTarget(fn () => '__blank');
 
         $this->configuringStandardTableMethods();
 
@@ -65,7 +71,7 @@ class CoeRequestsTable extends DataTableComponent
         return [
             Column::make(__("Full Name"))
             ->label(function($row) {
-                return $row->requestedBy->full_name;
+                return $row->requestor->full_name;
             })
                 ->sortable(),
 
@@ -93,7 +99,7 @@ class CoeRequestsTable extends DataTableComponent
     public function builder(): Builder
     {
         $query = CoeRequest::query()
-        ->with(['requestedBy'])
+        ->with(['requestor'])
             ->select(
                 '*'
             );

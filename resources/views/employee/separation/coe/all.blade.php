@@ -35,6 +35,6 @@
 
 <!-- BACK-END REPLACE: TABLE FOR ALL RESIGNATION LETTERS -->
 
-<livewire:coe-requests-table />
+<livewire:coe-requests-table :routePrefix="$routePrefix"/>
 
 @endsection

@@ -12,7 +12,7 @@
     'id' => null, 
     'loading' => 
     'Processing...', 
-    'disabled' => true, 
+    'disabled' => false, 
     'target' => null
 ])
 

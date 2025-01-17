@@ -27,9 +27,9 @@ class RegularPerformanceSeeder extends Seeder
                 $employeeIds = Employee::whereHas('status', function ($query) {
                     $query->where('employment_statuses.emp_status_id', EmploymentStatus::REGULAR);
                 })
-                    ->whereHas('application', function ($query) use ($period) {
-                        $query->where('hired_at', '<=', $period->start_date);
-                    })
+                    // ->whereHas('application', function ($query) use ($period) {
+                    //     $query->where('hired_at', '<=', $period->start_date);
+                    // })
                     ->pluck('employee_id');
 
 

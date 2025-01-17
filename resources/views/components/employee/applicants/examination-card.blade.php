@@ -2,12 +2,15 @@
 
     $inputGroupAttributes = ['class' => 'input-group gap-1 min-w-100 px-5'];
     $inputWrapperClasses = ['class' => 'col-12 text-start'];
+    $isInitAssessment = false;
 @endphp
 
 <div class="bg-body-secondary rounded-3 col p-3 px-lg-5 py-md-4 text-center position-relative">
-    <button class="btn position-absolute text-primary top-0 end-0 m-1" type="button" data-bs-toggle="modal" data-bs-target="#edit-exam-sched">
-        <i class="icon icon-large" data-lucide="pencil-line"></i>
-    </button>
+    @if ($isInitAssessment)
+        <button class="btn position-absolute text-primary top-0 end-0 m-1" type="button" data-bs-toggle="modal" data-bs-target="#edit-exam-sched">
+            <i class="icon icon-large" data-lucide="pencil-line"></i>
+        </button>
+    @endif
     <label for="applicant-exam-date" class="d-block text-uppercase text-primary fw-medium mt-2">Examination</label>
     <strong id="applicant-exam-date" class="applicant-exam-date fs-4 fw-bold">
     {{$slot}}
