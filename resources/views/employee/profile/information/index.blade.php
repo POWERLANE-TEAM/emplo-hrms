@@ -32,15 +32,6 @@
             </x-slot:heading>
         </x-headings.main-heading>
     </div>
-
-    <div class="col-md-4 text-end d-flex justify-content-end align-items-center">
-        <div>
-            <a href="{{ route($routePrefix . '.profile.edit') }}" class="btn btn-lg btn-outline-primary">
-                <i data-lucide="pen-line" class="icon icon-large me-2"></i>
-                {{ __('Edit Profile') }}
-            </a>
-        </div>
-    </div>
 </div>
 
 <livewire:profile.information />
