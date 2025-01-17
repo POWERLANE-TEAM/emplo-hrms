@@ -12,7 +12,7 @@
 @endPushOnce
 
 @pushOnce('scripts')
-    @vite(['resources/js/employee/hr/dashboard.js'])
+    @vite(['resources/js/employee/basic/dashboard.js'])
 @endPushOnce
 
 @pushOnce('styles')
