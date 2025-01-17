@@ -33,7 +33,7 @@ class CreateAnnouncement extends Component
             $announcement = Announcement::create([
                 'announcement_title' => $this->state['title'],
                 'announcement_description' => $this->state['description'],
-                'published_by' => Auth::user()->getAuthIdentifier(),
+                'published_by' => Auth::user()->account->employee_id,
             ]);
 
             $announcement->offices()->attach($this->state['visibleTo']);
