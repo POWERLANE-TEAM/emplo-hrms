@@ -71,8 +71,6 @@ class DatabaseSeeder extends Seeder
                 SeparatedEmployeeSeeder::class,
                 ServiceIncentiveLeaveCreditSeeder::class,
                 AnnouncementSeeder::class,
-                PayslipSeeder::class,
-                ContractSeeder::class,
                 RegularPerformanceEvaluation2024Seeder::class,
                 ProbationaryPerformanceEvaluation2024Seeder::class,
                 Issue2024Seeder::class,
