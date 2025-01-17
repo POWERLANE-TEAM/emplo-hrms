@@ -9,17 +9,14 @@
 <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 @endsection
 
-@pushOnce('pre-scripts')
-@endPushOnce
-
 @pushOnce('scripts')
     @vite(['resources/js/employee/basic/dashboard.js'])
 @endPushOnce
 
 @pushOnce('styles')
-    @vite(['resources/css/employee/hr-manager/style.css'])
-
+    @vite(['resources/css/employee/hr-manager/employee-info.css'])
 @endPushOnce
+
 @section('content')
 
 <x-headings.main-heading :isHeading="true">
