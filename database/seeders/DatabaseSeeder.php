@@ -52,7 +52,6 @@ class DatabaseSeeder extends Seeder
                 IssueTypeSeeder::class,
                 IssueSeeder::class,
                 IncidentSeeder::class,
-                RegularPerformancePeriodSeeder::class,
                 HrStaffSeeder::class,
                 HrManagerSeeder::class,
                 OperationsEmployeesSeeder::class,
