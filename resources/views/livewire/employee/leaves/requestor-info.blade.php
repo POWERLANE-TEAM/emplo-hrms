@@ -9,7 +9,7 @@
 <section>
     <x-breadcrumbs>
         <x-slot:breadcrumbs>
-            <x-breadcrumb :href="route($this->routePrefix.'.leaves.index')">
+            <x-breadcrumb :href="route($this->routePrefix.'.leaves.requests')">
                 {{ __('Leaves') }}
             </x-breadcrumb>
             <x-breadcrumb :active="request()->routeIs($activeRoutes)">
