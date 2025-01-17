@@ -54,6 +54,14 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
+            $table->boolean('passed')->nullable();
+
+            $table->foreignIdFor(Employee::class, 'assigned_by')
+                ->nullable()
+                ->constrained('employees', 'employee_id')
+                ->cascadeOnUpdate()
+                ->nullOnDelete();
+
             $table->timestamp('start_time')->nullable();
             $table->timestamp('end_time')->nullable();
         });

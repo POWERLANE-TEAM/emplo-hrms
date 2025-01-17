@@ -25,6 +25,8 @@ class PayslipFactory extends Factory
         $year = $this->faker->year();
         $name = "Payslip_{$month}_{$year}.pdf";
 
+        Storage::disk('local')->makeDirectory(FilePath::PAYSLIPS->value);
+
         $file = UploadedFile::fake()->create($name, 500, 'application/pdf');
         $content = 'Testing payslip upload';
         

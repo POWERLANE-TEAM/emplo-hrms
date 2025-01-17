@@ -72,7 +72,7 @@ class SignUp extends Component
 
         $this->validate();
 
-        try {
+        // try {
             $newUser = [
                 'email' => $this->email,
                 'password' => $this->password,
@@ -89,11 +89,11 @@ class SignUp extends Component
             $this->dispatch('sign-up-successful');
 
             $this->registered = true;
-        } catch (\Throwable $th) {
-            report($th);
+        // } catch (\Throwable $th) {
+            // report($th);
             // There is no listener currently for this event
             $this->dispatch('sign-up-error');
-        }
+        // }
 
         $this->reset();
     }

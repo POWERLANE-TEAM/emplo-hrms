@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\EmployeeArchiveController;
 use App\Http\Controllers\FileManagerController;
+use App\Http\Controllers\JobTitleController;
 use App\Http\Controllers\PayslipController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TrainingController;
@@ -21,8 +22,10 @@ use App\Http\Controllers\PerformanceDetailController;
 use App\Http\Controllers\Employee\DashboardController;
 use App\Http\Controllers\RegularPerformanceController;
 use App\Http\Controllers\Application\ApplicationController;
+use App\Http\Controllers\FinalInterviewController;
 use App\Http\Controllers\ProbationaryPerformanceController;
 use App\Http\Controllers\RegularPerformancePlanController;
+use App\Http\Controllers\Separation\CoeController;
 use App\Http\Controllers\Separation\ResignationController;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 
@@ -83,17 +86,17 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
             ->name('create');
     });
 
-    Route::prefix('job-title')->name('job-title.')->group(function () {
-        Route::get('/', function () {
-            return view('employee.admin.job-title.index');
-        })
+    Route::prefix('job-titles')->name('job-titles.')->group(function () {
+        Route::get('/', [JobTitleController::class, 'index'])
             ->name('index');
 
-        Route::get('create', function () {
-            return view('employee.admin.job-title.create');
-        })
+        Route::get('create', [JobTitleController::class, 'create'])
             ->can(UserPermission::CREATE_JOB_TITLE)
             ->name('create');
+
+        Route::get('{jobTitle}', [JobTitleController::class, 'show'])
+            ->whereNumber('jobTitle')
+            ->name('show');
     });
 
     Route::prefix('job-board')->name('job-board.')->group(function () {
@@ -204,6 +207,15 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         ->middleware(['permission:' . UserPermission::CREATE_APPLICANT_EXAM_SCHEDULE->value])
         ->middleware(['permission:' . UserPermission::CREATE_APPLICANT_EXAM_SCHEDULE->value])
         ->name('applicant.exam.store');
+
+
+            /**
+     * Schedule Final Interview
+     */
+    Route::post('/applicant/interview/final/{application}', [FinalInterviewController::class, 'store'])
+    ->middleware(['permission:' . UserPermission::CREATE_APPLICANT_INIT_INTERVIEW_SCHEDULE->value])
+    ->middleware(['permission:' . UserPermission::CREATE_APPLICANT_INIT_INTERVIEW_SCHEDULE->value])
+    ->name('applicant.final-inteview.store');
 
 
 
@@ -550,9 +562,9 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         return view('employee.separation.coe.all');
     })->name('separation.coe');
 
-    Route::get('seperation/coe/request', function () {
-        return view('employee.separation.coe.request');
-    })->name('separation.coe.request');
+    Route::get('seperation/coe/{coe}/request', [CoeController::class , 'show'])->name('separation.coe.request');
+
+    Route::get('seperation/coe/{coe}/generate', [CoeController::class , 'edit'])->name('separation.coe.generate');
 
     /**
      * Reports

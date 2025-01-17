@@ -125,24 +125,38 @@ class ApplicationExamController extends Controller
     {
 
         $applicationId = is_array($request) ? $request['applicationId'] : $request->input('applicationId');
+        $examResult = is_array($request) ? ($request['examResult'] ?? null) : $request->input('examResult', null);
 
         $application = Application::with(['applicant.account'])->findOrFail($applicationId);
 
         if (is_array($request)) {
-            $examStartDate = $request['date'];
-            $examStartTime = $request['time'];
+            $examStartDate = $request['date'] ?? null;
+            $examStartTime = $request['time'] ?? null;
         } else {
 
         }
 
-        $examStart = $examStartDate . ' ' . $examStartTime;
+        $examStart = null;
+        if (!is_null($examStartDate) && !is_null($examStartTime)) {
+            $examStart = $examStartDate . ' ' . $examStartTime;
+        }
 
         $exam = ApplicationExam::where('application_id', $application->application_id)->first();
 
-        $exam->update([
-            'start_time' => $examStart,
-        ]);
+        $updateData = [];
 
+        if (!is_null($examStart)) {
+            $updateData['start_time'] = $examStart;
+        }
+
+        if (!is_null($examResult)) {
+            $updateData['passed'] = $examResult;
+            $updateData['assigned_by'] = auth()->user()->account_id;
+        }
+
+        if (!empty($updateData)) {
+            $exam->update($updateData);
+        }
     }
 
     /* Delete */

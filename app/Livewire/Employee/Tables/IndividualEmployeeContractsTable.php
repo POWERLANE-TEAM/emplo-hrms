@@ -128,6 +128,7 @@ class IndividualEmployeeContractsTable extends DataTableComponent
 
             Column::make(__('File Size'))
                 ->label(function ($row) {
+                    Storage::disk('local')->makeDirectory(FilePath::CONTRACTS->value);
                     $path = sprintf('%s/%s', FilePath::CONTRACTS->value, $row->hashed_attachment);
                     $sizeInBytes = Storage::disk('local')->size($path);
 
@@ -136,6 +137,7 @@ class IndividualEmployeeContractsTable extends DataTableComponent
 
             Column::make(__('Last Modified'))
                 ->label(function ($row) {
+                    Storage::disk('local')->makeDirectory(FilePath::CONTRACTS->value);
                     $path = sprintf('%s/%s', FilePath::CONTRACTS->value, $row->hashed_attachment);
                     $lastModified = Storage::disk('local')->lastModified($path);
                     $convertFormat = Carbon::createFromTimestamp($lastModified, config('app.timezone'))->format('F d, Y g:i A');

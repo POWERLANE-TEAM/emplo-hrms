@@ -19,7 +19,7 @@ class SetInitInterviewDate extends Component
     public Application $application;
 
     #[Locked]
-    public string $postMethod;
+    public ?string $postMethod  = null;
 
     #[Locked]
     public bool $overrideInputContainerClass = false;
@@ -77,9 +77,19 @@ class SetInitInterviewDate extends Component
 
         if($this->postMethod == 'PATCH'){
             $controller->update($validated, true);
+            $this->dispatch('show-toast', [
+                'type' => 'success',
+                'message' => 'Initial interview has been rescheduled.',
+            ]);
         }else{
             $controller->store($validated, true);
+            $this->dispatch('show-toast', [
+                'type' => 'success',
+                'message' => 'Initial interview has been set.',
+            ]);
         }
+
+        $this->dispatch('refreshChanges');
     }
 
     /**

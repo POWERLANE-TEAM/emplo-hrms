@@ -28,21 +28,8 @@
             </x-slot:description>
         </x-headings.main-heading>
 
-        <div>
-            <div class="d-flex column-gap-2 column-gap-lg-3">
-                <form class="d-contents">
-                    <button class="btn btn-outline-primary h-100"><i class="icon icon-large mx-2"
-                            data-lucide="arrow-left"></i>Previous Day</button>
-                    <button class="btn btn-outline-primary h-100">Next Day<i class="icon icon-large mx-2"
-                            data-lucide="arrow-right"></i></button>
-                    <div class="border border-end-1"></div>
-                    <button class="btn btn-primary"><i class="icon icon-large" data-lucide="calendar-search"></i></button>
-                </form>
-
-            </div>
-        </div>
+        <livewire:employee.attendance.sync-dtr-logs />
     </div>
-
 
     <livewire:tables.employees-attendance-table />
     {{-- <livewire:tables.employees-attendance-period-table /> --}}

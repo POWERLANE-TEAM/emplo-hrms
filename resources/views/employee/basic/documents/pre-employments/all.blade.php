@@ -21,7 +21,8 @@
 
 <x-headings.main-heading :isHeading="true">
     <x-slot:heading>
-        {{ __('Pre-Employment Files') }}
+        {{-- {{ __('Pre-Employment Files') }} --}}
+        {{ __('Employment Files') }}
     </x-slot:heading>
 
     <x-slot:description>
@@ -33,7 +34,9 @@
 
 <!-- BACK-END TABLE NOTE:
     The employee id should be passed to: training/records.blade.php -->
-    <livewire:employee-documents-table :employee="$employee" />
+    {{-- <livewire:employee-documents-table :employee="$employee" /> --}}
+
+    @livewire('employee.pre-employment')
 
     <script>
         document.addEventListener('alpine:init', () => {

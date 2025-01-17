@@ -18,7 +18,7 @@ class CoeRequest extends Model
 
     protected $primaryKey = 'coe_request_id';
 
-    public function requestedBy()
+    public function requestor()
     {
         return $this->belongsTo(Employee::class, 'requested_by', 'employee_id');
     }

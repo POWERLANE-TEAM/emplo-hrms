@@ -12,7 +12,7 @@
         file:///./../../../../app/Livewire/Employee/PreEmploymentDoc.php
 --}}
 
-<tr class="rounded-2 outline  position-relative" style="height: 100px; vertical-align: middle; " x-data="file_preemp_req('{{ $doc_id }}')"
+<tr class="rounded-2 outline  position-relative" style="height: 100px; vertical-align: middle; " x-data="file_preemp_req('{{ $doc_id, $file }}')"
     x-bind:class="dropingFile ? 'bg-light border-primary' : 'border-secondary'"
     x-bind:style="hasError ? { '--bs-table-border-color': 'var(--bs-danger)' } : { '--bs-table-border-color': outlineColor }"
     x-on:drop.prevent="handleFileDrop($event)" x-on:dragover.prevent="dropingFile = true"
@@ -28,10 +28,10 @@
         </div>
     </td>
 
-    <td>
+    {{-- <td>
         <x-status-badge x-ref="statusBadge"
             color="{{ $errors->has('preemp_file') ? 'danger' : '' }}">{{ $errors->has('preemp_file') ? PreEmploymentReqStatus::INVALID : '' }}</x-status-badge>
-    </td>
+    </td> --}}
 
     <td>
         <button type="button" data-bs-toggle="modal" data-bs-target="#preemp-doc-{{ $doc_id }}-attachment"

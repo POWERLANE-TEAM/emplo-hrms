@@ -6,16 +6,22 @@ use App\Enums\ApplicationStatus;
 use App\Http\Helpers\Timezone;
 use App\Models\Application;
 use App\Models\ApplicationExam;
+use App\Models\InterviewParameter;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
 
 class Show extends Component
 {
+    protected $listeners = ['refreshChanges' => '$refresh'];
+
     public Application $application;
 
     public ApplicationExam $applicationExam;
+
+    public Collection $interviewParameters;
 
     protected $applicationId;
 
@@ -23,92 +29,145 @@ class Show extends Component
 
     protected bool $isInitAssessment;
 
+    protected bool $isFinalAssessment;
+
     protected $examSchedF;
 
     protected $initialInterviewSchedF;
 
+    protected $finalInterviewSchedF;
+
     protected $resume;
 
     #[Locked]
-    public bool $notYetExam;
+    public bool $notYetExam = false;
 
     #[Locked]
-    public bool $notYetInterview;
+    public bool $notYetInitInterview = false;
+
+    #[Locked]
+    public bool $notYetFinalInterview = false;
 
     #[Locked]
     public  string $evaluationNotice;
 
     #[Locked]
-    public bool $isReadyForInitEvaluation;
+    public bool $isReadyForInitEvaluation = false;
 
     #[Locked]
     public $modalId;
+
+    public function mount()
+    {
+
+    }
 
 
     public function boot()
     {
 
-        try {
+        // try {
             $this->applicationId = 'APL-' . $this->application->application_id;
 
-
-
-            $this->resume = $this->application->documents->where('preemp_req_id', 17)->first()->file_path;
+            $this->resume = optional($this->application->documents->where('preemp_req_id', 17)->first())->file_path;
 
             // dd($this->resume);
-            // if(!Storage::exists($this->resume)){
-            //     throw new \Exception('Resume not found');
-            // }
+            if($this->resume && !Storage::exists($this->resume)){
+                // throw new \Exception('Resume not found');
+            }
 
             $this->isPending = $this->application->application_status_id == ApplicationStatus::PENDING->value;
 
+
             $this->isInitAssessment = $this->application->application_status_id == ApplicationStatus::ASSESSMENT_SCHEDULED->value;
+            $this->isFinalAssessment = $this->application->application_status_id == ApplicationStatus::FINAL_INTERVIEW_SCHEDULED->value;
 
-            if($this->isInitAssessment){
+            if($this->isInitAssessment|| $this->isFinalAssessment){
 
-                $this->application->load('initialInterview');
+                $this->application->loadMissing('initialInterview');
 
                 $this->applicationExam = ApplicationExam::where('application_id', $this->application->application_id)->first();
 
                 $this->examSchedF = $this->formatSchedule(optional($this->applicationExam)->start_time);
                 $this->initialInterviewSchedF = $this->formatSchedule(optional($this->application->initialInterview)->init_interview_at);
+                $this->finalInterviewSchedF = $this->formatSchedule(optional($this->application->finalInterview)->final_interview_at);
 
 
                 if ($this->applicationExam->start_time) {
                     $examTime = Carbon::parse($this->applicationExam->start_time);
-$this->notYetExam = Carbon::now()->greaterThanOrEqualTo($examTime) && Carbon::now()->lessThan($examTime->addMinutes(5));
+
+                    $this->notYetExam = !Carbon::now()->greaterThanOrEqualTo($examTime) && Carbon::now()->lessThan($examTime->addMinutes(5));
+
                 } else {
+                    // ung exam time nakalipas na
                     $this->notYetExam = false;
                 }
 
                 if ($this->application->initialInterview->init_interview_at) {
                     $interviewTime = Carbon::parse($this->application->initialInterview->init_interview_at);
-                    $this->notYetInterview = Carbon::now()->greaterThanOrEqualTo($interviewTime) && Carbon::now()->lessThan($interviewTime->addMinutes(5));
+                    $this->notYetInitInterview = !Carbon::now()->greaterThanOrEqualTo($interviewTime) && Carbon::now()->lessThan($interviewTime->addMinutes(5));
                 } else {
-                    $this->notYetInterview = false;
+                    // ung interview time nakalipas na
+                    $this->notYetInitInterview = false;
                 }
 
-                if($this->isInitAssessment && $this->notYetExam || $this->notYetInterview){
+                // if interview hass occured
+                if(!$this->notYetInitInterview){
+                    $this->interviewParameters = InterviewParameter::all();
+                }
+
+                if($this->isInitAssessment && $this->notYetExam || $this->notYetInitInterview){
                     $this->evaluationNotice = 'The assign button(s) are currently disabled. They will be available once the scheduled date arrives.';
                 }
 
                 if(
-                    $this->notYetExam && $this->notYetInterview &&
+                    !$this->notYetExam && !$this->notYetInitInterview &&
                     $this->application->initialInterview->init_interviewer &&
-                    $examPassed = true
+                    optional($this->applicationExam)->passed &&
+                    optional($this->application->initialInterview)
                 ){
                     $this->isReadyForInitEvaluation = true;
                 }
+
+                if (optional($this->application->finalInterview)->final_interview_at) {
+                    $interviewTime = Carbon::parse($this->application->finalInterview->final_interview_at);
+                    $this->notYetFinalInterview = !Carbon::now()->greaterThanOrEqualTo($interviewTime) && Carbon::now()->lessThan($interviewTime->addMinutes(5));
+                } else {
+                    // ung interview time nakalipas na
+                    $this->notYetFinalInterview = false;
+                }
+
             }
 
-        } catch (\Throwable $th) {
-            report($th);
-        }
+        // } catch (\Throwable $th) {
+        //     report($th);
+        // }
+    }
+
+    public function setFinalInterview()
+    {
+       dump();
+    }
+
+    public function makeEmployeeInst()
+    {
+
+        $applicant = $this->application->applicant;
+
+        $this->application->update([
+            'application_status_id' => ApplicationStatus::APPROVED->value,
+            'is_passed' => true,
+        ]);
+
+        $this->dispatch('show-toast', [
+            'type' => 'success',
+            'message' => 'Application Approved .',
+        ]);
+
     }
 
     public function render()
     {
-
         return view(
             'livewire.employee.applicants.show',
             [
@@ -117,7 +176,8 @@ $this->notYetExam = Carbon::now()->greaterThanOrEqualTo($examTime) && Carbon::no
                 'isPending' => $this->isPending,
                 'isInitAssessment' => $this->isInitAssessment,
                 'examSchedF' => $this->examSchedF,
-                'initialInterviewSchedF' => $this->initialInterviewSchedF
+                'initialInterviewSchedF' => $this->initialInterviewSchedF,
+                'isFinalAssessment' => $this->isFinalAssessment
             ]
         );
     }

@@ -21,7 +21,7 @@ class SetExaminationDate extends Component
     public Application $application;
 
     #[Locked]
-    public string $postMethod;
+    public ?string $postMethod  = null;
     #[Locked]
     public bool $overrideInputContainerClass = false;
     #[Locked]
@@ -81,9 +81,21 @@ class SetExaminationDate extends Component
 
         if($this->postMethod == 'PATCH'){
             $controller->update($validated, true);
+            $this->dispatch('show-toast', [
+                'type' => 'success',
+                'message' => 'Exam schedule has been rescheduled.',
+            ]);
         }else{
             $controller->store($validated, true);
+            $this->dispatch('show-toast', [
+                'type' => 'success',
+                'message' => 'Exam schedule has been set.',
+            ]);
         }
+
+
+
+        $this->dispatch('refreshChanges');
     }
 
     public function render()

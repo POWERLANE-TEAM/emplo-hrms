@@ -2,7 +2,7 @@
 <section class="">
     <div class="bg-body-secondary d-flex flex-md-nowrap border-0 rounded-3 px-5 py-4">
         <span class="fw-bold fs-5">
-            <span class=" text-primary">
+            {{-- <span class=" text-primary">
                 11
                 <span>requirements</span>
             </span>
@@ -12,7 +12,7 @@
                     18
                 </span>
                 submitted
-            </span>
+            </span> --}}
         </span>
 
         <div class="ms-md-auto d-none d-sm-block" wire:ignore>
@@ -40,8 +40,8 @@
             <tr>
                 <th class="col-5"><i class="icon p-1 d-inline text-primary" data-lucide="file-text"></i>Requirement
                 </th>
-                <th class="col-1"><i class="icon p-1 d-inline text-primary" data-lucide="check-circle"></i>Status
-                </th>
+                {{-- <th class="col-1"><i class="icon p-1 d-inline text-primary" data-lucide="check-circle"></i>Status
+                </th> --}}
                 <th class="col-3"><i class="icon p-1 d-inline text-primary" data-lucide="paperclip"></i>Attachment
                 </th>
                 <th class="col-3"><i class="icon p-1 d-inline text-primary" data-lucide="upload"></i>Upload</th>
@@ -91,9 +91,9 @@
 
             <script nonce="{{ $nonce }}">
                 document.addEventListener('alpine:init', () => {
-                    Alpine.data('file_preemp_req', (docId) => ({
+                    Alpine.data('file_preemp_req', (docId, file = null) => ({
                         dropingFile: false,
-                        preemp_file: null,
+                        preemp_file: file,
                         docId: docId,
                         uuid: null,
                         progress: 0,
@@ -193,8 +193,8 @@
                         }
                     }));
 
-                    Alpine.data('modal_preemp_req', (docId) => ({
-                        preemp_file: null,
+                    Alpine.data('modal_preemp_req', (docId, file = null) => ({
+                        preemp_file: file,
                         docId: docId,
                         errorFeedback: null,
 
@@ -248,6 +248,7 @@
                             window.addEventListener('file-queued', this.handleFileQueued.bind(this));
                             window.addEventListener(`preemp-file-error`, this.handleUploadErorr.bind(
                                 this));
+                                console.log('Component initialized with file:', this.preemp_file);
                         }
 
                     }));
@@ -256,7 +257,7 @@
 
         </tbody>
 
-        <tbody class="text-start">
+        {{-- <tbody class="text-start">
             <tr class="no-hover">
                 <td colspan="4">
                     <section class="d-flex  px-4">
@@ -289,9 +290,9 @@
                     </section>
                 </td>
             </tr>
-        </tbody>
+        </tbody> --}}
 
-        <tbody>
+        {{-- <tbody>
             <tr class="border-2 rounded-2 outline" style="height: 100px; vertical-align: middle;">
                 <td class="">
                     <div class="fw-bold">Document</div>
@@ -311,11 +312,11 @@
                 <td>
                     <x-status-badge color="danger">Invalid</x-status-badge>
                 </td>
-                <td><button class="btn bg-transparent border-0 text-decoration-underline text-capitalize text-nowrap">View
+                <td><button type="button"     class="btn bg-transparent border-0 text-decoration-underline text-capitalize text-nowrap">View
                         Attachment</button></td>
-                <td><button class="btn btn-primary">Upload</button></td>
+                <td><button  type="button" class="btn btn-primary">Upload</button></td>
             </tr>
-        </tbody>
+        </tbody> --}}
 
     </table>
 </section>

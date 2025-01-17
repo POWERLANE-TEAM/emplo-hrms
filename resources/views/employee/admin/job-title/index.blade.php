@@ -28,10 +28,10 @@
 
 <x-headings.header-link heading="{{ __('Organization') }}"
     description="{{ __('Manage the organization\'s job family and positions.') }}" label="Create" nonce="{{ $nonce }}"
-    href="{{ route($routePrefix . '.job-title.create') }}" />
+    href="{{ route($routePrefix . '.job-titles.create') }}" />
 
 @include('components.includes.tab_navs.org-tab-navs')
 
-<livewire:tables.job-title-table />
+<livewire:tables.job-title-table :$routePrefix />
 
 @endsection
