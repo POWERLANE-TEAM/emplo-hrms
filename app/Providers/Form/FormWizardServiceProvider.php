@@ -2,13 +2,13 @@
 
 namespace App\Providers\Form;
 
-use Illuminate\Support\ServiceProvider;
-use Livewire\Livewire;
 use App\Livewire\Applicant\Application\AdditionalDetailsStep;
 use App\Livewire\Applicant\Application\ApplicationWizard;
 use App\Livewire\Applicant\Application\FinalPreviewStep;
 use App\Livewire\Applicant\Application\PersonalDetailsStep;
 use App\Livewire\Applicant\Application\ResumeUploadStep;
+use Illuminate\Support\ServiceProvider;
+use Livewire\Livewire;
 
 class FormWizardServiceProvider extends ServiceProvider
 {

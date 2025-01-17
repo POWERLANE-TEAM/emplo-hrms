@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\User;
 use App\Enums\AccountType;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Broadcast;
 
@@ -13,7 +13,7 @@ Broadcast::channel('user-auth.{userBroadcastId}', function ($user, string $userB
 
     $userSession = session()->getId();
     $userIdentity = $user->email ?? Auth::id();
-    $thisAuthBroadcastId = hash('sha512', $userSession . $userIdentity . $userSession);
+    $thisAuthBroadcastId = hash('sha512', $userSession.$userIdentity.$userSession);
 
     return $thisAuthBroadcastId == $userBroadcastId;
 });
@@ -37,7 +37,7 @@ Broadcast::channel('applicant.applying.{userBroadcastId}', function ($user, stri
 
     $userSession = session()->getId();
     $userIdentity = $user->email ?? Auth::id();
-    $thisAuthBroadcastId = hash('sha512', $userSession . $userIdentity . $userSession);
+    $thisAuthBroadcastId = hash('sha512', $userSession.$userIdentity.$userSession);
 
     return $thisAuthBroadcastId == $userBroadcastId && $user->account_type != AccountType::EMPLOYEE->value;
 });

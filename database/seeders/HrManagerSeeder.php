@@ -2,24 +2,24 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use App\Models\Shift;
+use App\Enums\AccountType;
+use App\Enums\EmploymentStatus;
 use App\Enums\UserRole;
+use App\Enums\UserStatus;
 use App\Models\Employee;
 use App\Models\JobTitle;
-use App\Enums\UserStatus;
-use App\Enums\AccountType;
-use Illuminate\Support\Arr;
+use App\Models\Shift;
 use App\Models\SpecificArea;
-use App\Enums\EmploymentStatus;
+use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 
 class HrManagerSeeder extends Seeder
 {
     protected static $freeEmailDomain = [];
-    
+
     /**
      * Run the database seeds.
      */
@@ -29,27 +29,27 @@ class HrManagerSeeder extends Seeder
             $employee = Employee::factory()->create();
 
             $employee->jobDetail()->updateOrCreate([
-                'job_title_id'  => JobTitle::where('job_title', 'HRD Manager')->first()->job_title_id,
-                'area_id'       => SpecificArea::where('area_name', 'Head Office')->first()->area_id,
-                'shift_id'      => Shift::inRandomOrder()->first()->shift_id,
+                'job_title_id' => JobTitle::where('job_title', 'HRD Manager')->first()->job_title_id,
+                'area_id' => SpecificArea::where('area_name', 'Head Office')->first()->area_id,
+                'shift_id' => Shift::inRandomOrder()->first()->shift_id,
                 'emp_status_id' => EmploymentStatus::REGULAR,
             ]);
 
             $file = File::json(base_path('resources/js/email-domain-list.json'));
             self::$freeEmailDomain = $file['valid_email'];
             $validDomains = Arr::random(self::$freeEmailDomain);
-    
+
             $userData = [
-                'account_type'      => AccountType::EMPLOYEE,
-                'account_id'        => $employee->employee_id,
-                'email'             => "hr_manager@{$validDomains}",
-                'password'          => Hash::make('UniqP@ssw0rd'),
-                'user_status_id'    => UserStatus::ACTIVE,
+                'account_type' => AccountType::EMPLOYEE,
+                'account_id' => $employee->employee_id,
+                'email' => "hr_manager@{$validDomains}",
+                'password' => Hash::make('UniqP@ssw0rd'),
+                'user_status_id' => UserStatus::ACTIVE,
                 'email_verified_at' => fake()->dateTimeBetween('-10 days', 'now'),
             ];
-    
+
             $employeeUser = User::factory()->create($userData);
-    
+
             $employeeUser->assignRole(UserRole::INTERMEDIATE);
         });
     }

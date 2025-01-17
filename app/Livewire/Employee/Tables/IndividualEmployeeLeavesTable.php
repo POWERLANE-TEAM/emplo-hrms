@@ -7,8 +7,8 @@ use App\Models\EmployeeLeave;
 use App\Models\LeaveCategory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\View\ComponentAttributeBag;
-use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class IndividualEmployeeLeavesTable extends DataTableComponent

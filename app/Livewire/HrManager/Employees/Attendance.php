@@ -2,17 +2,17 @@
 
 namespace App\Livewire\HrManager\Employees;
 
-use App\Models\Holiday;
-use App\Models\Payroll;
-use Livewire\Component;
-use App\Models\Employee;
-use App\Models\Overtime;
-use App\Models\AttendanceLog;
-use App\Models\EmployeeLeave;
-use Illuminate\Support\Carbon;
-use Livewire\Attributes\Locked;
 use App\Enums\BiometricPunchType;
+use App\Models\AttendanceLog;
+use App\Models\Employee;
+use App\Models\EmployeeLeave;
+use App\Models\Holiday;
+use App\Models\Overtime;
+use App\Models\Payroll;
+use Illuminate\Support\Carbon;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Locked;
+use Livewire\Component;
 
 class Attendance extends Component
 {
@@ -44,10 +44,10 @@ class Attendance extends Component
     {
         $periodStart = Carbon::parse($this->payrollModel->cut_off_start);
         $periodEnd = Carbon::parse($this->payrollModel->cut_off_end);
-        
+
         $holidays = Holiday::whereBetween('date', [$periodStart, $periodEnd])
             ->pluck('date')->toArray();
-    
+
         $attLogs = AttendanceLog::where('employee_id', $this->employee->employee_id)
             ->whereBetween('timestamp', [$periodStart, $periodEnd])
             ->where('type', BiometricPunchType::CHECK_IN->value)
@@ -56,19 +56,19 @@ class Attendance extends Component
                 return Carbon::parse($log->timestamp)->toDateString();
             })
             ->toArray();
-    
+
         $workingDays = collect();
-    
+
         for ($date = $periodStart; $date->lte($periodEnd); $date->addDay()) {
             $dayOfWeek = $date->dayOfWeek;
-            
-            if ($dayOfWeek != Carbon::SATURDAY && $dayOfWeek != Carbon::SUNDAY && !in_array($date->toDateString(), $holidays)) {
+
+            if ($dayOfWeek != Carbon::SATURDAY && $dayOfWeek != Carbon::SUNDAY && ! in_array($date->toDateString(), $holidays)) {
                 if (in_array($date->toDateString(), $attLogs)) {
                     $workingDays->push($date->toDateString());
                 }
             }
         }
-    
+
         return $workingDays->count();
     }
 
@@ -76,29 +76,30 @@ class Attendance extends Component
     {
         $periodStart = Carbon::parse($this->payrollModel->cut_off_start);
         $periodEnd = Carbon::parse($this->payrollModel->cut_off_end);
-    
+
         $allDays = collect();
         for ($date = $periodStart->copy(); $date->lte(min($periodEnd, today())); $date->addDay()) {
             $allDays->push($date->toDateString());
         }
-    
+
         $attLogs = AttendanceLog::where('employee_id', $this->employee->employee_id)
             ->whereBetween('timestamp', [$periodStart->toDateString(), $periodEnd->toDateString()])
             ->get();
-    
+
         $presentDays = collect($attLogs)
             ->map(fn ($log) => Carbon::parse($log->timestamp)->toDateString())
             ->toArray();
 
         $absentDays = $allDays->diff($presentDays)->filter(function ($date) {
             $dayOfWeek = Carbon::parse($date)->dayOfWeek;
+
             return $dayOfWeek != Carbon::SATURDAY && $dayOfWeek != Carbon::SUNDAY;
-        });       
+        });
 
         $absentCount = $absentDays->count();
-    
+
         return $absentCount;
-    }    
+    }
 
     private function countTardyDays()
     {
@@ -115,6 +116,7 @@ class Attendance extends Component
         $tardyDays = $attLogs->filter(function ($log) use ($shift) {
             $checkInTime = Carbon::parse($log->timestamp);
             $shiftStartTime = Carbon::parse($shift->start_time);
+
             return $checkInTime->gt($shiftStartTime);
         });
 
@@ -203,9 +205,9 @@ class Attendance extends Component
     public function render()
     {
         $merge = array_merge($this->overtimes, $this->leaves);
-    
+
         $events = [];
-        
+
         foreach ($merge as $key => $dates) {
             if (is_array($dates)) {
                 $events[] = [
@@ -242,7 +244,7 @@ class Attendance extends Component
 
         $startDate = Carbon::parse(Payroll::orderBy('cut_off_start', 'asc')->first()->cut_off_start);
         $endDate = now();
-    
+
         $allDays = collect();
         for ($date = $startDate; $date->lte($endDate); $date->addDay()) {
             if ($date->isWeekend()) {
@@ -250,25 +252,25 @@ class Attendance extends Component
             }
             $allDays->push($date->toDateString());
         }
-    
+
         $presentDays = collect($events)->pluck('start')->toArray();
         $leaveDays = collect($this->leaves)->flatMap(function ($dates) {
             $leaveRange = collect();
             $start = Carbon::parse($dates[0]);
             $end = Carbon::parse($dates[1]);
-        
+
             for ($date = $start; $date->lte($end); $date->addDay()) {
-                if (!$date->isWeekend()) {
+                if (! $date->isWeekend()) {
                     $leaveRange->push($date->toDateString());
                 }
             }
-        
+
             return $leaveRange;
         })->toArray();
 
         $excludedDays = array_merge($presentDays, $leaveDays);
         $absentDays = $allDays->diff($excludedDays);
-        
+
         foreach ($absentDays as $absentDay) {
             $events[] = [
                 'title' => 'Absent',

@@ -2,11 +2,11 @@
 
 namespace App\Console\Commands;
 
-use App\Models\AttendanceLog;
 use App\Enums\ActivityLogName;
+use App\Http\Helpers\BiometricDevice;
+use App\Models\AttendanceLog;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
-use App\Http\Helpers\BiometricDevice;
 
 class SyncAttendanceLogsFromBiometricDevice extends Command
 {
@@ -30,17 +30,17 @@ class SyncAttendanceLogsFromBiometricDevice extends Command
     public function handle()
     {
         DB::transaction(function () {
-            $zk = new BiometricDevice();
+            $zk = new BiometricDevice;
             $logs = $zk->getRawAttendanceLogs()->map(function ($log) {
                 return AttendanceLog::create([
-                        'uid' => $log->uid,
-                        'employee_id' => (int) $log->id,
-                        'state' => $log->state,
-                        'type' => $log->type,
-                        'timestamp' => $log->timestamp,
-                    ]);
+                    'uid' => $log->uid,
+                    'employee_id' => (int) $log->id,
+                    'state' => $log->state,
+                    'type' => $log->type,
+                    'timestamp' => $log->timestamp,
+                ]);
             });
-            
+
             activity()
                 ->useLog(ActivityLogName::SYSTEM->value)
                 ->withProperties($logs)

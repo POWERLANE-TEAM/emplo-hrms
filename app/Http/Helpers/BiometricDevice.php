@@ -8,7 +8,7 @@ use App\Models\BiometricDevice as Device;
 use Illuminate\Support\Str;
 use Rats\Zkteco\Lib\ZKTeco;
 
-class BiometricDevice 
+class BiometricDevice
 {
     private string $deviceName = '';
 
@@ -46,8 +46,8 @@ class BiometricDevice
 
     /**
      * Set ip address to use.
-     * 
-     * @param mixed $ip
+     *
+     * @param  mixed  $ip
      * @return void
      */
     public function setIp(?string $ip)
@@ -120,7 +120,7 @@ class BiometricDevice
 
     /**
      * Return every possible information about the device specification.
-     * 
+     *
      * @return object
      */
     public function getDeviceInfo()
@@ -150,7 +150,7 @@ class BiometricDevice
                 return (object) $item;
             });
     }
-    
+
     /**
      * @return \Illuminate\Support\Collection
      */
@@ -179,8 +179,7 @@ class BiometricDevice
 
     /**
      * Do not use.
-     * 
-     * @param int $uid
+     *
      * @return \Illuminate\Support\Collection
      */
     public function getFingerprint(int $uid)
@@ -193,7 +192,7 @@ class BiometricDevice
 
     /**
      * Power off the device.
-     * 
+     *
      * @return void
      */
     public function shutdown()
@@ -203,7 +202,7 @@ class BiometricDevice
 
     /**
      * Restart the device.
-     * 
+     *
      * @return void
      */
     public function restart()
@@ -213,7 +212,7 @@ class BiometricDevice
 
     /**
      * Says "Thank you"
-     * 
+     *
      * @return void
      */
     public function testVoice()
@@ -223,13 +222,13 @@ class BiometricDevice
 
     /**
      * Register user to the biometric machine.
-     * 
-     * @param int $uid
-     * @param int|string $userid
-     * @param string $name
-     * @param int|string $password
-     * @param int $role
-     * @param int $cardno
+     *
+     * @param  int  $uid
+     * @param  int|string  $userid
+     * @param  string  $name
+     * @param  int|string  $password
+     * @param  int  $role
+     * @param  int  $cardno
      * @return void
      */
     public function createUser($uid, $userid, $name, $password = '', $role = 0, $cardno = 0)
@@ -246,10 +245,11 @@ class BiometricDevice
     {
         if (count($params) > 1) {
             $formattedStrings = [];
-            
+
             foreach ($params as $param) {
                 $formattedStrings = Str::of($param)->chopStart('~')->trim()->toString();
             }
+
             return $formattedStrings;
         } else {
             return Str::of($params[0])->chopStart('~')->trim()->toString();

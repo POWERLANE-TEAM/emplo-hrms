@@ -4,11 +4,11 @@ namespace App\Livewire\Employee\Tables;
 
 use App\Enums\UserPermission;
 use App\Models\Overtime;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
-use Rappasoft\LaravelLivewireTables\Views\Column;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 
 class OvertimeRequestSummariesTable extends DataTableComponent
 {
@@ -25,7 +25,7 @@ class OvertimeRequestSummariesTable extends DataTableComponent
                 $filterParams = $this->appendPayrollId($row->payrollApproval->payroll->payroll_id);
 
                 return route("{$this->routePrefix}.overtimes.requests.employee.summaries", [
-                    'employee' => $row->employee_id
+                    'employee' => $row->employee_id,
                 ]).'?'.http_build_query($filterParams);
             })
             ->setTableRowUrlTarget(fn () => '__blank');
@@ -107,14 +107,14 @@ class OvertimeRequestSummariesTable extends DataTableComponent
 
     public function builder(): Builder
     {
-        $statement = "
+        $statement = '
             count(overtime_id) as overtime_id, 
             max(filed_at) as filed_at,
             max(date) as date,
             payroll_approval_id, 
             employee_id,
             sum(abs(extract(epoch from (start_time - end_time)))) / 3600 as total_ot_hours
-        ";
+        ';
 
         return Overtime::query()
             ->with([
@@ -129,9 +129,9 @@ class OvertimeRequestSummariesTable extends DataTableComponent
                     $query->whereNot('employee_id', Auth::user()->account->employee_id)
                         ->whereHas('jobTitle.jobFamily', function ($query) {
                             $query->where('job_family_id', Auth::user()->account->jobTitle->jobFamily->job_family_id);
-                        });     
+                        });
                 } else {
-                    $query->whereNot('employee_id', Auth::user()->account->employee_id);                    
+                    $query->whereNot('employee_id', Auth::user()->account->employee_id);
                 }
             })
             ->selectRaw($statement)
@@ -149,12 +149,12 @@ class OvertimeRequestSummariesTable extends DataTableComponent
                     $name = Str::headline($row->employee->full_name);
                     $photo = $row->employee->account->photo;
                     $id = $row->employee->employee_id;
-            
+
                     return '<div class="d-flex align-items-center">
-                                <img src="' . e($photo) . '" alt="User Picture" class="rounded-circle me-3" style="width: 38px; height: 38px;">
+                                <img src="'.e($photo).'" alt="User Picture" class="rounded-circle me-3" style="width: 38px; height: 38px;">
                                 <div>
-                                    <div>' . e($name) . '</div>
-                                    <div class="text-muted fs-6">Employee ID: ' . e($id) . '</div>
+                                    <div>'.e($name).'</div>
+                                    <div class="text-muted fs-6">Employee ID: '.e($id).'</div>
                                 </div>
                             </div>';
                 })
@@ -176,11 +176,11 @@ class OvertimeRequestSummariesTable extends DataTableComponent
                     $seconds = $row->total_ot_hours * 3600;
                     $hours = floor($seconds / 3600);
                     $minutes = floor(($seconds % 3600) / 60);
-                
+
                     return __("{$hours} hours and {$minutes} minutes");
                 })
                 ->sortable(function (Builder $query, $direction) {
-                    return $query->orderBy('total_hours_rendered', $direction); 
+                    return $query->orderBy('total_hours_rendered', $direction);
                 })
                 ->setSortingPillDirections('High', 'Low')
                 ->setSortingPillTitle(__('Hours rendered')),

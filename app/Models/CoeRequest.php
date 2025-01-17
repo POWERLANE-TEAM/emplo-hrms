@@ -12,9 +12,8 @@ class CoeRequest extends Model
     protected $guarded = [
         'coe_request_id',
         'created_at',
-        'updated_at'
+        'updated_at',
     ];
-
 
     protected $primaryKey = 'coe_request_id';
 

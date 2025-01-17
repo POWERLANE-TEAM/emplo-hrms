@@ -2,17 +2,13 @@
 
 namespace App\Livewire\Employee\Separation;
 
-use Livewire\Attributes\Locked;
-use App\Enums\FilePath;
 use App\Models\Employee;
-use App\Models\EmployeeDoc;
 use App\Models\Resignation as ModelsResignation;
+use Livewire\Attributes\Locked;
 use Livewire\Component;
 
 class Resignation extends Component
 {
-
-
     #[Locked]
     public bool $hasResignation;
 
@@ -29,7 +25,7 @@ class Resignation extends Component
         $this->hasResignation = $this->employee->resignations()->exists();
 
         if ($this->hasResignation) {
-            $this->resignation->loadMissing('resigneeLifecycle','resignationLetter');
+            $this->resignation->loadMissing('resigneeLifecycle', 'resignationLetter');
         }
 
     }

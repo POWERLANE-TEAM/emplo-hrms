@@ -3,8 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\Applicant;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ApplicantEducation>
@@ -28,7 +28,7 @@ class ApplicantEducationFactory extends Factory
 
         return [
             'applicant_id' => Applicant::inRandomOrder()->first()->applicant_id,
-            'education' =>  fake()->randomElement($keywords),
+            'education' => fake()->randomElement($keywords),
         ];
     }
 }

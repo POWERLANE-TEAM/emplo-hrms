@@ -164,9 +164,9 @@ class CreateAccountForm extends Component
         }
 
         isset(
-            $this->form->presentRegion, 
-            $this->form->presentCity, 
-            $this->form->presentBarangay, 
+            $this->form->presentRegion,
+            $this->form->presentCity,
+            $this->form->presentBarangay,
             $this->form->presentAddress
         )
             ? $this->samePresentAddressChckBox['shown'] = true

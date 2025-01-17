@@ -4,10 +4,8 @@ namespace App\Jobs\Guest;
 
 use App\Events\Guest\ResumeParsed;
 use App\Http\Controllers\DocumentController;
-use App\Traits\NeedsAuthBroadcastId;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
-use Illuminate\Support\Facades\Log;
 
 class ParseResumeJob implements ShouldQueue
 {
@@ -27,7 +25,7 @@ class ParseResumeJob implements ShouldQueue
     public function handle()
     {
         try {
-            $resumeParser = new DocumentController();
+            $resumeParser = new DocumentController;
 
             $resumeFile = new \Illuminate\Http\UploadedFile(
                 $this->resumePath,
@@ -39,14 +37,14 @@ class ParseResumeJob implements ShouldQueue
 
             $parsedResume = $resumeParser->recognizeText($resumeFile, 'array');
 
-            if (!empty($parsedResume)) {
+            if (! empty($parsedResume)) {
 
                 // Broadcast event
                 ResumeParsed::dispatch($parsedResume, $this->authId);
             }
         } catch (\Throwable $th) {
 
-            report("Parsing resume error: " . $th->getMessage());
+            report('Parsing resume error: '.$th->getMessage());
         }
     }
 }

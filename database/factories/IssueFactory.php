@@ -2,10 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Enums\IssueStatus;
-use App\Models\Employee;
-use App\Models\IssueType;
 use App\Enums\IssueConfidentiality;
+use App\Models\Employee;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

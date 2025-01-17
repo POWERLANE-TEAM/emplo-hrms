@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\User;
 use App\Enums\UserPermission;
+use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
 class ContractPolicy
@@ -18,9 +18,6 @@ class ContractPolicy
 
     /**
      * Check if user has permission to upload employee contract.
-     * 
-     * @param \App\Models\User $user
-     * @return Response
      */
     public function uploadContractAttachment(User $user): Response
     {

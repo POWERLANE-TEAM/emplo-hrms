@@ -49,7 +49,7 @@ class Show extends Component
     public bool $notYetFinalInterview = false;
 
     #[Locked]
-    public  string $evaluationNotice;
+    public string $evaluationNotice;
 
     #[Locked]
     public bool $isReadyForInitEvaluation = false;
@@ -57,19 +57,13 @@ class Show extends Component
     #[Locked]
     public $modalId;
 
-    public function mount()
-    {
-
-    }
-
-
     public function boot()
     {
 
-        // try {
-            $this->applicationId = 'APL-' . $this->application->application_id;
+        try {
+            $this->applicationId = 'APL-'.$this->application->application_id;
 
-            $this->resume = optional($this->application->documents->where('preemp_req_id', 17)->first())->file_path;
+            $this->resume = $this->application->documents->where('preemp_req_id', 17)->first()->file_path;
 
             // dd($this->resume);
             if($this->resume && !Storage::exists($this->resume)){
@@ -82,7 +76,7 @@ class Show extends Component
             $this->isInitAssessment = $this->application->application_status_id == ApplicationStatus::ASSESSMENT_SCHEDULED->value;
             $this->isFinalAssessment = $this->application->application_status_id == ApplicationStatus::FINAL_INTERVIEW_SCHEDULED->value;
 
-            if($this->isInitAssessment|| $this->isFinalAssessment){
+            if ($this->isInitAssessment) {
 
                 $this->application->loadMissing('initialInterview');
 
@@ -92,12 +86,9 @@ class Show extends Component
                 $this->initialInterviewSchedF = $this->formatSchedule(optional($this->application->initialInterview)->init_interview_at);
                 $this->finalInterviewSchedF = $this->formatSchedule(optional($this->application->finalInterview)->final_interview_at);
 
-
                 if ($this->applicationExam->start_time) {
                     $examTime = Carbon::parse($this->applicationExam->start_time);
-
-                    $this->notYetExam = !Carbon::now()->greaterThanOrEqualTo($examTime) && Carbon::now()->lessThan($examTime->addMinutes(5));
-
+                    $this->notYetExam = Carbon::now()->greaterThanOrEqualTo($examTime) && Carbon::now()->lessThan($examTime->addMinutes(5));
                 } else {
                     // ung exam time nakalipas na
                     $this->notYetExam = false;
@@ -111,21 +102,15 @@ class Show extends Component
                     $this->notYetInitInterview = false;
                 }
 
-                // if interview hass occured
-                if(!$this->notYetInitInterview){
-                    $this->interviewParameters = InterviewParameter::all();
-                }
-
-                if($this->isInitAssessment && $this->notYetExam || $this->notYetInitInterview){
+                if ($this->isInitAssessment && $this->notYetExam || $this->notYetInterview) {
                     $this->evaluationNotice = 'The assign button(s) are currently disabled. They will be available once the scheduled date arrives.';
                 }
 
-                if(
-                    !$this->notYetExam && !$this->notYetInitInterview &&
+                if (
+                    $this->notYetExam && $this->notYetInterview &&
                     $this->application->initialInterview->init_interviewer &&
-                    optional($this->applicationExam)->passed &&
-                    optional($this->application->initialInterview)
-                ){
+                    $examPassed = true
+                ) {
                     $this->isReadyForInitEvaluation = true;
                 }
 
@@ -177,7 +162,6 @@ class Show extends Component
                 'isInitAssessment' => $this->isInitAssessment,
                 'examSchedF' => $this->examSchedF,
                 'initialInterviewSchedF' => $this->initialInterviewSchedF,
-                'isFinalAssessment' => $this->isFinalAssessment
             ]
         );
     }

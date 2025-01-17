@@ -2,16 +2,16 @@
 
 namespace App\Livewire;
 
-use Illuminate\View\ComponentAttributeBag;
-use Rappasoft\LaravelLivewireTables\DataTableComponent;
-use Rappasoft\LaravelLivewireTables\Views\Column;
-use Carbon\Carbon;
 use App\Livewire\Tables\Defaults as DefaultTableConfig;
 use App\Models\CoeRequest;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 
 /**
  * Implemented Methods:
+ *
  * @method  configure(): void
  * @method  columns(): array
  * @method  builder(): Builder
@@ -24,7 +24,7 @@ class CoeRequestsTable extends DataTableComponent
     protected $model = CoeRequest::class;
 
     /**
-     * @var array $customFilterOptions contains the dropdown values and keys.
+     * @var array contains the dropdown values and keys.
      */
     protected $customFilterOptions;
 
@@ -63,37 +63,36 @@ class CoeRequestsTable extends DataTableComponent
     public function columns(): array
     {
         return [
-            Column::make(__("Full Name"))
-            ->label(function($row) {
-                return $row->requestedBy->full_name;
-            })
+            Column::make(__('Full Name'))
+                ->label(function ($row) {
+                    return $row->requestedBy->full_name;
+                })
                 ->sortable(),
 
-            Column::make(__("Status"))
-            ->label(function($row) {
-                return $row->generated_by ? 'Issued' : 'Pending';
-            })
+            Column::make(__('Status'))
+                ->label(function ($row) {
+                    return $row->generated_by ? 'Issued' : 'Pending';
+                })
                 ->sortable(),
 
-            Column::make("Deadline")
-            ->label(function($row) {
-                return Carbon::parse($row->created_at)->addDays(15)->format('F j, Y');
-            })
+            Column::make('Deadline')
+                ->label(function ($row) {
+                    return Carbon::parse($row->created_at)->addDays(15)->format('F j, Y');
+                })
                 ->sortable(),
 
-            Column::make("Updated at")
-            ->label(function($row) {
-               return  $row->updated_at->format('F j, Y');
-            })
+            Column::make('Updated at')
+                ->label(function ($row) {
+                    return $row->updated_at->format('F j, Y');
+                })
                 ->sortable(),
         ];
     }
 
-
     public function builder(): Builder
     {
         $query = CoeRequest::query()
-        ->with(['requestedBy'])
+            ->with(['requestedBy'])
             ->select(
                 '*'
             );
@@ -105,7 +104,6 @@ class CoeRequestsTable extends DataTableComponent
     {
         return [
 
-
         ];
     }
 
@@ -115,6 +113,4 @@ class CoeRequestsTable extends DataTableComponent
      * |--------------------------------------------------------------------------
      * Description
      */
-
-
 }

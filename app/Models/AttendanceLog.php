@@ -11,7 +11,7 @@ class AttendanceLog extends Model
     use HasFactory;
 
     public $timestamps = false;
-    
+
     public $incrementing = false;
 
     protected $primaryKey = 'uid';
