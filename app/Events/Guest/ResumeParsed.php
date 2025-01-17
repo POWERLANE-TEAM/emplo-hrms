@@ -2,9 +2,7 @@
 
 namespace App\Events\Guest;
 
-use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -26,7 +24,7 @@ class ResumeParsed implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('applicant.applying.' . $this->authBroadcastId);
+        return new PrivateChannel('applicant.applying.'.$this->authBroadcastId);
     }
 
     public function broadcastWith()

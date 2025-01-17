@@ -81,7 +81,7 @@ class JobTitle extends Model
     {
         return $this->hasMany(JobSkillKeyword::class, 'job_title_id', 'job_title_id');
     }
-    
+
     /**
      * Get the educations required / associated with the job title.
      */

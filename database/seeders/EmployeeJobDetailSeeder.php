@@ -2,12 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Models\Shift;
 use App\Models\Employee;
+use App\Models\EmploymentStatus;
 use App\Models\JobTitle;
+use App\Models\Shift;
 use App\Models\SpecificArea;
 use Illuminate\Database\Seeder;
-use App\Models\EmploymentStatus;
 use Illuminate\Support\Facades\DB;
 
 class EmployeeJobDetailSeeder extends Seeder

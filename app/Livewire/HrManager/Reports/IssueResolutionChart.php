@@ -23,7 +23,7 @@ class IssueResolutionChart extends Component
             ->filter(function ($issue) {
                 return in_array($issue->status, [
                     IssueStatus::RESOLVED->value,
-                    IssueStatus::CLOSED->value
+                    IssueStatus::CLOSED->value,
                 ]);
             })
             ->map(function ($issue) {
@@ -32,7 +32,6 @@ class IssueResolutionChart extends Component
                     'date_resolved' => $issue->status_marked_at,
                 ];
             })->toArray();
-
 
         foreach ($issues as $issue) {
             $dateSubmitted = strtotime($issue['date_submitted']);
@@ -47,13 +46,13 @@ class IssueResolutionChart extends Component
             $year = date('Y', $dateResolved);
             $month = date('Y-m', $dateResolved);
 
-            if (!isset($this->yearlyData[$year])) {
+            if (! isset($this->yearlyData[$year])) {
                 $this->yearlyData[$year] = ['total_days' => 0, 'count' => 0];
             }
             $this->yearlyData[$year]['total_days'] += $resolvedDays;
             $this->yearlyData[$year]['count']++;
 
-            if (!isset($this->monthlyData[$month])) {
+            if (! isset($this->monthlyData[$month])) {
                 $this->monthlyData[$month] = ['total_days' => 0, 'count' => 0];
             }
             $this->monthlyData[$month]['total_days'] += $resolvedDays;
@@ -83,11 +82,11 @@ class IssueResolutionChart extends Component
     }
 
     public function render()
-    {   
+    {
         return view('livewire.hr-manager.reports.issue-resolution-chart', [
             'issueResolutionData' => $this->issueResolutionData,
             'yearlyData' => $this->yearlyData,
-            'monthlyData' => $this->monthlyData
+            'monthlyData' => $this->monthlyData,
         ]);
     }
 }

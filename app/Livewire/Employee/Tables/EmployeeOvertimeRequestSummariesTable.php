@@ -5,11 +5,11 @@ namespace App\Livewire\Employee\Tables;
 use App\Livewire\Employee\Overtimes\CutOffPayoutPeriodsApproval;
 use App\Models\Employee;
 use App\Models\Overtime;
-use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Carbon;
 use Illuminate\View\ComponentAttributeBag;
-use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class EmployeeOvertimeRequestSummariesTable extends DataTableComponent
@@ -50,7 +50,7 @@ class EmployeeOvertimeRequestSummariesTable extends DataTableComponent
                 'wire:click' => "\$dispatchTo(
                     'employee.overtimes.individual-overtime-request-approval',
                     'showOvertimeRequestApprovalInfo',
-                    { eventPayload: ".json_encode($eventPayload)."})",
+                    { eventPayload: ".json_encode($eventPayload).'})',
             ];
         });
 
@@ -91,29 +91,29 @@ class EmployeeOvertimeRequestSummariesTable extends DataTableComponent
     {
         return [
             'requestor' => [
-                'name'              => $row->employee->full_name,
-                'photo'             => $row->employee->account->photo,
-                'job_title'         => $row->employee->jobTitle->job_title,
-                'job_level'         => $row->employee->jobTitle->jobLevel->job_level,
-                'job_level_name'    => $row->employee->jobTitle->jobLevel->job_level_name,
-                'employee_id'       => $row->employee->employee_id,
-                'shift'             => $row->employee->shift->shift_name,
-                'shift_schedule'    => $row->employee->shift_schedule,
-                'employment'        => $row->employee->status->emp_status_name,
+                'name' => $row->employee->full_name,
+                'photo' => $row->employee->account->photo,
+                'job_title' => $row->employee->jobTitle->job_title,
+                'job_level' => $row->employee->jobTitle->jobLevel->job_level,
+                'job_level_name' => $row->employee->jobTitle->jobLevel->job_level_name,
+                'employee_id' => $row->employee->employee_id,
+                'shift' => $row->employee->shift->shift_name,
+                'shift_schedule' => $row->employee->shift_schedule,
+                'employment' => $row->employee->status->emp_status_name,
             ],
             'overtime_details' => [
-                'work_performed'        => $row->work_performed,
-                'date'                  => Carbon::make($row->date)->format('F d, Y'),
-                'start_time'            => $row->start_time,
-                'end_time'              => $row->end_time,
-                'hours_requested'       => $row->hours_requested,
-                'authorizer_signed_at'  => $row->authorizer_signed_at,
-                'authorizer'            => $row?->authorizedBy?->full_name,
-                'denied_at'             => $row->denied_at,
-                'denier'                => $row?->deniedBy?->full_name,
-                'feedback'              => $row->feedback,
-                'filed_at'              => $row->filed_at,
-                'modified_at'           => Carbon::make($row->modified_at)->format('F d, Y'),             
+                'work_performed' => $row->work_performed,
+                'date' => Carbon::make($row->date)->format('F d, Y'),
+                'start_time' => $row->start_time,
+                'end_time' => $row->end_time,
+                'hours_requested' => $row->hours_requested,
+                'authorizer_signed_at' => $row->authorizer_signed_at,
+                'authorizer' => $row?->authorizedBy?->full_name,
+                'denied_at' => $row->denied_at,
+                'denier' => $row?->deniedBy?->full_name,
+                'feedback' => $row->feedback,
+                'filed_at' => $row->filed_at,
+                'modified_at' => Carbon::make($row->modified_at)->format('F d, Y'),
             ],
         ];
     }
@@ -122,7 +122,7 @@ class EmployeeOvertimeRequestSummariesTable extends DataTableComponent
     {
         return Overtime::query()
             ->with([
-                'payrollApproval.payroll'
+                'payrollApproval.payroll',
             ])
             ->get()
             ->mapWithKeys(function ($item) {
@@ -202,7 +202,7 @@ class EmployeeOvertimeRequestSummariesTable extends DataTableComponent
                     });
 
                     $this->dispatch('payrollDateModified', $value)->to(CutOffPayoutPeriodsApproval::class);
-                })
+                }),
         ];
     }
 }

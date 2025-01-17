@@ -2,9 +2,9 @@
 
 namespace App\Policies;
 
-use App\Models\User;
-use App\Models\Issue;
 use App\Enums\UserPermission;
+use App\Models\Issue;
+use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
 class IssuePolicy
@@ -19,9 +19,6 @@ class IssuePolicy
 
     /**
      * Check if user enployee permission to submit an issue report.
-     * 
-     * @param \App\Models\User $user
-     * @return \Illuminate\Auth\Access\Response
      */
     public function submitIssueReport(User $user): Response
     {
@@ -32,10 +29,6 @@ class IssuePolicy
 
     /**
      * check if the issue report being access is owned by the user employee.
-     * 
-     * @param \App\Models\User $user
-     * @param \App\Models\Issue $issue
-     * @return \Illuminate\Auth\Access\Response
      */
     public function viewIssueReport(User $user, Issue $issue): Response
     {
@@ -46,9 +39,6 @@ class IssuePolicy
 
     /**
      * Check if user employee can view any issue reported by any employee.
-     * 
-     * @param \App\Models\User $user
-     * @return \Illuminate\Auth\Access\Response
      */
     public function viewAnyIssueReport(User $user): Response
     {
@@ -59,9 +49,6 @@ class IssuePolicy
 
     /**
      * Check if user employee can update (resolve / close) open issues.
-     * 
-     * @param \App\Models\User $user
-     * @return \Illuminate\Auth\Access\Response
      */
     public function updateIssueStatus(User $user): Response
     {

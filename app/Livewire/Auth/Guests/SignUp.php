@@ -6,7 +6,6 @@ use App\Actions\Fortify\CreateNewUser;
 use App\Enums\AccountType;
 use App\Enums\UserStatus as EnumsUserStatus;
 use Illuminate\Validation\Rules\Password;
-use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
 use Livewire\Component;

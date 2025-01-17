@@ -10,14 +10,16 @@ class Timezone
 
     public static function get()
     {
-        $instance = new self();
+        $instance = new self;
         $instance->timezone = session('userTimezone', config('app.timezone'));
+
         return $instance;
     }
 
     public function withOffset()
     {
         $timezoneOffset = Carbon::now()->setTimezone($this->timezone)->format('P');
+
         return [$this->timezone, $timezoneOffset];
     }
 

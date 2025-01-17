@@ -2,15 +2,14 @@
 
 namespace App\Livewire\HrManager\Reports;
 
-use App\Models\Holiday;
-use Livewire\Component;
-use App\Models\Employee;
-use App\Models\AttendanceLog;
-use Illuminate\Support\Carbon;
-use App\Enums\EmploymentStatus;
-use Livewire\Attributes\Locked;
 use App\Enums\BiometricPunchType;
+use App\Enums\EmploymentStatus;
+use App\Models\AttendanceLog;
+use App\Models\Employee;
+use Illuminate\Support\Carbon;
+use Livewire\Attributes\Locked;
 use Livewire\Attributes\Reactive;
+use Livewire\Component;
 
 class AverageAttendanceChart extends Component
 {
@@ -41,17 +40,17 @@ class AverageAttendanceChart extends Component
                 });
             })
             ->get()
-            ->groupBy(function($date) {
+            ->groupBy(function ($date) {
                 return Carbon::parse($date->timestamp)->format('Y-m');
-            });    
-    
+            });
+
         $this->yearlyData = [];
         $this->monthlyData = [];
-    
+
         $yearlyTotalAttended = 0;
         $yearlyTotalScheduled = 0;
-    
-        $totalEmployees = Employee::whereHas('status', 
+
+        $totalEmployees = Employee::whereHas('status',
             fn ($query) => $query->whereIn('emp_status_name', [
                 EmploymentStatus::REGULAR->label(),
                 EmploymentStatus::PROBATIONARY->label(),
@@ -60,15 +59,15 @@ class AverageAttendanceChart extends Component
             ->count();
 
         foreach ($attendanceLogs as $month => $logs) {
-    
+
             $totalWorkdays = $this->getWorkdaysInMonth($month);
 
             $daysAttended = $logs->count();
             $totalScheduledDays = $totalEmployees * $totalWorkdays;
-    
+
             $totalScheduledDays = $totalEmployees * $totalWorkdays;
             $attendanceRate = ($daysAttended / $totalScheduledDays) * 100;
-    
+
             $yearlyTotalAttended += $daysAttended;
             $yearlyTotalScheduled += $totalScheduledDays;
 
@@ -80,7 +79,7 @@ class AverageAttendanceChart extends Component
                 'total_scheduled' => $totalScheduledDays,
             ];
         }
-    
+
         $year = substr($this->year, 0, 4);
         $attendanceRate = $yearlyTotalAttended > 0
             ? round(($yearlyTotalAttended / $yearlyTotalScheduled) * 100, 2)
@@ -89,9 +88,9 @@ class AverageAttendanceChart extends Component
         $this->yearlyData[$year] = [
             'attendance_rate' => $attendanceRate,
             'total_days_attended' => $yearlyTotalAttended,
-            'total_scheduled_days' => $yearlyTotalScheduled
+            'total_scheduled_days' => $yearlyTotalScheduled,
         ];
-    
+
         $this->attendanceData = [
             'yearly' => $this->yearlyData,
             'monthly' => $this->monthlyData,
@@ -100,7 +99,7 @@ class AverageAttendanceChart extends Component
 
     public function getWorkdaysInMonth($month)
     {
-        $startDate = Carbon::parse($month . '-01');
+        $startDate = Carbon::parse($month.'-01');
         $endDate = $startDate->copy()->endOfMonth();
 
         $workdays = 0;
@@ -115,16 +114,16 @@ class AverageAttendanceChart extends Component
             }
             $currentDate->addDay();
         }
-    
+
         return $workdays;
     }
 
     public function render()
-    {   
+    {
         return view('livewire.hr-manager.reports.average-attendance-chart', [
             'attendanceData' => $this->attendanceData,
             'yearlyData' => $this->yearlyData,
-            'monthlyData' => $this->monthlyData
+            'monthlyData' => $this->monthlyData,
         ]);
     }
 }

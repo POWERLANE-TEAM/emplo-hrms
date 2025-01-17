@@ -105,6 +105,7 @@ class EmployeesAttendanceTable extends DataTableComponent
     private function getTimestampF($row, $type)
     {
         $timestamp = $this->getTimestamp($row, $type);
+
         return $timestamp ? Carbon::parse($timestamp)->format('g:i A') : self::NULL_TIME;
     }
 
@@ -193,21 +194,12 @@ class EmployeesAttendanceTable extends DataTableComponent
     public function columns(): array
     {
         return [
-            Column::make(__('Employee'))
-                ->label(function ($row) {
-                    $name = Str::headline($row->full_name);
-                    $photo = $row->account->photo;
-                    $id = $row->employee_id;
-                    $status = $row->status->emp_status_name;
-            
-                    return '<div class="d-flex align-items-center">
-                                <img src="' . e($photo) . '" alt="User Picture" class="rounded-circle me-3" style="width: 38px; height: 38px;">
-                                <div>
-                                    <div>' . e($name) . '</div>
-                                    <div class="text-muted fs-6">Employee ID: ' . e($id) . '</div>
-                                    <small class="text-muted">' . e($status) . '</small>
-                                </div>
-                            </div>';
+            Column::make(__('Full Name'))
+                ->label(fn ($row) => $row->fullname)
+                ->sortable(function ($query, $direction) {
+                    return $query->orderBy('last_name', $direction)
+                        ->orderBy('first_name', $direction)
+                        ->orderBy('middle_name', $direction);
                 })
                 ->html()
                 ->sortable(fn (Builder $query, $direction) => $query->orderBy('last_name' ,$direction))
@@ -218,14 +210,67 @@ class EmployeesAttendanceTable extends DataTableComponent
                         ->orWhereHas('account', fn ($query) => $query->orWhereLike('email', "%{$searchTerm}%"));
                 }),
 
-            Column::make(__('Check In'))
-                ->label(fn($row) => $this->getTimestampF($row, BiometricPunchType::CHECK_IN->value)),
+            Column::make(__('Time In'))
+                ->label(fn ($row) => $this->getTimestampF($row, BiometricPunchType::CHECK_IN->value)),
 
-            Column::make(__('Check Out'))
-                ->label(fn($row) => $this->getTimestampF($row, BiometricPunchType::CHECK_OUT->value)),
+            Column::make(__('Time Out'))
+                ->label(fn ($row) => $this->getTimestampF($row, BiometricPunchType::CHECK_OUT->value)),
 
-            // Column::make(__('Date'))
-            //     ->label(fn ($row) => $row ? Carbon::parse($row->attendanceLogs->timestamp)->format('F d, Y') : self::NULL_TIME),
+            Column::make(__('Overtime Time In'))
+                ->label(fn ($row) => $this->getTimestampF($row, BiometricPunchType::OVERTIME_IN->value))
+                ->deselected(),
+
+            Column::make(__('Overtime Time Out'))
+                ->label(fn ($row) => $this->getTimestampF($row, BiometricPunchType::OVERTIME_OUT->value))
+                ->deselected(),
+
+            Column::make(__('Arrival'))
+                ->label(function ($row) {
+                    $attendance = $this->getTimestamp($row, BiometricPunchType::CHECK_IN->value);
+
+                    if (! $row->shift) {
+                        return $this->NOT_SET('shift');
+                    }
+
+                    $shiftStartTime = Carbon::parse($row->shift->start_time);
+                    $now = Carbon::now();
+
+                    if (is_null($attendance)) {
+                        return $now->lessThan($shiftStartTime) ? 'arriving' : 'running late';
+                    } else {
+                        $attendanceTime = Carbon::parse($attendance);
+
+                        return $attendanceTime->lessThan($shiftStartTime) ? 'on time' : 'late';
+                    }
+                }),
+
+            Column::make(__('Status'))
+                ->label(function ($row) {
+                    // $attendance = optional($row->attendanceLogs->first());
+                    $timeIn = $this->getTimestamp($row, BiometricPunchType::CHECK_IN->value);
+                    $timeOut = $this->getTimestamp($row, BiometricPunchType::CHECK_OUT->value);
+                    $overtimeTimeIn = $this->getTimestamp($row, BiometricPunchType::OVERTIME_IN->value);
+
+                    if (! $row->shift) {
+                        return $this->NOT_SET('shift');
+                    }
+
+                    $shiftEndTime = Carbon::parse($row->shift->end_time);
+                    $now = Carbon::now();
+
+                    // Temporary
+                    if ($overtimeTimeIn) {
+                        return 'overtime';
+                    } elseif (is_null($timeOut)) {
+                        if ($now->lessThan($shiftEndTime)) {
+                            return 'on duty';
+                        } elseif ($now->diffInMinutes($shiftEndTime) <= 30) {
+                            return 'duty ended';
+                        }
+                    } else {
+                        return 'clock out';
+                    }
+                }),
 
             /**
              * |--------------------------------------------------------------------------
@@ -235,6 +280,10 @@ class EmployeesAttendanceTable extends DataTableComponent
              */
             Column::make('Shift')
                 ->label(function ($row) {
+                    if (! $row->shift) {
+                        return $this->NOT_SET('shift');
+                    }
+
                     return $row->shift->shift_name;
                 }),
 
@@ -243,15 +292,24 @@ class EmployeesAttendanceTable extends DataTableComponent
 
             Column::make('Job Title')
                 ->label(function ($row) {
-                    if (!$row->jobTitle) return  $this->NOT_SET('job level');
+                    $row->load('jobTitle');
+                    if (! $row->jobTitle) {
+                        return $this->NOT_SET('job level');
+                    }
+
                     return $row->jobTitle->job_title;
                 }),
 
             Column::make('Department')
                 ->label(function ($row) {
                     $row->load('jobTitle.department');
-                    if (!$row->jobTitle) return  $this->NOT_SET('job title');
-                    if (!$row->jobTitle->department) return  $this->NOT_SET('department');
+                    if (! $row->jobTitle) {
+                        return $this->NOT_SET('job title');
+                    }
+                    if (! $row->jobTitle->department) {
+                        return $this->NOT_SET('department');
+                    }
+
                     return $row->jobTitle->department->department_name;
                 })
                 ->deselected(),
@@ -259,7 +317,10 @@ class EmployeesAttendanceTable extends DataTableComponent
             Column::make('Employment Status')
                 ->label(function ($row) {
                     $row->load('status');
-                    if (!$row->status) return  $this->NOT_SET('employment status');
+                    if (! $row->status) {
+                        return $this->NOT_SET('employment status');
+                    }
+
                     return $row->status->emp_status_name;
                 })
                 ->deselected(),
@@ -268,13 +329,39 @@ class EmployeesAttendanceTable extends DataTableComponent
                 ->label(function ($row) {
                     $row->load('application');
 
-                    if (!$row->application) return  'No application';
+                    if (! $row->application) {
+                        return 'No application';
+                    }
 
                     return Carbon::parse($row->application->hired_at)->format('F j, Y') ?? report('Employee has no hired date.');
                 })
                 ->deselected(),
 
         ];
+    }
+
+    public function builder(): Builder
+    {
+        $query = Employee::query()->with(['attendanceLogs', 'specificArea', 'shift' /* 'status', */ /* 'jobTitle.department' */ /* , 'jobTitle.jobLevel' */ /* , 'application' */])
+
+            // prevent duplicate rows (workaround)
+            ->leftJoin('employee_job_details', 'employees.employee_id', '=', 'employee_job_details.employee_id')
+            ->leftJoin('specific_areas', 'employee_job_details.area_id', '=', 'specific_areas.area_id')
+            ->distinct('employees.employee_id');
+
+        // Maybe add specific area restriction based on permission?
+
+        $this->limitSpecificArea($query);
+
+        if (! $this->getAppliedFilterWithValue('attendance-date')) {
+            $query->with(['attendanceLogs' => function ($query) {
+                $query->whereDate('timestamp', now()->format('Y-m-d'));
+            }]);
+        }
+
+        // dd($query->has('attendanceLogs')->limit(5)->get());
+
+        return $query;
     }
 
     public function filters(): array

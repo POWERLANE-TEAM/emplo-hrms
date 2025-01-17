@@ -2,17 +2,17 @@
 
 namespace App\Livewire\Admin\Config\Performance\PeriodSetUp;
 
-use Livewire\Component;
-use Illuminate\Support\Carbon;
-use App\Models\RegularPerformancePeriod;
 use App\Enums\PerformanceEvaluationPeriod;
+use App\Models\RegularPerformancePeriod;
+use Illuminate\Support\Carbon;
+use Livewire\Component;
 
 class Start extends Component
 {
     public $period;
 
     public function save()
-    {   
+    {
         $this->authorize('openRegularsEvaluationPeriod');
 
         RegularPerformancePeriod::create([

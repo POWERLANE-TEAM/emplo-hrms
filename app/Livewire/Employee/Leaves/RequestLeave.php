@@ -2,19 +2,19 @@
 
 namespace App\Livewire\Employee\Leaves;
 
-use App\Enums\Sex;
 use App\Enums\FilePath;
-use Livewire\Component;
+use App\Enums\Sex;
 use App\Models\EmployeeLeave;
 use App\Models\LeaveCategory;
-use Livewire\WithFileUploads;
 use Illuminate\Support\Carbon;
-use Livewire\Attributes\Locked;
-use Livewire\Attributes\Computed;
-use Livewire\Attributes\Validate;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\Locked;
+use Livewire\Attributes\Validate;
+use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class RequestLeave extends Component
 {
@@ -86,15 +86,15 @@ class RequestLeave extends Component
             ->where('is_proof_required')
             ->contains($this->state['leaveType']);
     }
-    
+
     public function rules()
     {
         return [
-            'state.leaveType'   => 'required',
-            'state.startDate'   => 'required|after:today|before:state.endDate',
-            'state.endDate'     => 'required|after:state.startDate',
-            'state.reason'      => 'required',
-            'attachments'       => [function ($attribute, $value, $fail) {
+            'state.leaveType' => 'required',
+            'state.startDate' => 'required|after:today|before:state.endDate',
+            'state.endDate' => 'required|after:state.startDate',
+            'state.reason' => 'required',
+            'attachments' => [function ($attribute, $value, $fail) {
                 if ($this->isLeaveRequireProof() && empty($value)) {
                     $fail(__('Attachments are required for the selected leave type.'));
                 }
@@ -105,14 +105,14 @@ class RequestLeave extends Component
     public function messages()
     {
         return [
-            'state.leaveType.required'  => __('Please select your type of leave.'),
-            'state.startDate.required'  => __('Please select the starting date of your leave.'),
-            'state.endDate.required'    => __('Please select the ending date of your leave.'),
-            'state.startDate.after'     => __('The start date must be after today.'),
-            'state.startDate.before'    => __('The start date must be before the end date.'),
-            'state.endDate.after'       => __('The end date must be after the start date.'),
-            'state.reason.required'     => __('Write your reason for leave.'),
-            'attachments.required'      => __('Attachments are required for the selected leave type.'),
+            'state.leaveType.required' => __('Please select your type of leave.'),
+            'state.startDate.required' => __('Please select the starting date of your leave.'),
+            'state.endDate.required' => __('Please select the ending date of your leave.'),
+            'state.startDate.after' => __('The start date must be after today.'),
+            'state.startDate.before' => __('The start date must be before the end date.'),
+            'state.endDate.after' => __('The end date must be after the start date.'),
+            'state.reason.required' => __('Write your reason for leave.'),
+            'attachments.required' => __('Attachments are required for the selected leave type.'),
         ];
     }
 
@@ -133,13 +133,13 @@ class RequestLeave extends Component
 
             $this->storeAttachments($leave);
         });
-        
+
         $this->reset();
         $this->resetErrorBag();
 
         $this->dispatch('showSuccessToast', [
             'type' => 'success',
-            'message' => __("Your file for leave request has been successfully submitted.")
+            'message' => __('Your file for leave request has been successfully submitted.'),
         ]);
     }
 
@@ -152,17 +152,17 @@ class RequestLeave extends Component
         foreach ($this->attachments as $attachment) {
 
             $hashedVersion = sprintf('%s-%d', $attachment->hashName(), Auth::id());
-            
+
             $attachment->storeAs(FilePath::LEAVES->value, $hashedVersion, 'local');
 
             array_push($leaveAttachments, [
-                'emp_leave_id'      => $leave->emp_leave_id,
+                'emp_leave_id' => $leave->emp_leave_id,
                 'hashed_attachment' => $hashedVersion,
-                'attachment_name'   => $attachment->getClientOriginalName(),
-            ]); 
+                'attachment_name' => $attachment->getClientOriginalName(),
+            ]);
         }
 
-        DB::table('employee_leave_attachments')->insert($leaveAttachments); 
+        DB::table('employee_leave_attachments')->insert($leaveAttachments);
     }
 
     public function removeAttachment(int $index)
@@ -182,9 +182,9 @@ class RequestLeave extends Component
                         'Special Leave Benefits for Women',
                     ]);
                 } else {
-                    return $type->leave_category_name === 'Paternity Leave'; 
+                    return $type->leave_category_name === 'Paternity Leave';
                 }
-        });
+            });
     }
 
     #[Computed]

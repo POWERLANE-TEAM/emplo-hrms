@@ -2,10 +2,10 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Employee;
-use Illuminate\Support\Carbon;
 use App\Enums\EmploymentStatus;
+use App\Models\Employee;
 use Illuminate\Console\Command;
+use Illuminate\Support\Carbon;
 
 class DeleteSeparatedEmployeeData extends Command
 {
@@ -37,12 +37,12 @@ class DeleteSeparatedEmployeeData extends Command
                     EmploymentStatus::REGULAR->label(),
                 ]);
             }
-        );
+            );
 
         $separatedEmployees->each(function ($employee) {
             $separationDate = Carbon::parse($employee->lifecycle->separated_at);
             $retentionPeriod = EmploymentStatus::separatedEmployeeDataRetentionPeriod($separationDate);
-            
+
             if (now()->greaterThanOrEqualTo($retentionPeriod)) {
                 $employee->account()->forceDelete();
                 $employee->trainings()->delete();

@@ -20,7 +20,7 @@ enum ServiceIncentiveLeave: int
                 self::Q2 => __('April - June'),
                 self::Q3 => __('July - September'),
                 self::Q4 => __('October - December'),
-            };            
+            };
         }
 
         return match ($this) {
@@ -56,7 +56,7 @@ enum ServiceIncentiveLeave: int
             Carbon::APRIL,
             Carbon::MAY,
             Carbon::JUNE,
-        ]; 
+        ];
     }
 
     public function getThirdQuarter(): array
@@ -65,7 +65,7 @@ enum ServiceIncentiveLeave: int
             Carbon::JULY,
             Carbon::AUGUST,
             Carbon::SEPTEMBER,
-        ]; 
+        ];
     }
 
     public function getFourthQuarter(): array
@@ -74,6 +74,6 @@ enum ServiceIncentiveLeave: int
             Carbon::OCTOBER,
             Carbon::NOVEMBER,
             Carbon::DECEMBER,
-        ]; 
+        ];
     }
 }

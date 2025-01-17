@@ -2,7 +2,6 @@
 
 namespace App\Http\Helpers;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -32,20 +31,16 @@ class RouteHelper
         };
     }
 
-
     public static function validateModel($model, $value)
     {
 
-
-        if (!is_subclass_of($model, 'Illuminate\Database\Eloquent\Model')) {
+        if (! is_subclass_of($model, 'Illuminate\Database\Eloquent\Model')) {
             throw new \InvalidArgumentException('The provided class is not a subclass of Illuminate\Database\Eloquent\Model');
         }
 
-        if (!is_int($value) && !ctype_digit($value)) {
+        if (! is_int($value) && ! ctype_digit($value)) {
             abort(400);
         }
-
-
 
         $value = (int) $value;
         $primaryKey = (new $model)->getKeyName();

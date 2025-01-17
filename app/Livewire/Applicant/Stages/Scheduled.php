@@ -11,7 +11,6 @@ use Livewire\Component;
 
 class Scheduled extends Component
 {
-
     public Application $application;
 
     public ApplicationExam $applicationExam;

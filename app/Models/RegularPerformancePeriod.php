@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Str;
-use Illuminate\Support\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 
 class RegularPerformancePeriod extends Model
 {

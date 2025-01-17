@@ -3,17 +3,17 @@
 namespace App\Livewire\HrManager\Incidents;
 
 use App\Enums\FilePath;
-use Livewire\Component;
+use App\Enums\IncidentPriorityLevel;
+use App\Enums\IssueStatus;
 use App\Models\Employee;
 use App\Models\Incident;
 use App\Models\IssueType;
-use App\Enums\IssueStatus;
-use Livewire\WithFileUploads;
-use Livewire\Attributes\Computed;
-use Illuminate\Support\Facades\DB;
-use App\Enums\IncidentPriorityLevel;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Livewire\Attributes\Computed;
+use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class CreateIncidentReport extends Component
 {
@@ -22,7 +22,7 @@ class CreateIncidentReport extends Component
     public $types = [];
 
     public $attachments = [];
-    
+
     public $description;
 
     public $initiator;
@@ -51,7 +51,7 @@ class CreateIncidentReport extends Component
 
         $this->dispatch('storedIncidentReport', [
             'type' => 'success',
-            'message' => __("Incident report was successfully created.")
+            'message' => __('Incident report was successfully created.'),
         ]);
 
         $this->dispatch('changes-saved');
@@ -60,13 +60,13 @@ class CreateIncidentReport extends Component
     public function storeIncident(): Incident
     {
         return Incident::create([
-            'incident_description'  => $this->description,
-            'resolution'            => $this->resolutionDetails,
-            'resolution_date'       => $this->resolutionDate,
-            'status'                => $this->status,
-            'priority'              => $this->priority,
-            'initiator'             => $this->initiator,
-            'reporter'              => Auth::user()->account->employee_id,
+            'incident_description' => $this->description,
+            'resolution' => $this->resolutionDetails,
+            'resolution_date' => $this->resolutionDate,
+            'status' => $this->status,
+            'priority' => $this->priority,
+            'initiator' => $this->initiator,
+            'reporter' => Auth::user()->account->employee_id,
         ]);
     }
 
@@ -79,17 +79,17 @@ class CreateIncidentReport extends Component
         foreach ($this->attachments as $attachment) {
 
             $hashedVersion = sprintf('%s-%d', $attachment->hashName(), Auth::id());
-            
+
             $attachment->storeAs(FilePath::INCIDENTS->value, $hashedVersion, 'local');
 
             array_push($incidentAttachments, [
-                'attachment'        => $hashedVersion,
-                'attachment_name'   => $attachment->getClientOriginalName(),
-                'incident_id'       => $incident->incident_id,
-            ]); 
+                'attachment' => $hashedVersion,
+                'attachment_name' => $attachment->getClientOriginalName(),
+                'incident_id' => $incident->incident_id,
+            ]);
         }
 
-        DB::table('incident_attachments')->insert($incidentAttachments); 
+        DB::table('incident_attachments')->insert($incidentAttachments);
     }
 
     public function removeAttachment(int $index)
@@ -104,15 +104,15 @@ class CreateIncidentReport extends Component
     public function rules(): array
     {
         return [
-            'types'             => 'required',
-            'types.*'           => 'exists:issue_types,issue_type_id',
-            'attachments'       => 'nullable|array|max:5',
-            'attachments.*'     => 'file|max:51200',
-            'description'       => 'required',
-            'initiator'         => 'required',
-            'priority'          => 'required',
-            'status'            => 'required',
-            'resolutionDate'    => 'nullable',
+            'types' => 'required',
+            'types.*' => 'exists:issue_types,issue_type_id',
+            'attachments' => 'nullable|array|max:5',
+            'attachments.*' => 'file|max:51200',
+            'description' => 'required',
+            'initiator' => 'required',
+            'priority' => 'required',
+            'status' => 'required',
+            'resolutionDate' => 'nullable',
             'resolutionDetails' => 'nullable',
         ];
     }

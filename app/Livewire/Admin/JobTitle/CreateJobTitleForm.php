@@ -44,11 +44,11 @@ class CreateJobTitleForm extends Component
 
         DB::transaction(function () {
             $jobTitle = JobTitle::create([
-                'job_title'     => $this->state['title'],
-                'job_desc'      => $this->state['description'],
-                'base_salary'   => $this->state['baseSalary'],
+                'job_title' => $this->state['title'],
+                'job_desc' => $this->state['description'],
+                'base_salary' => $this->state['baseSalary'],
                 'department_id' => $this->state['department'],
-                'job_level_id'  => $this->state['level'],
+                'job_level_id' => $this->state['level'],
                 'job_family_id' => $this->state['family'],
             ]);
 
@@ -148,24 +148,24 @@ class CreateJobTitleForm extends Component
     public function rules()
     {
         return [
-            'state.department'  => 'required',
-            'state.family'      => 'required',
-            'state.level'       => 'required',
-            'state.title'       => 'required|string|max:255',
+            'state.department' => 'required',
+            'state.family' => 'required',
+            'state.level' => 'required',
+            'state.title' => 'required|string|max:255',
             'state.description' => 'nullable|string|max:500',
-            'state.baseSalary'  => 'nullable|numeric|min:5',
+            'state.baseSalary' => 'nullable|numeric|min:5',
         ];
     }
 
     public function messages()
     {
         return [
-            'state.department'      => __('Department is required.'),
-            'state.family'          => __('Job family is required.'),
-            'state.level'           => __('Job level is required.'),
-            'state.title.required'  => __('Job title is required.'),
+            'state.department' => __('Department is required.'),
+            'state.family' => __('Job family is required.'),
+            'state.level' => __('Job level is required.'),
+            'state.title.required' => __('Job title is required.'),
             'state.description.max' => __('Description only allows for maximum of 500 characters.'),
-            'state.baseSalary'      => __('Numeric values only.'),
+            'state.baseSalary' => __('Numeric values only.'),
         ];
     }
 

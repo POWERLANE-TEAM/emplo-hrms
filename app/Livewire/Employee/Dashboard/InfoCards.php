@@ -2,16 +2,16 @@
 
 namespace App\Livewire\Employee\Dashboard;
 
-use App\Enums\Payroll;
-use Livewire\Component;
-use App\Models\Overtime;
-use App\Models\AttendanceLog;
-use Illuminate\Support\Carbon;
-use Livewire\Attributes\Locked;
 use App\Enums\BiometricPunchType;
-use Livewire\Attributes\Computed;
-use Illuminate\Support\Facades\Auth;
+use App\Enums\Payroll;
+use App\Models\AttendanceLog;
+use App\Models\Overtime;
 use App\Models\Payroll as PayrollModel;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\Locked;
+use Livewire\Component;
 
 class InfoCards extends Component
 {
@@ -77,14 +77,14 @@ class InfoCards extends Component
         foreach ($attLogs as $date => $logs) {
             $checkIn = null;
             $checkOut = null;
-    
+
             foreach ($logs as $log) {
                 if ($log->type == BiometricPunchType::CHECK_IN->value) {
                     $checkIn = Carbon::parse($log->timestamp);
                 } elseif ($log->type == BiometricPunchType::CHECK_OUT->value) {
                     $checkOut = Carbon::parse($log->timestamp);
                 }
-    
+
                 if ($checkIn && $checkOut) {
                     $totalSecs += $checkIn->diffInSeconds($checkOut);
                     $checkIn = null;
@@ -92,7 +92,7 @@ class InfoCards extends Component
                 }
             }
         }
-    
+
         return floor($totalSecs / 3600);
     }
 
@@ -114,14 +114,14 @@ class InfoCards extends Component
         foreach ($attLogs as $date => $logs) {
             $checkIn = null;
             $checkOut = null;
-    
+
             foreach ($logs as $log) {
                 if ($log->type == BiometricPunchType::CHECK_IN->value) {
                     $checkIn = Carbon::parse($log->timestamp);
                 } elseif ($log->type == BiometricPunchType::CHECK_OUT->value) {
                     $checkOut = Carbon::parse($log->timestamp);
                 }
-    
+
                 if ($checkIn && $checkOut) {
                     $totalSecs += $checkIn->diffInSeconds($checkOut);
                     $checkIn = null;
@@ -129,7 +129,7 @@ class InfoCards extends Component
                 }
             }
         }
-    
+
         return floor($totalSecs / 3600);
     }
 

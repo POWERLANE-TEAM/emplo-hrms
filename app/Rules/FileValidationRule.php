@@ -9,8 +9,11 @@ use Illuminate\Support\Facades\Validator;
 class FileValidationRule implements ValidationRule
 {
     protected $accepted;
+
     protected $minSize;
+
     protected $maxSize;
+
     protected $required;
 
     const FILE_SIZES = [
@@ -21,7 +24,7 @@ class FileValidationRule implements ValidationRule
         'xl' => '102400', // 100mb
     ];
 
-    public function __construct(array $accepted, string $minSize = null, string $maxSize = 'sm', bool $required = true)
+    public function __construct(array $accepted, ?string $minSize = null, string $maxSize = 'sm', bool $required = true)
     {
         $this->accepted = $accepted;
         $this->minSize = $minSize;
@@ -47,14 +50,15 @@ class FileValidationRule implements ValidationRule
 
     public function getRule(): string
     {
-        $rule = ($this->required ? 'required|' : '') . 'file|max:' . $this->getMaxFileSize() . '|mimes:' . $this->getAcceptedFileTypes();
+        $rule = ($this->required ? 'required|' : '').'file|max:'.$this->getMaxFileSize().'|mimes:'.$this->getAcceptedFileTypes();
 
         if ($this->minSize) {
-            $rule .= '|min:' . $this->getMinFileSize();
+            $rule .= '|min:'.$this->getMinFileSize();
         }
 
         return $rule;
     }
+
     public function message()
     {
         return 'The :attribute does not meet the validation requirements.';
@@ -86,6 +90,7 @@ class FileValidationRule implements ValidationRule
         }
 
         report(new \InvalidArgumentException("Invalid file size: $size"));
+
         return null;
     }
 }

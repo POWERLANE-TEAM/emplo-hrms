@@ -2,26 +2,26 @@
 
 namespace App\Models;
 
+use App\Enums\ActivityLogName;
 use App\Enums\CivilStatus;
 use App\Enums\ServiceIncentiveLeave;
-use Illuminate\Support\Str;
-use App\Enums\ActivityLogName;
-use Illuminate\Support\Carbon;
-use Spatie\Activitylog\LogOptions;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\Traits\LogsActivity;
-use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use App\Http\Helpers\GovernmentMandateContributionsIdFormat;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Employee extends Model
 {
@@ -60,8 +60,8 @@ class Employee extends Model
     protected function contactNumber(): Attribute
     {
         return Attribute::make(
-            get: fn (mixed $value) => '+63-' . substr($value, 1, 3) . '-' .
-                substr($value, 4, 3) . '-' .
+            get: fn (mixed $value) => '+63-'.substr($value, 1, 3).'-'.
+                substr($value, 4, 3).'-'.
                 substr($value, 7, 4),
         );
     }
@@ -74,6 +74,7 @@ class Employee extends Model
         return Attribute::make(
             get: function (string $value) {
                 $civilStatus = CivilStatus::tryFrom($value);
+
                 return $civilStatus ? $civilStatus->label() : ucwords($civilStatus);
             }
         );
@@ -189,7 +190,7 @@ class Employee extends Model
         }
 
         if ($serviceDuration->copy()->y >= 2) {
-            return 11; 
+            return 11;
         }
 
         if ($serviceDuration->copy()->y >= 1) {
@@ -724,11 +725,8 @@ class Employee extends Model
             ->withPivot('is_editor');
     }
 
-
     /**
      * Get all of the resignations for the employee through the employee documents.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
     public function resignations(): HasManyThrough
     {

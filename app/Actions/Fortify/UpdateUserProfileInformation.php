@@ -30,11 +30,11 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             'account_type' => [
                 'required_with:account_id',
                 'string',
-                'max:255'
+                'max:255',
             ],
             'account_id' => [
                 'required_with:account_type',
-                'integer'
+                'integer',
             ],
             'photo' => ['nullable', 'image'],
             'user_status_id' => ['nullable', 'integer'],
@@ -45,7 +45,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             if ($input['photo'] instanceof UploadedFile) {
                 $hashedUserId = md5($user->user_id);
                 $photoPath = $input['photo']->storeAs(
-                    'accounts/' . $input['accountType'] . '/' . $hashedUserId,
+                    'accounts/'.$input['accountType'].'/'.$hashedUserId,
                     $input['photo']->hashName(),
                     'public'
                 );
@@ -67,7 +67,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                 'account_id' => $input['accountId'] ?? null,
                 'user_status_id' => $input['userStatusId'] ?? null,
             ], function ($value) {
-                return !is_null($value);
+                return ! is_null($value);
             }))
                 ->fill([
                     'photo' => $input['photo'] ?? null,
@@ -90,7 +90,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
 
             'user_status_id' => $input['userStatusId'] ?? null,
         ], function ($value) {
-            return !is_null($value);
+            return ! is_null($value);
         }))
             ->fill([
                 'photo' => $input['photo'] ?? null,

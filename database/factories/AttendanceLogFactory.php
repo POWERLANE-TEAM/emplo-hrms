@@ -2,10 +2,10 @@
 
 namespace Database\Factories;
 
-use App\Models\Employee;
-use App\Models\AttendanceLog;
 use App\Enums\BiometricPunchType;
 use App\Enums\EmploymentStatus;
+use App\Models\AttendanceLog;
+use App\Models\Employee;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -23,12 +23,12 @@ class AttendanceLogFactory extends Factory
         $type = fake()->randomElement(
             array_map(fn ($case) => $case->value, array_filter(
                 BiometricPunchType::cases(), fn ($case) => ! in_array($case, [
-                    BiometricPunchType::OVERTIME_IN, BiometricPunchType::OVERTIME_OUT
-                    ])
-                )
+                    BiometricPunchType::OVERTIME_IN, BiometricPunchType::OVERTIME_OUT,
+                ])
             )
-        );        
-    
+            )
+        );
+
         $timestamp = match ($type) {
             BiometricPunchType::CHECK_IN->value => fake()->dateTimeBetween('8:00', '10:00')->format('Y-m-d H:i:s'),
             BiometricPunchType::CHECK_OUT->value => fake()->dateTimeBetween('16:00', '18:00')->format('Y-m-d H:i:s'),
@@ -41,8 +41,8 @@ class AttendanceLogFactory extends Factory
                 EmploymentStatus::REGULAR->label(),
                 EmploymentStatus::PROBATIONARY->label(),
             ]);
-        })->inRandomOrder()->first();
-    
+        })->first();
+
         return [
             'uid' => $uid,
             'employee_id' => $employee->employee_id,
@@ -51,16 +51,14 @@ class AttendanceLogFactory extends Factory
             'timestamp' => $timestamp,
         ];
     }
-    
+
     /**
      * Generate a unique UID that doesn't conflict with existing records.
-     *
-     * @return int
      */
     private function generateUniqueUid(): int
     {
         $uid = fake()->unique()->randomNumber();
-        
+
         while (AttendanceLog::where('uid', $uid)->exists()) {
             $uid = fake()->unique()->randomNumber();
         }

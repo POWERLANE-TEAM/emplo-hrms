@@ -2,9 +2,9 @@
 
 namespace Database\Factories;
 
-use App\Models\Payroll;
 use App\Models\Employee;
 use App\Models\OvertimePayrollApproval;
+use App\Models\Payroll;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -36,12 +36,12 @@ class OvertimeFactory extends Factory
             'employee_id' => Employee::inRandomOrder()->first()->employee_id,
             'payroll_approval_id' => $payrollApproval->payroll_approval_id,
             'work_performed' => fake()->randomElement([
-                'Project work', 
-                'Emergency task', 
-                'Client meeting', 
-                'Report preparation', 
-                'System upgrade', 
-                'Training session'
+                'Project work',
+                'Emergency task',
+                'Client meeting',
+                'Report preparation',
+                'System upgrade',
+                'Training session',
             ]),
             'date' => $start->format('Y-m-d'),
             'start_time' => $start->format('H:i:s'),

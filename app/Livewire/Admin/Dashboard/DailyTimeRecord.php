@@ -2,13 +2,13 @@
 
 namespace App\Livewire\Admin\Dashboard;
 
-use Livewire\Component;
+use App\Enums\BiometricPunchType;
+use App\Http\Helpers\BiometricDevice;
 use App\Models\AttendanceLog;
 use Illuminate\Support\Carbon;
-use Livewire\Attributes\Locked;
-use App\Enums\BiometricPunchType;
 use Illuminate\Support\Collection;
-use App\Http\Helpers\BiometricDevice;
+use Livewire\Attributes\Locked;
+use Livewire\Component;
 
 class DailyTimeRecord extends Component
 {
@@ -29,7 +29,7 @@ class DailyTimeRecord extends Component
     // }
 
     private function getTodayDtr()
-    {   
+    {
         $this->upsertTodayDtr();
 
         return AttendanceLog::whereDate('timestamp', $this->dateToday)
@@ -68,15 +68,15 @@ class DailyTimeRecord extends Component
                     'employee_id' => (int) $item->id,
                     'state' => $item->state,
                     'type' => $item->type,
-                    'timestamp' => $item->timestamp
+                    'timestamp' => $item->timestamp,
                 ],
-                uniqueBy: ['uid'], 
-                update: [
-                    'employee_id',
-                    'state',
-                    'timestamp',
-                    'type',
-                ]);
+                    uniqueBy: ['uid'],
+                    update: [
+                        'employee_id',
+                        'state',
+                        'timestamp',
+                        'type',
+                    ]);
             });
     }
 
@@ -90,7 +90,7 @@ class DailyTimeRecord extends Component
                 BiometricPunchType::OVERTIME_OUT->value,
             ])) {
                 return $carry;
-            }    
+            }
 
             match ($log->type) {
                 BiometricPunchType::CHECK_IN->value => $carry->checkIn = $time,
@@ -136,9 +136,9 @@ class DailyTimeRecord extends Component
         // $totalDtr = $dtrLogs->count();
         $dtrLogs = $this->generateFakeData();
         $totalDtr = $dtrLogs->count();
-        
+
         return view('livewire.admin.dashboard.daily-time-record', [
-            'dtrDate' => $this->dateToday->format('F, d Y')
+            'dtrDate' => $this->dateToday->format('F, d Y'),
         ], compact('dtrLogs', 'totalDtr'));
     }
 }

@@ -63,14 +63,13 @@ class ApplicationController extends Controller
             ApplicationStatus::REJECTED->value => 'rejected',
         ];
 
-
         $status = $routeApplicationCategory[$application->application_status_id];
 
         return view(
             'employee.application.show',
             [
                 'application' => $application,
-                'status' => in_array($status, ['pending', 'qualified', 'preemployed']) ? $status : 'pending'
+                'status' => in_array($status, ['pending', 'qualified', 'preemployed']) ? $status : 'pending',
             ]
         );
     }
@@ -87,8 +86,6 @@ class ApplicationController extends Controller
 
             $user->loadMissing('account.application');
 
-
-
             // check if the user updating the application is the applicant himself
             $isTheApplicant = false;
             if ($user && $user->account && $user->account->application) {
@@ -99,7 +96,7 @@ class ApplicationController extends Controller
 
                 $validated = $request->validate([
                     'jobVacancyId' => 'nullable|integer|exists:job_vacancies,job_vacancy_id',
-                    'applicationStatusId' => 'nullable|integer|in:' . implode(',', ApplicationStatus::values()),
+                    'applicationStatusId' => 'nullable|integer|in:'.implode(',', ApplicationStatus::values()),
                     'hireDate' => [
                         'nullable',
 

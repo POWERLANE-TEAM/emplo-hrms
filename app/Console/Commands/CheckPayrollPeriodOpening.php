@@ -3,9 +3,9 @@
 namespace App\Console\Commands;
 
 use App\Enums\Payroll;
-use Illuminate\Support\Carbon;
-use Illuminate\Console\Command;
 use App\Models\Payroll as PayrollModel;
+use Illuminate\Console\Command;
+use Illuminate\Support\Carbon;
 
 class CheckPayrollPeriodOpening extends Command
 {
@@ -35,8 +35,9 @@ class CheckPayrollPeriodOpening extends Command
             PayrollModel::create([
                 'cut_off_start' => $today['start'],
                 'cut_off_end' => $today['end'],
-                'payout' => Payroll::getPayoutDate($today['start'])
+                'payout' => Payroll::getPayoutDate($today['start']),
             ]);
+
             return;
         }
 
@@ -46,8 +47,9 @@ class CheckPayrollPeriodOpening extends Command
             PayrollModel::create([
                 'cut_off_start' => $today['start'],
                 'cut_off_end' => $today['end'],
-                'payout' => Payroll::getPayoutDate($today['start'])
+                'payout' => Payroll::getPayoutDate($today['start']),
             ]);
+
             return;
         }
     }

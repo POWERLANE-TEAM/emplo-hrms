@@ -111,10 +111,10 @@ return [
             'ratings' => 'performance.ratings',
             'categories' => 'performance.categories',
             'regulars' => [
-                'evaluation' => 'regulars.performance.evaluation-%s'
+                'evaluation' => 'regulars.performance.evaluation-%s',
             ],
             'probationaries' => [
-                'evaluation' => 'probationaries.performance.evaluation-%s'
+                'evaluation' => 'probationaries.performance.evaluation-%s',
             ],
         ],
         'profile' => [
@@ -126,7 +126,7 @@ return [
             'attendance_rate' => 'reports.attendance_rate-%s',
             'absenteeism' => 'reports.absenteeism_rate-%s',
             'retention_turnover_rate' => 'reports.retention_turnover_rate-%s',
-            'issue_resolution_time_rate' => 'reports.issue_resolution_time_rate-%s'
+            'issue_resolution_time_rate' => 'reports.issue_resolution_time_rate-%s',
         ],
     ],
 ];

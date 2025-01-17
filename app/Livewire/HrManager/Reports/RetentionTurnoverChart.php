@@ -2,12 +2,13 @@
 
 namespace App\Livewire\HrManager\Reports;
 
-use Livewire\Component;
 use App\Models\EmployeeLifecycle;
+use Livewire\Component;
 
 class RetentionTurnoverChart extends Component
 {
     public $year;
+
     public $retentionData;
 
     public function mount()
@@ -46,14 +47,14 @@ class RetentionTurnoverChart extends Component
             'total_left' => $data['employees_left'],
             'total_stayed' => $data['total_employees_end'],
             'turnover_rate' => round($turnoverRate, 1),
-            'retention_rate' => round($retentionRate, 1)
+            'retention_rate' => round($retentionRate, 1),
         ];
     }
 
     public function render()
     {
         return view('livewire.hr-manager.reports.retention-turnover-chart', [
-            'retentionData' => $this->retentionData
+            'retentionData' => $this->retentionData,
         ]);
     }
 }

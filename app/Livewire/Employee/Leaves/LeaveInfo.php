@@ -2,19 +2,19 @@
 
 namespace App\Livewire\Employee\Leaves;
 
-use App\Models\ServiceIncentiveLeaveCredit;
-use Livewire\Component;
-use Livewire\Attributes\On;
 use App\Models\EmployeeLeave;
-use Livewire\Attributes\Locked;
-use Livewire\Attributes\Computed;
-use Illuminate\Support\Facades\DB;
+use App\Models\ServiceIncentiveLeaveCredit;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\Locked;
+use Livewire\Attributes\On;
+use Livewire\Component;
 
 class LeaveInfo extends Component
 {
     public EmployeeLeave $leave;
-    
+
     #[Locked]
     public $destructiveBtnsEnabled = false;
 
@@ -29,7 +29,7 @@ class LeaveInfo extends Component
     private function renderDestructiveButtons()
     {
         if ($this->user->account->leaves->doesntContain($this->leave)) {
-            if (is_null($this->leave->fourth_approver_signed_at) && 
+            if (is_null($this->leave->fourth_approver_signed_at) &&
                 $this->leave->third_approver_signed_at &&
                 $this->user->can('approveLeaveRequestFinal')
             ) {
@@ -60,7 +60,7 @@ class LeaveInfo extends Component
 
     public function approveLeaveRequest()
     {
-        DB::transaction(function() {
+        DB::transaction(function () {
             $this->leave->update([
                 "{$this->approvingStage}_approver" => $this->employeeId,
                 "{$this->approvingStage}_approver_signed_at" => now(),
@@ -69,7 +69,7 @@ class LeaveInfo extends Component
             if ($this->approvingStage === 'fourth') {
                 if (is_null($this->leave->category->allotted_days)) {
                     $sil = ServiceIncentiveLeaveCredit::find($this->leave->employee->employee_id);
-                    
+
                     if ($this->leave->category->leave_category_name === 'Sick Leave') {
                         $sil->where('sick_leave_credits', '>', 0)
                             ->decrement('sick_leave_credits');
@@ -82,13 +82,13 @@ class LeaveInfo extends Component
         });
 
         $this->dispatchEvents(
-            'success', 
+            'success',
             __("{$this->leave->employee->last_name}'s {$this->leave->category->leave_category_name} request was approved successfully."));
     }
 
     public function denyLeaveRequest()
     {
-        DB::transaction(function() {
+        DB::transaction(function () {
             $this->leave->update([
                 'denier' => $this->employeeId,
                 'denied_at' => now(),
@@ -97,7 +97,7 @@ class LeaveInfo extends Component
         });
 
         $this->dispatchEvents(
-            'info', 
+            'info',
             __("{$this->leave->employee->last_name}'s {$this->leave->category->leave_category_name} request was denied."));
     }
 
@@ -141,7 +141,7 @@ class LeaveInfo extends Component
     public function render()
     {
         $this->renderDestructiveButtons();
-        
+
         return view('livewire.employee.leaves.leave-info');
     }
 }

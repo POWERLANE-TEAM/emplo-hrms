@@ -2,17 +2,17 @@
 
 namespace App\Livewire\Supervisor\Evaluations\Probationaries;
 
-use Livewire\Component;
-use App\Models\Employee;
-use Illuminate\Support\Carbon;
-use Livewire\Attributes\Locked;
-use App\Models\PerformanceRating;
-use Livewire\Attributes\Computed;
-use Illuminate\Support\Facades\DB;
-use App\Models\PerformanceCategory;
-use Illuminate\Support\Facades\Auth;
-use App\Models\ProbationaryPerformance;
 use App\Enums\PerformanceEvaluationPeriod;
+use App\Models\Employee;
+use App\Models\PerformanceCategory;
+use App\Models\PerformanceRating;
+use App\Models\ProbationaryPerformance;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\Locked;
+use Livewire\Component;
 
 class AssignScore extends Component
 {
@@ -37,16 +37,16 @@ class AssignScore extends Component
             'performancesAsProbationary.details.categoryRatings',
             'performancesAsProbationary.details.categoryRatings.rating',
             'performancesAsProbationary.details.categoryRatings.category',
-    ]);
+        ]);
     }
 
     public function save()
     {
-        DB::transaction(function ()  {
+        DB::transaction(function () {
             $detail = $this->storeProbationaryEvaluation();
 
             $data = $this->prepareForInsertion($detail);
-    
+
             DB::table('probationary_performance_ratings')->insert($data);
         });
 
@@ -58,11 +58,11 @@ class AssignScore extends Component
     private function storeProbationaryEvaluation(): ProbationaryPerformance
     {
         return ProbationaryPerformance::create([
-            'period_id'             => $this->currentPeriod->period_id,
-            'evaluator'             => Auth::user()->account->employee_id,
-            'evaluator_comments'    => $this->comments,
-            'evaluator_signed_at'   => now(),
-            'is_final_recommend'    => $this->recommendedToRegular,
+            'period_id' => $this->currentPeriod->period_id,
+            'evaluator' => Auth::user()->account->employee_id,
+            'evaluator_comments' => $this->comments,
+            'evaluator_signed_at' => now(),
+            'is_final_recommend' => $this->recommendedToRegular,
         ]);
     }
 
@@ -74,7 +74,7 @@ class AssignScore extends Component
             array_push($evaluation, [
                 'perf_category_id' => $categoryId,
                 'perf_rating_id' => $ratingId,
-                'probationary_performance_id' => $evaluationDetail->probationary_performance_id
+                'probationary_performance_id' => $evaluationDetail->probationary_performance_id,
             ]);
         }
 
@@ -126,7 +126,7 @@ class AssignScore extends Component
             return $item;
         }, PerformanceEvaluationPeriod::cases());
 
-        return array_filter($periods, 
+        return array_filter($periods,
             fn ($period) => $period !== PerformanceEvaluationPeriod::ANNUAL
         );
     }
@@ -143,18 +143,18 @@ class AssignScore extends Component
                 return $endDateYear === now()->year &&
                     $item->period_name === $thirdMonth;
             }
-        );
+            );
 
         return $thirdMonthEvaluation?->first()?->details?->first()
             ?->categoryRatings->map(function ($rating) {
                 return (object) [
-                    'category'      => $rating->category->perf_category_id,
-                    'rating'        => $rating->rating->perf_rating_id,
-                    'ratingScale'   => $rating->rating->perf_rating,
-                    'ratingName'    => $rating->rating->perf_rating_name, 
+                    'category' => $rating->category->perf_category_id,
+                    'rating' => $rating->rating->perf_rating_id,
+                    'ratingScale' => $rating->rating->perf_rating,
+                    'ratingName' => $rating->rating->perf_rating_name,
                 ];
             }
-        )->flatten()->toArray();
+            )->flatten()->toArray();
     }
 
     #[Computed]
@@ -169,18 +169,18 @@ class AssignScore extends Component
                 return $endDateYear === now()->year &&
                     $item->period_name === $fifthMonth;
             }
-        );
+            );
 
         return $fifthMonthEvaluation?->first()?->details?->first()
             ?->categoryRatings->map(function ($rating) {
                 return (object) [
-                    'category'      => $rating->category->perf_category_id,
-                    'rating'        => $rating->rating->perf_rating_id,
-                    'ratingScale'   => $rating->rating->perf_rating,
-                    'ratingName'    => $rating->rating->perf_rating_name, 
+                    'category' => $rating->category->perf_category_id,
+                    'rating' => $rating->rating->perf_rating_id,
+                    'ratingScale' => $rating->rating->perf_rating,
+                    'ratingName' => $rating->rating->perf_rating_name,
                 ];
             }
-        )->flatten()->toArray();
+            )->flatten()->toArray();
     }
 
     public function render()

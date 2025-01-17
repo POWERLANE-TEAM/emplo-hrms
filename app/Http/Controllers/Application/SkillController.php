@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Application;
 
 use App\Http\Controllers\Controller;
-use App\Models\Applicant;
 use App\Models\ApplicantSkill;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Contracts\View\View;
@@ -16,7 +15,6 @@ class SkillController extends Controller
     // {
     //     return view();
     // }
-
 
     /* Show form page for creating resource */
     // public function create() : ViewFactory|View
@@ -40,14 +38,14 @@ class SkillController extends Controller
                     $validated = $request->validate([
                         'applicantId' => 'required|exists:applicants,applicant_id',
                         'skills' => 'required|array',
-                        'skills.*' => 'required|string'
+                        'skills.*' => 'required|string',
                     ], $messages);
                 } else {
                     // Manually validate the array
                     $validated = validator($request, [
                         'applicantId' => 'required|exists:applicants,applicant_id',
                         'skills' => 'required|array',
-                        'skills.*' => 'required|string'
+                        'skills.*' => 'required|string',
                     ], $messages)->validate();
                 }
             } else {
@@ -61,7 +59,7 @@ class SkillController extends Controller
                     foreach ($skills as $skill) {
                         ApplicantSkill::create([
                             'applicant_id' => $validated['applicantId'],
-                            'skill' => $skill
+                            'skill' => $skill,
                         ]);
                     }
                 }

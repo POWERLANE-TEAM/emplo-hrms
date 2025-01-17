@@ -25,7 +25,7 @@ class IncidentSeeder extends Seeder
                 $item->collaborators()->attach(Employee::inRandomOrder()->first()->employee_id, [
                     'is_editor' => true,
                 ]);
-            });            
+            });
         });
     }
 }

@@ -3,19 +3,20 @@
 namespace App\Livewire\Tables\Performance;
 
 use App\Enums\EmploymentStatus;
-use Rappasoft\LaravelLivewireTables\DataTableComponent;
-use Rappasoft\LaravelLivewireTables\Views\Column;
+use App\Livewire\Tables\Defaults as DefaultTableConfig;
 use App\Models\Employee;
 use Illuminate\Database\Eloquent\Builder;
-use Rappasoft\LaravelLivewireTables\Views\Filters\DateFilter;
-use App\Livewire\Tables\Defaults as DefaultTableConfig;
 use Illuminate\Support\Facades\Log;
-use Rappasoft\LaravelLivewireTables\Views\Columns\LinkColumn;
 use Illuminate\View\ComponentAttributeBag;
+use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
+use Rappasoft\LaravelLivewireTables\Views\Columns\LinkColumn;
+use Rappasoft\LaravelLivewireTables\Views\Filters\DateFilter;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 /**
  * Implemented Methods:
+ *
  * @method  configure(): void
  * @method  columns(): array
  * @method  builder(): Builder
@@ -28,13 +29,13 @@ class EvaluationTable extends DataTableComponent
     protected $model = Employee::class;
 
     public $routePrefix;
+
     public $employeeStatus;
 
     /**
-     * @var array $customFilterOptions contains the dropdown values and keys.
+     * @var array contains the dropdown values and keys.
      */
     protected $customFilterOptions;
-
 
     public function mount(string $routePrefix, string $employeeStatus)
     {
@@ -122,11 +123,11 @@ class EvaluationTable extends DataTableComponent
     public function columns(): array
     {
         return [
-            LinkColumn::make("Full Name")
-                ->title(fn($row) => $row->fullname)
+            LinkColumn::make('Full Name')
+                ->title(fn ($row) => $row->fullname)
                 // route link should be changed to the correct route
-                ->location(fn($row) => route($this->routePrefix . '.performance.evaluation.index', ['employeeStatus' => $this->employeeStatus]))
-                ->attributes(fn($row) => [
+                ->location(fn ($row) => route($this->routePrefix.'.performance.evaluation.index', ['employeeStatus' => $this->employeeStatus]))
+                ->attributes(fn ($row) => [
                     'class' => 'fw-bold',
                     'style' => 'color: inherit',
                     'wire:navigate' => '',
@@ -134,32 +135,32 @@ class EvaluationTable extends DataTableComponent
                 ->sortable(function ($query, $direction) {
                     return $query->orderBy('last_name', $direction)
                         ->orderBy('first_name', $direction)
-                        ->orderBy('middle_name', $direction)
-                    ;
+                        ->orderBy('middle_name', $direction);
                 })
                 ->searchable(function (Builder $query, $searchTerm) {
                     $this->applyFullNameSearch($query, $searchTerm);
                 })
                 ->excludeFromColumnSelect(),
 
-            Column::make("Status")
+            Column::make('Status')
                 ->label(function ($row) {
                     return rand(0, 1) ? 'complete' : 'pending';
                 }),
 
-            Column::make("Result")
+            Column::make('Result')
                 ->label(function ($row) {
                     return rand(0, 1) ? 'approved' : 'declined';
                 }),
 
-            Column::make("Final Rating")
+            Column::make('Final Rating')
                 ->label(function ($row) {
                     return number_format(rand(0, 50) / 10, 1);
                 }),
 
-            Column::make("Performance Scale")
+            Column::make('Performance Scale')
                 ->label(function ($row) {
                     $values = ['exceeds expectation', 'outstanding', 'needs improvement', 'meets expectation'];
+
                     return $values[array_rand($values)];
                 }),
         ];
@@ -182,7 +183,7 @@ class EvaluationTable extends DataTableComponent
 
         // $this->limitSpecificArea($query);
 
-        if (!$this->getAppliedFilterWithValue('attendance-date')) {
+        if (! $this->getAppliedFilterWithValue('attendance-date')) {
             //
         }
 
@@ -203,9 +204,7 @@ class EvaluationTable extends DataTableComponent
                     'pillFormat' => 'd M Y',
                     'placeholder' => 'Enter Date',
                 ])
-                ->filter(function (Builder $builder, string $value) {
-                    return;
-                }),
+                ->filter(function (Builder $builder, string $value) {}),
 
             // SelectFilter::make('', 'set FilterKey here')
             //     ->options($this->customFilterOptions)
@@ -240,8 +239,8 @@ class EvaluationTable extends DataTableComponent
      * - 'DD-MM-YYYY'
      * - 'DD/MM/YYYY'
      *
-     * @param \Illuminate\Database\Query\Builder $query The query builder instance.
-     * @param string $searchTerm The search term to filter by.
+     * @param  \Illuminate\Database\Query\Builder  $query  The query builder instance.
+     * @param  string  $searchTerm  The search term to filter by.
      * @return \Illuminate\Database\Query\Builder The modified query builder instance.
      */
     // public function applyDateSearch(Builder $query, $searchTerm)
