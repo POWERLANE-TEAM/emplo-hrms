@@ -64,7 +64,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Validator::extend('valid_email_dns', function ($attributes, $value, $parameters, $validator) {
-            $data = file_get_contents(Vite::asset('resources/js/email-domain-list.json'));
+            $data = file_get_contents(resource_path('js/email-domain-list.json'));
             $email_domains = json_decode($data, true);
 
             // Extract the domain from the email
