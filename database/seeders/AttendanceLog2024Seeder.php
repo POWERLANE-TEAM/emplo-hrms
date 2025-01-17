@@ -50,7 +50,7 @@ class AttendanceLog2024Seeder extends Seeder
      */
     private function shouldBeAbsent($employee)
     {
-        return rand(0, 100) < 20;
+        return rand(0, 100) < 5;
     }
 
     /**
