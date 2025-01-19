@@ -5,9 +5,12 @@ namespace App\Livewire\Employee\Applicants;
 use App\Models\InterviewRating;
 use App\Http\Controllers\InitialInterviewController;
 use App\Livewire\Forms\Applicant\InterviewForm;
+use App\Models\FinalInterviewRating;
 use App\Models\InitialInterview;
+use App\Models\InitialInterviewRating;
 use App\Models\InterviewParameter;
 use App\Rules\ValidApplicantInterviewRating;
+use Illuminate\Database\Eloquent\Model;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Validate;
@@ -24,9 +27,14 @@ class SetInitInterviewResult extends Component
 
     public function mount()
     {
-        $this->initForm->interviewRatings = $this->initForm->initializeInterviewRatings();
-    }
+        $existingRatings = $this->initForm->getExistingInterviewRatings(new InitialInterviewRating, $this->initInterview);
 
+        if ($existingRatings) {
+            $this->initForm->interviewRatings = $existingRatings;
+        } else {
+            $this->initForm->interviewRatings = $this->initForm->initializeInterviewRatings();
+        }
+    }
 
     public function rules()
     {
@@ -62,9 +70,6 @@ class SetInitInterviewResult extends Component
 
     public function render()
     {
-        dump($this->getErrorBag());
-        dump($this->rules());
-        dump($this->initForm->interviewRatings);
         return view('livewire.employee.applicants.set-init-interview-result');
     }
 }

@@ -59,6 +59,7 @@ class ApplicationController extends Controller
             ApplicationStatus::PENDING->value => 'pending',
             ApplicationStatus::ASSESSMENT_SCHEDULED->value => 'qualified',
             ApplicationStatus::FINAL_INTERVIEW_SCHEDULED->value => 'qualified',
+            ApplicationStatus::APPROVED->value => 'qualified',
             ApplicationStatus::PRE_EMPLOYED->value => 'preemployed',
             ApplicationStatus::REJECTED->value => 'rejected',
         ];

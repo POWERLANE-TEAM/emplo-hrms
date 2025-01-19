@@ -10,17 +10,17 @@ class InitialInterviewRating extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'init_rating_id';
+    protected $primaryKey = 'ratings_id';
 
     protected $guarded = [
-        'init_rating_id',
+        'ratings_id',
         'created_at',
         'updated_at',
     ];
 
     public function scopeInterview(Builder $query, $interview): void
     {
-        $query->where('init_interview_id', $interview->init_interview_id);
+        $query->where('interview_id', $interview->interview_id);
     }
 
     public function scopeParameter(Builder $query, $parameterId): void

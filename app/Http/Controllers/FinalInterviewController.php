@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ApplicationStatus;
 use App\Enums\UserPermission;
 use App\Models\Application;
 use App\Models\FinalInterview;
@@ -65,7 +66,7 @@ class FinalInterviewController extends Controller
         $application = Application::findOrFail($applicationId);
 
         if (FinalInterview::where('application_id', $applicationId)->exists()) {
-            abort(409, 'Initial interview already scheduled.');
+            abort(409, 'Final interview already scheduled.');
         }
 
         if (is_array($request)) {
@@ -80,7 +81,10 @@ class FinalInterviewController extends Controller
             'application_id' => $application->application_id,
             'final_interview_at' => $interviewStartDate . ' ' . $interviewStartTime,
             'final_interviewer' => auth()->user()->user_id,
-            'is_final_interview_passed' => false,
+        ]);
+
+        $application->update([
+            'application_status_id' => ApplicationStatus::FINAL_INTERVIEW_SCHEDULED->value,
         ]);
 
         // Insert Interview Notification Event Here
@@ -100,8 +104,6 @@ class FinalInterviewController extends Controller
 
         $application = Application::findOrFail($applicationId);
 
-        dump($request);
-
         if (is_array($request)) {
             $interviewStartDate = $request['date'] ?? null;
             $interviewStartTime = $request['time'] ?? null;
@@ -116,8 +118,8 @@ class FinalInterviewController extends Controller
             $interviewStart = $interviewStartDate . ' ' . $interviewStartTime;
         }
 
-        $initalInterview = $application->initialInterview;
-        $initalInterviewRatings = is_array($request) ? $request['interviewRatings'] : $request->input('interviewRatings');
+        $interview = $application->finalInterview;
+        $interviewRatings = is_array($request) ? $request['interviewRatings'] : $request->input('interviewRatings');
 
         $data = [
             'final_interview_at' => $interviewStart,
@@ -129,17 +131,17 @@ class FinalInterviewController extends Controller
             return !is_null($value);
         });
 
-        if(!empty($initalInterviewRatings)){
-            foreach ($initalInterviewRatings as $key => $parameter) {
-                $isExist = FinalInterviewRating::parameter($key)->interview($initalInterview)->exists();
+        if(!empty($interviewRatings)){
+            foreach ($interviewRatings as $key => $parameter) {
+                $isExist = FinalInterviewRating::parameter($key)->interview($interview)->exists();
 
                 if($isExist){
-                    FinalInterviewRating::parameter($key)->interview($initalInterview)->update([
+                    FinalInterviewRating::parameter($key)->interview($interview)->update([
                         'rating_id' => $parameter,
                     ]);
                 }else{
                     FinalInterviewRating::create([
-                        'final_interview_id' => $initalInterview->init_interview_id,
+                        'interview_id' => $interview->interview_id,
                         'parameter_id' => $key,
                         'rating_id' => $parameter,
                     ]);
@@ -148,7 +150,7 @@ class FinalInterviewController extends Controller
 
         }
 
-        $initalInterview->update($filteredData);
+        $interview->update($filteredData);
     }
 
     /* Delete */

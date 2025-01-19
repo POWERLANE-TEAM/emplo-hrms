@@ -8,6 +8,8 @@ use App\Models\Application;
 use App\Models\ApplicationExam;
 use App\Models\InterviewParameter;
 use Carbon\Carbon;
+use DateTime;
+use DateTimeZone;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Locked;
@@ -22,6 +24,8 @@ class Show extends Component
     public ApplicationExam $applicationExam;
 
     public Collection $interviewParameters;
+
+    protected  $timezone;
 
     protected $applicationId;
 
@@ -66,7 +70,9 @@ class Show extends Component
     public function boot()
     {
 
-        // try {
+        try {
+            $timezone = $this->timezone = new DateTimeZone(config('app.timezone'));
+
             $this->applicationId = 'APL-' . $this->application->application_id;
 
             $this->resume = optional($this->application->documents->where('preemp_req_id', 17)->first())->file_path;
@@ -80,7 +86,8 @@ class Show extends Component
 
 
             $this->isInitAssessment = $this->application->application_status_id == ApplicationStatus::ASSESSMENT_SCHEDULED->value;
-            $this->isFinalAssessment = $this->application->application_status_id == ApplicationStatus::FINAL_INTERVIEW_SCHEDULED->value;
+            $this->isFinalAssessment =  $this->application->application_status_id == ApplicationStatus::FINAL_INTERVIEW_SCHEDULED->value;
+            $this->isFinalAssessment =  $this->isFinalAssessment && $this->application->initialInterview->is_init_interview_passed;
 
             if($this->isInitAssessment|| $this->isFinalAssessment){
 
@@ -88,15 +95,16 @@ class Show extends Component
 
                 $this->applicationExam = ApplicationExam::where('application_id', $this->application->application_id)->first();
 
+
                 $this->examSchedF = $this->formatSchedule(optional($this->applicationExam)->start_time);
                 $this->initialInterviewSchedF = $this->formatSchedule(optional($this->application->initialInterview)->init_interview_at);
                 $this->finalInterviewSchedF = $this->formatSchedule(optional($this->application->finalInterview)->final_interview_at);
 
-
                 if ($this->applicationExam->start_time) {
-                    $examTime = Carbon::parse($this->applicationExam->start_time);
+                    $examTime = $this->applicationExam->start_time;
+                    $examTime = $examTime ? new DateTime($examTime, $timezone) : null;
 
-                    $this->notYetExam = !Carbon::now()->greaterThanOrEqualTo($examTime) && Carbon::now()->lessThan($examTime->addMinutes(5));
+                    $this->notYetExam = $examTime && new DateTime('now', $timezone) <= (clone $examTime)->modify('+5 minutes');
 
                 } else {
                     // ung exam time nakalipas na
@@ -104,8 +112,10 @@ class Show extends Component
                 }
 
                 if ($this->application->initialInterview->init_interview_at) {
-                    $interviewTime = Carbon::parse($this->application->initialInterview->init_interview_at);
-                    $this->notYetInitInterview = !Carbon::now()->greaterThanOrEqualTo($interviewTime) && Carbon::now()->lessThan($interviewTime->addMinutes(5));
+                    $initInterviewTime = $this->application->initialInterview->init_interview_at;
+                    $initInterviewTime = $initInterviewTime ? new DateTime($initInterviewTime, $timezone) : null;
+
+                    $this->notYetInitInterview = $initInterviewTime && new DateTime('now', $timezone) <= (clone $initInterviewTime)->modify('+5 minutes');
                 } else {
                     // ung interview time nakalipas na
                     $this->notYetInitInterview = false;
@@ -129,9 +139,14 @@ class Show extends Component
                     $this->isReadyForInitEvaluation = true;
                 }
 
+
+
                 if (optional($this->application->finalInterview)->final_interview_at) {
-                    $interviewTime = Carbon::parse($this->application->finalInterview->final_interview_at);
-                    $this->notYetFinalInterview = !Carbon::now()->greaterThanOrEqualTo($interviewTime) && Carbon::now()->lessThan($interviewTime->addMinutes(5));
+                    $finalInterviewTime = new DateTime($this->application->finalInterview->final_interview_at, $timezone);
+                    $currentTime = new DateTime('now', new DateTimeZone('now', $timezone));
+
+                    $this->notYetFinalInterview = $currentTime &&  new DateTime() <= (clone $finalInterviewTime)->modify('+5 minutes');
+
                 } else {
                     // ung interview time nakalipas na
                     $this->notYetFinalInterview = false;
@@ -139,31 +154,9 @@ class Show extends Component
 
             }
 
-        // } catch (\Throwable $th) {
-        //     report($th);
-        // }
-    }
-
-    public function setFinalInterview()
-    {
-       dump();
-    }
-
-    public function makeEmployeeInst()
-    {
-
-        $applicant = $this->application->applicant;
-
-        $this->application->update([
-            'application_status_id' => ApplicationStatus::APPROVED->value,
-            'is_passed' => true,
-        ]);
-
-        $this->dispatch('show-toast', [
-            'type' => 'success',
-            'message' => 'Application Approved .',
-        ]);
-
+        } catch (\Throwable $th) {
+            report($th);
+        }
     }
 
     public function render()
@@ -177,9 +170,27 @@ class Show extends Component
                 'isInitAssessment' => $this->isInitAssessment,
                 'examSchedF' => $this->examSchedF,
                 'initialInterviewSchedF' => $this->initialInterviewSchedF,
+                'finalInterviewSchedF' => $this->finalInterviewSchedF,
                 'isFinalAssessment' => $this->isFinalAssessment
             ]
         );
+    }
+
+    public function makeEmployeeInst()
+    {
+
+        $applicant = $this->application->applicant;
+
+        $this->application->update([
+            'application_status_id' => ApplicationStatus::APPROVED->value,
+            'is_passed' => true,
+        ]);
+
+        return redirect()->route('employee.applications', ['applicationStatus' => 'qualified'])->with('show-toast', [
+            'type' => 'success',
+            'message' => 'Application Approved.',
+        ]);
+
     }
 
     protected function formatSchedule($date)

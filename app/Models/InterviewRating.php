@@ -58,7 +58,7 @@ class InterviewRating extends Model
      */
     public function finalRatings(): BelongsToMany
     {
-        return $this->belongsToMany(FinalInterviewRating::class, 'final_interview_ratings', 'rating_id', 'final_interview_id')
+        return $this->belongsToMany(FinalInterviewRating::class, 'final_interview_ratings', 'rating_id', 'interview_id')
             ->withPivot('parameter_id')
             ->withTimestamps();
     }

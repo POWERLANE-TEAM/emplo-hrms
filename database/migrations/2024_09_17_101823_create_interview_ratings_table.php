@@ -32,7 +32,7 @@ return new class extends Migration
         });
 
         Schema::create('initial_interviews', function (Blueprint $table) {
-            $table->id('init_interview_id');
+            $table->id('interview_id');
             $table->dateTime('init_interview_at')->nullable();
 
             $table->foreignIdFor(Application::class, 'application_id')
@@ -46,12 +46,12 @@ return new class extends Migration
                 ->cascadeOnDelete();
 
             $table->longText('other_comments')->nullable();
-            $table->boolean('is_init_interview_passed')->default(false);
+            $table->boolean('is_init_interview_passed')->nullable();
             $table->timestamps();
         });
 
         Schema::create('final_interviews', function (Blueprint $table) {
-            $table->id('final_interview_id');
+            $table->id('interview_id');
             $table->dateTime('final_interview_at')->nullable();
 
             $table->foreignIdFor(Application::class, 'application_id')
@@ -65,16 +65,16 @@ return new class extends Migration
                 ->cascadeOnDelete();
 
             $table->longText('other_comments')->nullable();
-            $table->boolean('is_final_interview_passed')->default(false);
+            $table->boolean('is_final_interview_passed')->nullable();
             $table->boolean('is_job_offer_accepted')->default(false); // i don't know where to put this
             $table->timestamps();
         });
 
         Schema::create('initial_interview_ratings', function (Blueprint $table) {
-            $table->id('init_rating_id');
+            $table->id('ratings_id');
 
-            $table->foreignIdFor(InitialInterview::class, 'init_interview_id')
-                ->constrained('initial_interviews', 'init_interview_id')
+            $table->foreignIdFor(InitialInterview::class, 'interview_id')
+                ->constrained('initial_interviews', 'interview_id')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
@@ -92,10 +92,10 @@ return new class extends Migration
         });
 
         Schema::create('final_interview_ratings', function (Blueprint $table) {
-            $table->id('final_rating_id');
+            $table->id('ratings_id');
 
-            $table->foreignIdFor(FinalInterview::class, 'final_interview_id')
-                ->constrained('final_interviews', 'final_interview_id')
+            $table->foreignIdFor(FinalInterview::class, 'interview_id')
+                ->constrained('final_interviews', 'interview_id')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 

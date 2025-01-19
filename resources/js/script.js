@@ -24,6 +24,9 @@ function disableSubmit() {
     document
         .querySelectorAll('.submit, .submit-link, [wire\\:click*="validate"]')
         .forEach((element) => {
+            if (button.classList.contains('ndsbl')) {
+                return;
+            }
             element.disabled = true;
         });
 }
