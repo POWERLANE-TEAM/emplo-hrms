@@ -25,7 +25,6 @@
         // ===========================
         // Employee Status
         // ===========================
-        // dd($resignation);
         $employeeStatus = $resignation->resignee->status->emp_status_name;
         // The current employment status of the employee.
         // This is updated to 'resigned' if the resignation letter is approved.

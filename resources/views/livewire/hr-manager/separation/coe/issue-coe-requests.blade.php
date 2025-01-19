@@ -23,8 +23,7 @@ $badge = $statusConfig[$certificateStatus]['badge'] ?? 'Unknown';
 
 
     <div>
-        <x-headings.header-with-status title="Clark, Avery Mendiola" color="{{ $color }}"
-            badge="{{ $badge }}">
+        <x-headings.header-with-status :title="$coe->requestor->fullname" color="{{ $color }}" badge="{{ $badge }}">
             <!-- Attributes are dynamically replaced based on $certificateStatus -->
         </x-headings.header-with-status>
     </div>
@@ -83,9 +82,8 @@ $badge = $statusConfig[$certificateStatus]['badge'] ?? 'Unknown';
                 :disabled="false" class="w-25" :loading="'Generating...'" />
         @else
             <div class="mt-3 mb-2">
-                <small class="">Generated on <b> {{$coe->updated_at
-                    ? Carbon::parse($coe->updated_at)->format('F j, Y')
-                    : 'N/A'}}</b></small>
+                <small class="">Generated on <b>
+                        {{ $coe->updated_at ? Carbon::parse($coe->updated_at)->format('F j, Y') : 'N/A' }}</b></small>
 
             </div>
 

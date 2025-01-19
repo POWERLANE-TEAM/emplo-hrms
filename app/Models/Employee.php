@@ -189,7 +189,7 @@ class Employee extends Model
         }
 
         if ($serviceDuration->copy()->y >= 2) {
-            return 11; 
+            return 11;
         }
 
         if ($serviceDuration->copy()->y >= 1) {
@@ -740,6 +740,11 @@ class Employee extends Model
             'employee_id',
             'emp_doc_id'
         );
+    }
+
+    public function coeRequests(): HasMany
+    {
+        return $this->hasMany(CoeRequest::class, 'requested_by');
     }
 
     /**
