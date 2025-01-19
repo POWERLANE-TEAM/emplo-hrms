@@ -120,7 +120,7 @@
 
         <!-- Show only when Pre-Employed -->
         @if ($isPreEmployed /* && !$missingAssessment */)
-            <livewire:applicant.stages.pre-employed :application="$application" :isMissingAssement="$missingAssessment" />
+            {{-- <livewire:applicant.stages.pre-employed :application="$application" :isMissingAssement="$missingAssessment" /> --}}
         @endif
 
     </div>

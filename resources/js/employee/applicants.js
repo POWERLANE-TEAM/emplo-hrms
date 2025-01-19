@@ -28,7 +28,7 @@ new GlobalListener('click', document, `[data-bs-target="#edit-final-interview"]`
 
 new GlobalListener('click', document, `#toggle-assign-final-interview-modal`, (event) => {
     // Todo make livewire and listen to this evente
-    window.openModal(`modal-assign-exam-result`);
+    window.openModal(`modal-assign-final-interview-result`);
 });
 
 // new GlobalListener('click', document, `#`, (event) => {
@@ -79,6 +79,10 @@ new GlobalListener('click', document, `#toggle-assign-init-interview-modal`, (ev
 new GlobalListener('click', document, `#applicant-profile-sched[name="submit"]`, () => {
     Livewire.dispatch('submit-init-interview-sched-form');
     Livewire.dispatch('submit-exam-sched-form');
+});
+
+new GlobalListener('click', document, `[data-bs-target="#submit-final-interview-result"]`, () => {
+    Livewire.dispatch('submit-final-interview-result');
 });
 
 new GlobalListener('click', document, `[aria-controls="iframe-applicant-resume"]`, (event) => {

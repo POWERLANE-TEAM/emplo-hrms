@@ -259,7 +259,7 @@
             :children="[
                 ['href' => route($routePrefix . '.applications', ['applicationStatus' => 'pending']), 'active' => request()->routeIs($routePrefix . '.applications', ['applicationStatus' => 'pending']), 'nav_txt' => 'Pending', 'applicationStatus' => 'pending'],
                 ['href' => route($routePrefix . '.applications', ['applicationStatus' => 'qualified']), 'active' => request()->routeIs($routePrefix . '.applications', ['applicationStatus' => 'qualified']), 'nav_txt' => 'Qualified', 'applicationStatus' => 'qualified'],
-                ['href' => route($routePrefix . '.applications', ['applicationStatus' => 'preemployed']), 'active' => request()->routeIs($routePrefix . '.applications', ['applicationStatus' => 'preemployed']), 'nav_txt' => 'Pre-employed', 'applicationStatus' => 'preemployed'],
+                // ['href' => route($routePrefix . '.applications', ['applicationStatus' => 'preemployed']), 'active' => request()->routeIs($routePrefix . '.applications', ['applicationStatus' => 'preemployed']), 'nav_txt' => 'Pre-employed', 'applicationStatus' => 'preemployed'],
             ]"
 
         :isActiveClosure="function($isActive, $child) use ($routePrefix) {

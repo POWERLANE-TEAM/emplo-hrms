@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Forms\Applicant;
 
+use App\Models\FinalInterviewRating;
+use App\Models\InitialInterviewRating;
 use App\Models\InterviewParameter;
 use App\Models\InterviewRating;
 use App\Rules\ValidApplicantInterviewRating;
@@ -26,6 +28,15 @@ class InterviewForm extends Form
     {
         return InterviewParameter::all()->pluck('parameter_id')->mapWithKeys(function ($id) {
             return [$id => ''];
+        })->toArray();
+    }
+
+    public function getExistingInterviewRatings(InitialInterviewRating|FinalInterviewRating $ratingModel, $interview)
+    {
+        $ratings = $ratingModel::where('interview_id', $interview->interview_id)->get();
+
+        return $ratings->mapWithKeys(function ($rating) {
+            return [$rating->parameter_id => $rating->rating_id];
         })->toArray();
     }
 
@@ -70,9 +81,7 @@ class InterviewForm extends Form
                 $count++;
             }
         }
-        dump($this->interviewRatings);
-        dump($values);
-        dump($total);
+
         $average = $count ? rtrim(rtrim(number_format($total / $count, 10), '0'), '.') : 0;
         return  [$average, $ratingPassedCount];
     }
