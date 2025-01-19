@@ -149,23 +149,6 @@ class Show extends Component
        dump();
     }
 
-    public function makeEmployeeInst()
-    {
-
-        $applicant = $this->application->applicant;
-
-        $this->application->update([
-            'application_status_id' => ApplicationStatus::APPROVED->value,
-            'is_passed' => true,
-        ]);
-
-        $this->dispatch('show-toast', [
-            'type' => 'success',
-            'message' => 'Application Approved .',
-        ]);
-
-    }
-
     public function render()
     {
         return view(
