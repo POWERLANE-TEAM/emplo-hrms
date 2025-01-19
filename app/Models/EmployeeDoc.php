@@ -33,4 +33,5 @@ class EmployeeDoc extends Model
     {
         return $this->hasOne(Resignation::class, 'emp_resignation_doc_id', 'emp_doc_id');
     }
+
 }

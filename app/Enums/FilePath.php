@@ -12,5 +12,6 @@ enum FilePath: string
     case PAYSLIPS = 'payslips';
     case CONTRACTS = 'contracts/';
     case LEAVES = 'leaves/';
+    case COE = 'uploads/employee/coe/';
     case DOC_TEMPLATE = 'templates/documents/';
 }

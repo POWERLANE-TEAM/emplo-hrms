@@ -18,6 +18,7 @@
         // Set when HR approves or rejects the resignation.
 
         $status = optional(optional($resignation)->resignationStatus)->resignation_status_name;
+
         // Current status of the resignation letter submission.
         // Possible values: 'pending' (letter submitted but not yet reviewed),
         // 'approved' (resignation letter approved by HR), or 'rejected' (resignation letter rejected).
@@ -30,7 +31,8 @@
         // ===========================
         // Employee Status
         // ===========================
-        $employeeStatus = $employee->status->emp_status_name;
+        $employeeStatus = strtolower($employee->status->emp_status_name);
+
         // The current employment status of the employee.
         // This is updated to 'resigned' if the resignation letter is approved.
 
@@ -40,7 +42,7 @@
         // COE Issuance
         // ===========================
 
-        $certificateStatus = 'issued';
+        $certificateStatus = $coeReq->emp_coe_doc_id  ? 'issued' : 'pending';
         // Status of the COE issuance.
         // Possible values: 'pending' (is being processed),
         // 'issued' (COE has been issued to the employee).
@@ -178,7 +180,7 @@
                                     <!-- Request of COE -->
                                     @if ($employeeStatus === 'resigned')
                                         <div class="mt-4">
-                                            <button class="btn btn-primary btn-lg w-100 mb-2" {{when($certificateStatus === 'issued', 'disabled') }}>
+                                            <button class="btn btn-primary btn-lg w-100 mb-2" {{when($certificateStatus != 'issued', 'disabled') }} wire:click="download">
                                                 <i data-lucide="download" class="icon icon-large me-2"></i>
                                                 Download Certificate of Employee
                                             </button>

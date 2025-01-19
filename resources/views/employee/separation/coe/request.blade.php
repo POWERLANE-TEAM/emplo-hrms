@@ -34,6 +34,6 @@
     </x-slot:breadcrumbs>
 </x-breadcrumbs>
 
-<livewire:hr-manager.separation.coe.issue-coe-requests />
+<livewire:hr-manager.separation.coe.issue-coe-requests :coe="$coe"/>
 
 @endsection

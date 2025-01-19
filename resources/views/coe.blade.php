@@ -4,8 +4,10 @@
 @use('App\Enums\FilePath')
 @use('App\Http\Helpers\File')
 
+
+
 @props([
-    'certName',
+    'certName' => 'Certificate of Employment',
     'certDesc' => 'This is to certify that',
     'name',
     'empStart',
@@ -98,21 +100,11 @@
 </head>
 
 @php
-    $certName = 'Certificate of Employment';
     $certParts = explode(' ', trim($certName), 2);
-    $certDesc = 'This is to certify that';
-    $name = 'John Doe';
-    $empStart = '2021-01-01';
-    $empEnd = '2021-12-31';
-    $jobTitle = 'Software Developer';
-    $jobDepartment = 'IT';
-    $issuedDate = '2021-12-31';
     // sheesh saves headache
     $issueDay = Carbon::parse($issuedDate)->isoFormat('Do');
     $issueMonth = Carbon::parse($issuedDate)->format('F');
     $issueYear = Carbon::parse($issuedDate)->isoFormat('YYYY');
-    $hrManager = 'Jane Doe';
-    $companyAddr = '123 Main St, City, State, Zip';
 
     $vectorFile = resource_path('images/illus/co-employment/greens-vector.png');
     $vectorData = base64_encode(file_get_contents($vectorFile));

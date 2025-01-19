@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use Illuminate\Support\Facades\Log;
 
 class Resignation extends Model
 {
@@ -46,7 +47,7 @@ class Resignation extends Model
 
     public function resignee(): HasOneThrough
     {
-        return $this->hasOneThrough(Employee::class, EmployeeDoc::class, 'employee_id', 'employee_id', 'emp_resignation_doc_id', 'employee_id');
+        return $this->hasOneThrough(Employee::class, EmployeeDoc::class, 'emp_doc_id', 'employee_id', 'emp_resignation_doc_id', 'employee_id');
     }
 
     public function initialApprover()

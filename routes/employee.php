@@ -25,6 +25,7 @@ use App\Http\Controllers\Application\ApplicationController;
 use App\Http\Controllers\FinalInterviewController;
 use App\Http\Controllers\ProbationaryPerformanceController;
 use App\Http\Controllers\RegularPerformancePlanController;
+use App\Http\Controllers\Separation\CoeController;
 use App\Http\Controllers\Separation\ResignationController;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 
@@ -561,9 +562,9 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         return view('employee.separation.coe.all');
     })->name('separation.coe');
 
-    Route::get('seperation/coe/request', function () {
-        return view('employee.separation.coe.request');
-    })->name('separation.coe.request');
+    Route::get('seperation/coe/{coe}/request', [CoeController::class , 'show'])->name('separation.coe.request');
+
+    Route::get('seperation/coe/{coe}/generate', [CoeController::class , 'edit'])->name('separation.coe.generate');
 
     /**
      * Reports

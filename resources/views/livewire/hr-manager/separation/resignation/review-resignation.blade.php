@@ -9,6 +9,7 @@
         // Date when HR processed and made a decision on the resignation (approval/rejection).
         // Set when HR approves or rejects the resignation.
 
+
         $status = $resignation->resignationStatus->resignation_status_name;
 
         // Current status of the resignation letter submission.
@@ -24,7 +25,6 @@
         // ===========================
         // Employee Status
         // ===========================
-
         $employeeStatus = $resignation->resignee->status->emp_status_name;
         // The current employment status of the employee.
         // This is updated to 'resigned' if the resignation letter is approved.
