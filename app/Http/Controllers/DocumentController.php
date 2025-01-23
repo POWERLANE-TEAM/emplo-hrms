@@ -53,7 +53,6 @@ class DocumentController extends Controller
             }
         }
 
-        dump('resume processor');
 
         $credentials = $this->setCredentials();
 
