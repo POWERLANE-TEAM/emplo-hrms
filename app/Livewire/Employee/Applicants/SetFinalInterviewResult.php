@@ -23,6 +23,7 @@ class SetFinalInterviewResult extends Component
 
     public InterviewForm $finalForm;
 
+    #[Locked]
     public $interviewParameterItems;
 
     public function mount()

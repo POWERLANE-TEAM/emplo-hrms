@@ -23,6 +23,7 @@ class SetInitInterviewResult extends Component
 
     public InterviewForm $initForm;
 
+    #[Locked]
     public $interviewParameterItems;
 
     public function mount()
