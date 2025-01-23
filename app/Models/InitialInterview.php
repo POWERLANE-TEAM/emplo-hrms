@@ -10,10 +10,10 @@ class InitialInterview extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'init_interview_id';
+    protected $primaryKey = 'interview_id';
 
     protected $guarded = [
-        'init_interview_id',
+        'interview_id',
         'created_at',
         'updated_at',
     ];

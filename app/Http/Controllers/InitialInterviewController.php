@@ -78,7 +78,6 @@ class InitialInterviewController extends Controller
             'application_id' => $application->application_id,
             'init_interview_at' => $interviewStartDate . ' ' . $interviewStartTime,
             'init_interviewer' => auth()->user()->user_id,
-            'is_init_interview_passed' => false,
         ]);
 
         // Insert Interview Notification Event Here
@@ -97,8 +96,6 @@ class InitialInterviewController extends Controller
         $applicationId = is_array($request) ? $request['applicationId'] : $request->input('applicationId');
 
         $application = Application::findOrFail($applicationId);
-
-        dump($request);
 
         if (is_array($request)) {
             $interviewStartDate = $request['date'] ?? null;
@@ -123,11 +120,13 @@ class InitialInterviewController extends Controller
             'is_init_interview_passed' => $request['isPassed'] ?? false,
         ];
 
+
         $filteredData = array_filter($data, function ($value) {
             return !is_null($value);
         });
 
         if(!empty($initalInterviewRatings)){
+
             foreach ($initalInterviewRatings as $key => $parameter) {
                 $isExist = InitialInterviewRating::parameter($key)->interview($initalInterview)->exists();
 
@@ -137,7 +136,7 @@ class InitialInterviewController extends Controller
                     ]);
                 }else{
                     InitialInterviewRating::create([
-                        'init_interview_id' => $initalInterview->init_interview_id,
+                        'interview_id' => $initalInterview->interview_id,
                         'parameter_id' => $key,
                         'rating_id' => $parameter,
                     ]);

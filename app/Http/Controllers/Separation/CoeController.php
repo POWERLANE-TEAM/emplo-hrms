@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Separation;
 
+use App\Enums\EmploymentStatus;
 use App\Enums\FilePath;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\RouteHelper;
@@ -10,6 +11,7 @@ use App\Models\EmployeeDoc;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class CoeController extends Controller
@@ -87,16 +89,27 @@ class CoeController extends Controller
      */
     public function update($coe, $coePath)
     {
-        $employeeDoc = EmployeeDoc::create([
-            'employee_id' => auth()->user()->account->employee_id,
-            'file_path' => $coePath
-        ]);
 
-        $coe->update([
-            'generated_by' => auth()->user()->account->employee_id,
-            'coe_path' => $coePath,
-            'emp_coe_doc_id' => $employeeDoc->emp_doc_id,
-        ]);
+        DB::transaction(function () use ($coe, $coePath) {
+            $employeeDoc = EmployeeDoc::create([
+                'employee_id' => $coe->requestor->employee_id,
+                'file_path' => $coePath
+            ]);
+
+            $coe->update([
+                'generated_by' => auth()->user()->account->employee_id,
+                'coe_path' => $coePath,
+                'emp_coe_doc_id' => $employeeDoc->emp_doc_id,
+            ]);
+
+            $coe->requestor->jobDetail->update([
+                'emp_status_id' => EmploymentStatus::RESIGNED->value
+            ]);
+
+            $coe->requestor->lifecycle->update([
+                'separated_at' => now(),
+            ]);
+        });
 
     }
 

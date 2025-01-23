@@ -15,6 +15,9 @@ class IssueCoeRequests extends Component
 
     public function save(CoeController $controller)
     {
+        // dump($this->coe->requestor->jobDetail);
+        // dump($this->coe->requestor->lifecycle);
+        // dd();
         $coePath = $controller->edit($this->coe);
 
         // sleep(3);

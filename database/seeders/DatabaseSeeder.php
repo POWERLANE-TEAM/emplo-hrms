@@ -34,6 +34,9 @@ class DatabaseSeeder extends Seeder
                 PerformanceRatingSeeder::class,
                 HolidaySeeder::class,
                 LeaveCategorySeeder::class,
+                InterviewParameterSeeder::class,
+                InterviewRatingSeeder::class,
+                ResignationStatusSeeder::class,
                 // AttendanceLogSeeder::class,
                 UserSeeder::class,
                 ApplicantSeeder::class,
@@ -75,7 +78,6 @@ class DatabaseSeeder extends Seeder
                 ProbationaryPerformanceEvaluation2024Seeder::class,
                 Issue2024Seeder::class,
                 AttendanceLog2024Seeder::class,
-                ResignationStatusSeeder::class
 
                 // EmployeeSeeder::class,
                 // GuestSeeder::class,

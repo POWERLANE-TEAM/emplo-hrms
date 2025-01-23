@@ -28,19 +28,61 @@ new GlobalListener('click', document, `[data-bs-target="#edit-final-interview"]`
 
 new GlobalListener('click', document, `#toggle-assign-final-interview-modal`, (event) => {
     // Todo make livewire and listen to this evente
-    window.openModal(`modal-assign-exam-result`);
+    window.openModal(`modal-assign-final-interview-result`);
 });
 
+// new GlobalListener('click', document, `#`, (event) => {
+//     // Todo make livewire and listen to this event
+//     Livewire.dispatch('exam-result-event');
+// });
+
+// This is time consuming to implement
+// const EXAM_RESULT_VALIDATION = {
+//     clear_invalid: false,
+//     attributes: {
+//         type: 'select',
+//         required: true,
+//     },
+//     customMsg: {
+//         required: 'Exam result is required.',
+//     },
+//     errorFeedback: {
+//         required: 'Exam result is required.',
+//     }
+// }
+
+// let examResultValidator = new InputValidator(EXAM_RESULT_VALIDATION);
+
+// function validateExamResult(elem) {
+//     let isValid = examResultValidator.validate(elem, setInvalidMessage);
+//     if (!isValid) {
+//         elem.classList.add('is-invalid');
+//     } else {
+//         elem.classList.remove('is-invalid');
+//     }
+//     return isValid;
+// }
+
+// new GlobalListener('change', document, `#exam-result`, (event) => {
+//     // Todo make livewire and listen to this evente
+//     if(event.target ){
+
+//     }
+// });
 
 
 new GlobalListener('click', document, `#toggle-assign-init-interview-modal`, (event) => {
     // Todo make livewire and listen to this evente
-    // window.openModal(`modal-assign-init-interview-result`);
+    window.openModal(`modal-assign-init-interview-result`);
 });
 
 new GlobalListener('click', document, `#applicant-profile-sched[name="submit"]`, () => {
     Livewire.dispatch('submit-init-interview-sched-form');
     Livewire.dispatch('submit-exam-sched-form');
+});
+
+new GlobalListener('click', document, `[data-bs-target="#submit-final-interview-result"]`, () => {
+    Livewire.dispatch('submit-final-interview-result');
 });
 
 new GlobalListener('click', document, `[aria-controls="iframe-applicant-resume"]`, (event) => {
