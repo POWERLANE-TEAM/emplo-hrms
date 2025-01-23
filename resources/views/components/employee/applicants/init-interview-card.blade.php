@@ -13,7 +13,7 @@
         </button>
     @endif
 
-    <label for="applicant-interview-date" class="d-block text-uppercase text-primary fw-medium mt-2">{{-- Initial --}}
+    <label for="applicant-interview-date" class="d-block text-uppercase text-primary fw-medium mt-2">Initial
         Interview</label>
     <strong id="applicant-interview-date" class="applicant-interview-date fs-4 fw-bold">
         {{ $slot }}
@@ -26,6 +26,7 @@
         </x-slot:title>
 
         <x-slot:content>
+            {{-- @livewire('employee.applicants.set-examination-date', ['application' => $application, 'routePrefix' => $routePrefix, 'postMethod' => 'PATCH']) --}}
             @livewire('employee.applicants.set-init-interview-date', ['application' => $application, 'routePrefix' => $routePrefix, 'inputGroupAttributes' => $inputGroupAttributes, 'dateWrapAttributes' => $inputWrapperClasses, 'timeWrapAttributes' => $inputWrapperClasses, 'overrideInputContainerClass' => true, 'overrideDateWrapper' => true, 'overrideTimeWrapper' => true])
 
             <button type="button" class="btn btn-success"

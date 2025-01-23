@@ -11,10 +11,10 @@ class FinalInterview extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'final_interview_id';
+    protected $primaryKey = 'interview_id';
 
     protected $guarded = [
-        'final_interview_id',
+        'interview_id',
         'created_at',
         'updated_at',
     ];
@@ -40,7 +40,7 @@ class FinalInterview extends Model
      */
     public function ratings(): BelongsToMany
     {
-        return $this->belongsToMany(InterviewRating::class, 'final_interview_ratings', 'final_interview_id', 'rating_id')
+        return $this->belongsToMany(InterviewRating::class, 'final_interview_ratings', 'interview_id', 'rating_id')
             ->withPivot('parameter_id')
             ->withTimestamps();
     }

@@ -79,13 +79,13 @@ class SetFinalInterviewDate extends Component
             $controller->update($validated, true);
             $this->dispatch('show-toast', [
                 'type' => 'success',
-                'message' => 'Initial interview has been rescheduled.',
+                'message' => 'Final interview has been rescheduled.',
             ]);
         }else{
             $controller->store($validated, true);
             $this->dispatch('show-toast', [
                 'type' => 'success',
-                'message' => 'Initial interview has been set.',
+                'message' => 'Final interview has been set.',
             ]);
         }
 
