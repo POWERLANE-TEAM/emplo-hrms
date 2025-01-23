@@ -24,6 +24,7 @@ class ReviewResignation extends Component
         $this->hasResignation = $this->resignation->resignationLetter->employee->documents()->where('file_path', 'like', '%' . FilePath::RESIGNATION->value . '%')->exists();
 
         if ($this->hasResignation) {
+            // dd($this->resignation->resignee);
             $this->resignation->loadMissing('resigneeLifecycle','resignationLetter');
         }
     }
