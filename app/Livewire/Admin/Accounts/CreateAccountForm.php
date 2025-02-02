@@ -100,11 +100,8 @@ class CreateAccountForm extends Component
      */
     public function save()
     {
-        if (! Auth::user()->hasPermissionTo(UserPermission::CREATE_EMPLOYEE_ACCOUNT)) {
-            $this->form->reset();
+        $this->authorize('createEmployeeAccount');
 
-            abort(403);
-        }
         $this->form->validate();
         $this->form->create();
         $this->form->reset();
