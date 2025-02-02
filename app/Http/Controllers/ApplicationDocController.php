@@ -71,7 +71,7 @@ class ApplicationDocController extends Controller
 
             $preemployed_user = User::with('account.application')->find($user_id);
 
-            dd($preemployed_user);
+            // dd($preemployed_user);
 
             $first_name = $preemployed_user->account->first_name;
             $last_name = $preemployed_user->account->last_name;

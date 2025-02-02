@@ -114,6 +114,7 @@ class IndividualEmployeePayslipsTable extends DataTableComponent
 
             Column::make(__('Size'))
                 ->label(function ($row) {
+                    Storage::disk('local')->makeDirectory(FilePath::PAYSLIPS->value);
                     $path = FilePath::PAYSLIPS->value . '/' . $row->hashed_attachment;
                     $sizeInBytes = Storage::disk('local')->size($path);
 

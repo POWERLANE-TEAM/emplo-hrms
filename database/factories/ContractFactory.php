@@ -25,6 +25,8 @@ class ContractFactory extends Factory
         $year = $this->faker->year();
         $name = "Contract{$month}_{$year}.pdf";
 
+        Storage::disk('local')->makeDirectory(FilePath::CONTRACTS->value);
+
         $file = UploadedFile::fake()->create($name, 500, 'application/pdf');
         $content = 'Testing contract file upload';
         

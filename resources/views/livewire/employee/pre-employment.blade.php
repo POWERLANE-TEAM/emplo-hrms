@@ -40,8 +40,8 @@
             <tr>
                 <th class="col-5"><i class="icon p-1 d-inline text-primary" data-lucide="file-text"></i>Requirement
                 </th>
-                <th class="col-1"><i class="icon p-1 d-inline text-primary" data-lucide="check-circle"></i>Status
-                </th>
+                {{-- <th class="col-1"><i class="icon p-1 d-inline text-primary" data-lucide="check-circle"></i>Status
+                </th> --}}
                 <th class="col-3"><i class="icon p-1 d-inline text-primary" data-lucide="paperclip"></i>Attachment
                 </th>
                 <th class="col-3"><i class="icon p-1 d-inline text-primary" data-lucide="upload"></i>Upload</th>
@@ -91,9 +91,9 @@
 
             <script nonce="{{ $nonce }}">
                 document.addEventListener('alpine:init', () => {
-                    Alpine.data('file_preemp_req', (docId) => ({
+                    Alpine.data('file_preemp_req', (docId, file = null) => ({
                         dropingFile: false,
-                        preemp_file: null,
+                        preemp_file: file,
                         docId: docId,
                         uuid: null,
                         progress: 0,
@@ -193,8 +193,8 @@
                         }
                     }));
 
-                    Alpine.data('modal_preemp_req', (docId) => ({
-                        preemp_file: null,
+                    Alpine.data('modal_preemp_req', (docId, file = null) => ({
+                        preemp_file: file,
                         docId: docId,
                         errorFeedback: null,
 
@@ -248,6 +248,7 @@
                             window.addEventListener('file-queued', this.handleFileQueued.bind(this));
                             window.addEventListener(`preemp-file-error`, this.handleUploadErorr.bind(
                                 this));
+                                console.log('Component initialized with file:', this.preemp_file);
                         }
 
                     }));

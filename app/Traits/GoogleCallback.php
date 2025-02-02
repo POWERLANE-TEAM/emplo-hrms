@@ -67,7 +67,7 @@ trait GoogleCallback
     {
         return $guest->account()->create([
             'email' => $payload->get('email'),
-            'account_type' => AccountType::GUEST,
+            'account_type' => AccountType::GUEST->value,
             'account_id' => $guest->guest_id,
             'password' => Str::password(),
             'photo' => $payload->get('picture') ?? null,

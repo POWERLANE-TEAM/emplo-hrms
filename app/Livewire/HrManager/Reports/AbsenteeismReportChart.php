@@ -80,7 +80,7 @@ class AbsenteeismReportChart extends Component
     
         $this->yearlyData[$year] = [
             'total_absences' => $yearlyTotalAbsences,
-            'monthly_average' => round($yearlyTotalAbsences / 12, 2), // Calculate monthly average absences
+            'monthly_average' => round($yearlyTotalAbsences / 12, 2),
         ];
     
         $this->absenteeismData = [
