@@ -33,7 +33,7 @@
         </x-slot:heading>
 
         <x-slot:description>
-            {{ __('View and manage employees\' information and documents') }}
+            {{ __('View and manage probationary and regular employees\' information') }}
         </x-slot:description>
     </x-headings.main-heading>
 

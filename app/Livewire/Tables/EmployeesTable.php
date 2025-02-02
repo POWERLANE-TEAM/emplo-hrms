@@ -2,15 +2,17 @@
 
 namespace App\Livewire\Tables;
 
-use App\Models\Employee;
-use App\Models\EmploymentStatus;
-use App\Models\JobTitle;
 use Carbon\Carbon;
-use App\Livewire\Tables\Defaults as DefaultTableConfig;
+use App\Models\Employee;
+use App\Models\JobTitle;
+use Illuminate\Support\Str;
+use App\Models\EmploymentStatus;
+use App\Enums\EmploymentStatus as Status;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\View\ComponentAttributeBag;
-use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
+use App\Livewire\Tables\Defaults as DefaultTableConfig;
+use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateFilter;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
@@ -50,11 +52,7 @@ class EmployeesTable extends DataTableComponent
             })
             ->setTableRowUrlTarget(fn() => '__blank');
 
-
         $this->configuringStandardTableMethods();
-
-        // $this->setDefaultSort('applications.hired_at', 'desc');
-
 
         $this->setConfigurableAreas([
             'toolbar-left-start' => [
@@ -69,22 +67,36 @@ class EmployeesTable extends DataTableComponent
             ],
         ]);
 
-        $this->jobTitles = JobTitle::select('job_title_id', 'job_title')->orderBy('job_title', 'ASC')->get()
+        $this->jobTitles = JobTitle::select('job_title_id', 'job_title')
+            ->orderBy('job_title', 'ASC')
+            ->get()
             ->mapWithKeys(function ($jobTitle) {
                 return [$jobTitle->job_title_id => $jobTitle->job_title];
             })
-            ->prepend('Select All Job Positions', '')
+            ->prepend('Select All Job Positions')
             ->toArray();
 
-        $this->employmentStatuses = EmploymentStatus::select('emp_status_id', 'emp_status_name')->orderBy('emp_status_name', 'ASC')->get()
+        $this->employmentStatuses = EmploymentStatus::select('emp_status_id', 'emp_status_name')
+            ->orderBy('emp_status_name', 'ASC')
+            ->get()
+            ->filter(fn ($item) => in_array($item->emp_status_name, [
+                Status::PROBATIONARY->label(),
+                Status::REGULAR->label(),
+            ]))
             ->mapWithKeys(function ($employmentStatus) {
                 return [$employmentStatus->emp_status_id => $employmentStatus->emp_status_name];
             })
-            ->prepend('Select All Employee Status', '')
+            ->prepend('Select All Employee Status')
             ->toArray();
 
         $this->oldestDate = Employee::whereHas('application')->with('application')->get()->min(function ($employee) {
             return $employee->application->hired_at;
+        });
+
+        $this->setTdAttributes(function (Column $column, $row, $columnIndex, $rowIndex) {
+            return [
+                'class' => $columnIndex === 0 ? 'text-md-start' : 'text-md-center',
+            ];
         });
     }
 
@@ -92,25 +104,44 @@ class EmployeesTable extends DataTableComponent
     {
         return [
             Column::make('Full Name')
-                ->label(fn($row) => $row->fullname)
-                ->sortable(function ($query, $direction) {
-                    return $query->orderBy('last_name', $direction)
-                        ->orderBy('first_name', $direction)
-                        ->orderBy('middle_name', $direction);
+                ->label(function ($row) {
+                    $name = Str::headline($row->full_name);
+                    $photo = $row->account->photo;
+                    $id = $row->employee_id;
+            
+                    return '<div class="d-flex align-items-center">
+                                <img src="' . e($photo) . '" alt="User Picture" class="rounded-circle me-3" style="width: 38px; height: 38px;">
+                                <div>
+                                    <div>' . e($name) . '</div>
+                                    <div class="text-muted fs-6">Employee ID: ' . e($id) . '</div>
+                                </div>
+                            </div>';
                 })
+                ->html()
+                ->sortable(fn (Builder $query, $direction) => $query->orderBy('last_name' ,$direction))
                 ->searchable(function (Builder $query, $searchTerm) {
-                    // $this->applyFullNameSearch($query, $searchTerm);
+                    return $query->whereLike('first_name', "%{$searchTerm}%")
+                        ->orWhereLike('middle_name', "%{$searchTerm}%")
+                        ->orWhereLike('last_name', "%{$searchTerm}%")
+                        ->orWhereHas('account', fn ($query) => $query->orWhereLike('email', "%{$searchTerm}%"));
                 })
                 ->excludeFromColumnSelect(),
+
             Column::make('Job Title')
                 ->label(fn($row) => $row->jobTitle->job_title)
                 ->searchable(function (Builder $query, $searchTerm) {
                     return $this->applyJobPositionSearch($query, $searchTerm);
                 }),
+
+            Column::make('Job Family')
+                ->label(fn ($row) => $row->jobTitle->jobFamily->job_family_name)
+                ->sortable(fn (Builder $query, $direction) => $query->orderBy('job_family_name' ,$direction))
+                ->searchable(fn (Builder $query, $searchTerm) => $query->whereLike('job_family_name', "%{$searchTerm}%")),
+
             Column::make('Department')
                 ->label(fn($row) => $row->jobTitle->department->department_name),
 
-            Column::make('Employment')
+            Column::make('Status')
                 ->label(fn($row) => $row->status->emp_status_name),
 
             /**
@@ -124,34 +155,36 @@ class EmployeesTable extends DataTableComponent
                 ->deselected(),
 
             Column::make('Hired Date')
-                ->label(fn($row) => $row->application ? Carbon::parse($row->application->hired_at)->format('F j, Y') : 'No recorded.')
+                ->label(fn($row) => $row->application ? Carbon::parse($row->application->hired_at)->format('F j, Y') : 'No record found.')
                 ->setSortingPillDirections('Oldest first', 'Latest first')
                 ->sortable(function ($query, $direction) {
                     return $query->orderBy('applications.hired_at', $direction);
                 })
                 ->deselected(),
-
         ];
     }
 
     public function builder(): Builder
     {
-        $query = Employee::query()->with(['status', 'jobTitle.department', 'specificArea', 'jobTitle.jobLevel', 'application', 'shift'])
-
-            // Without this I got SQLSTATE[42P01]: Undefined table: 7 ERROR: missing FROM-clause entry for table
-            // some joins are not currently in use but may be needed in sorting and filtering.
-            ->leftJoin('employee_job_details', 'employees.employee_id', '=', 'employee_job_details.employee_id')
-            ->leftJoin('employment_statuses', 'employee_job_details.emp_status_id', '=', 'employment_statuses.emp_status_id')
-            ->leftJoin('job_titles', 'employee_job_details.job_title_id', '=', 'job_titles.job_title_id')
-            ->join('departments', 'job_titles.department_id', '=', 'departments.department_id')
-            ->leftJoin('specific_areas', 'employee_job_details.area_id', '=', 'specific_areas.area_id')
-            ->join('job_levels', 'job_titles.job_level_id', '=', 'job_levels.job_level_id')
-            ->leftJoin('applications', 'employee_job_details.application_id', '=', 'applications.application_id')
-            ->leftJoin('shifts', 'employee_job_details.shift_id', '=', 'shifts.shift_id');
-
-        // $this->limitSpecificArea($query);
-
-        return $query;
+        return Employee::query()
+            ->with([
+                'account',
+                'status',
+                'jobTitle' => [
+                    'department',
+                    'jobLevel',
+                    'jobFamily',
+                ],
+                'specificArea',
+                'application',
+                'shift'
+            ])
+                ->whereHas('status', function ($query) {
+                    $query->whereIn('emp_status_name', [
+                        Status::PROBATIONARY->label(),
+                        Status::REGULAR->label(),
+                    ]);
+                });
     }
 
     public function filters(): array
@@ -169,16 +202,20 @@ class EmployeesTable extends DataTableComponent
             //     ])
             //     ->filter(function (Builder $builder, string $value) {}),
 
-            SelectFilter::make('Job Title', 'job-title')
+            SelectFilter::make('Job Title')
                 ->options($this->jobTitles)
                 ->filter(function (Builder $builder, string $value) {
-                    return $query = $builder->where('job_titles.job_title_id', $value);
+                    $builder->whereHas('jobDetail.jobTitle', function ($subQuery) use ($value) {
+                        $subQuery->where('job_title_id', $value);
+                    });
                 }),
 
-            SelectFilter::make('Employment Status', 'emp-status')
+            SelectFilter::make('Employment Status')
                 ->options($this->employmentStatuses)
                 ->filter(function (Builder $builder, string $value) {
-                    return $query = $builder->where('employment_statuses.emp_status_id', $value);
+                    $builder->whereHas('jobDetail.status', function ($subQuery) use ($value) {
+                        $subQuery->where('emp_status_id', $value);
+                    });
                 }),
 
         ];
