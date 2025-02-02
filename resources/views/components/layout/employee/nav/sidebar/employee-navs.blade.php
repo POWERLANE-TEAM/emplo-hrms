@@ -318,7 +318,7 @@
     @endcan
 
     {{-- HR Manager --}}
-    @can(UserPermission::VIEW_ALL_TRAINING)
+    @can(UserPermission::VIEW_ALL_TRAININGS)
         <x-layout.employee.nav.sidebar.nav-item
             href="{{ route($routePrefix . '.trainings.general') }}"
             :active="request()->routeIs($routePrefix . '.trainings.general.*')"
