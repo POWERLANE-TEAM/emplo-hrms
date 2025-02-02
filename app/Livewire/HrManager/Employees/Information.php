@@ -32,6 +32,7 @@ class Information extends Component
                 'status',
                 'shift',
                 'application',
+                'restDay',
             ]);
 
             $this->employee = Cache::rememberForever($key, function () use ($employee) {
@@ -50,15 +51,15 @@ class Information extends Component
                     'jobLevelName'          => $employee->jobTitle->jobLevel->job_level_name,
                     'jobFamily'             => $employee->jobTitle->jobFamily->job_family_name,
                     'employmentStatus'      => $employee->status->emp_status_name,
-                    'shift'                 => $employee->shift->shift_name,
-                    'shiftSched'            => $employee->shift_schedule,
+                    'shift'                 => $employee->shift->category->shift_name,
+                    'shiftSched'            => $employee->shift->schedule,
                     'hiredAt'               => $employee?->application?->hired_at,
-                    'dob'                   => $this->parseDateToReadableFormat($employee->date_of_birth),
+                    'dob'                   => $employee->date_of_birth,
                     'sss'                   => $employee->sss_no,
                     'philHealth'            => $employee->philhealth_no,
                     'tin'                   => $employee->tin_no,
                     'pagIbig'               => $employee->pag_ibig_no,
-                    'registeredAt'          => $this->parseDateToReadableFormat($employee->created_at),
+                    'restDay'               => $employee->restDay->day,
                 ];
             });
         }
@@ -67,11 +68,6 @@ class Information extends Component
     public function boot()
     {
         $this->timezone = Timezone::get();
-    }
-
-    private function parseDateToReadableFormat($date)
-    {
-        return Carbon::parse($date)->setTimezone($this->timezone)->format('F, j Y');
     }
 
     public function render()

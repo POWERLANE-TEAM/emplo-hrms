@@ -1,3 +1,5 @@
+@use(Illuminate\Support\Carbon)
+
 <section id="information" class="tab-section-employee">
     <div class="row">
         <!-- Left Column: Work / Personal Information -->
@@ -43,8 +45,10 @@
                     <p>{{ $employee->employmentStatus }}</p>
                     <div class="fw-bold">{{ __('Shift Schedule: ') }}</div>
                     <p>{{ $employee->shift.' ('.$employee->shiftSched.')' }}</p>
+                    <div class="fw-bold">{{ __('Rest Day: ') }}</div>
+                    <p>{{ $employee->restDay ?? __('No record found.') }}</p>
                     <div class="fw-bold">{{ __('Date Hired: ') }}</div>
-                    <p>{{ $employee->hiredAt ?? __('No record found.') }}</p>
+                    <p>{{ Carbon::parse($employee->hiredAt)->format('F d, Y') ?? __('No record found.') }}</p>
                 </div>
 
                 <div class="mt-3">
@@ -54,7 +58,7 @@
                     </div>
                     <div class="pt-2 left-col align-items-center">
                         <div class="fw-bold">{{ __('Date of Birth: ') }}</div>
-                        <p>{{ $employee->dob }}</p>
+                        <p>{{ Carbon::parse($employee->dob)->format('F d, Y') ?? __('Not provided') }}</p>
                         <div class="fw-bold">{{ __('Sex: ') }}</div>
                         <p>{{ \App\Enums\Sex::from($employee->sex)->label() }}</p>
                         <div class="fw-bold">{{ __('Civil Status: ') }}</div>
