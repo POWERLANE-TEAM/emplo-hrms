@@ -522,28 +522,27 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     /** Training resource */
     Route::prefix('trainings')->name('trainings.')->group(function () {
         Route::get('/', [TrainingController::class, 'index'])
+            // ->can('viewTrainingRecords')
             ->name('index');
 
         Route::get('general', [TrainingController::class, 'general'])
+            ->can('viewAnyTrainingRecords')
             ->name('general');
 
         Route::get('{employee}', [TrainingController::class, 'show'])
+            ->can('viewAnyTrainingRecords')
             ->whereNumber('employee')
             ->name('general.employee');
     });
 
 
-    /**
-     * Employees
-     */
+    /** Employee resource */
+    Route::get('list', [EmployeeController::class, 'index'])
+        ->can('viewAnyEmployees')
+        ->name('employees.masterlist.all');
 
-    Route::get('/employees/all', function () {
-        return view('employee.hr-manager.employees.all');
-    })->name('employees.masterlist.all');
-
-    Route::get('{employee}', function (Employee $employee) {
-        return view('employee.hr-manager.employees.information', compact('employee'));
-    })
+    Route::get('{employee}', [EmployeeController::class, 'show'])
+        ->can('viewEmployee')
         ->whereNumber('employee')
         ->name('employees.information');
 
@@ -572,24 +571,23 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
     Route::get('reports', function () {
         return view('employee.hr-manager.reports.index');
-    })->name('reports');
+    })
+        ->can(UserPermission::VIEW_REPORTS)
+        ->name('reports');
+
 
     /**
      * Archive
      */
     Route::prefix('archives')->name('archives.')->group(function () {
         Route::get('/', [EmployeeArchiveController::class, 'index'])
+            ->can('viewAnyArchivedRecords')
             ->name('index');
 
         Route::get('{employee}', [EmployeeArchiveController::class, 'show'])
+            ->can('viewAnyArchivedRecords')
             ->name('employee');
     });
-
-    /**
-     * General: Dashboard
-     */
-    Route::get('/index', [EmployeeController::class, 'index'])
-        ->name('index');
 
 
     /**
@@ -643,8 +641,8 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         Route::get('issues', [FileManagerController::class, 'issues'])
             ->name('issues');
 
-        // Route::get('leaves', [FileManagerController::class, 'leaves'])
-        //     ->name('leaves');
+        Route::get('leaves', [FileManagerController::class, 'leaves'])
+            ->name('leaves');
     });
 
     /**
