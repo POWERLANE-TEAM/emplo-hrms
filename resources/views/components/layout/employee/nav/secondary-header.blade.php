@@ -7,10 +7,9 @@
                 </div>
             </div>
 
-            <x-nav-link href="/hiring" wire:navigate :active="request()->is('/')"
-                class="no-hover text-decoration-none p-0">
+            <a href="/hiring" class="no-hover text-decoration-none p-0 {{ request()->is('/') ? 'active' : '' }}">
                 <p class="fs-3 mb-0 fw-bold text-primary">Powerlane</p>
-            </x-nav-link>
+            </a>
         </div>
         <div class="d-flex align-items-center fw-bold">
 
