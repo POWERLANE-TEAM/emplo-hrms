@@ -15,13 +15,13 @@ class ShiftSeeder extends Seeder
         $shifts = collect([
             [
                 'shift_name' => 'Regular',
-                'start_time' => '08:00:00',
-                'end_time' => '17:00:00',
+                'start_time' => '06:00:00',  // 6 am
+                'end_time' => '22:00:00',   // 10 pm
             ],
             [
                 'shift_name' => 'Night Differential',
-                'start_time' => '22:00:00',
-                'end_time' => '06:00:00',
+                'start_time' => '22:00:00', // 10 pm
+                'end_time' => '06:00:00',   // 6 am
             ],
         ]);
 
