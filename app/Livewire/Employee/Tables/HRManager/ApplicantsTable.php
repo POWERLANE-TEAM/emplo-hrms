@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Employee\Tables\HRManager;
+namespace App\Livewire\Employee\Tables\Hrmanager;
 
 use App\Enums\ApplicationStatus;
 use App\Enums\UserPermission;
@@ -292,12 +292,11 @@ class ApplicantsTable extends DataTableComponent
 
         return $query;
     }
-
     public function filters(): array
     {
         return [
             DateFilter::make('Date Applied From', 'application_from')
-                ->setPillsLocale(in_array(session('locale'), explode(',', env('APP_SUPPORTED_LOCALES', 'en'))) ? session('locale') : env('APP_LOCALE', 'en'))
+                ->setPillsLocale(in_array(session('locale'), config('app.supported_locales')) ? session('locale') : config('app.locale'))
                 ->config([
                     'min' => (function () {
                         $minDate = Applicant::has('application')->min('created_at');
