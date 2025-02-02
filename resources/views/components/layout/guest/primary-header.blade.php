@@ -13,18 +13,18 @@
         </div>
         <div class="d-flex align-items-center fw-bold">
             <section class="desktop-topnav d-none d-md-flex">
-                <a href="/" class="nav-link {{ request()->is('/') ? 'active' : '' }}">Home</a>
+            <a href="/" class="nav-link {{ request()->is('/') ? 'active' : '' }}">Home</a>
 
-                <a href="/hiring" class="nav-link {{ request()->is('hiring') ? 'active' : '' }}" id="job-listtings">Job
-                    Listings</a>
+<a href="/hiring" class="nav-link {{ request()->is('hiring') ? 'active' : '' }}" id="job-listtings">Job
+    Listings</a>
 
                 <!-- <x-nav-link href="/contact-us" class="nav-link" :active="request()->is('contact-us')">Contact</x-nav-link> -->
 
                 @guest
-                    <a href="/" class="nav-link {{ request()->is('/') ? 'active' : '' }}">Home</a>
-
-                    <a href="/hiring" class="nav-link {{ request()->is('hiring') ? 'active' : '' }}" id="job-listtings">Job
-                        Listings</a>
+                <a href="/login" class="nav-link btn btn-lg btn-outline-secondary border border-white 
+    {{ request()->is('login') ? 'active' : '' }}">
+    Sign In
+</a>
 
                     <a href="#" class="nav-link bg-white text-primary border border-white" aria-controls="signUpForm"
                         data-bs-toggle="modal" data-bs-target="#signUpForm">
@@ -54,8 +54,7 @@
                             Listings</x-nav-link>
                     </li>
                     <li class="dropdown-item">
-                        <x-nav-link href="/contact-us" class="nav-link"
-                            :active="request()->is('contact-us')">Contact</x-nav-link>
+                        <x-nav-link href="/contact-us" class="nav-link" :active="request()->is('contact-us')">Contact</x-nav-link>
                     </li>
                     @guest
                         <li class="dropdown-item">
