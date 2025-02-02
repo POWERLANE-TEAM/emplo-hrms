@@ -171,7 +171,7 @@
                                 class="flex-1 text-capitalize">{{ BasicEvalStatus::labelForValue(optional($application->initialInterview)->is_init_interview_passed) }}</span>
                             <button class="btn btn-sm btn-outline-secondary px-3 px-md-4" type="button"
                                 id="toggle-assign-init-interview-modal" {!! when(!$isReadyForInitEvaluation, 'disabled') !!}>
-                                {{ is_null($application->initialInterview->is_init_interview_passed) ? 'Assign' : 'Edit' }}
+                                {{ is_null(optional($application->initialInterview)->is_init_interview_passed) ? 'Assign' : 'Edit' }}
                             </button>
                         </div>
 
@@ -290,7 +290,7 @@
                 $isInitAssessment &&
                     ($notYetExam ||
                         false ||
-                        ($notYetInitInterview || $application->initialInterview->is_init_interview_passed == null)))
+                        ($notYetInitInterview || optional($application->initialInterview)->is_init_interview_passed == null)))
                 <p><i class="icon icon-xl text-info mx-2" data-lucide="badge-check"></i> No final result yet. Please
                     assign all the result. </p>
             @endif
