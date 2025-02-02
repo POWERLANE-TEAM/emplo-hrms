@@ -6,7 +6,6 @@ use App\Enums\FilePath;
 use App\Models\Contract;
 use App\Models\Employee;
 use App\Enums\ContractType;
-use Livewire\Attributes\On;
 use App\Http\Helpers\FileSize;
 use Illuminate\Support\Carbon;
 use Livewire\Attributes\Locked;
@@ -43,6 +42,7 @@ class IndividualEmployeeContractsTable extends DataTableComponent
         $this->setPerPageAccepted([5, 25, 50, 100, -1]);
         $this->setToolBarAttributes(['class' => ' d-md-flex my-md-2']);
         $this->setToolsAttributes(['class' => ' bg-body-secondary border-0 rounded-3 px-5 py-2']);
+        $this->setRememberColumnSelectionDisabled();
 
         $this->setTableAttributes([
             'default' => true,
