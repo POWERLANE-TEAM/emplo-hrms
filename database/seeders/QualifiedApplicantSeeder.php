@@ -16,6 +16,7 @@ use App\Models\FinalInterview;
 use App\Models\InitialInterview;
 use App\Models\JobVacancy;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Traits\NeedsEmptyPdf;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
@@ -25,7 +26,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
-function createApplicants($chunkStart, $chunk, $permissions)
+function createQualifiedApplicants($chunkStart, $chunk, $permissions)
 {
     activity()->withoutLogs(function () use ($chunkStart, $chunk) {
         try {
@@ -41,7 +42,7 @@ function createApplicants($chunkStart, $chunk, $permissions)
                         $users_data = [
                             'account_type' => AccountType::APPLICANT,
                             'account_id' => $applicant->applicant_id,
-                            'email' => 'applicant.' . str_pad($i, 3, '0', STR_PAD_LEFT) . '@gmail.com',
+                            'email' => 'qualified.applicant.' . str_pad($i, 3, '0', STR_PAD_LEFT) . '@gmail.com',
                             'password' => Hash::make('UniqP@ssw0rd'),
                             'user_status_id' => EnumUserStatus::ACTIVE,
                             'email_verified_at' => fake()->dateTimeBetween('-10 days', 'now'),
@@ -49,7 +50,12 @@ function createApplicants($chunkStart, $chunk, $permissions)
 
                         $applicant_user = User::factory()->create($users_data);
 
-                        $applicantStatus = fake()->randomElement(ApplicationStatus::values());
+
+                        // $applicantStatus = ApplicationStatus::ASSESSMENT_SCHEDULED->value;
+
+                        $qualifiedStatuses = array_map(fn($status) => $status->value, array_merge(ApplicationStatus::qualifiedState(), [ApplicationStatus::PRE_EMPLOYED]));
+
+                        $applicantStatus = fake()->randomElement($qualifiedStatuses);
 
                         $application = Application::create([
                             'applicant_id' => $applicant->applicant_id,
@@ -57,6 +63,7 @@ function createApplicants($chunkStart, $chunk, $permissions)
                             'application_status_id' =>  $applicantStatus,
                         ]);
 
+                        // Generate a random file name
                         $randomFileName = 'resume_' . uniqid() . '.pdf';
 
                         $pdfGen = new class {
@@ -73,16 +80,16 @@ function createApplicants($chunkStart, $chunk, $permissions)
                             'preemp_req_id' => 17, //resume
                         ]);
 
-                        if (in_array($applicantStatus, array_map(fn($status) => $status->value, array_merge(ApplicationStatus::qualifiedState(), [ApplicationStatus::PRE_EMPLOYED])))) {
-                            $examTime = Carbon::instance(fake()->dateTimeBetween('1 days', '2 days'));
-                            $interviewTime = $examTime->addDays(fake()->numberBetween(0, 5));
-                            ApplicationExam::create([
+                        if (in_array($applicantStatus, $qualifiedStatuses)) {
+                            $examTime = Carbon::instance(fake()->dateTimeBetween('-9 days', '-6 days'));
+                            $interviewTime = (clone $examTime)->addDays(fake()->numberBetween(0, 4));
+                            $exam = ApplicationExam::create([
                                 'application_id' => $application->application_id,
                                 'start_time' => $examTime,
                                 'end_time' => $examTime->addMinutes(30),
                             ]);
 
-                            InitialInterview::create([
+                            $initInterview = InitialInterview::create([
                                 'application_id' => $application->application_id,
                                 'init_interview_at' => $interviewTime,
                                 'init_interviewer' => Employee::whereHas('jobTitle', function ($query) {
@@ -91,7 +98,17 @@ function createApplicants($chunkStart, $chunk, $permissions)
                             ]);
 
                             if ($applicantStatus == ApplicationStatus::FINAL_INTERVIEW_SCHEDULED->value) {
-                                $finalInterviewTime = fake()->dateTimeBetween('5 days', '7 days');
+
+                                $exam->update([
+                                    'passed' => true,
+                                ]);
+
+                                $initInterview->update([
+                                    'is_init_interview_passed' => true,
+                                ]);
+
+                                $finalInterviewTime = (clone $interviewTime)->addDays(fake()->numberBetween(1, 3));
+
                                 FinalInterview::create([
                                     'application_id' => $application->application_id,
                                     'final_interview_at' => $finalInterviewTime,
@@ -102,7 +119,7 @@ function createApplicants($chunkStart, $chunk, $permissions)
                             }
 
                             if ($applicantStatus == ApplicationStatus::PRE_EMPLOYED->value) {
-                                $finalInterviewTime = fake()->dateTimeBetween('5 days', '7 days');
+                                $finalInterviewTime = Carbon::instance(fake()->dateTimeBetween('-2 days', 'now'))->subMinutes(30);
                                 FinalInterview::create([
                                     'application_id' => $application->application_id,
                                     'final_interview_at' => $finalInterviewTime,
@@ -141,7 +158,7 @@ function createApplicants($chunkStart, $chunk, $permissions)
  *                                      - Adjust if 10 concurrent processes is too much for your device.
  * @return void
  */
-class ApplicantSeeder extends Seeder
+class QualifiedApplicantSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -175,7 +192,7 @@ class ApplicantSeeder extends Seeder
         $tasks = [];
         for ($i = 0; $i < $concurrencyCount; $i++) {
             $chunkStart = $start + ($chunkCount * $i);
-            $tasks[] = fn() => createApplicants($chunkStart, $chunkCount, $permissions);
+            $tasks[] = fn() => createQualifiedApplicants($chunkStart, $chunkCount, $permissions);
         }
 
         Concurrency::run($tasks);
