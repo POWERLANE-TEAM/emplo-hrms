@@ -30,7 +30,6 @@ class Information extends Component
                     'status',
                     'shift',
                     'application',
-                    'restDay',
                 ],
             ]);
 
@@ -58,7 +57,6 @@ class Information extends Component
                     'philHealth'            => $user->account->philhealth_no,
                     'tin'                   => $user->account->tin_no,
                     'pagIbig'               => $user->account->pag_ibig_no,
-                    'restDay'               => $user->account->restDay->day,
                 ];                   
             });
         }

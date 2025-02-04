@@ -216,6 +216,14 @@ class Employee extends Model
     }
 
     /**
+     * Get the payroll summary associated with the employee.
+     */
+    public function payrollSummary(): HasMany
+    {
+        return $this->hasMany(PayrollSummary::class, 'employee_id', 'employee_id');
+    }
+
+    /**
      * Get the announcements where employee is the publisher.
      */
     public function publishedAnnouncements(): HasMany
@@ -268,7 +276,7 @@ class Employee extends Model
      */
     public function shift(): HasOneThrough
     {
-        return $this->hasOneThrough(Shift::class, EmployeeJobDetail::class, 'employee_id', 'shift_id', 'employee_id', 'shift_id');
+        return $this->hasOneThrough(EmployeeShift::class, EmployeeJobDetail::class, 'employee_id', 'employee_shift_id', 'employee_id', 'shift_id');
     }
 
     /**
@@ -760,9 +768,9 @@ class Employee extends Model
                 $causerFirstName = Str::ucfirst(Auth::user()->account->first_name);
 
                 return match ($eventName) {
-                    'created' => __($causerFirstName.' created a new employee record.'),
-                    'updated' => __($causerFirstName.' updated an employee\'s information.'),
-                    'deleted' => __($causerFirstName.' deleted an employee.'),
+                    'created' => __("{$causerFirstName} created a new employee record."),
+                    'updated' => __("{$causerFirstName} updated an employee\'s information."),
+                    'deleted' => __("{$causerFirstName} deleted an employee."),
                 };
             });
     }

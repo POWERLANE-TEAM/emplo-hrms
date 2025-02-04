@@ -32,7 +32,6 @@ class Information extends Component
                 'status',
                 'shift',
                 'application',
-                'restDay',
             ]);
 
             $this->employee = Cache::rememberForever($key, function () use ($employee) {
@@ -59,7 +58,6 @@ class Information extends Component
                     'philHealth'            => $employee->philhealth_no,
                     'tin'                   => $employee->tin_no,
                     'pagIbig'               => $employee->pag_ibig_no,
-                    'restDay'               => $employee->restDay->day,
                 ];
             });
         }
