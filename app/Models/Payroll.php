@@ -20,6 +20,9 @@ class Payroll extends Model
         'payroll_id',
     ];
 
+    /**
+     * Formatted date for payout attribute.
+     */
     protected function payout(): Attribute
     {
         return Attribute::make(
@@ -27,6 +30,9 @@ class Payroll extends Model
         );
     }
 
+    /**
+     * Formatted accessor for cut off interval attribute.
+     */
     public function getCutOffAttribute(): string
     {
         $start = Carbon::make($this->cut_off_start)->format('F d');
@@ -49,5 +55,13 @@ class Payroll extends Model
     public function payslips(): HasMany
     {
         return $this->hasMany(Payslip::class, 'payroll_id', 'payroll_id');
+    }
+
+    /**
+     * Get the summary associated with the payroll.
+     */
+    public function summary(): HasMany
+    {
+        return $this->hasMany(PayrollSummary::class, 'payroll_id', 'payroll_id');
     }
 }
