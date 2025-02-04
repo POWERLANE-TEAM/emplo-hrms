@@ -46,7 +46,7 @@
                     <div class="fw-bold">{{ __('Shift Schedule: ') }}</div>
                     <p>{{ $employee->shift.' ('.$employee->shiftSched.')' }}</p>
                     <div class="fw-bold">{{ __('Rest Day: ') }}</div>
-                    <p>{{ $employee->restDay ?? __('No record found.') }}</p>
+                    <p>{{ __('Weekends') }}</p>
                     <div class="fw-bold">{{ __('Date Hired: ') }}</div>
                     <p>{{ Carbon::parse($employee->hiredAt)->format('F d, Y') ?? __('No record found.') }}</p>
                 </div>
