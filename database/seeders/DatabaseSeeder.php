@@ -79,6 +79,7 @@ class DatabaseSeeder extends Seeder
                 ProbationaryPerformanceEvaluation2024Seeder::class,
                 Issue2024Seeder::class,
                 AttendanceLog2024Seeder::class,
+                PayrollSummarySeeder::class,
 
                 // EmployeeSeeder::class,
                 // GuestSeeder::class,
