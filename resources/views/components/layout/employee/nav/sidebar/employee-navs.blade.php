@@ -102,7 +102,7 @@
         :activeIcon="['src' => 'attendance', 'alt' => '']"
         :children="when( $user->hasPermissionTo(UserPermission::VIEW_ALL_DAILY_ATTENDANCE), [
             ['href' => route($navAttendanceRoute, ['range' => 'daily']), 'active' => request()->routeIs($navAttendanceRoute, ['range' => 'daily']), 'nav_txt' => 'Daily Time Log', 'range' => 'daily'],
-            ['href' => route($navAttendanceRoute, ['range' => 'period']), 'active' => request()->routeIs($navAttendanceRoute, ['range' => 'period']), 'nav_txt' => 'Attendance Records', 'range' => 'period']
+            ['href' => route($navAttendanceRoute, ['range' => 'period']), 'active' => request()->routeIs($navAttendanceRoute, ['range' => 'period']), 'nav_txt' => 'Payroll', 'range' => 'period']
         ])"
 
         :isActiveClosure="function($isActive, $child) use ($routePrefix, $navAttendanceRoute) {

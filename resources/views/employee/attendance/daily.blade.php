@@ -18,7 +18,7 @@
     <div class="d-flex justify-content-between align-items-center flex-wrap">
         <x-headings.main-heading :isHeading="true">
             <x-slot:heading>
-                Daily Time Record
+                {{ __('Attendance • Daily Time Record (DTR)') }}
             </x-slot:heading>
 
             <x-slot:description>
