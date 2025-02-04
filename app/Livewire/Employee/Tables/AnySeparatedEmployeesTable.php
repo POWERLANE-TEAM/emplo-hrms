@@ -90,18 +90,13 @@ class AnySeparatedEmployeesTable extends DataTableComponent
     public function builder(): Builder
     {
         return Employee::query()
+            ->inactiveEmploymentStatus()
             ->with([
                 'account',
                 'status',
                 'jobTitle',
                 'lifecycle',
-            ])
-            ->whereHas('status', function ($query) {
-                $query->whereNotIn('emp_status_name', [
-                    EmploymentStatus::PROBATIONARY->label(),
-                    EmploymentStatus::REGULAR->label(),
-                ]);
-            });
+            ]);
     }
 
     public function columns(): array

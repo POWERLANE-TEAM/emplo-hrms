@@ -30,25 +30,18 @@ class DeleteSeparatedEmployeeData extends Command
     {
         activity()->disableLogging();
 
-        $separatedEmployees = Employee::query()
-            ->whereHas('status', function ($query) {
-                $query->whereNotIn('emp_status_name', [
-                    EmploymentStatus::PROBATIONARY->label(),
-                    EmploymentStatus::REGULAR->label(),
-                ]);
+        Employee::inactiveEmploymentStatus()
+            ->each(function ($employee) {
+                $separationDate = Carbon::parse($employee->lifecycle->separated_at);
+                $retentionPeriod = EmploymentStatus::separatedEmployeeDataRetentionPeriod($separationDate);
+                
+                if (now()->greaterThanOrEqualTo($retentionPeriod)) {
+                    $employee->account()->forceDelete();
+                    $employee->trainings()->delete();
+                    $employee->delete();
+                }
             }
         );
-
-        $separatedEmployees->each(function ($employee) {
-            $separationDate = Carbon::parse($employee->lifecycle->separated_at);
-            $retentionPeriod = EmploymentStatus::separatedEmployeeDataRetentionPeriod($separationDate);
-            
-            if (now()->greaterThanOrEqualTo($retentionPeriod)) {
-                $employee->account()->forceDelete();
-                $employee->trainings()->delete();
-                $employee->delete();
-            }
-        });
 
         activity()->enableLogging();
     }

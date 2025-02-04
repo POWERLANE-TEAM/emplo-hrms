@@ -182,12 +182,7 @@ class EmployeesAttendanceTable extends DataTableComponent
                     'jobLevel',
                 ],
             ])
-            ->whereHas('status', function ($query) {
-                $query->whereIn('emp_status_name', [
-                    EmploymentStatus::REGULAR->label(),
-                    EmploymentStatus::PROBATIONARY->label(),
-                ]);
-            });
+            ->activeEmploymentStatus();
     }
 
     public function columns(): array

@@ -3,13 +3,15 @@
 namespace App\Models;
 
 use App\Enums\CivilStatus;
-use App\Enums\ServiceIncentiveLeave;
 use Illuminate\Support\Str;
 use App\Enums\ActivityLogName;
 use Illuminate\Support\Carbon;
+use App\Enums\EmploymentStatus as Status;
 use Spatie\Activitylog\LogOptions;
+use App\Enums\ServiceIncentiveLeave;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -20,8 +22,8 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
-use App\Http\Helpers\GovernmentMandateContributionsIdFormat;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use App\Http\Helpers\GovernmentMandateContributionsIdFormat;
 
 class Employee extends Model
 {
@@ -34,10 +36,6 @@ class Employee extends Model
         'employee_id',
         'created_at',
         'updated_at',
-    ];
-
-    protected $with = [
-        'jobDetail',
     ];
 
     /**
@@ -197,6 +195,39 @@ class Employee extends Model
         }
 
         return 0;
+    }
+
+    /**
+     * Query builder scope to get active employees (Probationary, Regular) only.
+     * 
+     * @param \Illuminate\Database\Eloquent\Builder $builder
+     * @return void
+     */
+    public function scopeActiveEmploymentStatus(Builder $query): void
+    {
+        $query->whereHas('status',
+            fn ($query) => $query->whereIn('emp_status_name', [
+                Status::PROBATIONARY->label(),
+                Status::REGULAR->label(),
+            ])
+        );
+    }
+
+    /**
+     * Query builder scope to get inactive employees (Resigned, Retired, or Terminated) only.
+     * 
+     * @param \Illuminate\Database\Eloquent\Builder $builder
+     * @return void
+     */
+    public function scopeInactiveEmploymentStatus(Builder $query): void
+    {
+        $query->whereHas('status',
+            fn ($query) => $query->whereIn('emp_status_name', [
+                Status::TERMINATED->label(),
+                Status::RESIGNED->label(),
+                Status::RETIRED->label(),
+            ])
+        );
     }
 
     /**
@@ -732,11 +763,8 @@ class Employee extends Model
             ->withPivot('is_editor');
     }
 
-
     /**
      * Get all of the resignations for the employee through the employee documents.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
     public function resignations(): HasManyThrough
     {
@@ -750,6 +778,9 @@ class Employee extends Model
         );
     }
 
+    /**
+     * Get certificate of employment (COE) associated with the employee.
+     */
     public function coeRequests(): HasMany
     {
         return $this->hasMany(CoeRequest::class, 'requested_by');

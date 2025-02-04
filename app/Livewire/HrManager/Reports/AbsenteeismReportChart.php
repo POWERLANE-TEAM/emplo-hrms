@@ -49,13 +49,7 @@ class AbsenteeismReportChart extends Component
     
         $monthlyAbsences = [];
 
-        $totalEmployees = Employee::whereHas('status', 
-            fn ($query) => $query->whereIn('emp_status_name', [
-                EmploymentStatus::REGULAR->label(),
-                EmploymentStatus::PROBATIONARY->label(),
-            ]))
-            ->get()
-            ->count();
+        $totalEmployees = Employee::activeEmploymentStatus()->get()->count();
     
         foreach ($attendanceLogs as $month => $logs) {
             $totalWorkdays = $this->getWorkdaysInMonth($month);

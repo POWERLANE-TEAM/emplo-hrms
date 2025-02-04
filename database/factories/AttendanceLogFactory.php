@@ -36,12 +36,7 @@ class AttendanceLogFactory extends Factory
 
         $uid = $this->generateUniqueUid();
 
-        $employee = Employee::whereHas('status', function ($query) {
-            $query->whereIn('emp_status_name', [
-                EmploymentStatus::REGULAR->label(),
-                EmploymentStatus::PROBATIONARY->label(),
-            ]);
-        })->inRandomOrder()->first();
+        $employee = Employee::activeEmploymentStatus()->inRandomOrder()->first();
     
         return [
             'uid' => $uid,

@@ -74,17 +74,14 @@ class AnyTrainingsTable extends DataTableComponent
     public function builder(): Builder
     {
         return Employee::query()
+            ->activeEmploymentStatus()
             ->with([
                 'account',
                 'status' => fn ($query) => $query->select('emp_status_name'),
                 'jobTitle',
                 'jobTitle.jobFamily',
                 'trainings',
-            ])
-            ->whereHas('status', function ($query) {
-                $query->where('emp_status_name', EmploymentStatus::REGULAR->label())
-                    ->orWhere('emp_status_name', EmploymentStatus::PROBATIONARY->label());
-            });
+            ]);
     }
 
     public function columns(): array
