@@ -225,8 +225,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         ->name('attendance.show');
 
     Route::get('/attendance/{range}', [AttendanceController::class, 'index'])
-        ->middleware(['permission:' . UserPermission::VIEW_ALL_DAILY_ATTENDANCE->value])
-        ->middleware(['permission:' . UserPermission::VIEW_ALL_DAILY_ATTENDANCE->value])
+        ->can(UserPermission::VIEW_ALL_DAILY_ATTENDANCE)
         ->where('range', 'daily|period')
         ->name('attendance.index');
 
