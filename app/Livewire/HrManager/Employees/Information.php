@@ -4,11 +4,12 @@ namespace App\Livewire\HrManager\Employees;
 
 use Livewire\Component;
 use App\Models\Employee;
+use Livewire\Attributes\Lazy;
 use App\Http\Helpers\Timezone;
-use Illuminate\Support\Carbon;
 use Livewire\Attributes\Locked;
 use Illuminate\Support\Facades\Cache;
 
+#[Lazy(isolate: false)]
 class Information extends Component
 {
     #[Locked]
@@ -66,6 +67,11 @@ class Information extends Component
     public function boot()
     {
         $this->timezone = Timezone::get();
+    }
+
+    public function placeholder()
+    {
+        return view('livewire.placeholder.profile');
     }
 
     public function render()

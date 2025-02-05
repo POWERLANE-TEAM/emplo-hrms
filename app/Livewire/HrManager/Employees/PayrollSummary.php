@@ -7,7 +7,7 @@ use App\Models\Employee;
 use Livewire\Attributes\Lazy;
 
 #[Lazy(isolate: false)]
-class Leaves extends Component
+class PayrollSummary extends Component
 {
     public Employee $employee;
 
@@ -18,6 +18,6 @@ class Leaves extends Component
 
     public function render()
     {
-        return view('livewire.hr-manager.employees.leaves');
+        return view('livewire.hr-manager.employees.payroll-summary');
     }
 }
