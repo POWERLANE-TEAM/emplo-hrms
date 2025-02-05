@@ -45,7 +45,7 @@ enum EmploymentStatus: int
     }
 
     /**
-     * Add 4 years to employee date of separation for data retention policy period.
+     * Add 5 years to employee date of separation for data retention policy period.
      * 
      * @param \Illuminate\Support\Carbon|string $separationDate
      * @return \Carbon\Carbon|\Carbon\CarbonInterface
@@ -56,7 +56,7 @@ enum EmploymentStatus: int
             ? Carbon::parse($separationDate) 
             : $separationDate;
 
-        return $separationDate->addYears(4);
+        return $separationDate->addYears(5);
     }
 
     /**
