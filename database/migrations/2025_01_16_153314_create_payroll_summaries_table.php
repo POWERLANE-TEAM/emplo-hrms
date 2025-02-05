@@ -50,7 +50,7 @@ return new class extends Migration
             $table->decimal('spe_hol_rest_nd', 5, 2)->default(0);      // special holiday rest day night differential
             $table->decimal('spe_hol_rest_ot', 5, 2)->default(0);      // special holiday rest day overtime
             $table->decimal('spe_hol_rest_ot_nd', 5, 2)->default(0);   // special holiday rest day overtime night differential
-            $table->decimal('abs_hours', 5, 2)->default(0);            // absence hours
+            $table->unsignedTinyInteger('abs_days')->default(0);       // absence days
             $table->decimal('ut_hours', 5, 2)->default(0);             // undertime hours
             $table->decimal('td_hours', 5, 2)->default(0);             // tardiness hours
             $table->timestamps();

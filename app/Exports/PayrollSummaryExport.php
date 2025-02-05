@@ -100,7 +100,7 @@ class PayrollSummaryExport implements FromCollection, WithHeadings
                     $psum->spe_hol_rest_nd,
                     $psum->spe_hol_rest_ot,
                     $psum->spe_hol_rest_ot_nd,
-                    $psum->abs_hours,
+                    $psum->abs_days,
                     $psum->ut_hours,
                     $psum->td_hours,
                 ];

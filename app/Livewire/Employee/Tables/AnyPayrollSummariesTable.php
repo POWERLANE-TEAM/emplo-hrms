@@ -75,6 +75,8 @@ class AnyPayrollSummariesTable extends DataTableComponent
         $this->setPrimaryKey('payroll_summary_id');
         $this->setPageName('payroll');
         $this->setDefaultSortingLabels('Lowest', 'Highest');
+        $this->setSingleSortingDisabled();
+        $this->setRememberColumnSelectionDisabled();
 
         $this->configuringStandardTableMethods();
 
@@ -252,9 +254,9 @@ class AnyPayrollSummariesTable extends DataTableComponent
                 ->label(fn ($row) => $row->spe_hol_rest_ot_nd)
                 ->sortable(fn (Builder $builder, $direction) => $builder->orderBy('spe_hol_rest_ot_nd', $direction)),
 
-            Column::make(__('Absence Hours'))
-                ->label(fn ($row) => $row->abs_hours)
-                ->sortable(fn (Builder $builder, $direction) => $builder->orderBy('abs_hours', $direction)),
+            Column::make(__('Absence Days'))
+                ->label(fn ($row) => $row->abs_days)
+                ->sortable(fn (Builder $builder, $direction) => $builder->orderBy('abs_days', $direction)),
 
             Column::make(__('Undertime Hours'))
                 ->label(fn ($row) => $row->ut_hours)
