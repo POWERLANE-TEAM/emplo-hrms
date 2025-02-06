@@ -40,8 +40,6 @@ class PerformanceApprovals extends Component
             'performancesAsProbationary.details.fourthApprover.jobTitle',
         ]);
 
-        // dd($this->employee->performancesAsProbationary);
-
         $this->isRecommendedRegular = $this->employee->performancesAsProbationary
             ->filter(fn ($item) => $item->period_name === PerformanceEvaluationPeriod::FINAL_MONTH->value)
             ->map(fn ($item) => $item->details->last())
@@ -67,6 +65,7 @@ class PerformanceApprovals extends Component
             'fourthApproverJobTitle'    => $probationary?->fourthApprover?->jobTitle?->job_title,
             'fourthApproverSignedAt'    => $probationary?->fourth_approver_signed_at,
             'isAcknowledged'            => $probationary?->is_employee_acknowledged,
+            'comments'                  => $probationary?->evaluatee_comments,
             'signedAt'                  => $probationary?->evaluatee_signed_at,
         ];
     }
