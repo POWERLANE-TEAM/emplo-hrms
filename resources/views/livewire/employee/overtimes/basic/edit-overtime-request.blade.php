@@ -21,23 +21,15 @@
                 
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <x-form.boxed-date name="state.date" id="date_ovt" label="{{ __('Date') }}" :nonce="$nonce" :required="true"
-                            placeholder="Date of Overtime" :readonly="! $editMode" />
-                        @error('state.date')
-                            <div class="invalid-feedback" role="alert">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    
-                    <div class="col-md-3 mb-3">
-                        <x-form.boxed-time wire:model.live="state.startTime" id="hours_ot" label="{{ __('Start Time') }}" :nonce="$nonce" :required="true"
+                        <x-form.boxed-date type="datetime-local" wire:model.live="state.startTime" id="hours_ot" label="{{ __('From') }}" :nonce="$nonce" :required="true"
                         placeholder="Start Time" :readonly="! $editMode" />
                         @error('state.startTime')
                             <div class="invalid-feedback" role="alert">{{ $message }}</div>
                         @enderror
                     </div>
                     
-                    <div class="col-md-3">
-                        <x-form.boxed-time wire:model.live="state.endTime" id="hours_ot" label="{{ __('End Time') }}" :nonce="$nonce" :required="true"
+                    <div class="col-md-6">
+                        <x-form.boxed-date type="datetime-local" wire:model.live="state.endTime" id="hours_ot" label="{{ __('To') }}" :nonce="$nonce" :required="true"
                         placeholder="End Time" :readonly="! $editMode" />
                         @error('state.endTime')
                             <div class="invalid-feedback" role="alert">{{ $message }}</div>
@@ -47,7 +39,7 @@
                 
                 <div class="fs-6 fw-medium text-secondary-emphasis">
                     <div class="">{{ __("Requested Hours: {$hoursRequested}") }}</div>
-                    <div class="">{{ __("Date Filed: {$overtime?->filedAt}") }}</div>
+                    <div class="">{{ __("Date Filed: {$overtime?->filedAt?->format('F d, Y g:i A')}") }}</div>
                 </div>
 
                 <div class="list-group">
@@ -61,7 +53,7 @@
                                         {{ $overtime?->authorizedBy }}
                                     </span>
                                 </span>
-                                <span class="text-muted small">{{ $overtime?->authorizedAt }}</span>
+                                <span class="text-muted small">{{ $overtime?->authorizedAt?->format('F d, Y g:i A') }}</span>
                             </div>
                         </div>
                     @endif
@@ -76,7 +68,7 @@
                                         {{ $overtime?->deniedBy }}
                                     </span>
                                 </span>
-                                <span class="text-muted small">{{ $overtime?->deniedAt }}</span>
+                                <span class="text-muted small">{{ $overtime?->deniedAt?->format('F d, Y g:i A') }}</span>
                             </div>
                             <div class="mt-3">
                                 <label for="feedback" class="form-label text-muted">{{ __('Reason:') }}</label>

@@ -76,7 +76,6 @@ class RequestOvertimeApproval extends Component
                 'requestorShiftSched'       =>  $this->request->employee->shift_schedule,
                 'requestorEmploymentStatus' =>  $this->request->employee->status->emp_status_name,
                 'workToPerform'             =>  $this->request->work_performed,
-                'date'                      =>  Carbon::parse($this->request->date)->format('F d, Y'),
                 'startTime'                 =>  $this->request->start_time,
                 'endTime'                   =>  $this->request->end_time,
                 'hrsRequested'              =>  $this->request->hoursRequested,

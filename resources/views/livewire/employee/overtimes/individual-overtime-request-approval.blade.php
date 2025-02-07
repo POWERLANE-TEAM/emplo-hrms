@@ -70,18 +70,12 @@
                 
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label for="date_ovt" class="fw-medium form-label">{{ __('Requested Date') }}</label>
-                                <div class="form-control bg-body-secondary p-2 rounded-3" id="date_ovt">
-                                    {{ $otRequest?->overtime_details->date }}
-                                </div>
-                            </div>
-                            <div class="col-md-3 mb-3">
                                 <label for="hours_ot" class="fw-medium form-label">{{ __('Start Time') }}</label>
                                 <div class="form-control bg-body-secondary p-2 rounded-3" id="hours_ot">
                                     {{ $otRequest?->overtime_details->start_time }}
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-6">
                                 <label for="hours_ot_end" class="fw-medium form-label">{{ __('End Time') }}</label>
                                 <div class="form-control bg-body-secondary p-2 rounded-3" id="hours_ot_end">
                                     {{ $otRequest?->overtime_details->end_time }}
@@ -104,10 +98,10 @@
                                     <div class="d-flex justify-content-between align-items-center">
                                         <span class="text-secondary-emphasis">{{ __('by: ') }}
                                             <span class="fw-semibold">
-                                                {{ $otRequest?->overtime_details->authorizer }}
+                                                {{ $otRequest?->overtime_details?->authorizer }}
                                             </span>
                                         </span>
-                                        <span class="text-muted small">{{ $otRequest?->overtime_details->authorizer_signed_at }}</span>
+                                        <span class="text-muted small">{{ $otRequest?->overtime_details?->authorizer_signed_at }}</span>
                                     </div>
                                 </div>
                             @endif
@@ -119,14 +113,14 @@
                                     <div class="d-flex justify-content-between align-items-center">
                                         <span class="text-secondary-emphasis">{{ __('by: ') }}
                                             <span class="fw-semibold">
-                                                {{ $otRequest?->overtime_details->denier }}
+                                                {{ $otRequest?->overtime_details?->denier }}
                                             </span>
                                         </span>
-                                        <span class="text-muted small">{{ $otRequest?->overtime_details->denied_at }}</span>
+                                        <span class="text-muted small">{{ $otRequest?->overtime_details?->denied_at }}</span>
                                     </div>
                                     <div class="mt-3">
                                         <label for="feedback" class="form-label text-muted">{{ __('Reason:') }}</label>
-                                        <textarea id="feedback" class="form-control bg-body-secondary" rows="3" readonly>{{ $otRequest?->overtime_details->feedback }}</textarea>
+                                        <textarea id="feedback" class="form-control bg-body-secondary" rows="3" readonly>{{ $otRequest?->overtime_details?->feedback }}</textarea>
                                     </div>
                                 </div>
                             @endif

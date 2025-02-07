@@ -13,8 +13,8 @@
 
 @pushOnce('styles')
     @vite(['resources/css/employee/basic/leaves.css'])
-
 @endPushOnce
+
 @section('content')
 
 <x-breadcrumbs>

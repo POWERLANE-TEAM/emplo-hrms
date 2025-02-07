@@ -4,7 +4,7 @@ namespace App\Livewire\Employee\Tables\Basic;
 
 use App\Enums\Payroll;
 use App\Models\Overtime;
-use Livewire\Attributes\On;
+use App\Enums\StatusBadge;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\View\ComponentAttributeBag;
@@ -99,20 +99,12 @@ class OvertimeSummariesTable extends DataTableComponent
         ];
     }
 
-    #[On('changesSaved')]
-    public function refreshComponent()
-    {
-        $this->dispatch('refreshDatatable');
-    }
-
     public function builder(): Builder
     {
         $statement = "
             count(overtime_id) as overtime_id, 
             max(filed_at) as filed_at,
-            max(date) as date,
-            payroll_approval_id, 
-            sum(abs(extract(epoch from (start_time - end_time)))) / 3600 as total_hours_rendered
+            payroll_approval_id
         ";
 
         return Overtime::query()
@@ -126,54 +118,55 @@ class OvertimeSummariesTable extends DataTableComponent
     {
         return [
             Column::make(__('Cut-Off Period'))
-                ->label(function ($row) {
-                    $cutOff = Payroll::getCutOffPeriod($row->date, isReadableFormat: true);
-                    return $cutOff['start']. ' - ' .$cutOff['end'];
-                })
-                ->sortable(function (Builder $query, $direction) {
-                    return $query->orderBy('date', $direction);
-                })
+                ->label(fn ($row) => $row->payrollApproval->payroll->cut_off)
                 ->setSortingPillDirections('Asc', 'Desc')
                 ->setSortingPillTitle(__('Cut-Off')),
 
+            Column::make(__('Approval Status'))
+                ->label(function ($row) {
+                    $badge = [];
+                    
+                    if ($row->payrollApproval->third_approver_signed_at) {
+                        $badge = [
+                            'color' => StatusBadge::APPROVED->getColor(),
+                            'slot' => StatusBadge::APPROVED->getLabel(),
+                        ];
+                    } else {
+                        $badge = [
+                            'color' => StatusBadge::PENDING->getColor(),
+                            'slot' => StatusBadge::PENDING->getLabel(),
+                        ];
+                    }
+
+                    return view('components.status-badge')->with($badge);
+                }),
+
             Column::make(__('Payout Date'))
-                ->label(fn ($row) => Payroll::getPayoutDate($row->date, isReadableFormat: true))
-                ->sortable(function (Builder $query, $direction) {
-                    return $query->orderBy('date', $direction);
-                })
+                ->label(fn ($row) => $row->payrollApproval->payroll->payout)
                 ->setSortingPillDirections('Asc', 'Desc')
                 ->setSortingPillTitle(__('Payout')),
 
             Column::make(__('Last Request Filing'))
-                ->label(fn ($row) => $row->filed_at)
+                ->label(fn ($row) => $row->filed_at->format('F d, Y g:i A'))
                 ->sortable(function (Builder $query, $direction) {
                     return $query->orderBy('filed_at', $direction);
                 })
                 ->setSortingPillDirections('Asc', 'Desc')
                 ->setSortingPillTitle(__('Last filing')),
 
-            Column::make(__('Hours Rendered'))
-                ->label(function ($row) {
-                    $seconds = $row->total_hours_rendered * 3600;
-                    $hours = floor($seconds / 3600);
-                    $minutes = floor(($seconds % 3600) / 60);
+            // Column::make(__('Hours Rendered'))
+            //     ->label(function ($row) {
+            //         $seconds = $row->total_hours_rendered * 3600;
+            //         $hours = floor($seconds / 3600);
+            //         $minutes = floor(($seconds % 3600) / 60);
                 
-                    return __("{$hours} hours and {$minutes} minutes");
-                })
-                ->sortable(function (Builder $query, $direction) {
-                    return $query->orderBy('total_hours_rendered', $direction); 
-                })
-                ->setSortingPillDirections('High', 'Low')
-                ->setSortingPillTitle(__('Hours rendered')),
-
-            Column::make(__('Status'))
-                ->label(function ($row) {
-                    if ($row->payrollApproval->third_approver_signed_at) {
-                        return $row->payrollApproval->thirdApprover->full_name;
-                    } else {
-                        return __('Pending');
-                    }
-                }),
+            //         return __("{$hours} hours and {$minutes} minutes");
+            //     })
+            //     ->sortable(function (Builder $query, $direction) {
+            //         return $query->orderBy('total_hours_rendered', $direction); 
+            //     })
+            //     ->setSortingPillDirections('High', 'Low')
+            //     ->setSortingPillTitle(__('Hours rendered')),
         ];
     }
 

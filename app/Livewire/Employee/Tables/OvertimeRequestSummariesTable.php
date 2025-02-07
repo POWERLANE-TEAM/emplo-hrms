@@ -2,9 +2,10 @@
 
 namespace App\Livewire\Employee\Tables;
 
-use App\Enums\UserPermission;
 use App\Models\Overtime;
+use App\Enums\StatusBadge;
 use Illuminate\Support\Str;
+use App\Enums\UserPermission;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\Views\Column;
@@ -63,13 +64,13 @@ class OvertimeRequestSummariesTable extends DataTableComponent
 
         $this->setThAttributes(function (Column $column) {
             return [
-                'class' => 'text-md-start fw-medium',
+                'class' => 'text-md-center fw-medium',
             ];
         });
 
         $this->setTdAttributes(function (Column $column, $row, $columnIndex, $rowIndex) {
             return [
-                'class' => 'flex text-md-start',
+                'class' => $columnIndex === 0 ? 'text-md-start' : 'flex text-md-center',
             ];
         });
 
@@ -111,10 +112,8 @@ class OvertimeRequestSummariesTable extends DataTableComponent
         $statement = "
             count(overtime_id) as overtime_id, 
             max(filed_at) as filed_at,
-            max(date) as date,
             payroll_approval_id, 
-            employee_id,
-            sum(abs(extract(epoch from (start_time - end_time)))) / 3600 as total_ot_hours
+            employee_id
         ";
 
         return Overtime::query()
@@ -142,9 +141,6 @@ class OvertimeRequestSummariesTable extends DataTableComponent
     public function columns(): array
     {
         return [
-            // Column::make(__('Employee'))
-            //     ->label(fn ($row) => dd($row->overtime->employee)),
-
             Column::make(__('Employee'))
                 ->label(function ($row) {
                     $name = Str::headline($row->employee->full_name);
@@ -164,36 +160,46 @@ class OvertimeRequestSummariesTable extends DataTableComponent
             Column::make(__('Cut-Off Period'))
                 ->label(fn ($row) => $row->payrollApproval->payroll->cut_off),
 
+            Column::make(__('Approval Status'))
+                ->label(function ($row) {
+                    $badge = [
+                        'color' => StatusBadge::PENDING->getColor(),
+                        'slot' => StatusBadge::PENDING->getLabel(),
+                    ];
+
+                    if ($row->payrollApproval->third_approver_signed_at) {
+                        $badge = [
+                            'color' => StatusBadge::APPROVED->getColor(),
+                            'slot' => StatusBadge::APPROVED->getLabel(),
+                        ];
+                    }
+
+                    return view('components.status-badge')->with($badge);
+                }),
+
             Column::make(__('Last Request Filing'))
-                ->label(fn ($row) => $row->filed_at)
+                ->label(fn ($row) => $row->filed_at->format('F d, Y g:i A'))
                 ->sortable(function (Builder $query, $direction) {
                     return $query->orderBy('filed_at', $direction);
                 })
                 ->setSortingPillDirections('Asc', 'Desc')
                 ->setSortingPillTitle(__('Last filing')),
 
-            Column::make(__('Total OT Hours'))
-                ->label(function ($row) {
-                    $seconds = $row->total_ot_hours * 3600;
-                    $hours = floor($seconds / 3600);
-                    $minutes = floor(($seconds % 3600) / 60);
-                
-                    return __("{$hours} hours and {$minutes} minutes");
-                })
-                ->sortable(function (Builder $query, $direction) {
-                    return $query->orderBy('total_hours_rendered', $direction); 
-                })
-                ->setSortingPillDirections('High', 'Low')
-                ->setSortingPillTitle(__('Hours rendered')),
+            // Column::make(__('Total OT Hours'))
+            //     ->label(function ($row) {
+            //         $seconds = $row->employee->overtimes->sum(function ($ot) {
+            //             return $ot->authorizer_signed_at
+            //                 ? $ot->start_time->diffInSeconds($ot->end_time)
+            //                 : null;
+            //         });
 
-            Column::make(__('Status'))
-                ->label(function ($row) {
-                    if ($row->payrollApproval->third_approver_signed_at) {
-                        return __('Approved');
-                    } else {
-                        return __('Pending');
-                    }
-                }),
+            //         $hours = floor($seconds / 3600);
+            //         $minutes = floor(($seconds % 3600) / 60);
+                
+            //         return __("{$hours} hours and {$minutes} minutes");
+            //     })
+            //     ->setSortingPillDirections('High', 'Low')
+            //     ->setSortingPillTitle(__('Hours rendered')),
         ];
     }
 

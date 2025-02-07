@@ -37,18 +37,12 @@
                 
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label for="date_ovt" class="fw-medium form-label">{{ __('Requested Date') }}</label>
-                                <div class="form-control bg-body-secondary p-2 rounded-3" id="date_ovt">
-                                    {{ $otSummaryInfo?->date }}
-                                </div>
-                            </div>
-                            <div class="col-md-3 mb-3">
                                 <label for="hours_ot" class="fw-medium form-label">{{ __('Start Time') }}</label>
                                 <div class="form-control bg-body-secondary p-2 rounded-3" id="hours_ot">
                                     {{ $otSummaryInfo?->start_time }}
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-6">
                                 <label for="hours_ot_end" class="fw-medium form-label">{{ __('End Time') }}</label>
                                 <div class="form-control bg-body-secondary p-2 rounded-3" id="hours_ot_end">
                                     {{ $otSummaryInfo?->end_time }}

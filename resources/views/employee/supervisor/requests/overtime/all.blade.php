@@ -1,5 +1,4 @@
-@extends('components.layout.employee.layout', ['description' => 'Employee Dashboard', 'nonce' => $nonce])
-@use ('Illuminate\View\ComponentAttributeBag')
+@extends('components.layout.employee.layout', ['description' => 'Overtime Requests', 'nonce' => $nonce])
 
 @section('head')
 <title>Overtime Requests</title>

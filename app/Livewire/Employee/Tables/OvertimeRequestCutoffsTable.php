@@ -108,7 +108,6 @@ class OvertimeRequestCutoffsTable extends DataTableComponent
         $statement = "
             count(overtime_id) as overtime_id, 
             max(filed_at) as filed_at,
-            max(date) as date,
             payroll_approval_id, 
             sum(abs(extract(epoch from (start_time - end_time)))) / 3600 as total_ot_hours
         ";
@@ -150,26 +149,26 @@ class OvertimeRequestCutoffsTable extends DataTableComponent
                 ->setSortingPillTitle(__('Payout')),
 
             Column::make(__('Last Request Filing'))
-                ->label(fn ($row) => $row->filed_at)
+                ->label(fn ($row) => $row->filed_at->format('F d, Y g:i A'))
                 ->sortable(function (Builder $query, $direction) {
                     return $query->orderBy('filed_at', $direction);
                 })
                 ->setSortingPillDirections('Asc', 'Desc')
                 ->setSortingPillTitle(__('Last filing')),
 
-            Column::make(__('Total OT Hours'))
-                ->label(function ($row) {
-                    $seconds = $row->total_ot_hours * 3600;
-                    $hours = floor($seconds / 3600);
-                    $minutes = floor(($seconds % 3600) / 60);
+            // Column::make(__('Total OT Hours'))
+            //     ->label(function ($row) {
+            //         $seconds = $row->total_ot_hours * 3600;
+            //         $hours = floor($seconds / 3600);
+            //         $minutes = floor(($seconds % 3600) / 60);
                 
-                    return __("{$hours} hours and {$minutes} minutes");
-                })
-                ->sortable(function (Builder $query, $direction) {
-                    return $query->orderBy('total_ot_hours', $direction); 
-                })
-                ->setSortingPillDirections('High', 'Low')
-                ->setSortingPillTitle(__('Hours rendered')),
+            //         return __("{$hours} hours and {$minutes} minutes");
+            //     })
+            //     ->sortable(function (Builder $query, $direction) {
+            //         return $query->orderBy('total_ot_hours', $direction); 
+            //     })
+            //     ->setSortingPillDirections('High', 'Low')
+            //     ->setSortingPillTitle(__('Hours rendered')),
         ];
     }
 

@@ -7,7 +7,6 @@ use Livewire\Component;
 use App\Models\Employee;
 use App\Models\Overtime;
 use Livewire\Attributes\On;
-use Illuminate\Support\Carbon;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Computed;
 use Illuminate\Support\Facades\DB;
@@ -22,7 +21,6 @@ class EditOvertimeRequest extends Component
 {
     public $state = [
         'workToPerform' => '',
-        'date' => null,
         'startTime' => null,
         'endTime' => null,
     ];
@@ -78,7 +76,6 @@ class EditOvertimeRequest extends Component
         $this->request->update([
             'payroll_approval_id'   => $payrollApproval->payroll_approval_id,
             'work_performed'        => $this->state['workToPerform'],
-            'date'                  => $this->state['date'],
             'start_time'            => $this->state['startTime'],
             'end_time'              => $this->state['endTime'],
         ]);
@@ -107,7 +104,7 @@ class EditOvertimeRequest extends Component
 
     private function getCutoffAndPayout(): array
     {
-        $requestedDate = $this->state['date'];
+        $requestedDate = $this->state['startTime'];
 
         return Payroll::getCutOffPeriod($requestedDate);
     }
@@ -119,7 +116,7 @@ class EditOvertimeRequest extends Component
         return PayrollModel::firstOrCreate([
             'cut_off_start' => $cutoffAndPayout['start']->toDateString(),
             'cut_off_end'   => $cutoffAndPayout['end']->toDateString(),
-            'payout'        => Payroll::getPayoutDate($this->state['date'])->toDateString(),
+            'payout'        => Payroll::getPayoutDate($this->state['startTime'])->toDateString(),
         ]);
     }
 
@@ -137,18 +134,15 @@ class EditOvertimeRequest extends Component
             $this->state = [
                 'overtimeId'    => $this->request->overtime_id,
                 'workToPerform' => $this->request->work_performed,
-                'date'          => Carbon::parse($this->request->date)->format('Y-m-d'),
-                'startTime'     => Carbon::parse($this->request->start_time)->format('H:i'),
-                'endTime'       => Carbon::parse($this->request->end_time)->format('H:i'),
+                'startTime'     => $this->request->start_time->format('Y-m-d H:i:s'),
+                'endTime'       => $this->request->end_time->format('Y-m-d H:i:s'),
             ];
             $this->hoursRequested = $this->request->hoursRequested;
             
             $this->makeKeysReadable();
 
-            if ($isEditable) {
-                if (Gate::allows('editOvertimeRequest', $this->request)) {
-                    $this->editMode = true;
-                }
+            if (Gate::allows('editOvertimeRequest', $this->request)) {
+                $this->editMode = true;
             }
 
             $this->loading = false;
@@ -190,9 +184,8 @@ class EditOvertimeRequest extends Component
     {
         return [
             'state.workToPerform'   => 'required|string|max:100',
-            'state.date'            => 'required|date|after_or_equal:today',
-            'state.startTime'       => 'required|date_format:H:i',
-            'state.endTime'         => 'required|date_format:H:i|after:state.startTime',
+            'state.startTime'       => 'required|date',
+            'state.endTime'         => 'required|date|after:state.startTime',
         ];
     }
 
@@ -202,13 +195,10 @@ class EditOvertimeRequest extends Component
             'state.workToPerform.required'  => __('Please provide a description.'),
             'state.workToPerform.string'    => __('Description must be a valid string.'),
             'state.workToPerform.max'       => __('Description must not exceed 100 characters.'),
-            'state.date.required'           => __('Please provide a valid date.'),
-            'state.date.date'               => __('The date must be a valid format.'),
-            'state.date.after_or_equal'     => __('The date must not be in the past.'),
             'state.startTime.required'      => __('Please provide a start time.'),
-            'state.startTime.date_format'   => __('The start time must be in the format HH:mm.'),
+            // 'state.startTime.date_format'   => __('The start time must be in the format Y-m-d H:i:s.'),
             'state.endTime.required'        => __('Please provide an end time.'),
-            'state.endTime.date_format'     => __('The end time must be in the format HH:mm.'),
+            // 'state.endTime.date_format'     => __('The end time must be in the format Y-m-d H:i:s.'),
             'state.endTime.after'           => __('The end time must be after the start time.'),
         ];
     }

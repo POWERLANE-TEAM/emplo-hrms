@@ -58,11 +58,12 @@ class CutOffPayoutPeriodsApproval extends Component
     private function getOtInfo()
     {
         $this->overtime = Overtime::with([
-            // 'payrollApproval',
-            'payrollApproval.payroll',
-            'payrollApproval.initialApprover',
-            'payrollApproval.secondaryApprover',
-            'payrollApproval.thirdApprover',
+            'payrollApproval' => [
+                'payroll',
+                'initialApprover',
+                'secondaryApprover',
+                'thirdApprover',
+            ],
         ])
             ->whereHas('payrollApproval.payroll', function ($query) {
                 $query->where('payroll_id', $this->payroll);
@@ -102,12 +103,11 @@ class CutOffPayoutPeriodsApproval extends Component
     
     private function getTotalOtHours()
     {
-        $totalSecs = $this->overtime->map(function ($ot) {
-            $start = Carbon::parse($ot->start_time);
-            $end = Carbon::parse($ot->end_time);
-
-            return $start->diffInSeconds($end);
-        })->sum();
+        $totalSecs = $this->overtime->sum(function ($ot) {
+            return $ot->authorizer_signed_at
+                ? $ot->start_time->diffInSeconds($ot->end_time)
+                : null;
+        });
 
         $hours                  = floor($totalSecs / 3600);
         $minutes                = floor(($totalSecs % 3600) / 60);

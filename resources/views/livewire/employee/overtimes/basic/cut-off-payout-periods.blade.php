@@ -13,14 +13,14 @@
     if (request()->routeIs("{$routePrefix}.overtimes.recents")) {
         $page = [
             'heading' => __('Recent Overtime Requests'),
-            'description' => __('You can view and manage overtime requests filed less than or exactly a week ago here.'),
+            'description' => __('You can view and manage overtime requests filed less than a week ago here.'),
         ];
     }
 
     if (request()->routeIs("{$routePrefix}.overtimes.archive")) {
         $page = [
-            'heading' => __('All Overtime Requests'),
-            'description' => __('You can view all your filed overtime requests here.'),
+            'heading' => __('Archived Overtime Requests'),
+            'description' => __('You can view overtime requests that are authorized or filed more than a week ago here.'),
         ];
     }
 
