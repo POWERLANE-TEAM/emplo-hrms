@@ -4,12 +4,11 @@ namespace App\Models;
 
 use Illuminate\Support\Str;
 use App\Enums\ActivityLogName;
-use Illuminate\Support\Carbon;
 use Spatie\Activitylog\LogOptions;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Spatie\Activitylog\Traits\LogsActivity;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -30,36 +29,43 @@ class Overtime extends Model
         'modified_at',
     ];
 
+    protected $casts = [
+        'start_time'            => 'datetime',
+        'end_time'              => 'datetime',
+        'authorizer_signed_at'  => 'datetime',
+        'denied_at'             => 'datetime',
+    ];
+
     /**
-     * Accessor / mutator for start time attribute.
+     * Local query builder scope to get ot requests that are filed exactly or more than a week ago.
      */
-    protected function startTime(): Attribute
+    public function scopeArchived(Builder $query): void
     {
-        return Attribute::make(
-            get: fn (mixed $value) => Carbon::make($value)->format('g:i A'),
-            set: fn (mixed $value) => Carbon::make($value)->format('H:i:s'),
-        );
-    }
-    
-    /**
-     * Accessor / mutator for end time attribute.
-     */
-    protected function endTime(): Attribute
-    {
-        return Attribute::make(
-            get: fn (mixed $value) => Carbon::make($value)->format('g:i A'),
-            set: fn (mixed $value) => Carbon::make($value)->format('H:i:s'),
-        );
+        $query->where('filed_at', '<=', now()->subWeek());
     }
 
     /**
-     * Accessor(only) for filing date attribute.
+     * Local query builder scope to get ot requests that are filed less than a week ago.
      */
-    protected function filedAt(): Attribute
+    public function scopeRecent(Builder $query): void
     {
-        return Attribute::make(
-            get: fn (mixed $value) => Carbon::make($value)->format('F d, Y g:i A')
-        );
+        $query->where('filed_at', '>', now()->subWeek());
+    }
+
+    /**
+     * Local query builder scope to get ot requests that are authorized.
+     */
+    public function scopeAuthorized(Builder $query): void
+    {
+        $query->whereNotNull('authorizer_signed_at');
+    }
+
+    /**
+     * Local query builder scope to get ot requests that are denied.
+     */
+    public function scopeDenied(Builder $query): void
+    {
+        $query->whereNotNull('denied_at');
     }
 
     /**
@@ -67,37 +73,7 @@ class Overtime extends Model
      */
     public function getHoursRequestedAttribute(): string
     {
-        $start = Carbon::createFromFormat('g:i A', $this->start_time);
-        $end = Carbon::createFromFormat('g:i A', $this->end_time);
-    
-        return $start->diff($end)->format('%h hours and %i minutes');
-    }
-    
-    public function date(): Attribute
-    {
-        return Attribute::make(
-            set: fn (mixed $value) => Carbon::make($value)->format('Y-m-d')
-        );
-    }
-
-    /**
-     * Accessor for authorized date (formatted).
-     */
-    protected function authorizerSignedAt(): Attribute
-    {
-        return Attribute::make(
-            get: fn (mixed $value) => Carbon::make($value)?->format('F d, Y g:i A') ?? null,
-        );
-    }
-
-    /**
-     * Accessor for request denied date (formatted).
-     */
-    protected function deniedAt(): Attribute
-    {
-        return Attribute::make(
-            get: fn (mixed $value) => Carbon::make($value)?->format('F d, Y g:i A') ?? null,
-        );
+        return $this->start_time->diff($this->end_time);
     }
 
     public function payrollApproval(): BelongsTo
@@ -143,9 +119,9 @@ class Overtime extends Model
                 $causerFirstName = Str::ucfirst(Auth::user()->account->first_name);
 
                 return match ($eventName) {
-                    'created' => __($causerFirstName.' submitted an overtime request.'),
-                    'updated' => __($causerFirstName.' updated an overtime request\'s information.'),
-                    'deleted' => __($causerFirstName.' deleted an overtime request record.'),
+                    'created' => __("{$causerFirstName} submitted an overtime request."),
+                    'updated' => __("{$causerFirstName} updated an overtime request's information."),
+                    'deleted' => __("{$causerFirstName} deleted an overtime request record."),
                 };
             });
     }

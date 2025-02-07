@@ -59,9 +59,8 @@ return new class extends Migration
                 ->cascadeOnDelete();
 
             $table->longText('work_performed');
-            $table->date('date');
-            $table->time('start_time');
-            $table->time('end_time');
+            $table->timestamp('start_time');
+            $table->timestamp('end_time');
 
             $table->timestamp('authorizer_signed_at')->nullable();
             $table->foreignIdFor(Employee::class, 'authorizer')
