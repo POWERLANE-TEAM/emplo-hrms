@@ -11,6 +11,7 @@ use App\Models\Application;
 use App\Models\Employee;
 use App\Models\EmployeeDoc;
 use App\Models\EmployeeJobDetail;
+use App\Models\EmployeeLifecycle;
 use App\Models\EmploymentStatus;
 use App\Models\JobTitle;
 use App\Models\JobVacancy;
@@ -95,6 +96,14 @@ function createEmployee($chunkStart, $chunk, $freeEmailDomain)
                             'employee_id' => $employee->employee_id,
                             'file_path' => 'storage/',
                         ]);
+
+                        $employeeLifecycle = EmployeeLifecycle::create([
+                            'employee_id' => $employee->employee_id,
+                            'started_at' => now(),
+                        ]);
+
+                        Log::info('EmployeeLifecycle created', ['employeeLifecycle' => $employeeLifecycle]);
+
                     } catch (\Exception $e) {
                         Log::error('Exception: ' . $e->getMessage() . ' in ' . $e->getFile() . ' on line ' . $e->getLine());
                     }
