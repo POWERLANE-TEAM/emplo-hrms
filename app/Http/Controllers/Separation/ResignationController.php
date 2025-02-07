@@ -132,6 +132,7 @@ class ResignationController extends Controller
                 $data = [
                     'resignation_status_id' => $request['resignation_status_id'],
                     'initial_approver' => auth()->user()->account->employee_id,
+                    'initial_approver_signed_at' => now(),
                     'initial_approver_comments' => $request['initial_approver_comments'],
                 ];
             }

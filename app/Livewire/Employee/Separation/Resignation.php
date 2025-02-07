@@ -45,7 +45,8 @@ class Resignation extends Component
         $file = $this->coeReq->empCoeDoc->file_path;
 
         if (Storage::disk('public')->exists($file)) {
-            return Storage::disk('public')->download($file);
+            $downloadName = 'Certificate_of_Employment.pdf'; // Specify the desired download name here
+            return Storage::disk('public')->download($file, $downloadName);
         }
 
     }

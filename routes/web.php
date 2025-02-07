@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\FilePath;
 use App\Http\Controllers\Application\ApplicantController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\ContentController;
@@ -10,13 +11,19 @@ use App\Livewire\Auth\FacebookOAuth;
 use App\Livewire\Auth\GoogleOAuth;
 use App\Livewire\Auth\GoogleOneTap;
 use App\Livewire\Auth\Logout;
+use App\Traits\NeedsWordDocToPdf;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Google\Cloud\AIPlatform\V1\Client\ModelServiceClient;
 use Google\Cloud\AIPlatform\V1\ListModelsRequest;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
-
+use NcJoes\OfficeConverter\OfficeConverter;
+use PhpOffice\PhpWord\Element\Image;
+use PhpOffice\PhpWord\IOFactory;
+use PhpOffice\PhpWord\Settings;
+use PhpOffice\PhpWord\Style\Paper;
+use PhpOffice\PhpWord\TemplateProcessor;
 
 Route::group([], function () {
     Route::get('/hiring', function () {
@@ -90,13 +97,80 @@ Route::get('/canvas', function () {
 });
 
 Route::get('/pdf', function () {
-    Pdf::setOption(['dpi' => 300]);
-    $coe = Pdf::loadView('coe');
+
+    $coeData = [
+        'name' =>  'John Doe',
+        'empStart' => '2021-01-01',
+        'empEnd' =>  '2021-12-31',
+        'jobTitle'  => 'Software Developer',
+        'jobDepartment'  => 'IT',
+        'issuedDate'  => now(),
+        'hrManager' =>  'Jane Doe',
+        'companyAddr' => 'Rowsuz Business Center, Diversin Rd',
+    ];
+
+    $options = [
+        // 'debugPng' => true,
+        // 'debugCss' => true,
+        // 'debugLayout' => true,
+        // 'debugLayoutLine' => true,
+        // 'debugLayoutPaddingBox' => true,
+    ];
+
+    $coe = Pdf::loadView('coe', $coeData);
     $coe->setPaper('a4', 'landscape');
+    $coe->setOptions($options);
     return $coe->download('coe.pdf');
 });
 
 Route::get('/coe', function () {
     return view('coe');
 });
+Route::get('/word', function () {
+    $reader = IOFactory::createReader('Word2007');
 
+    $path = FilePath::DOC_TEMPLATE->value . 'Certificate of Appreciation.docx';
+
+    // echo $path;
+
+    if (Storage::disk('public')->missing($path)) {
+        abort(404);
+    }
+
+    $templateProcessor = new TemplateProcessor(Storage::disk('public')->path($path));
+
+    $values = [
+        // Long Names isnt shrinked
+        'EMPLOYEE_NAME' => 'John Doe',
+        'START_DATE' => 'January 1, 2020',
+        'END_DATE' => 'December 31, 2024',
+        'JOB_TITLE' => 'Software Engineer',
+        'DEPT_NAME' => 'IT Department',
+        'ORDINAL' => '7th',
+        'MONTH' => 'February',
+        'YEAR' => '2025',
+        'COMPANY_ADDRESS' => '1234 Main St, Calamba, Calabarzon, Philippines',
+        'HRManager_NAME' => 'John Doe',
+    ];
+
+    $templateProcessor->setValues($values);
+    $templateProcessor->setImageValue('USER_SIGNATURE', 'C:\Users\Summer\Downloads\evangeline_bandilla-sign.png' );
+
+    $docxFilePath = 'word.docx';
+    $templateProcessor->saveAs(Storage::disk('public')->path($docxFilePath));
+
+    $converter = new class {
+        use NeedsWordDocToPdf;
+    };
+
+    $outputDir = 'pdf';
+    $disk = 'public';
+
+    try {
+        $pdfFilePath = $converter->convert($docxFilePath, $outputDir, $disk);
+        return response()->download(Storage::disk($disk)->path($pdfFilePath));
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+
+});

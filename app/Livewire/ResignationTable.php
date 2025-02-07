@@ -129,7 +129,7 @@ class ResignationTable extends DataTableComponent
                         return '--';
                     }
 
-                    $decisionAtF = Carbon::parse($decisionAt)->setTimezone($this->timezone)->format('F d, Y');
+                    return Carbon::parse($decisionAt)->setTimezone($this->timezone)->format('F d, Y');
 
                 })
                 ->sortable(),
