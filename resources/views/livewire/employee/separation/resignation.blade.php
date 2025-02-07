@@ -23,7 +23,7 @@
         // Possible values: 'pending' (letter submitted but not yet reviewed),
         // 'approved' (resignation letter approved by HR), or 'rejected' (resignation letter rejected).
 
-        $hasComments = !empty($resignation->initial_approver_comments);
+        $hasComments = !empty(optional($resignation)->initial_approver_comments);
         // Indicates whether HR has left comments on the resignation letter.
         // Set to true if HR provided comments, false if no comments are given.
 
