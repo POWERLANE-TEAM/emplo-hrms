@@ -117,7 +117,10 @@ class MyReportedIssuesTable extends DataTableComponent
                 ->label(fn ($row) => IssueConfidentiality::from($row->confidentiality)->getLabel()),
 
             Column::make(__('Status'))
-                ->label(fn ($row) => IssueStatus::from($row->status)->getLabel()),
+                ->label(fn ($row) => view('components.status-badge')->with([
+                    'color' => IssueStatus::from($row->status)->getColor(),
+                    'slot' => IssueStatus::from($row->status)->getLabel(),
+                ])),
 
             Column::make(__('Date Filed'))
                 ->label(fn ($row) => $row->filed_at)
