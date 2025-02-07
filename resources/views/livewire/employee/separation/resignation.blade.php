@@ -42,7 +42,7 @@
         // COE Issuance
         // ===========================
 
-        $certificateStatus = $coeReq->emp_coe_doc_id  ? 'issued' : 'pending';
+        $certificateStatus = optional($coeReq)->emp_coe_doc_id  ? 'issued' : 'pending';
         // Status of the COE issuance.
         // Possible values: 'pending' (is being processed),
         // 'issued' (COE has been issued to the employee).
