@@ -35,7 +35,7 @@ class IssueCoeRequests extends Component
         $file = $this->coe->empCoeDoc->file_path;
 
         if (Storage::disk('public')->exists($file)) {
-            $downloadName = 'Certificate_of_Employment.pdf'; // Specify the desired download name here
+            $downloadName = 'Certificate_of_Employment.pdf';
             return Storage::disk('public')->download($file, $downloadName);
         }
 

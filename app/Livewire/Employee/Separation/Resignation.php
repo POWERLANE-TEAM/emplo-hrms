@@ -4,6 +4,7 @@ namespace App\Livewire\Employee\Separation;
 
 use Livewire\Attributes\Locked;
 use App\Enums\FilePath;
+use App\Http\Controllers\Separation\ResignationController;
 use App\Models\CoeRequest;
 use App\Models\Employee;
 use App\Models\EmployeeDoc;
@@ -37,6 +38,32 @@ class Resignation extends Component
         }
 
         $this->coeReq = CoeRequest::where('requested_by', $this->employee->employee_id)->latest()->first();
+
+    }
+
+    public function retract(ResignationController $controller){
+
+        try {
+            $response = $controller->update(['resignation_id' => $this->resignation->resignation_id, 'retracted_at' => now()], validated: true);
+
+            if ($response instanceof \Illuminate\Http\JsonResponse && $response->getStatusCode() == 400) {
+                $this->dispatch('show-toast', [
+                    'type' => 'danger',
+                    'message' => $response->getData()->message,
+                ]);
+            } else {
+                $this->dispatch('show-toast', [
+                    'type' => 'success',
+                    'message' => 'Resignation retracted successfully.',
+                ]);
+            }
+        } catch (\Exception $e) {
+            report($e);
+            $this->dispatch('show-toast', [
+                'type' => 'danger',
+                'message' => 'An error occurred while retracting the resignation.',
+            ]);
+        }
 
     }
 

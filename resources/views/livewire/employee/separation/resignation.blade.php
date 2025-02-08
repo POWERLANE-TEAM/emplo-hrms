@@ -17,7 +17,7 @@
         // Date when HR processed and made a decision on the resignation (approval/rejection).
         // Set when HR approves or rejects the resignation.
 
-        $status = optional(optional($resignation)->resignationStatus)->resignation_status_name;
+        $status =  optional($resignation)->retracted_at ? 'Retracted' : optional(optional($resignation)->resignationStatus)->resignation_status_name;
 
         // Current status of the resignation letter submission.
         // Possible values: 'pending' (letter submitted but not yet reviewed),
@@ -141,6 +141,8 @@
                                         <span class="text-danger">Rejected <i class="icon icon-large text-danger ms-1"
                                                 data-lucide="badge-x"></i></span>
                                     @else
+                                        <span class="text-danger">Retracted <i class="icon icon-large text-danger ms-1"
+                                                data-lucide="badge-x"></i></span>
                                     @endif
                                 </p>
 
@@ -164,7 +166,7 @@
                                     <x-info_panels.note
                                         note="{{ __('You can cancel your resignation as long as it is still pending approval. Once processed, cancellation is no longer possible.') }}" />
 
-                                    <button type="submit" id="applicant-decline-resume" name="submit"
+                                    <button type="submit" id="applicant-decline-resume" name="submit" wire:click="retract"
                                         class="btn btn-lg btn-danger w-25">Retract</button>
 
                                     <!-- SECTION: Status Approved / Rejected -->

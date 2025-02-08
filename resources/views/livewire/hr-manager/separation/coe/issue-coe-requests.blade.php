@@ -62,9 +62,9 @@ $badge = $statusConfig[$certificateStatus]['badge'] ?? 'Unknown';
                     }
 
                     $employmentDuration =
-                        $startDate instanceof Carbon && $endDate instanceof Carbon
-                            ? $startDate->diff($endDate)->format('%y years, %m months, %d days')
-                            : 'N/A';
+    $startDate instanceof Carbon && $endDate instanceof Carbon
+        ? $startDate->diff($endDate)->format('%y years, %m months, %d days')
+        : ($startDate instanceof Carbon ? $startDate->diff(Carbon::now())->format('%y years, %m months, %d days') : 'N/A');
                 @endphp
 
                 <!-- Employment Details -->

@@ -125,8 +125,11 @@ class ResignationController extends Controller
             // ]);
         }
 
+        // dump(auth()->user());
+        // dump($resignation->resignee->account);
+        // dd(!auth()->user()->is($resignation->resignee->account));
         // add authorization
-        if (!auth()->user()->is($resignation->resignee) && true) {
+        if (!auth()->user()->is($resignation->resignee->account) && true) {
 
             if (is_array($request) && $validated) {
                 $data = [
@@ -139,6 +142,10 @@ class ResignationController extends Controller
 
         }else{
             if (is_array($request) && $validated && true) {
+                if($resignation->resignation_status_id == ResignationStatus::APPROVED->value){
+                    return response()->json(['message' => 'You cannot retract resignation'], 400);
+                }
+
                 $data = [
                     'retracted_at' => $request['retracted_at'],
                 ];
@@ -147,7 +154,7 @@ class ResignationController extends Controller
 
         $resignation->update($data);
 
-        if($request['resignation_status_id'] == ResignationStatus::APPROVED->value){
+        if(isset($request['resignation_status_id']) && $request['resignation_status_id'] == ResignationStatus::APPROVED->value){
             ResignationApproved::dispatch($resignation->resignee);
         }
 

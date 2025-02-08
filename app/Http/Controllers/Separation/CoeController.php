@@ -9,9 +9,7 @@ use App\Http\Helpers\RouteHelper;
 use App\Models\CoeRequest;
 use App\Models\EmployeeDoc;
 use App\Traits\NeedsWordDocToPdf;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -79,16 +77,6 @@ class CoeController extends Controller
             'companyAddr' => 'Rowsuz Business Center, Diversin Rd',
         ];
 
-        // Pdf::setOption(['dpi' => 300]);
-        // $coe = Pdf::loadView('coe', $coeData);
-        // $coe->setPaper('a4', 'landscape');
-        // $coePdf = $coe->output();
-
-        // $relativePath = FilePath::COE->value . hash('sha256', time()) . '.pdf';
-        // $coePath = 'public/' . $relativePath;
-
-        // Storage::put($coePath, $coePdf);
-
         $relativePath = $this->generateContent($coeRequest);
 
         return $relativePath;
@@ -155,7 +143,9 @@ class CoeController extends Controller
         $disk = 'public';
 
         try {
-            $pdfFilePath = $this->convert($docxFilePath, '', $disk);
+            $pdfFilePath = $this->convert($docxFilePath, FilePath::COE->value, $disk);
+            Storage::disk('public')->delete($docxFilePath);
+
             return $pdfFilePath;
         } catch (\Throwable $th) {
             report($th);
@@ -183,10 +173,6 @@ class CoeController extends Controller
 
             $coe->requestor->jobDetail->update([
                 'emp_status_id' => EmploymentStatus::RESIGNED->value
-            ]);
-
-            $coe->requestor->lifecycle->update([
-                'separated_at' => now(),
             ]);
 
             $coe->requestor->lifecycle->update([
