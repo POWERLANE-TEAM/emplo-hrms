@@ -19,6 +19,7 @@ use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
@@ -104,10 +105,15 @@ class FortifyServiceProvider extends ServiceProvider
                         }
                     }
 
-
-
                     if ($hasAccess) {
-                        return redirect()->intended()->with('clearSessionStorageKeys', 'pageThemePreference');
+
+                        // check first if redirect would be successful free from error status code
+                        $testRequest = Request::create($intendedUrl, 'GET');
+                        $testResponse = app()->handle($testRequest);
+                        if ($testResponse->isOk()) {
+                            return redirect($intendedUrl)->with('clearSessionStorageKeys', 'pageThemePreference');
+                        }
+
                     }
                 }
 
@@ -128,6 +134,7 @@ class FortifyServiceProvider extends ServiceProvider
 
                 return redirect('/')->with('clearSessionStorageKeys', 'pageThemePreference');;
             }
+
         });
     }
 
