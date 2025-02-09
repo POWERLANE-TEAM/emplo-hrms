@@ -54,6 +54,7 @@ class CoeController extends Controller
 
         $coe = RouteHelper::validateModel(CoeRequest::class, $coe);
 
+        $coe->loadMissing(['requestor.lifecycle', 'requestor.jobTitle.department']);
 
         return view('employee.separation.coe.request', compact('coe'));
     }
@@ -65,7 +66,8 @@ class CoeController extends Controller
     public function edit($coeRequest)
     {
 
-        // dump($coeRequest);
+        $coeRequest->loadMissing(['requestor.lifecycle', 'requestor.jobTitle.department']);
+
         $coeData = [
             'name' =>  $coeRequest->requestor->fullname,
             'empStart' => $coeRequest->requestor->lifecycle->start_date,
@@ -86,7 +88,6 @@ class CoeController extends Controller
     {
         $reader = IOFactory::createReader('Word2007');
 
-        // echo $path;
 
         if (Storage::disk('public')->missing($this->coeTemplatePath)) {
             abort(404);
