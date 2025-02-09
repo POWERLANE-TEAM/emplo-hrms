@@ -26,11 +26,10 @@ class ApplicationDocController extends Controller
             return view('employee.pre-employment-copy');
         }
 
-        if(!auth()->user()->account_type ==  AccountType::APPLICANT->value)
+        if (!auth()->user()->account_type ==  AccountType::APPLICANT->value)
             return redirect()->route('employee.general.documents.all');
 
         return view('employee.pre-employment');
-
     }
 
     /* store a new resource */
@@ -76,18 +75,29 @@ class ApplicationDocController extends Controller
             $first_name = $preemployed_user->account->first_name;
             $last_name = $preemployed_user->account->last_name;
 
-            $user_folder = $first_name . '_' . $last_name . '_' . dechex($user_id);
+            $user_folder = dechex($user_id);
 
             $application_id = $preemployed_user->account->application->application_id;
 
-            $path = $file->storeAs(FilePath::PRE_EMPLOYMENT->value . "$user_folder", $hashed_name, 'public');
+            $path = $file->storeAs(FilePath::PRE_EMPLOYMENT->value . "/$user_folder", $hashed_name, 'public');
 
             /* Needs to be updated to store in application docs instead */
 
-            $preemp_doc = new ApplicationDoc;
-            $preemp_doc->preemp_req_id = $doc_id;
-            $preemp_doc->application_id = $application_id;
-            $preemp_doc->file_path = $path;
+            $preemp_doc = ApplicationDoc::where('preemp_req_id', $doc_id)
+                ->where('application_id', $application_id)
+                ->first();
+
+            if ($preemp_doc) {
+
+                $preemp_doc->file_path = $path;
+            } else {
+
+                $preemp_doc = new ApplicationDoc;
+                $preemp_doc->preemp_req_id = $doc_id;
+                $preemp_doc->application_id = $application_id;
+                $preemp_doc->file_path = $path;
+            }
+
             $preemp_doc->save();
 
             /* Should be preemp_requirements name instead */

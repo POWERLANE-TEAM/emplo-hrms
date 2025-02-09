@@ -99,7 +99,7 @@ class EmployeesTable extends DataTableComponent
                         ->orderBy('middle_name', $direction);
                 })
                 ->searchable(function (Builder $query, $searchTerm) {
-                    // $this->applyFullNameSearch($query, $searchTerm);
+                    $this->applyFullNameSearch($query, $searchTerm);
                 })
                 ->excludeFromColumnSelect(),
             Column::make('Job Title')
