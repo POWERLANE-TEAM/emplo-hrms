@@ -166,17 +166,18 @@ class OvertimePolicy
     }
 
     /**
-     * Check if user employee overtime request is still untouched by approvers.
+     * Check if user employee overtime request is still untouched by approvers and date of filing is not less than or equal a week.
      * 
+     * @param \App\Models\User|null $user
      * @param \App\Models\Overtime $overtime
      * @return \Illuminate\Auth\Access\Response
      */
     public function editOvertimeRequest(?User $user, Overtime $overtime): Response
     {
-        $record = $overtime->first();
-
-        return is_null($record->authorizer_signed_at) &&
-            is_null($record->denied_at)
+        return 
+            $overtime->recent() &&
+            ! $overtime->authorizer_signed_at &&
+            ! $overtime->denied_at
                 ? Response::allow()
                 : Response::deny();
     }

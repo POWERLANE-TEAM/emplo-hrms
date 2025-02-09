@@ -42,7 +42,7 @@ class FileManagerController extends Controller
 
     public function leaves()
     {
-        abort(418, __('Idk man, sometimes it do be like that.'));
+        return view('employee.basic.documents.leaves.index');
     }
 
     public function viewContractAttachment(string $attachment)

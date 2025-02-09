@@ -1,20 +1,20 @@
-<section id="attendance" class="tab-section-employee" wire:ignore.self>
+<div wire:ignore.self>
     <section class="px-4">
         <div class="row">
             <div class="col-6">
                 <div class="text-primary fs-3 fw-bold d-flex align-items-center"">
-                    Attendance
+                    {{ __('Attendance') }}
                 </div>
             </div>
 
             <div class=" col-6">
                 <div class="row">
                     <div class="col-4 d-flex align-items-center justify-content-end">
-                        <label class="fw-semibold text-secondary-emphasis"> Payroll Period </label>
+                        <label class="fw-semibold text-secondary-emphasis">{{ __('Payroll Period') }}</label>
                     </div>
 
                     <div class="col-8">
-                        <select wire:model.change="period" id="period" class="form-select" style="flex: 1;">
+                        <select id="period" class="form-select" style="flex: 1;">
                             @foreach ($this->periods as $payroll)
                                 <option value="{{ $payroll->payroll_id }}">
                                     {{ $payroll->cut_off }}
@@ -86,30 +86,31 @@
             </div>
         </div>
     </section>
-</section>
+</div>
 
 @script
 <script>
-    const events = @json($events);
-    initCalendar(events);
+    Livewire.hook('morphed', (component) => {
+        const events = @json($events);
+        initCalendar(events);
+        const periodDropdown = document.getElementById('period');
 
-    const periodDropdown = document.getElementById('period');
+        periodDropdown.addEventListener("change", function () {
+            const selectedOption = this.options[this.selectedIndex].text;
 
-    periodDropdown.addEventListener("change", function () {
-        const selectedOption = this.options[this.selectedIndex].text;
+            const startDateMatch = selectedOption.match(/([A-Za-z]+ \d{1,2}, \d{4})/);
+            if (startDateMatch) {
+                const startDate = startDateMatch[0];
 
-        const startDateMatch = selectedOption.match(/([A-Za-z]+ \d{1,2}, \d{4})/);
-        if (startDateMatch) {
-            const startDate = startDateMatch[0];
-
-            const event = new CustomEvent("periodChanged", {
-                detail: {
-                    startDate,
-                    fullText: selectedOption,
-                },
-            });
-            document.dispatchEvent(event);
-        }
+                const event = new CustomEvent("periodChanged", {
+                    detail: {
+                        startDate,
+                        fullText: selectedOption,
+                    },
+                });
+                document.dispatchEvent(event);
+            }
+        });
     });
 </script>
 @endscript

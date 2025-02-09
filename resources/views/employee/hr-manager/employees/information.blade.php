@@ -2,7 +2,7 @@
 @use ('App\Models\Employee')
 
 @section('head')
-    <title> {{ $employee->last_name }} | Employee Information</title>
+    <title> {{ $employee->full_name }} • Profile</title>
     <script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
     <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
@@ -67,24 +67,44 @@
             <!-- Information Tab Section-->
 
             <!-- Sub-section: Employee Information -->
-            <livewire:hr-manager.employees.information :$employee />
-            <!-- Sub-section: Documents -->
-            <livewire:hr-manager.employees.documents :$employee />
-
+            <section id="information" class="tab-section-employee">
+                <livewire:hr-manager.employees.information :$employee />
+            </section>
+            
             <!-- Attendance Tab Section -->
-            <livewire:hr-manager.employees.attendance :$employee />
+            <section id="attendance" class="tab-section-employee">
+                <livewire:hr-manager.employees.attendance :$employee />
+            </section>
 
             <!-- Payslips Tab Section -->
-            <livewire:hr-manager.employees.payslips :$routePrefix :$employee />
+            <section id="payslips" class="tab-section-employee">
+                <livewire:hr-manager.employees.payslips :$routePrefix :$employee />
+            </section>
 
             <!-- Contract Tab Section -->
-            <livewire:hr-manager.employees.contract :$routePrefix :$employee />
+            <section id="contract" class="tab-section-employee">
+                <livewire:hr-manager.employees.contract :$routePrefix :$employee />
+            </section>
 
             <!-- Leaves Tab Section -->
-            <livewire:hr-manager.employees.leaves :$routePrefix :$employee />
+            <section id="leaves" class="tab-section-employee">
+                <livewire:hr-manager.employees.leaves :$routePrefix :$employee />
+            </section>
 
             <!-- Overtime Tab Section -->
-            <livewire:hr-manager.employees.overtime :$employee />
+            <section id="overtime" class="tab-section-employee">
+                <livewire:hr-manager.employees.overtime :$employee />
+            </section>
+
+            <!-- Payroll Summary Section -->
+            <section id="psummary" class="tab-section-employee">
+                <livewire:hr-manager.employees.payroll-summary :$employee />
+            </section>
+
+            <!-- Trainings Section -->
+            <section id="trainings" class="tab-section-employee">
+                <livewire:hr-manager.employees.trainings :$employee />
+            </section>
         </div>
     </section>
 @endsection

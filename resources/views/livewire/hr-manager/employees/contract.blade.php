@@ -1,7 +1,7 @@
 @use(Illuminate\Support\Carbon)
 @use(App\Enums\EmploymentStatus)
 
-<section id="contract" class="tab-section-employee" wire:ignore>
+<div wire:ignore>
     <section class="px-4 mb-4">
         <div class="row">
             <div class="col-md-12">
@@ -82,7 +82,7 @@
     </section>
 
     <livewire:employee.tables.individual-employee-contracts-table :$routePrefix :$employee />
-</section>
+</div>
 
 @script
 <script>

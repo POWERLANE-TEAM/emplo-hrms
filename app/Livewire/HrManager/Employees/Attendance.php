@@ -9,11 +9,13 @@ use App\Models\Employee;
 use App\Models\Overtime;
 use App\Models\AttendanceLog;
 use App\Models\EmployeeLeave;
+use Livewire\Attributes\Lazy;
 use Illuminate\Support\Carbon;
 use Livewire\Attributes\Locked;
 use App\Enums\BiometricPunchType;
 use Livewire\Attributes\Computed;
 
+#[Lazy(isolate: false)]
 class Attendance extends Component
 {
     public $period;
@@ -38,6 +40,11 @@ class Attendance extends Component
     public function mount()
     {
         $this->period = $this->periods->first()->payroll_id;
+    }
+
+    public function placeholder()
+    {
+        return view('livewire.placeholder.profile');
     }
 
     private function getTotalPresentWorkingDays()

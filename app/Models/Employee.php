@@ -3,13 +3,15 @@
 namespace App\Models;
 
 use App\Enums\CivilStatus;
-use App\Enums\ServiceIncentiveLeave;
 use Illuminate\Support\Str;
 use App\Enums\ActivityLogName;
 use Illuminate\Support\Carbon;
+use App\Enums\EmploymentStatus as Status;
 use Spatie\Activitylog\LogOptions;
+use App\Enums\ServiceIncentiveLeave;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -20,8 +22,8 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
-use App\Http\Helpers\GovernmentMandateContributionsIdFormat;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use App\Http\Helpers\GovernmentMandateContributionsIdFormat;
 
 class Employee extends Model
 {
@@ -34,10 +36,6 @@ class Employee extends Model
         'employee_id',
         'created_at',
         'updated_at',
-    ];
-
-    protected $with = [
-        'jobDetail',
     ];
 
     /**
@@ -200,6 +198,53 @@ class Employee extends Model
     }
 
     /**
+     * Query builder scope to get active employees (Probationary, Regular) only.
+     */
+    public function scopeActiveEmploymentStatus(Builder $query): void
+    {
+        $query->whereHas('status',
+            fn ($subQuery) => $subQuery->whereIn('emp_status_name', [
+                Status::PROBATIONARY->label(),
+                Status::REGULAR->label(),
+            ])
+        );
+    }
+
+    /**
+     * Query builder scope to get inactive employees (Resigned, Retired, or Terminated) only.
+     */
+    public function scopeInactiveEmploymentStatus(Builder $query): void
+    {
+        $query->whereHas('status',
+            fn ($subQuery) => $subQuery->whereIn('emp_status_name', [
+                Status::TERMINATED->label(),
+                Status::RESIGNED->label(),
+                Status::RETIRED->label(),
+            ])
+        );
+    }
+
+    /**
+     * Query builder scope to get employees with regular shift.
+     */
+    public function scopeRegularShift(Builder $query): void
+    {
+        $query->whereHas('shift.category',
+            fn($subQuery) => $subQuery->where('shift_name', 'Regular'),
+        );
+    }
+
+    /**
+     * Query builder scope to get employees with night differential shift.
+     */
+    public function scopeNightDifferentialShift(Builder $query): void
+    {
+        $query->whereHas('shift.category',
+            fn ($subQuery) => $subQuery->where('shift_name', 'Night Differential'),
+        );
+    }
+
+    /**
      * Get the account associated with the employee.
      */
     public function account(): MorphOne
@@ -213,6 +258,14 @@ class Employee extends Model
     public function attendanceLogs(): HasMany
     {
         return $this->hasMany(AttendanceLog::class, 'employee_id', 'employee_id');
+    }
+
+    /**
+     * Get the payroll summary associated with the employee.
+     */
+    public function payrollSummary(): HasMany
+    {
+        return $this->hasMany(PayrollSummary::class, 'employee_id', 'employee_id');
     }
 
     /**
@@ -268,7 +321,7 @@ class Employee extends Model
      */
     public function shift(): HasOneThrough
     {
-        return $this->hasOneThrough(Shift::class, EmployeeJobDetail::class, 'employee_id', 'shift_id', 'employee_id', 'shift_id');
+        return $this->hasOneThrough(EmployeeShift::class, EmployeeJobDetail::class, 'employee_id', 'employee_shift_id', 'employee_id', 'shift_id');
     }
 
     /**
@@ -724,11 +777,8 @@ class Employee extends Model
             ->withPivot('is_editor');
     }
 
-
     /**
      * Get all of the resignations for the employee through the employee documents.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
     public function resignations(): HasManyThrough
     {
@@ -742,6 +792,9 @@ class Employee extends Model
         );
     }
 
+    /**
+     * Get certificate of employment (COE) associated with the employee.
+     */
     public function coeRequests(): HasMany
     {
         return $this->hasMany(CoeRequest::class, 'requested_by');
@@ -760,9 +813,9 @@ class Employee extends Model
                 $causerFirstName = Str::ucfirst(Auth::user()->account->first_name);
 
                 return match ($eventName) {
-                    'created' => __($causerFirstName.' created a new employee record.'),
-                    'updated' => __($causerFirstName.' updated an employee\'s information.'),
-                    'deleted' => __($causerFirstName.' deleted an employee.'),
+                    'created' => __("{$causerFirstName} created a new employee record."),
+                    'updated' => __("{$causerFirstName} updated an employee\'s information."),
+                    'deleted' => __("{$causerFirstName} deleted an employee."),
                 };
             });
     }

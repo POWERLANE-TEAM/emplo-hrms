@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Enums\EmploymentStatus;
 use App\Models\Holiday;
 use App\Models\Employee;
 use App\Models\AttendanceLog;
@@ -19,17 +18,13 @@ class AttendanceLog2024Seeder extends Seeder
     {
         $holidays = Holiday::pluck('date')->toArray();
 
-        $employees = Employee::whereHas('status', 
-            fn ($employee) => $employee->whereIn('emp_status_name', [
-                EmploymentStatus::REGULAR->label(),
-                EmploymentStatus::PROBATIONARY->label(),
-            ]))->get();
+        $employees = Employee::activeEmploymentStatus()->get();
 
         foreach ($employees as $employee) {
             for ($day = 1; $day <= 365; $day++) {
                 $date = Carbon::create(2024, 1, 1)->addDays($day - 1);
                 
-                if ($date->isWeekend() || in_array($date->format('Y-m-d'), $holidays)) {
+                if ($date->isWeekend() || in_array($date->format('m-d'), $holidays)) {
                     continue;
                 }
 
@@ -61,14 +56,14 @@ class AttendanceLog2024Seeder extends Seeder
         $checkInTime = $this->generateTimestampForEmployee($date, BiometricPunchType::CHECK_IN);
         $checkOutTime = $this->generateTimestampForEmployee($date, BiometricPunchType::CHECK_OUT);
 
-        AttendanceLog::create([
+        AttendanceLog::factory()->create([
             'employee_id' => $employee->employee_id,
             'state' => 1,
             'type' => BiometricPunchType::CHECK_IN->value,
             'timestamp' => $checkInTime,
         ]);
 
-        AttendanceLog::create([
+        AttendanceLog::factory()->create([
             'employee_id' => $employee->employee_id,
             'state' => 2,
             'type' => BiometricPunchType::CHECK_OUT->value,

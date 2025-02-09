@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Shift extends Model
 {
@@ -16,4 +17,20 @@ class Shift extends Model
         'start_time',
         'end_time',
     ];
+
+    /**
+     * Local scope query builder to get model of Regular shift name.
+     */
+    public function scopeRegular(Builder $query): void
+    {
+        $query->where('shift_name', 'Regular');
+    }
+
+    /**
+     * Local scope query builder to get model of Night Differential name.
+     */
+    public function scopeNightDifferential(Builder $query)
+    {
+        $query->where('shift_name', 'Night Differential');
+    }
 }

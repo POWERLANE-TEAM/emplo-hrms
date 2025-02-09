@@ -2,7 +2,7 @@
 
 <meta name="twitter:card" content="{{ Vite::asset('resources/images/logo/pri-thumbnail.webp') }}">
 
-<meta property="og:title" content="Title Here">
+<meta property="og:title" content="Emplo • HRMS">
 <meta property="og:type" content="article">
 <meta property="og:url" content="{{ config('app.url') }}">
 <meta property="og:image" content="{{ Vite::asset('resources/images/logo/pri-thumbnail.webp') }}">

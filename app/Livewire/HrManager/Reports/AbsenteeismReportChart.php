@@ -28,17 +28,12 @@ class AbsenteeismReportChart extends Component
     public function mount()
     {
         $attendanceLogs = AttendanceLog::whereYear('timestamp', $this->year)
-            ->where('type', BiometricPunchType::CHECK_IN)
-            ->whereHas('employee', function ($query) {
-                $query->whereNotIn('timestamp', function ($subQuery) {
-                    $subQuery->select('date')
-                        ->from('holidays')
-                        ->whereRaw('EXTRACT(MONTH FROM date) = ?', [Carbon::parse($this->year)->month]);
-                });
-            })
             ->get()
+            ->where('type', BiometricPunchType::CHECK_IN->value)
+            ->where(fn ($log) => $log->timestamp->copy()->format('m-d'))
+            ->whereNotIn('timestamp', $this->holidays->toArray())
             ->groupBy(function($date) {
-                return Carbon::parse($date->timestamp)->format('Y-m');
+                return $date->timestamp->copy()->format('Y-m');
             });    
     
         $this->yearlyData = [];
@@ -49,15 +44,14 @@ class AbsenteeismReportChart extends Component
     
         $monthlyAbsences = [];
 
-        $totalEmployees = Employee::whereHas('status', 
-            fn ($query) => $query->whereIn('emp_status_name', [
-                EmploymentStatus::REGULAR->label(),
-                EmploymentStatus::PROBATIONARY->label(),
-            ]))
-            ->get()
-            ->count();
+        $totalEmployees = Employee::activeEmploymentStatus()->get()->count();
     
-        foreach ($attendanceLogs as $month => $logs) {
+        $sortedMonths = $attendanceLogs->keys()->sort()->values();
+
+        foreach ($sortedMonths as $month) {
+
+            $logs = $attendanceLogs[$month];
+            
             $totalWorkdays = $this->getWorkdaysInMonth($month);
 
             $daysAttended = $logs->count();

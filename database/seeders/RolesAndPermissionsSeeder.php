@@ -54,7 +54,6 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::VIEW_DOCUMENTS->value,
             UserPermission::VIEW_ISSUES->value,
             UserPermission::VIEW_RESIGNATION->value,
-            UserPermission::VIEW_EMP_PERFORMANCE_TRAINING->value,
             UserPermission::CREATE_LEAVE_REQUEST->value,
             UserPermission::CREATE_OVERTIME_REQUEST->value,
             UserPermission::CREATE_ISSUE_REPORT->value,
@@ -88,7 +87,7 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::VIEW_ALL_EMP_PERFORMANCE_EVAL_FINAL_APPROVAL_FORM->value,
             UserPermission::VIEW_ALL_RELATIONS->value,
             UserPermission::VIEW_ALL_ISSUES->value,
-            UserPermission::VIEW_ALL_TRAINING->value,
+            UserPermission::VIEW_ALL_TRAININGS->value,
             UserPermission::VIEW_TALENT_EVALUATOR->value,
             UserPermission::VIEW_PLAN_GENERATOR->value,
             UserPermission::VIEW_ALL_FILED_RESIGNATION_LETTERS->value,
@@ -101,6 +100,8 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::VIEW_JOB_LISTING_MANAGER->value,
             UserPermission::VIEW_CALENDAR_MANAGER->value,
             UserPermission::VIEW_ANNOUNCEMENT_MANAGER->value,
+            UserPermission::VIEW_ALL_EMPLOYEE_INFORMATION->value,
+            UserPermission::VIEW_EMPLOYEE_INFORMATION->value,
 
             // Create cases goes here
             UserPermission::CREATE_APPLICANT_EXAM_SCHEDULE->value,
@@ -115,6 +116,7 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::CREATE_JOB_TITLE->value,
             UserPermission::CREATE_ANNOUNCEMENT->value,
             UserPermission::CREATE_JOB_LISTING->value,
+            UserPermission::CREATE_EMPLOYEE_TRAINING->value,
 
             // Update cases goes here
             UserPermission::UPDATE_PENDING_APPLICATION_STATUS->value,
@@ -156,6 +158,9 @@ class RolesAndPermissionsSeeder extends Seeder
             UserPermission::VIEW_PERFORMANCE_CONFIG->value,
             UserPermission::VIEW_FORM_CONFIG->value,
             UserPermission::VIEW_ONLINE_USERS->value,
+            UserPermission::VIEW_ALL_EMPLOYEES->value,
+            UserPermission::VIEW_ALL_EMPLOYEE_INFORMATION->value,
+            UserPermission::VIEW_EMPLOYEE_INFORMATION->value,
 
             // Create cases goes here
             UserPermission::CREATE_JOB_LISTING->value,

@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Shift;
+use App\Models\EmployeeShift;
 use App\Models\Employee;
 use App\Models\JobTitle;
 use App\Models\SpecificArea;
@@ -19,10 +19,10 @@ class EmployeeJobDetailSeeder extends Seeder
     {
         $employees = Employee::all()->map(function ($item) {
             return [
-                'employee_id' => $item->employee_id,
-                'job_title_id' => JobTitle::inRandomOrder()->first()->job_title_id,
-                'area_id' => SpecificArea::inRandomOrder()->first()->area_id,
-                'shift_id' => Shift::inRandomOrder()->first()->shift_id,
+                'employee_id'   => $item->employee_id,
+                'job_title_id'  => JobTitle::inRandomOrder()->first()->job_title_id,
+                'area_id'       => SpecificArea::inRandomOrder()->first()->area_id,
+                'shift_id'      => EmployeeShift::inRandomOrder()->first()->employee_shift_id,
                 'emp_status_id' => EmploymentStatus::inRandomOrder()->first()->emp_status_id,
             ];
         })->toArray();

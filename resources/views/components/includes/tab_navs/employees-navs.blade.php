@@ -11,4 +11,6 @@
         ['title' => 'Contracts', 'section' => 'contract'],
         ['title' => 'Leaves', 'section' => 'leaves'],
         ['title' => 'Overtimes', 'section' => 'overtime'],
+        ['title' => 'Payrolls', 'section' => 'psummary'],
+        ['title' => 'Trainings', 'section' => 'trainings'],
 ]" />

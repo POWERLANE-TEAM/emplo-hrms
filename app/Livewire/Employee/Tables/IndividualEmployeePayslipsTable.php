@@ -4,6 +4,7 @@ namespace App\Livewire\Employee\Tables;
 
 use App\Enums\FilePath;
 use App\Models\Payslip;
+use Livewire\Attributes\Lazy;
 use App\Http\Helpers\FileSize;
 use Illuminate\Support\Carbon;
 use Livewire\Attributes\Locked;
@@ -16,6 +17,7 @@ use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Columns\LinkColumn;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateRangeFilter;
 
+#[Lazy]
 class IndividualEmployeePayslipsTable extends DataTableComponent
 {
     protected $model = Payslip::class;
@@ -23,11 +25,16 @@ class IndividualEmployeePayslipsTable extends DataTableComponent
     #[Locked]
     public $routePrefix;
 
+    public function placeholder()
+    {
+        return view('livewire.placeholder.profile');
+    }
+
     public function configure(): void
     {
         $this->setPrimaryKey('payslip_id');
         $this->setPageName('employee-payslips');
-        $this->setEagerLoadAllRelationsEnabled();
+        // $this->setEagerLoadAllRelationsEnabled();
         $this->setSingleSortingDisabled();
         $this->enableAllEvents();
         $this->setQueryStringEnabled();
@@ -39,6 +46,7 @@ class IndividualEmployeePayslipsTable extends DataTableComponent
         $this->setPerPageAccepted([10, 25, 50, 100, -1]);
         $this->setToolBarAttributes(['class' => ' d-md-flex my-md-2']);
         $this->setToolsAttributes(['class' => ' bg-body-secondary border-0 rounded-3 px-5 py-2']);
+        $this->setRememberColumnSelectionDisabled();
 
         $this->setTableAttributes([
             'default' => true,

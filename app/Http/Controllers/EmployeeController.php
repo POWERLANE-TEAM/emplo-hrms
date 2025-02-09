@@ -2,44 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Contracts\View\Factory as ViewFactory;
-use Illuminate\Contracts\View\View;
+use App\Models\Employee;
 
 class EmployeeController extends Controller
 {
-    /* Show all resource */
-    public function index(): ViewFactory|View
+    public function index()
     {
-        return view('employee.all.index');
+        return view('employee.hr-manager.employees.all');
     }
 
-    /* Show form page for creating resource */
-    // public function create() : ViewFactory|View
-    // {
-    //     // return view();
-    // }
-
-    /* store a new resource */
-    public function store()
+    public function show(Employee $employee)
     {
-        //
-    }
-
-    /* Get single resource */
-    // public function show(): ViewFactory|View
-    // {
-    //     return view();
-    // }
-
-    /* Patch or edit */
-    public function update()
-    {
-        //
-    }
-
-    /* Delete */
-    public function destroy()
-    {
-        //
+        return view('employee.hr-manager.employees.information', compact('employee'));
     }
 }

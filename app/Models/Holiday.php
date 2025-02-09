@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Support\Str;
+use App\Enums\PhHolidayType;
 use App\Enums\ActivityLogName;
 use Spatie\Activitylog\LogOptions;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -21,7 +23,22 @@ class Holiday extends Model
         'type',
     ];
 
-    // date accessor
+    /**
+     * Local query builder scope to get regular holidays.
+     */
+    public function scopeRegular(Builder $query): void
+    {
+        $query->where('type', PhHolidayType::REGULAR->value);
+    }
+
+    /**
+     * Local query builder scope to get special(working/non-working) holidays.
+     */
+    public function scopeSpecial(Builder $query): void
+    {
+        $query->where('type', PhHolidayType::SPECIAL_NON_WORKING->value)
+            ->orWhere('type', PhHolidayType::SPECIAL_WORKING->value);
+    }
 
     /**
      * Override default values for more controlled logging.

@@ -4,11 +4,12 @@ namespace App\Livewire\HrManager\Employees;
 
 use Livewire\Component;
 use App\Models\Employee;
+use Livewire\Attributes\Lazy;
 use App\Http\Helpers\Timezone;
-use Illuminate\Support\Carbon;
 use Livewire\Attributes\Locked;
 use Illuminate\Support\Facades\Cache;
 
+#[Lazy(isolate: false)]
 class Information extends Component
 {
     #[Locked]
@@ -50,15 +51,14 @@ class Information extends Component
                     'jobLevelName'          => $employee->jobTitle->jobLevel->job_level_name,
                     'jobFamily'             => $employee->jobTitle->jobFamily->job_family_name,
                     'employmentStatus'      => $employee->status->emp_status_name,
-                    'shift'                 => $employee->shift->shift_name,
-                    'shiftSched'            => $employee->shift_schedule,
+                    'shift'                 => $employee->shift->category->shift_name,
+                    'shiftSched'            => $employee->shift->schedule,
                     'hiredAt'               => $employee?->application?->hired_at,
-                    'dob'                   => $this->parseDateToReadableFormat($employee->date_of_birth),
+                    'dob'                   => $employee->date_of_birth,
                     'sss'                   => $employee->sss_no,
                     'philHealth'            => $employee->philhealth_no,
                     'tin'                   => $employee->tin_no,
                     'pagIbig'               => $employee->pag_ibig_no,
-                    'registeredAt'          => $this->parseDateToReadableFormat($employee->created_at),
                 ];
             });
         }
@@ -69,9 +69,9 @@ class Information extends Component
         $this->timezone = Timezone::get();
     }
 
-    private function parseDateToReadableFormat($date)
+    public function placeholder()
     {
-        return Carbon::parse($date)->setTimezone($this->timezone)->format('F, j Y');
+        return view('livewire.placeholder.profile');
     }
 
     public function render()

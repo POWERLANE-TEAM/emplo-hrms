@@ -2,15 +2,15 @@
 
 namespace App\Livewire\Employee\Tables;
 
-use App\Livewire\Employee\Overtimes\CutOffPayoutPeriodsApproval;
 use App\Models\Employee;
 use App\Models\Overtime;
+use App\Enums\StatusBadge;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\View\ComponentAttributeBag;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
+use App\Livewire\Employee\Overtimes\CutOffPayoutPeriodsApproval;
 
 class EmployeeOvertimeRequestSummariesTable extends DataTableComponent
 {
@@ -34,6 +34,7 @@ class EmployeeOvertimeRequestSummariesTable extends DataTableComponent
         $this->setPerPageAccepted([10, 25, 50, 100, -1]);
         $this->setToolBarAttributes(['class' => ' d-md-flex my-md-2']);
         $this->setToolsAttributes(['class' => ' bg-body-secondary border-0 rounded-3 px-5 py-2']);
+        $this->setRememberColumnSelectionDisabled();
 
         $this->setTableAttributes([
             'default' => true,
@@ -103,17 +104,16 @@ class EmployeeOvertimeRequestSummariesTable extends DataTableComponent
             ],
             'overtime_details' => [
                 'work_performed'        => $row->work_performed,
-                'date'                  => Carbon::make($row->date)->format('F d, Y'),
-                'start_time'            => $row->start_time,
-                'end_time'              => $row->end_time,
+                'start_time'            => $row->start_time->format('F d, Y g:i A'),
+                'end_time'              => $row->end_time->format('F d, Y g:i A'),
                 'hours_requested'       => $row->hours_requested,
-                'authorizer_signed_at'  => $row->authorizer_signed_at,
+                'authorizer_signed_at'  => $row->authorizer_signed_at?->format('F d, Y g:i A'),
                 'authorizer'            => $row?->authorizedBy?->full_name,
-                'denied_at'             => $row->denied_at,
+                'denied_at'             => $row->denied_at?->format('F d, Y g:i A'),
                 'denier'                => $row?->deniedBy?->full_name,
                 'feedback'              => $row->feedback,
-                'filed_at'              => $row->filed_at,
-                'modified_at'           => Carbon::make($row->modified_at)->format('F d, Y'),             
+                'filed_at'              => $row->filed_at->format('F d, Y g:i A'),
+                'modified_at'           => $row->modified_at->format('F d, Y g:i A'),         
             ],
         ];
     }
@@ -138,12 +138,15 @@ class EmployeeOvertimeRequestSummariesTable extends DataTableComponent
                 'authorizedBy',
                 'deniedBy',
                 'employee',
-                'employee.jobTitle',
-                'employee.shift',
-                'employee.jobTitle.jobLevel',
-                'employee.jobTitle.jobFamily',
-                'employee.account',
-                'employee.status',
+                'employee' => [
+                    'account',
+                    'status',
+                    'shift',
+                    'jobTitle' => [
+                        'jobLevel',
+                        'jobFamily',
+                    ],
+                ],
             ])
             ->where('employee_id', $this->employee->employee_id)
             ->select('*');
@@ -155,37 +158,40 @@ class EmployeeOvertimeRequestSummariesTable extends DataTableComponent
             Column::make(__('Work Performed'))
                 ->sortable(),
 
-            Column::make(__('Date Requested'))
-                ->label(fn ($row) => Carbon::make($row->date)->format('F d, Y'))
-                ->sortable(function (Builder $query, $direction) {
-                    return $query->orderBy('date', $direction);
-                })
-                ->setSortingPillDirections('Asc', 'Desc'),
-
             Column::make(__('Total Hours'))
                 ->label(fn ($row) => $row->hoursRequested)
                 ->deselected(),
 
             Column::make(__('Start Time'))
+                ->format(fn ($row) => $row->format('F d, Y g:i A'))
                 ->sortable(),
 
             Column::make(__('End Time'))
+                ->format(fn ($row) => $row->format('F d, Y g:i A'))
                 ->sortable(),
 
             Column::make(__('Date Filed'))
-                ->label(fn ($row) => $row->filed_at)
+                ->label(fn ($row) => $row->filed_at->format('F d, Y g:i A'))
                 ->sortable(fn (Builder $query, $direction) => $query->orderBy('filed_at', $direction))
                 ->setSortingPillDirections('Asc', 'Desc'),
 
             Column::make(__('Authorization'))
                 ->label(function ($row) {
+                    $badge = [
+                        'color' => StatusBadge::PENDING->getColor(),
+                        'slot' => StatusBadge::PENDING->getLabel(),
+                    ];
+
                     if ($row->authorizer_signed_at) {
                         return $row->authorizedBy->full_name;
                     } elseif ($row->denied_at) {
-                        return __('Denied');
-                    } else {
-                        return __('Pending');
+                        $badge = [
+                            'color' => StatusBadge::DENIED->getColor(),
+                            'slot' => StatusBadge::DENIED->getLabel(),
+                        ];
                     }
+
+                    return view('components.status-badge')->with($badge);
                 }),
         ];
     }

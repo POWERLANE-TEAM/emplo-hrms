@@ -2,9 +2,9 @@
 
 use App\Models\Application;
 use App\Models\Employee;
+use App\Models\EmployeeShift;
 use App\Models\EmploymentStatus;
 use App\Models\JobTitle;
-use App\Models\Shift;
 use App\Models\SpecificArea;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -35,8 +35,8 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
-            $table->foreignIdFor(Shift::class, 'shift_id')
-                ->constrained('shifts', 'shift_id')
+            $table->foreignIdFor(EmployeeShift::class, 'shift_id')
+                ->constrained('employee_shifts', 'employee_shift_id')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 

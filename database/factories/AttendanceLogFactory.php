@@ -5,7 +5,6 @@ namespace Database\Factories;
 use App\Models\Employee;
 use App\Models\AttendanceLog;
 use App\Enums\BiometricPunchType;
-use App\Enums\EmploymentStatus;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -30,22 +29,15 @@ class AttendanceLogFactory extends Factory
         );        
     
         $timestamp = match ($type) {
-            BiometricPunchType::CHECK_IN->value => fake()->dateTimeBetween('8:00', '10:00')->format('Y-m-d H:i:s'),
-            BiometricPunchType::CHECK_OUT->value => fake()->dateTimeBetween('16:00', '18:00')->format('Y-m-d H:i:s'),
+            BiometricPunchType::CHECK_IN->value => fake()->dateTimeBetween('5:30', '14:00')->format('Y-m-d H:i:s'),
+            BiometricPunchType::CHECK_OUT->value => fake()->dateTimeBetween('13:30', '22:00')->format('Y-m-d H:i:s'),
         };
 
         $uid = $this->generateUniqueUid();
-
-        $employee = Employee::whereHas('status', function ($query) {
-            $query->whereIn('emp_status_name', [
-                EmploymentStatus::REGULAR->label(),
-                EmploymentStatus::PROBATIONARY->label(),
-            ]);
-        })->inRandomOrder()->first();
-    
+            
         return [
             'uid' => $uid,
-            'employee_id' => $employee->employee_id,
+            'employee_id' => null,
             'state' => fake()->numberBetween(1, 9),
             'type' => $type,
             'timestamp' => $timestamp,
