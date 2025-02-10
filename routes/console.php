@@ -23,6 +23,11 @@ Schedule::daily()
     }
 );
 
-// Schedule::command('generate-payroll-summary')
+// for debugging
+// Schedule::everyFiveSeconds()
 //     ->timezone('Asia/Manila')
-//     ->everyFiveSeconds();
+//     ->group(function () {
+//         Schedule::command('check-payroll-period-opening');
+//         Schedule::command('generate-payroll-summary');
+//     }
+// );
