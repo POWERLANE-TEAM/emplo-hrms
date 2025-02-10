@@ -89,6 +89,10 @@ class CoeRequestsTable extends DataTableComponent
 
             Column::make("Updated at")
             ->label(function($row) {
+
+                if($row->updated_at == $row->created_at){
+                    return '--';
+                }
                return  $row->updated_at->format('F j, Y');
             })
                 ->sortable(),

@@ -1,22 +1,17 @@
 <?php
 
+use App\Enums\FilePath;
 use App\Http\Controllers\Application\ApplicantController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\ContentController;
 use App\Http\Controllers\ApplicationDocController;
-use App\Http\Controllers\ResumeController;
 use App\Http\Controllers\WebThemeController;
 use App\Livewire\Auth\FacebookOAuth;
 use App\Livewire\Auth\GoogleOAuth;
 use App\Livewire\Auth\GoogleOneTap;
 use App\Livewire\Auth\Logout;
-use Barryvdh\DomPDF\Facade\Pdf;
-use Google\Cloud\AIPlatform\V1\Client\ModelServiceClient;
-use Google\Cloud\AIPlatform\V1\ListModelsRequest;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Storage;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
-
 
 Route::group([], function () {
     Route::get('/hiring', function () {
@@ -88,15 +83,3 @@ Route::get('/forgot-password', function () {
 Route::get('/canvas', function () {
     return view('canvas');
 });
-
-Route::get('/pdf', function () {
-    Pdf::setOption(['dpi' => 300]);
-    $coe = Pdf::loadView('coe');
-    $coe->setPaper('a4', 'landscape');
-    return $coe->download('coe.pdf');
-});
-
-Route::get('/coe', function () {
-    return view('coe');
-});
-

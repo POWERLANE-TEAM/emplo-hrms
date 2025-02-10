@@ -11,11 +11,19 @@
 @endsection
 
 @pushOnce('scripts')
+    <script src="https://unpkg.com/filepond-plugin-pdf-preview/dist/filepond-plugin-pdf-preview.min.js"></script>
+    @filepondScripts
+    <script nonce="{{ $nonce }}">
+        document.addEventListener('livewire:init', () => {
+            LivewireFilePond.registerPlugin(FilePondPluginPdfPreview);
+        });
+    </script>
     @vite(['resources/js/employee/hr-manager/employee-info.js'])
     @vite(['resources/js/employee/calendar.js'])
 @endPushOnce
 
 @pushOnce('styles')
+    <link href="https://unpkg.com/filepond-plugin-pdf-preview/dist/filepond-plugin-pdf-preview.min.css" rel="stylesheet">
     @vite(['resources/css/employee/hr-manager/employee-info.css'])
 @endPushOnce
 
@@ -33,20 +41,17 @@
 
     <section class="row pt-2">
         <div class="col-md-4">
-            <x-form.boxed-selectpicker 
-                id="incident_type" 
-                :nonce="$nonce" 
-                :options="Employee::all()->mapWithKeys(fn ($item) => [$item->employee_id => $item->full_name])->toArray()"
-                onchange="handleEmployeeChange(this.value)"
-                placeholder="Select employee">
+            <x-form.boxed-selectpicker id="incident_type" :nonce="$nonce" :options="Employee::all()->mapWithKeys(fn($item) => [$item->employee_id => $item->full_name])->toArray()"
+                onchange="handleEmployeeChange(this.value)" placeholder="Select employee">
             </x-form.boxed-selectpicker>
 
             <script>
                 const handleEmployeeChange = (employeeId) => {
                     if (employeeId) {
-                        const url = `{{ route($routePrefix.'.employees.information', ['employee' => ':employeeId']) }}`.replace(':employeeId', employeeId);
+                        const url = `{{ route($routePrefix . '.employees.information', ['employee' => ':employeeId']) }}`.replace(
+                            ':employeeId', employeeId);
                         window.location.href = url;
-                    }                
+                    }
                 }
             </script>
         </div>

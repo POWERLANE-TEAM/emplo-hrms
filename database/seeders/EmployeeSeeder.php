@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Enums\AccountType;
 use App\Enums\ApplicationStatus;
+use App\Enums\FilePath;
 use App\Enums\UserRole;
 use App\Enums\UserStatus;
 use App\Models\Applicant;
@@ -11,6 +12,7 @@ use App\Models\Application;
 use App\Models\Employee;
 use App\Models\EmployeeDoc;
 use App\Models\EmployeeJobDetail;
+use App\Models\EmployeeLifecycle;
 use App\Models\EmploymentStatus;
 use App\Models\JobTitle;
 use App\Models\JobVacancy;
@@ -18,6 +20,7 @@ use App\Models\PreempRequirement;
 use App\Models\Shift;
 use App\Models\SpecificArea;
 use App\Models\User;
+use App\Traits\NeedsEmptyPdf;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Concurrency;
@@ -25,6 +28,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 function createEmployee($chunkStart, $chunk, $freeEmailDomain)
 {
@@ -72,13 +76,24 @@ function createEmployee($chunkStart, $chunk, $freeEmailDomain)
                             'hired_at' => $timestamp->modify('+' . rand(3, 14) . ' days'),
                         ]);
 
+                        $pdfGen = new class {
+                            use NeedsEmptyPdf;
+                        };
+
                         PreempRequirement::where(function ($query) {
                             $query->where('preemp_req_name', '!=', 'Resume')
                                 ->orWhere('preemp_req_name', '!=', 'resume');
-                        })->get()->each(function ($requirement) use ($application) {
+                        })->get()->each(function ($requirement) use ($application, $pdfGen) {
+
+                            $randomFileName = 'preemp_' . uniqid() . '.pdf';
+
+                            [$filePath, $pdf] = $pdfGen->emptyPdf(FilePath::PRE_EMPLOYMENT->value, $randomFileName, '<h1>Sample Requirement</h1>');
+
+                            Storage::disk('public')->put($filePath, $pdf->output());
+
                             $application->documents()->create([
                                 'preemp_req_id' => $requirement->preemp_req_id,
-                                'file_path' => 'storage/',
+                                'file_path' => $filePath,
                             ]);
                         });
 
@@ -95,6 +110,12 @@ function createEmployee($chunkStart, $chunk, $freeEmailDomain)
                             'employee_id' => $employee->employee_id,
                             'file_path' => 'storage/',
                         ]);
+
+                        $employeeLifecycle = EmployeeLifecycle::create([
+                            'employee_id' => $employee->employee_id,
+                            'started_at' => now(),
+                        ]);
+
                     } catch (\Exception $e) {
                         Log::error('Exception: ' . $e->getMessage() . ' in ' . $e->getFile() . ' on line ' . $e->getLine());
                     }

@@ -2,41 +2,49 @@
 @use ('Illuminate\View\ComponentAttributeBag')
 
 @section('head')
-<title>Files | Pre-employment Requirements</title>
-<script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
-<script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
-<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+    <title>Files | Pre-employment Requirements</title>
+    <script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
+    <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 @endsection
 
 @pushOnce('scripts')
+    <script src="https://unpkg.com/filepond-plugin-pdf-preview/dist/filepond-plugin-pdf-preview.min.js"></script>
+    @filepondScripts
+    <script nonce="{{ $nonce }}">
+        document.addEventListener('livewire:init', () => {
+            LivewireFilePond.registerPlugin(FilePondPluginPdfPreview);
+        });
+    </script>
     @vite(['resources/js/employee/basic/dashboard.js'])
 @endPushOnce
 
 @pushOnce('styles')
+    <link href="https://unpkg.com/filepond-plugin-pdf-preview/dist/filepond-plugin-pdf-preview.min.css" rel="stylesheet">
     @vite(['resources/css/employee/hr-manager/employee-info.css'])
 @endPushOnce
 
 @section('content')
+    <x-headings.main-heading :isHeading="true">
+        <x-slot:heading>
+            {{-- {{ __('Pre-Employment Files') }} --}}
+            {{ __('Employment Files') }}
+        </x-slot:heading>
 
-<x-headings.main-heading :isHeading="true">
-    <x-slot:heading>
-        {{-- {{ __('Pre-Employment Files') }} --}}
-        {{ __('Employment Files') }}
-    </x-slot:heading>
+        <x-slot:description>
+            {{ __('Manage and update all of your documents.') }}
+        </x-slot:description>
+    </x-headings.main-heading>
 
-    <x-slot:description>
-        {{ __('Manage and update all of your documents.') }}
-    </x-slot:description>
-</x-headings.main-heading>
+    @include('components.includes.tab_navs.file-manager')
 
-@include('components.includes.tab_navs.file-manager')
-
-<!-- BACK-END TABLE NOTE:
-    The employee id should be passed to: training/records.blade.php -->
+    <!-- BACK-END TABLE NOTE:
+        The employee id should be passed to: training/records.blade.php -->
     {{-- <livewire:employee-documents-table :employee="$employee" /> --}}
 
-    @livewire('employee.pre-employment')
+    <livewire:pre-employment-requirements-table :employee="$employee" />
+    <livewire:employee.pre-employment.preemployment-form :employee="$employee" />
 
     <script>
         document.addEventListener('alpine:init', () => {
@@ -54,5 +62,4 @@
             }));
         });
     </script>
-
 @endsection

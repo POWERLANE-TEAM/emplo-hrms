@@ -120,10 +120,7 @@ class EmployeesTable extends DataTableComponent
                 ->html()
                 ->sortable(fn (Builder $query, $direction) => $query->orderBy('last_name' ,$direction))
                 ->searchable(function (Builder $query, $searchTerm) {
-                    return $query->whereLike('first_name', "%{$searchTerm}%")
-                        ->orWhereLike('middle_name', "%{$searchTerm}%")
-                        ->orWhereLike('last_name', "%{$searchTerm}%")
-                        ->orWhereHas('account', fn ($query) => $query->orWhereLike('email', "%{$searchTerm}%"));
+                    $this->applyFullNameSearch($query, $searchTerm);
                 })
                 ->excludeFromColumnSelect(),
 

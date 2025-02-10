@@ -13,5 +13,6 @@ enum FilePath: string
     case CONTRACTS = 'contracts/';
     case LEAVES = 'leaves/';
     case COE = 'uploads/employee/coe/';
-    case DOC_TEMPLATE = 'templates/documents/';
+    case DOC_TEMPLATE = 'templates/document/';
+    case DEFAULT_SIGNATURE = 'templates/document/signature-placeholder.png';
 }

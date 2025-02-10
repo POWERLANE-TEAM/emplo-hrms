@@ -39,7 +39,9 @@ class DatabaseSeeder extends Seeder
                 ResignationStatusSeeder::class,
                 // AttendanceLogSeeder::class,
                 UserSeeder::class,
-                ApplicantSeeder::class,
+                // ApplicantSeeder::class,
+                // NewApplicantSeeder::class,
+                QualifiedApplicantSeeder::class,
                 // ApplicationSeeder::class,
                 ApplicantEducationSeeder::class,
                 ApplicantExperienceSeeder::class,
@@ -81,7 +83,7 @@ class DatabaseSeeder extends Seeder
                 AttendanceLog2024Seeder::class,
                 PayrollSummarySeeder::class,
 
-                // EmployeeSeeder::class,
+                EmployeeSeeder::class,
                 // GuestSeeder::class,
                 // RegularPerformanceSeeder::class,
                 // AttendanceSeeder::class
