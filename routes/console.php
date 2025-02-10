@@ -23,5 +23,6 @@ Schedule::daily()
     }
 );
 
-Schedule::command('generate-payroll-summary')
-    ->everyFiveSeconds();
+// Schedule::command('generate-payroll-summary')
+//     ->timezone('Asia/Manila')
+//     ->everyFiveSeconds();
