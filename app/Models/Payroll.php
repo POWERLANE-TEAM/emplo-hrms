@@ -20,6 +20,11 @@ class Payroll extends Model
         'payroll_id',
     ];
 
+    protected $casts = [
+        'cut_off_start' => 'datetime',
+        'cut_off_end'   => 'datetime',
+    ];
+
     /**
      * Formatted date for payout attribute.
      */
@@ -35,8 +40,8 @@ class Payroll extends Model
      */
     public function getCutOffAttribute(): string
     {
-        $start = Carbon::make($this->cut_off_start)->format('F d');
-        $end = Carbon::make($this->cut_off_end)->format('F d, Y');
+        $start = $this->cut_off_start->format('F d');
+        $end = $this->cut_off_end->format('F d, Y');
 
         return "{$start} - {$end}";
     }
