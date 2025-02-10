@@ -7,6 +7,7 @@ use App\Enums\UserRole;
 use App\Policies\EmployeeArchivePolicy;
 use App\Policies\IssuePolicy;
 use App\Policies\TrainingPolicy;
+use App\Services\PayrollSummaryService;
 use Illuminate\Support\Carbon;
 use App\Policies\ContractPolicy;
 use App\Policies\EmployeePolicy;
@@ -47,6 +48,10 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $this->app->register(FormWizardServiceProvider::class);
+
+        $this->app->bind(PayrollSummaryService::class, function () {
+            return new PayrollSummaryService();
+        });
     }
 
     /**
