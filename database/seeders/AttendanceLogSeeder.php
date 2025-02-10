@@ -5,14 +5,60 @@ namespace Database\Seeders;
 use App\Models\Employee;
 use App\Models\AttendanceLog;
 use Illuminate\Database\Seeder;
+use App\Enums\BiometricPunchType;
+use Illuminate\Support\Facades\DB;
 
 class AttendanceLogSeeder extends Seeder
 {
+    private $mockData = [];
+
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        AttendanceLog::factory(Employee::count() * 5)->create();
+        Employee::activeEmploymentStatus()
+            ->get()
+            ->each(function ($employee) {
+                $checkIn = [
+                    'type' => BiometricPunchType::CHECK_IN->value,
+                    'timestamp' => fake()->dateTimeBetween('5:30', '14:00')->format('Y-m-d H:i:s'),
+                ];
+                $checkOut = [
+                    'type' => BiometricPunchType::CHECK_OUT->value,
+                    'timestamp' => fake()->dateTimeBetween('13:30', '22:00')->format('Y-m-d H:i:s'),
+                ];
+                
+                for ($i = 2; $i > 0; $i--) {
+                    array_push($this->mockData, [
+                        'uid'           => $this->generateUniqueUid(),
+                        'employee_id'   => $employee->employee_id,
+                        'state'         => fake()->numberBetween(1, 9),
+                        'type'          => $i === 2 ? $checkIn['type'] : $checkOut['type'],
+                        'timestamp'     => $i === 2 ? $checkIn['timestamp'] : $checkOut['timestamp'],
+                    ]);
+                }
+            });
+        
+        // dd($this->mockData);
+
+        DB::table('attendance_logs')->insert($this->mockData);
+    }
+
+    /**
+     * Generate a unique UID that doesn't conflict with existing uids.
+     *
+     * @return int
+     */
+    private function generateUniqueUid(): int
+    {
+        $uid = fake()->unique()->randomNumber();
+        
+        while (AttendanceLog::where('uid', $uid)->exists() || 
+            in_array($uid, array_values($this->mockData))) {
+            $uid = fake()->unique()->randomNumber();
+        }
+
+        return $uid;
     }
 }
