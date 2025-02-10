@@ -100,17 +100,17 @@ Route::middleware('auth')->group(function () {
     /**
      * Job Title
      */
-    Route::prefix('job-title')->name('job-title.')->group(function () {
-        Route::get('/', function () {
-            return view('employee.admin.job-title.index');
-        })
+    Route::prefix('job-titles')->name('job-titles.')->group(function () {
+        Route::get('/', [JobTitleController::class, 'index'])
             ->name('index');
 
-        Route::get('create', function () {
-            return view('employee.admin.job-title.create');
-        })
+        Route::get('create', [JobTitleController::class, 'create'])
             ->can(UserPermission::CREATE_JOB_TITLE)
             ->name('create');
+
+        Route::get('{jobTitle}', [JobTitleController::class, 'show'])
+            ->whereNumber('jobTitle')
+            ->name('show');
     });
 
     /**
