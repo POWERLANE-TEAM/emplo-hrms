@@ -12,6 +12,7 @@ use App\Models\ApplicationDoc;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Storage;
+use Livewire\Attributes\Locked;
 use Rappasoft\LaravelLivewireTables\Views\Columns\LinkColumn;
 
 /**
@@ -29,6 +30,7 @@ class EmployeeDocumentsTable extends DataTableComponent
 
     protected $routePrefix;
 
+    #[Locked]
     private bool $isBasicEmployee;
 
     protected $model = ApplicationDoc::class;

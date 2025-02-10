@@ -1,23 +1,8 @@
+@use('App\Http\Helpers\FilepondHelper')
+
 @php
     $isCustomPlaceholder = isset($placeholder);
 
-    function parseAccept($accept)
-    {
-        if (is_array($accept)) {
-            $result = [];
-            foreach ($accept as $prefix => $types) {
-                if (is_array($types)) {
-                    foreach ($types as $type) {
-                        $result[] = "$prefix/$type";
-                    }
-                } else {
-                    $result[] = "$prefix/$types";
-                }
-            }
-            return implode(', ', $result);
-        }
-        return $accept;
-    }
 @endphp
 
 @props([
@@ -33,7 +18,7 @@
         throw new Exception('You must wire:model to the filepond input.');
     }
 
-    $allowedFiles = parseAccept($accept);
+    $allowedFiles = FilepondHelper::parseAccept($accept);
 
     $attributes = $attributes->merge(['accepted-file-types' => $allowedFiles]);
 
