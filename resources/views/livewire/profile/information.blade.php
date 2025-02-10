@@ -46,8 +46,10 @@
                     <p>{{ $employee->employmentStatus }}</p>
                     <div class="fw-bold">{{ __('Shift Schedule: ') }}</div>
                     <p>{{ $employee->shift.' ('.$employee->shiftSched.')' }}</p>
+                    <div class="fw-bold">{{ __('Rest Day: ') }}</div>
+                    <p>{{ __('Weekends') }}</p>
                     <div class="fw-bold">{{ __('Date Hired: ') }}</div>
-                    <p>{{ Carbon::make($employee->hiredAt)->format('F d, Y') ?? __('No record found.') }}</p>
+                    <p>{{ Carbon::parse($employee->hiredAt)->format('F d, Y') ?? __('No record found.') }}</p>
                 </div>
 
                 <div class="mt-3">
@@ -57,7 +59,7 @@
                     </div>
                     <div class="pt-2 left-col align-items-center">
                         <div class="fw-bold">{{ __('Date of Birth: ') }}</div>
-                        <p>{{ \Illuminate\Support\Carbon::make($employee->dob)->format('F d, Y') ?? __('Not provided') }}</p>
+                        <p>{{ Carbon::parse($employee->dob)->format('F d, Y') ?? __('Not provided') }}</p>
                         <div class="fw-bold">{{ __('Sex: ') }}</div>
                         <p>{{ $employee->sex }}</p>
                         <div class="fw-bold">{{ __('Civil Status: ') }}</div>

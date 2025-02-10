@@ -10,22 +10,24 @@ use Illuminate\Support\Facades\Schedule;
  * Command that executes daily to backup the database.
  * Command that generates the payroll summary for payroll_summaries table
  * Command that executes daily to remove applicants who are rejected for more or exactly than 30 days.
- * 
- * Tip: replace frequency with short intervals like every(x)seconds for debugging
  */
 
-Schedule::command('sync-attlogs-from-biometric-device')
+Schedule::daily()
     ->timezone('Asia/Manila')
-    ->daily();
+    ->group(function () {
+        Schedule::command('sync-attlogs-from-biometric-device'); // to revisit implementation
+        Schedule::command('check-probationary-evaluation-period-opening');
+        Schedule::command('check-payroll-period-opening');
+        Schedule::command('delete-separated-employee-data');
+        Schedule::command('generate-payroll-summary');
+    }
+);
 
-Schedule::command('check-probationary-evaluation-period-opening')
-    ->timezone('Asia/Manila')
-    ->daily();
-
-Schedule::command('check-payroll-period-opening')
-    ->timezone('Asia/Manila')
-    ->daily();
-
-Schedule::command('delete-separated-employee-data')
-    ->timezone('Asia/Manila')
-    ->daily();
+// for debugging
+// Schedule::everyFiveSeconds()
+//     ->timezone('Asia/Manila')
+//     ->group(function () {
+//         Schedule::command('check-payroll-period-opening');
+//         Schedule::command('generate-payroll-summary');
+//     }
+// );

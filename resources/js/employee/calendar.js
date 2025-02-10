@@ -40,37 +40,38 @@ export function initCalendar(attendanceLogs) {
         }
     });
 
-    const resizeCalendar = () => {
-        console.log('Resizing calendar...');
-        if (calendar) {
-            calendar.updateSize();
-        } else {
-            console.log('Calendar instance not found');
-        }
-    };
+    // This resize thingy doesn't work at all.
 
-    const mainSideBar = document.querySelector('sidebar.main-menu');
-    const mainMenuToggles = document.querySelectorAll('button.main-menu');
+    // const resizeCalendar = () => {
+    //     console.log('Resizing calendar...');
+    //     if (calendar) {
+    //         calendar.updateSize();
+    //     } else {
+    //         console.log('Calendar instance not found');
+    //     }
+    // };
 
-    mainMenuToggles.forEach((btn) => {
-        btn.onclick = function () {
-            console.log('Sidebar toggle clicked');
-            setTimeout(() => {
-                console.log('Calling updateSize after sidebar toggle');
-                resizeCalendar();
-            }, 250); 
-        };
-    });
+    // const mainSideBar = document.querySelector('sidebar.main-menu');
+    // const mainMenuToggles = document.querySelectorAll('button.main-menu');
 
-    if (mainSideBar) {
-        mainSideBar.addEventListener('transitionend', () => {
-            console.log('Sidebar transition ended');
-            resizeCalendar();
-        });
-    } else {
-        console.log('Sidebar element not found');
-    }
+    // mainMenuToggles.forEach((btn) => {
+    //     btn.onclick = function () {
+    //         console.log('Sidebar toggle clicked');
+    //         setTimeout(() => {
+    //             console.log('Calling updateSize after sidebar toggle');
+    //             resizeCalendar();
+    //         }, 250); 
+    //     };
+    // });
 
+    // if (mainSideBar) {
+    //     mainSideBar.addEventListener('transitionend', () => {
+    //         console.log('Sidebar transition ended');
+    //         resizeCalendar();
+    //     });
+    // } else {
+    //     console.log('Sidebar element not found');
+    // }
 }
 
 window.initCalendar = initCalendar;

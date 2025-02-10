@@ -4,10 +4,13 @@ namespace App\Providers;
 
 use App\Models\User;
 use App\Enums\UserRole;
-use App\Policies\ContractPolicy;
+use App\Policies\EmployeeArchivePolicy;
 use App\Policies\IssuePolicy;
-use App\Policies\ProbationaryPerformancePolicy;
+use App\Policies\TrainingPolicy;
+use App\Services\PayrollSummaryService;
 use Illuminate\Support\Carbon;
+use App\Policies\ContractPolicy;
+use App\Policies\EmployeePolicy;
 use App\Policies\IncidentPolicy;
 use App\Policies\OvertimePolicy;
 use Laravel\Pulse\Facades\Pulse;
@@ -22,6 +25,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
 use App\Policies\RegularPerformancePolicy;
 use Illuminate\Auth\Notifications\VerifyEmail;
+use App\Policies\ProbationaryPerformancePolicy;
 use App\Providers\Form\FormWizardServiceProvider;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -44,6 +48,10 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $this->app->register(FormWizardServiceProvider::class);
+
+        $this->app->bind(PayrollSummaryService::class, function () {
+            return new PayrollSummaryService();
+        });
     }
 
     /**
@@ -113,7 +121,7 @@ class AppServiceProvider extends ServiceProvider
             'job_skill_keyword'         => 'App\Models\JobSkillKeyword',
             'job_education_keyword'     => 'App\Models\JobEducationKeyword',
             'job_experience_keyword'    => 'App\Models\JobExperienceKeyword',
-            'interview_parameter'                   => 'App\Models\InterviewParameter',
+            'interview_parameter'       => 'App\Models\InterviewParameter',
         ]);
 
         BroadcastServiceProvider::class;
@@ -205,6 +213,19 @@ class AppServiceProvider extends ServiceProvider
 
         /** Contract Policies */
         Gate::define('uploadContractAttachment', [ContractPolicy::class, 'uploadContractAttachment']);
+
+        /** Employee Policies */
+        Gate::define('viewAnyEmployees', [EmployeePolicy::class, 'viewAnyEmployees']);
+        Gate::define('viewEmployee', [EmployeePolicy::class, 'viewEmployee']);
+        Gate::define('createEmployeeAccount', [EmployeePolicy::class, 'createEmployeeAccount']);
+
+        /** Training Policies */
+        Gate::define('createTrainingRecord', [TrainingPolicy::class, 'createTrainingRecord']);
+        Gate::define('viewTrainingRecords', [TrainingPolicy::class, 'viewTrainingRecords']);
+        Gate::define('viewAnyTrainingRecords', [TrainingPolicy::class, 'viewAnyTrainingRecords']);
+
+        /** Employee Archive Policies */
+        Gate::define('viewAnyArchivedRecords', [EmployeeArchivePolicy::class, 'viewAnyArchivedRecords']);
 
         Vite::useAggressivePrefetching();
 

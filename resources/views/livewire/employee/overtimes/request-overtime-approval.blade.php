@@ -73,21 +73,15 @@
                 
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label for="date_ovt" class="fw-medium form-label">{{ __('Requested Date') }}</label>
-                                <div class="form-control bg-body-secondary p-2 rounded-3" id="date_ovt">
-                                    {{ $overtime?->date }}
-                                </div>
-                            </div>
-                            <div class="col-md-3 mb-3">
                                 <label for="hours_ot" class="fw-medium form-label">{{ __('Start Time') }}</label>
                                 <div class="form-control bg-body-secondary p-2 rounded-3" id="hours_ot">
-                                    {{ $overtime?->startTime }}
+                                    {{ $overtime?->startTime?->format('F d, Y g:i A') }}
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-6">
                                 <label for="hours_ot_end" class="fw-medium form-label">{{ __('End Time') }}</label>
                                 <div class="form-control bg-body-secondary p-2 rounded-3" id="hours_ot_end">
-                                    {{ $overtime?->endTime }}
+                                    {{ $overtime?->endTime?->format('F d, Y g:i A') }}
                                 </div>
                             </div>
                         </div>
@@ -96,7 +90,7 @@
                             <div class="">{{ __('Requested Hours: ') }}</div>
                             <div>{{ $overtime?->hrsRequested }}</div>
                             <div class="">{{ __('Date Filed: ') }}</div>
-                            <div>{{ $overtime?->filedAt }}</div>
+                            <div>{{ $overtime?->filedAt?->format('F d, Y g:i A') }}</div>
                         </div>
 
                         <div class="list-group">
@@ -110,7 +104,7 @@
                                                 {{ $overtime?->authorizedBy }}
                                             </span>
                                         </span>
-                                        <span class="text-muted small">{{ $overtime?->authorizedAt }}</span>
+                                        <span class="text-muted small">{{ $overtime?->authorizedAt?->format('F d, Y g:i A') }}</span>
                                     </div>
                                 </div>
                             @endif
@@ -125,7 +119,7 @@
                                                 {{ $overtime?->deniedBy }}
                                             </span>
                                         </span>
-                                        <span class="text-muted small">{{ $overtime?->deniedAt }}</span>
+                                        <span class="text-muted small">{{ $overtime?->deniedAt?->format('F d, Y g:i A') }}</span>
                                     </div>
                                     <div class="mt-3">
                                         <label for="feedback" class="form-label text-muted">{{ __('Reason:') }}</label>

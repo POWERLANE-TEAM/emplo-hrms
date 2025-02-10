@@ -39,12 +39,7 @@ class LeaveUtilizationChart extends Component
 
     public function mount()
     {
-        $employees = Employee::whereHas('status', function ($query) {
-            $query->whereIn('emp_status_name', [
-                EmploymentStatus::PROBATIONARY->label(),
-                EmploymentStatus::REGULAR->label(),
-            ]);
-        })->get();
+        $employees = Employee::activeEmploymentStatus()->get();
 
         $silCredits = $employees->sum(fn ($employee) => $employee->actual_sil_credits);
 

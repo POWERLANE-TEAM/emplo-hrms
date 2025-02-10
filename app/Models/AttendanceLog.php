@@ -24,6 +24,10 @@ class AttendanceLog extends Model
         'timestamp',
     ];
 
+    protected $casts = [
+        'timestamp' => 'datetime',
+    ];
+
     public function employee(): BelongsTo
     {
         return $this->belongsTo(Employee::class, 'employee_id', 'employee_id');

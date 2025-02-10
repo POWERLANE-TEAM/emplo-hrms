@@ -18,25 +18,17 @@
                 @enderror
             </div>
             
-            <div class="row">
+            <div class="row">             
                 <div class="col-md-6 mb-3">
-                    <x-form.boxed-date name="state.date" id="date_ovt" label="{{ __('Date') }}" :nonce="$nonce" :required="true"
-                        placeholder="Date of Overtime" />
-                    @error('state.date')
-                        <div class="invalid-feedback" role="alert">{{ $message }}</div>
-                    @enderror
-                </div>
-                
-                <div class="col-md-3 mb-3">
-                    <x-form.boxed-time wire:model.live="state.startTime" id="hours_ot" label="{{ __('Start Time') }}" :nonce="$nonce" :required="true"
+                    <x-form.boxed-date type="datetime-local" wire:model.live="state.startTime" id="hours_ot" label="{{ __('Start Time') }}" :nonce="$nonce" :required="true"
                     placeholder="Start Time" />
                     @error('state.startTime')
                         <div class="invalid-feedback" role="alert">{{ $message }}</div>
                     @enderror
                 </div>
                 
-                <div class="col-md-3">
-                    <x-form.boxed-time wire:model.live="state.endTime" id="hours_ot" label="{{ __('End Time') }}" :nonce="$nonce" :required="true"
+                <div class="col-md-6">
+                    <x-form.boxed-date type="datetime-local" wire:model.live="state.endTime" id="hours_ot" label="{{ __('End Time') }}" :nonce="$nonce" :required="true"
                     placeholder="End Time" />
                     @error('state.endTime')
                         <div class="invalid-feedback" role="alert">{{ $message }}</div>

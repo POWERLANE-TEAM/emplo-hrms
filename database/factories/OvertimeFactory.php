@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Shift;
 use App\Models\Payroll;
 use App\Models\Employee;
 use App\Models\OvertimePayrollApproval;
@@ -19,21 +20,24 @@ class OvertimeFactory extends Factory
      */
     public function definition(): array
     {
-        $payrolls = Payroll::all();
-        $payroll = $payrolls->random();
+        $shifts = Shift::all();
+        $shift = $shifts->random();
 
-        $start = fake()->dateTimeBetween($payroll->cut_off_start, $payroll->cut_off_end);
+        $start = fake()->dateTimeBetween('22:00:00', '23:59:00');
         $end = (clone $start)->modify('+'.rand(1, 4).' hours');
 
         if ($end <= $start) {
             $end = (clone $start)->modify('+1 hour');
         }
+
+        $payroll = Payroll::all()->random();
+        
         $payrollApproval = OvertimePayrollApproval::firstOrCreate([
             'payroll_id' => $payroll->payroll_id,
         ]);
 
         return [
-            'employee_id' => Employee::inRandomOrder()->first()->employee_id,
+            'employee_id' => Employee::activeEmploymentStatus()->inRandomOrder()->first()->employee_id,
             'payroll_approval_id' => $payrollApproval->payroll_approval_id,
             'work_performed' => fake()->randomElement([
                 'Project work', 
@@ -43,9 +47,9 @@ class OvertimeFactory extends Factory
                 'System upgrade', 
                 'Training session'
             ]),
-            'date' => $start->format('Y-m-d'),
-            'start_time' => $start->format('H:i:s'),
-            'end_time' => $end->format('H:i:s'),
+            'start_time' => $start,
+            'end_time' => $end,
+            // 'authorizer_signed_at' => now(),
             'filed_at' => $start,
             'modified_at' => $start,
         ];

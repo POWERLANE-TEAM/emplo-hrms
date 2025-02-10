@@ -41,6 +41,7 @@ class AnyReportedIssuesTable extends DataTableComponent
         $this->setPerPageAccepted([10, 25, 50, 100, -1]);
         $this->setToolBarAttributes(['class' => ' d-md-flex my-md-2']);
         $this->setToolsAttributes(['class' => ' bg-body-secondary border-0 rounded-3 px-5 py-2']);
+        $this->setRememberColumnSelectionDisabled();
 
         $this->setTableAttributes([
             'default' => true,
@@ -68,7 +69,7 @@ class AnyReportedIssuesTable extends DataTableComponent
 
         $this->setTdAttributes(function (Column $column, $row, $columnIndex, $rowIndex) {
             return [
-                'class' => $column->getTitle() === 'Reporter' ? 'text-md-start' : 'text-md-center',
+                'class' => $columnIndex === 0 ? 'text-md-start border-end sticky' : 'text-md-center',
             ];
         });
     }
@@ -136,7 +137,10 @@ class AnyReportedIssuesTable extends DataTableComponent
                 ->label(fn ($row) => IssueConfidentiality::from($row->confidentiality)->getLabel()),
 
             Column::make(__('Status'))
-                ->label(fn ($row) => IssueStatus::from($row->status)->getLabel()),
+                ->label(fn ($row) => view('components.status-badge')->with([
+                    'color' => IssueStatus::from($row->status)->getColor(),
+                    'slot' => IssueStatus::from($row->status)->getLabel(),
+                ])),
             
             Column::make(__('Date Filed'))
                 ->label(fn ($row) => $row->filed_at)

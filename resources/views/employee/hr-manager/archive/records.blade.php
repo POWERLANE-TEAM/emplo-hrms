@@ -57,23 +57,43 @@
 
 <!-- Information Tab Section-->
 
-<!-- Sub-section: Employee Information -->
-<livewire:hr-manager.employees.information :$employee />
-<!-- Sub-section: Documents -->
-<livewire:hr-manager.employees.documents :$employee />
+<section id="information" class="tab-section-employee">
+    <livewire:hr-manager.employees.information :$employee />
+</section>
 
 <!-- Attendance Tab Section -->
-<livewire:hr-manager.employees.attendance :$employee />
+<section id="attendance" class="tab-section-employee">
+    <livewire:hr-manager.employees.attendance :$employee />
+</section>
 
 <!-- Payslips Tab Section -->
-<livewire:hr-manager.employees.payslips :$routePrefix :$employee />
+<section id="payslips" class="tab-section-employee">
+    <livewire:hr-manager.employees.payslips :$routePrefix :$employee />
+</section>
 
 <!-- Contract Tab Section -->
-<livewire:hr-manager.employees.contract :$routePrefix :$employee />
+<section id="contract" class="tab-section-employee">
+    <livewire:hr-manager.employees.contract :$routePrefix :$employee />
+</section>
 
 <!-- Leaves Tab Section -->
-<livewire:hr-manager.employees.leaves :$routePrefix :$employee />
+<section id="leaves" class="tab-section-employee">
+    <livewire:hr-manager.employees.leaves :$routePrefix :$employee />
+</section>
 
 <!-- Overtime Tab Section -->
-<livewire:hr-manager.employees.overtime :$employee />
+<section id="overtime" class="tab-section-employee">
+    <livewire:hr-manager.employees.overtime :$employee />
+</section>
+
+<!-- Payroll Summary Section -->
+<section id="psummary" class="tab-section-employee">
+    <livewire:hr-manager.employees.payroll-summary :$employee />
+</section>
+
+<!-- Trainings Section -->
+<section id="trainings" class="tab-section-employee">
+    <livewire:hr-manager.employees.trainings :$employee />
+</section>
+
 @endsection

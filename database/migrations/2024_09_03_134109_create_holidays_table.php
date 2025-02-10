@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('type')->index(); // regular and special, etc.
             $table->string('event');
-            $table->date('date');
+            $table->string('date');
             $table->timestamps();
         });
     }

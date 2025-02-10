@@ -6,7 +6,6 @@ use Livewire\Component;
 use App\Models\Employee;
 use App\Models\Overtime;
 use Livewire\Attributes\On;
-use Illuminate\Support\Carbon;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Computed;
 use Illuminate\Support\Facades\Auth;
@@ -57,16 +56,13 @@ class CutOffPayOutPeriods extends Component
     {
         $this->overtime = Overtime::with([
             'payrollApproval',
-            // 'payrollApproval.payroll',
-            // 'payrollApproval.initialApprover',
-            // 'payrollApproval.secondaryApprover',
-            // 'payrollApproval.thirdApprover',
         ])
             ->when($this->payroll, function ($query) {
-                $query->whereHas('payrollApproval.payroll', function ($subquery) {
-                    $subquery->where('payroll_id', $this->payroll);
-                });          
-            })
+                $query->where('employee_id', $this->authEmployee->employee_id)
+                    ->whereHas('payrollApproval.payroll', function ($subQuery) {
+                        $subQuery->where('payroll_id', $this->payroll);
+                    });
+            })         
             ->get();
     }
 
@@ -87,12 +83,11 @@ class CutOffPayOutPeriods extends Component
 
     private function getTotalOtHours()
     {
-        $totalSecs = $this->overtime->map(function ($ot) {
-            $start = Carbon::parse($ot->start_time);
-            $end = Carbon::parse($ot->end_time);
-
-            return $start->diffInSeconds($end);
-        })->sum();
+        $totalSecs = $this->overtime->sum(function ($ot) {
+            return $ot->authorizer_signed_at
+                ? $ot->start_time->diffInSeconds($ot->end_time)
+                : null;
+        });
 
         $hours                  = floor($totalSecs / 3600);
         $minutes                = floor(($totalSecs % 3600) / 60);

@@ -26,7 +26,7 @@ enum UserPermission: string
     case CREATE_JOB_TITLE = 'create job title';
     case CREATE_EMP_PERFORMANCE_EVAL_FORM = 'create employee performance evaluation form';
     case CREATE_ALL_EMP_PERFORMANCE_EVAL_FORM = 'create all employee performance evaluation form';
-    case CREATE_EMP_PERFORMANCE_ASSIGNED_TRAINING = 'create employee performance assigned training';
+    case CREATE_EMPLOYEE_TRAINING = 'create employee performance assigned training';
     case CREATE_PERFORMANCE_CATEGORIES = 'create performance categories';
     case CREATE_PERFORMANCE_RATING_SCALES = 'create performance rating scales';
     case CREATE_PREEMPLOYMENT_REQUIREMENTS = 'create pre employment requirements';
@@ -75,7 +75,7 @@ enum UserPermission: string
     case VIEW_ALL_OVERTIME_REQUEST = 'view all overtime requests';
     case VIEW_ALL_PAYSLIPS = 'view all payslips';
     case VIEW_ALL_ISSUES = 'view all employee issues';
-    case VIEW_ALL_TRAINING = 'view all employee trainings';
+    case VIEW_ALL_TRAININGS = 'view all employee trainings';
     case VIEW_ALL_EMP_PERFORMANCE_EVAL = 'view all performance evaluation records';
     case VIEW_ALL_EMP_PERFORMANCE_TRAINING = 'view all performance training records';
     case VIEW_ALL_EMP_PERFORMANCE_EVAL_GRADE_FORM = 'view all performance evaluation grade form';
@@ -177,7 +177,7 @@ enum UserPermission: string
             self::CREATE_JOB_TITLE => 'Create job title',
             self::CREATE_EMP_PERFORMANCE_EVAL_FORM => 'Create employee performance evaluation form',
             self::CREATE_ALL_EMP_PERFORMANCE_EVAL_FORM => 'Start employee performance evaluation',
-            self::CREATE_EMP_PERFORMANCE_ASSIGNED_TRAINING => 'Assign employee performance training',
+            self::CREATE_EMPLOYEE_TRAINING => 'Assign employee performance training',
             self::CREATE_PERFORMANCE_CATEGORIES => 'Create new performance categories',
             self::CREATE_PERFORMANCE_RATING_SCALES => 'Create new performance rating scales',
             self::CREATE_PREEMPLOYMENT_REQUIREMENTS => 'Upload pre-employment requirements',
@@ -244,7 +244,7 @@ enum UserPermission: string
             self::VIEW_FORM_CONFIG => 'View form configurator',
             self::VIEW_ONLINE_USERS => 'Monitor online users',
             self::VIEW_ALL_ISSUES => 'View all employee issues',
-            self::VIEW_ALL_TRAINING => 'View all employee trainings',
+            self::VIEW_ALL_TRAININGS => 'View all employee trainings',
             self::VIEW_ALL_SUBORDINATE_REQUESTS => 'View all subordinate requests',
             self::VIEW_ALL_SUBORDINATE_PERFORMANCE_EVAL_FORM => 'View all subordinate performance evaluation forms.',
             self::VIEW_ALL_SUBORDINATE_LEAVE_REQUEST => 'View all subordinate leaves requests.',

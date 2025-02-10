@@ -40,11 +40,11 @@ class EmployeeJobDetail extends Model
     }
 
     /**
-     * Get the shift that owns the job detail.
+     * Get the employee shift that owns the job detail.
      */
     public function shift(): BelongsTo
     {
-        return $this->belongsTo(Shift::class, 'shift_id', 'shift_id');
+        return $this->belongsTo(EmployeeShift::class, 'shift_id', 'employee_shift_id');
     }
 
     /**

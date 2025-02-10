@@ -2,10 +2,8 @@
 
 namespace App\Livewire\Employee\Overtimes\Basic;
 
+use Closure;
 use App\Enums\Payroll;
-use App\Livewire\Employee\Tables\Basic\OvertimeSummariesTable;
-use App\Models\OvertimePayrollApproval;
-use App\Models\Payroll as PayrollModel;
 use Livewire\Component;
 use App\Models\Overtime;
 use Livewire\Attributes\On;
@@ -14,15 +12,13 @@ use Livewire\Attributes\Locked;
 use Livewire\Attributes\Computed;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use App\Livewire\Employee\Tables\Basic\RecentOvertimesTable;
-use App\Livewire\Employee\Tables\Basic\ArchiveOvertimesTable;
+use App\Models\OvertimePayrollApproval;
+use App\Models\Payroll as PayrollModel;
 
 class RequestOvertime extends Component
 {
     public $state = [
-        'overtimeId' => null,
         'workToPerform' => '',
-        'date' => null,
         'startTime' => null,
         'endTime' => null,
     ];
@@ -32,8 +28,7 @@ class RequestOvertime extends Component
 
     public function mount()
     {
-        $this->state['date'] = now()->format('Y-m-d');
-        $this->state['startTime'] = now()->format('H:i');
+        $this->state['startTime'] = now()->format('Y-m-d H:i:s');
     }
 
     public function updated($prop)
@@ -45,8 +40,8 @@ class RequestOvertime extends Component
             $start = Carbon::parse($this->state['startTime']);
             $end = Carbon::parse($this->state['endTime']);
 
-            if ($end->lessThan($start)) {
-                $this->addError('state.endTime', __('End time cannot be before the start date.'));
+            if ($end->lessThan($start->addMinutes(30))) {
+                $this->addError('state.endTime', __('Overtime duration must be at least 30 minutes.'));
             } else {
                 $this->resetErrorBag('state.endTime');
                 $this->hoursRequested = $start->diff($end)->format('%h hours and %i minutes');
@@ -71,9 +66,7 @@ class RequestOvertime extends Component
         $this->reset();
         $this->resetErrorBag();
 
-        $this->dispatch('changesSaved')->to(OvertimeSummariesTable::class);
-        $this->dispatch('changesSaved')->to(ArchiveOvertimesTable::class);
-        $this->dispatch('changesSaved')->to(RecentOvertimesTable::class);
+        $this->dispatch('refreshDatatable');
         $this->dispatch('changesSaved');
     }
 
@@ -86,7 +79,7 @@ class RequestOvertime extends Component
 
     private function getCutoffAndPayout(): array
     {
-        $requestedDate = $this->state['date'];
+        $requestedDate = $this->state['startTime'];
 
         return Payroll::getCutOffPeriod($requestedDate);
     }
@@ -98,7 +91,7 @@ class RequestOvertime extends Component
         return PayrollModel::firstOrCreate([
             'cut_off_start' => $cutoffAndPayout['start']->toDateString(),
             'cut_off_end'   => $cutoffAndPayout['end']->toDateString(),
-            'payout'        => Payroll::getPayoutDate($this->state['date'])->toDateString(),
+            'payout'        => Payroll::getPayoutDate($this->state['startTime'])->toDateString(),
         ]);
     }
 
@@ -120,7 +113,6 @@ class RequestOvertime extends Component
             'employee_id'           => $this->employee->employee_id,
             'payroll_approval_id'   => $payrollApproval->payroll_approval_id,
             'work_performed'        => $this->state['workToPerform'],
-            'date'                  => $this->state['date'],
             'start_time'            => $this->state['startTime'],
             'end_time'              => $this->state['endTime'],
         ]);
@@ -136,26 +128,33 @@ class RequestOvertime extends Component
     {
         return [
             'state.workToPerform'   => 'required|string|max:100',
-            'state.date'            => 'required|date|after_or_equal:today',
-            'state.startTime'       => 'required|date_format:H:i',
-            'state.endTime'         => 'required|date_format:H:i|after:state.startTime',
+            'state.startTime'       => 'required|date|after_or_equal:today',
+            'state.endTime'         => [
+                'required',
+                'date',
+                'after:state.startTime',
+                function (string $attibute, mixed $value, Closure $fail) {
+                    $startTime = Carbon::parse(request('state.startTime'));
+                    $endTime = Carbon::parse($value);
+
+                    if ($endTime->lessThan($startTime->addMinutes(30))) {
+                        $fail(__('End time must be at least 30 minutes from start time.'));
+                    }
+                }
+            ],
         ];
     }
 
     public function messages(): array
     {
         return [
-            'state.workToPerform.required'  => __('Please provide a description.'),
-            'state.workToPerform.string'    => __('Description must be a valid string.'),
-            'state.workToPerform.max'       => __('Description must not exceed 100 characters.'),
-            'state.date.required'           => __('Please provide a valid date.'),
-            'state.date.date'               => __('The date must be a valid format.'),
-            'state.date.after_or_equal'     => __('The date must not be in the past.'),
-            'state.startTime.required'      => __('Please provide a start time.'),
-            'state.startTime.date_format'   => __('The start time must be in the format HH:mm.'),
-            'state.endTime.required'        => __('Please provide an end time.'),
-            'state.endTime.date_format'     => __('The end time must be in the format HH:mm.'),
-            'state.endTime.after'           => __('The end time must be after the start time.'),
+            'state.workToPerform.required'      => __('Please provide a description.'),
+            'state.workToPerform.string'        => __('Description must be a valid string.'),
+            'state.workToPerform.max'           => __('Description must not exceed 100 characters.'),
+            'state.startTime.required'          => __('Please provide a start time.'),
+            'state.startTime.after_or_equal'    => __('Starting date must be today or in the future.'),
+            'state.endTime.required'            => __('Please provide an end time.'),
+            'state.endTime.after'               => __('The end time must be after the start time.'),
         ];
     }
 

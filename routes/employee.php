@@ -6,7 +6,6 @@ use App\Http\Controllers\JobTitleController;
 use App\Http\Controllers\PayslipController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TrainingController;
-use App\Models\Employee;
 use App\Enums\UserPermission;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\IssueController;
@@ -209,7 +208,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         ->name('applicant.exam.store');
 
 
-            /**
+    /**
      * Schedule Final Interview
      */
     Route::post('/applicant/interview/final/{application}', [FinalInterviewController::class, 'store'])
@@ -217,16 +216,9 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     ->middleware(['permission:' . UserPermission::CREATE_APPLICANT_INIT_INTERVIEW_SCHEDULE->value])
     ->name('applicant.final-inteview.store');
 
-
-
-    Route::get('{employee}/attendance', [AttendanceController::class, 'show'])
-        ->middleware(['permission:' . UserPermission::VIEW_ALL_DAILY_ATTENDANCE->value])
-        ->middleware(['permission:' . UserPermission::VIEW_ALL_DAILY_ATTENDANCE->value])
-        ->name('attendance.show');
-
+    
     Route::get('/attendance/{range}', [AttendanceController::class, 'index'])
-        ->middleware(['permission:' . UserPermission::VIEW_ALL_DAILY_ATTENDANCE->value])
-        ->middleware(['permission:' . UserPermission::VIEW_ALL_DAILY_ATTENDANCE->value])
+        ->can(UserPermission::VIEW_ALL_DAILY_ATTENDANCE)
         ->where('range', 'daily|period')
         ->name('attendance.index');
 
@@ -324,7 +316,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     Route::prefix('overtimes')->name('overtimes.')->group(function () {
 
         Route::get('requests/cut-offs', [OvertimeController::class, 'cutOff'])
-            // ->can('viewOvertimeRequestAsInitialApprover')
+            ->can('viewSubordinateOvertimeRequest')
             ->name('requests.cut-offs');
 
         Route::get('requests', [OvertimeController::class, 'authorize'])
@@ -522,28 +514,27 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     /** Training resource */
     Route::prefix('trainings')->name('trainings.')->group(function () {
         Route::get('/', [TrainingController::class, 'index'])
+            // ->can('viewTrainingRecords')
             ->name('index');
 
         Route::get('general', [TrainingController::class, 'general'])
+            ->can('viewAnyTrainingRecords')
             ->name('general');
 
         Route::get('{employee}', [TrainingController::class, 'show'])
+            ->can('viewAnyTrainingRecords')
             ->whereNumber('employee')
             ->name('general.employee');
     });
 
 
-    /**
-     * Employees
-     */
+    /** Employee resource */
+    Route::get('list', [EmployeeController::class, 'index'])
+        ->can('viewAnyEmployees')
+        ->name('employees.masterlist.all');
 
-    Route::get('/employees/all', function () {
-        return view('employee.hr-manager.employees.all');
-    })->name('employees.masterlist.all');
-
-    Route::get('{employee}', function (Employee $employee) {
-        return view('employee.hr-manager.employees.information', compact('employee'));
-    })
+    Route::get('{employee}', [EmployeeController::class, 'show'])
+        ->can('viewEmployee')
         ->whereNumber('employee')
         ->name('employees.information');
 
@@ -572,24 +563,23 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
     Route::get('reports', function () {
         return view('employee.hr-manager.reports.index');
-    })->name('reports');
+    })
+        ->can(UserPermission::VIEW_REPORTS)
+        ->name('reports');
+
 
     /**
      * Archive
      */
     Route::prefix('archives')->name('archives.')->group(function () {
         Route::get('/', [EmployeeArchiveController::class, 'index'])
+            ->can('viewAnyArchivedRecords')
             ->name('index');
 
         Route::get('{employee}', [EmployeeArchiveController::class, 'show'])
+            ->can('viewAnyArchivedRecords')
             ->name('employee');
     });
-
-    /**
-     * General: Dashboard
-     */
-    Route::get('/index', [EmployeeController::class, 'index'])
-        ->name('index');
 
 
     /**
@@ -643,8 +633,8 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         Route::get('issues', [FileManagerController::class, 'issues'])
             ->name('issues');
 
-        // Route::get('leaves', [FileManagerController::class, 'leaves'])
-        //     ->name('leaves');
+        Route::get('leaves', [FileManagerController::class, 'leaves'])
+            ->name('leaves');
     });
 
     /**

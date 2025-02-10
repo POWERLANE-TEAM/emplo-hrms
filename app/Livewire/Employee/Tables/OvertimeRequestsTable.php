@@ -3,6 +3,7 @@
 namespace App\Livewire\Employee\Tables;
 
 use App\Enums\Payroll;
+use App\Enums\StatusBadge;
 use App\Models\Overtime;
 use Illuminate\Support\Str;
 use Livewire\Attributes\On;
@@ -37,6 +38,7 @@ class OvertimeRequestsTable extends DataTableComponent
         $this->setPerPageAccepted([10, 25, 50, 100, -1]);
         $this->setToolBarAttributes(['class' => ' d-md-flex my-md-2']);
         $this->setToolsAttributes(['class' => ' bg-body-secondary border-0 rounded-3 px-5 py-2']);
+        $this->setRememberColumnSelectionDisabled();
 
         $this->setTableAttributes([
             'default' => true,
@@ -46,7 +48,7 @@ class OvertimeRequestsTable extends DataTableComponent
         $this->setTrAttributes(function ($row, $index) {
             return [
                 'default' => true,
-                'class' => 'border-1 rounded-2 outline no-transition mx-4',
+                'class' => 'border-1 rounded-2 outline no-transition',
                 'role' => 'button',
                 'wire:click' => "\$dispatchTo(
                     'employee.overtimes.request-overtime-approval', 
@@ -63,13 +65,13 @@ class OvertimeRequestsTable extends DataTableComponent
         $this->setThAttributes(function (Column $column) {
             return [
                 'default' => true,
-                'class' => 'fw-medium',
+                'class' => 'text-center fw-medium',
             ];
         });
 
         $this->setTdAttributes(function (Column $column, $row, $columnIndex, $rowIndex) {
             return [
-                'class' => 'text-md-start',
+                'class' => $columnIndex === 0 ? 'text-md-start border-end sticky' : 'text-md-center',
             ];
         });
 
@@ -165,19 +167,14 @@ class OvertimeRequestsTable extends DataTableComponent
                 ->deselected(),
 
             Column::make(__('Start Time'))
+                ->format(fn ($row) => $row->format('F d, Y g:i A'))
                 ->sortable()
                 ->deselected(),
 
             Column::make(__('End Time'))
+                ->format(fn ($row) => $row->format('F d, Y g:i A'))
                 ->sortable()
                 ->deselected(),
-            
-            Column::make(__('Date Requested'), 'date')
-                ->format(fn ($row) => Carbon::parse($row)->format('F d, Y'))
-                ->sortable()
-                ->searchable()
-                ->setSortingPillDirections('Asc', 'Desc')
-                ->setSortingPillTitle(__('Request Date')),
             
             Column::make(__('Hours Requested'))
                 ->label(fn ($row) => $row->hoursRequested)
@@ -189,29 +186,37 @@ class OvertimeRequestsTable extends DataTableComponent
 
             Column::make(__('Status'))
                 ->label(function ($row) {
+                    $badge = [
+                        'color' => StatusBadge::PENDING->getColor(),
+                        'slot' => StatusBadge::PENDING->getLabel(),
+                    ];
+
                     if ($row->authorizer_signed_at) {
-                        return __('Approved');
+                        $badge = [
+                            'color' => StatusBadge::APPROVED->getColor(),
+                            'slot' => StatusBadge::APPROVED->getLabel(),
+                        ];
                     } elseif ($row->denied_at) {
-                        return __('Denied');
-                    } else {
-                        return __('Pending');
+                        $badge = [
+                            'color' => StatusBadge::DENIED->getColor(),
+                            'slot' => StatusBadge::DENIED->getLabel(),
+                        ];
                     }
+
+                    return view('components.status-badge')->with($badge);
                 }),
 
-            Column::make(__('Cut-Off Period'))
-                ->label(fn ($row) => $row->payrollApproval->payroll->cut_off)
-                ->sortable(function (Builder $query, $direction) {
-                    return $query->orderBy('date', $direction);
-                })
-                ->setSortingPillDirections('Asc', 'Desc')
-                ->setSortingPillTitle(__('Cut-Off')),
-
             Column::make(__('Date Filed'))
-                ->label(fn ($row) => $row->filed_at)
+                ->label(fn ($row) => $row->filed_at->format('F d, Y g:i A'))
                 ->sortable(function (Builder $query, $direction) {
                     return $query->orderBy('filed_at', $direction);
                 })
                 ->setSortingPillDirections('Asc', 'Desc'),
+
+            Column::make(__('Payroll'))
+                ->label(fn ($row) => $row->payrollApproval->payroll->cut_off)
+                ->setSortingPillDirections('Asc', 'Desc')
+                ->setSortingPillTitle(__('Payroll')),
         ];
     }
 

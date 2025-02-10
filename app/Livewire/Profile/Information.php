@@ -29,7 +29,7 @@ class Information extends Component
                     ],
                     'status',
                     'shift',
-                    'application'
+                    'application',
                 ],
             ]);
 
@@ -49,8 +49,8 @@ class Information extends Component
                     'jobLevelName'          => $user->account->jobTitle->jobLevel->job_level_name,
                     'jobFamily'             => $user->account->jobTitle->jobFamily->job_family_name,
                     'employmentStatus'      => $user->account->status->emp_status_name,
-                    'shift'                 => $user->account->shift->shift_name,
-                    'shiftSched'            => $user->account->shift_schedule,
+                    'shift'                 => $user->account->shift->category->shift_name,
+                    'shiftSched'            => $user->account->shift->schedule,
                     'hiredAt'               => $user->account?->jobDetail?->hired_at,
                     'dob'                   => $user->account->date_of_birth,
                     'sss'                   => $user->account->sss_no,
