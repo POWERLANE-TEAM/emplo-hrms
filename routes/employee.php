@@ -6,7 +6,6 @@ use App\Http\Controllers\JobTitleController;
 use App\Http\Controllers\PayslipController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TrainingController;
-use App\Models\Employee;
 use App\Enums\UserPermission;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\IssueController;
@@ -209,7 +208,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         ->name('applicant.exam.store');
 
 
-            /**
+    /**
      * Schedule Final Interview
      */
     Route::post('/applicant/interview/final/{application}', [FinalInterviewController::class, 'store'])
@@ -217,13 +216,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     ->middleware(['permission:' . UserPermission::CREATE_APPLICANT_INIT_INTERVIEW_SCHEDULE->value])
     ->name('applicant.final-inteview.store');
 
-
-
-    Route::get('{employee}/attendance', [AttendanceController::class, 'show'])
-        ->middleware(['permission:' . UserPermission::VIEW_ALL_DAILY_ATTENDANCE->value])
-        ->middleware(['permission:' . UserPermission::VIEW_ALL_DAILY_ATTENDANCE->value])
-        ->name('attendance.show');
-
+    
     Route::get('/attendance/{range}', [AttendanceController::class, 'index'])
         ->can(UserPermission::VIEW_ALL_DAILY_ATTENDANCE)
         ->where('range', 'daily|period')
@@ -323,7 +316,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     Route::prefix('overtimes')->name('overtimes.')->group(function () {
 
         Route::get('requests/cut-offs', [OvertimeController::class, 'cutOff'])
-            // ->can('viewOvertimeRequestAsInitialApprover')
+            ->can('viewSubordinateOvertimeRequest')
             ->name('requests.cut-offs');
 
         Route::get('requests', [OvertimeController::class, 'authorize'])
