@@ -80,7 +80,7 @@ class FinalInterviewController extends Controller
         FinalInterview::create([
             'application_id' => $application->application_id,
             'final_interview_at' => $interviewStartDate . ' ' . $interviewStartTime,
-            'final_interviewer' => auth()->user()->user_id,
+            'final_interviewer' => auth()->user()->account->employee_id,
         ]);
 
         $application->update([
@@ -123,7 +123,7 @@ class FinalInterviewController extends Controller
 
         $data = [
             'final_interview_at' => $interviewStart,
-            'final_interviewer' => auth()->user()->user_id,
+            'final_interviewer' => auth()->user()->account->employee_id,
             'is_final_interview_passed' => $request['isPassed'] ?? false,
         ];
 

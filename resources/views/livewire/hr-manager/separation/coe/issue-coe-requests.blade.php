@@ -50,15 +50,21 @@ $badge = $statusConfig[$certificateStatus]['badge'] ?? 'Unknown';
 
                 @php
 
-                    $startDate = $coe->requestor->lifecycle->start_date
-                        ? Carbon::parse($coe->requestor->lifecycle->start_date)
-                        : null;
-                    $endDate = $coe->requestor->lifecycle->separated_at
-                        ? Carbon::parse($coe->requestor->lifecycle->separated_at)
-                        : null;
-                    $employmentDuration = $startDate
-                        ? $startDate->diff($endDate)->format('%y years, %m months, %d days')
-                        : 'N/A';
+                    $startDate = $coe->requestor->lifecycle->started_at ?? 'Error';
+                    $endDate = $coe->requestor->lifecycle->separated_at ?? 'N/A';
+
+                    if ($startDate !== 'Error') {
+                        $startDate = Carbon::parse($startDate);
+                    }
+
+                    if ($endDate instanceof Carbon) {
+                        $endDate = Carbon::parse($endDate);
+                    }
+
+                    $employmentDuration =
+    $startDate instanceof Carbon && $endDate instanceof Carbon
+        ? $startDate->diff($endDate)->format('%y years, %m months, %d days')
+        : ($startDate instanceof Carbon ? $startDate->diff(Carbon::now())->format('%y years, %m months, %d days') : 'N/A');
                 @endphp
 
                 <!-- Employment Details -->
@@ -66,8 +72,8 @@ $badge = $statusConfig[$certificateStatus]['badge'] ?? 'Unknown';
                     <section>
                         <p class="fw-bold fs-5 letter-spacing-2 text-primary text-uppercase">Employment Details</p>
                         <p class="pb-2 fs-6"><b>Start Date:</b>
-                            {{ $startDate ? $startDate->format('F j, Y') : 'No Record' }}</p>
-                        <p class="pb-2 fs-6"><b>End Date:</b> {{ $endDate ? $endDate->format('F j, Y') : 'N/A' }}</p>
+                            {{ $startDate instanceof \Carbon\Carbon ? $startDate->format('F j, Y') : 'Error' }}</p>
+                        <p class="pb-2 fs-6"><b>End Date:</b> {{ $endDate instanceof Carbon ? $endDate->format('F j, Y') : 'N/A' }}</p>
                         <p class="pb-2 fs-6"><b>Employment Duration: </b> {{ $employmentDuration }}</p>
                     </section>
                 </div>

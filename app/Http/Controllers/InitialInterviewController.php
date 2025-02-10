@@ -77,7 +77,7 @@ class InitialInterviewController extends Controller
         InitialInterview::create([
             'application_id' => $application->application_id,
             'init_interview_at' => $interviewStartDate . ' ' . $interviewStartTime,
-            'init_interviewer' => auth()->user()->user_id,
+            'init_interviewer' => auth()->user()->account->employee_id,
         ]);
 
         // Insert Interview Notification Event Here
@@ -116,7 +116,7 @@ class InitialInterviewController extends Controller
 
         $data = [
             'init_interview_at' => $interviewStart,
-            'init_interviewer' => auth()->user()->user_id,
+            'init_interviewer' => auth()->user()->account->employee_id,
             'is_init_interview_passed' => $request['isPassed'] ?? false,
         ];
 

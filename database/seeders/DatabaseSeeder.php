@@ -40,7 +40,7 @@ class DatabaseSeeder extends Seeder
                 // AttendanceLogSeeder::class,
                 UserSeeder::class,
                 // ApplicantSeeder::class,
-                NewApplicantSeeder::class,
+                // NewApplicantSeeder::class,
                 QualifiedApplicantSeeder::class,
                 // ApplicationSeeder::class,
                 ApplicantEducationSeeder::class,
@@ -81,7 +81,7 @@ class DatabaseSeeder extends Seeder
                 Issue2024Seeder::class,
                 AttendanceLog2024Seeder::class,
 
-                // EmployeeSeeder::class,
+                EmployeeSeeder::class,
                 // GuestSeeder::class,
                 // RegularPerformanceSeeder::class,
                 // AttendanceSeeder::class
