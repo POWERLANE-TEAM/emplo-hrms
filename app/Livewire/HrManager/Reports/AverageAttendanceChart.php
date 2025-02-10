@@ -7,10 +7,10 @@ use Livewire\Component;
 use App\Models\Employee;
 use App\Models\AttendanceLog;
 use Illuminate\Support\Carbon;
-use App\Enums\EmploymentStatus;
 use Livewire\Attributes\Locked;
 use App\Enums\BiometricPunchType;
 use Livewire\Attributes\Reactive;
+use Illuminate\Support\Facades\DB;
 
 class AverageAttendanceChart extends Component
 {
@@ -32,28 +32,24 @@ class AverageAttendanceChart extends Component
         // implement caching
 
         $attendanceLogs = AttendanceLog::whereYear('timestamp', $this->year)
-            ->where('type', BiometricPunchType::CHECK_IN)
-            ->whereHas('employee', function ($query) {
-                $query->whereNotIn('timestamp', function ($subQuery) {
-                    $subQuery->select('date')
-                        ->from('holidays')
-                        ->whereRaw('EXTRACT(MONTH FROM date) = ?', [Carbon::parse($this->year)->month]);
-                });
-            })
             ->get()
-            ->groupBy(function($date) {
-                return Carbon::parse($date->timestamp)->format('Y-m');
-            });    
-    
-        $this->yearlyData = [];
-        $this->monthlyData = [];
+            ->where('type', BiometricPunchType::CHECK_IN->value)
+            ->where(fn ($log) => $log->timestamp->format('m-d'))
+            ->whereNotIn('timestamp', $this->holidays->toArray())
+            ->groupBy(function ($date) {
+                return $date->timestamp->format('Y-m');
+            });        
     
         $yearlyTotalAttended = 0;
         $yearlyTotalScheduled = 0;
     
         $totalEmployees = Employee::activeEmploymentStatus()->get()->count();
 
-        foreach ($attendanceLogs as $month => $logs) {
+        $sortedMonths = $attendanceLogs->keys()->sort()->values();
+
+        foreach ($sortedMonths as $month) {
+
+            $logs = $attendanceLogs[$month];
     
             $totalWorkdays = $this->getWorkdaysInMonth($month);
 
