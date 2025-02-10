@@ -26,33 +26,33 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
-            $table->decimal('reg_hrs', 5, 2)->default(0);              // regular hours worked
-            $table->decimal('reg_nd', 5, 2)->default(0);               // regular night differential
-            $table->decimal('reg_ot', 5, 2)->default(0);               // regular overtime
-            $table->decimal('reg_ot_nd', 5, 2)->default(0);            // regular overtime night differential
-            $table->decimal('rest_hrs', 5, 2)->default(0);             // rest day hours worked
-            $table->decimal('rest_nd', 5, 2)->default(0);              // rest day night differential
-            $table->decimal('rest_ot', 5, 2)->default(0);              // rest day overtime
-            $table->decimal('rest_ot_nd', 5, 2)->default(0);           // rest day overtime night differential
-            $table->decimal('reg_hol_hrs', 5, 2)->default(0);          // regular holiday hours worked
-            $table->decimal('reg_hol_nd', 5, 2)->default(0);           // regular holiday night differential
-            $table->decimal('reg_hol_ot', 5, 2)->default(0);           // regular holiday overtime
-            $table->decimal('reg_hol_ot_nd', 5, 2)->default(0);        // regular holiday overtime night differential
-            $table->decimal('reg_hol_rest_hrs', 5, 2)->default(0);     // regular holiday rest day hours worked
-            $table->decimal('reg_hol_rest_nd', 5, 2)->default(0);      // regular holiday rest day night differential
-            $table->decimal('reg_hol_rest_ot', 5, 2)->default(0);      // regular holiday rest day overtime
-            $table->decimal('reg_hol_rest_ot_nd', 5, 2)->default(0);   // regular holiday rest day overtime night differential
-            $table->decimal('spe_hol_hrs', 5, 2)->default(0);          // special holiday hours worked
-            $table->decimal('spe_hol_nd', 5, 2)->default(0);           // special holiday night differential
-            $table->decimal('spe_hol_ot', 5, 2)->default(0);           // special holiday overtime
-            $table->decimal('spe_hol_ot_nd', 5, 2)->default(0);        // special holiday overtime night differential
-            $table->decimal('spe_hol_rest_hrs', 5, 2)->default(0);     // special holiday rest day hours worked
-            $table->decimal('spe_hol_rest_nd', 5, 2)->default(0);      // special holiday rest day night differential
-            $table->decimal('spe_hol_rest_ot', 5, 2)->default(0);      // special holiday rest day overtime
-            $table->decimal('spe_hol_rest_ot_nd', 5, 2)->default(0);   // special holiday rest day overtime night differential
-            $table->unsignedTinyInteger('abs_days')->default(0);       // absence days
-            $table->decimal('ut_hours', 5, 2)->default(0);             // undertime hours
-            $table->decimal('td_hours', 5, 2)->default(0);             // tardiness hours
+            $table->decimal('reg_hrs', 5, 2)->nullable();              // regular hours worked
+            $table->decimal('reg_nd', 5, 2)->nullable();               // regular night differential
+            $table->decimal('reg_ot', 5, 2)->nullable();               // regular overtime
+            $table->decimal('reg_ot_nd', 5, 2)->nullable();            // regular overtime night differential
+            $table->decimal('rest_hrs', 5, 2)->nullable();             // rest day hours worked
+            $table->decimal('rest_nd', 5, 2)->nullable();              // rest day night differential
+            $table->decimal('rest_ot', 5, 2)->nullable();              // rest day overtime
+            $table->decimal('rest_ot_nd', 5, 2)->nullable();           // rest day overtime night differential
+            $table->decimal('reg_hol_hrs', 5, 2)->nullable();          // regular holiday hours worked
+            $table->decimal('reg_hol_nd', 5, 2)->nullable();           // regular holiday night differential
+            $table->decimal('reg_hol_ot', 5, 2)->nullable();           // regular holiday overtime
+            $table->decimal('reg_hol_ot_nd', 5, 2)->nullable();        // regular holiday overtime night differential
+            $table->decimal('reg_hol_rest_hrs', 5, 2)->nullable();     // regular holiday rest day hours worked
+            $table->decimal('reg_hol_rest_nd', 5, 2)->nullable();      // regular holiday rest day night differential
+            $table->decimal('reg_hol_rest_ot', 5, 2)->nullable();      // regular holiday rest day overtime
+            $table->decimal('reg_hol_rest_ot_nd', 5, 2)->nullable();   // regular holiday rest day overtime night differential
+            $table->decimal('spe_hol_hrs', 5, 2)->nullable();          // special holiday hours worked
+            $table->decimal('spe_hol_nd', 5, 2)->nullable();           // special holiday night differential
+            $table->decimal('spe_hol_ot', 5, 2)->nullable();           // special holiday overtime
+            $table->decimal('spe_hol_ot_nd', 5, 2)->nullable();        // special holiday overtime night differential
+            $table->decimal('spe_hol_rest_hrs', 5, 2)->nullable();     // special holiday rest day hours worked
+            $table->decimal('spe_hol_rest_nd', 5, 2)->nullable();      // special holiday rest day night differential
+            $table->decimal('spe_hol_rest_ot', 5, 2)->nullable();      // special holiday rest day overtime
+            $table->decimal('spe_hol_rest_ot_nd', 5, 2)->nullable();   // special holiday rest day overtime night differential
+            $table->unsignedTinyInteger('abs_days')->nullable();       // absence days
+            $table->decimal('ut_hours', 5, 2)->nullable();             // undertime hours
+            $table->decimal('td_hours', 5, 2)->nullable();             // tardiness hours
             $table->timestamps();
         });
     }

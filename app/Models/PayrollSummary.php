@@ -18,6 +18,36 @@ class PayrollSummary extends Model
         'updated_at',
     ];
 
+    protected $attributes = [
+        'reg_hrs'               => 0,
+        'reg_nd'                => 0,
+        'reg_ot'                => 0,
+        'reg_ot_nd'             => 0,
+        'rest_hrs'              => 0,
+        'rest_nd'               => 0,
+        'rest_ot'               => 0,
+        'rest_ot_nd'            => 0,
+        'reg_hol_hrs'           => 0,
+        'reg_hol_nd'            => 0,
+        'reg_hol_ot'            => 0,
+        'reg_hol_ot_nd'         => 0,
+        'reg_hol_rest_hrs'      => 0,
+        'reg_hol_rest_nd'       => 0,
+        'reg_hol_rest_ot'       => 0,
+        'reg_hol_rest_ot_nd'    => 0,
+        'spe_hol_hrs'           => 0,
+        'spe_hol_nd'            => 0,
+        'spe_hol_ot'            => 0,
+        'spe_hol_ot_nd'         => 0,
+        'spe_hol_rest_hrs'      => 0,
+        'spe_hol_rest_nd'       => 0,
+        'spe_hol_rest_ot'       => 0,
+        'spe_hol_rest_ot_nd'    => 0,
+        'abs_days'              => 0,
+        'ut_hours'              => 0,
+        'td_hours'              => 0,
+    ];    
+
     /**
      * Get the payroll that owns the summary.
      * 
