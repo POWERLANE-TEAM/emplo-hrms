@@ -19,6 +19,9 @@ class EmployeeShift extends Model
         'updated_at',
     ];
 
+    /**
+     * Accessor for shift schedule start - end time.
+     */
     protected function getScheduleAttribute(): string
     {
         $start = Carbon::make($this->start_time)->format('g:i A');
@@ -27,6 +30,11 @@ class EmployeeShift extends Model
         return "{$start} - {$end}";
     }
 
+    /**
+     * Get the shift type that owns the given start - end time.
+     * 
+     * @return BelongsTo<Shift, EmployeeShift>
+     */
     public function category(): BelongsTo
     {
         return $this->belongsTo(Shift::class, 'shift_id', 'shift_id');
