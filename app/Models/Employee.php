@@ -199,14 +199,11 @@ class Employee extends Model
 
     /**
      * Query builder scope to get active employees (Probationary, Regular) only.
-     * 
-     * @param \Illuminate\Database\Eloquent\Builder $builder
-     * @return void
      */
     public function scopeActiveEmploymentStatus(Builder $query): void
     {
         $query->whereHas('status',
-            fn ($query) => $query->whereIn('emp_status_name', [
+            fn ($subQuery) => $subQuery->whereIn('emp_status_name', [
                 Status::PROBATIONARY->label(),
                 Status::REGULAR->label(),
             ])
@@ -215,18 +212,35 @@ class Employee extends Model
 
     /**
      * Query builder scope to get inactive employees (Resigned, Retired, or Terminated) only.
-     * 
-     * @param \Illuminate\Database\Eloquent\Builder $builder
-     * @return void
      */
     public function scopeInactiveEmploymentStatus(Builder $query): void
     {
         $query->whereHas('status',
-            fn ($query) => $query->whereIn('emp_status_name', [
+            fn ($subQuery) => $subQuery->whereIn('emp_status_name', [
                 Status::TERMINATED->label(),
                 Status::RESIGNED->label(),
                 Status::RETIRED->label(),
             ])
+        );
+    }
+
+    /**
+     * Query builder scope to get employees with regular shift.
+     */
+    public function scopeRegularShift(Builder $query): void
+    {
+        $query->whereHas('shift.category',
+            fn($subQuery) => $subQuery->where('shift_name', 'Regular'),
+        );
+    }
+
+    /**
+     * Query builder scope to get employees with night differential shift.
+     */
+    public function scopeNightDifferentialShift(Builder $query): void
+    {
+        $query->whereHas('shift.category',
+            fn ($subQuery) => $subQuery->where('shift_name', 'Night Differential'),
         );
     }
 
