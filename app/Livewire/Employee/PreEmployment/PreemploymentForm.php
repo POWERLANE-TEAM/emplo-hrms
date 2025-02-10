@@ -45,10 +45,6 @@ class PreemploymentForm extends Component
                 $query->where('application_id', $this->employee->jobDetail->application_id);
             }])->get();
 
-
-
-            // dd($this->employee->account->hasRole(UserRole::BASIC));
-
         } catch (\Throwable $th) {
             report($th);
         }
@@ -76,13 +72,8 @@ class PreemploymentForm extends Component
     {
 
         $user = auth()->user();
-        dump($this->preemploymentDocs[$docId]['file']);
-        dump($this->preemploymentDocs[$docId]['file']->getRealPath());
-        dump($docId);
 
         $fileFromLivewire = FilepondHelper::transfromToFile($this->preemploymentDocs[$docId]['file']->getRealPath());
-
-        dump($fileFromLivewire);
 
         // if (! $user->hasAllPermissions([UserPermission::CREATE_PRE_EMPLOYMENT_DOCUMENT])) {
         //     abort(403, 'You are not authorized to perform this action yet');
