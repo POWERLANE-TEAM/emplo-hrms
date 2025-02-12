@@ -29,15 +29,15 @@ class PayrollSummaryService
      */
     public function __construct()
     {
-        $this->latestPayroll = Payroll::latest('cut_off_end')->first();
+        // $this->latestPayroll = Payroll::latest('cut_off_end')->first();
 
-        $this->regularShift = Shift::regular()->first();
-        $this->nightDifferentialShift = Shift::nightDifferential()->first();
+        // $this->regularShift = Shift::regular()->first();
+        // $this->nightDifferentialShift = Shift::nightDifferential()->first();
 
-        if ($this->latestPayroll) {
-            $this->regularHolidays = $this->getRegularHolidays($this->latestPayroll->cut_off_end);
-            $this->specialHolidays = $this->getSpecialHolidays($this->latestPayroll->cut_off_end);
-        }
+        // if ($this->latestPayroll) {
+        //     $this->regularHolidays = $this->getRegularHolidays($this->latestPayroll->cut_off_end);
+        //     $this->specialHolidays = $this->getSpecialHolidays($this->latestPayroll->cut_off_end);
+        // }
     }   
 
     /**

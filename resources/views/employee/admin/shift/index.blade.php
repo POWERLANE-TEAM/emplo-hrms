@@ -1,43 +1,37 @@
 {{-- Extends layout --}}
-@extends('components.layout.employee.layout', ['nonce' => $nonce])
+@extends('components.layout.employee.layout', ['description' => 'Job Families', 'nonce' => $nonce])
 
 {{-- Head Section: Title, Scripts, & Styles --}}
 @section('head')
-<title>Category</title>
-<link rel="preload" href="{{ Vite::asset('resources/css/employee/main.css') }}" as="style"
-    onload="this.onload=null;this.rel='stylesheet'">
-<noscript>
-    <link rel="stylesheet" href="{{ Vite::asset('resources/css/employee/main.css') }}">
-</noscript>
-
+<title>Job Families</title>
 <script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 @endsection
 
+@pushOnce('pre-scripts')
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" nonce="{{ $nonce }}"></script>
+@endPushOnce
+
 @pushOnce('scripts')
-    @vite(['resources/js/drag-and-drop.js'])
+    <script src="{{ Vite::asset('resources/js/forms/nbp.min.js') }}" defer></script>
+    @vite(['resources/js/employee/hr-manager/dashboard.js'])
 @endPushOnce
 
 @pushOnce('styles')
-    @vite(['resources/css/employee/main.css'])
+    @vite(['resources/css/employee/hr-manager/dashboard.css'])
 @endPushOnce
 {{-- END OF Head Section: Title, Scripts, & Styles --}}
+
 
 {{-- Body/Content Section --}}
 @section('content')
 
-<x-headings.main-heading :isHeading="true">
-    <x-slot:heading>
-        {{ __('Configure Performance Evaluation') }}
-    </x-slot:heading>
+<x-headings.header-link heading="{{ __('Shift Schedules ') }}"
+    description="{{ __('Adjust or create shifts, as well as their work schedule.') }}" label="Create" nonce="{{ $nonce }}"
+    href="{{ route($routePrefix . '.job-family.create') }}" />
 
-    <x-slot:description>
-        {{ __('Add, edit or remove performance evaluations elements.') }}
-    </x-slot:description>
-</x-headings.main-heading>
+@include('components.includes.tab_navs.org-tab-navs')
 
-@include('components.includes.tab_navs.perf-eval-navs')
-
-<livewire:admin.config.performance.categories />
+<livewire:admin.shifts.shifts />
 
 @endsection
