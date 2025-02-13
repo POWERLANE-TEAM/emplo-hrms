@@ -27,9 +27,12 @@ use App\Policies\RegularPerformancePolicy;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use App\Policies\ProbationaryPerformancePolicy;
 use App\Providers\Form\FormWizardServiceProvider;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Broadcasting\BroadcastServiceProvider;
+use Illuminate\Support\Facades\Log;
+use Laravel\Fortify\Contracts\PasswordResetResponse;
 
 class AppServiceProvider extends ServiceProvider
 {

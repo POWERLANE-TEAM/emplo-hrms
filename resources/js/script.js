@@ -7,7 +7,8 @@ const themeManager = new ThemeManager();
 window.ThemeManager = themeManager;
 
 function disableSubmit() {
-    document
+    try {
+        document
         .querySelectorAll(
             'form:has(:invalid) button[type="submit"],form:has(:invalid) button:not([type])'
         )
@@ -29,6 +30,9 @@ function disableSubmit() {
             }
             element.disabled = true;
         });
+    } catch (e) {
+        console.error(e);
+    }
 }
 
 try {
@@ -223,12 +227,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
 export function switchModal(hideModalId, showModalId, callback) {
     try {
-        // Hide the current modal
-        const hideModal = bootstrap.Modal.getOrCreateInstance(document.getElementById(hideModalId));
-        hideModal.hide();
+        setTimeout(() => {
+            // Hide the current modal
+            const hideModal = bootstrap.Modal.getOrCreateInstance(document.getElementById(hideModalId));
+            hideModal.hide();
 
-        // Open the target modal using your openModal function
-        openModal(showModalId, callback);
+            if (typeof callback === 'function') {
+                callback(modalId);
+            }
+
+            // Open the target modal using your openModal function
+            openModal(showModalId);
+        }, 0);
     } catch (e) {
         console.error(e);
     }

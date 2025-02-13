@@ -20,6 +20,11 @@
     <script src="{{ Vite::asset('resources/js/forms/nbp.min.js') }}" defer></script>
     @vite(['resources/js/employee/login.js'])
     @vite(['resources/js/animations/auth-effect.js'])
+    <script>
+        const FORGOT_PASSWORD_ACTION = "{{ route('password.email') }}";
+    </script>
+    @vite(['resources/js/forgot-password.js'])
+    <script src="{{ Vite::asset('resources/js/forms/nbp.min.js') }}" defer></script>
 @endPushOnce
 
 @section('critical-styles')

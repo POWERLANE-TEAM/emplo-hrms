@@ -72,6 +72,12 @@
                 </x-slot:label>
             </x-form.checkbox>
 
+            <div class=" col-md-auto mx-auto me-md-0 ms-md-auto order-2 order-md-1">
+                <button type="button" class="border-0 bg-transparent text-decoration-underline green-hover"
+                    onclick="openModal('forgotPasswordModal')">
+                    Forgot your password?
+                </button>
+            </div>
 
             <button type="submit" nonce="{{ $nonce }}" id="userLoginBtn"
                 class="btn btn-primary btn-lg col-12 order-1 order-md-2">

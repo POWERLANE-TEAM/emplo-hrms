@@ -11,9 +11,11 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
+    @env('production')
     <style nonce="{{ $nonce }}">
         {!! Vite::content('resources/css/input/disable-submit.css') !!}
     </style>
+    @endenv
     <x-html.meta />
     <x-html.meta-seo />
 
@@ -36,20 +38,20 @@
     <!-- Scripts -->
     <x-authenticated-broadcast-id />
     <x-livewire-listener />
-    @if(session('clearSessionStorageKeys'))
-    <script nonce="{{ $nonce }}">
-        @php
-            $keys = session('clearSessionStorageKeys');
-        @endphp
+    @if (session('clearSessionStorageKeys'))
+        <script nonce="{{ $nonce }}">
+            @php
+                $keys = session('clearSessionStorageKeys');
+            @endphp
 
-        @if(is_array($keys))
-            @foreach($keys as $key)
-                sessionStorage.removeItem('{{ $key }}');
-            @endforeach
-        @else
-            sessionStorage.removeItem('{{ $keys }}');
-        @endif
-    </script>
+            @if (is_array($keys))
+                @foreach ($keys as $key)
+                    sessionStorage.removeItem('{{ $key }}');
+                @endforeach
+            @else
+                sessionStorage.removeItem('{{ $keys }}');
+            @endif
+        </script>
     @endif
 
     @vite(['resources/js/listeners/online-users.js'])
@@ -70,11 +72,11 @@
     @stack('styles')
 
     @env('local')
-        @vite(['node_modules/bootstrap/dist/js/bootstrap.bundle.min.js'])
+    @vite(['node_modules/bootstrap/dist/js/bootstrap.bundle.min.js'])
     @endenv
 
     @env('production')
-        @vite(['node_modules/bootstrap/dist/js/bootstrap.bundle.min.js?commonjs-entry'])
+    @vite(['node_modules/bootstrap/dist/js/bootstrap.bundle.min.js?commonjs-entry'])
     @endenv
 
     @stack('pre-scripts')

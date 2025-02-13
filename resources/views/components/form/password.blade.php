@@ -4,11 +4,11 @@
     <label for="{{ $attributes->get('id') }}" class="mb-1">{{ $label }}</label>
 @endisset
 <div class="input-group mb-3">
-    <div class="px-2 d-flex position-absolute icon  text-primary" wire:ignore nonce="{{ $nonce }}">
-        @if (!empty($input_icon_left))
+    @if (!empty($input_icon_left))
+        <div class="px-2 d-flex position-absolute icon  text-primary" wire:ignore nonce="{{ $nonce }}">
             {{ $input_icon_left }}
-        @endif
-    </div>
+        </div>
+    @endif
     <input type="password"
         {{ $attributes->merge([
                 'class' => 'form-control rm-bg-icon border-bottom ps-5 z-0',

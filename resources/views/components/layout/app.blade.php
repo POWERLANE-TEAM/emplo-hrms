@@ -9,9 +9,11 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
+    @env('production')
     <style nonce="{{ $nonce }}">
         {!! Vite::content('resources/css/input/disable-submit.css') !!}
     </style>
+    @endenv
     <x-html.meta />
     <x-html.meta-seo />
 

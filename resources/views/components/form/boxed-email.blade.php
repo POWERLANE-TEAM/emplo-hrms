@@ -25,7 +25,7 @@
         aria-owns="{{ $attributes->get('id') }}-feedback" maxlength="320" required
         @if ($attributes->has('name')) wire:model="{{ $attributes->get('name') }}" @endif nonce="{{ $nonce }}">
 
-    @if (!empty($feedback))
-        {{ $feedback }}
-    @endif
 </div>
+@if (!empty($feedback))
+    {{ $feedback }}
+@endif

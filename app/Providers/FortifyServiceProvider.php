@@ -28,6 +28,8 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Contracts\LoginResponse;
 use Laravel\Fortify\Contracts\LogoutResponse;
+use Laravel\Fortify\Contracts\PasswordResetResponse;
+use Laravel\Fortify\Contracts\PasswordUpdateResponse;
 use Laravel\Fortify\Fortify;
 
 class FortifyServiceProvider extends ServiceProvider
@@ -37,8 +39,6 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-
-        config(['fortify.prefix' => RouteHelper::getByReferrer()]);
 
         $this->app->instance(LogoutResponse::class, new class implements LogoutResponse
         {
@@ -113,7 +113,6 @@ class FortifyServiceProvider extends ServiceProvider
                         if ($testResponse->isOk()) {
                             return redirect($intendedUrl)->with('clearSessionStorageKeys', 'pageThemePreference');
                         }
-
                     }
                 }
 
@@ -134,7 +133,6 @@ class FortifyServiceProvider extends ServiceProvider
 
                 return redirect('/')->with('clearSessionStorageKeys', 'pageThemePreference');;
             }
-
         });
     }
 
@@ -176,12 +174,20 @@ class FortifyServiceProvider extends ServiceProvider
         });
 
         Fortify::loginView(function () {
-
             return view('livewire.auth.login-view');
         });
 
         Fortify::twoFactorChallengeView(function () {
             return view('livewire.auth.two-factor-challenge-form-view');
+        });
+
+        // Form to enter the email address to send the password reset link
+        Fortify::requestPasswordResetLinkView(function () {
+            return view('auth.forgot-password');
+        });
+
+        Fortify::resetPasswordView(function (Request $request) {
+            return view('auth.reset-password', ['request' => $request]);
         });
 
         RateLimiter::for('login', function (Request $request) {
