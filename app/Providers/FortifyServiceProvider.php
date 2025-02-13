@@ -40,6 +40,8 @@ class FortifyServiceProvider extends ServiceProvider
     public function register(): void
     {
 
+        config(['fortify.prefix' => RouteHelper::getByReferrer()]);
+        
         $this->app->instance(LogoutResponse::class, new class implements LogoutResponse
         {
             public function toResponse($request)

@@ -5,6 +5,7 @@ namespace App\Livewire\Dialogues;
 use App\Rules\EmailRule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
+use Laravel\Fortify\Http\Controllers\NewPasswordController;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
@@ -15,7 +16,6 @@ class ForgotPassword extends Component
 
     public function forgotPassword()
     {
-
         $this->validate();
 
         config(['fortify.prefix' => '']);
@@ -26,6 +26,7 @@ class ForgotPassword extends Component
             session()->flash('status', __($status));
             $this->js("switchModal('forgotPasswordModal', 'modal-forgot-password-email-success')");
         } else {
+            report($status);
             $this->dispatch('show-toast', [
                 'type' => 'danger',
                 'message' => 'An error occurred while sending the password reset link.',

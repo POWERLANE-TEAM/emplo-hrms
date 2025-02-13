@@ -121,7 +121,7 @@
     <!-- BACK-END Replace: Add this when changed successfully  -->
     <x-modals.status-modal type="success" label="Changed Successfully" header="Password changed successfully!"
         id="changed-successfully"
-        message="Password has been changed. You can now <a href='{{ route($routePrefix ? '.' : '' . 'login') }}'>sign in</a>." />
+        message="Password has been changed. You can now <a href='{{-- {{ route($routePrefix ? '.' : '' . 'login') }} --}}'>sign in</a>." />
 
     @vite(['resources/js/reset-password.js'])
 @endsection
