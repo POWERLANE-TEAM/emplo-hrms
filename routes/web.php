@@ -12,7 +12,6 @@ use App\Livewire\Auth\GoogleOneTap;
 use App\Livewire\Auth\Logout;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
-use Laravel\Fortify\Http\Controllers\NewPasswordController;
 
 Route::group([], function () {
     Route::get('/hiring', function () {
@@ -77,8 +76,9 @@ Route::get('/information-centre', function () {
 
 Route::get('/modal-content/{modalKey}', [ContentController::class, 'getModalContent']);
 
-Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])
-->name('password.reset');
+// Route::get('/forgot-password', function () {
+//     return view('password-recovery.index');
+// });
 
 Route::get('/canvas', function () {
     return view('canvas');
