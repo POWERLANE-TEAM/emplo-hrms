@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Enums\AccountType;
 use App\Models\User;
 use App\Enums\UserRole;
 use App\Policies\EmployeeArchivePolicy;
@@ -32,7 +33,6 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Broadcasting\BroadcastServiceProvider;
 use Illuminate\Support\Facades\Log;
-use Laravel\Fortify\Contracts\PasswordResetResponse;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -233,6 +233,21 @@ class AppServiceProvider extends ServiceProvider
         Vite::useAggressivePrefetching();
 
         $this->cacheDurations();
+
+        ResetPassword::createUrlUsing(function (User $user, string $token) {
+
+            $redirectPrefix = '';
+
+            Log::info('User account type: ' , ['user'=> $user]);
+
+            if($user->hasRole(UserRole::ADVANCED)) {
+                $redirectPrefix = 'admin' ;
+            } elseif($user->account_type == AccountType::EMPLOYEE->value) {
+                $redirectPrefix = AccountType::EMPLOYEE->value;
+            }
+
+            return config('app.url'). '/reset-password/'.$token . '?email=' . urlencode($user->email) . '&redirectPrefix=' . urlencode($redirectPrefix);
+        });
     }
 
     private function cacheDurations()
