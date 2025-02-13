@@ -27,10 +27,15 @@ use App\Http\Controllers\RegularPerformancePlanController;
 use App\Http\Controllers\Separation\CoeController;
 use App\Http\Controllers\Separation\ResignationController;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
+use Laravel\Fortify\Http\Controllers\NewPasswordController;
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthenticatedSessionController::class, 'create'])
         ->name('login');
+
+    Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])
+        ->name('password.reset');
+
 });
 
 Route::middleware('auth'/* , 'verified' */)->group(function () {
