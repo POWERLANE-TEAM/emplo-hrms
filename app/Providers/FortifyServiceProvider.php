@@ -12,6 +12,7 @@ use App\Enums\RoutePrefix as EnumsRoutePrefix;
 use App\Enums\UserPermission;
 use App\Enums\UserRole;
 use App\Events\UserLoggedout;
+use App\Http\Controllers\ResetPasswordController;
 use App\Http\Helpers\RouteHelper;
 use App\Livewire\Auth\UnverifiedEmail;
 use App\Models\User;
@@ -41,7 +42,7 @@ class FortifyServiceProvider extends ServiceProvider
     {
 
         config(['fortify.prefix' => RouteHelper::getByReferrer()]);
-        
+
         $this->app->instance(LogoutResponse::class, new class implements LogoutResponse
         {
             public function toResponse($request)
@@ -189,7 +190,7 @@ class FortifyServiceProvider extends ServiceProvider
         });
 
         Fortify::resetPasswordView(function (Request $request) {
-            return view('auth.reset-password', ['request' => $request]);
+            return app(ResetPasswordController::class)->index($request);
         });
 
         RateLimiter::for('login', function (Request $request) {
@@ -230,7 +231,7 @@ class FortifyServiceProvider extends ServiceProvider
             return EnumsRoutePrefix::ADVANCED->value;
         }
 
-        if ($user->hasRole(UserRole::INTERMEDIATE) && $routePrefix != EnumsRoutePrefix::EMPLOYEE->value) {
+        if (($user->hasRole(UserRole::INTERMEDIATE) || $user->hasRole(UserRole::BASIC)) && $routePrefix != EnumsRoutePrefix::EMPLOYEE->value) {
             return EnumsRoutePrefix::EMPLOYEE->value;
         }
 

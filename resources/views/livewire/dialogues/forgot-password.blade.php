@@ -11,7 +11,10 @@
         </x-slot:content>
         <x-slot:footer>
             <button type="button" class="btn btn-primary submit" x-init="$el.disabled = true" id="submitForgotPassword"
-                wire:click="forgotPassword">{{ __('Submit') }} </button>
+                wire:click="forgotPassword"><span wire:loading.class="d-none">{{ __('Submit') }}</span>
+                <span  role="status" wire:loading>Sending pasword reset link...</span>
+                <span  class="spinner-border spinner-border-sm text-light" aria-hidden="true" wire:loading></span>
+            </button>
         </x-slot:footer>
     </x-modals.dialog>
 

@@ -108,9 +108,15 @@
                         </x-slot:feedback>
                     </x-form.boxed-password>
 
+                    @if (session('status'))
+                        <script>
+                            openModal('changed-successfully')
+                        </script>
+                    @endif
+
                     <div class="d-flex align-items-center">
                         <button type="submit" id="submitResetPassword" class="btn w-100 btn-primary mt-4"
-                            onclick="openModal('changed-successfully')">
+                            {{-- onclick="openModal('changed-successfully')" --}}>
                             {{ __('Save Changes') }}
                         </button>
                     </div>

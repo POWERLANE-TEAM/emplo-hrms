@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Auth\Applicant;
 
+use Livewire\Attributes\Locked;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
@@ -14,6 +15,9 @@ class Login extends Component
     public $password = '';
 
     public $remember = false;
+
+    #[Locked]
+    public $loginMessage;
 
     public function render()
     {
