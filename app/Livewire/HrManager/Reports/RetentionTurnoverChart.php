@@ -3,16 +3,26 @@
 namespace App\Livewire\HrManager\Reports;
 
 use Livewire\Component;
+use Livewire\Attributes\Locked;
 use App\Models\EmployeeLifecycle;
+use Illuminate\Support\Facades\Cache;
 
 class RetentionTurnoverChart extends Component
 {
     public $year;
+
+    #[Locked]    
     public $retentionData;
 
     public function mount()
     {
-        $this->fetchRetentionData();
+        $key = sprintf(config('cache.keys.reports.retention_turnover_rate'), $this->year);
+
+        $this->retentionData = Cache::get($key);
+
+        if ($this->retentionData) return;
+
+        $this->retentionData = Cache::rememberForever($key, fn () => $this->fetchRetentionData());
     }
 
     /**
@@ -40,7 +50,7 @@ class RetentionTurnoverChart extends Component
             : 0;
         $retentionRate = 100 - $turnoverRate;
 
-        $this->retentionData = [
+        return [
             'year' => $this->year,
             'total_start' => $data['total_employees_start'],
             'total_left' => $data['employees_left'],
@@ -52,8 +62,6 @@ class RetentionTurnoverChart extends Component
 
     public function render()
     {
-        return view('livewire.hr-manager.reports.retention-turnover-chart', [
-            'retentionData' => $this->retentionData
-        ]);
+        return view('livewire.hr-manager.reports.retention-turnover-chart');
     }
 }

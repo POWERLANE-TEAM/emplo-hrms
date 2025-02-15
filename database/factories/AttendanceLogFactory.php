@@ -32,31 +32,12 @@ class AttendanceLogFactory extends Factory
             BiometricPunchType::CHECK_IN->value => fake()->dateTimeBetween('5:30', '14:00')->format('Y-m-d H:i:s'),
             BiometricPunchType::CHECK_OUT->value => fake()->dateTimeBetween('13:30', '22:00')->format('Y-m-d H:i:s'),
         };
-
-        $uid = $this->generateUniqueUid();
             
         return [
-            'uid' => $uid,
             'employee_id' => null,
             'state' => fake()->numberBetween(1, 9),
             'type' => $type,
             'timestamp' => $timestamp,
         ];
-    }
-    
-    /**
-     * Generate a unique UID that doesn't conflict with existing records.
-     *
-     * @return int
-     */
-    private function generateUniqueUid(): int
-    {
-        $uid = fake()->unique()->randomNumber();
-        
-        while (AttendanceLog::where('uid', $uid)->exists()) {
-            $uid = fake()->unique()->randomNumber();
-        }
-
-        return $uid;
     }
 }

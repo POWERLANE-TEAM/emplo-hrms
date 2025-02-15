@@ -2,24 +2,26 @@
 
 namespace App\Livewire\HrManager\Reports;
 
-use App\Models\Holiday;
 use Livewire\Component;
 use App\Models\Employee;
 use App\Models\AttendanceLog;
 use Illuminate\Support\Carbon;
-use App\Enums\EmploymentStatus;
 use Livewire\Attributes\Locked;
 use App\Enums\BiometricPunchType;
+use Illuminate\Support\Facades\Cache;
 
 class AbsenteeismReportChart extends Component
 {
     // #[Reactive]
     public $year;
 
+    #[Locked]
     public $absenteeismData;
 
+    #[Locked]
     public $yearlyData = [];
 
+    #[Locked]
     public $monthlyData = [];
 
     #[Locked]
@@ -27,6 +29,16 @@ class AbsenteeismReportChart extends Component
 
     public function mount()
     {
+        $key = sprintf(config('cache.keys.reports.absenteeism'), $this->year);
+
+        $this->absenteeismData  = Cache::get($key);
+
+        if ($this->absenteeismData) {
+            $this->monthlyData = $this->absenteeismData['monthly'];
+            $this->yearlyData = $this->absenteeismData['yearly'];          
+            return;  
+        }
+
         $attendanceLogs = AttendanceLog::whereYear('timestamp', $this->year)
             ->get()
             ->where('type', BiometricPunchType::CHECK_IN->value)
@@ -35,9 +47,6 @@ class AbsenteeismReportChart extends Component
             ->groupBy(function($date) {
                 return $date->timestamp->copy()->format('Y-m');
             });    
-    
-        $this->yearlyData = [];
-        $this->monthlyData = [];
     
         $yearlyTotalAbsences = 0;
         $yearlyTotalScheduled = 0;
@@ -81,6 +90,8 @@ class AbsenteeismReportChart extends Component
             'yearly' => $this->yearlyData,
             'monthly' => $this->monthlyData,
         ];
+
+        Cache::forever($key, $this->absenteeismData);
     }
 
     public function getWorkdaysInMonth($month)
@@ -106,11 +117,7 @@ class AbsenteeismReportChart extends Component
 
     public function render()
     {   
-        return view('livewire.hr-manager.reports.absenteeism-report-chart', [
-            'absenteeismData' => $this->absenteeismData,
-            'yearlyData' => $this->yearlyData,
-            'monthlyData' => $this->monthlyData
-        ]);
+        return view('livewire.hr-manager.reports.absenteeism-report-chart');
     }
 }
 

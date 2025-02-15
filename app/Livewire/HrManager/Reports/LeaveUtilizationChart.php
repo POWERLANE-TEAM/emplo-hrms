@@ -5,12 +5,11 @@ namespace App\Livewire\HrManager\Reports;
 use Livewire\Component;
 use App\Models\Employee;
 use App\Models\EmployeeLeave;
-use App\Models\LeaveCategory;
-use App\Enums\EmploymentStatus;
+use Livewire\Attributes\Locked;
+use Illuminate\Support\Facades\Cache;
 
 class LeaveUtilizationChart extends Component
 {
-
     /*
      * BACK-END REPLACE / REQUIREMENTS:
      * 
@@ -35,10 +34,17 @@ class LeaveUtilizationChart extends Component
 
     public $year;
 
+    #[Locked]
     public $leaveData;
 
     public function mount()
     {
+        $key = sprintf(config('cache.keys.reports.leave_utilization_rate'), $this->year);
+
+        $this->leaveData = Cache::get($key);
+
+        if ($this->leaveData) return;
+
         $employees = Employee::activeEmploymentStatus()->get();
 
         $silCredits = $employees->sum(fn ($employee) => $employee->actual_sil_credits);
@@ -77,12 +83,12 @@ class LeaveUtilizationChart extends Component
                 'total' => $totalSilCredits
             ],
         ];
+
+        Cache::forever($key, $this->leaveData);
     }
 
     public function render()
     {
-        return view('livewire.hr-manager.reports.leave-utilization-chart', [
-            'leaveData' => $this->leaveData,
-        ]);
+        return view('livewire.hr-manager.reports.leave-utilization-chart');
     }
 }
