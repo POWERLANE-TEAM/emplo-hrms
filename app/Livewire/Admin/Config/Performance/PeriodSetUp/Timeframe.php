@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Admin\Config\Performance\PeriodSetup;
+namespace App\Livewire\Admin\Config\Performance\PeriodSetUp;
 
 use Livewire\Component;
 use Illuminate\Support\Carbon;

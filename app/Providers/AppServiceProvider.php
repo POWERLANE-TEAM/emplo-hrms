@@ -7,6 +7,7 @@ use App\Enums\UserRole;
 use App\Policies\EmployeeArchivePolicy;
 use App\Policies\IssuePolicy;
 use App\Policies\TrainingPolicy;
+use App\Services\AttendanceService;
 use App\Services\PayrollSummaryService;
 use Illuminate\Support\Carbon;
 use App\Policies\ContractPolicy;
@@ -17,7 +18,6 @@ use Laravel\Pulse\Facades\Pulse;
 use App\Policies\UserStatusPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Vite;
-use App\Http\Helpers\BiometricDevice;
 use App\Policies\EmployeeLeavePolicy;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
@@ -43,14 +43,14 @@ class AppServiceProvider extends ServiceProvider
          */
         $this->app->register(ComposerServiceProvider::class);
 
-        $this->app->singleton(BiometricDevice::class, function () {
-            return new BiometricDevice();
-        });
-
         $this->app->register(FormWizardServiceProvider::class);
 
         $this->app->bind(PayrollSummaryService::class, function () {
             return new PayrollSummaryService();
+        });
+
+        $this->app->bind(AttendanceService::class, function () {
+            return new AttendanceService();
         });
     }
 

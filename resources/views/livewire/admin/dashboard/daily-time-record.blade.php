@@ -10,7 +10,7 @@
                 <header class="fs-4 fw-bold text-secondary-emphasis">
                     {{ __('Daily Time Record') }}
                 </header>
-                <div class="text-muted">{{ $dtrDate }}</div>
+                <div class="text-muted">{{ today()->format('F d, Y') }}</div>
             </div>
             {{-- Refresh Button --}}
             <div wire:ignore class="ms-auto">
@@ -33,24 +33,27 @@
                 </thead>
 
                 <tbody>
-                    @foreach ($dtrLogs as $dtrLog)
-                        <tr class="px-5">
-                            <td class="d-flex align-items-center px-4 py-3">
-                                <img src="{{ $dtrLog->employee->photo }}" alt="User Picture" width="45" height="45"
-                                    class="rounded-circle me-3">
-                                <div>
-                                    <div>{{ $dtrLog->employee->name ?? __('Unknown Employee') }}</div>
-                                    <small class="text-muted">
-                                        <span class="fw-bold">{{ __('Employee Id:') }}</span>
-                                        {{ $dtrLog->employee->id }}
-                                    </small>
-                                </div>
-                            </td>
-                            <td class="text-center">{{ $dtrLog->checkIn ?? '-' }}</td>
-                            <td class="text-center">{{ $dtrLog->checkOut ?? '-' }}</td>
-                        </tr>
-                    @endforeach
-
+                    @if ($dtrLogs->isEmpty())
+                        {{-- some empty state here --}}
+                    @else
+                        @foreach ($dtrLogs as $dtrLog)
+                            <tr class="px-5">
+                                <td class="d-flex align-items-center px-4 py-3">
+                                    <img src="{{ $dtrLog->employee->photo }}" alt="User Picture" width="45" height="45"
+                                        class="rounded-circle me-3">
+                                    <div>
+                                        <div>{{ $dtrLog->employee->name ?? __('Unknown Employee') }}</div>
+                                        <small class="text-muted">
+                                            <span class="fw-bold">{{ __('Employee Id:') }}</span>
+                                            {{ $dtrLog->employee->id }}
+                                        </small>
+                                    </div>
+                                </td>
+                                <td class="text-center">{{ $dtrLog->checkIn ?? '-' }}</td>
+                                <td class="text-center">{{ $dtrLog->checkOut ?? '-' }}</td>
+                            </tr>
+                        @endforeach                    
+                    @endif
                 </tbody>
             </table>
         </div>

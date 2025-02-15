@@ -255,4 +255,9 @@ class BiometricDevice
             return Str::of($params[0])->chopStart('~')->trim()->toString();
         }
     }
+
+    public function clearAttendanceLogs()
+    {
+        $this->zk->clearAttendance();
+    }
 }
