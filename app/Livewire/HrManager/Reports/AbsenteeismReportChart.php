@@ -117,11 +117,7 @@ class AbsenteeismReportChart extends Component
 
     public function render()
     {   
-        return view('livewire.hr-manager.reports.absenteeism-report-chart', [
-            'absenteeismData' => $this->absenteeismData,
-            'yearlyData' => $this->yearlyData,
-            'monthlyData' => $this->monthlyData
-        ]);
+        return view('livewire.hr-manager.reports.absenteeism-report-chart');
     }
 }
 

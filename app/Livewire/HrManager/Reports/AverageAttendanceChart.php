@@ -31,7 +31,7 @@ class AverageAttendanceChart extends Component
     {
         $key = sprintf(config('cache.keys.reports.attendance_rate'), $this->year);
 
-        $this->attendanceData   = Cache::get($key);
+        $this->attendanceData = Cache::get($key);
 
         if ($this->attendanceData) {
             $this->monthlyData = $this->attendanceData['monthly'];
@@ -121,10 +121,6 @@ class AverageAttendanceChart extends Component
 
     public function render()
     {   
-        return view('livewire.hr-manager.reports.average-attendance-chart', [
-            'attendanceData' => $this->attendanceData,
-            'yearlyData' => $this->yearlyData,
-            'monthlyData' => $this->monthlyData
-        ]);
+        return view('livewire.hr-manager.reports.average-attendance-chart');
     }
 }

@@ -165,8 +165,6 @@ class EmployeeMetrics extends Component
 
     public function render()
     {
-        return view('livewire.hr-manager.reports.employee-metrics', [
-            'metrics' => $this->metrics,
-        ]);
+        return view('livewire.hr-manager.reports.employee-metrics');
     }
 }

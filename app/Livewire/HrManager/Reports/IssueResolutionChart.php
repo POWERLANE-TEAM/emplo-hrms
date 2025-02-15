@@ -101,10 +101,6 @@ class IssueResolutionChart extends Component
 
     public function render()
     {   
-        return view('livewire.hr-manager.reports.issue-resolution-chart', [
-            'issueResolutionData' => $this->issueResolutionData,
-            'yearlyData' => $this->yearlyData,
-            'monthlyData' => $this->monthlyData
-        ]);
+        return view('livewire.hr-manager.reports.issue-resolution-chart');
     }
 }
