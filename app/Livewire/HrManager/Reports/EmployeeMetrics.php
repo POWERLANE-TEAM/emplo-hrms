@@ -6,9 +6,11 @@ use Livewire\Component;
 use App\Models\Employee;
 use App\Models\Applicant;
 use Illuminate\Support\Carbon;
+use Livewire\Attributes\Locked;
 use Livewire\Attributes\Reactive;
 use App\Models\RegularPerformance;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 use App\Models\RegularPerformancePeriod;
 use App\Models\ProbationaryPerformancePeriod;
 
@@ -17,17 +19,24 @@ class EmployeeMetrics extends Component
     #[Reactive]
     public $year;
 
+    #[Locked]
     public $metrics = [];
 
     public function mount()
     {
-        $this->year;
+        $key = sprintf(config('cache.keys.reports.employee_metrics'), $this->year);
+
+        $this->metrics =  Cache::get($key);
+
+        if ($this->metrics) return;
 
         $this->metrics = [
-            'employee_tenure' => $this->calculateEmployeeTenure(),
-            'new_hires' => $this->calculateNewHires(),
-            'evaluation_success' => $this->calculateEvaluationSuccess(),
+            'employee_tenure'       => $this->calculateEmployeeTenure(),
+            'new_hires'             => $this->calculateNewHires(),
+            'evaluation_success'    => $this->calculateEvaluationSuccess(),
         ];
+
+        Cache::forever($key, $this->metrics);
     }
 
     private function calculateEmployeeTenure()

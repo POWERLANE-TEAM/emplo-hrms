@@ -2,22 +2,37 @@
 
 namespace App\Livewire\HrManager\Reports;
 
-use App\Enums\IssueStatus;
 use App\Models\Issue;
 use Livewire\Component;
+use App\Enums\IssueStatus;
+use Livewire\Attributes\Locked;
+use Illuminate\Support\Facades\Cache;
 
 class IssueResolutionChart extends Component
 {
     public $year;
 
+    #[Locked]
     public $issueResolutionData = [];
 
+    #[Locked]
     public $yearlyData = [];
 
+    #[Locked]
     public $monthlyData = [];
 
     public function mount()
     {
+        $key = sprintf(config('cache.keys.reports.issue_resolution_time_rate'), $this->year);
+
+        $this->issueResolutionData  = Cache::get($key);
+
+        if ($this->issueResolutionData) {
+            $this->monthlyData = $this->issueResolutionData['monthly'];
+            $this->yearlyData = $this->issueResolutionData['yearly'];
+            return;
+        }
+
         $issues = Issue::whereYear('filed_at', $this->year)
             ->get()
             ->filter(function ($issue) {
@@ -80,6 +95,8 @@ class IssueResolutionChart extends Component
             'yearly' => $this->yearlyData,
             'monthly' => $this->monthlyData,
         ];
+
+        Cache::forever($key, $this->issueResolutionData);
     }
 
     public function render()

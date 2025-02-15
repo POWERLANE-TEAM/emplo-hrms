@@ -9,6 +9,7 @@ use App\Models\Training;
 use App\Enums\IssueStatus;
 use App\Enums\TrainingStatus;
 use Livewire\Attributes\Reactive;
+use Illuminate\Support\Facades\Cache;
 
 class KeyMetrics extends Component
 {
@@ -17,9 +18,14 @@ class KeyMetrics extends Component
 
     public $metrics;
 
+    // this gotta be the most awful shit i laid my eyes upon.
     public function mount()
     {
-        $this->year;
+        $key = sprintf(config('cache.keys.reports.key_metrics'), $this->year);
+
+        $this->metrics = Cache::get($key);
+
+        if ($this->metrics) return;
 
         $incidents = Incident::whereYear('created_at', $this->year)
             ->get()
@@ -96,7 +102,9 @@ class KeyMetrics extends Component
                     $data['training']['total']
                 )
             ]
-        ];
+        ];            
+
+        Cache::forever($key, $this->metrics);
     }
 
     private function calculatePercentage($completed, $total)
