@@ -17,7 +17,6 @@ class EmployeeLeave extends Model
 
     const UPDATED_AT = 'modified_at';
 
-
     protected $primaryKey = 'emp_leave_id';
 
     protected $guarded = [

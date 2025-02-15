@@ -128,4 +128,21 @@ trait AttendanceUtils
             return (float) "{$hours}.{$mins}";
         }
     }
+
+    public function getPunchesTime(Collection $group)
+    {
+        return $group->reduce(function ($carry, $log) {
+            $time = Carbon::parse($log->timestamp)->format('g:i A');
+
+            match ($log->type) {
+                BiometricPunchType::CHECK_IN->value => $carry->checkIn = $time,
+                BiometricPunchType::CHECK_OUT->value => $carry->checkOut = $time,
+            };
+
+            return $carry;
+        }, (object) [
+            'checkIn' => null,
+            'checkOut' => null,
+        ]);
+    }
 }

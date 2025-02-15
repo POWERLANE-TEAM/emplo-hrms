@@ -13,7 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('attendance_logs', function (Blueprint $table) {
-            $table->id('uid');
+            $table->id();
             $table->foreignIdFor(Employee::class, 'employee_id')
                 ->constrained('employees', 'employee_id')
                 ->cascadeOnUpdate()
