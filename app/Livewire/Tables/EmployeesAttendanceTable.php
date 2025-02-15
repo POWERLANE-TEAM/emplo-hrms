@@ -115,7 +115,7 @@ class EmployeesAttendanceTable extends DataTableComponent
 
     public function configure(): void
     {
-        $this->setPrimaryKey('application_id');
+        $this->setPrimaryKey('employee_id');
         $this->enableAllEvents();
 
         $this->configuringStandardTableMethods();
@@ -170,7 +170,7 @@ class EmployeesAttendanceTable extends DataTableComponent
                     ->latest('timestamp')
                     ->take(1),
             ])
-            ->orderBy('latest_timestamp', 'desc')
+            ->orderBy('latest_timestamp', 'asc')
             ->with([
                 'jobDetail',
                 'account',
