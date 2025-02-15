@@ -2,14 +2,16 @@
 
 namespace App\Console\Commands;
 
-use App\Models\AttendanceLog;
-use App\Enums\ActivityLogName;
+use App\Services\AttendanceService;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
-use App\Http\Helpers\BiometricDevice;
 
 class SyncAttendanceLogsFromBiometricDevice extends Command
 {
+    public function __construct(private AttendanceService $attendanceService)
+    {
+        parent::__construct();
+    }
+
     /**
      * The name and signature of the console command.
      *
@@ -29,23 +31,7 @@ class SyncAttendanceLogsFromBiometricDevice extends Command
      */
     public function handle()
     {
-        DB::transaction(function () {
-            $zk = new BiometricDevice();
-            $logs = $zk->getRawAttendanceLogs()->map(function ($log) {
-                return AttendanceLog::create([
-                        'uid' => $log->uid,
-                        'employee_id' => (int) $log->id,
-                        'state' => $log->state,
-                        'type' => $log->type,
-                        'timestamp' => $log->timestamp,
-                    ]);
-            });
-            
-            activity()
-                ->useLog(ActivityLogName::SYSTEM->value)
-                ->withProperties($logs)
-                ->event('created')
-                ->log(__('Save attendance logs to database from biometric attendance machine.'));
-        }, 3);
+        $this->attendanceService->storeDtrLogs();
+        // $this->attendanceService->clearDtrLogs();
     }
 }
