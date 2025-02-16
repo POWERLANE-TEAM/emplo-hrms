@@ -4,42 +4,17 @@ namespace App\Livewire\Employee\Attendance;
 
 use App\Livewire\Tables\EmployeesAttendanceTable;
 use Livewire\Component;
-use App\Models\AttendanceLog;
-use Illuminate\Support\Carbon;
-use App\Http\Helpers\BiometricDevice;
+use App\Services\AttendanceService;
 
 class SyncDtrLogs extends Component
 {
-    private BiometricDevice $zkInstance;
-
-    public function sync()
+    public function boot(AttendanceService $attendanceService)
     {
-        $this->zkInstance = new BiometricDevice();
-        $this->upsertTodayDtr();
+        $this->attendanceService = $attendanceService;
+
+        $this->attendanceService->storeDtrLogs();
 
         $this->dispatch('syncToDtrTable')->to(EmployeesAttendanceTable::class);
-    }
-
-    private function upsertTodayDtr()
-    {
-        $this->zkInstance->getRawAttendanceLogs()
-            ->filter(fn ($log) => Carbon::parse($log->timestamp)->isSameDay(today()))
-            ->each(function ($item) {
-                AttendanceLog::upsert([
-                    'uid' => $item->uid,
-                    'employee_id' => (int) $item->id,
-                    'state' => $item->state,
-                    'type' => $item->type,
-                    'timestamp' => $item->timestamp
-                ],
-                uniqueBy: ['uid'], 
-                update: [
-                    'employee_id',
-                    'state',
-                    'timestamp',
-                    'type',
-                ]);
-            });
     }
 
     public function render()

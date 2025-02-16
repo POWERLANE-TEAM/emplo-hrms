@@ -101,12 +101,12 @@ class IndividualEmployeeOvertimesTable extends DataTableComponent
                 ->sortable()
                 ->deselected(),
             
-            Column::make(__('Date Requested'), 'date')
-                ->format(fn ($row) => Carbon::parse($row)->format('F d, Y'))
-                ->sortable()
-                ->searchable()
-                ->setSortingPillDirections('Asc', 'Desc')
-                ->setSortingPillTitle(__('Request Date')),
+            // Column::make(__('Date Requested'), 'date')
+            //     ->format(fn ($row) => Carbon::parse($row)->format('F d, Y'))
+            //     ->sortable()
+            //     ->searchable()
+            //     ->setSortingPillDirections('Asc', 'Desc')
+            //     ->setSortingPillTitle(__('Request Date')),
             
             Column::make(__('Hours Requested'))
                 ->label(fn ($row) => $row->hoursRequested)

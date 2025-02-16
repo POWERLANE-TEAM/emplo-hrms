@@ -10,7 +10,7 @@ use Livewire\Attributes\Locked;
 use Livewire\Attributes\Computed;
 use Illuminate\Support\Facades\Auth;
 
-class CutOffPayOutPeriods extends Component
+class CutOffPayoutPeriods extends Component
 {
     #[Locked]
     public $overtime;

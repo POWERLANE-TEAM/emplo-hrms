@@ -24,6 +24,7 @@ class EmployeeJobDetailSeeder extends Seeder
                 'area_id'       => SpecificArea::inRandomOrder()->first()->area_id,
                 'shift_id'      => EmployeeShift::inRandomOrder()->first()->employee_shift_id,
                 'emp_status_id' => EmploymentStatus::inRandomOrder()->first()->emp_status_id,
+                'hired_at'      => now(),
             ];
         })->toArray();
 

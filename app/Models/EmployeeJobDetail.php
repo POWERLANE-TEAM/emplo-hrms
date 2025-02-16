@@ -15,6 +15,10 @@ class EmployeeJobDetail extends Model
         'emp_job_detail_id',
     ];
 
+    protected $casts = [
+        'hired_at' => 'datetime',
+    ];
+
     /**
      * Get the employee that owns the job detail.
      */

@@ -2,25 +2,26 @@
 
 namespace App\Livewire\HrManager\Reports;
 
-use App\Models\Holiday;
 use Livewire\Component;
 use App\Models\Employee;
 use App\Models\AttendanceLog;
 use Illuminate\Support\Carbon;
 use Livewire\Attributes\Locked;
 use App\Enums\BiometricPunchType;
-use Livewire\Attributes\Reactive;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 
 class AverageAttendanceChart extends Component
 {
     // #[Reactive]
     public $year;
 
+    #[Locked]
     public $attendanceData;
 
+    #[Locked]
     public $yearlyData = [];
 
+    #[Locked]
     public $monthlyData = [];
 
     #[Locked]
@@ -28,8 +29,15 @@ class AverageAttendanceChart extends Component
 
     public function mount()
     {
-        // $key = sprintf(config('cache.keys.reports.attendance_rate'), $this->year);
-        // implement caching
+        $key = sprintf(config('cache.keys.reports.attendance_rate'), $this->year);
+
+        $this->attendanceData = Cache::get($key);
+
+        if ($this->attendanceData) {
+            $this->monthlyData = $this->attendanceData['monthly'];
+            $this->yearlyData = $this->attendanceData['yearly'];
+            return;
+        }
 
         $attendanceLogs = AttendanceLog::whereYear('timestamp', $this->year)
             ->get()
@@ -86,6 +94,8 @@ class AverageAttendanceChart extends Component
             'yearly' => $this->yearlyData,
             'monthly' => $this->monthlyData,
         ];
+
+        Cache::forever($key, $this->attendanceData);
     }
 
     public function getWorkdaysInMonth($month)
@@ -111,10 +121,6 @@ class AverageAttendanceChart extends Component
 
     public function render()
     {   
-        return view('livewire.hr-manager.reports.average-attendance-chart', [
-            'attendanceData' => $this->attendanceData,
-            'yearlyData' => $this->yearlyData,
-            'monthlyData' => $this->monthlyData
-        ]);
+        return view('livewire.hr-manager.reports.average-attendance-chart');
     }
 }

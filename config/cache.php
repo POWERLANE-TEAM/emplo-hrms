@@ -126,7 +126,8 @@ return [
             'attendance_rate' => 'reports.attendance_rate-%s',
             'absenteeism' => 'reports.absenteeism_rate-%s',
             'retention_turnover_rate' => 'reports.retention_turnover_rate-%s',
-            'issue_resolution_time_rate' => 'reports.issue_resolution_time_rate-%s'
+            'issue_resolution_time_rate' => 'reports.issue_resolution_time_rate-%s',
+            'leave_utilization_rate' => 'reports.leave_utilization_rate-%s',
         ],
     ],
 ];

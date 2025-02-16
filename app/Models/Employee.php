@@ -156,41 +156,49 @@ class Employee extends Model
 
     protected function getActualSilCreditsAttribute()
     {
-        $dateHired = Carbon::parse($this->jobDetail->hired_at);
+        $this->loadMissing([
+            'jobDetail' => fn ($query) => $query->select([
+                'emp_job_detail_id', 
+                'employee_id', 
+                'hired_at'
+            ])
+        ]);
+
+        $dateHired = $this->jobDetail->hired_at;
 
         $serviceDuration = now()->diff($dateHired);
 
-        if ($serviceDuration->copy()->y < 1) {
-            if (in_array($dateHired->copy()->month, ServiceIncentiveLeave::Q1->getFirstQuarter())) {
+        if ($serviceDuration->y < 1) {
+            if (in_array($dateHired->month, ServiceIncentiveLeave::Q1->getFirstQuarter())) {
                 return ServiceIncentiveLeave::Q1->value;
             }
 
-            if (in_array($dateHired->copy()->month, ServiceIncentiveLeave::Q2->getSecondQuarter())) {
+            if (in_array($dateHired->month, ServiceIncentiveLeave::Q2->getSecondQuarter())) {
                 return ServiceIncentiveLeave::Q2->value;
             }
 
-            if (in_array($dateHired->copy()->month, ServiceIncentiveLeave::Q3->getThirdQuarter())) {
+            if (in_array($dateHired->month, ServiceIncentiveLeave::Q3->getThirdQuarter())) {
                 return ServiceIncentiveLeave::Q3->value;
             }
 
-            if (in_array($dateHired->copy()->month, ServiceIncentiveLeave::Q4->getFourthQuarter())) {
+            if (in_array($dateHired->month, ServiceIncentiveLeave::Q4->getFourthQuarter())) {
                 return ServiceIncentiveLeave::Q4->value;
             }
         }
 
-        if ($serviceDuration->copy()->y >= 5) {
+        if ($serviceDuration->y >= 5) {
             return 16;
         }
 
-        if ($serviceDuration->copy()->y >= 3) {
+        if ($serviceDuration->y >= 3) {
             return 14;
         }
 
-        if ($serviceDuration->copy()->y >= 2) {
+        if ($serviceDuration->y >= 2) {
             return 11;
         }
 
-        if ($serviceDuration->copy()->y >= 1) {
+        if ($serviceDuration->y >= 1) {
             return 9;
         }
 
