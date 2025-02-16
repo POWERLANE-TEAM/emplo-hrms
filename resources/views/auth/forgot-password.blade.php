@@ -4,7 +4,8 @@
 @vite(['resources/js/forgot-password.js'])
 <script src="{{ Vite::asset('resources/js/forms/nbp.min.js') }}" defer></script>
 
-<form method="POST" @if ($livewire)  wire:submit.prevent="forgotPassword"   @endif action="{{ route('password.email') }}">
+<form method="POST" @if ($livewire) wire:submit.prevent="forgotPassword" @endif
+    action="{{ route('password.email') }}">
     @csrf
     <p class="fs-6 fw-medium">Enter your email address to receive a password reset link.</p>
     <x-form.boxed-email id="reset-pw-email" label="{{ __('Email Address') }}" name="forgotPwEmail" autocomplete="email"
@@ -20,7 +21,11 @@
     </x-form.boxed-email>
 
     @if (!$livewire)
-        <button type="submit" id="submitForgotPassword" class="btn btn-primary">{{ __('Submit') }}</button>
+        <button type="submit" id="submitForgotPassword" class="btn btn-primary"><span
+                wire:loading.class="d-none">{{ __('Submit') }}</span>
+            <span role="status" wire:loading>Sending pasword reset link...</span>
+            <span class="spinner-border spinner-border-sm text-light" aria-hidden="true" wire:loading></span>
+        </button>
     @endif
 </form>
 
@@ -34,6 +39,3 @@
             header="Email Sent" :message="session('status')" />
     @endif
 @endif
-
-
-

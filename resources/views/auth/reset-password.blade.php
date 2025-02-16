@@ -115,9 +115,11 @@
                     @endif
 
                     <div class="d-flex align-items-center">
-                        <button type="submit" id="submitResetPassword" class="btn w-100 btn-primary mt-4"
-                            {{-- onclick="openModal('changed-successfully')" --}}>
-                            {{ __('Save Changes') }}
+                        <button type="submit" id="submitResetPassword" class="btn w-100 btn-primary mt-4">
+                            <span wire:loading.class="d-none">{{ __('Save Changes') }}</span>
+                            <span role="status" wire:loading>Saving...</span>
+                            <span class="spinner-border spinner-border-sm text-light" aria-hidden="true"
+                                wire:loading></span>
                         </button>
                     </div>
             </form>
