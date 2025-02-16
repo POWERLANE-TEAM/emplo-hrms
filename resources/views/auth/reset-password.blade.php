@@ -65,7 +65,7 @@
                 @csrf
                 <input type="hidden" name="token" value="{{ $request->route('token') }}">
 
-                <x-form.boxed-email id="reset-pw-email" label="Email Address" name="email" autocomplete="email" type="hidden" readonly disabled
+                <x-form.boxed-email id="reset-pw-email" label="Email Address" name="email" type="hidden" readonly
                     :nonce="$nonce" class=" {{ $errors->has('email') ? 'is-invalid' : '' }}" value="{{ $request->email }}"
                     required>
                     <x-slot:input_icon_left>
