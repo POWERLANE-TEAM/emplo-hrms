@@ -22,6 +22,17 @@
 
 @pushOnce('styles')
     @vite(['resources/css/forgot-password.css'])
+    <style>
+        input[type="email"] {
+            pointer-events: none;
+            -moz-pointer-events: none;
+            -webkit-pointer-events: none;
+        }
+
+        [for="reset-pw-email"] {
+            display: none;
+        }
+    </style>
 @endPushOnce
 
 @section('before-nav')
@@ -54,7 +65,7 @@
                 @csrf
                 <input type="hidden" name="token" value="{{ $request->route('token') }}">
 
-                <x-form.boxed-email id="reset-pw-email" label="Email Address" name="email" autocomplete="email"
+                <x-form.boxed-email id="reset-pw-email" label="Email Address" name="email" autocomplete="email" type="hidden" readonly disabled
                     :nonce="$nonce" class=" {{ $errors->has('email') ? 'is-invalid' : '' }}" value="{{ $request->email }}"
                     required>
                     <x-slot:input_icon_left>
