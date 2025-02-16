@@ -60,20 +60,12 @@ export default defineConfig({
                     dest: 'assets/'
                 },
                 {
-                    src: 'resources/images/icons/*.*',
-                    dest: 'assets/images/icons/'
+                    src: 'resources/images/app/**/*.*',
+                    dest: 'assets/images/'
                 },
                 {
-                    src: 'resources/images/icons/app/*',
-                    dest: 'assets/images/icons/'
-                },
-                {
-                    src: 'resources/images/splash',
+                    src: 'resources/images/splash/*',
                     dest: 'assets/images/splash/'
-                },
-                {
-                    src: 'resources/images/screenshots/*',
-                    dest: 'assets/images/screenshots/'
                 },
                 {
                     src: 'resources/js/serviceworker.js',

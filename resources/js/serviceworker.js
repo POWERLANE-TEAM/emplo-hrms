@@ -3,14 +3,14 @@ var filesToCache = [
     // '/offline',
     // '/css/app.css',
     // '/js/app.js',
-    '/build/assets/images/icons/icon-72x72.webp',
-    '/build/assets/images/icons/icon-96x96.webp',
-    '/build/assets/images/icons/icon-128x128.webp',
-    '/build/assets/images/icons/icon-144x144.webp',
-    '/build/assets/images/icons/icon-152x152.webp',
-    '/build/assets/images/icons/icon-192x192.webp',
-    '/build/assets/images/icons/icon-384x384.webp',
-    '/build/assets/images/icons/icon-512x512.webp',
+    // '/build/assets/images/icons/icon-72x72.webp',
+    // '/build/assets/images/icons/icon-96x96.webp',
+    // '/build/assets/images/icons/icon-128x128.webp',
+    // '/build/assets/images/icons/icon-144x144.webp',
+    // '/build/assets/images/icons/icon-152x152.webp',
+    // '/build/assets/images/icons/icon-192x192.webp',
+    // '/build/assets/images/icons/icon-384x384.webp',
+    // '/build/assets/images/icons/icon-512x512.webp',
 ];
 
 // Cache on install
