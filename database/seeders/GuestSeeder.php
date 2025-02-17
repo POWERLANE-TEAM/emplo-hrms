@@ -3,13 +3,8 @@
 namespace Database\Seeders;
 
 use App\Enums\AccountType;
-use App\Enums\ApplicationStatus;
-use App\Enums\UserPermission;
 use App\Enums\UserStatus as EnumUserStatus;
-use App\Models\Applicant;
-use App\Models\Application;
 use App\Models\Guest;
-use App\Models\JobVacancy;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Concurrency;
@@ -33,7 +28,7 @@ function createGuests($chunkStart, $chunk)
                         $users_data = [
                             'account_type' => AccountType::GUEST,
                             'account_id' => $guest->guest_id,
-                            'email' => 'guest.' . str_pad($i, 3, '0', STR_PAD_LEFT) . '@gmail.com',
+                            'email' => 'guest.'.str_pad($i, 3, '0', STR_PAD_LEFT).'@gmail.com',
                             'password' => Hash::make('UniqP@ssw0rd'),
                             'user_status_id' => EnumUserStatus::ACTIVE,
                             'email_verified_at' => fake()->dateTimeBetween('-10 days', 'now'),
@@ -41,12 +36,12 @@ function createGuests($chunkStart, $chunk)
 
                         User::factory()->create($users_data);
                     } catch (\Exception $e) {
-                        Log::error('Exception: ' . $e->getMessage() . ' in ' . $e->getFile() . ' on line ' . $e->getLine());
+                        Log::error('Exception: '.$e->getMessage().' in '.$e->getFile().' on line '.$e->getLine());
                     }
                 });
             }
         } catch (\Throwable $th) {
-            Log::error('Exception: ' . $th->getMessage() . ' in ' . $th->getFile() . ' on line ' . $th->getLine());
+            Log::error('Exception: '.$th->getMessage().' in '.$th->getFile().' on line '.$th->getLine());
         }
 
         return ['result' => true];
@@ -89,7 +84,7 @@ class GuestSeeder extends Seeder
         $tasks = [];
         for ($i = 0; $i < $concurrencyCount; $i++) {
             $chunkStart = $start + ($chunkCount * $i);
-            $tasks[] = fn() => createGuests($chunkStart, $chunkCount);
+            $tasks[] = fn () => createGuests($chunkStart, $chunkCount);
         }
 
         Concurrency::run($tasks);

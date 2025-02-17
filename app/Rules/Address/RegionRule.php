@@ -26,7 +26,7 @@ class RegionRule implements ValidationRule
 
     public function getRule(): string
     {
-        $rule = ($this->required ? 'required|' : '') . $this->ruleString;
+        $rule = ($this->required ? 'required|' : '').$this->ruleString;
 
         return $rule;
     }

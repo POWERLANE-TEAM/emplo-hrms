@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\JobTitle;
-use Illuminate\Http\Request;
 
 class JobTitleController extends Controller
 {

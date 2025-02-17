@@ -2,12 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Models\Holiday;
-use App\Models\Employee;
-use App\Models\AttendanceLog;
-use Illuminate\Support\Carbon;
-use Illuminate\Database\Seeder;
 use App\Enums\BiometricPunchType;
+use App\Models\AttendanceLog;
+use App\Models\Employee;
+use App\Models\Holiday;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Carbon;
 
 class AttendanceLog2024Seeder extends Seeder
 {
@@ -23,7 +23,7 @@ class AttendanceLog2024Seeder extends Seeder
         foreach ($employees as $employee) {
             for ($day = 1; $day <= 365; $day++) {
                 $date = Carbon::create(2024, 1, 1)->addDays($day - 1);
-                
+
                 if ($date->isWeekend() || in_array($date->format('m-d'), $holidays)) {
                     continue;
                 }
@@ -39,7 +39,7 @@ class AttendanceLog2024Seeder extends Seeder
 
     /**
      * Simulate a random chance of being absent for an employee.
-     * 
+     *
      * @param  Employee  $employee
      * @return bool
      */

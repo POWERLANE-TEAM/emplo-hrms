@@ -6,7 +6,6 @@ use App\Actions\Fortify\CreateNewUser;
 use App\Enums\AccountType;
 use App\Enums\UserStatus as EnumsUserStatus;
 use Illuminate\Validation\Rules\Password;
-use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -73,26 +72,26 @@ class SignUp extends Component
         $this->validate();
 
         // try {
-            $newUser = [
-                'email' => $this->email,
-                'password' => $this->password,
-                'password_confirmation' => $this->password_confirmation,
-                'consent' => $this->consent,
-                'first_name' => $this->first_name,
-                'middle_name' => $this->middle_name == '' ? null : $this->middle_name,
-                'last_name' => $this->last_name,
-                'account_type' => AccountType::GUEST->value,
-                'user_status' => EnumsUserStatus::ACTIVE->value,
-            ];
+        $newUser = [
+            'email' => $this->email,
+            'password' => $this->password,
+            'password_confirmation' => $this->password_confirmation,
+            'consent' => $this->consent,
+            'first_name' => $this->first_name,
+            'middle_name' => $this->middle_name == '' ? null : $this->middle_name,
+            'last_name' => $this->last_name,
+            'account_type' => AccountType::GUEST->value,
+            'user_status' => EnumsUserStatus::ACTIVE->value,
+        ];
 
-            $newUserCreated = $userCreator->create($newUser, true);
-            $this->dispatch('sign-up-successful');
+        $newUserCreated = $userCreator->create($newUser, true);
+        $this->dispatch('sign-up-successful');
 
-            $this->registered = true;
+        $this->registered = true;
         // } catch (\Throwable $th) {
-            // report($th);
-            // There is no listener currently for this event
-            $this->dispatch('sign-up-error');
+        // report($th);
+        // There is no listener currently for this event
+        $this->dispatch('sign-up-error');
         // }
 
         $this->reset();

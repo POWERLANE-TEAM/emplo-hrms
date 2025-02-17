@@ -7,7 +7,6 @@ use Livewire\Component;
 
 class UploadManager extends Component
 {
-
     public ApplicationDoc $EmpApplicationDocs;
 
     // TODO: add making of modal containing form for file input

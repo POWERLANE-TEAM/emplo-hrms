@@ -2,14 +2,14 @@
 
 namespace Database\Seeders;
 
-use App\Models\Employee;
-use App\Models\Training;
-use App\Enums\TrainingStatus;
-use Illuminate\Support\Carbon;
 use App\Enums\EmploymentStatus;
-use Illuminate\Database\Seeder;
-use App\Models\TrainingProvider;
+use App\Enums\TrainingStatus;
+use App\Models\Employee;
 use App\Models\OutsourcedTrainer;
+use App\Models\Training;
+use App\Models\TrainingProvider;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Carbon;
 
 class TrainingSeeder extends Seeder
 {
@@ -19,14 +19,14 @@ class TrainingSeeder extends Seeder
     public function run(): void
     {
         $providers = TrainingProvider::all();
-    
+
         $employees = Employee::whereHas('status', function ($query) {
             $query->where('emp_status_name', EmploymentStatus::PROBATIONARY->label())
-                  ->orWhere('emp_status_name', EmploymentStatus::REGULAR->label());
+                ->orWhere('emp_status_name', EmploymentStatus::REGULAR->label());
         })->get();
-    
+
         $outsourcedTrainers = [];
-    
+
         foreach ($providers as $provider) {
             $outsourcedTrainers = array_merge(
                 $outsourcedTrainers,
@@ -35,12 +35,12 @@ class TrainingSeeder extends Seeder
                 ])->all()
             );
         }
-    
+
         $trainers = $employees->merge($outsourcedTrainers);
-    
+
         foreach ($employees as $employee) {
             $randomTrainer = $trainers->random();
-    
+
             if ($randomTrainer instanceof Employee) {
                 $trainerType = 'employee';
                 $trainerId = $randomTrainer->employee_id;
@@ -48,7 +48,7 @@ class TrainingSeeder extends Seeder
                 $trainerType = 'outsourced_trainer';
                 $trainerId = $randomTrainer['trainer_id'];
             }
-    
+
             Training::create([
                 'trainee' => $employee->employee_id,
                 'trainer_type' => $trainerType,
@@ -63,5 +63,5 @@ class TrainingSeeder extends Seeder
                 'completion_status' => fake()->randomElement(array_map(fn ($case) => $case->value, TrainingStatus::cases())),
             ]);
         }
-    }     
+    }
 }

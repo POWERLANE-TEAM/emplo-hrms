@@ -28,10 +28,8 @@ class EmployeeDoc extends Model
         return $this->belongsTo(Employee::class, 'employee_id', 'employee_id');
     }
 
-
     public function resignation(): HasOne
     {
         return $this->hasOne(Resignation::class, 'emp_resignation_doc_id', 'emp_doc_id');
     }
-
 }

@@ -2,17 +2,17 @@
 
 namespace App\Livewire\Employee\Tables;
 
-use App\Models\Payroll;
-use App\Models\Employee;
-use App\Models\AttendanceLog;
-use Illuminate\Support\Carbon;
-use Livewire\Attributes\Locked;
 use App\Enums\BiometricPunchType;
-use Livewire\Attributes\Reactive;
+use App\Models\AttendanceLog;
+use App\Models\Employee;
+use App\Models\Payroll;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Carbon;
 use Illuminate\View\ComponentAttributeBag;
-use Rappasoft\LaravelLivewireTables\Views\Column;
+use Livewire\Attributes\Locked;
+use Livewire\Attributes\Reactive;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 
 class MyAttendanceLogsTable extends DataTableComponent
 {
@@ -98,7 +98,7 @@ class MyAttendanceLogsTable extends DataTableComponent
 
     public function columns(): array
     {
-        return [  
+        return [
             Column::make(__('Workday Date'), 'timestamp')
                 ->sortable()
                 ->searchable()

@@ -2,9 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Enums\CivilStatus;
 use App\Enums\Sex;
 use App\Models\Barangay;
-use App\Enums\CivilStatus;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -29,8 +29,8 @@ class EmployeeFactory extends Factory
             'permanent_address' => fake()->streetName(),
             'contact_number' => fake()->unique()->numerify('09#########'),
             'date_of_birth' => fake()->date,
-            'sex' => fake()->randomElement(array_map(fn($case) => $case->value, Sex::cases())),
-            'civil_status' => fake()->randomElement(array_map(fn($case) => $case->value, CivilStatus::cases())),
+            'sex' => fake()->randomElement(array_map(fn ($case) => $case->value, Sex::cases())),
+            'civil_status' => fake()->randomElement(array_map(fn ($case) => $case->value, CivilStatus::cases())),
             'sss_no' => fake()->numerify('##########'),
             'philhealth_no' => fake()->numerify('############'),
             'tin_no' => fake()->numerify('############'),

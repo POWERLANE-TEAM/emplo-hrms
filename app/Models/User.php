@@ -87,7 +87,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * Accessor for photo attribute.
      *
      * If null, generate a random user avatar based on full name.
-     * 
+     *
      * TODO: save photo url to table and set a file path for retrieval.
      */
     protected function photo(): Attribute
@@ -95,7 +95,7 @@ class User extends Authenticatable implements MustVerifyEmail
         $username = "{$this->account->last_name}, {$this->account->first_name}";
 
         return Attribute::make(
-            get: fn(mixed $value) => $value ?? app(GenerateRandomUserAvatar::class)($username),
+            get: fn (mixed $value) => $value ?? app(GenerateRandomUserAvatar::class)($username),
         );
     }
 
@@ -156,7 +156,7 @@ class User extends Authenticatable implements MustVerifyEmail
                     try {
                         $isGuest = true;
 
-                        $causerFirstName = 'guest_' . session()->getId();
+                        $causerFirstName = 'guest_'.session()->getId();
 
                         $sessionId = request()->session()->getId();
                         $session = DB::connection(config('session.connection'))
@@ -164,36 +164,37 @@ class User extends Authenticatable implements MustVerifyEmail
                             ->where('id', $sessionId)
                             ->first();
 
-                        $guestTrace = tap(new Agent, fn($agent) => $agent->setUserAgent($session->user_agent));
+                        $guestTrace = tap(new Agent, fn ($agent) => $agent->setUserAgent($session->user_agent));
 
                         $deviceType = 'Unknown';
 
-                        if ($guestTrace->isDesktop())
+                        if ($guestTrace->isDesktop()) {
                             $deviceType = 'Desktop';
-                        elseif ($guestTrace->isMobile())
+                        } elseif ($guestTrace->isMobile()) {
                             $deviceType = 'Mobile';
-                        elseif ($guestTrace->isTablet())
+                        } elseif ($guestTrace->isTablet()) {
                             $deviceType = 'Tablet';
+                        }
                     } catch (\Throwable $th) {
                         report($th);
                     }
                 }
 
                 $eventDescription = match ($eventName) {
-                    'created' => __($causerFirstName . ' created a new user.'),
-                    'updated' => __($causerFirstName . ' updated a user information.'),
+                    'created' => __($causerFirstName.' created a new user.'),
+                    'updated' => __($causerFirstName.' updated a user information.'),
                     'deleted' => $this->deleted_at
-                        ? __($causerFirstName . ' temporarily removed a user.')
-                        : __($causerFirstName . ' permanently deleted a user.'),
+                        ? __($causerFirstName.' temporarily removed a user.')
+                        : __($causerFirstName.' permanently deleted a user.'),
                 };
 
                 try {
                     if (isset($isGuest) && $isGuest) {
                         $guestInfo = [
                             'ip_address' => $session->ip_address,
-                            'browser' => $guestTrace->browser() ?? "Unknown",
+                            'browser' => $guestTrace->browser() ?? 'Unknown',
                             'device_type' => $deviceType,
-                            'platform' => $guestTrace->platform() ?? "Unknown",
+                            'platform' => $guestTrace->platform() ?? 'Unknown',
                             'payload' => $session->payload,
                         ];
 
@@ -203,7 +204,7 @@ class User extends Authenticatable implements MustVerifyEmail
                             $compressedGuestInfo = json_encode($guestInfo);
                         }
 
-                        Log::info('Guest Log: ' . $eventDescription . ' Details: ' . $compressedGuestInfo);
+                        Log::info('Guest Log: '.$eventDescription.' Details: '.$compressedGuestInfo);
                     }
                 } catch (\Throwable $th) {
                     report($th);

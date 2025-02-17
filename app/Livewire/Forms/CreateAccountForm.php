@@ -2,31 +2,30 @@
 
 namespace App\Livewire\Forms;
 
-use Livewire\Form;
-use App\Models\User;
-use App\Models\Shift;
-use App\Enums\FilePath;
-use App\Models\Barangay;
-use App\Models\Employee;
-use App\Models\JobLevel;
-use App\Models\JobTitle;
-use App\Enums\UserStatus;
-use App\Models\JobDetail;
-use App\Models\JobFamily;
 use App\Enums\AccountType;
 use App\Enums\ContractType;
-use Illuminate\Support\Str;
-use App\Models\SpecificArea;
-use Livewire\WithFileUploads;
+use App\Enums\FilePath;
+use App\Enums\UserStatus;
+use App\Models\Barangay;
+use App\Models\Employee;
 use App\Models\EmploymentStatus;
-use Livewire\Attributes\Validate;
-use Illuminate\Support\Facades\DB;
-use Spatie\Permission\Models\Role;
+use App\Models\JobFamily;
+use App\Models\JobLevel;
+use App\Models\JobTitle;
+use App\Models\Shift;
+use App\Models\SpecificArea;
+use App\Models\User;
+use App\Notifications\EmployeeAccountCreated;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Livewire\Attributes\Validate;
+use Livewire\Form;
+use Livewire\WithFileUploads;
 use Spatie\Activitylog\Facades\LogBatch;
-use App\Notifications\EmployeeAccountCreated;
+use Spatie\Permission\Models\Role;
 
 class CreateAccountForm extends Form
 {
@@ -263,16 +262,16 @@ class CreateAccountForm extends Form
         Storage::disk('local')->makeDirectory(FilePath::CONTRACTS->value);
 
         $hashedVersion = sprintf(
-            "%s-%s", $this->contract->hashName(), $employee->employee_id
+            '%s-%s', $this->contract->hashName(), $employee->employee_id
         );
 
         $this->contract->storeAs(FilePath::CONTRACTS->value, $hashedVersion, 'local');
 
         return $employee->contracts()->create([
             'type' => ContractType::CONTRACT,
-            'uploaded_by'       => Auth::user()->account->employee_id,
+            'uploaded_by' => Auth::user()->account->employee_id,
             'hashed_attachment' => $hashedVersion,
-            'attachment_name'   => $this->contract->getClientOriginalName(),
+            'attachment_name' => $this->contract->getClientOriginalName(),
         ]);
     }
 
@@ -311,22 +310,22 @@ class CreateAccountForm extends Form
     private function storeEmployee()
     {
         return Employee::create([
-            'first_name'            => $this->firstName,
-            'middle_name'           => $this->middleName,
-            'last_name'             => $this->lastName,
+            'first_name' => $this->firstName,
+            'middle_name' => $this->middleName,
+            'last_name' => $this->lastName,
 
-            'present_address'       => $this->presentAddress,
-            'present_barangay'      => Barangay::findOrFail($this->presentBarangay)->id,
-            'permanent_address'     => $this->permanentAddress,
-            'permanent_barangay'    => Barangay::findOrFail($this->permanentBarangay)->id,
-            'contact_number'        => $this->contactNumber,
-            'sex'                   => $this->sex,
-            'civil_status'          => $this->civilStatus,
-            'date_of_birth'         => $this->birthDate,
-            'sss_no'                => $this->sss,
-            'philhealth_no'         => $this->philhealth,
-            'tin_no'                => $this->tin,
-            'pag_ibig_no'           => $this->pagibig,
+            'present_address' => $this->presentAddress,
+            'present_barangay' => Barangay::findOrFail($this->presentBarangay)->id,
+            'permanent_address' => $this->permanentAddress,
+            'permanent_barangay' => Barangay::findOrFail($this->permanentBarangay)->id,
+            'contact_number' => $this->contactNumber,
+            'sex' => $this->sex,
+            'civil_status' => $this->civilStatus,
+            'date_of_birth' => $this->birthDate,
+            'sss_no' => $this->sss,
+            'philhealth_no' => $this->philhealth,
+            'tin_no' => $this->tin,
+            'pag_ibig_no' => $this->pagibig,
         ]);
     }
 
@@ -338,13 +337,13 @@ class CreateAccountForm extends Form
     private function storeJobDetails(Employee $employee)
     {
         return $employee->jobDetail()->create([
-            'job_title_id'  => JobTitle::findOrFail($this->jobTitle)->job_title_id,
-            'job_level_id'  => JobLevel::findOrFail($this->jobLevel)->job_level_id,
+            'job_title_id' => JobTitle::findOrFail($this->jobTitle)->job_title_id,
+            'job_level_id' => JobLevel::findOrFail($this->jobLevel)->job_level_id,
             'job_family_id' => JobFamily::findOrFail($this->jobFamily)->job_family_id,
-            'area_id'       => SpecificArea::findOrFail($this->area)->area_id,
-            'shift_id'      => Shift::findOrFail($this->shift)->shift_id,
+            'area_id' => SpecificArea::findOrFail($this->area)->area_id,
+            'shift_id' => Shift::findOrFail($this->shift)->shift_id,
             'emp_status_id' => EmploymentStatus::findOrFail($this->employmentStatus)->emp_status_id,
-            'hired_at'      => $this->hiredAt,
+            'hired_at' => $this->hiredAt,
         ]);
     }
 }

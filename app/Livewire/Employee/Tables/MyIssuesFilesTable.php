@@ -2,18 +2,18 @@
 
 namespace App\Livewire\Employee\Tables;
 
-use App\Models\Issue;
 use App\Enums\FilePath;
 use App\Http\Helpers\FileSize;
-use Illuminate\Support\Carbon;
+use App\Models\Issue;
 use App\Models\IssueAttachment;
-use Livewire\Attributes\Locked;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\View\ComponentAttributeBag;
-use Rappasoft\LaravelLivewireTables\Views\Column;
+use Livewire\Attributes\Locked;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Columns\LinkColumn;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateRangeFilter;
 
@@ -133,10 +133,10 @@ class MyIssuesFilesTable extends DataTableComponent
                     );
                 })
                 ->setSortingPillDirections('Oldest', 'Latest'),
-            
+
             Column::make(__('Size'))
                 ->label(function ($row) {
-                    $path = FilePath::ISSUES->value . '/' . $row->attachment;
+                    $path = FilePath::ISSUES->value.'/'.$row->attachment;
                     $sizeInBytes = Storage::disk('local')->size($path);
 
                     return FileSize::formatSize($sizeInBytes);

@@ -7,9 +7,9 @@ use Livewire\Mechanisms\ComponentRegistry;
 
 trait HasObjectForm
 {
-    public function mountWithObjectForm(string $formClass = null, string $formProperty = 'form')
+    public function mountWithObjectForm(?string $formClass = null, string $formProperty = 'form')
     {
-        if (!$formClass) {
+        if (! $formClass) {
             return;
         }
         $states = $this->state()->currentStep();

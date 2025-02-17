@@ -2,17 +2,17 @@
 
 namespace App\Livewire\HrManager\Reports;
 
-use Livewire\Component;
-use App\Models\Employee;
 use App\Models\Applicant;
+use App\Models\Employee;
+use App\Models\ProbationaryPerformancePeriod;
+use App\Models\RegularPerformance;
+use App\Models\RegularPerformancePeriod;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Reactive;
-use App\Models\RegularPerformance;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Cache;
-use App\Models\RegularPerformancePeriod;
-use App\Models\ProbationaryPerformancePeriod;
+use Livewire\Component;
 
 class EmployeeMetrics extends Component
 {
@@ -26,14 +26,16 @@ class EmployeeMetrics extends Component
     {
         $key = sprintf(config('cache.keys.reports.employee_metrics'), $this->year);
 
-        $this->metrics =  Cache::get($key);
+        $this->metrics = Cache::get($key);
 
-        if ($this->metrics) return;
+        if ($this->metrics) {
+            return;
+        }
 
         $this->metrics = [
-            'employee_tenure'       => $this->calculateEmployeeTenure(),
-            'new_hires'             => $this->calculateNewHires(),
-            'evaluation_success'    => $this->calculateEvaluationSuccess(),
+            'employee_tenure' => $this->calculateEmployeeTenure(),
+            'new_hires' => $this->calculateNewHires(),
+            'evaluation_success' => $this->calculateEvaluationSuccess(),
         ];
 
         Cache::forever($key, $this->metrics);
@@ -49,23 +51,23 @@ class EmployeeMetrics extends Component
             ->get()
             ->map(function ($employee) {
                 return (object) [
-                    'date_start' => $employee->lifecycle->started_at
+                    'date_start' => $employee->lifecycle->started_at,
                 ];
             });
 
         $totalTenure = 0;
-    
+
         foreach ($employees as $employee) {
             $startDate = Carbon::parse($employee->date_start);
             $tenure = abs(now()->diffInDays($startDate)) / 365.25;
-    
+
             if ($tenure > 0) {
                 $totalTenure += $tenure;
             }
         }
-    
-        return $totalTenure > 0 
-            ? round($totalTenure / count($employees), 1) 
+
+        return $totalTenure > 0
+            ? round($totalTenure / count($employees), 1)
             : 0;
     }
 
@@ -94,7 +96,7 @@ class EmployeeMetrics extends Component
         $total = $probationary->total + $probationary->total;
 
         if ($passed > 0 && $total > 0) {
-            return round(($passed / $total) * 100, 1);            
+            return round(($passed / $total) * 100, 1);
         } else {
             return 0;
         }
@@ -138,14 +140,14 @@ class EmployeeMetrics extends Component
                         DB::raw('AVG(perf_rating_id) as average_rating'),
                     ])->groupBy('probationary_performance_id');
                 },
-                'probationaryEvaluatee'
+                'probationaryEvaluatee',
             ])
             ->get()
             ->map(function ($period) {
                 $averageRatings = $period->details
                     ->pluck('categoryRatings.*.average_rating')
                     ->flatten()->avg();
-        
+
                 return [
                     'evaluatee' => $period->probationaryEvaluatee,
                     'period_name' => $period->period_name,

@@ -2,14 +2,14 @@
 
 namespace App\Livewire\HrManager\Reports;
 
-use App\Models\Issue;
-use Livewire\Component;
-use App\Models\Incident;
-use App\Models\Training;
 use App\Enums\IssueStatus;
 use App\Enums\TrainingStatus;
-use Livewire\Attributes\Reactive;
+use App\Models\Incident;
+use App\Models\Issue;
+use App\Models\Training;
 use Illuminate\Support\Facades\Cache;
+use Livewire\Attributes\Reactive;
+use Livewire\Component;
 
 class KeyMetrics extends Component
 {
@@ -25,7 +25,9 @@ class KeyMetrics extends Component
 
         $this->metrics = Cache::get($key);
 
-        if ($this->metrics) return;
+        if ($this->metrics) {
+            return;
+        }
 
         $incidents = Incident::whereYear('created_at', $this->year)
             ->get()
@@ -58,7 +60,6 @@ class KeyMetrics extends Component
                 ];
             });
 
-    
         $data = [
             'incidents' => [
                 'completed' => $incidents->sum('completed'),
@@ -71,7 +72,7 @@ class KeyMetrics extends Component
             'training' => [
                 'completed' => $trainings->sum('completed'),
                 'total' => $trainings->count(),
-            ]
+            ],
         ];
 
         $this->metrics = [
@@ -82,7 +83,7 @@ class KeyMetrics extends Component
                 'percentage' => $this->calculatePercentage(
                     $data['incidents']['completed'],
                     $data['incidents']['total']
-                )
+                ),
             ],
             'issues' => [
                 'type' => 'Issues',
@@ -91,7 +92,7 @@ class KeyMetrics extends Component
                 'percentage' => $this->calculatePercentage(
                     $data['issues']['completed'],
                     $data['issues']['total']
-                )
+                ),
             ],
             'training' => [
                 'type' => 'Training',
@@ -100,17 +101,19 @@ class KeyMetrics extends Component
                 'percentage' => $this->calculatePercentage(
                     $data['training']['completed'],
                     $data['training']['total']
-                )
-            ]
-        ];            
+                ),
+            ],
+        ];
 
         Cache::forever($key, $this->metrics);
     }
 
     private function calculatePercentage($completed, $total)
     {
-        if ($total == 0)
+        if ($total == 0) {
             return 0;
+        }
+
         return round(($completed / $total) * 100);
     }
 

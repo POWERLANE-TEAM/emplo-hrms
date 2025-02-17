@@ -2,18 +2,18 @@
 
 namespace App\Livewire\Employee\Tables;
 
-use App\Models\Employee;
-use Illuminate\Support\Str;
-use Illuminate\Support\Carbon;
 use App\Enums\EmploymentStatus;
-use Livewire\Attributes\Locked;
+use App\Models\Employee;
 use App\Models\RegularPerformance;
-use Illuminate\Support\Facades\Auth;
 use App\Models\RegularPerformancePeriod;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Illuminate\View\ComponentAttributeBag;
-use Rappasoft\LaravelLivewireTables\Views\Column;
+use Livewire\Attributes\Locked;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class RegularSubordinatesPerformancesTable extends DataTableComponent
@@ -69,7 +69,7 @@ class RegularSubordinatesPerformancesTable extends DataTableComponent
 
         $this->setTdAttributes(function (Column $column, $row, $columnIndex, $rowIndex) {
             return [
-                'class' => $column->getTitle() === 'Evaluatee' ? 'text-md-start' :'text-md-center',
+                'class' => $column->getTitle() === 'Evaluatee' ? 'text-md-start' : 'text-md-center',
             ];
         });
 
@@ -89,14 +89,14 @@ class RegularSubordinatesPerformancesTable extends DataTableComponent
     }
 
     private function setRoute(Employee $employee)
-    {   
+    {
         if ($employee->performancesAsRegular->first()) {
             return route("{$this->routePrefix}.performances.regulars.show", [
-                'performance' => $employee->performancesAsRegular->first()->regular_performance_id
+                'performance' => $employee->performancesAsRegular->first()->regular_performance_id,
             ]);
         } else {
             return route("{$this->routePrefix}.performances.regulars.create", [
-                'employee' => $employee->employee_id
+                'employee' => $employee->employee_id,
             ]);
         }
     }
@@ -127,23 +127,23 @@ class RegularSubordinatesPerformancesTable extends DataTableComponent
                     $name = Str::headline($row->full_name);
                     $photo = $row->account->photo;
                     $id = $row->employee_id;
-            
+
                     return '<div class="d-flex align-items-center">
-                                <img src="' . e($photo) . '" alt="User Picture" class="rounded-circle me-3" style="width: 38px; height: 38px;">
+                                <img src="'.e($photo).'" alt="User Picture" class="rounded-circle me-3" style="width: 38px; height: 38px;">
                                 <div>
-                                    <div>' . e($name) . '</div>
-                                    <div class="text-muted fs-6">Employee ID: ' . e($id) . '</div>
+                                    <div>'.e($name).'</div>
+                                    <div class="text-muted fs-6">Employee ID: '.e($id).'</div>
                                 </div>
                             </div>';
                 })
                 ->html()
-                ->sortable(fn (Builder $query, $direction) => $query->orderBy('last_name' ,$direction))
+                ->sortable(fn (Builder $query, $direction) => $query->orderBy('last_name', $direction))
                 ->searchable(function (Builder $query, $searchTerm) {
                     return $query->whereLike('first_name', "%{$searchTerm}%")
                         ->orWhereLike('middle_name', "%{$searchTerm}%")
                         ->orWhereLike('last_name', "%{$searchTerm}%");
                 }),
-            
+
             Column::make(__('Status'))
                 ->label(function ($row) {
                     if ($row->performancesAsRegular->first()) {
@@ -169,7 +169,8 @@ class RegularSubordinatesPerformancesTable extends DataTableComponent
             Column::make(__('Final Rating'))
                 ->label(function ($row) {
                     if ($row->performancesAsRegular->first()) {
-                        $finalRating = $row->performancesAsRegular->first()->final_rating;  
+                        $finalRating = $row->performancesAsRegular->first()->final_rating;
+
                         return $finalRating['ratingAvg'];
                     } else {
                         return '-';
@@ -179,7 +180,8 @@ class RegularSubordinatesPerformancesTable extends DataTableComponent
             Column::make(__('Performance Scale'))
                 ->label(function ($row) {
                     if ($row->performancesAsRegular->first()) {
-                        $finalRating = $row->performancesAsRegular->first()->final_rating;  
+                        $finalRating = $row->performancesAsRegular->first()->final_rating;
+
                         return $finalRating['performanceScale'];
                     } else {
                         return '-';
@@ -207,8 +209,8 @@ class RegularSubordinatesPerformancesTable extends DataTableComponent
                         $subQuery->where('period_id', $value);
                     });
                 })
-                ->setFilterPillTitle('Period')
-                // ->setFilterDefaultValue(RegularPerformancePeriod::latest()->first()->period_id)
+                ->setFilterPillTitle('Period'),
+            // ->setFilterDefaultValue(RegularPerformancePeriod::latest()->first()->period_id)
         ];
     }
 

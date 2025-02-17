@@ -34,7 +34,7 @@ return new class extends Migration
 
         Schema::create('probationary_performance_periods', function (Blueprint $table) {
             $table->id('period_id');
-            
+
             $table->foreignIdFor(Employee::class, 'evaluatee')
                 ->constrained('employees', 'employee_id')
                 ->cascadeOnUpdate()
@@ -98,7 +98,7 @@ return new class extends Migration
                 ->constrained('employees', 'employee_id')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-            
+
             $table->boolean('is_employee_acknowledged')->default(false);
         });
 
@@ -140,7 +140,7 @@ return new class extends Migration
                 ->nullable()
                 ->constrained('employees', 'employee_id')
                 ->cascadeOnUpdate()
-                ->cascadeOnDelete();    
+                ->cascadeOnDelete();
 
             // recommendation to make probationary become regular
             $table->boolean('is_final_recommend')->default(false);
@@ -158,7 +158,7 @@ return new class extends Migration
                 ->constrained('performance_ratings', 'perf_rating_id')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-            
+
             $table->foreignIdFor(ProbationaryPerformance::class, 'probationary_performance_id')
                 ->constrained('probationary_performances', 'probationary_performance_id')
                 ->cascadeOnUpdate()

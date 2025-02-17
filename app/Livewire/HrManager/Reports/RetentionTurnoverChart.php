@@ -2,16 +2,16 @@
 
 namespace App\Livewire\HrManager\Reports;
 
-use Livewire\Component;
-use Livewire\Attributes\Locked;
 use App\Models\EmployeeLifecycle;
 use Illuminate\Support\Facades\Cache;
+use Livewire\Attributes\Locked;
+use Livewire\Component;
 
 class RetentionTurnoverChart extends Component
 {
     public $year;
 
-    #[Locked]    
+    #[Locked]
     public $retentionData;
 
     public function mount()
@@ -20,7 +20,9 @@ class RetentionTurnoverChart extends Component
 
         $this->retentionData = Cache::get($key);
 
-        if ($this->retentionData) return;
+        if ($this->retentionData) {
+            return;
+        }
 
         $this->retentionData = Cache::rememberForever($key, fn () => $this->fetchRetentionData());
     }
@@ -56,7 +58,7 @@ class RetentionTurnoverChart extends Component
             'total_left' => $data['employees_left'],
             'total_stayed' => $data['total_employees_end'],
             'turnover_rate' => round($turnoverRate, 1),
-            'retention_rate' => round($retentionRate, 1)
+            'retention_rate' => round($retentionRate, 1),
         ];
     }
 

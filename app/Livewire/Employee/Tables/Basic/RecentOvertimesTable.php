@@ -2,13 +2,13 @@
 
 namespace App\Livewire\Employee\Tables\Basic;
 
-use App\Models\Overtime;
-use App\Enums\StatusBadge;
 use App\Enums\OvertimeRequestStatus;
-use Illuminate\Support\Facades\Auth;
+use App\Enums\StatusBadge;
+use App\Models\Overtime;
 use Illuminate\Database\Eloquent\Builder;
-use Rappasoft\LaravelLivewireTables\Views\Column;
+use Illuminate\Support\Facades\Auth;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateFilter;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
@@ -66,7 +66,7 @@ class RecentOvertimesTable extends DataTableComponent
             return [
                 'class' => 'text-md-center',
             ];
-        });        
+        });
     }
 
     public function builder(): Builder
@@ -98,11 +98,11 @@ class RecentOvertimesTable extends DataTableComponent
                 ->format(fn ($row) => $row->format('F d, Y g:i A'))
                 ->sortable()
                 ->setSortingPillDirections('Asc', 'Desc'),
-            
+
             Column::make(__('Hours Requested'))
                 ->label(fn ($row) => $row->hoursRequested)
                 ->setSortingPillDirections('Asc', 'Desc'),
-            
+
             Column::make(__('Date Filed'))
                 ->label(fn ($row) => $row->filed_at->format('F d, Y g:i A'))
                 ->sortable(function (Builder $query, $direction) {
@@ -162,7 +162,7 @@ class RecentOvertimesTable extends DataTableComponent
                     } elseif ($value === OvertimeRequestStatus::DENIED->value) {
                         $query->whereNotNull('denied_at');
                     }
-                })
+                }),
         ];
     }
 }

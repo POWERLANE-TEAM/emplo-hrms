@@ -23,9 +23,9 @@ class PreEmploymentPreview extends Component
                 ->first())
                 ->file_path;
 
-                if ($filePath) {
-                    $this->file = Storage::disk('public')->url($filePath);
-                }
+            if ($filePath) {
+                $this->file = Storage::disk('public')->url($filePath);
+            }
         } catch (\Throwable $th) {
             report($th);
         }

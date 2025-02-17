@@ -2,15 +2,15 @@
 
 namespace App\Livewire\Employee\Tables;
 
+use App\Enums\IssueConfidentiality;
+use App\Enums\IssueStatus;
 use App\Models\Issue;
 use App\Models\IssueType;
-use App\Enums\IssueStatus;
-use Livewire\Attributes\Locked;
-use App\Enums\IssueConfidentiality;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
-use Rappasoft\LaravelLivewireTables\Views\Column;
+use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Locked;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class MyReportedIssuesTable extends DataTableComponent
@@ -92,7 +92,7 @@ class MyReportedIssuesTable extends DataTableComponent
     {
         return Issue::query()
             ->with([
-                'types'
+                'types',
             ])
             ->where('issue_reporter', Auth::user()->account->employee_id);
     }

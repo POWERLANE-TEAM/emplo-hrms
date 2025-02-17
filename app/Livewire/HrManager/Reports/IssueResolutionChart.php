@@ -2,11 +2,11 @@
 
 namespace App\Livewire\HrManager\Reports;
 
-use App\Models\Issue;
-use Livewire\Component;
 use App\Enums\IssueStatus;
-use Livewire\Attributes\Locked;
+use App\Models\Issue;
 use Illuminate\Support\Facades\Cache;
+use Livewire\Attributes\Locked;
+use Livewire\Component;
 
 class IssueResolutionChart extends Component
 {
@@ -25,11 +25,12 @@ class IssueResolutionChart extends Component
     {
         $key = sprintf(config('cache.keys.reports.issue_resolution_time_rate'), $this->year);
 
-        $this->issueResolutionData  = Cache::get($key);
+        $this->issueResolutionData = Cache::get($key);
 
         if ($this->issueResolutionData) {
             $this->monthlyData = $this->issueResolutionData['monthly'];
             $this->yearlyData = $this->issueResolutionData['yearly'];
+
             return;
         }
 
@@ -38,7 +39,7 @@ class IssueResolutionChart extends Component
             ->filter(function ($issue) {
                 return in_array($issue->status, [
                     IssueStatus::RESOLVED->value,
-                    IssueStatus::CLOSED->value
+                    IssueStatus::CLOSED->value,
                 ]);
             })
             ->map(function ($issue) {
@@ -47,7 +48,6 @@ class IssueResolutionChart extends Component
                     'date_resolved' => $issue->status_marked_at,
                 ];
             })->toArray();
-
 
         foreach ($issues as $issue) {
             $dateSubmitted = strtotime($issue['date_submitted']);
@@ -62,13 +62,13 @@ class IssueResolutionChart extends Component
             $year = date('Y', $dateResolved);
             $month = date('Y-m', $dateResolved);
 
-            if (!isset($this->yearlyData[$year])) {
+            if (! isset($this->yearlyData[$year])) {
                 $this->yearlyData[$year] = ['total_days' => 0, 'count' => 0];
             }
             $this->yearlyData[$year]['total_days'] += $resolvedDays;
             $this->yearlyData[$year]['count']++;
 
-            if (!isset($this->monthlyData[$month])) {
+            if (! isset($this->monthlyData[$month])) {
                 $this->monthlyData[$month] = ['total_days' => 0, 'count' => 0];
             }
             $this->monthlyData[$month]['total_days'] += $resolvedDays;
@@ -100,7 +100,7 @@ class IssueResolutionChart extends Component
     }
 
     public function render()
-    {   
+    {
         return view('livewire.hr-manager.reports.issue-resolution-chart');
     }
 }

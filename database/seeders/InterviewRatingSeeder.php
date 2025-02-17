@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Enums\InterviewRating as EnumsInterviewRating;
 use App\Models\InterviewRating;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class InterviewRatingSeeder extends Seeder

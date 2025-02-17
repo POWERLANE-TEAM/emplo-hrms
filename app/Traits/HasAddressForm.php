@@ -2,19 +2,17 @@
 
 namespace App\Traits;
 
+use App\Http\Requests\ResidentialAddressRequest as AddressRequest;
 use App\Models\Barangay;
 use App\Models\City;
 use App\Models\Province;
 use App\Models\Region;
 use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Computed;
-use Livewire\Features\SupportLockedProperties\CannotUpdateLockedPropertyException;
-use App\Http\Requests\ResidentialAddressRequest  as AddressRequest;
 use Livewire\Attributes\Validate;
 
 trait HasAddressForm
 {
-
     #[Validate(as: [
         'address.presentRegion' => 'present region',
         'address.presentProvince' => 'present province',
@@ -32,10 +30,10 @@ trait HasAddressForm
     public $address = [
         // Present Address
         'presentRegion' => null,
-        'presentProvince' =>  null,
-        'presentCity' =>  null,
-        'presentBarangay' =>  null,
-        'presentAddress' =>  null,
+        'presentProvince' => null,
+        'presentCity' => null,
+        'presentBarangay' => null,
+        'presentAddress' => null,
 
         // Permanent Address
         'permanentRegion' => null,
@@ -92,7 +90,6 @@ trait HasAddressForm
         'checked' => false,
     ];
 
-
     public function updatingAddress($property, $value = null)
     {
         if ($this->samePresentAddressChckBox['checked']) {
@@ -115,7 +112,6 @@ trait HasAddressForm
         }
     }
 
-
     /**
      * Handle automatic dropdown options for provinces, cities, and barangays.
      *
@@ -125,7 +121,7 @@ trait HasAddressForm
     public function updatedAddress($property, $value = null)
     {
 
-        Log::info('Updated Address: ' . $property . ' ' . $value);
+        Log::info('Updated Address: '.$property.' '.$value);
         if ($property === 'address.presentRegion') {
             $this->presentAddressFields['provinces'] = Province::where('region_code', $this->address['presentRegion'])
                 ->pluck('name', 'province_code')
@@ -217,12 +213,11 @@ trait HasAddressForm
     {
         if ($this->samePresentAddressChckBox['checked']) {
 
-
-            $addressRequest = new AddressRequest();
+            $addressRequest = new AddressRequest;
 
             $presentAddressRules = [];
             foreach ($addressRequest->rules() as $key => $rule) {
-                $presentAddressRules["address.present" . ucfirst($key)] = $rule;
+                $presentAddressRules['address.present'.ucfirst($key)] = $rule;
             }
 
             $this->validate($presentAddressRules);
@@ -267,7 +262,7 @@ trait HasAddressForm
             'address.permanentProvince',
             'address.permanentCity',
             'address.permanentBarangay',
-            'address.permanentAddress'
+            'address.permanentAddress',
         ];
     }
 
@@ -281,7 +276,7 @@ trait HasAddressForm
         ];
 
         if ($hasAddress) {
-            $array[] =  'address.presentAddress';
+            $array[] = 'address.presentAddress';
         }
 
         return $array;

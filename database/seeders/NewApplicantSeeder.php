@@ -10,14 +10,9 @@ use App\Enums\UserStatus as EnumUserStatus;
 use App\Models\Applicant;
 use App\Models\Application;
 use App\Models\ApplicationDoc;
-use App\Models\ApplicationExam;
-use App\Models\Employee;
-use App\Models\FinalInterview;
-use App\Models\InitialInterview;
 use App\Models\JobVacancy;
 use App\Models\User;
 use App\Traits\NeedsEmptyPdf;
-use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Concurrency;
 use Illuminate\Support\Facades\DB;
@@ -41,7 +36,7 @@ function createPendingApplicants($chunkStart, $chunk, $permissions)
                         $users_data = [
                             'account_type' => AccountType::APPLICANT,
                             'account_id' => $applicant->applicant_id,
-                            'email' => 'pending.applicant.' . str_pad($i, 3, '0', STR_PAD_LEFT) . '@gmail.com',
+                            'email' => 'pending.applicant.'.str_pad($i, 3, '0', STR_PAD_LEFT).'@gmail.com',
                             'password' => Hash::make('UniqP@ssw0rd'),
                             'user_status_id' => EnumUserStatus::ACTIVE,
                             'email_verified_at' => fake()->dateTimeBetween('-10 days', 'now'),
@@ -54,12 +49,13 @@ function createPendingApplicants($chunkStart, $chunk, $permissions)
                         $application = Application::create([
                             'applicant_id' => $applicant->applicant_id,
                             'job_vacancy_id' => JobVacancy::inRandomOrder()->first()->job_vacancy_id,
-                            'application_status_id' =>  $applicantStatus,
+                            'application_status_id' => $applicantStatus,
                         ]);
 
-                        $randomFileName = 'resume_' . uniqid() . '.pdf';
+                        $randomFileName = 'resume_'.uniqid().'.pdf';
 
-                        $pdfGen = new class {
+                        $pdfGen = new class
+                        {
                             use NeedsEmptyPdf;
                         };
 
@@ -70,17 +66,17 @@ function createPendingApplicants($chunkStart, $chunk, $permissions)
                         ApplicationDoc::create([
                             'application_id' => $application->application_id,
                             'file_path' => $resumePath,
-                            'preemp_req_id' => 17, //resume
+                            'preemp_req_id' => 17, // resume
                         ]);
 
                         // $applicant_user->givePermissionTo($permissions);
                     } catch (\Exception $e) {
-                        Log::error('Exception: ' . $e->getMessage() . ' in ' . $e->getFile() . ' on line ' . $e->getLine());
+                        Log::error('Exception: '.$e->getMessage().' in '.$e->getFile().' on line '.$e->getLine());
                     }
                 });
             }
         } catch (\Throwable $th) {
-            Log::error('Exception: ' . $th->getMessage() . ' in ' . $th->getFile() . ' on line ' . $th->getLine());
+            Log::error('Exception: '.$th->getMessage().' in '.$th->getFile().' on line '.$th->getLine());
         }
 
         return ['result' => true];
@@ -132,7 +128,7 @@ class NewApplicantSeeder extends Seeder
         $tasks = [];
         for ($i = 0; $i < $concurrencyCount; $i++) {
             $chunkStart = $start + ($chunkCount * $i);
-            $tasks[] = fn() => createPendingApplicants($chunkStart, $chunkCount, $permissions);
+            $tasks[] = fn () => createPendingApplicants($chunkStart, $chunkCount, $permissions);
         }
 
         Concurrency::run($tasks);

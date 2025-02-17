@@ -2,14 +2,14 @@
 
 namespace App\Livewire\Employee\Leaves;
 
-use Livewire\Component;
 use App\Enums\StatusBadge;
-use Livewire\Attributes\On;
 use App\Enums\UserPermission;
 use App\Models\EmployeeLeave;
-use Livewire\Attributes\Locked;
-use Livewire\Attributes\Computed;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\Locked;
+use Livewire\Attributes\On;
+use Livewire\Component;
 use Livewire\WithPagination;
 
 class RequestorInfo extends Component
@@ -26,7 +26,7 @@ class RequestorInfo extends Component
 
     #[Locked]
     public $previousLeaveId;
-    
+
     #[Locked]
     public $nextLeaveId;
 
@@ -52,7 +52,7 @@ class RequestorInfo extends Component
     {
         $higherPermissions = [
             UserPermission::APPROVE_LEAVE_REQUEST_THIRD,
-            UserPermission::APPROVE_LEAVE_REQUEST_FOURTH
+            UserPermission::APPROVE_LEAVE_REQUEST_FOURTH,
         ];
 
         $query = EmployeeLeave::query()
@@ -76,12 +76,12 @@ class RequestorInfo extends Component
         $remaining = $query->paginate($count);
 
         if ($query->isNotEmpty()) {
-            $currentIndex = $query->search(fn($item) => $item->emp_leave_id === $this->leave->emp_leave_id);
-    
+            $currentIndex = $query->search(fn ($item) => $item->emp_leave_id === $this->leave->emp_leave_id);
+
             $this->previousLeaveId = ($currentIndex > 0) ? $query[$currentIndex - 1]->emp_leave_id : null;
             $this->nextLeaveId = ($currentIndex < $count - 1) ? $query[$currentIndex + 1]->emp_leave_id : null;
         }
-        
+
         return $remaining;
     }
 

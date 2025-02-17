@@ -17,12 +17,14 @@ class FilepondHelper
                     $result[] = "$prefix/$types";
                 }
             }
+
             return implode(', ', $result);
         }
+
         return $accept;
     }
 
-    public static function  transfromToFile($filePath)
+    public static function transfromToFile($filePath)
     {
         try {
             if (file_exists($filePath)) {

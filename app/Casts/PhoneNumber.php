@@ -5,7 +5,6 @@ namespace App\Casts;
 use Exception;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Log;
 use Propaganistas\LaravelPhone\PhoneNumber as FormatPhoneNumber;
 
 class PhoneNumber implements CastsAttributes
@@ -32,7 +31,7 @@ class PhoneNumber implements CastsAttributes
         //     $this->reportFormattingError($model, $value, $regionMode);
         // }
 
-        return  $value;
+        return $value;
     }
 
     /**
@@ -56,7 +55,6 @@ class PhoneNumber implements CastsAttributes
             throw new Exception('Phone number is required');
         }
 
-
         try {
             if ($regionMode == 'local') {
                 $phoneObj = new FormatPhoneNumber($value, 'PH');
@@ -74,7 +72,7 @@ class PhoneNumber implements CastsAttributes
         }
 
         // remove non-numeric characters
-        return (preg_replace('/\D/', '', $contactNumber) ?? $value);
+        return preg_replace('/\D/', '', $contactNumber) ?? $value;
     }
 
     /**
@@ -85,6 +83,6 @@ class PhoneNumber implements CastsAttributes
         $user = $model->account;
         $userId = $user->account_id ?? 'unknown';
         $userType = $user->account_type ?? 'unknown';
-        report(new Exception('Phone number formatting failed for value: ' . $value . ' for user ID: ' . $userId . ' of type: ' . $userType . ' in region mode: ' . $regionMode));
+        report(new Exception('Phone number formatting failed for value: '.$value.' for user ID: '.$userId.' of type: '.$userType.' in region mode: '.$regionMode));
     }
 }

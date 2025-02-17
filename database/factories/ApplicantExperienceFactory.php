@@ -3,8 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\Applicant;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ApplicantExperience>
@@ -25,7 +25,7 @@ class ApplicantExperienceFactory extends Factory
         }, $experiences);
 
         $keywords = array_merge(...$keywords);
-        
+
         return [
             'applicant_id' => Applicant::inRandomOrder()->first()->applicant_id,
             'experience_desc' => fake()->randomElement($keywords),

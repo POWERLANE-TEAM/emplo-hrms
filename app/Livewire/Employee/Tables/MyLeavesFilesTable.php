@@ -3,17 +3,17 @@
 namespace App\Livewire\Employee\Tables;
 
 use App\Enums\FilePath;
-use App\Models\EmployeeLeave;
 use App\Http\Helpers\FileSize;
-use Illuminate\Support\Carbon;
-use Livewire\Attributes\Locked;
-use Illuminate\Support\Facades\Auth;
+use App\Models\EmployeeLeave;
 use App\Models\EmployeeLeaveAttachment;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\ComponentAttributeBag;
-use Rappasoft\LaravelLivewireTables\Views\Column;
+use Livewire\Attributes\Locked;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Columns\LinkColumn;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateRangeFilter;
 
@@ -91,7 +91,7 @@ class MyLeavesFilesTable extends DataTableComponent
     {
         return EmployeeLeaveAttachment::query()
             ->with([
-                'leave'
+                'leave',
             ])
             ->whereHas('leave', function ($query) {
                 $query->where('employee_id', Auth::user()->account->employee_id);
@@ -129,7 +129,7 @@ class MyLeavesFilesTable extends DataTableComponent
                     return $query->orderBy(
                         EmployeeLeave::select('filed_at')
                             ->whereColumn('employee_leaves.emp_leave_id', 'employee_leave_attachments.attachment_id'),
-                            $direction
+                        $direction
                     );
                 })
                 ->setSortingPillDirections('Oldest', 'Latest'),

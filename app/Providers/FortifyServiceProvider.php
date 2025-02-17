@@ -20,7 +20,6 @@ use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
@@ -29,8 +28,6 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Contracts\LoginResponse;
 use Laravel\Fortify\Contracts\LogoutResponse;
-use Laravel\Fortify\Contracts\PasswordResetResponse;
-use Laravel\Fortify\Contracts\PasswordUpdateResponse;
 use Laravel\Fortify\Fortify;
 
 class FortifyServiceProvider extends ServiceProvider
@@ -59,7 +56,7 @@ class FortifyServiceProvider extends ServiceProvider
                     // avoid Pusher error: cURL error 7: Failed to connect to localhost port 8080 after 2209 ms: Couldn't connect to server
                     /* when websocket server is not started */
 
-                    Log::error('Broadcast error: ' . $th);
+                    Log::error('Broadcast error: '.$th);
                 } finally {
                     return redirect($redirectUrl)->with('clearSessionStorageKeys', 'pageThemePreference');
                 }
@@ -76,7 +73,7 @@ class FortifyServiceProvider extends ServiceProvider
                 activity()
                     ->by($authUser)
                     ->useLog(ActivityLogName::AUTHENTICATION->value)
-                    ->log(Str::ucfirst($authUser->account->first_name) . ' logged in.');
+                    ->log(Str::ucfirst($authUser->account->first_name).' logged in.');
 
                 // Redirection to previously visited page before being prompt to login
                 // For example you visit /employee/payslip and you are not logged in
@@ -131,10 +128,10 @@ class FortifyServiceProvider extends ServiceProvider
                 }
 
                 if ($authUser->account_type == AccountType::APPLICANT->value) {
-                    return redirect('/application')->with('clearSessionStorageKeys', 'pageThemePreference');;
+                    return redirect('/application')->with('clearSessionStorageKeys', 'pageThemePreference');
                 }
 
-                return redirect('/')->with('clearSessionStorageKeys', 'pageThemePreference');;
+                return redirect('/')->with('clearSessionStorageKeys', 'pageThemePreference');
             }
         });
     }
@@ -150,7 +147,7 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
 
-        Fortify::verifyEmailView(fn() => app(UnverifiedEmail::class)->render());
+        Fortify::verifyEmailView(fn () => app(UnverifiedEmail::class)->render());
 
         Fortify::authenticateUsing(function (Request $request) {
 
@@ -194,7 +191,7 @@ class FortifyServiceProvider extends ServiceProvider
         });
 
         RateLimiter::for('login', function (Request $request) {
-            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())) . '|' . $request->ip());
+            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
 
             return Limit::perMinute(5)->by($throttleKey);
         });

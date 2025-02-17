@@ -11,11 +11,12 @@ class PayrollSummaryExport implements FromCollection, WithHeadings
 {
     public $payroll;
 
-    public function __construct($payroll) {
+    public function __construct($payroll)
+    {
         if (! $payroll) {
             $this->payroll = Payroll::latest('cut_off_start')->first()->payroll_id;
         }
-        
+
         $this->payroll = $payroll;
     }
 

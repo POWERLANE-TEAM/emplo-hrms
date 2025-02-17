@@ -2,15 +2,15 @@
 
 namespace App\Livewire\Employee\Tables;
 
-use App\Models\Employee;
-use Illuminate\Support\Str;
-use Illuminate\Support\Carbon;
 use App\Enums\EmploymentStatus;
-use Livewire\Attributes\Locked;
+use App\Models\Employee;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 use Illuminate\View\ComponentAttributeBag;
-use Rappasoft\LaravelLivewireTables\Views\Column;
+use Livewire\Attributes\Locked;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class AnySeparatedEmployeesTable extends DataTableComponent
@@ -103,27 +103,27 @@ class AnySeparatedEmployeesTable extends DataTableComponent
     {
         return [
             Column::make(__('Employee'))
-            ->label(function ($row) {
-                $name = Str::headline($row->full_name);
-                $photo = $row->account->photo;
-                $id = $row->employee_id;
-        
-                return '<div class="d-flex align-items-center">
-                            <img src="' . e($photo) . '" alt="User Picture" class="rounded-circle me-3" style="width: 38px; height: 38px;">
+                ->label(function ($row) {
+                    $name = Str::headline($row->full_name);
+                    $photo = $row->account->photo;
+                    $id = $row->employee_id;
+
+                    return '<div class="d-flex align-items-center">
+                            <img src="'.e($photo).'" alt="User Picture" class="rounded-circle me-3" style="width: 38px; height: 38px;">
                             <div>
-                                <div>' . e($name) . '</div>
-                                <div class="text-muted fs-6">Employee ID: ' . e($id) . '</div>
+                                <div>'.e($name).'</div>
+                                <div class="text-muted fs-6">Employee ID: '.e($id).'</div>
                             </div>
                         </div>';
-            })
-            ->html()
-            ->sortable(fn (Builder $query, $direction) => $query->orderBy('last_name' ,$direction))
-            ->searchable(function (Builder $query, $searchTerm) {
-                return $query->whereLike('first_name', "%{$searchTerm}%")
-                    ->orWhereLike('middle_name', "%{$searchTerm}%")
-                    ->orWhereLike('last_name', "%{$searchTerm}%")
-                    ->orWhereHas('account', fn ($query) => $query->orWhereLike('email', "%{$searchTerm}%"));
-            }),
+                })
+                ->html()
+                ->sortable(fn (Builder $query, $direction) => $query->orderBy('last_name', $direction))
+                ->searchable(function (Builder $query, $searchTerm) {
+                    return $query->whereLike('first_name', "%{$searchTerm}%")
+                        ->orWhereLike('middle_name', "%{$searchTerm}%")
+                        ->orWhereLike('last_name', "%{$searchTerm}%")
+                        ->orWhereHas('account', fn ($query) => $query->orWhereLike('email', "%{$searchTerm}%"));
+                }),
 
             Column::make(__('Job Title'))
                 ->label(fn ($row) => $row->jobTitle->job_title),
@@ -136,12 +136,12 @@ class AnySeparatedEmployeesTable extends DataTableComponent
 
             Column::make(__('Date Until Data Disposal'))
                 ->label(function ($row) {
-                        $separationDate = Carbon::parse($row->lifecycle->separated_at);
-                        $retentionDate = EmploymentStatus::separatedEmployeeDataRetentionPeriod($separationDate);
-                        
-                        return now()->diff($retentionDate)->format('%y years %m months %d days');
-                    }
-                )
+                    $separationDate = Carbon::parse($row->lifecycle->separated_at);
+                    $retentionDate = EmploymentStatus::separatedEmployeeDataRetentionPeriod($separationDate);
+
+                    return now()->diff($retentionDate)->format('%y years %m months %d days');
+                }
+                ),
         ];
     }
 
@@ -162,9 +162,10 @@ class AnySeparatedEmployeesTable extends DataTableComponent
     {
         $all = array_reduce(EmploymentStatus::cases(), function ($carry, $case) {
             $carry[$case->label()] = $case->label();
+
             return $carry;
         }, []);
-        
+
         return array_filter($all, fn ($item) => ! in_array($item, [
             EmploymentStatus::PROBATIONARY->label(),
             EmploymentStatus::REGULAR->label(),
