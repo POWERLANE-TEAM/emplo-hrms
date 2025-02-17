@@ -14,10 +14,8 @@
     <form action="/login" nonce="{{ $nonce }}">
         @csrf
 
-        @if ($errors->has('credentials'))
-            <div class="alert alert-danger bg-danger-subtle" role="alert">
-                {{ $errors->first('credentials') }}
-            </div>
+        @if (!empty($loginMessage))
+            {!!$loginMessage!!}
         @else
             <div class="alert alert-danger opacity-0" role="alert" aria-hidden="true">
                 Blank

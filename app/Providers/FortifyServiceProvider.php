@@ -12,6 +12,7 @@ use App\Enums\RoutePrefix as EnumsRoutePrefix;
 use App\Enums\UserPermission;
 use App\Enums\UserRole;
 use App\Events\UserLoggedout;
+use App\Http\Controllers\ResetPasswordController;
 use App\Http\Helpers\RouteHelper;
 use App\Livewire\Auth\UnverifiedEmail;
 use App\Models\User;
@@ -28,6 +29,8 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Contracts\LoginResponse;
 use Laravel\Fortify\Contracts\LogoutResponse;
+use Laravel\Fortify\Contracts\PasswordResetResponse;
+use Laravel\Fortify\Contracts\PasswordUpdateResponse;
 use Laravel\Fortify\Fortify;
 
 class FortifyServiceProvider extends ServiceProvider
@@ -113,7 +116,6 @@ class FortifyServiceProvider extends ServiceProvider
                         if ($testResponse->isOk()) {
                             return redirect($intendedUrl)->with('clearSessionStorageKeys', 'pageThemePreference');
                         }
-
                     }
                 }
 
@@ -134,7 +136,6 @@ class FortifyServiceProvider extends ServiceProvider
 
                 return redirect('/')->with('clearSessionStorageKeys', 'pageThemePreference');;
             }
-
         });
     }
 
@@ -176,12 +177,20 @@ class FortifyServiceProvider extends ServiceProvider
         });
 
         Fortify::loginView(function () {
-
             return view('livewire.auth.login-view');
         });
 
         Fortify::twoFactorChallengeView(function () {
             return view('livewire.auth.two-factor-challenge-form-view');
+        });
+
+        // Form to enter the email address to send the password reset link
+        Fortify::requestPasswordResetLinkView(function () {
+            return view('auth.forgot-password');
+        });
+
+        Fortify::resetPasswordView(function (Request $request) {
+            return app(ResetPasswordController::class)->index($request);
         });
 
         RateLimiter::for('login', function (Request $request) {
@@ -222,7 +231,7 @@ class FortifyServiceProvider extends ServiceProvider
             return EnumsRoutePrefix::ADVANCED->value;
         }
 
-        if ($user->hasRole(UserRole::INTERMEDIATE) && $routePrefix != EnumsRoutePrefix::EMPLOYEE->value) {
+        if (($user->hasRole(UserRole::INTERMEDIATE) || $user->hasRole(UserRole::BASIC)) && $routePrefix != EnumsRoutePrefix::EMPLOYEE->value) {
             return EnumsRoutePrefix::EMPLOYEE->value;
         }
 

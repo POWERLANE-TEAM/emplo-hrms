@@ -1,24 +1,27 @@
 <div>
-    <x-modals.dialog id="forgotPassword">
+    <x-modals.dialog id="forgotPasswordModal">
         <x-slot:title>
             <h1 class="modal-title fs-5">{{ __('Forgot Password') }}</h1>
             <button data-bs-toggle="modal" class="btn-close" aria-label="Close"></button>
         </x-slot:title>
         <x-slot:content>
-            <div class="my-3"">
-
-                <p class="fs-6 fw-medium">Enter your email address to receive a password reset link.</p>
-                <x-form.boxed-input-text id=" trainer" label="{{ __('Email Address') }}" :nonce="$nonce" :required="true"
-                placeholder="johndoe@gmail.com" />
+            <div class="my-3">
+                @include('auth.forgot-password', ['livewire' => true])
             </div>
-</x-slot:content>
-<x-slot:footer>
-    <button class="btn btn-primary">{{ __('Submit') }}</button>
+        </x-slot:content>
+        <x-slot:footer>
+            <button type="button" class="btn btn-primary submit" x-init="$el.disabled = true" id="submitForgotPassword"
+                wire:click="forgotPassword"><span wire:loading.class="d-none">{{ __('Submit') }}</span>
+                <span  role="status" wire:loading>Sending pasword reset link...</span>
+                <span  class="spinner-border spinner-border-sm text-light" aria-hidden="true" wire:loading></span>
+            </button>
+        </x-slot:footer>
+    </x-modals.dialog>
 
-    <!-- Use a status-modal here or x-email-sent once email has been sent.
-     Use the switchModal() global function to swap the modals out.
-     
-     Note: switchModal() function is still on PR #204. If not merged yet, it's still not accessible.-->
-</x-slot:footer>
-</x-modals.dialog>
+    @if (session('status'))
+        <x-modals.email-sent label="Forgot password email sent" id="modal-forgot-password-email-success"
+            header="Email Sent" :message="session('status')" />
+    @endif
 </div>
+
+
