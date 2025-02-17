@@ -15,7 +15,7 @@
 </label>
 
 <div class="input-group position-relative">
-    <input type="email"
+    <input 
         {{ $attributes->merge([
             'class' => 'form-control border ps-3 rounded',
             'autocomplete' => $attributes->get('autocomplete', 'off'),
@@ -23,9 +23,11 @@
             'placeholder' => $attributes->get('placeholder', 'e.g. ' . 'alex.a@gmail.com'),
         ]) }}
         aria-owns="{{ $attributes->get('id') }}-feedback" maxlength="320" required
-        @if ($attributes->has('name')) wire:model="{{ $attributes->get('name') }}" @endif nonce="{{ $nonce }}">
+        @if ($attributes->has('name')) wire:model="{{ $attributes->get('name') }}" @endif nonce="{{ $nonce }}"
+        type="email"
+        >
 
-    @if (!empty($feedback))
-        {{ $feedback }}
-    @endif
 </div>
+@if (!empty($feedback))
+    {{ $feedback }}
+@endif

@@ -17,10 +17,8 @@
     <form action="login" method="POST" nonce="{{ $nonce }}">
         @csrf
 
-        @if ($errors->has('credentials'))
-            <div class="alert alert-danger bg-danger-subtle" role="alert">
-                {{ $errors->first('credentials') }}
-            </div>
+        @if (!empty($loginMessage))
+            {!! $loginMessage !!}
         @else
             <div class="alert alert-danger opacity-0" role="alert" aria-hidden="true">
                 Blank
@@ -70,6 +68,13 @@
                 <label for="remember-toggle" class="checkbox-label d-flex flex-wrap">
                     Remember me
                 </label>
+            </div>
+
+            <div class=" col-md-auto mx-auto me-md-0 ms-md-auto order-2 order-md-1">
+                <button type="button" class="border-0 bg-transparent text-decoration-underline green-hover"
+                    onclick="openModal('forgotPasswordModal')">
+                    Forgot your password?
+                </button>
             </div>
 
             <button type="submit" nonce="{{ $nonce }}" id="userLoginBtn"

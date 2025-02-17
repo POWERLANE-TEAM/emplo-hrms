@@ -48,12 +48,14 @@ class EmailRule implements ValidationRule
             'valid_email_dns',
         ];
 
-        if ($this->shouldStrictlyUnique) {
-            $rules[] = 'unique:users,email';
-        } else {
-            $rules[] = 'unique:users,email,' . auth()->id('user_id') . ',user_id';
+        if (auth()->check()) {
+            if ($this->shouldStrictlyUnique) {
+                $rules[] = 'unique:users,email';
+            } else {
+                $rules[] = 'unique:users,email,' . auth()->id() . ',user_id';
+            }
         }
-
+        
         return implode('|', $rules);
     }
 }

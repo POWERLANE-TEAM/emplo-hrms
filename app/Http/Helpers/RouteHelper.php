@@ -2,6 +2,8 @@
 
 namespace App\Http\Helpers;
 
+use App\Enums\RoutePrefix;
+use App\Enums\UserRole;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -32,6 +34,20 @@ class RouteHelper
         };
     }
 
+    public static function getByUser($user): string
+    {
+        $suffix = '.';
+
+        if ($user->hasRole(UserRole::ADVANCED) ) {
+            return RoutePrefix::ADVANCED->value . $suffix;
+        }
+
+        if ($user->hasRole(UserRole::INTERMEDIATE) || $user->hasRole(UserRole::BASIC) ) {
+            return RoutePrefix::EMPLOYEE->value . $suffix;
+        }
+
+        return '';
+    }
 
     public static function validateModel($model, $value)
     {
