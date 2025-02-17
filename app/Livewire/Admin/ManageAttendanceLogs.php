@@ -3,11 +3,11 @@
 namespace App\Livewire\Admin;
 
 use App\Enums\BiometricPunchType;
-use Livewire\Component;
-use App\Models\Employee;
-use App\Models\AttendanceLog;
-use Illuminate\Support\Carbon;
 use App\Http\Helpers\BiometricDevice;
+use App\Models\AttendanceLog;
+use App\Models\Employee;
+use Illuminate\Support\Carbon;
+use Livewire\Component;
 
 class ManageAttendanceLogs extends Component
 {
@@ -15,18 +15,18 @@ class ManageAttendanceLogs extends Component
 
     public function boot()
     {
-        $this->zkInstance = new BiometricDevice();
+        $this->zkInstance = new BiometricDevice;
     }
 
     private function cleanAttendanceLogs()
     {
         return $this->zkInstance->getRawAttendanceLogs()
             ->groupBy(function ($log) {
-                return $log->id . '-' . Carbon::parse($log->timestamp)->toDateString();
+                return $log->id.'-'.Carbon::parse($log->timestamp)->toDateString();
             })
             ->map(function ($group) {
                 $group = $group->sortBy('timestamp');
-    
+
                 $checkIn = null;
                 $checkOut = null;
 
@@ -37,8 +37,8 @@ class ManageAttendanceLogs extends Component
                         BiometricPunchType::CHECK_OUT->value => $checkOut = $time,
                     };
                 }
-                $firstLog = $group->first(); 
-    
+                $firstLog = $group->first();
+
                 return (object) [
                     'uid' => $firstLog->uid,
                     'state' => $firstLog->state,
@@ -49,7 +49,7 @@ class ManageAttendanceLogs extends Component
                 ];
             });
     }
-    
+
     public function clearAttendanceLogs()
     {
         //

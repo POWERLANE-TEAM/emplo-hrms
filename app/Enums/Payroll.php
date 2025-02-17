@@ -66,16 +66,12 @@ enum Payroll: int
 
     /**
      * Get cut-off period based on the given date.
-     *
-     * @param string|null $date
-     * @param bool $isReadableFormat
-     * @return array
      */
     public static function getCutOffPeriod(?string $date = null, bool $isReadableFormat = false): array
     {
         $date = Carbon::parse($date) ?? now();
 
-        $cutOffPeriod = match(true) {
+        $cutOffPeriod = match (true) {
             $date->day <= 10 => self::CUT_OFF_2,
             $date->day <= 25 => self::CUT_OFF_1,
             default => self::CUT_OFF_2,
@@ -94,7 +90,7 @@ enum Payroll: int
     public static function getPayoutDate(?string $date = null, bool $isReadableFormat = false)
     {
         $date = Carbon::parse($date) ?? now();
-        
+
         $payoutDate = match (true) {
             $date->day <= 10 => $date->copy()->startOfMonth()->addDays(14),
             $date->day <= 25 => $date->copy()->endOfMonth(),
@@ -114,11 +110,11 @@ enum Payroll: int
         if ($date->day >= 11 && $date->day <= 25) {
             return Payroll::CUT_OFF_1;
         }
-    
+
         if ($date->day >= 26 || $date->day <= 10) {
             return Payroll::CUT_OFF_2;
         }
-    
+
         return Payroll::CUT_OFF_2;
     }
 }

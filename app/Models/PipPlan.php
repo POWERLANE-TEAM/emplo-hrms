@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class PipPlan extends Model
 {
@@ -23,7 +23,7 @@ class PipPlan extends Model
     ];
 
     /**
-     * Get the performance evaluation that owns the peformance improvement plan.  
+     * Get the performance evaluation that owns the peformance improvement plan.
      */
     public function regularPerformance(): BelongsTo
     {

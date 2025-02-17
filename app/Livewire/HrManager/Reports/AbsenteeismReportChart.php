@@ -2,13 +2,13 @@
 
 namespace App\Livewire\HrManager\Reports;
 
-use Livewire\Component;
-use App\Models\Employee;
-use App\Models\AttendanceLog;
-use Illuminate\Support\Carbon;
-use Livewire\Attributes\Locked;
 use App\Enums\BiometricPunchType;
+use App\Models\AttendanceLog;
+use App\Models\Employee;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
+use Livewire\Attributes\Locked;
+use Livewire\Component;
 
 class AbsenteeismReportChart extends Component
 {
@@ -31,12 +31,13 @@ class AbsenteeismReportChart extends Component
     {
         $key = sprintf(config('cache.keys.reports.absenteeism'), $this->year);
 
-        $this->absenteeismData  = Cache::get($key);
+        $this->absenteeismData = Cache::get($key);
 
         if ($this->absenteeismData) {
             $this->monthlyData = $this->absenteeismData['monthly'];
-            $this->yearlyData = $this->absenteeismData['yearly'];          
-            return;  
+            $this->yearlyData = $this->absenteeismData['yearly'];
+
+            return;
         }
 
         $attendanceLogs = AttendanceLog::whereYear('timestamp', $this->year)
@@ -44,23 +45,23 @@ class AbsenteeismReportChart extends Component
             ->where('type', BiometricPunchType::CHECK_IN->value)
             ->where(fn ($log) => $log->timestamp->copy()->format('m-d'))
             ->whereNotIn('timestamp', $this->holidays->toArray())
-            ->groupBy(function($date) {
+            ->groupBy(function ($date) {
                 return $date->timestamp->copy()->format('Y-m');
-            });    
-    
+            });
+
         $yearlyTotalAbsences = 0;
         $yearlyTotalScheduled = 0;
-    
+
         $monthlyAbsences = [];
 
         $totalEmployees = Employee::activeEmploymentStatus()->get()->count();
-    
+
         $sortedMonths = $attendanceLogs->keys()->sort()->values();
 
         foreach ($sortedMonths as $month) {
 
             $logs = $attendanceLogs[$month];
-            
+
             $totalWorkdays = $this->getWorkdaysInMonth($month);
 
             $daysAttended = $logs->count();
@@ -68,7 +69,7 @@ class AbsenteeismReportChart extends Component
             $totalScheduledDays = $totalEmployees * $totalWorkdays;
 
             $daysAbsent = $totalScheduledDays - $daysAttended;
-    
+
             $yearlyTotalAbsences += $daysAbsent;
             $yearlyTotalScheduled += $totalScheduledDays;
 
@@ -80,12 +81,12 @@ class AbsenteeismReportChart extends Component
         }
 
         $year = substr($this->year, 0, 4);
-    
+
         $this->yearlyData[$year] = [
             'total_absences' => $yearlyTotalAbsences,
             'monthly_average' => round($yearlyTotalAbsences / 12, 2),
         ];
-    
+
         $this->absenteeismData = [
             'yearly' => $this->yearlyData,
             'monthly' => $this->monthlyData,
@@ -96,7 +97,7 @@ class AbsenteeismReportChart extends Component
 
     public function getWorkdaysInMonth($month)
     {
-        $startDate = Carbon::parse($month . '-01');
+        $startDate = Carbon::parse($month.'-01');
         $endDate = $startDate->copy()->endOfMonth();
 
         $workdays = 0;
@@ -111,13 +112,12 @@ class AbsenteeismReportChart extends Component
             }
             $currentDate->addDay();
         }
-        
+
         return $workdays;
     }
 
     public function render()
-    {   
+    {
         return view('livewire.hr-manager.reports.absenteeism-report-chart');
     }
 }
-

@@ -3,19 +3,19 @@
 namespace App\Livewire;
 
 use App\Enums\UserRole;
-use Illuminate\View\ComponentAttributeBag;
-use Rappasoft\LaravelLivewireTables\DataTableComponent;
-use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Livewire\Tables\Defaults as DefaultTableConfig;
 use App\Models\Employee;
 use App\Models\PreempRequirement;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Livewire\Attributes\Js;
+use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Columns\LinkColumn;
 
 /**
  * Implemented Methods:
+ *
  * @method  configure(): void
  * @method  columns(): array
  * @method  builder(): Builder
@@ -81,9 +81,9 @@ class PreEmploymentRequirementsTable extends DataTableComponent
     public function columns(): array
     {
         return [
-            Column::make(__("Document Name"), "preemp_req_name")
+            Column::make(__('Document Name'), 'preemp_req_name')
                 ->sortable(),
-            Column::make(__("Attachment"))
+            Column::make(__('Attachment'))
                 ->label(function ($row) {
                     return __('Attachment');
                 })
@@ -99,7 +99,7 @@ class PreEmploymentRequirementsTable extends DataTableComponent
                 })
                 ->html()
                 ->sortable(),
-            Column::make("Upload")
+            Column::make('Upload')
                 ->label(function ($row, $column) {
                     $rowIndex = $column->getRowIndex();
 
@@ -108,12 +108,12 @@ class PreEmploymentRequirementsTable extends DataTableComponent
                 HTML;
                 })
                 ->html()
-                ->hideIf(!$this->isBasicEmployee),
+                ->hideIf(! $this->isBasicEmployee),
 
-            Column::make("Created at", "created_at")
+            Column::make('Created at', 'created_at')
                 ->deselected()
                 ->sortable(),
-            Column::make("Date Uploaded")
+            Column::make('Date Uploaded')
                 ->label(function ($row) {
                     try {
                         if (is_null(optional($row->applicationDocs->first())->submitted_at)) {
@@ -124,15 +124,16 @@ class PreEmploymentRequirementsTable extends DataTableComponent
                         return Carbon::parse(optional($row->applicationDocs->first())->submitted_at)->setTimezone($this->timezone)->format('d/m/y');
                     } catch (\Exception $e) {
                         report($e);
+
                         return '--';
                     }
                 })
-            ->deselectedIf($this->isBasicEmployee),
+                ->deselectedIf($this->isBasicEmployee),
 
-            LinkColumn::make("History")
-                ->title(fn($row) => 'See History')
+            LinkColumn::make('History')
+                ->title(fn ($row) => 'See History')
 
-                ->location(fn($row) => route($this->routePrefix . '.employees.information', ['employee' => $this->employee->employee_id]) . '/#information')
+                ->location(fn ($row) => route($this->routePrefix.'.employees.information', ['employee' => $this->employee->employee_id]).'/#information')
                 ->deselectedIf($this->isBasicEmployee),
         ];
     }

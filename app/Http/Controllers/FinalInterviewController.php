@@ -7,8 +7,6 @@ use App\Enums\UserPermission;
 use App\Models\Application;
 use App\Models\FinalInterview;
 use App\Models\FinalInterviewRating;
-use App\Models\InitialInterview;
-use App\Models\InitialInterviewRating;
 use App\Rules\ScheduleDateRule;
 use App\Rules\ScheduleTimeRule;
 use Illuminate\Contracts\View\Factory as ViewFactory;
@@ -51,7 +49,7 @@ class FinalInterviewController extends Controller
             $this->date = now();
 
             $validated = $request->validate([
-                'interview.date' => 'required|' . ScheduleDateRule::get($this->minDate, $this->maxDate),
+                'interview.date' => 'required|'.ScheduleDateRule::get($this->minDate, $this->maxDate),
                 'interview.time' => (function () {
                     return [
                         'required_with:date',
@@ -79,7 +77,7 @@ class FinalInterviewController extends Controller
 
         FinalInterview::create([
             'application_id' => $application->application_id,
-            'final_interview_at' => $interviewStartDate . ' ' . $interviewStartTime,
+            'final_interview_at' => $interviewStartDate.' '.$interviewStartTime,
             'final_interviewer' => auth()->user()->account->employee_id,
         ]);
 
@@ -114,8 +112,8 @@ class FinalInterviewController extends Controller
         }
 
         $interviewStart = null;
-        if (!is_null($interviewStartDate) && !is_null($interviewStartTime)) {
-            $interviewStart = $interviewStartDate . ' ' . $interviewStartTime;
+        if (! is_null($interviewStartDate) && ! is_null($interviewStartTime)) {
+            $interviewStart = $interviewStartDate.' '.$interviewStartTime;
         }
 
         $interview = $application->finalInterview;
@@ -128,18 +126,18 @@ class FinalInterviewController extends Controller
         ];
 
         $filteredData = array_filter($data, function ($value) {
-            return !is_null($value);
+            return ! is_null($value);
         });
 
-        if(!empty($interviewRatings)){
+        if (! empty($interviewRatings)) {
             foreach ($interviewRatings as $key => $parameter) {
                 $isExist = FinalInterviewRating::parameter($key)->interview($interview)->exists();
 
-                if($isExist){
+                if ($isExist) {
                     FinalInterviewRating::parameter($key)->interview($interview)->update([
                         'rating_id' => $parameter,
                     ]);
-                }else{
+                } else {
                     FinalInterviewRating::create([
                         'interview_id' => $interview->interview_id,
                         'parameter_id' => $key,

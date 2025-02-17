@@ -2,18 +2,18 @@
 
 namespace App\Livewire\Employee\Tables;
 
+use App\Enums\ContractType;
 use App\Enums\FilePath;
+use App\Http\Helpers\FileSize;
 use App\Models\Contract;
 use App\Models\Employee;
-use App\Enums\ContractType;
-use App\Http\Helpers\FileSize;
-use Illuminate\Support\Carbon;
-use Livewire\Attributes\Locked;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\ComponentAttributeBag;
-use Rappasoft\LaravelLivewireTables\Views\Column;
+use Livewire\Attributes\Locked;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Columns\LinkColumn;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
@@ -83,7 +83,7 @@ class IndividualEmployeeContractsTable extends DataTableComponent
                     'attributes' => new ComponentAttributeBag([
                         'class' => 'fs-5 py-1 text-secondary-emphasis fw-semibold text-underline',
                     ]),
-                    'heading' => __("Contracts & Amendments"),
+                    'heading' => __('Contracts & Amendments'),
                 ],
             ],
         ]);
@@ -154,7 +154,7 @@ class IndividualEmployeeContractsTable extends DataTableComponent
                             ->orWhereLike('employees.last_name', "%{$searchTerm}%");
                     });
                 }),
-            
+
             Column::make(__('Uploaded At'))
                 ->label(fn ($row) => Carbon::make($row->created_at)->format('F d, Y g:i A'))
                 ->sortable(fn (Builder $query, $direction) => $query->orderBy('created_at', $direction))

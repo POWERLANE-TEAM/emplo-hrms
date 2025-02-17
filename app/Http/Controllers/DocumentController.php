@@ -3,19 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Traits\DocumentAIAuth;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 use Google\Cloud\DocumentAI\V1\Client\DocumentProcessorServiceClient;
 use Google\Cloud\DocumentAI\V1\ProcessRequest;
 use Google\Cloud\DocumentAI\V1\RawDocument;
+use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class DocumentController extends Controller
 {
-
-
     use DocumentAIAuth;
 
     /**
@@ -23,12 +20,12 @@ class DocumentController extends Controller
      *
      * @return \Illuminate\Http\UploadedFile|\Illuminate\Http\UploadedFile[]|array|null
      */
-    public function recognizeText(Request|UploadedFile $fileRequest, string $returnType,  ?string $mimeType = null, ?string $fileEnvelope = null, ?bool $validated = false)/* : UploadedFile */
+    public function recognizeText(Request|UploadedFile $fileRequest, string $returnType, ?string $mimeType = null, ?string $fileEnvelope = null, ?bool $validated = false)/* : UploadedFile */
     {
 
         if ($fileRequest instanceof Request) {
 
-            if (!$validated) {
+            if (! $validated) {
                 $validated = $fileRequest->validate([
                     '*' => 'required|file',
                 ]);
@@ -53,12 +50,11 @@ class DocumentController extends Controller
             }
         }
 
-
         $credentials = $this->setCredentials();
 
         [$processorId, $processorVersion] = $this->getProcessor();
 
-        $client = new DocumentProcessorServiceClient();
+        $client = new DocumentProcessorServiceClient;
 
         $apiName = $client->processorVersionName(
             $credentials['project_id'],
@@ -167,12 +163,11 @@ class DocumentController extends Controller
                     }
                 }
 
-
                 if ($returnType == 'response') {
                     return response()->json([
                         'parsedData' => $extractedData,
                     ]);
-                } else if ($returnType == 'array') {
+                } elseif ($returnType == 'array') {
                     return $extractedData;
                 }
 

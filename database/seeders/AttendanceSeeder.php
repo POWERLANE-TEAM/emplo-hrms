@@ -14,7 +14,7 @@ function createAttendances(array $employeeIds, int $partitionIndex, Carbon $curr
 {
     $employees = Employee::with('shift')->whereIn('employee_id', $employeeIds)->get();
 
-    activity()->withoutLogs(function () use ($employees, $partitionIndex, $currentDate) {
+    activity()->withoutLogs(function () use ($employees, $currentDate) {
         static $uid = 0;
 
         foreach ($employees as $employee) {
@@ -24,8 +24,6 @@ function createAttendances(array $employeeIds, int $partitionIndex, Carbon $curr
 
             $randomMinutes = rand(-10, 30);
             $timeIn = Carbon::parse($shiftStart)->addMinutes($randomMinutes)->setDateFrom($currentDate);
-
-
 
             DB::table('attendance_logs')->insert([
                 // 'uid' => $uid++,
@@ -55,9 +53,8 @@ function createAttendances(array $employeeIds, int $partitionIndex, Carbon $curr
                     'employee_id' => $employee->employee_id,
                     'state' => 3,
                     'type' => BiometricPunchType::OVERTIME_IN->value,
-                    'timestamp' => $timeOut
+                    'timestamp' => $timeOut,
                 ]);
-
 
                 DB::table('attendance_logs')->insert([
                     // 'uid' => $uid++,
@@ -97,7 +94,7 @@ class AttendanceSeeder extends Seeder
             $dateForClosure = $currentDate->copy();
 
             foreach ($partitions as $partitionIndex => $partition) {
-                $tasks[] = fn() => createAttendances($partition, $partitionIndex, $dateForClosure);
+                $tasks[] = fn () => createAttendances($partition, $partitionIndex, $dateForClosure);
             }
 
             Concurrency::run($tasks);

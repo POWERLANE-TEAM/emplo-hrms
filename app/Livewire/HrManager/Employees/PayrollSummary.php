@@ -2,9 +2,9 @@
 
 namespace App\Livewire\HrManager\Employees;
 
-use Livewire\Component;
 use App\Models\Employee;
 use Livewire\Attributes\Lazy;
+use Livewire\Component;
 
 #[Lazy(isolate: false)]
 class PayrollSummary extends Component

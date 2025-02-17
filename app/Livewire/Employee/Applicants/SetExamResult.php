@@ -6,12 +6,10 @@ use App\Enums\BasicEvalStatus;
 use App\Http\Controllers\ApplicationExamController;
 use App\Models\Application;
 use Livewire\Attributes\Computed;
-use Livewire\Attributes\Locked;
 use Livewire\Component;
 
 class SetExamResult extends Component
 {
-
     public Application $application;
 
     public $examResult;
@@ -31,7 +29,7 @@ class SetExamResult extends Component
     public function save(ApplicationExamController $controller)
     {
         $validated = $this->validate([
-            'examResult' => 'required'
+            'examResult' => 'required',
         ]);
 
         $validated['applicationId'] = $this->application->application_id;

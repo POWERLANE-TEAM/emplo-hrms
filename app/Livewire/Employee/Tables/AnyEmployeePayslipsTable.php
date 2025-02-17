@@ -2,20 +2,20 @@
 
 namespace App\Livewire\Employee\Tables;
 
-use App\Enums\Payroll;
 use App\Enums\FilePath;
-use App\Models\Employee;
-use Illuminate\Support\Str;
-use Livewire\Attributes\On;
+use App\Enums\Payroll;
 use App\Http\Helpers\FileSize;
-use Illuminate\Support\Carbon;
-use Livewire\Attributes\Locked;
+use App\Models\Employee;
 use App\Models\Payroll as PayrollModel;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\View\ComponentAttributeBag;
-use Rappasoft\LaravelLivewireTables\Views\Column;
+use Livewire\Attributes\Locked;
+use Livewire\Attributes\On;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class AnyEmployeePayslipsTable extends DataTableComponent
@@ -130,18 +130,18 @@ class AnyEmployeePayslipsTable extends DataTableComponent
                     $photo = $row->account->photo;
                     $id = $row->employee_id;
                     $status = $row->status->emp_status_name;
-            
+
                     return '<div class="d-flex align-items-center">
-                                <img src="' . e($photo) . '" alt="User Picture" class="rounded-circle me-3" style="width: 38px; height: 38px;">
+                                <img src="'.e($photo).'" alt="User Picture" class="rounded-circle me-3" style="width: 38px; height: 38px;">
                                 <div>
-                                    <div>' . e($name) . '</div>
-                                    <div class="text-muted fs-6">Employee ID: ' . e($id) . '</div>
-                                    <small class="text-muted">' . e($status) . '</small>
+                                    <div>'.e($name).'</div>
+                                    <div class="text-muted fs-6">Employee ID: '.e($id).'</div>
+                                    <small class="text-muted">'.e($status).'</small>
                                 </div>
                             </div>';
                 })
                 ->html()
-                ->sortable(fn (Builder $query, $direction) => $query->orderBy('last_name' ,$direction))
+                ->sortable(fn (Builder $query, $direction) => $query->orderBy('last_name', $direction))
                 ->searchable(function (Builder $query, $searchTerm) {
                     return $query->whereLike('first_name', "%{$searchTerm}%")
                         ->orWhereLike('middle_name', "%{$searchTerm}%")
@@ -163,7 +163,8 @@ class AnyEmployeePayslipsTable extends DataTableComponent
                     if ($file) {
                         $path = sprintf('%s/%s', FilePath::PAYSLIPS->value, $file);
                         $sizeInBytes = Storage::disk('local')->size($path);
-                        return FileSize::formatSize($sizeInBytes);                        
+
+                        return FileSize::formatSize($sizeInBytes);
                     } else {
                         return ' - ';
                     }
@@ -173,14 +174,15 @@ class AnyEmployeePayslipsTable extends DataTableComponent
                 ->label(function ($row) {
                     $file = $row?->payslips?->firstWhere('payroll_id', $this->period)
                         ?->hashed_attachment;
-                    
+
                     if ($file) {
                         $path = sprintf('%s/%s', FilePath::PAYSLIPS->value, $row->hashed_attachment);
                         $lastModified = Storage::disk('local')->lastModified($path);
                         $convertFormat = Carbon::createFromTimestamp($lastModified, config('app.timezone'))->format('F d, Y g:i A');
+
                         return $convertFormat;
-                    } 
-                    
+                    }
+
                     return ' - ';
                 }),
 
@@ -190,15 +192,15 @@ class AnyEmployeePayslipsTable extends DataTableComponent
                     $eventPayload = $this->createEventPayload($row);
 
                     if (! $fileExist) {
-                        return 
+                        return
                             "<button class='btn btn-primary fw-light px-4' 
                                 wire:click=\"\$dispatchTo(
                                     'employee.payslip.upload-payslip',
                                     'uploadPayslip',
-                                    { eventPayload: " . htmlspecialchars(json_encode($eventPayload), ENT_QUOTES, 'UTF-8') . "}
-                                )\"
+                                    { eventPayload: ".htmlspecialchars(json_encode($eventPayload), ENT_QUOTES, 'UTF-8').'}
+                                )"
                             >Upload
-                            </button>";
+                            </button>';
                     }
 
                     return __('Uploaded');
@@ -221,7 +223,7 @@ class AnyEmployeePayslipsTable extends DataTableComponent
                 })
                 ->setFilterDefaultValue((int) $this->period),
         ];
-    }    
+    }
 
     private function getPayrollOptions()
     {

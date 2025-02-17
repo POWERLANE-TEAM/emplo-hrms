@@ -5,9 +5,9 @@ namespace Database\Factories;
 use App\Enums\ContractType;
 use App\Enums\FilePath;
 use App\Models\Employee;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Contract>
@@ -29,11 +29,11 @@ class ContractFactory extends Factory
 
         $file = UploadedFile::fake()->create($name, 500, 'application/pdf');
         $content = 'Testing contract file upload';
-        
+
         $hashedName = $file->hashName();
 
         Storage::disk('local')->put(
-            sprintf('%s/%s', FilePath::CONTRACTS->value, $hashedName), 
+            sprintf('%s/%s', FilePath::CONTRACTS->value, $hashedName),
             $content
         );
 

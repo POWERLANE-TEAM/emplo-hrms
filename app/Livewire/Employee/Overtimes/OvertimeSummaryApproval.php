@@ -3,8 +3,8 @@
 namespace App\Livewire\Employee\Overtimes;
 
 use Livewire\Attributes\Locked;
-use Livewire\Component;
 use Livewire\Attributes\On;
+use Livewire\Component;
 
 class OvertimeSummaryApproval extends Component
 {
@@ -14,7 +14,8 @@ class OvertimeSummaryApproval extends Component
     public $loading = true;
 
     #[On('showOvertimeSummaryApproval')]
-    public function catchEventPayload(array $eventPayload) {
+    public function catchEventPayload(array $eventPayload)
+    {
         $this->otSummaryInfo = (object) $eventPayload;
 
         $this->loading = false;

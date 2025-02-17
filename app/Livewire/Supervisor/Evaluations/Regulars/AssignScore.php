@@ -2,16 +2,16 @@
 
 namespace App\Livewire\Supervisor\Evaluations\Regulars;
 
-use Livewire\Component;
 use App\Models\Employee;
-use Livewire\Attributes\Locked;
-use App\Models\PerformanceRating;
-use Livewire\Attributes\Computed;
-use App\Models\RegularPerformance;
-use Illuminate\Support\Facades\DB;
 use App\Models\PerformanceCategory;
-use Illuminate\Support\Facades\Auth;
+use App\Models\PerformanceRating;
+use App\Models\RegularPerformance;
 use App\Models\RegularPerformancePeriod;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\Locked;
+use Livewire\Component;
 
 class AssignScore extends Component
 {
@@ -69,7 +69,7 @@ class AssignScore extends Component
             array_push($evaluation, [
                 'perf_category_id' => $categoryId,
                 'perf_rating_id' => $ratingId,
-                'regular_performance_id' => $detail->regular_performance_id
+                'regular_performance_id' => $detail->regular_performance_id,
             ]);
         }
 

@@ -41,7 +41,7 @@ function createApplicants($chunkStart, $chunk, $permissions)
                         $users_data = [
                             'account_type' => AccountType::APPLICANT,
                             'account_id' => $applicant->applicant_id,
-                            'email' => 'applicant.' . str_pad($i, 3, '0', STR_PAD_LEFT) . '@gmail.com',
+                            'email' => 'applicant.'.str_pad($i, 3, '0', STR_PAD_LEFT).'@gmail.com',
                             'password' => Hash::make('UniqP@ssw0rd'),
                             'user_status_id' => EnumUserStatus::ACTIVE,
                             'email_verified_at' => fake()->dateTimeBetween('-10 days', 'now'),
@@ -54,12 +54,13 @@ function createApplicants($chunkStart, $chunk, $permissions)
                         $application = Application::create([
                             'applicant_id' => $applicant->applicant_id,
                             'job_vacancy_id' => JobVacancy::inRandomOrder()->first()->job_vacancy_id,
-                            'application_status_id' =>  $applicantStatus,
+                            'application_status_id' => $applicantStatus,
                         ]);
 
-                        $randomFileName = 'resume_' . uniqid() . '.pdf';
+                        $randomFileName = 'resume_'.uniqid().'.pdf';
 
-                        $pdfGen = new class {
+                        $pdfGen = new class
+                        {
                             use NeedsEmptyPdf;
                         };
 
@@ -70,10 +71,10 @@ function createApplicants($chunkStart, $chunk, $permissions)
                         ApplicationDoc::create([
                             'application_id' => $application->application_id,
                             'file_path' => $resumePath,
-                            'preemp_req_id' => 17, //resume
+                            'preemp_req_id' => 17, // resume
                         ]);
 
-                        if (in_array($applicantStatus, array_map(fn($status) => $status->value, array_merge(ApplicationStatus::qualifiedState(), [ApplicationStatus::PRE_EMPLOYED])))) {
+                        if (in_array($applicantStatus, array_map(fn ($status) => $status->value, array_merge(ApplicationStatus::qualifiedState(), [ApplicationStatus::PRE_EMPLOYED])))) {
                             $examTime = Carbon::instance(fake()->dateTimeBetween('1 days', '2 days'));
                             $interviewTime = $examTime->addDays(fake()->numberBetween(0, 5));
                             ApplicationExam::create([
@@ -87,7 +88,7 @@ function createApplicants($chunkStart, $chunk, $permissions)
                                 'init_interview_at' => $interviewTime,
                                 'init_interviewer' => Employee::whereHas('jobTitle', function ($query) {
                                     $query->where('job_title', 'like', '%hr%');
-                                })->inRandomOrder()->firstOr(fn() => Employee::inRandomOrder()->first())->employee_id,
+                                })->inRandomOrder()->firstOr(fn () => Employee::inRandomOrder()->first())->employee_id,
                             ]);
 
                             if ($applicantStatus == ApplicationStatus::FINAL_INTERVIEW_SCHEDULED->value) {
@@ -97,7 +98,7 @@ function createApplicants($chunkStart, $chunk, $permissions)
                                     'final_interview_at' => $finalInterviewTime,
                                     'final_interviewer' => Employee::whereHas('jobTitle', function ($query) {
                                         $query->where('job_title', 'like', '%hr%');
-                                    })->inRandomOrder()->firstOr(fn() => Employee::inRandomOrder()->first())->employee_id,
+                                    })->inRandomOrder()->firstOr(fn () => Employee::inRandomOrder()->first())->employee_id,
                                 ]);
                             }
 
@@ -108,22 +109,21 @@ function createApplicants($chunkStart, $chunk, $permissions)
                                     'final_interview_at' => $finalInterviewTime,
                                     'final_interviewer' => Employee::whereHas('jobTitle', function ($query) {
                                         $query->where('job_title', 'like', '%hr%');
-                                    })->inRandomOrder()->firstOr(fn() => Employee::inRandomOrder()->first())->employee_id,
+                                    })->inRandomOrder()->firstOr(fn () => Employee::inRandomOrder()->first())->employee_id,
                                     'is_final_interview_passed' => true,
                                     'is_job_offer_accepted' => true,
                                 ]);
                             }
                         }
 
-
                         // $applicant_user->givePermissionTo($permissions);
                     } catch (\Exception $e) {
-                        Log::error('Exception: ' . $e->getMessage() . ' in ' . $e->getFile() . ' on line ' . $e->getLine());
+                        Log::error('Exception: '.$e->getMessage().' in '.$e->getFile().' on line '.$e->getLine());
                     }
                 });
             }
         } catch (\Throwable $th) {
-            Log::error('Exception: ' . $th->getMessage() . ' in ' . $th->getFile() . ' on line ' . $th->getLine());
+            Log::error('Exception: '.$th->getMessage().' in '.$th->getFile().' on line '.$th->getLine());
         }
 
         return ['result' => true];
@@ -175,7 +175,7 @@ class ApplicantSeeder extends Seeder
         $tasks = [];
         for ($i = 0; $i < $concurrencyCount; $i++) {
             $chunkStart = $start + ($chunkCount * $i);
-            $tasks[] = fn() => createApplicants($chunkStart, $chunkCount, $permissions);
+            $tasks[] = fn () => createApplicants($chunkStart, $chunkCount, $permissions);
         }
 
         Concurrency::run($tasks);

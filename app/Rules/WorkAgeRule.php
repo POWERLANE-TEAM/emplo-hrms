@@ -8,7 +8,9 @@ use Illuminate\Contracts\Validation\ValidationRule;
 class WorkAgeRule extends ScheduleDateRule implements ValidationRule
 {
     protected $minDate;
+
     protected $maxDate;
+
     protected $message;
 
     public function __construct()
@@ -28,7 +30,8 @@ class WorkAgeRule extends ScheduleDateRule implements ValidationRule
         try {
             $dateValue = new \DateTime($value, $dateTimeZone);
         } catch (\Exception $e) {
-            $fail('The ' . $attribute . ' must be a valid date.');
+            $fail('The '.$attribute.' must be a valid date.');
+
             return;
         }
 
@@ -45,6 +48,7 @@ class WorkAgeRule extends ScheduleDateRule implements ValidationRule
     public function setMessage(string $message): self
     {
         $this->message = $message;
+
         return $this;
     }
 

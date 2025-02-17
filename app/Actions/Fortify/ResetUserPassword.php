@@ -2,11 +2,7 @@
 
 namespace App\Actions\Fortify;
 
-use App\Enums\AccountType;
-use App\Enums\UserRole;
 use App\Models\User;
-use Google\Service\AdExchangeBuyer\Account;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\ResetsUserPasswords;
 

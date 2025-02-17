@@ -2,14 +2,14 @@
 
 namespace App\Policies;
 
+use App\Enums\UserPermission;
 use App\Models\EmployeeLeave;
 use App\Models\User;
-use App\Enums\UserPermission;
 use Illuminate\Auth\Access\Response;
 
 class EmployeeLeavePolicy
 {
-    /** 
+    /**
      * Create a new policy instance.
      */
     public function __construct(
@@ -18,11 +18,8 @@ class EmployeeLeavePolicy
 
     /**
      * Check if user can file for leave request.
-     * 
+     *
      * Should have direct or via role permission and not exceeding the allowed count of filed requests of pending status.
-     * 
-     * @param \App\Models\User $user
-     * @return Response
      */
     public function fileLeaveRequest(User $user): Response
     {
@@ -44,10 +41,6 @@ class EmployeeLeavePolicy
 
     /**
      * Check if auth user employee owns one of the leave models he's trying to access.
-     * 
-     * @param \App\Models\User $user
-     * @param \App\Models\EmployeeLeave $leave
-     * @return Response
      */
     public function viewLeaveRequest(User $user, EmployeeLeave $leave): Response
     {
@@ -58,10 +51,6 @@ class EmployeeLeavePolicy
 
     /**
      * Check if leave model is yet to have initial approval and denied status.
-     * 
-     * @param \App\Models\User $user
-     * @param \App\Models\EmployeeLeave $leave
-     * @return \Illuminate\Auth\Access\Response
      */
     public function updateLeaveRequest(?User $user, EmployeeLeave $leave): Response
     {
@@ -73,10 +62,6 @@ class EmployeeLeavePolicy
 
     /**
      * Check if user employee can access a leave request thru permissions and model comparison.
-     * 
-     * @param \App\Models\User $user
-     * @param \App\Models\EmployeeLeave $leave
-     * @return Response
      */
     public function viewSubordinateLeaveRequest(User $user, EmployeeLeave $leave): Response
     {
@@ -85,7 +70,7 @@ class EmployeeLeavePolicy
 
         if (! $user->hasAnyPermission([
             UserPermission::VIEW_SUBORDINATE_LEAVE_REQUEST,
-            UserPermission::VIEW_ALL_SUBORDINATE_REQUESTS
+            UserPermission::VIEW_ALL_SUBORDINATE_REQUESTS,
         ])) {
             return Response::deny(__('You don\'t have the necessary permissions to access this leave request.'));
         }
@@ -100,8 +85,8 @@ class EmployeeLeavePolicy
     public function approveSubordinateLeaveRequest(User $user): Response
     {
         return $user->hasAnyPermission([
-            UserPermission::APPROVE_LEAVE_REQUEST_FIRST, 
-            UserPermission::APPROVE_LEAVE_REQUEST_SECOND
+            UserPermission::APPROVE_LEAVE_REQUEST_FIRST,
+            UserPermission::APPROVE_LEAVE_REQUEST_SECOND,
         ])
             ? Response::allow()
             : Response::deny(__('You don\'t have the necessary permissions to access this leave request.'));

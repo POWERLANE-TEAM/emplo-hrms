@@ -20,8 +20,7 @@ class ChartJs
                         }';
     }
 
-
-    public static function pieGenerateBgColors(array $valueVars, int $maxvalue,  array $colorVars, string $defaultColorVar)
+    public static function pieGenerateBgColors(array $valueVars, int $maxvalue, array $colorVars, string $defaultColorVar)
     {
 
         $valueChecks = implode(' || ', array_map(function ($var) {
@@ -39,7 +38,7 @@ class ChartJs
 
             // Check if chartArea and element are ready
             if (!CHART.chartArea || !context.element)
-                return  '  . $defaultColorVar . '; // Fallback color
+                return  '.$defaultColorVar.'; // Fallback color
 
 
             // Retrieve slice-specific data
@@ -57,7 +56,7 @@ class ChartJs
                 !isFinite(innerRadius) ||
                 !isFinite(outerRadius)
             ) {
-                return  '  . $defaultColorVar . '; // Fallback color
+                return  '.$defaultColorVar.'; // Fallback color
             }
 
             // Calculate chart center
@@ -84,23 +83,23 @@ class ChartJs
                     xEnd,
                     yEnd,
                 });
-                return  '  . $defaultColorVar . '; // Fallback color
+                return  '.$defaultColorVar.'; // Fallback color
             }
 
             // Create gradient
             const GRADIENT = ctx.createLinearGradient(xStart, yStart, xEnd, yEnd);
 
             // Assign colors
-            const colors = [ ' . implode(', ', $colorVars) . ',  '  . $defaultColorVar . '];
-            const color = colors[context.dataIndex] ||  '  . $defaultColorVar . '; // Fallback color
+            const colors = [ '.implode(', ', $colorVars).',  '.$defaultColorVar.'];
+            const color = colors[context.dataIndex] ||  '.$defaultColorVar.'; // Fallback color
 
 
-            if ([' . implode(', ', $valueVars) . '].includes(' . $maxvalue . ')) {
+            if (['.implode(', ', $valueVars).'].includes('.$maxvalue.')) {
                 return colors[context.dataIndex];
             }
 
             // handle no submission
-            if (( ' . implode(' + ', $valueVars) . ') == 0) {
+            if (( '.implode(' + ', $valueVars).') == 0) {
                 return colors[context.dataIndex];
             }
 

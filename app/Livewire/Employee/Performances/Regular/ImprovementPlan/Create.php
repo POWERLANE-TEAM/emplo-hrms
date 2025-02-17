@@ -24,19 +24,18 @@ class Create extends Component
 
     public function boot()
     {
-        $controller = new RegularPerformancePlanController();
+        $controller = new RegularPerformancePlanController;
 
-        if($this->performance->pip()->exists()){
+        if ($this->performance->pip()->exists()) {
             $this->method = 'PATCH';
             $this->routeMethod = 'update';
 
         }
 
-
-
     }
 
-    public function save(){
+    public function save()
+    {
         // if($this->method == 'PATCH'){
         //     return $controller->update([
         //         'pipId' => $this->performance->pip->pip_id,

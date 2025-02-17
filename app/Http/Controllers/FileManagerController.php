@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Enums\FilePath;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Storage;
 
 class FileManagerController extends Controller
 {
@@ -16,7 +16,7 @@ class FileManagerController extends Controller
     public function preEmployments()
     {
         return view('employee.basic.documents.pre-employments.all', [
-            'employee' => auth()->user()->account
+            'employee' => auth()->user()->account,
         ]);
     }
 

@@ -4,13 +4,11 @@ namespace App\Livewire\HrManager\Separation\Coe;
 
 use App\Http\Controllers\Separation\CoeController;
 use App\Models\CoeRequest;
-use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 
 class IssueCoeRequests extends Component
 {
-
     public CoeRequest $coe;
 
     public function save(CoeController $controller)
@@ -30,12 +28,14 @@ class IssueCoeRequests extends Component
         ]);
     }
 
-    public function download(){
+    public function download()
+    {
 
         $file = $this->coe->empCoeDoc->file_path;
 
         if (Storage::disk('public')->exists($file)) {
             $downloadName = 'Certificate_of_Employment.pdf';
+
             return Storage::disk('public')->download($file, $downloadName);
         }
 

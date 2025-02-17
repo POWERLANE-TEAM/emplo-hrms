@@ -2,14 +2,14 @@
 
 namespace App\Livewire\Employee\Tables;
 
-use Illuminate\Support\Str;
 use App\Models\EmployeeLeave;
 use App\Models\LeaveCategory;
-use Livewire\Attributes\Locked;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
-use Rappasoft\LaravelLivewireTables\Views\Column;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Livewire\Attributes\Locked;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class SubordinateLeaveRequestsTable extends DataTableComponent
@@ -23,7 +23,7 @@ class SubordinateLeaveRequestsTable extends DataTableComponent
     {
         $this->setPrimaryKey('emp_leave_id')
             ->setTableRowUrl(fn ($row) => route("{$this->routePrefix}.leaves.employee.requests", [
-                'leave' => $row->emp_leave_id
+                'leave' => $row->emp_leave_id,
             ]))
             ->setTableRowUrlTarget(fn () => '__blank');
         $this->setPageName('leaves');
@@ -76,7 +76,7 @@ class SubordinateLeaveRequestsTable extends DataTableComponent
     {
         if ($row->denied_at) {
             return __('Denied');
-        }elseif ($row->fourth_approver_signed_at) {
+        } elseif ($row->fourth_approver_signed_at) {
             return __('Approved');
         } elseif ($row->third_approver_signed_at) {
             return __('Awaiting HR Manager Approval');
@@ -106,7 +106,7 @@ class SubordinateLeaveRequestsTable extends DataTableComponent
                 'initialApprover',
             ])
             ->whereNot('employee_id', Auth::user()->account->employee_id)
-            ->whereHas('employee.jobTitle.jobFamily', function($query) {
+            ->whereHas('employee.jobTitle.jobFamily', function ($query) {
                 $query->where('job_family_id', Auth::user()->account->jobTitle->jobFamily->job_family_id);
             });
     }
@@ -119,12 +119,12 @@ class SubordinateLeaveRequestsTable extends DataTableComponent
                     $name = Str::headline($row->employee->full_name);
                     $photo = $row->employee->account->photo;
                     $id = $row->employee->employee_id;
-            
+
                     return '<div class="d-flex align-items-center">
-                                <img src="' . e($photo) . '" alt="User Picture" class="rounded-circle me-3" style="width: 38px; height: 38px;">
+                                <img src="'.e($photo).'" alt="User Picture" class="rounded-circle me-3" style="width: 38px; height: 38px;">
                                 <div>
-                                    <div>' . e($name) . '</div>
-                                    <div class="text-muted fs-6">Employee ID: ' . e($id) . '</div>
+                                    <div>'.e($name).'</div>
+                                    <div class="text-muted fs-6">Employee ID: '.e($id).'</div>
                                 </div>
                             </div>';
                 })

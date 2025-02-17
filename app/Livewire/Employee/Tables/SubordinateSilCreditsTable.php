@@ -2,14 +2,14 @@
 
 namespace App\Livewire\Employee\Tables;
 
-use Illuminate\Support\Str;
-use Illuminate\Support\Carbon;
 use App\Enums\EmploymentStatus;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Builder;
 use App\Models\ServiceIncentiveLeaveCredit;
-use Rappasoft\LaravelLivewireTables\Views\Column;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 
 class SubordinateSilCreditsTable extends DataTableComponent
 {
@@ -96,18 +96,18 @@ class SubordinateSilCreditsTable extends DataTableComponent
                     $photo = $row->employee->account->photo;
                     $id = $row->employee->employee_id;
                     $status = $row->employee->status->emp_status_name;
-            
+
                     return '<div class="d-flex align-items-center">
-                                <img src="' . e($photo) . '" alt="User Picture" class="rounded-circle me-3" style="width: 38px; height: 38px;">
+                                <img src="'.e($photo).'" alt="User Picture" class="rounded-circle me-3" style="width: 38px; height: 38px;">
                                 <div>
-                                    <div>' . e($name) . '</div>
-                                    <div class="text-muted fs-6">Employee ID: ' . e($id) . '</div>
-                                    <small class="text-muted">' . e($status) . '</small>
+                                    <div>'.e($name).'</div>
+                                    <div class="text-muted fs-6">Employee ID: '.e($id).'</div>
+                                    <small class="text-muted">'.e($status).'</small>
                                 </div>
                             </div>';
                 })
                 ->html()
-                ->sortable(fn (Builder $query, $direction) => $query->orderBy('last_name' ,$direction))
+                ->sortable(fn (Builder $query, $direction) => $query->orderBy('last_name', $direction))
                 ->searchable(function (Builder $query, $searchTerm) {
                     return $query->whereHas('employee', function ($subQuery) use ($searchTerm) {
                         $subQuery->whereLike('first_name', "%{$searchTerm}%")
