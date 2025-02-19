@@ -20,7 +20,7 @@
             
             <div class="row">             
                 <div class="col-md-6 mb-3">
-                    <x-form.boxed-date type="datetime-local" wire:model.live="state.startTime" id="hours_ot" label="{{ __('Start Time') }}" :nonce="$nonce" :required="true"
+                    <x-form.boxed-date type="datetime-local" min="{{ now() }}" max="{{ $this->currentPayroll->cut_off_end }}" wire:model.live="state.startTime" id="hours_ot" label="{{ __('Start Time') }}" :nonce="$nonce" :required="true"
                     placeholder="Start Time" />
                     @error('state.startTime')
                         <div class="invalid-feedback" role="alert">{{ $message }}</div>
@@ -28,7 +28,7 @@
                 </div>
                 
                 <div class="col-md-6">
-                    <x-form.boxed-date type="datetime-local" wire:model.live="state.endTime" id="hours_ot" label="{{ __('End Time') }}" :nonce="$nonce" :required="true"
+                    <x-form.boxed-date type="datetime-local" min="{{ now() }}" max="{{ $this->currentPayroll->cut_off_end }}" wire:model.live="state.endTime" id="hours_ot" label="{{ __('End Time') }}" :nonce="$nonce" :required="true"
                     placeholder="End Time" />
                     @error('state.endTime')
                         <div class="invalid-feedback" role="alert">{{ $message }}</div>

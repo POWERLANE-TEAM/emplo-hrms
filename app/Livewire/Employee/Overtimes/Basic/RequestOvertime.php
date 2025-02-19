@@ -40,7 +40,9 @@ class RequestOvertime extends Component
             $start = Carbon::parse($this->state['startTime']);
             $end = Carbon::parse($this->state['endTime']);
 
-            if ($end->lessThan($start->addMinutes(30))) {
+            if ($end->gt($start->copy()->addHours(5))) {
+                $this->addError('state.endTime', __('Overtime duration must be within 5 hours only.'));
+            } elseif ($end->lessThan($start->copy()->addMinutes(30))) {
                 $this->addError('state.endTime', __('Overtime duration must be at least 30 minutes.'));
             } else {
                 $this->resetErrorBag('state.endTime');
@@ -119,6 +121,12 @@ class RequestOvertime extends Component
     }
 
     #[Computed]
+    public function currentPayroll()
+    {
+        return PayrollModel::latest('cut_off_start')->first();
+    }
+
+    #[Computed]
     private function employee()
     {
         return Auth::user()->account;
@@ -137,8 +145,13 @@ class RequestOvertime extends Component
                     $startTime = Carbon::parse(request('state.startTime'));
                     $endTime = Carbon::parse($value);
 
-                    if ($endTime->lessThan($startTime->addMinutes(30))) {
+                    if ($startTime->lt($this->currentPayroll->cut_off_start) ||
+                        $endTime->gt($this->currentPayroll->cut_off_end)) {
+                        $fail(__('Start or end date and time must be within the current payroll period.'));
+                    } elseif ($endTime->lessThan($startTime->copy()->addMinutes(30))) {
                         $fail(__('End time must be at least 30 minutes from start time.'));
+                    } elseif ($endTime->gt($startTime->copy()->addHours(5))) {
+                        $fail(__('End time must be not more than 5 hours from start time.'));
                     }
                 }
             ],
