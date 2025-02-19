@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Employee;
 use App\Models\Overtime;
 use Illuminate\Database\Seeder;
 
@@ -12,9 +13,11 @@ class OvertimeSeeder extends Seeder
      */
     public function run(): void
     {
-        activity()->withoutLogs(function () {
+        $totalActiveEmployees = Employee::activeEmploymentStatus()->count();
+
+        activity()->withoutLogs(function () use ($totalActiveEmployees) {
             Overtime::unguard();
-            Overtime::factory(40)->create();
+            Overtime::factory($totalActiveEmployees)->create();
             Overtime::reguard();
         });
     }
