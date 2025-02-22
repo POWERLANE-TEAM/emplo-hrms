@@ -65,7 +65,7 @@ class RegularPerformancePolicy
         }
 
         if (! $this->isEvaluationPeriodOpen()) {
-            return Response::deny();
+            return Response::deny(__('Regular performance evaluation period is not open yet for this period'));
         }
 
         if (! $this->isEmployeeUnderJurisdiction($user, $employee)) {
