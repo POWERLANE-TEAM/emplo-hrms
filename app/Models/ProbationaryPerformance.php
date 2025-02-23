@@ -19,6 +19,14 @@ class ProbationaryPerformance extends Model
         'probationary_performance_id',
     ];
 
+    protected $casts = [
+        'evaluatee_signed_at'           => 'datetime',
+        'evaluator_signed_at'           => 'datetime',
+        'secondary_approver_signed_at'  => 'datetime',
+        'third_approver_signed_at'      => 'datetime',
+        'fourth_approver_signed_at'     => 'datetime',
+    ];
+
     /**
      * Get the performance period whe the performance evaluation occured.
      */
