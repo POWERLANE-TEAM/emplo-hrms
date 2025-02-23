@@ -80,6 +80,7 @@ class RegularSubordinatesPerformancesTable extends DataTableComponent
     public function builder(): Builder
     {
         return Employee::query()
+            ->ofEmploymentStatus(EmploymentStatus::REGULAR)
             ->with([
                 'account:account_type,account_id,photo',
                 'performancesAsRegular' => [
@@ -87,9 +88,6 @@ class RegularSubordinatesPerformancesTable extends DataTableComponent
                 ],
             ])
             ->whereNot('employee_id', Auth::user()->account->employee_id)
-            ->whereHas('status', function ($query) {
-                $query->where('emp_status_name', EmploymentStatus::REGULAR->label());
-            })
             ->whereHas('jobTitle.jobFamily', function ($query) {
                 $query->where('job_family_id', Auth::user()->account->jobTitle->jobFamily->job_family_id);
             });
@@ -164,14 +162,15 @@ class RegularSubordinatesPerformancesTable extends DataTableComponent
                         $finalRating = $this->performance->final_rating;
 
                         return sprintf(
-                            '%s - %s',
+                            "<strong>%s - %s</strong>",
                             $finalRating['ratingAvg'],
                             $finalRating['performanceScale']
                         );
                     }
 
                     return '--';
-                }),
+                })
+                ->html(),
 
             Column::make(__('Period'))
                 ->label(function () {

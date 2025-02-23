@@ -74,16 +74,14 @@ class AnyRegularsPerformancesTable extends DataTableComponent
     public function builder(): Builder
     {
         return Employee::query()
+            ->ofEmploymentStatus(EmploymentStatus::REGULAR)
             ->with([
                 'account:account_type,account_id,photo',
                 'performancesAsRegular' => [
                     'categoryRatings' => ['rating'],
                 ],
             ])
-            ->whereNot('employee_id', Auth::user()->account->employee_id) // not sure abt this
-            ->whereHas('status', function ($query) {
-                $query->where('emp_status_name', EmploymentStatus::REGULAR->label());
-            })
+            // ->whereNot('employee_id', Auth::user()->account->employee_id) // not sure abt this
             ->where(function ($query) {
                 $query->whereHas('performancesAsRegular', function ($sq) {
                     $sq->whereNotNull('secondary_approver_signed_at');
