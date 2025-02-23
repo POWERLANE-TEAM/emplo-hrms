@@ -1,12 +1,10 @@
 @extends('components.layout.employee.layout', ['description' => 'Probationaries Performance Evaluation', 'nonce' => $nonce])
-@use ('Illuminate\View\ComponentAttributeBag')
 
 @section('head')
-<title>Probationary Employees | Performance Evaluation</title>
+<title>Performance Evaluation • Probationaries</title>
 <script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 @endsection
-
 
 @pushOnce('scripts')
     @vite(['resources/js/employee/hr-manager/performance.js'])
@@ -20,7 +18,7 @@
 
 <x-headings.main-heading :isHeading="true">
     <x-slot:heading>
-        {{ __('Probationaries Performance Evaluation Table') }}
+        {{ __('Performance Evaluations • Probationaries') }}
     </x-slot:heading>
 
     <x-slot:description>
