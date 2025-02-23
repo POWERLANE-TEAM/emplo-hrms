@@ -28,4 +28,13 @@ enum PerformanceEvaluationPeriod: string
             self::ANNUAL => 'Annual',
         };
     }
+
+    public static function options(): array
+    {
+        return array_reduce(
+            self::cases(),
+            fn ($options, $case) => $options + [$case->value => $case->getLabel()],
+            []
+        );
+    }
 }
