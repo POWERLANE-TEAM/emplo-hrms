@@ -16,11 +16,9 @@ class FinalMonthEvaluationSeeder extends Seeder
     public function run(): void
     {
         $start = now();
-        $end = fake()->dateTimeBetween($start, (clone $start)->modify('+10 days'));
+        $end = $start->copy()->addWeeks(2);
 
-        $probationaries = Employee::whereHas('status', function ($query) {
-            $query->where('emp_status_name', EmploymentStatus::PROBATIONARY->label());
-        })->get();
+        $probationaries = Employee::ofEmploymentStatus(EmploymentStatus::PROBATIONARY)->get();
 
         $data = [];
 
@@ -31,8 +29,8 @@ class FinalMonthEvaluationSeeder extends Seeder
                     'period_name' => PerformanceEvaluationPeriod::FINAL_MONTH,
                     'start_date' => $start,
                     'end_date' => $end,
-                    'created_at' => now(),
-                    'updated_at' => now(),
+                    'created_at' => $start,
+                    'updated_at' => $start,
                 ]);
             }
         );

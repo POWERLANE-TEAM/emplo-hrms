@@ -15,27 +15,23 @@ class ThirdMonthEvaluationSeeder extends Seeder
      */
     public function run(): void
     {
-        $start = now();
-        $end = fake()->dateTimeBetween($start, (clone $start)->modify('+10 days'));
-
-        $probationaries = Employee::whereHas('status', function ($query) {
-            $query->where('emp_status_name', EmploymentStatus::PROBATIONARY->label());
-        })->get();
+        $probationaries = Employee::ofEmploymentStatus(EmploymentStatus::PROBATIONARY)->get();
 
         $data = [];
 
-        $probationaries->each(function ($item) 
-            use (&$data, $start, $end) {
-                array_push($data, [
-                    'evaluatee' => $item->employee_id,
-                    'period_name' => PerformanceEvaluationPeriod::THIRD_MONTH,
-                    'start_date' => $start,
-                    'end_date' => $end,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]);
-            }
-        );
+        $start = now()->subWeek();
+        $end = $start->copy()->addWeeks(2);
+
+        $probationaries->each(function ($proby) use (&$data, $start, $end) {
+            $data[] = [
+                'evaluatee' => $proby->employee_id,
+                'period_name' => PerformanceEvaluationPeriod::THIRD_MONTH->value,
+                'start_date' => $start,
+                'end_date' => $end,
+                'created_at' => $start,
+                'updated_at' => $start,
+            ];
+        });
 
         DB::table('probationary_performance_periods')->insert($data);
     }
