@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Schedule;
  * To-dos
  * 
  * Command that execute every January 1 to reset the leave balance of every employee to 10(default).
- * Command that executes daily to remove applicants who are rejected for more or exactly than 30 days.
  */
 
 Schedule::withoutOverlapping()
@@ -19,6 +18,7 @@ Schedule::withoutOverlapping()
             Schedule::command('check-probationary-evaluation-period-opening');
             Schedule::command('check-payroll-period-opening');
             Schedule::command('delete-separated-employee-data');
+            Schedule::command('delete-rejected-applicants-data');
             Schedule::command('generate-payroll-summary');
             Schedule::command('activitylog:clean');
             Schedule::command('backup:clean');
@@ -33,3 +33,4 @@ Schedule::withoutOverlapping()
 // Schedule::command('backup:clean')->everyFiveSeconds();
 // Schedule::command('backup:run --only-db')->everyFiveSeconds();
 // Schedule::command('open-regular-evaluation-period')->everyFiveSeconds();
+// Schedule::command('delete-rejected-applicants-data')->everyFiveSeconds();
