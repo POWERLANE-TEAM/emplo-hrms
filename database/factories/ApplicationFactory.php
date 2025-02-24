@@ -19,12 +19,24 @@ class ApplicationFactory extends Factory
      */
     public function definition(): array
     {
+        $status = fake()->randomElement(array_map(fn ($case) => $case->value, ApplicationStatus::cases()));
+        $hiredAt = null;
+        $isPassed = false;
+        $rejectedAt = now();
+
+        if ($status === ApplicationStatus::APPROVED->value) {
+            $hiredAt = now();
+            $isPassed = true;
+            $rejectedAt = null;
+        }
+
         return [
             'applicant_id' => Applicant::inRandomOrder()->first()->applicant_id,
             'job_vacancy_id' => JobVacancy::factory(),
-            'application_status_id' => fake()->randomElement(array_map(fn ($case) => $case->value, ApplicationStatus::cases())),
-            'hired_at' => fake()->randomElement([null, now()]),
-            'is_passed' => fake()->randomElement([true, false]),
+            'application_status_id' => $status,
+            'hired_at' => $hiredAt,
+            'is_passed' => $isPassed,
+            'rejected_at' => $rejectedAt,
         ];
     }
 }
