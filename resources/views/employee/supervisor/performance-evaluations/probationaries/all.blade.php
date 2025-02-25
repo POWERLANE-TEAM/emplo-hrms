@@ -1,7 +1,9 @@
 @extends('components.layout.employee.layout', ['description' => 'Probationary Subordinates Performance Evaluations', 'nonce' => $nonce])
 
+@php $jobFamily = auth()->user()->account->jobTitle->jobFamily->job_family_name; @endphp
+
 @section('head')
-<title>Probationaries Performance Evaluations</title>
+<title>Performance Evaluations • {{ $jobFamily }}'s Probationaries</title>
 <script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 @endsection
@@ -18,15 +20,14 @@
 
 <x-headings.main-heading :isHeading="true">
     <x-slot:heading>
-        {{ __('Probationaries Performance Evaluation') }}
+        {!! sprintf(
+            "%s • <span class='text-primary'>%s</span> %s", 
+            'Performance Evaluations', $jobFamily, 'Probationaries'
+        ) !!}
     </x-slot:heading>
 
     <x-slot:description>
-        {!! __('View and manage '.
-        '<span class="text-primary fw-semibold">'
-            .auth()->user()->account->jobTitle->jobFamily->job_family_name.
-        '</span>'.
-        '\'s probationaries performances here. Incomplete status will redirect you to the performance evaluation form.') !!}
+        {{ __('Incomplete status will redirect you to the performance evaluation form.') }}
     </x-slot:description>
 </x-headings.main-heading>
 

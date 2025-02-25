@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\CivilStatus;
+use BackedEnum;
 use Illuminate\Support\Str;
 use App\Enums\ActivityLogName;
 use Illuminate\Support\Carbon;
@@ -230,6 +231,18 @@ class Employee extends Model
                 Status::RETIRED->label(),
             ])
         );
+    }
+
+    /**
+     * Dynamic local scope to get employees of any type of employment status.
+     */
+    public function scopeOfEmploymentStatus(Builder $query, BackedEnum|string $employmentStatus): void
+    {
+        if ($employmentStatus instanceOf Status) {
+            $employmentStatus = $employmentStatus->label();
+        }
+
+        $query->whereHas('status', fn ($subQuery) => $subQuery->where('emp_status_name', $employmentStatus));
     }
 
     /**

@@ -3,121 +3,92 @@
 namespace App\Livewire\Employee\Tables;
 
 use App\Models\Employee;
-use Illuminate\Support\Str;
-use Illuminate\Support\Carbon;
+use App\Enums\StatusBadge;
 use App\Enums\EmploymentStatus;
 use Livewire\Attributes\Locked;
+use App\Livewire\Tables\Defaults;
 use App\Models\PerformanceRating;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\View\ComponentAttributeBag;
-use App\Models\ProbationaryPerformancePeriod;
+use App\Enums\PerformanceEvaluationPeriod;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class AnyProbationariesPerformancesTable extends DataTableComponent
 {
+    use Defaults;
+
     protected $model = Employee::class;
 
     #[Locked]
     public $routePrefix;
+    
+    private $isFinal;
+
+    private $currentPeriod;
+
+    private $performances;
+
+    private $periodFilter;
 
     public function configure(): void
     {
-        $this->setPrimaryKey('employee_id')
-        ->setTableRowUrl(fn($row) => $this->setRoute($row) . '/#overview')
-            ->setTableRowUrlTarget(fn () => '__blank');
+        $this->setPrimaryKey('employee_id');
         $this->setPageName('any-regulars-performance');
-        $this->setEagerLoadAllRelationsEnabled();
+        $this->setDefaultSortingLabels('Lowest', 'Highest');
         $this->setSingleSortingDisabled();
-        $this->enableAllEvents();
-        $this->setQueryStringEnabled();
-        $this->setOfflineIndicatorEnabled();
-        // $this->setDefaultSort('filed_at', 'desc');
-        $this->setSearchDebounce(1000);
-        $this->setTrimSearchStringEnabled();
-        $this->setEmptyMessage(__('No results found.'));
-        $this->setPerPageAccepted([10, 25, 50, 100, -1]);
-        $this->setToolBarAttributes(['class' => ' d-md-flex my-md-2']);
-        $this->setToolsAttributes(['class' => ' bg-body-secondary border-0 rounded-3 px-5 py-2']);
         $this->setRememberColumnSelectionDisabled();
-        
+        $this->configuringStandardTableMethods();
+
         $this->setTableAttributes([
             'default' => true,
-            'class' => 'table-hover px-1 no-transition',
+            'class' => 'px-1 no-transition',
         ]);
-
-        $this->setTrAttributes(function ($row, $index) {
-            return [
-                'default' => true,
-                'class' => 'border-1 rounded-2 outline no-transition mx-4',
-            ];
-        });
-
-        $this->setSearchFieldAttributes([
-            'type' => 'search',
-            'class' => 'form-control rounded-3 search text-body body-bg shadow-sm',
-        ]);
-
-        $this->setThAttributes(function (Column $column) {
-            return [
-                'default' => true,
-                'class' => 'text-center fw-medium',
-            ];
-        });
-
-        $this->setTdAttributes(function (Column $column, $row, $columnIndex, $rowIndex) {
-            return [
-                'class' => $column->getTitle() === 'Evaluatee' ? 'text-md-start' :'text-md-center',
-            ];
-        });
 
         $this->setConfigurableAreas([
             'toolbar-left-start' => [
-                'components.headings.main-heading',
+                'components.table.filter.select-filter',
                 [
-                    'overrideClass' => true,
-                    'overrideContainerClass' => true,
-                    'attributes' => new ComponentAttributeBag([
-                        'class' => 'fs-5 py-1 text-secondary-emphasis fw-medium text-underline',
-                    ]),
-                    'heading' => __('Current Period: ').now()->format('F d, Y'),
+                    'filter' => (function () {
+                        return SelectFilter::make(__('Approval'))
+                            ->options($this->getApprovalStatus())
+                            ->filter(function (Builder $query, $value) {
+                                $this->dispatch('setFilter', 'approval', $value);
+                            });
+                    })(),
+
+                    'label' => __('Approval: ')
                 ],
             ],
         ]);
-    }
 
-    private function setRoute(Employee $employee)
-    {   
-        $evaluation = $employee->performancesAsProbationary;
-
-        session()->put('final_rating', 
-            $this->computeFinalRating($evaluation),
-        );
-
-        return route("{$this->routePrefix}.performances.probationaries.review", [
-            'employee' => $employee->employee_id,
-            'year_period' => Carbon::parse($evaluation->last()->end_date)->year,
-        ]);
+        $this->setTdAttributes(function (Column $column, $row, $columnIndex, $rowIndex) {
+            $this->performances = $row->performancesAsProbationary
+                ->when($this->periodFilter, fn ($query) => $query->where('period_name', $this->periodFilter));
+            $this->currentPeriod = $this->performances->sortByDesc('end_date')->first();
+                
+            return [
+                'class' => $columnIndex === 0 ? 'text-md-start border-end sticky' : 'text-md-center',
+            ];
+        });
     }
 
     public function builder(): Builder
     {
         return Employee::query()
+            ->ofEmploymentStatus(EmploymentStatus::PROBATIONARY)
             ->with([
-                'account' => fn ($query) => $query->get('photo'),
-                'performancesAsProbationary.details',
-                'performancesAsProbationary.details.categoryRatings',
-                'performancesAsProbationary.details.categoryRatings.rating',
+                'account:account_type,account_id,photo',
+                'performancesAsProbationary' => [
+                    'details' => [
+                        'categoryRatings' => ['rating'],
+                    ],
+                ],
             ])
-            ->whereNot('employee_id', Auth::user()->account->employee_id)
+            // ->whereNot('employee_id', Auth::user()->account->employee_id)
             ->whereHas('performancesAsProbationary.details', function ($query) {
                 $query->whereNotNull('secondary_approver_signed_at');
-            })
-            ->whereHas('jobDetail.status', function ($query) {
-                $query->where('emp_status_name', EmploymentStatus::PROBATIONARY->label());
             });
     }
 
@@ -160,83 +131,98 @@ class AnyProbationariesPerformancesTable extends DataTableComponent
     {
         return [
             Column::make(__('Evaluatee'))
-                ->label(function ($row) {
-                    $name = Str::headline($row->full_name);
-                    $photo = $row->account->photo;
-                    $id = $row->employee_id;
-            
-                    return '<div class="d-flex align-items-center">
-                                <img src="' . e($photo) . '" alt="User Picture" class="rounded-circle me-3" style="width: 38px; height: 38px;">
-                                <div>
-                                    <div>' . e($name) . '</div>
-                                    <div class="text-muted fs-6">Employee ID: ' . e($id) . '</div>
-                                </div>
-                            </div>';
-                })
-                ->html()
-                ->sortable(fn (Builder $query, $direction) => $query->orderBy('last_name' ,$direction))
-                ->searchable(function (Builder $query, $searchTerm) {
-                    return $query->whereLike('first_name', "%{$searchTerm}%")
-                        ->orWhereLike('middle_name', "%{$searchTerm}%")
-                        ->orWhereLike('last_name', "%{$searchTerm}%");
-                }),    
+                ->label(fn ($row) => view('components.table.employee')->with([
+                    'name'  => $row->full_name,
+                    'photo' => $row->account->photo,
+                    'id'    => $row->employee_id
+                ]))
+                ->sortable(fn (Builder $query, $direction) => $query->orderBy('last_name', $direction))
+                ->searchable(fn (Builder $query, $searchTerm) => $this->applyFullNameSearch($query, $searchTerm)),
 
-            Column::make(__('Results'))
+            Column::make(__('Completion'))
                 ->label(function ($row) {
-                    if ($row->performancesAsProbationary->last()->details->last()->fourth_approver_signed_at) {
-                        return __('Approved');
-                    } else {
-                        return __('Pending');
+                    $evaluations = $row->performancesAsProbationary;
+
+                    session()->put('final_rating', $this->computeFinalRating($evaluations));
+            
+                    $url = route("{$this->routePrefix}.performances.probationaries.review", [
+                        'employee' => $row->employee_id,
+                        'year_period' => $evaluations->max('end_date')->year,
+                    ]);
+
+                    return "<a href='{$url}' class='btn btn-info btn-md justify-content-center w-auto'>
+                                <i data-lucide='eye' class='icon icon-large me-1'></i>
+                                <span class='fw-light'>Review Evaluation</span>
+                            </a>";
+                })
+                ->html(),
+
+
+            Column::make(__('Approval'))
+                ->label(function ($row) {
+                    $badge = [
+                        'color' => StatusBadge::PENDING->getColor(),
+                        'slot' => StatusBadge::PENDING->getLabel(),
+                    ];
+
+                    $isFullyApproved = $this->performances->first(function ($performance) {
+                        return $performance->period_name === PerformanceEvaluationPeriod::FINAL_MONTH->value;
+                    })->details->first(fn ($detail) => $detail->fourth_approver_signed_at);
+
+                    if ($isFullyApproved) {
+                        $badge = [
+                            'color' => StatusBadge::APPROVED->getColor(),
+                            'slot' => StatusBadge::APPROVED->getLabel(),
+                        ];
                     }
+
+                    return view('components.status-badge')->with($badge);
                 }),
 
             Column::make(__('Final Rating'))
                 ->label(function ($row) {
                     $finalRating = $this->computeFinalRating($row->performancesAsProbationary);
-                    return $finalRating['format'];
-                }),
+                    
+                    return sprintf(
+                        "<strong>%s - %s</strong>",
+                        $finalRating['format'],
+                        $finalRating['scale']
+                    );
+                })
+                ->html(),
 
-            Column::make(__('Performance Scale'))
-                ->label(function ($row) {
-                    $finalRating = $this->computeFinalRating($row->performancesAsProbationary);
-                    return $finalRating['scale'];
-                }),
-
-            // Column::make(__('Period'))
-            //     ->label(function ($row) {
-            //         if ($this->isProbationaryFinalEvaluated($row->performancesAsProbationary)) {
-            //             return $row->performancesAsProbationary->details->last()->period->interval;
-            //         } else {
-            //             return '-';
-            //         }
-            //     }),
+            Column::make(__('Period'))->label(fn () => $this->currentPeriod->interval),
         ];
     }
     
     public function filters(): array
     {
         return [
-            SelectFilter::make(__('Evaluation Period'))
-                ->options($this->getPeriodOptions())
+            SelectFilter::make(__('Approval'))
+                ->options($this->getApprovalStatus())
                 ->filter(function (Builder $query, $value) {
-                    return $query->whereHas('performancesAsProbationary.period', function ($subQuery) use ($value) {
-                        $subQuery->where('period_id', $value);
+                    $query->whereHas('performancesAsProbationary.details', function ($sq) use ($value) {                        
+                        if ($value === '0') {
+                            $sq->whereNull('fourth_approver_signed_at')
+                                ->orWhereNull('third_approver_signed_at');
+                        } elseif ($value === '1') {
+                            $sq->whereNotNull('fourth_approver_signed_at');
+                        }
                     });
                 })
-                ->setFilterPillTitle('Period')
-                // ->setFilterDefaultValue(RegularPerformancePeriod::latest()->first()->period_id)
+                ->setFilterDefaultValue('')
+                ->hiddenFromMenus(),
+
+            // date filter here perhaps
         ];
     }
     
-    private function getPeriodOptions(): array
+    private function getApprovalStatus(): array
     {
-        return ProbationaryPerformancePeriod::all()
-            ->mapWithKeys(function ($item) {
-                $start = Carbon::make($item->start_date)->format('j M, Y');
-                $end = Carbon::make($item->end_date)->format('j M Y');
-                $period = "{$start} - {$end}";
-
-                return [$item->period_id => $period];
-            })->toArray();
+        return [
+            '' => __('Select Approval Status'),
+            '0' => __('Pending'),
+            '1' => __('Approved'),
+        ];
     }
 }
