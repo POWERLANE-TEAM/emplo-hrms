@@ -29,7 +29,7 @@ class ResetUserPassword implements ResetsUserPasswords
         ])->after(function ($validator) use ($user, $input) {
             if (Hash::check($input['password'], $user->password)) {
                 $validator->errors()->add('password', 'Your new password cannot be the same as your current password.');
-                $user->notify(new PasswordChangeAttemptNotification($user));
+                $user->notify(new PasswordChangeAttemptNotification());
             }
         })->validate();
 
@@ -37,6 +37,6 @@ class ResetUserPassword implements ResetsUserPasswords
             'password' => $input['password'],
         ])->save();
 
-        $user->notify(new PasswordResetNotification($user));
+        $user->notify(new PasswordResetNotification());
     }
 }
