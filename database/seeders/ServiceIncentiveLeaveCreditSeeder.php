@@ -4,11 +4,9 @@ namespace Database\Seeders;
 
 use App\Models\Employee;
 use App\Models\Applicant;
-use App\Models\JobVacancy;
 use App\Models\Application;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Seeder;
-use App\Enums\ApplicationStatus;
 use Illuminate\Support\Facades\DB;
 use App\Enums\ServiceIncentiveLeave;
 
