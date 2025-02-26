@@ -19,6 +19,11 @@ class EmployeeShift extends Model
         'updated_at',
     ];
 
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
     /**
      * Accessor for shift schedule start - end time.
      */
