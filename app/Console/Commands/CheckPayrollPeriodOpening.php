@@ -14,7 +14,7 @@ class CheckPayrollPeriodOpening extends Command
      *
      * @var string
      */
-    protected $signature = 'check-payroll-period-opening';
+    protected $signature = 'prollperiod:open';
 
     /**
      * The console command description.

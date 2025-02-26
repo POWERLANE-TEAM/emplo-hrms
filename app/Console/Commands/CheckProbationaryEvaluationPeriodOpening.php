@@ -40,7 +40,7 @@ class CheckProbationaryEvaluationPeriodOpening extends Command
      *
      * @var string
      */
-    protected $signature = 'check-probationary-evaluation-period-opening';
+    protected $signature = 'probevaluation:open';
 
     /**
      * The console command description.
