@@ -74,6 +74,7 @@ class DatabaseSeeder extends Seeder
                 TrainingProviderSeeder::class,
                 TrainingSeeder::class,
                 SeparatedEmployeeSeeder::class,
+                EmployeeSeeder::class,
                 ServiceIncentiveLeaveCreditSeeder::class,
                 AnnouncementSeeder::class,
                 RegularPerformanceEvaluation2024Seeder::class,
@@ -82,7 +83,7 @@ class DatabaseSeeder extends Seeder
                 AttendanceLog2024Seeder::class,
                 PayrollSummarySeeder::class,
                 OvertimeSeeder::class,
-                EmployeeSeeder::class,
+                // ExperiencedEmployeeSeeder::class,
                 // GuestSeeder::class,
                 // RegularPerformanceSeeder::class,
                 // AttendanceSeeder::class
