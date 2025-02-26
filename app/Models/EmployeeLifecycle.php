@@ -18,6 +18,13 @@ class EmployeeLifecycle extends Model
         'updated_at',
     ];
 
+    protected $casts = [
+        'started_at' =>     'datetime',
+        'separated_at' =>   'datetime',
+        'created_at' =>     'datetime',
+        'updated_at' =>     'datetime',
+    ];
+
     public function employee(): BelongsTo
     {
         return $this->belongsTo(Employee::class, 'employee_id', 'employee_id');
