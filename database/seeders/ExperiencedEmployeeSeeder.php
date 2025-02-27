@@ -62,10 +62,10 @@ class ExperiencedEmployeeSeeder extends Seeder
             }
 
             $quarter = match (true) {
-                in_array($dateHired->month, ServiceIncentiveLeave::Q1->getFirstQuarter()) => ServiceIncentiveLeave::Q1,
-                in_array($dateHired->month, ServiceIncentiveLeave::Q2->getSecondQuarter()) => ServiceIncentiveLeave::Q2,
-                in_array($dateHired->month, ServiceIncentiveLeave::Q3->getThirdQuarter()) => ServiceIncentiveLeave::Q3,
-                in_array($dateHired->month, ServiceIncentiveLeave::Q4->getFourthQuarter()) => ServiceIncentiveLeave::Q4,
+                in_array($dateHired->month, ServiceIncentiveLeave::getFirstQuarter()) => ServiceIncentiveLeave::Q1,
+                in_array($dateHired->month, ServiceIncentiveLeave::getSecondQuarter()) => ServiceIncentiveLeave::Q2,
+                in_array($dateHired->month, ServiceIncentiveLeave::getThirdQuarter()) => ServiceIncentiveLeave::Q3,
+                in_array($dateHired->month, ServiceIncentiveLeave::getFourthQuarter()) => ServiceIncentiveLeave::Q4,
             };
 
             $data[] = [

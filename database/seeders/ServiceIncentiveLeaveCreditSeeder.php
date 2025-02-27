@@ -34,10 +34,10 @@ class ServiceIncentiveLeaveCreditSeeder extends Seeder
                 $month = $dateHired->copy()->month;
 
                 $quarter = match (true) {
-                    in_array($month, ServiceIncentiveLeave::Q1->getFirstQuarter()) => ServiceIncentiveLeave::Q1,
-                    in_array($month, ServiceIncentiveLeave::Q2->getSecondQuarter()) => ServiceIncentiveLeave::Q2,
-                    in_array($month, ServiceIncentiveLeave::Q3->getThirdQuarter()) => ServiceIncentiveLeave::Q3,
-                    in_array($month, ServiceIncentiveLeave::Q4->getFourthQuarter()) => ServiceIncentiveLeave::Q4,
+                    in_array($month, ServiceIncentiveLeave::getFirstQuarter()) => ServiceIncentiveLeave::Q1,
+                    in_array($month, ServiceIncentiveLeave::getSecondQuarter()) => ServiceIncentiveLeave::Q2,
+                    in_array($month, ServiceIncentiveLeave::getThirdQuarter()) => ServiceIncentiveLeave::Q3,
+                    in_array($month, ServiceIncentiveLeave::getFourthQuarter()) => ServiceIncentiveLeave::Q4,
                 };
 
                 $increase = 0;
