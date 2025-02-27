@@ -1,13 +1,10 @@
 <?php
 
 use App\Enums\UserPermission;
-use App\Livewire\Auth\Logout;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\EmployeeController;
-use App\Http\Controllers\JobTitleController;
 use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\EmployeeArchiveController;
+use App\Livewire\Auth\Logout;
+use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 
 Route::middleware('guest')->group(function () {
@@ -83,34 +80,6 @@ Route::middleware('auth')->group(function () {
             ->name('create');
     });
 
-
-    /** 
-     * Employee resource 
-     */
-    Route::get('list', [EmployeeController::class, 'index'])
-        ->can('viewAnyEmployees')
-        ->name('employees.masterlist.all');
-
-    Route::get('{employee}', [EmployeeController::class, 'show'])
-        ->can('viewEmployee')
-        ->whereNumber('employee')
-        ->name('employees.information');
-
-
-    /**
-     * Archive
-     */
-    Route::prefix('archives')->name('archives.')->group(function () {
-        Route::get('/', [EmployeeArchiveController::class, 'index'])
-            ->can('viewAnyArchivedRecords')
-            ->name('index');
-
-        Route::get('{employee}', [EmployeeArchiveController::class, 'show'])
-            ->can('viewAnyArchivedRecords')
-            ->name('employee');
-    });
-
-
     /**
      * Job Family
      */
@@ -131,7 +100,7 @@ Route::middleware('auth')->group(function () {
     /**
      * Job Title
      */
-    Route::prefix('job-titles')->name('job-titles.')->group(function () {
+    Route::prefix('job-title')->name('job-title.')->group(function () {
         Route::get('/', function () {
             return view('employee.admin.job-title.index');
         })
@@ -142,10 +111,6 @@ Route::middleware('auth')->group(function () {
         })
             ->can(UserPermission::CREATE_JOB_TITLE)
             ->name('create');
-
-        Route::get('{jobTitle}', [JobTitleController::class, 'show'])
-            ->whereNumber('jobTitle')
-            ->name('show');
     });
 
     /**

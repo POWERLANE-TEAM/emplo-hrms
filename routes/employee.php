@@ -647,23 +647,3 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     Route::get('/separation/resignation/file/request', [ResignationController::class, 'create'])
     ->name('separation.resignation.create');
 });
-
-Route::get('test', function () {
-    
-    DB::table('applicants')->select('applicant_id')->whereNotNull('rejected_at')->ddRawSql();
-
-    // $startshift = \Carbon\Carbon::createFromFormat('H:i:s', '22:00:00')->setDateFrom(now()->subDay());
-    // $endshift = \Carbon\Carbon::createFromFormat('H:i:s', '6:00:00')->setDateFrom(now());
-
-    // $timein = \Carbon\Carbon::parse('2025-02-21 21:45:00');
-
-    // dd(
-    //     $startshift,
-    //     $endshift,
-    //     $timein,
-    //     $timein->isBetween(
-    //         $startshift->copy()->subHour(), 
-    //         $endshift
-    //     )
-    // );
-});

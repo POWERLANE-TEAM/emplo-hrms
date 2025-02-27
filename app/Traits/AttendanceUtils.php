@@ -145,9 +145,4 @@ trait AttendanceUtils
             'checkOut' => null,
         ]);
     }
-
-    public function validateWithinShift(string $startShift, string $endShift)
-    {
-        // fuck my life...
-    }
 }
