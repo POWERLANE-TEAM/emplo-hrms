@@ -33,7 +33,7 @@ class ServiceIncentiveLeaveCreditSeeder extends Seeder
             $result = array_column(
                 array_filter(
                     ServiceIncentiveLeave::getAllQuartersAndCredits(), 
-                    fn ($qCred) => in_array($dateHired->month, $qCred['months'])
+                    fn ($quarter) => in_array($month, $quarter['months'])
                 ), 'credits'
             );
             
