@@ -272,7 +272,8 @@
 
     {{-- HR Manager --}}
     @can(UserPermission::VIEW_ALL_EMPLOYEES, UserPermission::VIEW_ARCHIVED_EMP_201_FILES)
-        <x-layout.employee.nav.sidebar.nested-nav-items
+        @if ($routePrefix === 'employee')
+            <x-layout.employee.nav.sidebar.nested-nav-items
             nav_txt="Employees"
             :active="request()->routeIs($routePrefix . '.employees.*')"
             class="order-3"
@@ -290,7 +291,8 @@
                     'nav_txt' => 'Archived 201 Records'
                 ],
             ]">
-        </x-layout.employee.nav.sidebar.nested-nav-items>
+            </x-layout.employee.nav.sidebar.nested-nav-items>
+        @endif
 
     @endcan
 
