@@ -52,7 +52,7 @@ enum ServiceIncentiveLeave: int
         };
     }
 
-    public function getFirstQuarter(): array
+    public static function getFirstQuarter(): array
     {
         return [
             CarbonInterface::JANUARY,
@@ -61,7 +61,7 @@ enum ServiceIncentiveLeave: int
         ];
     }
 
-    public function getSecondQuarter(): array
+    public static function getSecondQuarter(): array
     {
         return [
             CarbonInterface::APRIL,
@@ -70,7 +70,7 @@ enum ServiceIncentiveLeave: int
         ]; 
     }
 
-    public function getThirdQuarter(): array
+    public static function getThirdQuarter(): array
     {
         return [
             CarbonInterface::JULY,
@@ -79,13 +79,35 @@ enum ServiceIncentiveLeave: int
         ]; 
     }
 
-    public function getFourthQuarter(): array
+    public static function getFourthQuarter(): array
     {
         return [
             CarbonInterface::OCTOBER,
             CarbonInterface::NOVEMBER,
             CarbonInterface::DECEMBER,
         ]; 
+    }
+
+    public static function getAllQuarters(): array
+    {
+        return [
+            'first_quarter' => [
+                'credits' => self::Q1->value,
+                'months' => self::getFirstQuarter()
+            ],
+            'second_quarter' => [
+                'credits' => self::Q2->value,
+                'months' => self::getSecondQuarter()
+            ],
+            'third_quarter' => [
+                'credits' => self::Q3->value,
+                'months' => self::getThirdQuarter()
+            ],
+            'fourth_quarter' => [
+                'credits' => self::Q4->value,
+                'months' => self::getFirstQuarter()
+            ],
+        ];
     }
 
     public static function silCreditsIncreaseMap(): array
