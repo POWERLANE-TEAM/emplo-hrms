@@ -2,24 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use App\Enums\EmploymentStatus;
 use App\Models\RegularPerformance;
 use Illuminate\Support\Facades\Auth;
-use App\Models\ProbationaryPerformance;
 
 class PerformanceController extends Controller
 {
     public function index()
     {
-        $user = Auth::user()->load('account.status');
+        $user = Auth::user()->load('account.status:emp_status_name');
+
         if ($user->account->status->emp_status_name === EmploymentStatus::PROBATIONARY->label()) {
             return to_route('employee.performances.probationary');
-        } else {
-            return to_route('employee.performances.regular');
         }
+        
+        return to_route('employee.performances.regular');
     }
 
     public function asRegular()

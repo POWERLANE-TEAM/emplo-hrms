@@ -105,7 +105,7 @@ class GeneralAttendance extends Component
         foreach ($this->attendanceLogs as $uid => [$type, $timestamp]) {
             $events[] = [
                 'title' => 'Worked Regular',
-                'start' => Carbon::parse($timestamp)->toDateString(),
+                'start' => $timestamp->toDateString(),
                 'classNames' => ['bg-primary'],
             ];
         }
@@ -114,7 +114,7 @@ class GeneralAttendance extends Component
             [$title, $date] = $holiday;
             $events[] = [
                 'title' => $title,
-                'start' => Carbon::parse($date)->toDateString(),
+                'start' => Carbon::createFromFormat('m-d', $date)->setYear(now()->year)->toDateString(),
                 'classNames' => ['bg-warning-emphasis'],
             ];
         }
