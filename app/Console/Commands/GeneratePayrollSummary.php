@@ -20,7 +20,7 @@ class GeneratePayrollSummary extends Command
      *
      * @var string
      */
-    protected $signature = 'generate-payroll-summary';
+    protected $signature = 'prollsummary:generate';
 
     /**
      * The console command description.

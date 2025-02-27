@@ -5,7 +5,8 @@ namespace App\Actions\Fortify;
 use App\Enums\AccountType;
 use App\Enums\UserRole;
 use App\Models\User;
-use Google\Service\AdExchangeBuyer\Account;
+use App\Notifications\PasswordChangeAttemptNotification;
+use App\Notifications\PasswordResetNotification;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\ResetsUserPasswords;
@@ -21,12 +22,21 @@ class ResetUserPassword implements ResetsUserPasswords
      */
     public function reset(User $user, array $input): void
     {
+        $user->loadMissing('account');
+
         Validator::make($input, [
             'password' => $this->passwordRules(),
-        ])->validate();
+        ])->after(function ($validator) use ($user, $input) {
+            if (Hash::check($input['password'], $user->password)) {
+                $validator->errors()->add('password', 'Your new password cannot be the same as your current password.');
+                $user->notify(new PasswordChangeAttemptNotification());
+            }
+        })->validate();
 
         $user->forceFill([
             'password' => $input['password'],
         ])->save();
+
+        $user->notify(new PasswordResetNotification());
     }
 }

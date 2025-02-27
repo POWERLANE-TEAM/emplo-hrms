@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Support\Str;
-use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -21,13 +20,20 @@ class RegularPerformancePeriod extends Model
         'end_date',
     ];
 
+    protected $casts = [
+        'start_date'    => 'datetime',
+        'end_date'      => 'datetime',
+        'created_at'    => 'datetime',
+        'updated_at'    => 'datetime',
+    ];
+
     /**
      * Formatted attribute accessor for period interval (e.g: December 01 - December 12, 2025).
      */
     public function getIntervalAttribute()
     {
-        $start = Carbon::make($this->start_date)->format('F d');
-        $end = Carbon::make($this->end_date)->format('F d, Y');
+        $start = $this->start_date->format('F d');
+        $end = $this->end_date->format('F d, Y');
 
         return "{$start} - {$end}";
     }

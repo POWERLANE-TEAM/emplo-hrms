@@ -4,7 +4,6 @@ namespace App\Livewire\Admin;
 
 use Illuminate\Support\Str;
 use App\Models\AttendanceLog;
-use Illuminate\Support\Carbon;
 use App\Enums\BiometricPunchType;
 use App\Http\Helpers\BiometricDevice;
 use Illuminate\Database\Eloquent\Builder;
@@ -19,7 +18,7 @@ class AttendanceLogsTable extends DataTableComponent
 
     public function configure(): void
     {
-        $this->setPrimaryKey('uid');
+        $this->setPrimaryKey('id');
         $this->setPageName('attendance-logs');
         $this->setEagerLoadAllRelationsEnabled();
         $this->setSingleSortingDisabled();
@@ -113,12 +112,12 @@ class AttendanceLogsTable extends DataTableComponent
             Column::make(__('Time'), 'timestamp')
                 ->sortable()
                 ->searchable()
-                ->format(fn ($value, $row, Column $column) => Carbon::make($row->timestamp)->format('g:i A')),
+                ->format(fn ($value, $row, Column $column) => $row->timestamp->format('g:i A')),
 
             Column::make(__('Date'), 'timestamp')
                 ->sortable()
                 ->searchable()
-                ->format(fn ($value, $row, Column $column) => Carbon::make($row->timestamp)->format('F d, Y')),
+                ->format(fn ($value, $row, Column $column) => $row->timestamp->format('F d, Y')),
         ];
     }
 }

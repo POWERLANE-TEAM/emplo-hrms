@@ -2,24 +2,24 @@
 
 namespace App\Providers;
 
-use App\Enums\AccountType;
 use App\Models\User;
 use App\Enums\UserRole;
-use App\Policies\EmployeeArchivePolicy;
+use App\Enums\AccountType;
 use App\Policies\IssuePolicy;
-use App\Policies\TrainingPolicy;
-use App\Services\AttendanceService;
-use App\Services\PayrollSummaryService;
 use Illuminate\Support\Carbon;
 use App\Policies\ContractPolicy;
 use App\Policies\EmployeePolicy;
 use App\Policies\IncidentPolicy;
 use App\Policies\OvertimePolicy;
+use App\Policies\TrainingPolicy;
 use Laravel\Pulse\Facades\Pulse;
 use App\Policies\UserStatusPolicy;
+use App\Services\AttendanceService;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Vite;
 use App\Policies\EmployeeLeavePolicy;
+use App\Policies\EmployeeArchivePolicy;
+use App\Services\PayrollSummaryService;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;
@@ -27,12 +27,12 @@ use Illuminate\Validation\Rules\Password;
 use App\Policies\RegularPerformancePolicy;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use App\Policies\ProbationaryPerformancePolicy;
-use App\Providers\Form\FormWizardServiceProvider;
 use Illuminate\Auth\Notifications\ResetPassword;
+use App\Providers\Form\FormWizardServiceProvider;
 use Illuminate\Notifications\Messages\MailMessage;
+use App\Services\ServiceIncentiveLeaveCreditService;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Broadcasting\BroadcastServiceProvider;
-use Illuminate\Support\Facades\Log;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -54,6 +54,10 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(AttendanceService::class, function () {
             return new AttendanceService();
+        });
+
+        $this->app->bind(ServiceIncentiveLeaveCreditService::class, function () {
+            return new ServiceIncentiveLeaveCreditService();
         });
     }
 
@@ -238,7 +242,7 @@ class AppServiceProvider extends ServiceProvider
 
             $redirectPrefix = '';
 
-            Log::info('User account type: ' , ['user'=> $user]);
+            // Log::info('User account type: ' , ['user'=> $user]);
 
             if($user->hasRole(UserRole::ADVANCED)) {
                 $redirectPrefix = 'admin' ;

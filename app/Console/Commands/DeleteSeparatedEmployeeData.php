@@ -14,7 +14,7 @@ class DeleteSeparatedEmployeeData extends Command
      *
      * @var string
      */
-    protected $signature = 'delete-separated-employee-data';
+    protected $signature = 'employee:clean';
 
     /**
      * The console command description.

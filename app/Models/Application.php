@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class Application extends Model
@@ -22,6 +23,19 @@ class Application extends Model
         'created_at',
         'updated_at',
     ];
+
+    protected $casts = [
+        'hired_at' => 'datetime',
+        'rejected_at' => 'datetime',
+    ];
+
+    /**
+     * Local query scope to get rejected applications that were past or equal to specific no. of days.
+     */
+    public function scopeRejectedDuration(Builder $query, int $duration): void
+    {
+        $query->where('rejected_at', '>=', now()->subDays($duration));
+    }
 
     /**
      * Get the applicant that owns the job application.

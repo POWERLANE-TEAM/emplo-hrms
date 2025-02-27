@@ -2,28 +2,31 @@
 
 use Illuminate\Support\Facades\Schedule;
 
-/**
- * To-dos
- * 
- * Command that execute every January 1 to reset the leave balance of every employee to 10(default).
- * Command that executes daily to remove applicants who are rejected for more or exactly than 30 days.
- */
-
-Schedule::daily()
-    ->withoutOverlapping()
-    ->timezone('Asia/Manila')
-    ->group(function () {
-        Schedule::command('sync-attlogs-from-biometric-device');
-        Schedule::command('check-probationary-evaluation-period-opening');
-        Schedule::command('check-payroll-period-opening');
-        Schedule::command('delete-separated-employee-data');
-        Schedule::command('generate-payroll-summary');
+Schedule::timezone('Asia/Manila')->group(function () {
+    /** Daily cron */
+    Schedule::daily()->group(function () {
+        Schedule::command('attlogs:sync');
+        Schedule::command('probevaluation:open');
+        Schedule::command('prollperiod:open');
+        Schedule::command('employee:clean');
+        Schedule::command('applicant:clean');
         Schedule::command('activitylog:clean');
-        Schedule::command('backup:clean');
-        Schedule::command('backup:run --only-db');
-    }
-);
+
+        Schedule::withoutOverlapping()->group(function () {
+            Schedule::command('silcredits:increase');
+            Schedule::command('prollsummary:generate');
+            Schedule::command('backup:clean');
+            Schedule::command('backup:run --only-db');   
+        });
+    });
+
+    /** Yearly (Jan 1) cron */
+    Schedule::yearly()->group(function () {
+        Schedule::command('silcredits:reset');
+        Schedule::command('regevaluation:open');
+    });
+});
 
 // for debugging
-// Schedule::command('backup:clean')->everyFiveSeconds();
-// Schedule::command('backup:run --only-db')->everyFiveSeconds();
+// Schedule::command('silcredits:reset')->everyFiveSeconds();
+// Schedule::command('silcredits:increase')->everyTenSeconds();
