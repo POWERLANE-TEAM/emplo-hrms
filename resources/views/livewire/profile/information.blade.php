@@ -40,6 +40,8 @@
                 </div>              
 
                 <div class="left-col pt-2 align-items-center">
+                    <div class="fw-bold">{{ __('Employee Number: ') }}</div>
+                    <p>{{ $employee->id }}</p>
                     <div class="fw-bold">{{ __('Job Family: ') }}</div>
                     <p>{{ $employee->jobFamily }}</p>
                     <div class="fw-bold">{{ __('Employment Status: ') }}</div>

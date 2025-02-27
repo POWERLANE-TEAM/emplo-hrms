@@ -35,6 +35,7 @@ class Information extends Component
 
             $this->employee = Cache::rememberForever($key, function () use ($user) {
                 return (object) [
+                    'id'                    => $user->account->employee_id,
                     'userId'                => $user->user_id,
                     'name'                  => $user->account->full_name,
                     'email'                 => $user->email,
