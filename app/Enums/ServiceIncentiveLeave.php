@@ -88,7 +88,7 @@ enum ServiceIncentiveLeave: int
         ]; 
     }
 
-    public static function getAllQuarters(): array
+    public static function getAllQuartersAndCredits(): array
     {
         return [
             'first_quarter' => [
