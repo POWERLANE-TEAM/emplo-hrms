@@ -18,6 +18,11 @@ class ServiceIncentiveLeaveCredit extends Model
         'updated_at',
     ];
 
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
     /**
      * Get the employee that owns the service leave credit.
      */

@@ -798,7 +798,7 @@ class PayrollSummaryService
         });
         
         $seconds = $validatedAttendanceLogs->sum(function ($log) use ($shiftStart) {
-            $start = $shiftStart->setDateFrom($log->timestamp);
+            $start = $shiftStart->addMinutes(5)->setDateFrom($log->timestamp); // 5mins grace period
 
             return $start->diffInSeconds($log->timestamp);
         });

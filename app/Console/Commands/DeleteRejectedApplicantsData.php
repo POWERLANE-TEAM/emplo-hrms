@@ -14,7 +14,7 @@ class DeleteRejectedApplicantsData extends Command
      *
      * @var string
      */
-    protected $signature = 'delete-rejected-applicants-data';
+    protected $signature = 'applicant:clean';
 
     /**
      * The console command description.
