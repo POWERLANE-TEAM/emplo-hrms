@@ -21,6 +21,7 @@ Schedule::timezone('Asia/Manila')->group(function () {
     });
 
     /** Yearly (Jan 1) cron */
+    /** TODO: Reports */
     Schedule::yearly()->group(function () {
         Schedule::command('silcredits:reset');
         Schedule::command('regevaluation:open');
