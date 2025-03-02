@@ -3,10 +3,10 @@
 namespace App\Livewire\Employee\Tables;
 
 use App\Models\Overtime;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
-use Rappasoft\LaravelLivewireTables\Views\Column;
+use Illuminate\Support\Facades\Auth;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 
 class OvertimeRequestCutoffsTable extends DataTableComponent
 {
@@ -26,12 +26,12 @@ class OvertimeRequestCutoffsTable extends DataTableComponent
                 ];
 
                 $filterParams = $this->buildDateRangeFilterParams($cutOffFilter);
-                
+
                 return route("{$this->routePrefix}.overtimes.requests").'?'.
                     http_build_query($filterParams);
             })
             ->setTableRowUrlTarget(fn () => '__blank');
-        
+
         $this->setPageName('overtime-requests');
         $this->setEagerLoadAllRelationsEnabled();
         $this->setSingleSortingDisabled();
@@ -105,12 +105,12 @@ class OvertimeRequestCutoffsTable extends DataTableComponent
 
     public function builder(): Builder
     {
-        $statement = "
+        $statement = '
             count(overtime_id) as overtime_id, 
             max(filed_at) as filed_at,
             payroll_approval_id, 
             sum(abs(extract(epoch from (start_time - end_time)))) / 3600 as total_ot_hours
-        ";
+        ';
 
         return Overtime::query()
             ->with([
@@ -123,7 +123,7 @@ class OvertimeRequestCutoffsTable extends DataTableComponent
             ->selectRaw($statement)
             ->groupBy('payroll_approval_id');
     }
-    
+
     public function columns(): array
     {
         return [
@@ -161,11 +161,11 @@ class OvertimeRequestCutoffsTable extends DataTableComponent
             //         $seconds = $row->total_ot_hours * 3600;
             //         $hours = floor($seconds / 3600);
             //         $minutes = floor(($seconds % 3600) / 60);
-                
+
             //         return __("{$hours} hours and {$minutes} minutes");
             //     })
             //     ->sortable(function (Builder $query, $direction) {
-            //         return $query->orderBy('total_ot_hours', $direction); 
+            //         return $query->orderBy('total_ot_hours', $direction);
             //     })
             //     ->setSortingPillDirections('High', 'Low')
             //     ->setSortingPillTitle(__('Hours rendered')),

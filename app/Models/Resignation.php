@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
-use Illuminate\Support\Facades\Log;
 
 class Resignation extends Model
 {
@@ -22,16 +21,15 @@ class Resignation extends Model
 
     protected $guarded = [
         'resignation_id',
-        'filed_at'
+        'filed_at',
     ];
 
     protected function finalDecisionAt(): Attribute
     {
         return Attribute::make(
-            get: fn(mixed $value, array $attributes) => $attributes['retracted_at'] ?? $attributes['initial_approver_signed_at'],
+            get: fn (mixed $value, array $attributes) => $attributes['retracted_at'] ?? $attributes['initial_approver_signed_at'],
         );
     }
-
 
     // Need modify relationship if applicable
 

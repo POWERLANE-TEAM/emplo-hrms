@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Carbon;
 
 class EmployeeShift extends Model
 {
@@ -37,7 +37,7 @@ class EmployeeShift extends Model
 
     /**
      * Get the shift type that owns the given start - end time.
-     * 
+     *
      * @return BelongsTo<Shift, EmployeeShift>
      */
     public function category(): BelongsTo

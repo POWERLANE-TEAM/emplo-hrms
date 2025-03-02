@@ -2,19 +2,19 @@
 
 namespace App\Livewire\Employee\Tables;
 
-use App\Models\Employee;
-use App\Enums\StatusBadge;
 use App\Enums\EmploymentStatus;
-use Livewire\Attributes\Locked;
+use App\Enums\PerformanceEvaluationPeriod;
+use App\Enums\StatusBadge;
 use App\Livewire\Tables\Defaults;
+use App\Models\Employee;
 use App\Models\PerformanceRating;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Database\Eloquent\Builder;
-use App\Enums\PerformanceEvaluationPeriod;
-use Illuminate\Database\Eloquent\Collection;
-use Rappasoft\LaravelLivewireTables\Views\Column;
+use Livewire\Attributes\Locked;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class ProbationarySubordinatesPerformancesTable extends DataTableComponent
@@ -64,7 +64,7 @@ class ProbationarySubordinatesPerformancesTable extends DataTableComponent
                             });
                     })(),
 
-                    'label' => __('Stage Type: ')
+                    'label' => __('Stage Type: '),
                 ],
             ],
         ]);
@@ -74,7 +74,7 @@ class ProbationarySubordinatesPerformancesTable extends DataTableComponent
                 ->when($this->periodFilter, fn ($query) => $query->where('period_name', $this->periodFilter));
             $this->isFinal = $this->isFinalEvaluated($this->performances);
             $this->currentPeriod = $this->performances->sortByDesc('end_date')->first();
-                
+
             return [
                 'class' => $columnIndex === 0 ? 'text-md-start border-end sticky' : 'text-md-center',
             ];
@@ -100,7 +100,7 @@ class ProbationarySubordinatesPerformancesTable extends DataTableComponent
             ->whereHas('performancesAsProbationary');
     }
 
-    private function isFinalEvaluated(Collection $evaluations): bool|null
+    private function isFinalEvaluated(Collection $evaluations): ?bool
     {
         $final = $evaluations->filter(function ($item) {
             return $item->period_name === PerformanceEvaluationPeriod::FINAL_MONTH->value;
@@ -115,43 +115,43 @@ class ProbationarySubordinatesPerformancesTable extends DataTableComponent
             $categoryRatings = $item->details->first()?->categoryRatings;
 
             if ($categoryRatings) {
-                $totalRatings = $categoryRatings->sum(fn($subitem) => $subitem->rating->perf_rating);
+                $totalRatings = $categoryRatings->sum(fn ($subitem) => $subitem->rating->perf_rating);
                 $countRatings = $categoryRatings->count();
-                
+
                 $carry['total'] += $totalRatings;
                 $carry['count'] += $countRatings;
             }
 
             return $carry;
         }, ['total' => 0, 'count' => 0]);
-    
+
         $sum = $totals['total'];
         $countSum = $totals['count'];
-    
+
         $mean = $countSum > 0 ? $sum / $countSum : 0;
         $format = number_format($mean, 2, '.');
         $rounded = round($mean);
         $avg = (int) $rounded;
 
         $key = config('cache.keys.performance.ratings');
-    
+
         $performanceRatings = Cache::rememberForever($key, function () {
             return PerformanceRating::all();
         });
-    
+
         $scale = $performanceRatings->firstWhere('perf_rating', $avg)?->perf_rating_name;
 
         return compact('format', 'scale');
-    } 
+    }
 
     public function columns(): array
     {
         return [
             Column::make(__('Evaluatee'))
                 ->label(fn ($row) => view('components.table.employee')->with([
-                    'name'  => $row->full_name,
+                    'name' => $row->full_name,
                     'photo' => $row->account->photo,
-                    'id'    => $row->employee_id
+                    'id' => $row->employee_id,
                 ]))
                 ->sortable(fn (Builder $query, $direction) => $query->orderBy('last_name', $direction))
                 ->searchable(fn (Builder $query, $searchTerm) => $this->applyFullNameSearch($query, $searchTerm)),
@@ -165,7 +165,7 @@ class ProbationarySubordinatesPerformancesTable extends DataTableComponent
 
                     if ($this->isFinal) {
                         session()->put('final_rating', $this->computeFinalRating($evaluations));
-                
+
                         $url = route("{$this->routePrefix}.performances.probationaries.show", [
                             'employee' => $row->employee_id,
                             'year_period' => $evaluations->max('end_date')->year,
@@ -181,19 +181,18 @@ class ProbationarySubordinatesPerformancesTable extends DataTableComponent
                         'employee' => $row->employee_id,
                     ]);
 
-                    if ($evaluations->contains(fn ($evaluation) => 
-                        $evaluation->details->contains('period_id', $this->currentPeriod->period_id))
+                    if ($evaluations->contains(fn ($evaluation) => $evaluation->details->contains('period_id', $this->currentPeriod->period_id))
                     ) {
                         return "<a href='{$url}' class='btn btn-info btn-sm justify-content-center w-auto'>
                                     <i data-lucide='eye' class='icon icon-large me-1'></i>
                                     <span class='fw-light'>Review Evaluation</span>
-                                </a>";                            
+                                </a>";
                     }
-                        
+
                     if ($evaluations->max('end_date')->ne($this->currentPeriod->end_date)) {
                         return view('components.status-badge')->with([
                             'color' => StatusBadge::INVALID->getColor(),
-                            'slot' => __('Not Applicable')
+                            'slot' => __('Not Applicable'),
                         ]);
                     }
 
@@ -232,10 +231,10 @@ class ProbationarySubordinatesPerformancesTable extends DataTableComponent
             Column::make(__('Final Rating'))
                 ->label(function ($row) {
                     if ($this->isFinal) {
-                        $finalRating = $this->computeFinalRating($this->performances); 
+                        $finalRating = $this->computeFinalRating($this->performances);
 
                         return sprintf(
-                            "<strong>%s - %s</strong>",
+                            '<strong>%s - %s</strong>',
                             $finalRating['format'],
                             $finalRating['scale']
                         );
@@ -258,7 +257,7 @@ class ProbationarySubordinatesPerformancesTable extends DataTableComponent
                     $query->whereHas('performancesAsProbationary', function ($subQuery) use ($value) {
                         $subQuery->where('period_name', $value);
                     });
-                    
+
                     $this->periodFilter = $value;
                 })
                 ->setFilterPillTitle('Type')
@@ -266,12 +265,12 @@ class ProbationarySubordinatesPerformancesTable extends DataTableComponent
                 ->hiddenFromFilterCount(),
         ];
     }
-    
+
     private function getPeriodOptions(): array
     {
         $filtered = array_filter(
-            PerformanceEvaluationPeriod::options(), 
-            fn ($option) => $option != PerformanceEvaluationPeriod::ANNUAL->value, 
+            PerformanceEvaluationPeriod::options(),
+            fn ($option) => $option != PerformanceEvaluationPeriod::ANNUAL->value,
             ARRAY_FILTER_USE_KEY
         );
 

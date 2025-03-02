@@ -2,15 +2,15 @@
 
 namespace App\Traits;
 
-use App\Models\User;
-use App\Models\Guest;
-use App\Enums\UserStatus;
 use App\Enums\AccountType;
-use Illuminate\Support\Str;
 use App\Enums\ActivityLogName;
 use App\Enums\PlaceholderString;
+use App\Enums\UserStatus;
+use App\Models\Guest;
+use App\Models\User;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 trait GoogleCallback
 {
@@ -18,8 +18,8 @@ trait GoogleCallback
 
     /**
      * Save Google user payload into the database.
-     * 
-     * @param array<string, null> $payload
+     *
+     * @param  array<string, null>  $payload
      * @return \App\Models\User
      */
     public function saveGooglePayload(array $payload)
@@ -28,7 +28,7 @@ trait GoogleCallback
             activity()->withoutLogs(function () use ($payload) {
                 $payload = collect($payload);
                 $guest = $this->createGuest($payload);
-                $this->newUser = $this->createUserAccount($guest, $payload);                
+                $this->newUser = $this->createUserAccount($guest, $payload);
             });
         });
 
@@ -36,15 +36,14 @@ trait GoogleCallback
             ->useLog(ActivityLogName::AUTHENTICATION->value)
             ->withProperties(['user' => $this->newUser])
             ->event('created')
-            ->log(__('A new guest user has registered via Google'));            
+            ->log(__('A new guest user has registered via Google'));
 
         return $this->newUser;
     }
 
     /**
      * Create a new guest type of user.
-     * 
-     * @param  \Illuminate\Support\Collection $payload
+     *
      * @return \App\Models\Guest
      */
     private function createGuest(Collection $payload)
@@ -58,9 +57,7 @@ trait GoogleCallback
 
     /**
      * Create the user account from Google payload.
-     * 
-     * @param \App\Models\Guest $guest
-     * @param \Illuminate\Support\Collection $payload
+     *
      * @return \App\Models\User
      */
     private function createUserAccount(Guest $guest, Collection $payload)

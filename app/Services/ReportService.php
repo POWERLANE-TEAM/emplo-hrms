@@ -2,23 +2,22 @@
 
 namespace App\Services;
 
-use App\Models\Issue;
-use App\Models\Employee;
-use App\Models\Incident;
-use App\Models\Training;
-use App\Models\Applicant;
 use App\Enums\IssueStatus;
 use App\Enums\TrainingStatus;
+use App\Models\Applicant;
+use App\Models\Employee;
 use App\Models\EmployeeLeave;
-use App\Traits\AttendanceUtils;
 use App\Models\EmployeeLifecycle;
-use App\Models\RegularPerformance;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\App;
-use App\Models\RegularPerformancePeriod;
-use Illuminate\Database\Eloquent\Collection;
+use App\Models\Incident;
+use App\Models\Issue;
 use App\Models\ProbationaryPerformancePeriod;
-use App\Services\ServiceIncentiveLeaveCreditService;
+use App\Models\RegularPerformance;
+use App\Models\RegularPerformancePeriod;
+use App\Models\Training;
+use App\Traits\AttendanceUtils;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\DB;
 
 class ReportService
 {
@@ -28,10 +27,10 @@ class ReportService
     {
         $employees = Employee::query()
             ->with([
-                'lifecycle' => fn($q) => $q->select([
+                'lifecycle' => fn ($q) => $q->select([
                     'employee_id',
                     'started_at',
-                ])
+                ]),
             ])
             ->whereHas('lifecycle', function ($query) use ($year) {
                 $query->whereYear('started_at', $year);
@@ -51,14 +50,14 @@ class ReportService
     {
         $applicants = Applicant::whereYear('created_at', $year)
             ->with([
-                'application' => fn($q) => $q->select([
+                'application' => fn ($q) => $q->select([
                     'applicant_id',
                     'is_passed',
-                ])
+                ]),
             ])
             ->get();
 
-        $hires = $applicants->filter(fn($applicant) => $applicant->application->is_passed);
+        $hires = $applicants->filter(fn ($applicant) => $applicant->application->is_passed);
 
         return (object) [
             'hires' => $hires->count(),
@@ -117,7 +116,7 @@ class ReportService
                         DB::raw('AVG(perf_rating_id) as average_rating'),
                     ])->groupBy('probationary_performance_id');
                 },
-                'probationaryEvaluatee'
+                'probationaryEvaluatee',
             ])
             ->get()
             ->map(function ($period) {
@@ -171,7 +170,7 @@ class ReportService
         $issues = Issue::query()
             ->select([
                 'filed_at',
-                'status'
+                'status',
             ])
             ->whereYear('filed_at', $year)
             ->get();
@@ -265,7 +264,7 @@ class ReportService
         $yearlyData[$year] = (object) [
             'attendance_rate' => $attendanceRate,
             'total_days_attended' => $yearlyTotalAttended,
-            'total_scheduled_days' => $yearlyTotalScheduled
+            'total_scheduled_days' => $yearlyTotalScheduled,
         ];
 
         return (object) compact('monthlyData', 'yearlyData');
@@ -340,7 +339,7 @@ class ReportService
             'total_separated' => $totalSeparatedEmployees,
             'total_remaining' => $totalRemainingEmployees,
             'turnover_rate' => round($turnoverRate, 1),
-            'retention_rate' => round($retentionRate, 1)
+            'retention_rate' => round($retentionRate, 1),
         ];
     }
 
@@ -350,7 +349,7 @@ class ReportService
             ->whereYear('filed_at', $year)
             ->ofStatus([
                 IssueStatus::RESOLVED->value,
-                IssueStatus::CLOSED->value
+                IssueStatus::CLOSED->value,
             ])
             ->get()
             ->map(function ($issue) {
@@ -377,13 +376,13 @@ class ReportService
             $year = date('Y', $dateResolved);
             $month = date('Y-m', $dateResolved);
 
-            if (!isset($yearlyData[$year])) {
+            if (! isset($yearlyData[$year])) {
                 $yearlyData[$year] = ['total_days' => 0, 'count' => 0];
             }
             $yearlyData[$year]['total_days'] += $resolvedDays;
             $yearlyData[$year]['count']++;
 
-            if (!isset($monthlyData[$month])) {
+            if (! isset($monthlyData[$month])) {
                 $monthlyData[$month] = ['total_days' => 0, 'count' => 0];
             }
             $monthlyData[$month]['total_days'] += $resolvedDays;
@@ -439,9 +438,9 @@ class ReportService
 
         return (object) compact(
             'credits',
-            'totalSilCredits', 
-            'totalUsedSilCredits', 
-            'usedVacationCredits', 
+            'totalSilCredits',
+            'totalUsedSilCredits',
+            'usedVacationCredits',
             'usedSickCredits'
         );
     }

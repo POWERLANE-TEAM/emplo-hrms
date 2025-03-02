@@ -2,15 +2,15 @@
 
 namespace App\Livewire\Employee\Tables;
 
+use App\Enums\TrainingStatus;
 use App\Models\Employee;
 use App\Models\Training;
-use App\Enums\TrainingStatus;
-use Illuminate\Support\Carbon;
-use Livewire\Attributes\Locked;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Carbon;
 use Illuminate\View\ComponentAttributeBag;
-use Rappasoft\LaravelLivewireTables\Views\Column;
+use Livewire\Attributes\Locked;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class IndividualEmployeeTrainingsTable extends DataTableComponent

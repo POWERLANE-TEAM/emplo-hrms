@@ -64,7 +64,6 @@ class ApplicationController extends Controller
             ApplicationStatus::REJECTED->value => 'rejected',
         ];
 
-
         $status = $routeApplicationCategory[$application->application_status_id];
 
         $query = Application::query();
@@ -76,15 +75,15 @@ class ApplicationController extends Controller
 
         $nextQuery = clone $query;
         $previousQuery = clone $query;
-    
+
         // Get the next and previous applications
         $nextApplicant = $nextQuery->where('application_id', '>', $application->application_id)
-                                   ->orderBy('application_id', 'asc')
-                                   ->first();
-    
+            ->orderBy('application_id', 'asc')
+            ->first();
+
         $previousApplicant = $previousQuery->where('application_id', '<', $application->application_id)
-                                           ->orderBy('application_id', 'desc')
-                                           ->first();
+            ->orderBy('application_id', 'desc')
+            ->first();
 
         return view(
             'employee.application.show',
@@ -109,8 +108,6 @@ class ApplicationController extends Controller
 
             $user->loadMissing('account.application');
 
-
-
             // check if the user updating the application is the applicant himself
             $isTheApplicant = false;
             if ($user && $user->account && $user->account->application) {
@@ -121,7 +118,7 @@ class ApplicationController extends Controller
 
                 $validated = $request->validate([
                     'jobVacancyId' => 'nullable|integer|exists:job_vacancies,job_vacancy_id',
-                    'applicationStatusId' => 'nullable|integer|in:' . implode(',', ApplicationStatus::values()),
+                    'applicationStatusId' => 'nullable|integer|in:'.implode(',', ApplicationStatus::values()),
                     'hireDate' => [
                         'nullable',
 

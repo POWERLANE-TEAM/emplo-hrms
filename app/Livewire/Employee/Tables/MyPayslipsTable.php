@@ -3,16 +3,16 @@
 namespace App\Livewire\Employee\Tables;
 
 use App\Enums\FilePath;
-use App\Models\Payslip;
 use App\Http\Helpers\FileSize;
+use App\Models\Payslip;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
-use Livewire\Attributes\Locked;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\View\ComponentAttributeBag;
-use Rappasoft\LaravelLivewireTables\Views\Column;
+use Livewire\Attributes\Locked;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Columns\LinkColumn;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateRangeFilter;
 
@@ -115,7 +115,7 @@ class MyPayslipsTable extends DataTableComponent
 
             Column::make(__('Size'))
                 ->label(function ($row) {
-                    $path = FilePath::PAYSLIPS->value . '/' . $row->hashed_attachment;
+                    $path = FilePath::PAYSLIPS->value.'/'.$row->hashed_attachment;
                     $sizeInBytes = Storage::disk('local')->size($path);
 
                     return FileSize::formatSize($sizeInBytes);
@@ -139,7 +139,6 @@ class MyPayslipsTable extends DataTableComponent
                             ->orWhereLike('employees.last_name', "%{$searchTerm}%");
                     });
                 }),
-            
 
             Column::make(__('Uploaded At'))
                 ->label(fn ($row) => Carbon::make($row->created_at)->format('F d, Y g:i A'))

@@ -3,9 +3,9 @@
 namespace App\Livewire\Admin\Dashboard;
 
 use App\Models\Holiday;
-use Livewire\Component;
-use Illuminate\View\View;
 use Illuminate\Support\Carbon;
+use Illuminate\View\View;
+use Livewire\Component;
 
 class CalendarEvents extends Component
 {
@@ -18,7 +18,7 @@ class CalendarEvents extends Component
             ])
             ->orderBy('date')
             ->limit(2)
-            ->get();   
+            ->get();
 
         return view('livewire.admin.dashboard.calendar-events', compact('holidays'));
     }

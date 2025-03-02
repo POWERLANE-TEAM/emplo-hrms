@@ -3,8 +3,8 @@
 namespace App\Livewire\Employee\Attendance;
 
 use App\Livewire\Tables\EmployeesAttendanceTable;
-use Livewire\Component;
 use App\Services\AttendanceService;
+use Livewire\Component;
 
 class SyncDtrLogs extends Component
 {

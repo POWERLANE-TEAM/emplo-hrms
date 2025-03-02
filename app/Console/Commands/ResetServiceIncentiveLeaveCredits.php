@@ -34,16 +34,16 @@ class ResetServiceIncentiveLeaveCredits extends Command
         $silCredits = [];
 
         $activeEmployees = $this->silCreditService->getActiveEmployees();
-        
+
         $activeEmployees->each(function ($employee) use (&$silCredits) {
             $serviceDuration = $this->silCreditService->getServiceDuration($employee->jobDetail->hired_at);
 
             $credit = $this->silCreditService->resetSilCredits($serviceDuration);
 
             $silCredits[] = [
-                'employee_id'               => $employee->employee_id,
-                'sick_leave_credits'        => $credit,
-                'vacation_leave_credits'    => $credit,
+                'employee_id' => $employee->employee_id,
+                'sick_leave_credits' => $credit,
+                'vacation_leave_credits' => $credit,
             ];
         });
 

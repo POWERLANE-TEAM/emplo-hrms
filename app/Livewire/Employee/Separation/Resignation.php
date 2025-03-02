@@ -2,20 +2,16 @@
 
 namespace App\Livewire\Employee\Separation;
 
-use Livewire\Attributes\Locked;
-use App\Enums\FilePath;
 use App\Http\Controllers\Separation\ResignationController;
 use App\Models\CoeRequest;
 use App\Models\Employee;
-use App\Models\EmployeeDoc;
 use App\Models\Resignation as ModelsResignation;
 use Illuminate\Support\Facades\Storage;
+use Livewire\Attributes\Locked;
 use Livewire\Component;
 
 class Resignation extends Component
 {
-
-
     #[Locked]
     public bool $hasResignation;
 
@@ -34,14 +30,15 @@ class Resignation extends Component
         $this->hasResignation = $this->employee->resignations()->exists();
 
         if ($this->hasResignation) {
-            $this->resignation->loadMissing('resigneeLifecycle','resignationLetter');
+            $this->resignation->loadMissing('resigneeLifecycle', 'resignationLetter');
         }
 
         $this->coeReq = CoeRequest::where('requested_by', $this->employee->employee_id)->latest()->first();
 
     }
 
-    public function retract(ResignationController $controller){
+    public function retract(ResignationController $controller)
+    {
 
         try {
             $response = $controller->update(['resignation_id' => $this->resignation->resignation_id, 'retracted_at' => now()], validated: true);
@@ -67,17 +64,18 @@ class Resignation extends Component
 
     }
 
-    public function download(){
+    public function download()
+    {
 
         $file = $this->coeReq->empCoeDoc->file_path;
 
         if (Storage::disk('public')->exists($file)) {
             $downloadName = 'Certificate_of_Employment.pdf'; // Specify the desired download name here
+
             return Storage::disk('public')->download($file, $downloadName);
         }
 
     }
-
 
     public function render()
     {

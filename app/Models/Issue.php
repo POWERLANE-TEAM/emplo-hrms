@@ -3,13 +3,13 @@
 namespace App\Models;
 
 use App\Enums\IssueStatus;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Issue extends Model
 {
@@ -28,17 +28,17 @@ class Issue extends Model
     ];
 
     protected $casts = [
-        'occured_at'        => 'datetime',
-        'status_marked_at'  => 'datetime',
-        'filed_at'          => 'datetime',
-        'modified_at'       => 'datetime',
+        'occured_at' => 'datetime',
+        'status_marked_at' => 'datetime',
+        'filed_at' => 'datetime',
+        'modified_at' => 'datetime',
     ];
 
     /**
      * Local scope builder to get dynamic issue statuses.
      */
     public function scopeOfStatus(Builder $query, array $statuses): void
-    {   
+    {
         $statuses = collect($statuses);
 
         $statuses = $statuses->map(

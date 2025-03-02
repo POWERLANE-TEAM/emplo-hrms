@@ -2,10 +2,10 @@
 
 namespace Database\Factories;
 
-use App\Models\Shift;
-use App\Models\Payroll;
 use App\Models\Employee;
 use App\Models\OvertimePayrollApproval;
+use App\Models\Payroll;
+use App\Models\Shift;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -31,7 +31,7 @@ class OvertimeFactory extends Factory
         }
 
         $payroll = Payroll::all()->random();
-        
+
         $payrollApproval = OvertimePayrollApproval::firstOrCreate([
             'payroll_id' => $payroll->payroll_id,
         ]);
@@ -40,12 +40,12 @@ class OvertimeFactory extends Factory
             'employee_id' => Employee::activeEmploymentStatus()->inRandomOrder()->first()->employee_id,
             'payroll_approval_id' => $payrollApproval->payroll_approval_id,
             'work_performed' => fake()->randomElement([
-                'Project work', 
-                'Emergency task', 
-                'Client meeting', 
-                'Report preparation', 
-                'System upgrade', 
-                'Training session'
+                'Project work',
+                'Emergency task',
+                'Client meeting',
+                'Report preparation',
+                'System upgrade',
+                'Training session',
             ]),
             'start_time' => $start,
             'end_time' => $end,

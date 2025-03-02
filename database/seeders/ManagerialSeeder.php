@@ -2,13 +2,13 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use App\Enums\UserRole;
-use App\Models\Employee;
-use App\Enums\UserStatus;
 use App\Enums\AccountType;
-use Illuminate\Support\Arr;
+use App\Enums\UserRole;
+use App\Enums\UserStatus;
+use App\Models\Employee;
+use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 
@@ -40,7 +40,7 @@ class ManagerialSeeder extends Seeder
             $employeeUser = User::factory()->create($userData);
 
             $employeeUser->assignRole(UserRole::BASIC);
-            $employeeUser->givePermissionTo(RolesAndPermissionsSeeder::managerialPermissions());            
+            $employeeUser->givePermissionTo(RolesAndPermissionsSeeder::managerialPermissions());
         });
     }
 }

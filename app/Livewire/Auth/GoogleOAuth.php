@@ -4,9 +4,7 @@ namespace App\Livewire\Auth;
 
 use App\Models\User;
 use App\Traits\GoogleCallback;
-use Exception;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Laravel\Socialite\Facades\Socialite;
 use Livewire\Component;
 

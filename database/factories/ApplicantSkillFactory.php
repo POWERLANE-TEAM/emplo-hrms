@@ -3,8 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\Applicant;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ApplicantSkill>

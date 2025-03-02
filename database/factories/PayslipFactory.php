@@ -3,11 +3,11 @@
 namespace Database\Factories;
 
 use App\Enums\FilePath;
-use App\Models\Payroll;
 use App\Models\Employee;
+use App\Models\Payroll;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Payslip>
@@ -29,11 +29,11 @@ class PayslipFactory extends Factory
 
         $file = UploadedFile::fake()->create($name, 500, 'application/pdf');
         $content = 'Testing payslip upload';
-        
+
         $hashedName = $file->hashName();
 
         Storage::disk('local')->put(
-            sprintf('%s/%s', FilePath::PAYSLIPS->value, $hashedName), 
+            sprintf('%s/%s', FilePath::PAYSLIPS->value, $hashedName),
             $content
         );
 
@@ -42,7 +42,7 @@ class PayslipFactory extends Factory
             'uploaded_by' => Employee::inRandomOrder()->first()->employee_id,
             'hashed_attachment' => $hashedName,
             'attachment_name' => $file->getClientOriginalName(),
-            'payroll_id' => Payroll::inRandomOrder()->first()->payroll_id
+            'payroll_id' => Payroll::inRandomOrder()->first()->payroll_id,
         ];
     }
 }

@@ -4,12 +4,10 @@ namespace App\Livewire\Tables;
 
 use App\Http\Helpers\Timezone;
 use Illuminate\Database\Eloquent\Builder;
-use Livewire\Attributes\Computed;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 
 trait Defaults
 {
-
     protected $timezone;
 
     public function setTimezone(): void
@@ -73,7 +71,6 @@ trait Defaults
         // For Example
         // $this->setColumnSelectDisabled();
     }
-
 
     public function applyFullNameSearch(Builder $query, $searchTerm): Builder
     {

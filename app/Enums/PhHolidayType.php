@@ -8,7 +8,7 @@ enum PhHolidayType: string
     case SPECIAL_NON_WORKING = 'special non-working';
     case SPECIAL_WORKING = 'special working';
 
-    public function label() 
+    public function label()
     {
         return match ($this) {
             self::REGULAR => 'Regular Holiday',

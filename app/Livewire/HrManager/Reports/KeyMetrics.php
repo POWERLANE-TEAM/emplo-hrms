@@ -2,11 +2,11 @@
 
 namespace App\Livewire\HrManager\Reports;
 
-use Livewire\Component;
 use App\Services\ReportService;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Reactive;
-use Illuminate\Support\Facades\Cache;
+use Livewire\Component;
 
 class KeyMetrics extends Component
 {
@@ -24,15 +24,17 @@ class KeyMetrics extends Component
 
         $this->metrics = Cache::get($key);
 
-        if ($this->metrics) return;
-        
+        if ($this->metrics) {
+            return;
+        }
+
         $this->reportService = $reportService;
-    
+
         $this->metrics = (object) [
             'incidents' => $this->reportService->getCompletedAndTotalIncidents($this->year),
-            'issues'    => $this->reportService->getCompletedAndTotalIssues($this->year),
+            'issues' => $this->reportService->getCompletedAndTotalIssues($this->year),
             'trainings' => $this->reportService->getCompletedAndTotalTrainings($this->year),
-        ];          
+        ];
 
         Cache::forever($key, $this->metrics);
     }

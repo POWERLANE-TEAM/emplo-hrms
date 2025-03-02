@@ -2,13 +2,13 @@
 
 namespace App\Livewire\Admin;
 
-use Illuminate\Support\Str;
-use App\Models\AttendanceLog;
 use App\Enums\BiometricPunchType;
 use App\Http\Helpers\BiometricDevice;
+use App\Models\AttendanceLog;
 use Illuminate\Database\Eloquent\Builder;
-use Rappasoft\LaravelLivewireTables\Views\Column;
+use Illuminate\Support\Str;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 
 class AttendanceLogsTable extends DataTableComponent
 {
@@ -78,7 +78,7 @@ class AttendanceLogsTable extends DataTableComponent
         return AttendanceLog::query()
             ->with([
                 'employee',
-                'employee.account'
+                'employee.account',
             ])
             ->select('*');
     }
@@ -89,19 +89,19 @@ class AttendanceLogsTable extends DataTableComponent
             Column::make(__('Employee Id'), 'employee_id')
                 ->sortable()
                 ->searchable(),
-    
+
             Column::make(__('Employee'))
                 ->label(function ($row) {
                     $name = Str::headline($row->employee->full_name);
                     $photo = $row->employee->account->photo;
-            
+
                     return '<div class="d-flex justify-content-center align-items-center">
-                                <img src="' . e($photo) . '" alt="User Picture" style="width: 33px; height: 33px; border-radius: 50%; margin-right: 10px;">
-                                <span>' . e($name) . '</span>
+                                <img src="'.e($photo).'" alt="User Picture" style="width: 33px; height: 33px; border-radius: 50%; margin-right: 10px;">
+                                <span>'.e($name).'</span>
                             </div>';
                 })
                 ->html(),
-    
+
             Column::make(__('Type'))
                 ->label(function ($row) {
                     $type = BiometricPunchType::tryFrom($row->type);

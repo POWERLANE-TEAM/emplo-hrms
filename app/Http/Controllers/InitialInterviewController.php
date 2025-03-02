@@ -48,7 +48,7 @@ class InitialInterviewController extends Controller
             $this->date = $request->input('examination.date');
 
             $validated = $request->validate([
-                'interview.date' => 'required|' . ScheduleDateRule::get($this->minDate, $this->maxDate),
+                'interview.date' => 'required|'.ScheduleDateRule::get($this->minDate, $this->maxDate),
                 'interview.time' => (function () {
                     return [
                         'required_with:date',
@@ -76,7 +76,7 @@ class InitialInterviewController extends Controller
 
         InitialInterview::create([
             'application_id' => $application->application_id,
-            'init_interview_at' => $interviewStartDate . ' ' . $interviewStartTime,
+            'init_interview_at' => $interviewStartDate.' '.$interviewStartTime,
             'init_interviewer' => auth()->user()->account->employee_id,
         ]);
 
@@ -107,8 +107,8 @@ class InitialInterviewController extends Controller
         }
 
         $interviewStart = null;
-        if (!is_null($interviewStartDate) && !is_null($interviewStartTime)) {
-            $interviewStart = $interviewStartDate . ' ' . $interviewStartTime;
+        if (! is_null($interviewStartDate) && ! is_null($interviewStartTime)) {
+            $interviewStart = $interviewStartDate.' '.$interviewStartTime;
         }
 
         $initalInterview = $application->initialInterview;
@@ -120,21 +120,20 @@ class InitialInterviewController extends Controller
             'is_init_interview_passed' => $request['isPassed'] ?? false,
         ];
 
-
         $filteredData = array_filter($data, function ($value) {
-            return !is_null($value);
+            return ! is_null($value);
         });
 
-        if(!empty($initalInterviewRatings)){
+        if (! empty($initalInterviewRatings)) {
 
             foreach ($initalInterviewRatings as $key => $parameter) {
                 $isExist = InitialInterviewRating::parameter($key)->interview($initalInterview)->exists();
 
-                if($isExist){
+                if ($isExist) {
                     InitialInterviewRating::parameter($key)->interview($initalInterview)->update([
                         'rating_id' => $parameter,
                     ]);
-                }else{
+                } else {
                     InitialInterviewRating::create([
                         'interview_id' => $initalInterview->interview_id,
                         'parameter_id' => $key,

@@ -2,12 +2,11 @@
 
 namespace App\Livewire\Admin\JobTitle;
 
-use Livewire\Component;
-use App\Models\JobTitle;
-use Livewire\Attributes\On;
-use Livewire\Attributes\Computed;
 use App\Enums\JobQualificationPriorityLevel;
-use App\Livewire\Admin\JobTitle\CreateJobTitleForm;
+use App\Models\JobTitle;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
+use Livewire\Component;
 
 class EditEducation extends Component
 {
@@ -27,7 +26,7 @@ class EditEducation extends Component
         'priority' => null,
         'qualification' => null,
     ];
-    
+
     public $existingIndex;
 
     public function save()
@@ -92,7 +91,7 @@ class EditEducation extends Component
 
         $this->dispatch('openEducationQualificationModal');
     }
-    
+
     public function openExistingEditMode(int $index)
     {
         $this->isEditMode = true;
@@ -114,7 +113,7 @@ class EditEducation extends Component
     public function removeExistingQualification(int $index)
     {
         $this->isEditMode = false;
-        
+
         $this->jobTitle->educations
             ->where('keyword_id', $index)
             ->first()
@@ -126,7 +125,7 @@ class EditEducation extends Component
     public function removeQualification(int $index)
     {
         unset($this->items[$index]);
-        
+
         $this->dispatch('removeEducationQualification', $index)
             ->to(JobTitleDetails::class);
     }
@@ -161,7 +160,7 @@ class EditEducation extends Component
     {
         return collect(JobQualificationPriorityLevel::options())->flip()->toArray();
     }
-    
+
     #[On('removedExistingEducation')]
     public function render()
     {

@@ -1,31 +1,31 @@
 <?php
 
-use App\Http\Controllers\EmployeeArchiveController;
-use App\Http\Controllers\FileManagerController;
-use App\Http\Controllers\JobTitleController;
-use App\Http\Controllers\PayslipController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\TrainingController;
 use App\Enums\UserPermission;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\IssueController;
-use App\Http\Controllers\LeaveController;
-use App\Http\Controllers\EmployeeController;
-use App\Http\Controllers\IncidentController;
-use App\Http\Controllers\OvertimeController;
-use App\Http\Controllers\AttendanceController;
-use App\Http\Controllers\PerformanceController;
-use App\Http\Controllers\ApplicationExamController;
-use App\Http\Controllers\InitialInterviewController;
-use App\Http\Controllers\PerformanceDetailController;
-use App\Http\Controllers\Employee\DashboardController;
-use App\Http\Controllers\RegularPerformanceController;
 use App\Http\Controllers\Application\ApplicationController;
+use App\Http\Controllers\ApplicationExamController;
+use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\Employee\DashboardController;
+use App\Http\Controllers\EmployeeArchiveController;
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\FileManagerController;
 use App\Http\Controllers\FinalInterviewController;
+use App\Http\Controllers\IncidentController;
+use App\Http\Controllers\InitialInterviewController;
+use App\Http\Controllers\IssueController;
+use App\Http\Controllers\JobTitleController;
+use App\Http\Controllers\LeaveController;
+use App\Http\Controllers\OvertimeController;
+use App\Http\Controllers\PayslipController;
+use App\Http\Controllers\PerformanceController;
+use App\Http\Controllers\PerformanceDetailController;
 use App\Http\Controllers\ProbationaryPerformanceController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RegularPerformanceController;
 use App\Http\Controllers\RegularPerformancePlanController;
 use App\Http\Controllers\Separation\CoeController;
 use App\Http\Controllers\Separation\ResignationController;
+use App\Http\Controllers\TrainingController;
+use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 
 Route::middleware('guest')->group(function () {
@@ -52,7 +52,6 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
             ->name('logs');
     });
 
-
     /**
      * Recycle Bin
      */
@@ -60,14 +59,12 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         return view('employee.recycle-bin.index');
     })->name('recycle-bin');
 
-
     /**
      * Notifications
      */
     Route::get('notifications', function () {
         return view('employee.notifications.index');
     })->name('notifications');
-
 
     /**
      * Organization
@@ -104,11 +101,9 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         })->name('create');
     });
 
-
     /**
      * Calendar Manager
      */
-
     Route::prefix('calendar')->name('calendar.')->group(function () {
         Route::get('monthly', function () {
             return view('employee.admin.calendar.monthly');
@@ -120,7 +115,6 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         })
             ->name('list');
     });
-
 
     /**
      * Announcement
@@ -143,11 +137,10 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
      */
     Route::get('/dashboard', DashboardController::class)
         ->middleware([
-            'permission:' . UserPermission::VIEW_HR_MANAGER_DASHBOARD->value
-                . '|' . UserPermission::VIEW_EMPLOYEE_DASHBOARD->value
+            'permission:'.UserPermission::VIEW_HR_MANAGER_DASHBOARD->value
+                .'|'.UserPermission::VIEW_EMPLOYEE_DASHBOARD->value,
         ])
         ->name('dashboard');
-
 
     /**
      * List of Applicants
@@ -155,68 +148,61 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     Route::get('/applicants/{applicationStatus}', [ApplicationController::class, 'index'])
         ->where('applicationStatus', 'pending|qualified|preemployed')
         ->middleware([
-            'permission:' . UserPermission::VIEW_ALL_PENDING_APPLICATIONS->value
-                . '|' . UserPermission::VIEW_ALL_QUALIFIED_APPLICATIONS->value
-                . '|' . UserPermission::VIEW_ALL_PRE_EMPLOYED_APPLICATIONS->value,
+            'permission:'.UserPermission::VIEW_ALL_PENDING_APPLICATIONS->value
+                .'|'.UserPermission::VIEW_ALL_QUALIFIED_APPLICATIONS->value
+                .'|'.UserPermission::VIEW_ALL_PRE_EMPLOYED_APPLICATIONS->value,
         ])
         ->name('applications');
-
 
     /**
      * View Specific Application Details
      */
-
     Route::get('/applicant/{application}', [ApplicationController::class, 'show'])
         ->middleware([
-            'permission:' . UserPermission::VIEW_APPLICATION_INFORMATION->value,
+            'permission:'.UserPermission::VIEW_APPLICATION_INFORMATION->value,
         ])
         ->middleware([
-            'permission:' . UserPermission::VIEW_ALL_PENDING_APPLICATIONS->value
-                . '|' . UserPermission::VIEW_ALL_QUALIFIED_APPLICATIONS->value
-                . '|' . UserPermission::VIEW_ALL_PRE_EMPLOYED_APPLICATIONS->value,
+            'permission:'.UserPermission::VIEW_ALL_PENDING_APPLICATIONS->value
+                .'|'.UserPermission::VIEW_ALL_QUALIFIED_APPLICATIONS->value
+                .'|'.UserPermission::VIEW_ALL_PRE_EMPLOYED_APPLICATIONS->value,
         ])
         ->name('application.show');
-
 
     /**
      * Update Application Status
      */
     Route::patch('/applicant/{application}', [ApplicationController::class, 'update'])
         ->middleware([
-            'permission:' . UserPermission::UPDATE_PENDING_APPLICATION_STATUS->value
-                . '|' . UserPermission::UPDATE_QUALIFIED_APPLICATION_STATUS->value
-                . '|' . UserPermission::UPDATE_PRE_EMPLOYED_APPLICATION_STATUS->value,
+            'permission:'.UserPermission::UPDATE_PENDING_APPLICATION_STATUS->value
+                .'|'.UserPermission::UPDATE_QUALIFIED_APPLICATION_STATUS->value
+                .'|'.UserPermission::UPDATE_PRE_EMPLOYED_APPLICATION_STATUS->value,
         ])
         ->name('application.update');
-
 
     /**
      * Schedule Initial Interview
      */
     Route::post('/applicant/interview/initial/{application}', [InitialInterviewController::class, 'store'])
-        ->middleware(['permission:' . UserPermission::CREATE_APPLICANT_INIT_INTERVIEW_SCHEDULE->value])
-        ->middleware(['permission:' . UserPermission::CREATE_APPLICANT_INIT_INTERVIEW_SCHEDULE->value])
+        ->middleware(['permission:'.UserPermission::CREATE_APPLICANT_INIT_INTERVIEW_SCHEDULE->value])
+        ->middleware(['permission:'.UserPermission::CREATE_APPLICANT_INIT_INTERVIEW_SCHEDULE->value])
         ->name('applicant.initial-inteview.store');
-
 
     /**
      * Schedule Exam for Applicant
      */
     Route::post('/applicant/exam/{application}', [ApplicationExamController::class, 'store'])
-        ->middleware(['permission:' . UserPermission::CREATE_APPLICANT_EXAM_SCHEDULE->value])
-        ->middleware(['permission:' . UserPermission::CREATE_APPLICANT_EXAM_SCHEDULE->value])
+        ->middleware(['permission:'.UserPermission::CREATE_APPLICANT_EXAM_SCHEDULE->value])
+        ->middleware(['permission:'.UserPermission::CREATE_APPLICANT_EXAM_SCHEDULE->value])
         ->name('applicant.exam.store');
-
 
     /**
      * Schedule Final Interview
      */
     Route::post('/applicant/interview/final/{application}', [FinalInterviewController::class, 'store'])
-    ->middleware(['permission:' . UserPermission::CREATE_APPLICANT_INIT_INTERVIEW_SCHEDULE->value])
-    ->middleware(['permission:' . UserPermission::CREATE_APPLICANT_INIT_INTERVIEW_SCHEDULE->value])
-    ->name('applicant.final-inteview.store');
+        ->middleware(['permission:'.UserPermission::CREATE_APPLICANT_INIT_INTERVIEW_SCHEDULE->value])
+        ->middleware(['permission:'.UserPermission::CREATE_APPLICANT_INIT_INTERVIEW_SCHEDULE->value])
+        ->name('applicant.final-inteview.store');
 
-    
     Route::get('/attendance/{range}', [AttendanceController::class, 'index'])
         ->can(UserPermission::VIEW_ALL_DAILY_ATTENDANCE)
         ->where('range', 'daily|period')
@@ -233,14 +219,12 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         });
     });
 
-
     /**
      * Evaluator
      */
     Route::get('resume-evaluator/rankings', function () {
         return view('/employee.hr-manager.resume-evaluator.rankings');
     })->name('resume-evaluator.rankings');
-
 
     /**
      * PIP Generation
@@ -250,19 +234,18 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         Route::get('{performance}/plan/improvement/regulars/create', [RegularPerformancePlanController::class, 'create'])->name('plan.improvement.regular.create');
 
         Route::prefix('plan/improvement')->name('plan.improvement.')->group(function () {
-            Route::get('/', function(){
+            Route::get('/', function () {
                 return view('employee.performance.improvement-plan.index');
             })
-            ->can(UserPermission::VIEW_PLAN_GENERATOR)
-            ->name('index');
+                ->can(UserPermission::VIEW_PLAN_GENERATOR)
+                ->name('index');
 
-
-                    /** Regulars */
+            /** Regulars */
             Route::prefix('regulars')->name('regular.')->group(function () {
 
-                Route::get('/{pip}',  [RegularPerformancePlanController::class, 'show'])
-                ->can(UserPermission::VIEW_PLAN_GENERATOR)
-                ->name('generated');
+                Route::get('/{pip}', [RegularPerformancePlanController::class, 'show'])
+                    ->can(UserPermission::VIEW_PLAN_GENERATOR)
+                    ->name('generated');
 
                 // trigger post request to external api google vertex
                 Route::post('generate', [RegularPerformancePlanController::class, 'generate'])->name('generate');
@@ -274,11 +257,7 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
 
         });
 
-
     });
-
-
-
 
     /**
      * Performance
@@ -291,11 +270,9 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         });
     });
 
-
     /**
      * Performance Evaluation Results: Probationay
      */
-
     Route::get('evaluation-results/probationary', function () {
         return view('employee.hr-manager.evaluations.probationary.evaluation-results');
     })->name('evaluation-results.probationary');
@@ -306,7 +283,6 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     Route::get('evaluation-results/regular', function () {
         return view('/employee.hr-manager.evaluations.regular.evaluation-results');
     })->name('evaluation-results.regular');
-
 
     /**
      * Overtime resource
@@ -345,7 +321,6 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         Route::get('archive', [OvertimeController::class, 'archive'])
             ->name('archive');
     });
-
 
     /**
      * Leaves resource
@@ -390,7 +365,6 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
             // ->can('viewSubordinateLeaveRequest', 'leave')
             ->name('employee.requests');
     });
-
 
     /**
      * Employee relations resource
@@ -510,7 +484,6 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         });
     });
 
-
     /** Training resource */
     Route::prefix('trainings')->name('trainings.')->group(function () {
         Route::get('/', [TrainingController::class, 'index'])
@@ -527,7 +500,6 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
             ->name('general.employee');
     });
 
-
     /** Employee resource */
     Route::get('list', [EmployeeController::class, 'index'])
         ->can('viewAnyEmployees')
@@ -538,7 +510,6 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         ->whereNumber('employee')
         ->name('employees.information');
 
-
     /**
      * Separation
      */
@@ -547,26 +518,24 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     })->name('separation.resignations');
 
     Route::get('/separation/resignations/{resignation}/review', [ResignationController::class, 'edit'])
-    ->name('separation.resignations.review');
+        ->name('separation.resignations.review');
 
     Route::get('seperation/coe', function () {
         return view('employee.separation.coe.all');
     })->name('separation.coe');
 
-    Route::get('seperation/coe/{coe}/request', [CoeController::class , 'show'])->name('separation.coe.request');
+    Route::get('seperation/coe/{coe}/request', [CoeController::class, 'show'])->name('separation.coe.request');
 
-    Route::get('seperation/coe/{coe}/generate', [CoeController::class , 'edit'])->name('separation.coe.generate');
+    Route::get('seperation/coe/{coe}/generate', [CoeController::class, 'edit'])->name('separation.coe.generate');
 
     /**
      * Reports
      */
-
     Route::get('reports', function () {
         return view('employee.hr-manager.reports.index');
     })
         ->can(UserPermission::VIEW_REPORTS)
         ->name('reports');
-
 
     /**
      * Archive
@@ -581,14 +550,12 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
             ->name('employee');
     });
 
-
     /**
      * General: Attendance
      */
     Route::get('/attendance', function () {
         return view('employee.basic.attendance.index');
     })->name('attendance');
-
 
     /**
      * Payslip resource
@@ -609,7 +576,6 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
         Route::get('bulk-upload', [PayslipController::class])
             ->name('bulk');
     });
-
 
     /**
      * File Manager Resource
@@ -645,5 +611,5 @@ Route::middleware('auth'/* , 'verified' */)->group(function () {
     })->name('separation.index');
 
     Route::get('/separation/resignation/file/request', [ResignationController::class, 'create'])
-    ->name('separation.resignation.create');
+        ->name('separation.resignation.create');
 });
