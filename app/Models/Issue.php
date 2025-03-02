@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Carbon;
+use App\Enums\IssueStatus;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -27,34 +27,25 @@ class Issue extends Model
         'modified_at',
     ];
 
-    /**
-     * Formatted date accessor for filed_at attribute (e.g: December 30, 2024 11:59 PM)
-     */
-    protected function filedAt(): Attribute
-    {
-        return Attribute::make(
-            get: fn (mixed $value) => Carbon::make($value)->format('F d, Y g:i A'),
-        );
-    }
+    protected $casts = [
+        'occured_at'        => 'datetime',
+        'status_marked_at'  => 'datetime',
+        'filed_at'          => 'datetime',
+        'modified_at'       => 'datetime',
+    ];
 
     /**
-     * Formatted date accessor for occured_at attribute (e.g: December 30, 2024 11:59 PM)
+     * Local scope builder to get dynamic issue statuses.
      */
-    protected function occuredAt(): Attribute
-    {
-        return Attribute::make(
-            get: fn (mixed $value) => Carbon::make($value)?->format('F d, Y g:i A') ?? null,
-        );
-    }
+    public function scopeOfStatus(Builder $query, array $statuses): void
+    {   
+        $statuses = collect($statuses);
 
-    /**
-     * Formatted date accessor for status_marked_at attribute (e.g: December 30, 2024 11:59 PM)
-     */
-    protected function statusMarkedAt(): Attribute
-    {
-        return Attribute::make(
-            get: fn (mixed $value) => Carbon::make($value)?->format('F d, Y g:i A') ?? null,
+        $statuses = $statuses->map(
+            fn ($status) => $status instanceof IssueStatus ? $status->value : $status
         );
+
+        $query->whereIn('status', $statuses);
     }
 
     /**

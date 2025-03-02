@@ -1,5 +1,5 @@
 <div class="mt-5">
-    <h3 class="fw-bold pb-1">Employee Retention & Turnover Rate</h3>
+    <h3 class="fw-bold pb-1">{{ __('Employee Retention & Turnover Rate') }}</h3>
 
     <!-- Chart Container -->
     <div wire:ignore x-data="{
@@ -76,22 +76,22 @@
                     <div class="col-md-4">
                         <div class="text-center">
                             <h5 class="text-primary">Total Employees</h5>
-                            <h3>{{ $retentionData['total_start'] }}</h3>
-                            <p>Starting count for {{ $retentionData['year'] }}</p>
+                            <h3>{{ $retentionData->total_starting }}</h3>
+                            <p>Starting count for {{ $year }}</p>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="text-center">
                             <h5 class="text-primary">Retention Rate</h5>
-                            <h3 class="text-success fw-bold">{{ $retentionData['retention_rate'] }}%</h3>
-                            <p>{{ $retentionData['total_stayed'] }} employees stayed</p>
+                            <h3 class="text-success fw-bold">{{ $retentionData->retention_rate }}%</h3>
+                            <p>{{ $retentionData->total_separated }} employees stayed</p>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="text-center">
                             <h5 class="text-primary">Turnover Rate</h5>
-                            <h3 class="text-danger fw-bold">{{ $retentionData['turnover_rate'] }}%</h3>
-                            <p>{{ $retentionData['total_left'] }} employees left</p>
+                            <h3 class="text-danger fw-bold">{{ $retentionData->turnover_rate }}%</h3>
+                            <p>{{ $retentionData->total_remaining }} employees left</p>
                         </div>
                     </div>
                 </div>
@@ -99,12 +99,3 @@
         </div>
     </div>
 </div>
-
-{{-- @script
-<script>
-    window.addEventListener('year-changed', event => {
-        console.log('Year changed event detected:', event.detail);
-        @this.set('selectedYear', event.detail);
-    });
-</script>
-@endscript --}}

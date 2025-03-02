@@ -1,5 +1,5 @@
 <section class="mt-5">
-    <h3 class="pb-1 fw-bold">Leave Utilization Rate</h3>
+    <h3 class="pb-1 fw-bold">{{ __('Leave Utilization Rate') }}</h3>
     <div wire:ignore x-data="{
         leaveData: @entangle('leaveData'),
         selectedLeaveType: 'all',
@@ -81,13 +81,13 @@
                             <ul>
                                 @foreach ($leaveData as $leaveType => $data)
                                     @php
-                                        $percentage = ($data['used'] / $data['total']) * 100;
+                                        $percentage = ($data->used / $data->total) * 100;
                                     @endphp
 
                                     <li class="pb-2">
                                         {{ ucfirst($leaveType) }} Leave: <strong>{{ round($percentage, 2) }}%</strong>
                                         <ul>
-                                                <li>{{ $data['used'] }} days used out of {{ $data['total'] }}</li>
+                                                <li>{{ $data->used }} days used out of {{ $data->total }}</li>
                                         </ul>
                                 @endforeach
                             </ul>
@@ -98,12 +98,3 @@
         </div>
     </div>
 </section>
-
-{{-- @script
-<script>
-    window.addEventListener('year-changed', event => {
-        console.log('Year changed event detected:', event.detail);
-        @this.set('selectedYear', event.detail);
-    });
-</script>
-@endscript --}}

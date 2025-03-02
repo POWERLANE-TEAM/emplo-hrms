@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Enums\UserRole;
 use App\Enums\AccountType;
 use App\Policies\IssuePolicy;
+use App\Services\ReportService;
 use Illuminate\Support\Carbon;
 use App\Policies\ContractPolicy;
 use App\Policies\EmployeePolicy;
@@ -58,6 +59,10 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(ServiceIncentiveLeaveCreditService::class, function () {
             return new ServiceIncentiveLeaveCreditService();
+        });
+
+        $this->app->bind(ReportService::class, function () {
+            return new ReportService();
         });
     }
 
