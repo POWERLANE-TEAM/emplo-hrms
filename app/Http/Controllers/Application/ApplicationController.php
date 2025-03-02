@@ -67,11 +67,32 @@ class ApplicationController extends Controller
 
         $status = $routeApplicationCategory[$application->application_status_id];
 
+        $query = Application::query();
+        if ($status == 'pending') {
+            $query->where('application_status_id', ApplicationStatus::PENDING->value);
+        } else {
+            $query->whereNot('application_status_id', ApplicationStatus::PENDING->value);
+        }
+
+        $nextQuery = clone $query;
+        $previousQuery = clone $query;
+    
+        // Get the next and previous applications
+        $nextApplicant = $nextQuery->where('application_id', '>', $application->application_id)
+                                   ->orderBy('application_id', 'asc')
+                                   ->first();
+    
+        $previousApplicant = $previousQuery->where('application_id', '<', $application->application_id)
+                                           ->orderBy('application_id', 'desc')
+                                           ->first();
+
         return view(
             'employee.application.show',
             [
                 'application' => $application,
-                'status' => in_array($status, ['pending', 'qualified', 'preemployed']) ? $status : 'pending'
+                'status' => in_array($status, ['pending', 'qualified', 'preemployed']) ? $status : 'pending',
+                'previousApplicant' => $previousApplicant,
+                'nextApplicant' => $nextApplicant,
             ]
         );
     }
