@@ -2,18 +2,18 @@
 
 namespace App\Livewire\Employee\Attendance;
 
-use App\Models\Holiday;
-use App\Models\Payroll;
-use Livewire\Component;
-use App\Models\Employee;
-use App\Models\Overtime;
-use App\Models\AttendanceLog;
-use App\Models\EmployeeLeave;
-use Illuminate\Support\Carbon;
-use Livewire\Attributes\Locked;
 use App\Enums\BiometricPunchType;
+use App\Models\AttendanceLog;
+use App\Models\Employee;
+use App\Models\EmployeeLeave;
+use App\Models\Holiday;
+use App\Models\Overtime;
+use App\Models\Payroll;
+use Illuminate\Support\Carbon;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Locked;
 use Livewire\Attributes\Reactive;
+use Livewire\Component;
 
 class Summary extends Component
 {
@@ -60,11 +60,11 @@ class Summary extends Component
             return $start->diffInSeconds($end);
         })->sum();
 
-        $hours      = floor($totalSecs / 3600);
-        $minutes    = floor(($totalSecs % 3600) / 60);
-        $seconds    = $totalSecs % 60;
+        $hours = floor($totalSecs / 3600);
+        $minutes = floor(($totalSecs % 3600) / 60);
+        $seconds = $totalSecs % 60;
 
-        return sprintf("%02d:%02d:%02d", $hours, $minutes, $seconds);
+        return sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
     }
 
     public function getTotalHours()
@@ -85,14 +85,14 @@ class Summary extends Component
         foreach ($attLogs as $date => $logs) {
             $checkIn = null;
             $checkOut = null;
-    
+
             foreach ($logs as $log) {
                 if ($log->type == BiometricPunchType::CHECK_IN->value) {
                     $checkIn = Carbon::parse($log->timestamp);
                 } elseif ($log->type == BiometricPunchType::CHECK_OUT->value) {
                     $checkOut = Carbon::parse($log->timestamp);
                 }
-    
+
                 if ($checkIn && $checkOut) {
                     $totalSecs += $checkIn->diffInSeconds($checkOut);
                     $checkIn = null;
@@ -100,12 +100,12 @@ class Summary extends Component
                 }
             }
         }
-    
-        $hours      = floor($totalSecs / 3600);
-        $minutes    = floor(($totalSecs % 3600) / 60);
-        $seconds    = $totalSecs % 60;
 
-        return sprintf("%02d:%02d:%02d", $hours, $minutes, $seconds);
+        $hours = floor($totalSecs / 3600);
+        $minutes = floor(($totalSecs % 3600) / 60);
+        $seconds = $totalSecs % 60;
+
+        return sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
     }
 
     #[Computed]
@@ -118,10 +118,10 @@ class Summary extends Component
     {
         $periodStart = Carbon::parse($this->payrollModel->cut_off_start);
         $periodEnd = Carbon::parse($this->payrollModel->cut_off_end);
-        
+
         $holidays = Holiday::whereBetween('date', [$periodStart, $periodEnd])
             ->pluck('date')->toArray();
-    
+
         $attLogs = AttendanceLog::where('employee_id', $this->employee->employee_id)
             ->whereBetween('timestamp', [$periodStart, $periodEnd])
             ->where('type', BiometricPunchType::CHECK_IN->value)
@@ -130,49 +130,50 @@ class Summary extends Component
                 return Carbon::parse($log->timestamp)->toDateString();
             })
             ->toArray();
-    
+
         $workingDays = collect();
-    
+
         for ($date = $periodStart; $date->lte($periodEnd); $date->addDay()) {
             $dayOfWeek = $date->dayOfWeek;
-            
-            if ($dayOfWeek != Carbon::SATURDAY && $dayOfWeek != Carbon::SUNDAY && !in_array($date->toDateString(), $holidays)) {
+
+            if ($dayOfWeek != Carbon::SATURDAY && $dayOfWeek != Carbon::SUNDAY && ! in_array($date->toDateString(), $holidays)) {
                 if (in_array($date->toDateString(), $attLogs)) {
                     $workingDays->push($date->toDateString());
                 }
             }
         }
-    
+
         return $workingDays->count();
     }
-    
+
     public function getTotalAbsents()
     {
         $periodStart = Carbon::parse($this->payrollModel->cut_off_start);
         $periodEnd = Carbon::parse($this->payrollModel->cut_off_end);
-    
+
         $allDays = collect();
         for ($date = $periodStart->copy(); $date->lte(min($periodEnd, today())); $date->addDay()) {
             $allDays->push($date->toDateString());
         }
-    
+
         $attLogs = AttendanceLog::where('employee_id', $this->employee->employee_id)
             ->whereBetween('timestamp', [$periodStart->toDateString(), $periodEnd->toDateString()])
             ->get();
-    
+
         $presentDays = collect($attLogs)
             ->map(fn ($log) => Carbon::parse($log->timestamp)->toDateString())
             ->toArray();
 
         $absentDays = $allDays->diff($presentDays)->filter(function ($date) {
             $dayOfWeek = Carbon::parse($date)->dayOfWeek;
+
             return $dayOfWeek != Carbon::SATURDAY && $dayOfWeek != Carbon::SUNDAY;
-        });       
+        });
 
         $absentCount = $absentDays->count();
-    
+
         return $absentCount;
-    }    
+    }
 
     private function countTardyDays()
     {
@@ -189,6 +190,7 @@ class Summary extends Component
         $tardyDays = $attLogs->filter(function ($log) use ($shift) {
             $checkInTime = Carbon::parse($log->timestamp);
             $shiftStartTime = Carbon::parse($shift->start_time);
+
             return $checkInTime->gt($shiftStartTime);
         });
 

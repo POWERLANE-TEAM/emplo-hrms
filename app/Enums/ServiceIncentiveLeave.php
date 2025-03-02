@@ -2,8 +2,8 @@
 
 namespace App\Enums;
 
-use Exception;
 use Carbon\CarbonInterface;
+use Exception;
 
 enum ServiceIncentiveLeave: int
 {
@@ -31,7 +31,7 @@ enum ServiceIncentiveLeave: int
                 self::Q2 => __('April - June'),
                 self::Q3 => __('July - September'),
                 self::Q4 => __('October - December'),
-            };            
+            };
         }
 
         return match ($this) {
@@ -67,7 +67,7 @@ enum ServiceIncentiveLeave: int
             CarbonInterface::APRIL,
             CarbonInterface::MAY,
             CarbonInterface::JUNE,
-        ]; 
+        ];
     }
 
     public static function getThirdQuarter(): array
@@ -76,7 +76,7 @@ enum ServiceIncentiveLeave: int
             CarbonInterface::JULY,
             CarbonInterface::AUGUST,
             CarbonInterface::SEPTEMBER,
-        ]; 
+        ];
     }
 
     public static function getFourthQuarter(): array
@@ -85,7 +85,7 @@ enum ServiceIncentiveLeave: int
             CarbonInterface::OCTOBER,
             CarbonInterface::NOVEMBER,
             CarbonInterface::DECEMBER,
-        ]; 
+        ];
     }
 
     public static function getAllQuartersAndCredits(): array
@@ -93,19 +93,19 @@ enum ServiceIncentiveLeave: int
         return [
             'first_quarter' => [
                 'credits' => self::Q1->value,
-                'months' => self::getFirstQuarter()
+                'months' => self::getFirstQuarter(),
             ],
             'second_quarter' => [
                 'credits' => self::Q2->value,
-                'months' => self::getSecondQuarter()
+                'months' => self::getSecondQuarter(),
             ],
             'third_quarter' => [
                 'credits' => self::Q3->value,
-                'months' => self::getThirdQuarter()
+                'months' => self::getThirdQuarter(),
             ],
             'fourth_quarter' => [
                 'credits' => self::Q4->value,
-                'months' => self::getFirstQuarter()
+                'months' => self::getFirstQuarter(),
             ],
         ];
     }
@@ -134,9 +134,9 @@ enum ServiceIncentiveLeave: int
     public static function silCreditsMap(bool $yrsInService = false, bool $yearlyReset = false): array
     {
         if (! $yrsInService && ! $yearlyReset) {
-            throw new Exception(__("No flag provided to the method."));
+            throw new Exception(__('No flag provided to the method.'));
         }
-        
+
         if ($yrsInService) {
             return self::silCreditsIncreaseMap();
         }

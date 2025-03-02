@@ -2,9 +2,9 @@
 
 namespace App\Livewire\HrManager\Employees;
 
-use Livewire\Component;
 use App\Models\Employee;
 use Livewire\Attributes\Locked;
+use Livewire\Component;
 
 class Payslips extends Component
 {

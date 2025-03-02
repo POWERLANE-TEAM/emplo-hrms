@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class EmployeeLifecycle extends Model
@@ -19,10 +19,10 @@ class EmployeeLifecycle extends Model
     ];
 
     protected $casts = [
-        'started_at' =>     'datetime',
-        'separated_at' =>   'datetime',
-        'created_at' =>     'datetime',
-        'updated_at' =>     'datetime',
+        'started_at' => 'datetime',
+        'separated_at' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
     public function employee(): BelongsTo

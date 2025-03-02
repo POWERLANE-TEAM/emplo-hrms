@@ -2,15 +2,15 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use App\Enums\UserRole;
-use App\Models\Employee;
 use App\Enums\AccountType;
-use Illuminate\Support\Arr;
+use App\Enums\UserRole;
+use App\Enums\UserStatus as EnumUserStatus;
+use App\Models\Employee;
+use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
-use App\Enums\UserStatus as EnumUserStatus;
 
 /**
  * Seeder class for Employee Account with roles and permissions.

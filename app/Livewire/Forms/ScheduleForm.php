@@ -25,7 +25,7 @@ class ScheduleForm extends Form
         return [
             'date' => (function () {
 
-                return 'required|' . ScheduleDateRule::get($this->minDate, $this->maxDate);
+                return 'required|'.ScheduleDateRule::get($this->minDate, $this->maxDate);
             })(),
 
             'time' => (function () {

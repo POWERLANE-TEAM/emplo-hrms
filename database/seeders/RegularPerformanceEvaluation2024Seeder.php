@@ -2,16 +2,16 @@
 
 namespace Database\Seeders;
 
+use App\Enums\EmploymentStatus;
 use App\Enums\PerformanceEvaluationPeriod;
 use App\Models\Employee;
-use Illuminate\Support\Carbon;
-use App\Enums\EmploymentStatus;
-use Illuminate\Database\Seeder;
+use App\Models\PerformanceCategory;
 use App\Models\PerformanceRating;
 use App\Models\RegularPerformance;
-use App\Models\PerformanceCategory;
 use App\Models\RegularPerformancePeriod;
 use App\Models\RegularPerformanceRating;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Carbon;
 
 class RegularPerformanceEvaluation2024Seeder extends Seeder
 {
@@ -59,7 +59,7 @@ class RegularPerformanceEvaluation2024Seeder extends Seeder
         $categories = PerformanceCategory::all();
         $ratings = PerformanceRating::all();
 
-        foreach ($categories as $category) {;
+        foreach ($categories as $category) {
             $rating = $ratings->random();
 
             RegularPerformanceRating::create([

@@ -21,4 +21,4 @@ class OvertimeSeeder extends Seeder
             Overtime::reguard();
         });
     }
-}   
+}

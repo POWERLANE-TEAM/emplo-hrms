@@ -2,12 +2,11 @@
 
 namespace App\Livewire\Profile;
 
-use Livewire\Component;
 use Carbon\Carbon;
+use Livewire\Component;
 
 class ActivityLogs extends Component
 {
-
     // BACK-END REPLACE: Database fetching only. The rest of the back-end are handled.
     public $events = [
         [
@@ -140,7 +139,6 @@ class ActivityLogs extends Component
             ],
         ],
     ];
-
 
     public function render()
     {

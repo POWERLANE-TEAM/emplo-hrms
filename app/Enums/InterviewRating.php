@@ -20,7 +20,7 @@ enum InterviewRating: string
         };
     }
 
-        /**
+    /**
      * Return array of each cases and scalar values.
      */
     public static function options(): array
@@ -35,8 +35,7 @@ enum InterviewRating: string
     public static function values(): array
     {
         return collect(self::cases())
-        ->pluck('value')
-        ->all();
+            ->pluck('value')
+            ->all();
     }
 }
-

@@ -2,16 +2,16 @@
 
 namespace App\Livewire\Employee\Tables;
 
+use App\Enums\EmploymentStatus;
+use App\Enums\StatusBadge;
 use App\Livewire\Tables\Defaults;
 use App\Models\Employee;
-use App\Enums\StatusBadge;
-use App\Enums\EmploymentStatus;
-use Livewire\Attributes\Locked;
-use Illuminate\Support\Facades\Auth;
 use App\Models\RegularPerformancePeriod;
 use Illuminate\Database\Eloquent\Builder;
-use Rappasoft\LaravelLivewireTables\Views\Column;
+use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Locked;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class AnyRegularsPerformancesTable extends DataTableComponent
@@ -39,7 +39,7 @@ class AnyRegularsPerformancesTable extends DataTableComponent
         $this->configuringStandardTableMethods();
 
         $this->periodOptions = $this->getPeriodOptions();
-        
+
         $this->setTableAttributes([
             'default' => true,
             'class' => 'px-1 no-transition',
@@ -57,7 +57,7 @@ class AnyRegularsPerformancesTable extends DataTableComponent
                             });
                     })(),
 
-                    'label' => __('Evaluation Period: ')
+                    'label' => __('Evaluation Period: '),
                 ],
             ],
         ]);
@@ -66,7 +66,7 @@ class AnyRegularsPerformancesTable extends DataTableComponent
             $this->performance = $row->performancesAsRegular->firstWhere('period_id', $this->period);
 
             return [
-                'class' => $column->getTitle() === 'Evaluatee' ? 'text-md-start border-end sticky' :'text-md-center',
+                'class' => $column->getTitle() === 'Evaluatee' ? 'text-md-start border-end sticky' : 'text-md-center',
             ];
         });
     }
@@ -86,7 +86,7 @@ class AnyRegularsPerformancesTable extends DataTableComponent
                 $query->whereHas('performancesAsRegular', function ($sq) {
                     $sq->whereNotNull('secondary_approver_signed_at');
                 });
-                
+
                 $query->orWhere(function ($sq) {
                     $sq->whereHas('jobTitle.jobFamily', function ($ssq) {
                         $ssq->where('job_family_id', Auth::user()->account->jobTitle->jobFamily->job_family_id);
@@ -102,21 +102,21 @@ class AnyRegularsPerformancesTable extends DataTableComponent
         return [
             Column::make(__('Evaluatee'))
                 ->label(fn ($row) => view('components.table.employee')->with([
-                        'name'  => $row->full_name,
-                        'photo' => $row->account->photo,
-                        'id'    => $row->employee_id,
-                    ])
+                    'name' => $row->full_name,
+                    'photo' => $row->account->photo,
+                    'id' => $row->employee_id,
+                ])
                 )
-                ->sortable(fn (Builder $query, $direction) => $query->orderBy('last_name' ,$direction))
+                ->sortable(fn (Builder $query, $direction) => $query->orderBy('last_name', $direction))
                 ->searchable(fn (Builder $query, $searchTerm) => $this->applyFullNameSearch($query, $searchTerm))
                 ->setSortingPillDirections('A-Z', 'Z-A'),
 
             Column::make(__('Completion'))
-                ->label(function () {            
+                ->label(function () {
                     $url = route("{$this->routePrefix}.performances.regulars.show", [
                         'performance' => $this->performance->regular_performance_id,
                     ]);
-                    
+
                     return "<a href='{$url}' class='btn btn-info btn-md justify-content-center w-auto'>
                                 <i data-lucide='eye' class='icon icon-large me-1'></i>
                                 <span class='fw-light'>Review Evaluation</span>
@@ -130,7 +130,7 @@ class AnyRegularsPerformancesTable extends DataTableComponent
                         'color' => StatusBadge::PENDING->getColor(),
                         'slot' => StatusBadge::PENDING->getLabel(),
                     ];
-    
+
                     if ($this->performance) {
                         if ($this->performance->fourth_approver_signed_at) {
                             $badge = [
@@ -138,6 +138,7 @@ class AnyRegularsPerformancesTable extends DataTableComponent
                                 'slot' => StatusBadge::APPROVED->getLabel(),
                             ];
                         }
+
                         return view('components.status-badge')->with($badge);
                     }
 
@@ -165,7 +166,7 @@ class AnyRegularsPerformancesTable extends DataTableComponent
                         $this->periodOptions,
                         fn ($option) => $option == $this->period
                             ? $this->periodOptions[$option]
-                            : null, 
+                            : null,
                         ARRAY_FILTER_USE_KEY
                     );
 
@@ -181,9 +182,9 @@ class AnyRegularsPerformancesTable extends DataTableComponent
                 ->options($this->periodOptions)
                 ->filter(function (Builder $query, $value) {
                     $query->where(function ($sq) use ($value) {
-                        $sq->whereHas('performancesAsRegular', 
+                        $sq->whereHas('performancesAsRegular',
                             fn ($ssq) => $ssq->where('period_id', $value)
-                        );                        
+                        );
                     });
 
                     $this->period = (int) $value;
@@ -202,14 +203,14 @@ class AnyRegularsPerformancesTable extends DataTableComponent
                 ->filter(function (Builder $query, $value) {
                     if ($value === '0') {
                         $query->whereDoesntHave(
-                            'performancesAsRegular', 
+                            'performancesAsRegular',
                             fn ($sq) => $sq->where('period_id', $this->period)
                         );
                     } elseif ($value === '1') {
                         $query->whereHas(
-                            'performancesAsRegular', 
+                            'performancesAsRegular',
                             fn ($sq) => $sq->where('period_id', $this->period)
-                        );                        
+                        );
                     }
                 })
                 ->setFilterDefaultValue(''),
@@ -223,7 +224,7 @@ class AnyRegularsPerformancesTable extends DataTableComponent
                 ->filter(function (Builder $query, $value) {
                     $query->whereHas('performancesAsRegular', function ($sq) use ($value) {
                         $sq->where('period_id', $this->period);
-                        
+
                         if ($value === '0') {
                             $sq->whereNull('fourth_approver_signed_at');
                         } elseif ($value === '1') {

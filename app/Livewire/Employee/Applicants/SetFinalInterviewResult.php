@@ -2,23 +2,17 @@
 
 namespace App\Livewire\Employee\Applicants;
 
-use App\Models\InterviewRating;
 use App\Http\Controllers\FinalInterviewController;
 use App\Livewire\Forms\Applicant\InterviewForm;
-use App\Models\FinalInterviewRating;
 use App\Models\FinalInterview;
-use App\Models\InterviewParameter;
+use App\Models\FinalInterviewRating;
 use App\Rules\ValidApplicantInterviewRating;
-use Illuminate\Database\Eloquent\Model;
-use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
-use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 class SetFinalInterviewResult extends Component
 {
-
     public FinalInterview $finalInterview;
 
     public InterviewForm $finalForm;
@@ -41,7 +35,7 @@ class SetFinalInterviewResult extends Component
     {
         return [
             'finalForm.interviewRatings' => 'required',
-            'finalForm.interviewRatings.*' => 'bail|required|' . ValidApplicantInterviewRating::getRule(),
+            'finalForm.interviewRatings.*' => 'bail|required|'.ValidApplicantInterviewRating::getRule(),
         ];
     }
 

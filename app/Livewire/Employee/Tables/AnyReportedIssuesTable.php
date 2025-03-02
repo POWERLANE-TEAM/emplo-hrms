@@ -2,16 +2,16 @@
 
 namespace App\Livewire\Employee\Tables;
 
+use App\Enums\IssueConfidentiality;
+use App\Enums\IssueStatus;
 use App\Models\Issue;
 use App\Models\IssueType;
-use App\Enums\IssueStatus;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Locked;
-use App\Enums\IssueConfidentiality;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Builder;
-use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class AnyReportedIssuesTable extends DataTableComponent
@@ -108,12 +108,12 @@ class AnyReportedIssuesTable extends DataTableComponent
                     $name = Str::headline($row->reporter->full_name);
                     $photo = $row->reporter->account->photo;
                     $id = $row->reporter->employee_id;
-            
+
                     return '<div class="d-flex align-items-center">
-                                <img src="' . e($photo) . '" alt="User Picture" class="rounded-circle me-3" style="width: 38px; height: 38px;">
+                                <img src="'.e($photo).'" alt="User Picture" class="rounded-circle me-3" style="width: 38px; height: 38px;">
                                 <div>
-                                    <div>' . e($name) . '</div>
-                                    <div class="text-muted fs-6">Employee ID: ' . e($id) . '</div>
+                                    <div>'.e($name).'</div>
+                                    <div class="text-muted fs-6">Employee ID: '.e($id).'</div>
                                 </div>
                             </div>';
                 })
@@ -141,7 +141,7 @@ class AnyReportedIssuesTable extends DataTableComponent
                     'color' => IssueStatus::from($row->status)->getColor(),
                     'slot' => IssueStatus::from($row->status)->getLabel(),
                 ])),
-            
+
             Column::make(__('Date Filed'))
                 ->label(fn ($row) => $row->filed_at)
                 ->sortable(fn (Builder $query, $direction) => $query->orderBy('filed_at', $direction)),
@@ -165,4 +165,3 @@ class AnyReportedIssuesTable extends DataTableComponent
         ];
     }
 }
- 

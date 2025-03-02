@@ -54,7 +54,7 @@ class ApplicationExamController extends Controller
             $this->date = $request->input('examination.date');
 
             $validated = $request->validate([
-                'examination.date' => 'required|' . ScheduleDateRule::get($this->minDate, $this->maxDate),
+                'examination.date' => 'required|'.ScheduleDateRule::get($this->minDate, $this->maxDate),
                 'examination.time' => (function () {
                     return [
                         'required_with:date',
@@ -81,12 +81,12 @@ class ApplicationExamController extends Controller
                 $examStartTime = $validated('examination.time');
             }
 
-            $examStart = $examStartDate . ' ' . $examStartTime;
+            $examStart = $examStartDate.' '.$examStartTime;
 
             $examDuration = '00:30:00';
             [$hours, $minutes, $seconds] = explode(':', $examDuration);
             $totalMinutes = ($hours * 60) + $minutes + ($seconds / 60);
-            $examEnd = date('Y-m-d H:i:s', strtotime($examStart . ' + ' . $hours . ' hours ' . $minutes . ' minutes ' . $seconds . ' seconds'));
+            $examEnd = date('Y-m-d H:i:s', strtotime($examStart.' + '.$hours.' hours '.$minutes.' minutes '.$seconds.' seconds'));
 
             ApplicationExam::create([
                 'application_id' => $applicationId,
@@ -137,24 +137,24 @@ class ApplicationExamController extends Controller
         }
 
         $examStart = null;
-        if (!is_null($examStartDate) && !is_null($examStartTime)) {
-            $examStart = $examStartDate . ' ' . $examStartTime;
+        if (! is_null($examStartDate) && ! is_null($examStartTime)) {
+            $examStart = $examStartDate.' '.$examStartTime;
         }
 
         $exam = ApplicationExam::where('application_id', $application->application_id)->first();
 
         $updateData = [];
 
-        if (!is_null($examStart)) {
+        if (! is_null($examStart)) {
             $updateData['start_time'] = $examStart;
         }
 
-        if (!is_null($examResult)) {
+        if (! is_null($examResult)) {
             $updateData['passed'] = $examResult;
             $updateData['assigned_by'] = auth()->user()->account_id;
         }
 
-        if (!empty($updateData)) {
+        if (! empty($updateData)) {
             $exam->update($updateData);
         }
     }

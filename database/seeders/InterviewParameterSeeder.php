@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\InterviewParameter;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class InterviewParameterSeeder extends Seeder

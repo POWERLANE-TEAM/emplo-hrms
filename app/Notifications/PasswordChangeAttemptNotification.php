@@ -2,11 +2,11 @@
 
 namespace App\Notifications;
 
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
-use Carbon\Carbon;
+use Illuminate\Notifications\Notification;
 
 class PasswordChangeAttemptNotification extends Notification implements ShouldQueue
 {
@@ -29,6 +29,7 @@ class PasswordChangeAttemptNotification extends Notification implements ShouldQu
     public function via($notifiable)
     {
         $notifiable->loadMissing('account');
+
         return ['mail', 'database'];
     }
 
@@ -44,8 +45,8 @@ class PasswordChangeAttemptNotification extends Notification implements ShouldQu
         $timezone = config('app.timezone');
 
         return (new MailMessage)
-            ->greeting('Hello ' . $notifiable->account->fullname . ',')
-            ->line('There was an attempt to change your password on ' . $time . ' ' . $timezone . ' that was the same as your current password.')
+            ->greeting('Hello '.$notifiable->account->fullname.',')
+            ->line('There was an attempt to change your password on '.$time.' '.$timezone.' that was the same as your current password.')
             ->line('If you did not request this change, please contact our support team immediately.');
     }
 
@@ -53,7 +54,6 @@ class PasswordChangeAttemptNotification extends Notification implements ShouldQu
      * Get the array representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return array
      */
     public function toDatabase($notifiable): array
     {
@@ -61,7 +61,7 @@ class PasswordChangeAttemptNotification extends Notification implements ShouldQu
         $timezone = config('app.timezone');
 
         return [
-            'password-change-attempt' => $notifiable->account->fullname . ', there was an attempt to change your password on ' . $time . ' ' . $timezone . ' that was the same as your current password.',
+            'password-change-attempt' => $notifiable->account->fullname.', there was an attempt to change your password on '.$time.' '.$timezone.' that was the same as your current password.',
         ];
     }
 

@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class InitialInterviewRating extends Model
@@ -27,5 +27,4 @@ class InitialInterviewRating extends Model
     {
         $query->where('parameter_id', $parameterId);
     }
-
 }

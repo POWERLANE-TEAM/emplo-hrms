@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
-use Illuminate\Http\Request;
 use App\Models\RegularPerformance;
 
 class RegularPerformanceController extends Controller
@@ -21,6 +20,7 @@ class RegularPerformanceController extends Controller
     public function show(RegularPerformance $performance)
     {
         $performance->loadMissing(['employeeEvaluatee', 'employeeEvaluatee.jobTitle']);
+
         return view('employee.supervisor.performance-evaluations.regulars.show', compact('performance'));
     }
 
@@ -32,6 +32,7 @@ class RegularPerformanceController extends Controller
     public function review(RegularPerformance $performance)
     {
         $performance->loadMissing(['employeeEvaluatee', 'employeeEvaluatee.jobTitle']);
+
         return view('employee.hr-manager.evaluations.regular.show', compact('performance'));
     }
 }

@@ -2,13 +2,13 @@
 
 namespace App\Livewire\Employee\Tables;
 
-use Illuminate\Support\Str;
 use App\Models\EmployeeLeave;
 use App\Models\LeaveCategory;
-use Livewire\Attributes\Locked;
-use Rappasoft\LaravelLivewireTables\Views\Column;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Str;
+use Livewire\Attributes\Locked;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class AnyLeaveRequestsTable extends DataTableComponent
@@ -22,7 +22,7 @@ class AnyLeaveRequestsTable extends DataTableComponent
     {
         $this->setPrimaryKey('emp_leave_id')
             ->setTableRowUrl(fn ($row) => route("{$this->routePrefix}.leaves.employee.requests", [
-                'leave' => $row->emp_leave_id
+                'leave' => $row->emp_leave_id,
             ]))
             ->setTableRowUrlTarget(fn () => '__blank');
         $this->setPageName('leaves');
@@ -110,12 +110,12 @@ class AnyLeaveRequestsTable extends DataTableComponent
                     $name = Str::headline($row->employee->full_name);
                     $photo = $row->employee->account->photo;
                     $id = $row->employee->employee_id;
-            
+
                     return '<div class="d-flex align-items-center">
-                                <img src="' . e($photo) . '" alt="User Picture" class="rounded-circle me-3" style="width: 38px; height: 38px;">
+                                <img src="'.e($photo).'" alt="User Picture" class="rounded-circle me-3" style="width: 38px; height: 38px;">
                                 <div>
-                                    <div>' . e($name) . '</div>
-                                    <div class="text-muted fs-6">Employee ID: ' . e($id) . '</div>
+                                    <div>'.e($name).'</div>
+                                    <div class="text-muted fs-6">Employee ID: '.e($id).'</div>
                                 </div>
                             </div>';
                 })
@@ -187,16 +187,16 @@ class AnyLeaveRequestsTable extends DataTableComponent
                     if ($value === '1') {
                         $query->where(function ($subQuery) {
                             $subQuery->whereNotNull('third_approver_signed_at')
-                                     ->orWhereNotNull('secondary_approver_signed_at');
+                                ->orWhereNotNull('secondary_approver_signed_at');
                         })
-                        ->whereNull('denied_at');
-                    } elseif ($value === '2' ) {
+                            ->whereNull('denied_at');
+                    } elseif ($value === '2') {
                         $query->whereNotNull('fourth_approver_signed_at');
                     } elseif ($value === '3') {
                         $query->whereNotNull('denied_at');
                     }
                 })
-                ->setFilterDefaultValue('1')
+                ->setFilterDefaultValue('1'),
         ];
     }
 }

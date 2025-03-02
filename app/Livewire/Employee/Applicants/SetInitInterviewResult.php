@@ -2,23 +2,16 @@
 
 namespace App\Livewire\Employee\Applicants;
 
-use App\Models\InterviewRating;
 use App\Http\Controllers\InitialInterviewController;
 use App\Livewire\Forms\Applicant\InterviewForm;
-use App\Models\FinalInterviewRating;
 use App\Models\InitialInterview;
 use App\Models\InitialInterviewRating;
-use App\Models\InterviewParameter;
 use App\Rules\ValidApplicantInterviewRating;
-use Illuminate\Database\Eloquent\Model;
-use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
-use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 class SetInitInterviewResult extends Component
 {
-
     public InitialInterview $initInterview;
 
     public InterviewForm $initForm;
@@ -41,7 +34,7 @@ class SetInitInterviewResult extends Component
     {
         return [
             'initForm.interviewRatings' => 'required',
-            'initForm.interviewRatings.*' => 'bail|required|' . ValidApplicantInterviewRating::getRule(),
+            'initForm.interviewRatings.*' => 'bail|required|'.ValidApplicantInterviewRating::getRule(),
         ];
     }
 

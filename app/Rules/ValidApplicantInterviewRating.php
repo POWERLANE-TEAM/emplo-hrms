@@ -2,7 +2,6 @@
 
 namespace App\Rules;
 
-use App\Enums\EnumsInterviewRating;
 use App\Models\InterviewRating;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
@@ -10,7 +9,6 @@ use Illuminate\Contracts\Validation\ValidationRule;
 class ValidApplicantInterviewRating implements ValidationRule
 {
     protected ?string $attributeName;
-
 
     public function __construct(?string $attributeName = null)
     {
@@ -24,8 +22,8 @@ class ValidApplicantInterviewRating implements ValidationRule
 
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if (!InterviewRating::where('rating_id', $value)->exists()) {
-            $fail('This ' . ($this->attributeName ?? $attribute) . ' is invalid.');
+        if (! InterviewRating::where('rating_id', $value)->exists()) {
+            $fail('This '.($this->attributeName ?? $attribute).' is invalid.');
         }
     }
 }

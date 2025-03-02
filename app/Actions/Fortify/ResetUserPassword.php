@@ -2,8 +2,6 @@
 
 namespace App\Actions\Fortify;
 
-use App\Enums\AccountType;
-use App\Enums\UserRole;
 use App\Models\User;
 use App\Notifications\PasswordChangeAttemptNotification;
 use App\Notifications\PasswordResetNotification;
@@ -29,7 +27,7 @@ class ResetUserPassword implements ResetsUserPasswords
         ])->after(function ($validator) use ($user, $input) {
             if (Hash::check($input['password'], $user->password)) {
                 $validator->errors()->add('password', 'Your new password cannot be the same as your current password.');
-                $user->notify(new PasswordChangeAttemptNotification());
+                $user->notify(new PasswordChangeAttemptNotification);
             }
         })->validate();
 
@@ -37,6 +35,6 @@ class ResetUserPassword implements ResetsUserPasswords
             'password' => $input['password'],
         ])->save();
 
-        $user->notify(new PasswordResetNotification());
+        $user->notify(new PasswordResetNotification);
     }
 }

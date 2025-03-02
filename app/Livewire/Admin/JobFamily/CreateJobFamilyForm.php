@@ -2,14 +2,14 @@
 
 namespace App\Livewire\Admin\JobFamily;
 
-use Livewire\Component;
+use App\Enums\UserPermission;
 use App\Models\Employee;
 use App\Models\JobFamily;
-use App\Enums\UserPermission;
-use Livewire\Attributes\Validate;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\Validate;
+use Livewire\Component;
 
 class CreateJobFamilyForm extends Component
 {
@@ -55,15 +55,15 @@ class CreateJobFamilyForm extends Component
     public function updatedQuery()
     {
         $this->employees = Employee::whereLike('first_name', "%{$this->query}%")
-                                ->orWhereLike('middle_name', "%{$this->query}%")
-                                ->orWhereLike('last_name', "%{$this->query}%")
-                                ->get()
-                                ->map(function ($item) {
-                                    return (object) [
-                                        'id' => $item->employee_id,
-                                        'fullName' => $item->full_name 
-                                    ];
-                                });
+            ->orWhereLike('middle_name', "%{$this->query}%")
+            ->orWhereLike('last_name', "%{$this->query}%")
+            ->get()
+            ->map(function ($item) {
+                return (object) [
+                    'id' => $item->employee_id,
+                    'fullName' => $item->full_name,
+                ];
+            });
     }
 
     public function selectEmployee(int $id)

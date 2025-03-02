@@ -2,11 +2,11 @@
 
 namespace App\Notifications;
 
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
-use Carbon\Carbon;
+use Illuminate\Notifications\Notification;
 
 class PasswordResetNotification extends Notification implements ShouldQueue
 {
@@ -29,6 +29,7 @@ class PasswordResetNotification extends Notification implements ShouldQueue
     public function via($notifiable)
     {
         $notifiable->loadMissing('account');
+
         return ['mail', 'database'];
     }
 
@@ -44,8 +45,8 @@ class PasswordResetNotification extends Notification implements ShouldQueue
         $timezone = config('app.timezone');
 
         return (new MailMessage)
-            ->greeting('Hello ' . $notifiable->account->fullname . ',')
-            ->line('Your password has been reset successfully on ' . $time . ' ' . $timezone . '.')
+            ->greeting('Hello '.$notifiable->account->fullname.',')
+            ->line('Your password has been reset successfully on '.$time.' '.$timezone.'.')
             ->line('If you did not request this change, please contact our support team immediately.');
     }
 
@@ -53,7 +54,6 @@ class PasswordResetNotification extends Notification implements ShouldQueue
      * Get the array representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return array
      */
     public function toDatabase($notifiable): array
     {
@@ -61,7 +61,7 @@ class PasswordResetNotification extends Notification implements ShouldQueue
         $timezone = config('app.timezone');
 
         return [
-            'password-reset' => $notifiable->account->fullname . ', your password has been reset successfully on ' . $time . ' ' . $timezone . '.',
+            'password-reset' => $notifiable->account->fullname.', your password has been reset successfully on '.$time.' '.$timezone.'.',
         ];
     }
 

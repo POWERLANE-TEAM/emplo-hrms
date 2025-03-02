@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 class ProfileController extends Controller
 {
     public function index()
@@ -18,7 +16,7 @@ class ProfileController extends Controller
 
     public function settings()
     {
-        return view('employee.profile.settings');    
+        return view('employee.profile.settings');
     }
 
     public function logs()

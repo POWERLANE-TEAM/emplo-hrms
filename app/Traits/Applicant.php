@@ -3,7 +3,6 @@
 namespace App\Traits;
 
 use App\Enums\AccountType;
-use App\Enums\UserPermission;
 
 trait Applicant
 {
@@ -14,6 +13,7 @@ trait Applicant
             if ($isTerminate) {
                 abort(403, 'You have already submitted an application.');
             }
+
             return true;
         }
     }
@@ -22,8 +22,8 @@ trait Applicant
      * Check if the current user is an applicant or not.
      * Employee with enough permission can proceed.
      *
-     * @param bool|null $isTerminate Optional. If true, aborts the request with a 403 status code.
-     *                               I
+     * @param  bool|null  $isTerminate  Optional. If true, aborts the request with a 403 status code.
+     *                                  I
      * @return bool|null Returns true if the user is an employee without the required permission
      *                   and $isTerminate is false or null.
      */
@@ -33,6 +33,7 @@ trait Applicant
             if ($isTerminate) {
                 abort(403, 'You are not allowed to access this page.');
             }
+
             return true;
         }
     }

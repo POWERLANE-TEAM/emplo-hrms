@@ -2,9 +2,9 @@
 
 namespace App\Policies;
 
-use App\Models\User;
-use App\Models\Training;
 use App\Enums\UserPermission;
+use App\Models\Training;
+use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
 class TrainingPolicy
@@ -19,9 +19,6 @@ class TrainingPolicy
 
     /**
      * Check if user can create training record.
-     * 
-     * @param \App\Models\User $user
-     * @return Response
      */
     public function createTrainingRecord(User $user): Response
     {
@@ -32,10 +29,6 @@ class TrainingPolicy
 
     /**
      * Check if user employee owns the training records.
-     * 
-     * @param \App\Models\User $user
-     * @param \App\Models\Training $training
-     * @return Response
      */
     public function viewTrainingRecords(User $user, Training $training): Response
     {
@@ -46,9 +39,6 @@ class TrainingPolicy
 
     /**
      * Check if user employee can view any employee training records.
-     * 
-     * @param \App\Models\User $user
-     * @return Response
      */
     public function viewAnyTrainingRecords(User $user): Response
     {

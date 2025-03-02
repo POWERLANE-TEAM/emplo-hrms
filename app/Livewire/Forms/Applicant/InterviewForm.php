@@ -14,14 +14,11 @@ use Livewire\Form;
 
 class InterviewForm extends Form
 {
-
-
     #[Locked]
     public $interviewParameters = [];
 
     #[Validate]
     public $interviewRatings = [];
-
 
     #[Computed]
     public function initializeInterviewRatings()
@@ -48,7 +45,8 @@ class InterviewForm extends Form
 
     public function interviewRatingOptionsF($reverse = false)
     {
-        $options =InterviewRating::getRatings();
+        $options = InterviewRating::getRatings();
+
         return $reverse ? array_reverse($options, true) : $options;
     }
 
@@ -56,7 +54,7 @@ class InterviewForm extends Form
     {
         return [
             'interviewRatings' => 'required',
-            'interviewRatings.*' => 'bail|required|' . ValidApplicantInterviewRating::getRule(),
+            'interviewRatings.*' => 'bail|required|'.ValidApplicantInterviewRating::getRule(),
         ];
     }
 
@@ -76,13 +74,16 @@ class InterviewForm extends Form
         foreach ($this->interviewRatings as $rating) {
             if ($rating) {
                 $ratingVal = $values[$rating];
-                if ($this->ratingIsPassing($ratingVal)) $ratingPassedCount++;
+                if ($this->ratingIsPassing($ratingVal)) {
+                    $ratingPassedCount++;
+                }
                 $total += $ratingVal;
                 $count++;
             }
         }
 
         $average = $count ? rtrim(rtrim(number_format($total / $count, 10), '0'), '.') : 0;
-        return  [$average, $ratingPassedCount];
+
+        return [$average, $ratingPassedCount];
     }
 }

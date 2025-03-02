@@ -4,7 +4,6 @@ namespace App\Livewire\Admin\Accounts;
 
 use App\Enums\CivilStatus;
 use App\Enums\Sex;
-use App\Enums\UserPermission;
 use App\Enums\UserRole;
 use App\Livewire\Forms\CreateAccountForm as CreateAccountFormObject;
 use App\Models\Barangay;
@@ -17,7 +16,6 @@ use App\Models\Province;
 use App\Models\Region;
 use App\Models\Shift;
 use App\Models\SpecificArea;
-use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -161,9 +159,9 @@ class CreateAccountForm extends Component
         }
 
         isset(
-            $this->form->presentRegion, 
-            $this->form->presentCity, 
-            $this->form->presentBarangay, 
+            $this->form->presentRegion,
+            $this->form->presentCity,
+            $this->form->presentBarangay,
             $this->form->presentAddress
         )
             ? $this->samePresentAddressChckBox['shown'] = true

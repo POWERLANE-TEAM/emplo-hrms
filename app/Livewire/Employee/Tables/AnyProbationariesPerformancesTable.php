@@ -2,17 +2,17 @@
 
 namespace App\Livewire\Employee\Tables;
 
-use App\Models\Employee;
-use App\Enums\StatusBadge;
 use App\Enums\EmploymentStatus;
-use Livewire\Attributes\Locked;
-use App\Livewire\Tables\Defaults;
-use App\Models\PerformanceRating;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Database\Eloquent\Builder;
 use App\Enums\PerformanceEvaluationPeriod;
-use Rappasoft\LaravelLivewireTables\Views\Column;
+use App\Enums\StatusBadge;
+use App\Livewire\Tables\Defaults;
+use App\Models\Employee;
+use App\Models\PerformanceRating;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Cache;
+use Livewire\Attributes\Locked;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class AnyProbationariesPerformancesTable extends DataTableComponent
@@ -23,7 +23,7 @@ class AnyProbationariesPerformancesTable extends DataTableComponent
 
     #[Locked]
     public $routePrefix;
-    
+
     private $isFinal;
 
     private $currentPeriod;
@@ -58,7 +58,7 @@ class AnyProbationariesPerformancesTable extends DataTableComponent
                             });
                     })(),
 
-                    'label' => __('Approval: ')
+                    'label' => __('Approval: '),
                 ],
             ],
         ]);
@@ -67,7 +67,7 @@ class AnyProbationariesPerformancesTable extends DataTableComponent
             $this->performances = $row->performancesAsProbationary
                 ->when($this->periodFilter, fn ($query) => $query->where('period_name', $this->periodFilter));
             $this->currentPeriod = $this->performances->sortByDesc('end_date')->first();
-                
+
             return [
                 'class' => $columnIndex === 0 ? 'text-md-start border-end sticky' : 'text-md-center',
             ];
@@ -98,30 +98,30 @@ class AnyProbationariesPerformancesTable extends DataTableComponent
             $categoryRatings = $item->details->first()?->categoryRatings;
 
             if ($categoryRatings) {
-                $totalRatings = $categoryRatings->sum(fn($subitem) => $subitem->rating->perf_rating);
+                $totalRatings = $categoryRatings->sum(fn ($subitem) => $subitem->rating->perf_rating);
                 $countRatings = $categoryRatings->count();
-                
+
                 $carry['total'] += $totalRatings;
                 $carry['count'] += $countRatings;
             }
 
             return $carry;
         }, ['total' => 0, 'count' => 0]);
-    
+
         $sum = $totals['total'];
         $countSum = $totals['count'];
-    
+
         $mean = $countSum > 0 ? $sum / $countSum : 0;
         $format = number_format($mean, 2, '.');
         $rounded = round($mean);
         $avg = (int) $rounded;
 
         $key = config('cache.keys.performance.ratings');
-    
+
         $performanceRatings = Cache::rememberForever($key, function () {
             return PerformanceRating::all();
         });
-    
+
         $scale = $performanceRatings->firstWhere('perf_rating', $avg)?->perf_rating_name;
 
         return compact('format', 'scale');
@@ -132,9 +132,9 @@ class AnyProbationariesPerformancesTable extends DataTableComponent
         return [
             Column::make(__('Evaluatee'))
                 ->label(fn ($row) => view('components.table.employee')->with([
-                    'name'  => $row->full_name,
+                    'name' => $row->full_name,
                     'photo' => $row->account->photo,
-                    'id'    => $row->employee_id
+                    'id' => $row->employee_id,
                 ]))
                 ->sortable(fn (Builder $query, $direction) => $query->orderBy('last_name', $direction))
                 ->searchable(fn (Builder $query, $searchTerm) => $this->applyFullNameSearch($query, $searchTerm)),
@@ -144,7 +144,7 @@ class AnyProbationariesPerformancesTable extends DataTableComponent
                     $evaluations = $row->performancesAsProbationary;
 
                     session()->put('final_rating', $this->computeFinalRating($evaluations));
-            
+
                     $url = route("{$this->routePrefix}.performances.probationaries.review", [
                         'employee' => $row->employee_id,
                         'year_period' => $evaluations->max('end_date')->year,
@@ -156,7 +156,6 @@ class AnyProbationariesPerformancesTable extends DataTableComponent
                             </a>";
                 })
                 ->html(),
-
 
             Column::make(__('Approval'))
                 ->label(function ($row) {
@@ -182,9 +181,9 @@ class AnyProbationariesPerformancesTable extends DataTableComponent
             Column::make(__('Final Rating'))
                 ->label(function ($row) {
                     $finalRating = $this->computeFinalRating($row->performancesAsProbationary);
-                    
+
                     return sprintf(
-                        "<strong>%s - %s</strong>",
+                        '<strong>%s - %s</strong>',
                         $finalRating['format'],
                         $finalRating['scale']
                     );
@@ -194,14 +193,14 @@ class AnyProbationariesPerformancesTable extends DataTableComponent
             Column::make(__('Period'))->label(fn () => $this->currentPeriod->interval),
         ];
     }
-    
+
     public function filters(): array
     {
         return [
             SelectFilter::make(__('Approval'))
                 ->options($this->getApprovalStatus())
                 ->filter(function (Builder $query, $value) {
-                    $query->whereHas('performancesAsProbationary.details', function ($sq) use ($value) {                        
+                    $query->whereHas('performancesAsProbationary.details', function ($sq) use ($value) {
                         if ($value === '0') {
                             $sq->whereNull('fourth_approver_signed_at')
                                 ->orWhereNull('third_approver_signed_at');
@@ -216,7 +215,7 @@ class AnyProbationariesPerformancesTable extends DataTableComponent
             // date filter here perhaps
         ];
     }
-    
+
     private function getApprovalStatus(): array
     {
         return [

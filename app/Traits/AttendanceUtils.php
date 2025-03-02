@@ -2,16 +2,15 @@
 
 namespace App\Traits;
 
-use Illuminate\Support\Carbon;
 use App\Enums\BiometricPunchType;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Carbon;
 
 trait AttendanceUtils
 {
     /**
      * Filter attendance logs within time window of regular shift start - end time.
-     * 
-     * @param Collection $attendanceLogs
+     *
      * @return Collection<int, mixed>
      */
     public function validateRegularLogs(Collection $attendanceLogs)
@@ -20,21 +19,20 @@ trait AttendanceUtils
 
         return $sortedLogs->filter(function ($log) {
             $regShiftStart = Carbon::createFromFormat('H:i:s', $this->regularShift->start_time)
-                                ->setDateFrom($log->timestamp); // 6 am
+                ->setDateFrom($log->timestamp); // 6 am
             $regShiftEnd = Carbon::createFromFormat('H:i:s', $this->regularShift->end_time)
-                                ->setDateFrom($log->timestamp); // 10 pm
-                                        
+                ->setDateFrom($log->timestamp); // 10 pm
+
             return $log->timestamp->isBetween(
-                    $regShiftStart, 
-                    $regShiftEnd
-                );
+                $regShiftStart,
+                $regShiftEnd
+            );
         });
     }
 
     /**
      * Filter attendance logs within time window of night differential shift start - end time.
-     * 
-     * @param Collection $attendanceLogs
+     *
      * @return Collection<int, mixed>
      */
     public function validateNightDiffLogs(Collection $attendanceLogs)
@@ -48,16 +46,16 @@ trait AttendanceUtils
         // case 3: ci = 2/6/25 10 pm - co = 2/6/25 11 pm; expected = ✔ actual = ✔
         return $sortedLogs->filter(function ($log) use (&$checkIns) {
             $nightDiffShiftStart = Carbon::createFromFormat('H:i:s', $this->nightDifferentialShift->start_time)
-                                        ->setDateFrom($log->timestamp); // 10 pm
+                ->setDateFrom($log->timestamp); // 10 pm
             $nightDiffShiftEnd = Carbon::createFromFormat('H:i:s', $this->nightDifferentialShift->end_time)
-                                        ->setDateFrom($log->timestamp->copy()->addDay()); // 6 am
+                ->setDateFrom($log->timestamp->copy()->addDay()); // 6 am
 
-            if ($log->type === BiometricPunchType::CHECK_IN->value && 
+            if ($log->type === BiometricPunchType::CHECK_IN->value &&
                 $log->timestamp->gte($nightDiffShiftStart)) {
-                    $checkIns->push($log->timestamp);
+                $checkIns->push($log->timestamp);
             } elseif ($log->type === BiometricPunchType::CHECK_OUT->value) {
                 $corCheckIn = $checkIns->first(function ($checkIn) use ($log) {
-                    return 
+                    return
                         $checkIn->isSameDay($log->timestamp) &&
                         $checkIn->isBefore($log->timestamp);
                 });
@@ -69,21 +67,18 @@ trait AttendanceUtils
                 }
             } else {
                 return false;
-            };
+            }
 
             return $log->timestamp->isBetween(
-                    $nightDiffShiftStart, 
-                    $nightDiffShiftEnd
-                );
+                $nightDiffShiftStart,
+                $nightDiffShiftEnd
+            );
         });
     }
 
     /**
      * Filter attendance logs within time start and end of payroll period.
-     * 
-     * @param Collection $attendanceLogs
-     * @param Carbon $startDate
-     * @param Carbon $startDate
+     *
      * @return Collection<int, mixed>
      */
     public function validateAttendanceLogsPayroll(Collection $attendanceLogs, Carbon $startDate, Carbon $endDate)
@@ -95,8 +90,7 @@ trait AttendanceUtils
 
     /**
      * Add the difference in hours of each check-in against check-out timestamp.
-     * 
-     * @param Collection $attendanceLogs
+     *
      * @return float|null
      */
     public function sumDtrLogs(Collection $attendanceLogs)
@@ -113,7 +107,7 @@ trait AttendanceUtils
                     $seconds += $checkIn->diffInSeconds($checkOut);
 
                     $checkIn = null;
-                }             
+                }
             });
 
             return $seconds;
@@ -156,6 +150,7 @@ trait AttendanceUtils
 
         $holidays = $holidays->filter(function ($holiday) use ($startDate, $endDate) {
             $date = Carbon::createFromFormat('m-d', $holiday->date)->setYear($startDate->year);
+
             return $date->isBetween($startDate, $endDate);
         })
             ->pluck('date')
@@ -167,7 +162,7 @@ trait AttendanceUtils
             }
             $currentDate->addDay();
         }
-    
+
         return $workdays;
     }
 }

@@ -2,10 +2,10 @@
 
 namespace App\Livewire\HrManager\Reports;
 
-use Livewire\Component;
 use App\Services\ReportService;
-use Livewire\Attributes\Locked;
 use Illuminate\Support\Facades\Cache;
+use Livewire\Attributes\Locked;
+use Livewire\Component;
 
 class IssueResolutionChart extends Component
 {
@@ -18,9 +18,11 @@ class IssueResolutionChart extends Component
     {
         $key = sprintf(config('cache.keys.reports.issue_resolution_time_rate'), $this->year);
 
-        $this->issueResolutionData  = Cache::get($key);
+        $this->issueResolutionData = Cache::get($key);
 
-        if ($this->issueResolutionData) return;
+        if ($this->issueResolutionData) {
+            return;
+        }
 
         $issueResolutionTimeRate = $reportService->getIssueResolutionTimeRate($this->year);
 
@@ -33,7 +35,7 @@ class IssueResolutionChart extends Component
     }
 
     public function render()
-    {   
+    {
         return view('livewire.hr-manager.reports.issue-resolution-chart');
     }
 }

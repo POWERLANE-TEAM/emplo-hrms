@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Employee;
-use Illuminate\Http\Request;
 use App\Enums\EmploymentStatus;
+use App\Models\Employee;
 use App\Models\RegularPerformance;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class PerformanceController extends Controller
@@ -17,7 +17,7 @@ class PerformanceController extends Controller
         if ($user->account->status->emp_status_name === EmploymentStatus::PROBATIONARY->label()) {
             return to_route('employee.performances.probationary');
         }
-        
+
         return to_route('employee.performances.regular');
     }
 
@@ -39,6 +39,7 @@ class PerformanceController extends Controller
     public function showAsProbationary(Request $request, Employee $employee)
     {
         $yearPeriod = $request->query('year_period');
+
         return view('employee.performance.eval.probationary.show', compact('employee', 'yearPeriod'));
     }
 }

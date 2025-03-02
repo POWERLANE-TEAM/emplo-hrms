@@ -31,11 +31,13 @@ class PreemploymentForm extends Component
 
     public $preemploymentDocs;
 
-    public function mount(){
+    public function mount()
+    {
         $this->setPreemploymentDocs();
     }
 
-    public function boot(){
+    public function boot()
+    {
         try {
             $this->isBasicEmployee = auth()->user()->hasRole(UserRole::BASIC);
 
@@ -50,11 +52,12 @@ class PreemploymentForm extends Component
         }
     }
 
-    public function setPreemploymentDocs(){
+    public function setPreemploymentDocs()
+    {
         $this->preemploymentDocs = $this->preemploymentReqs->map(function ($req) {
             $docArray = [
                 'preemp_req_id' => $req->preemp_req_id,
-                'file' =>  Storage::disk('public')->url('/'. optional(optional($req->applicationDocs)->first())->file_path ?? '')
+                'file' => Storage::disk('public')->url('/'.optional(optional($req->applicationDocs)->first())->file_path ?? ''),
             ];
 
             $docArray['oldFile'] = $docArray['file'] ? $docArray['file'] : null;
