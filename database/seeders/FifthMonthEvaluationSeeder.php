@@ -15,25 +15,23 @@ class FifthMonthEvaluationSeeder extends Seeder
      */
     public function run(): void
     {
-        $start = now();
-        $end = fake()->dateTimeBetween($start, (clone $start)->modify('+10 days'));
+        $start = now()->subDays(3);
+        $end = $start->copy()->addWeeks(2);
 
-        $probationaries = Employee::whereHas('status', function ($query) {
-            $query->where('emp_status_name', EmploymentStatus::PROBATIONARY->label());
-        })->get();
+        $probationaries = Employee::ofEmploymentStatus(EmploymentStatus::PROBATIONARY)->get();
 
         $data = [];
 
         $probationaries->each(function ($item) 
             use (&$data, $start, $end) {
-                array_push($data, [
+                $data[] = [
                     'evaluatee' => $item->employee_id,
                     'period_name' => PerformanceEvaluationPeriod::FIFTH_MONTH,
                     'start_date' => $start,
                     'end_date' => $end,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]);
+                    'created_at' => $start,
+                    'updated_at' => $start,
+                ];
             }
         );
 

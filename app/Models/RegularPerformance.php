@@ -25,13 +25,13 @@ class RegularPerformance extends Model
     {
         $key = config('cache.keys.performance.ratings');
 
-        $cachedValue = Cache::rememberForever($key, function () {
-            return PerformanceRating::all();
-        });
+        $cachedValue = Cache::rememberForever($key, fn () => PerformanceRating::all());
 
-        $this->loadMissing([
-            'categoryRatings.rating',
-        ]);
+        if (! $cachedValue) {
+            $this->loadMissing([
+                'categoryRatings.rating',
+            ]);   
+        }
 
         $total = $this->categoryRatings->average(function ($item) {
             return $item->rating->perf_rating;

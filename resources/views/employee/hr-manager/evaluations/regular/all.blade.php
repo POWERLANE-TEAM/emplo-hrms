@@ -1,7 +1,7 @@
 @extends('components.layout.employee.layout', ['description' => 'Regulars Performance Evaluation', 'nonce' => $nonce])
 
 @section('head')
-<title>Regular Employees | Performance Evaluation</title>
+<title>Performance Evaluation • Regulars</title>
 <script rel="preload" as="script" type="text/js" src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 <script src="https://unpkg.com/lucide@0.428.0/dist/umd/lucide.min.js"></script>
 @endsection
@@ -22,7 +22,7 @@
 
 <x-headings.main-heading :isHeading="true">
     <x-slot:heading>
-        {{ __('Regulars Performance Evaluation Table') }}
+        {{ __('Performance Evaluations • Regulars') }}
     </x-slot:heading>
 
     <x-slot:description>

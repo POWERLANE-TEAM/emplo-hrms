@@ -13,7 +13,7 @@ class OpenRegularEvaluationPeriod extends Command
      *
      * @var string
      */
-    protected $signature = 'open-regular-evaluation-period';
+    protected $signature = 'regevaluation:open';
 
     /**
      * The console command description.

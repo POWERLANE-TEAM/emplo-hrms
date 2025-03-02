@@ -17,7 +17,7 @@ class SyncAttendanceLogsFromBiometricDevice extends Command
      *
      * @var string
      */
-    protected $signature = 'sync-attlogs-from-biometric-device';
+    protected $signature = 'attlogs:sync';
 
     /**
      * The console command description.

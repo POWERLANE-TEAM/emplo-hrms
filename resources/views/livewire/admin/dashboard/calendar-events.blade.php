@@ -1,3 +1,5 @@
+@use(Illuminate\Support\Carbon)
+
 <div class="col-md-6 d-flex">
     <div class="card border-primary p-4 h-100 w-100">
         <div class="px-3">
@@ -14,11 +16,21 @@
             </div>
             <div class="w-100">
 
-                <!-- BACK-END REPLACE: Recent Activity Logs. Limit to 2. -->
-                <ul>
-                    <li>February 14, 2024 — Valentine's Day</li>
-                    <li>March 8, 2024 — International Women's Day</li>
-                </ul>
+                @if ($holidays->isEmpty())
+                    <small>{{ __('No upcoming events.') }}</small>
+                @else
+                    <ul>
+                        @foreach ($holidays as $holiday)
+                            <li>
+                                {{ sprintf("%s - %s",   
+                                    Carbon::createFromFormat('m-d', $holiday->date)->format('F d Y'),
+                                    $holiday->event)
+                                }}
+                            </li>
+                        @endforeach                        
+                    </ul>        
+                @endif
+
             </div>
         </div>
     </div>
