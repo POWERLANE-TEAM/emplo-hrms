@@ -1,5 +1,7 @@
+@use(Illuminate\Support\Carbon)
+
 <div class="mt-5">
-    <h3 class="pb-1 fw-bold">Employee Attendance Rate Report</h3>
+    <h3 class="pb-1 fw-bold">{{ __('Employee Attendance Rate Report') }}</h3>
 
     <!-- Chart Container -->
     <div wire:ignore x-data="{
@@ -79,8 +81,8 @@
                 <div class="overflow-auto visible-gray-scrollbar attendance-avg-table">
                     <header>
                         <h4 class="text-primary fw-bold">Yearly Summary:
-                            @foreach ($attendanceData['yearly'] as $year => $data)
-                                {{ $data['attendance_rate'] }}% Average Attendance Rate
+                            @foreach ($attendanceData->yearly as $year => $data)
+                                {{ $data->attendance_rate }}% Average Attendance Rate
                             @endforeach
                         </h4>
                     </header>
@@ -98,14 +100,14 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($attendanceData['monthly'] as $month => $data)
+                                @foreach ($attendanceData->monthly as $month => $data)
                                     <tr>
-                                        <td>{{ \Carbon\Carbon::parse($month)->format('F') }}</td>
-                                        <td>{{ $data['workdays'] }}</td>
-                                        <td>{{ $data['total_employees'] }}</td>
-                                        <td>{{ $data['days_attended'] }}</td>
-                                        <td>{{ $data['total_scheduled'] }}</td>
-                                        <td>{{ $data['attendance_rate'] }}%</td>
+                                        <td>{{ Carbon::createFromFormat('Y-m', $month)->format('F') }}</td>
+                                        <td>{{ $data->work_days }}</td>
+                                        <td>{{ $data->total_employees }}</td>
+                                        <td>{{ $data->days_attended }}</td>
+                                        <td>{{ $data->total_scheduled }}</td>
+                                        <td>{{ $data->attendance_rate }}%</td>
                                     </tr>
                                 @endforeach
                             </tbody>

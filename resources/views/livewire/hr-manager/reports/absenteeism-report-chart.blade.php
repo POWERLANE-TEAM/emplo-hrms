@@ -1,5 +1,7 @@
+@use(Illuminate\Support\Carbon)
+
 <section class="mt-5">
-    <h3 class="pb-1 fw-bold">Employee Absenteeism Report</h3>
+    <h3 class="pb-1 fw-bold">{{ __('Employee Absenteeism Report') }}</h3>
 
     <!-- Chart Container -->
     <div wire:ignore x-data="{
@@ -77,8 +79,8 @@
                         <div class="text-center">
                             <h5>Yearly Total</h5>
                             <h3 class="text-success fw-bold">
-                                @foreach ($absenteeismData['yearly'] as $year => $data)
-                                    {{ $data['total_absences'] }} absences
+                                @foreach ($absenteeismData->yearly as $year => $data)
+                                    {{ $data->total_absences }} absences
                                 @endforeach
                             </h3>
                         </div>
@@ -89,8 +91,8 @@
                         <div class="text-center">
                             <h5>Monthly Average</h5>
                             <h3 class="text-success fw-bold">
-                                @foreach ($absenteeismData['yearly'] as $year => $data)
-                                    {{ number_format($data['monthly_average'], 1) }} absences per month
+                                @foreach ($absenteeismData->yearly as $year => $data)
+                                    {{ number_format($data->monthly_average, 1) }} absences per month
                                 @endforeach
                             </h3>
                         </div>
@@ -112,10 +114,10 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($absenteeismData['monthly'] as $month => $data)
+                                @foreach ($absenteeismData->monthly as $month => $data)
                                     <tr>
                                         <td>{{ \Carbon\Carbon::parse($month)->format('F') }}</td>
-                                        <td>{{ $data['absences'] }}</td>
+                                        <td>{{ $data->absences }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -126,12 +128,3 @@
         </div>
     </div>
 </section>
-
-{{-- @script
-<script>
-    window.addEventListener('year-changed', event => {
-        console.log('Year changed event detected:', event.detail);
-        @this.set('selectedYear', event.detail);
-    });
-</script>
-@endscript --}}
