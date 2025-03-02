@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\AttendanceLog;
 use Illuminate\Support\Carbon;
 use App\Traits\AttendanceUtils;
+use App\Enums\BiometricPunchType;
 use Illuminate\Support\Facades\DB;
 use App\Http\Helpers\BiometricDevice;
 use Illuminate\Database\Eloquent\Collection;
@@ -106,5 +107,16 @@ class AttendanceService
         $zkInstance = new BiometricDevice;
 
         $zkInstance->clearAttendanceLogs();
+    }
+
+    public function getAnnualDtrLogs(int $year, Collection|array $holidays): Collection
+    {
+        return AttendanceLog::query()
+            ->whereYear('timestamp', $year)
+            ->get()
+            ->where('type', BiometricPunchType::CHECK_IN->value)
+            ->where(fn ($log) => $log->timestamp->format('m-d'))
+            ->whereNotIn('timestamp', $holidays)
+            ->groupBy(fn ($date) => $date->timestamp->format('Y-m'));
     }
 }
