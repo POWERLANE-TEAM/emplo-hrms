@@ -107,7 +107,7 @@
                             !!}                    
                         </div>
                     </div>
-                    <div>{{ __("Marked on {$issue->status_marked_at}") }}</div>
+                    <div>{{ __("Marked on {$issue->status_marked_at->format('F d, Y g:i A')}") }}</div>
                 </div>
             @endif
         </x-slot:footer>
@@ -175,7 +175,7 @@
         <div class="col-5 d-flex align-items-center justify-content-end">
             <div class="text-start">
                 <div class="d-flex align-items-center">
-                    {{ "Reported on {$issue->filed_at}" }}                        
+                    {{ "Reported on {$issue->filed_at->format('F d, Y g:i A')}" }}                        
                 </div>
 
                 <div class="mt-2 text-end" x-cloak>
@@ -215,7 +215,7 @@
 
             <div class="row pt-2">
                 <div class="col">
-                    <x-form.display.boxed-input-display label="{{ __('Date and Time Issue Occurred') }}" data="{{ $issue->occured_at }}" />
+                    <x-form.display.boxed-input-display label="{{ __('Date and Time Issue Occurred') }}" data="{{ $issue->occured_at->format('F d, Y g:i A') }}" />
                 </div>
 
                 <div class="col">

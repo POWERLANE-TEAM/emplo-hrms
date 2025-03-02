@@ -145,4 +145,29 @@ trait AttendanceUtils
             'checkOut' => null,
         ]);
     }
+
+    public function getTotalWorkdaysInMonth($date, $holidays): int
+    {
+        $startDate = Carbon::createFromFormat('Y-m', $date)->startOfMonth();
+        $endDate = $startDate->copy()->endOfMonth();
+
+        $workdays = 0;
+        $currentDate = $startDate;
+
+        $holidays = $holidays->filter(function ($holiday) use ($startDate, $endDate) {
+            $date = Carbon::createFromFormat('m-d', $holiday->date)->setYear($startDate->year);
+            return $date->isBetween($startDate, $endDate);
+        })
+            ->pluck('date')
+            ->toArray();
+
+        while ($currentDate <= $endDate) {
+            if ($currentDate->isWeekday() && ! in_array($currentDate->toDateString(), $holidays)) {
+                $workdays++;
+            }
+            $currentDate->addDay();
+        }
+    
+        return $workdays;
+    }
 }

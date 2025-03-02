@@ -43,7 +43,6 @@
         @endif
 
         @if ((int) $year === now()->year)
-        {{-- @dd('hello') --}}
             <div class="empty-state">
                 <div class="container">
                     <!-- Row for the Image -->

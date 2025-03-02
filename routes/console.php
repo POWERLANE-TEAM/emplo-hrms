@@ -24,9 +24,9 @@ Schedule::timezone('Asia/Manila')->group(function () {
     Schedule::yearly()->group(function () {
         Schedule::command('silcredits:reset');
         Schedule::command('regevaluation:open');
+
+        Schedule::withoutOverlapping()->group(function () {
+            Schedule::command('report:cache');
+        });
     });
 });
-
-// for debugging
-// Schedule::command('silcredits:reset')->everyFiveSeconds();
-// Schedule::command('silcredits:increase')->everyTenSeconds();

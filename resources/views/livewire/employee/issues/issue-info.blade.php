@@ -107,7 +107,7 @@
                             !!}                    
                         </div>
                     </div>
-                    <div>{{ __("Marked on {$issue->status_marked_at}") }}</div>
+                    <div>{{ __("Marked on {$issue->status_marked_at->format('F d, Y g:i A')}") }}</div>
                 </div>
             @endif
         </x-slot:footer>
@@ -132,7 +132,7 @@
                 :overrideContainerClass="true"
             >
                 <x-slot:heading>
-                    {{ $issue->filed_at }}
+                    {{ $issue->filed_at->format('F d, Y g:i A') }}
                     <x-status-badge 
                         color="{{ IssueStatus::from($issue->status)->getColor() }}"
                     >
@@ -182,7 +182,7 @@
 
             <div class="row pt-2">
                 <div class="col">
-                    <x-form.display.boxed-input-display label="{{ __('DateTime Issue Occurred') }}" data="{{ $issue->occured_at }}" />
+                    <x-form.display.boxed-input-display label="{{ __('DateTime Issue Occurred') }}" data="{{ $issue->occured_at->format('F d, Y g:i A') }}" />
                 </div>
 
                 <div class="col">

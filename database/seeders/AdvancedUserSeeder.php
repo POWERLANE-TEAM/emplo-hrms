@@ -25,8 +25,8 @@ class AdvancedUserSeeder extends Seeder
         $userData = [
             'account_type' => AccountType::EMPLOYEE,
             'account_id' => $employee->employee_id,
-            'email' => 'services.powerlaneresources@gmail.com',
-            'password' => Hash::make('UniqP@ssw0rd'),
+            'email' => config('auth.advanced_user_username'),
+            'password' => Hash::make(config('auth.advanced_user_password')),
             'user_status_id' => UserStatus::ACTIVE,
             'email_verified_at' => fake()->dateTimeBetween('-10 days', 'now'),
         ];
