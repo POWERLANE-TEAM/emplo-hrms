@@ -344,6 +344,6 @@
 
     </div>
 
-    <x-employee.applicants.show-nav-btn />
+    <x-employee.applicants.show-nav-btn :nextApplicant="$nextApplicant" :previousApplicant="$previousApplicant" />
 
 </div>

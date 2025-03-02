@@ -1,5 +1,8 @@
 @php
     $nonce = csp_nonce();
+    $applicantName = $application->applicant->fullname;
+    $modalId = 'application-approve-modal';
+    $props = compact('application', 'modalId', 'previousApplicant', 'nextApplicant');
 @endphp
 
 @php
@@ -31,7 +34,7 @@
     <x-breadcrumbs>
         <x-slot:breadcrumbs>
             <x-breadcrumb :href="route($routePrefix . '.applications', ['applicationStatus' => $status])">
-            {{ ucfirst($status != 'pending' ? $status : '') }} Applicants
+                {{ ucfirst($status != 'pending' ? $status : '') }} Applicants
             </x-breadcrumb>
             <x-breadcrumb :active="request()->routeIs($routePrefix . '.application.*')">
                 Applicant Profile
@@ -53,13 +56,10 @@
         $modalId = 'application-approve-modal';
     @endphp
 
-    @livewire('employee.applicants.show', ['application' => $application, 'modalId' => $modalId])
+    @livewire('employee.applicants.show', $props)
 
     @if ($status == 'pending')
-        @livewire('employee.modal.applicant.resume.approve', ['application' => $application, 'modalId' => $modalId])
-
-        @elseif (true)
-
+        @livewire('employee.modal.applicant.resume.approve', $props)
+    @elseif (true)
     @endif
-
 @endsection

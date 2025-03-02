@@ -60,6 +60,12 @@ class Show extends Component
 
     #[Locked]
     public $modalId;
+    
+    #[Locked]
+    public $previousApplicant;
+
+    #[Locked]
+    public $nextApplicant;
 
     public function mount()
     {
