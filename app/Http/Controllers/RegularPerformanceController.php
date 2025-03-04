@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use App\Models\RegularPerformance;
+use App\Traits\EmployeePipAiAuth;
 
 class RegularPerformanceController extends Controller
 {
+    use EmployeePipAiAuth;
+
     public function index()
     {
         return view('employee.supervisor.performance-evaluations.regulars.all');
@@ -32,6 +35,7 @@ class RegularPerformanceController extends Controller
     public function review(RegularPerformance $performance)
     {
         $performance->loadMissing(['employeeEvaluatee', 'employeeEvaluatee.jobTitle']);
-        return view('employee.hr-manager.evaluations.regular.show', compact('performance'));
+        $isEndpointAccessible = $this->isEndpointAccessible();
+        return view('employee.hr-manager.evaluations.regular.show',  compact('performance', 'isEndpointAccessible'));
     }
 }
