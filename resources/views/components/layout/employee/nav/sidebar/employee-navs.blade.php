@@ -570,11 +570,11 @@
 * |--------------------------------------------------------------------------
 --}}
 
-<x-layout.employee.nav.sidebar.nav-group :sidebar_expanded="$sidebar_expanded" class="" txt_collapsed="AI"
-    txt_expanded="AI Tools">
+{{-- <x-layout.employee.nav.sidebar.nav-group :sidebar_expanded="$sidebar_expanded" class="" txt_collapsed="AI"
+    txt_expanded="AI Tools"> --}}
 
     {{-- HR Manager --}}
-    @can(UserPermission::VIEW_TALENT_EVALUATOR)
+    {{-- @can(UserPermission::VIEW_TALENT_EVALUATOR)
         <x-layout.employee.nav.sidebar.nav-item
             href="{{ route($routePrefix . '.resume-evaluator.rankings') }}"
             :active="request()->routeIs($routePrefix . '.resume-evaluator.rankings')"
@@ -583,10 +583,10 @@
             :defaultIcon="['src' => 'resume-evaluator', 'alt' => '']"
             :activeIcon="['src' => 'resume-evaluator', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
-    @endcan
+    @endcan --}}
 
     {{-- HR Manager --}}
-    @can(UserPermission::VIEW_PLAN_GENERATOR)
+    {{-- @can(UserPermission::VIEW_PLAN_GENERATOR)
         <x-layout.employee.nav.sidebar.nav-item
             href="{{ route($routePrefix . '.performances.plan.improvement.index') }}"
             :active="request()->routeIs($routePrefix . '.performances.plan.improvement.index')"
@@ -594,6 +594,6 @@
             nav_txt="Plan Generator"
             :defaultIcon="['src' => 'plan-generator', 'alt' => '']" :activeIcon="['src' => 'plan-generator', 'alt' => '']">
         </x-layout.employee.nav.sidebar.nav-item>
-    @endcan
+    @endcan --}}
 
-</x-layout.employee.nav.sidebar.nav-group>
+{{-- </x-layout.employee.nav.sidebar.nav-group> --}}
