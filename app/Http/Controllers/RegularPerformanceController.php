@@ -24,7 +24,8 @@ class RegularPerformanceController extends Controller
     public function show(RegularPerformance $performance)
     {
         $performance->loadMissing(['employeeEvaluatee', 'employeeEvaluatee.jobTitle']);
-        return view('employee.supervisor.performance-evaluations.regulars.show', compact('performance'));
+        $isEndpointAccessible = $this->isEndpointAccessible();
+        return view('employee.supervisor.performance-evaluations.regulars.show', compact('performance', 'isEndpointAccessible'));
     }
 
     public function general()

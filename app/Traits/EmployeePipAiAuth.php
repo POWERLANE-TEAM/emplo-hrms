@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use Google\Cloud\AIPlatform\V1\Client\ModelServiceClient;
 use Google\Cloud\AIPlatform\V1\ListModelsRequest;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 trait EmployeePipAiAuth
@@ -68,7 +69,8 @@ trait EmployeePipAiAuth
     
         [$credentialsPath, $credentials] = $this->getCredentials();
     
-        if (!Storage::exists($credentialsPath)) {
+        if (!File::exists($credentialsPath)) {
+            report(new \Exception('Credentials file not found at ' . File::path($credentialsPath)));
             return false;
         }
     
@@ -86,6 +88,7 @@ trait EmployeePipAiAuth
             $client->listModels($request);
             return true;
         } catch (\Exception $e) {
+            report($e);
             return false;
         }
     }
