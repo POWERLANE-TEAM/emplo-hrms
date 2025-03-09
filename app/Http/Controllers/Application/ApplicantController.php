@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Application;
 
 use App\Actions\Fortify\UpdateUserProfileInformation;
 use App\Enums\AccountType;
+use App\Enums\FilePath;
 use App\Enums\UserPermission;
 use App\Enums\UserStatus;
 use App\Http\Controllers\Controller;
@@ -18,8 +19,6 @@ use App\Traits\Applicant as ApplicantTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use App\Enums\FilePath;
 use Propaganistas\LaravelPhone\PhoneNumber;
 
 class ApplicantController extends Controller
@@ -109,33 +108,33 @@ class ApplicantController extends Controller
                 $request['user']['accountType'] = AccountType::APPLICANT->value;
                 $request['user']['userStatusId'] = UserStatus::ACTIVE->value;
 
-                $application =  $request['application'];
-                $applicantUser =  $request['user'];
+                $application = $request['application'];
+                $applicantUser = $request['user'];
             } else {
                 //
             }
 
-            $applicationController  = new ApplicationController();
+            $applicationController = new ApplicationController;
 
-            $educationController = new EducationController();
+            $educationController = new EducationController;
             $educationController->store([
                 'applicantId' => $newApplicant->applicant_id,
-                'education' => $request['education']
+                'education' => $request['education'],
             ], false);
 
-            $experienceController = new ExperienceController();
+            $experienceController = new ExperienceController;
             $experienceController->store([
                 'applicantId' => $newApplicant->applicant_id,
-                'experience' => $request['experience']
+                'experience' => $request['experience'],
             ], false);
 
-            $skillController = new SkillController();
+            $skillController = new SkillController;
             $skillController->store([
                 'applicantId' => $newApplicant->applicant_id,
-                'skills' => $request['skills']
+                'skills' => $request['skills'],
             ], false);
 
-            $userToApplicantController  = new UpdateUserProfileInformation();
+            $userToApplicantController = new UpdateUserProfileInformation;
 
             $errors = session()->get('errors');
             $userToApplicantController->update($user, $applicantUser);
@@ -153,9 +152,8 @@ class ApplicantController extends Controller
             ApplicationDoc::create([
                 'application_id' => $application->application_id,
                 'file_path' => $path,
-                'preemp_req_id' => 17, //resume
+                'preemp_req_id' => 17, // resume
             ]);
-
 
             DB::commit();
         } catch (\Exception $e) {
@@ -192,11 +190,12 @@ class ApplicantController extends Controller
         if (empty($application) && auth()->check()) {
             // dump(auth()->user());
             $application = auth()->user()->account->application;
-        } else if (auth()->check()) {
+        } elseif (auth()->check()) {
             $application = RouteHelper::validateModel(Application::class, $application);
         }
 
         $application = $application->load('applicant', 'vacancy.jobTitle', 'status');
+
         // dd($application);
         return view('applicant/index', ['application' => $application]);
     }
@@ -215,6 +214,6 @@ class ApplicantController extends Controller
 
     private function canApply(?bool $isTerminate = true)
     {
-        return !self::applicantOrYet(!Auth::user()->hasPermissionTo(UserPermission::VIEW_JOB_APPLICATION_FORM->value), $isTerminate) && !self::hasApplication($isTerminate);
+        return ! self::applicantOrYet(! Auth::user()->hasPermissionTo(UserPermission::VIEW_JOB_APPLICATION_FORM->value), $isTerminate) && ! self::hasApplication($isTerminate);
     }
 }

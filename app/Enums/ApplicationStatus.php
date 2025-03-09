@@ -85,9 +85,6 @@ enum ApplicationStatus: int
 
     /**
      * Match substrings to enum case values.
-     *
-     * @param string $status
-     * @return int|null
      */
     public static function fromNameSubstring(string $status): ?int
     {
@@ -98,6 +95,7 @@ enum ApplicationStatus: int
                 return $case->value;
             }
         }
+
         return null;
     }
 }

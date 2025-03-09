@@ -4,9 +4,9 @@ namespace App\Livewire\HrManager\Reports;
 
 use App\Models\Holiday;
 use App\Models\Payroll;
-use Livewire\Component;
-use Livewire\Attributes\Locked;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Locked;
+use Livewire\Component;
 
 class AnnualReport extends Component
 {

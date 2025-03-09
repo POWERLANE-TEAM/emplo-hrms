@@ -7,7 +7,7 @@ use Illuminate\Contracts\Validation\ValidationRule;
 
 class BarangayRule implements ValidationRule
 {
-    protected $ruleString =  'digits_between:1,255';
+    protected $ruleString = 'digits_between:1,255';
 
     /**
      * Run the validation rule.
@@ -26,7 +26,7 @@ class BarangayRule implements ValidationRule
 
     public function getRule(): string
     {
-        $rule = ($this->required ? 'required|' : '') . $this->ruleString;
+        $rule = ($this->required ? 'required|' : '').$this->ruleString;
 
         return $rule;
     }

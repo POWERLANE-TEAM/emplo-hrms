@@ -2,29 +2,29 @@
 
 namespace App\Models;
 
-use App\Enums\CivilStatus;
-use BackedEnum;
-use Illuminate\Support\Str;
 use App\Enums\ActivityLogName;
-use Illuminate\Support\Carbon;
+use App\Enums\CivilStatus;
 use App\Enums\EmploymentStatus as Status;
-use Spatie\Activitylog\LogOptions;
 use App\Enums\ServiceIncentiveLeave;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
-use Spatie\Activitylog\Traits\LogsActivity;
-use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasOneThrough;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use App\Http\Helpers\GovernmentMandateContributionsIdFormat;
+use BackedEnum;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Employee extends Model
 {
@@ -59,8 +59,8 @@ class Employee extends Model
     protected function contactNumber(): Attribute
     {
         return Attribute::make(
-            get: fn (mixed $value) => '+63-' . substr($value, 1, 3) . '-' .
-                substr($value, 4, 3) . '-' .
+            get: fn (mixed $value) => '+63-'.substr($value, 1, 3).'-'.
+                substr($value, 4, 3).'-'.
                 substr($value, 7, 4),
         );
     }
@@ -73,6 +73,7 @@ class Employee extends Model
         return Attribute::make(
             get: function (string $value) {
                 $civilStatus = CivilStatus::tryFrom($value);
+
                 return $civilStatus ? $civilStatus->label() : ucwords($civilStatus);
             }
         );
@@ -159,10 +160,10 @@ class Employee extends Model
     {
         $this->loadMissing([
             'jobDetail' => fn ($query) => $query->select([
-                'emp_job_detail_id', 
-                'employee_id', 
-                'hired_at'
-            ])
+                'emp_job_detail_id',
+                'employee_id',
+                'hired_at',
+            ]),
         ]);
 
         $dateHired = $this->jobDetail->hired_at;
@@ -238,7 +239,7 @@ class Employee extends Model
      */
     public function scopeOfEmploymentStatus(Builder $query, BackedEnum|string $employmentStatus): void
     {
-        if ($employmentStatus instanceOf Status) {
+        if ($employmentStatus instanceof Status) {
             $employmentStatus = $employmentStatus->label();
         }
 
@@ -251,7 +252,7 @@ class Employee extends Model
     public function scopeRegularShift(Builder $query): void
     {
         $query->whereHas('shift.category',
-            fn($subQuery) => $subQuery->where('shift_name', 'Regular'),
+            fn ($subQuery) => $subQuery->where('shift_name', 'Regular'),
         );
     }
 

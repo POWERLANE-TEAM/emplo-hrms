@@ -2,16 +2,16 @@
 
 namespace App\Livewire\Admin\JobTitle;
 
-use Livewire\Component;
+use App\Enums\UserPermission;
+use App\Models\Department;
+use App\Models\JobFamily;
 use App\Models\JobLevel;
 use App\Models\JobTitle;
-use App\Models\JobFamily;
-use App\Models\Department;
-use Livewire\Attributes\On;
-use App\Enums\UserPermission;
-use Livewire\Attributes\Computed;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
+use Livewire\Component;
 
 class JobTitleDetails extends Component
 {
@@ -57,11 +57,11 @@ class JobTitleDetails extends Component
 
         DB::transaction(function () {
             $this->jobTitle->update([
-                'job_title'     => $this->title,
-                'job_desc'      => $this->description,
-                'base_salary'   => $this->baseSalary,
+                'job_title' => $this->title,
+                'job_desc' => $this->description,
+                'base_salary' => $this->baseSalary,
                 'department_id' => $this->department,
-                'job_level_id'  => $this->level,
+                'job_level_id' => $this->level,
                 'job_family_id' => $this->family,
             ]);
 
@@ -159,24 +159,24 @@ class JobTitleDetails extends Component
     public function rules()
     {
         return [
-            'department'  => 'required',
-            'family'      => 'required',
-            'level'       => 'required',
-            'title'       => 'required|string|max:255',
+            'department' => 'required',
+            'family' => 'required',
+            'level' => 'required',
+            'title' => 'required|string|max:255',
             'description' => 'nullable|string|max:500',
-            'baseSalary'  => 'nullable|numeric|min:5',
+            'baseSalary' => 'nullable|numeric|min:5',
         ];
     }
 
     public function messages()
     {
         return [
-            'department'      => __('Department is required.'),
-            'family'          => __('Job family is required.'),
-            'level'           => __('Job level is required.'),
-            'title.required'  => __('Job title is required.'),
+            'department' => __('Department is required.'),
+            'family' => __('Job family is required.'),
+            'level' => __('Job level is required.'),
+            'title.required' => __('Job title is required.'),
             'description.max' => __('Description only allows for maximum of 500 characters.'),
-            'baseSalary'      => __('Numeric values only.'),
+            'baseSalary' => __('Numeric values only.'),
         ];
     }
 

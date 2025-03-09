@@ -2,17 +2,17 @@
 
 namespace App\Livewire\Tables;
 
-use Carbon\Carbon;
-use App\Models\Employee;
-use App\Models\JobTitle;
-use Illuminate\Support\Str;
-use App\Models\EmploymentStatus;
 use App\Enums\EmploymentStatus as Status;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\View\ComponentAttributeBag;
-use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Livewire\Tables\Defaults as DefaultTableConfig;
+use App\Models\Employee;
+use App\Models\EmploymentStatus;
+use App\Models\JobTitle;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Str;
+use Illuminate\View\ComponentAttributeBag;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateFilter;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
@@ -48,9 +48,9 @@ class EmployeesTable extends DataTableComponent
         $this->setPrimaryKey('application_id')
             ->setTableRowUrl(function ($row) use ($routePrefix) {
 
-                return route($routePrefix . '.employees.information', ['employee' => $row->employee_id]) . '/#information';
+                return route($routePrefix.'.employees.information', ['employee' => $row->employee_id]).'/#information';
             })
-            ->setTableRowUrlTarget(fn() => '__blank');
+            ->setTableRowUrlTarget(fn () => '__blank');
 
         $this->configuringStandardTableMethods();
 
@@ -108,38 +108,38 @@ class EmployeesTable extends DataTableComponent
                     $name = Str::headline($row->full_name);
                     $photo = $row->account->photo;
                     $id = $row->employee_id;
-            
+
                     return '<div class="d-flex align-items-center">
-                                <img src="' . e($photo) . '" alt="User Picture" class="rounded-circle me-3" style="width: 38px; height: 38px;">
+                                <img src="'.e($photo).'" alt="User Picture" class="rounded-circle me-3" style="width: 38px; height: 38px;">
                                 <div>
-                                    <div>' . e($name) . '</div>
-                                    <div class="text-muted fs-6">Employee ID: ' . e($id) . '</div>
+                                    <div>'.e($name).'</div>
+                                    <div class="text-muted fs-6">Employee ID: '.e($id).'</div>
                                 </div>
                             </div>';
                 })
                 ->html()
-                ->sortable(fn (Builder $query, $direction) => $query->orderBy('last_name' ,$direction))
+                ->sortable(fn (Builder $query, $direction) => $query->orderBy('last_name', $direction))
                 ->searchable(function (Builder $query, $searchTerm) {
                     $this->applyFullNameSearch($query, $searchTerm);
                 })
                 ->excludeFromColumnSelect(),
 
             Column::make('Job Title')
-                ->label(fn($row) => $row->jobTitle->job_title)
+                ->label(fn ($row) => $row->jobTitle->job_title)
                 ->searchable(function (Builder $query, $searchTerm) {
                     return $this->applyJobPositionSearch($query, $searchTerm);
                 }),
 
             Column::make('Job Family')
                 ->label(fn ($row) => $row->jobTitle->jobFamily->job_family_name)
-                ->sortable(fn (Builder $query, $direction) => $query->orderBy('job_family_name' ,$direction))
+                ->sortable(fn (Builder $query, $direction) => $query->orderBy('job_family_name', $direction))
                 ->searchable(fn (Builder $query, $searchTerm) => $query->whereLike('job_family_name', "%{$searchTerm}%")),
 
             Column::make('Department')
-                ->label(fn($row) => $row->jobTitle->department->department_name),
+                ->label(fn ($row) => $row->jobTitle->department->department_name),
 
             Column::make('Status')
-                ->label(fn($row) => $row->status->emp_status_name),
+                ->label(fn ($row) => $row->status->emp_status_name),
 
             /**
              * |--------------------------------------------------------------------------
@@ -148,11 +148,11 @@ class EmployeesTable extends DataTableComponent
              * Description
              */
             Column::make('Shift')
-                ->label(fn($row) => $row->shift->shift_name)
+                ->label(fn ($row) => $row->shift->shift_name)
                 ->deselected(),
 
             Column::make('Hired Date')
-                ->label(fn($row) => $row->application ? Carbon::parse($row->application->hired_at)->format('F j, Y') : 'No record found.')
+                ->label(fn ($row) => $row->application ? Carbon::parse($row->application->hired_at)->format('F j, Y') : 'No record found.')
                 ->setSortingPillDirections('Oldest first', 'Latest first')
                 ->sortable(function ($query, $direction) {
                     return $query->orderBy('applications.hired_at', $direction);
@@ -174,14 +174,14 @@ class EmployeesTable extends DataTableComponent
                 ],
                 'specificArea',
                 'application',
-                'shift'
+                'shift',
             ])
-                ->whereHas('status', function ($query) {
-                    $query->whereIn('emp_status_name', [
-                        Status::PROBATIONARY->label(),
-                        Status::REGULAR->label(),
-                    ]);
-                });
+            ->whereHas('status', function ($query) {
+                $query->whereIn('emp_status_name', [
+                    Status::PROBATIONARY->label(),
+                    Status::REGULAR->label(),
+                ]);
+            });
     }
 
     public function filters(): array
@@ -224,7 +224,6 @@ class EmployeesTable extends DataTableComponent
      * |--------------------------------------------------------------------------
      * Description
      */
-
 
     /**
      * Apply a case-insensitive search using the 'ILIKE' operator on the 'job_title' field in the query.

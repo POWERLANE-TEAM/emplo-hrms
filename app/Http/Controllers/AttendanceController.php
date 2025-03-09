@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Enums\UserPermission;
 use App\Models\Employee;
 use Illuminate\Contracts\View\Factory as ViewFactory;
@@ -13,8 +14,8 @@ class AttendanceController extends Controller
     {
         if ($range == 'daily') {
             return view('employee.attendance.daily');
-        } else{
-                return view('employee.attendance.tracking');
+        } else {
+            return view('employee.attendance.tracking');
         }
     }
 
@@ -31,14 +32,14 @@ class AttendanceController extends Controller
     }
 
     /* Get single resource */
-    public function show(Employee $employee = null): ViewFactory|View
+    public function show(?Employee $employee = null): ViewFactory|View
     {
 
-        if (!auth()->user()->hasPermissionTo(UserPermission::VIEW_ALL_DAILY_ATTENDANCE->value)) {
+        if (! auth()->user()->hasPermissionTo(UserPermission::VIEW_ALL_DAILY_ATTENDANCE->value)) {
             abort(403); // Forbidden
         }
-        
-        if(empty($employee)){
+
+        if (empty($employee)) {
             $employee = auth()->user()->account;
         }
 

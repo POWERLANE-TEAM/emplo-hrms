@@ -2,10 +2,10 @@
 
 namespace App\Livewire\Admin;
 
-use Livewire\Component;
 use App\Enums\UserPermission;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Helpers\BiometricDevice;
+use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 
 class ManageBiometricDevice extends Component
 {
@@ -15,13 +15,13 @@ class ManageBiometricDevice extends Component
 
     public function boot()
     {
-        $this->zkInstance = new BiometricDevice();
+        $this->zkInstance = new BiometricDevice;
     }
 
     public function updateDeviceIp()
     {
         if (! Auth::user()->hasPermissionTo(UserPermission::UPDATE_BIOMETRIC_DEVICE)) {
-            abort (403);
+            abort(403);
         }
 
         $this->zkInstance->setIp($this->ipAddress ?: __('Shouldn\'t be empty.'));

@@ -3,7 +3,6 @@
 namespace App\Livewire\Applicant\Application;
 
 use App\Enums\Sex;
-use App\Enums\UserPermission;
 use App\Events\Guest\ResumeParsed;
 use App\Http\Requests\PersonNameRequest;
 use App\Jobs\Guest\ParseResumeJob;
@@ -12,14 +11,11 @@ use App\Rules\MobileNumberRule;
 use App\Rules\ProfilePhotoValidationRule;
 use App\Rules\WorkAgeRule;
 use App\Traits\Applicant;
-use App\Traits\HasObjectForm;
 use App\Traits\NeedsAuthBroadcastId;
 use Closure;
 use DateTime;
 use DateTimeZone;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Computed;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Propaganistas\LaravelPhone\PhoneNumber;
@@ -28,15 +24,13 @@ use Spatie\LivewireWizard\Components\StepComponent;
 
 class PersonalDetailsStep extends StepComponent
 {
-
-    use WithFilePond, NeedsAuthBroadcastId;
+    use NeedsAuthBroadcastId, WithFilePond;
 
     /**
      * |--------------------------------------------------------------------------
      * | Wire model properties
      * |--------------------------------------------------------------------------
      */
-
     public $displayProfile;
 
     public $applicant = [
@@ -81,7 +75,9 @@ class PersonalDetailsStep extends StepComponent
 
     public function mount()
     {
-        if (auth()->check())  $this->applicant['email'] = auth()->user()->email;
+        if (auth()->check()) {
+            $this->applicant['email'] = auth()->user()->email;
+        }
 
         // get the resume file property state from the resume upload step
         $resumeState = $this->state()->forStep('form.applicant.resume-upload-step');
@@ -120,7 +116,6 @@ class PersonalDetailsStep extends StepComponent
             ParseResumeJob::dispatch($this->resumePath, self::getBroadcastId());
         }
 
-
         // // For testing purposes not relying on Document AI API
 
         // ResumeParsed::dispatch([
@@ -149,7 +144,7 @@ class PersonalDetailsStep extends StepComponent
     public function boot()
     {
 
-        if (isset($this->displayProfile) && !is_array($this->displayProfile) && $this->displayProfile instanceof \Illuminate\Http\UploadedFile) {
+        if (isset($this->displayProfile) && ! is_array($this->displayProfile) && $this->displayProfile instanceof \Illuminate\Http\UploadedFile) {
 
             // save persistent file properties that is needed when rehydrating
             try {
@@ -158,7 +153,7 @@ class PersonalDetailsStep extends StepComponent
             } catch (\Exception $e) {
                 report($e->getMessage());
             }
-        } else if (isset($this->displayProfilePath) && empty($this->displayProfile)) {
+        } elseif (isset($this->displayProfilePath) && empty($this->displayProfile)) {
 
             // rehydrate the file object
             // however the file object is not readable by the filepond
@@ -176,8 +171,7 @@ class PersonalDetailsStep extends StepComponent
             }
         }
 
-
-        if (!empty($this->displayProfileUrl)) {
+        if (! empty($this->displayProfileUrl)) {
             // this supposed to be the fix for the filepond issue
             // but will cause validation to throw must be of file type
             // $this->displayProfile = $this->displayProfileUrl;
@@ -194,17 +188,16 @@ class PersonalDetailsStep extends StepComponent
             $date->setTimezone($dateTimeZone);
             $this->applicant['birth'] = $date->format('Y-m-d');
         } catch (\Exception $e) {
-            report('Error converting applicant birth date to timezone: ' . $e->getMessage());
+            report('Error converting applicant birth date to timezone: '.$e->getMessage());
         }
     }
-
 
     protected function rules()
     {
 
         $displayProfileRule = new ProfilePhotoValidationRule(null, 'lg', true);
 
-        $personNameRequest = new PersonNameRequest();
+        $personNameRequest = new PersonNameRequest;
 
         $nameRules = [];
         foreach ($personNameRequest->rules() as $key => $rule) {
@@ -212,17 +205,17 @@ class PersonalDetailsStep extends StepComponent
         }
 
         return array_merge($nameRules, [
-            'sexAtBirth' => 'required|in:' . implode(',', array_keys(Sex::options())),
+            'sexAtBirth' => 'required|in:'.implode(',', array_keys(Sex::options())),
             'displayProfile' => $displayProfileRule->getRule(),
             'applicant.mobileNumber' => ['required', MobileNumberRule::getRule()],
-            'applicant.email' => 'required|' . (new EmailRule(false))->getRule(),
-            'applicant.birth' => new WorkAgeRule(),
+            'applicant.email' => 'required|'.(new EmailRule(false))->getRule(),
+            'applicant.birth' => new WorkAgeRule,
         ]);
     }
 
     protected function validationAttributes()
     {
-        $personNameRequest = new PersonNameRequest();
+        $personNameRequest = new PersonNameRequest;
 
         $nameAttributes = [];
         foreach ($personNameRequest->attributes() as $key => $attribute) {
@@ -294,7 +287,6 @@ class PersonalDetailsStep extends StepComponent
             $contactNumber = null;
             $regionMode = config('app.region_mode');
 
-
             if (isset($event['parsedResume']['employee_contact'])) {
                 $contacts = is_array($event['parsedResume']['employee_contact']) ? $event['parsedResume']['employee_contact'] : [$event['parsedResume']['employee_contact']];
                 if ($regionMode == 'local') {
@@ -331,7 +323,7 @@ class PersonalDetailsStep extends StepComponent
     // but this will be used as name field suggestions
     public function updateParsedNameSegment()
     {
-        if (!empty($this->parsedResume['employee_name'])) {
+        if (! empty($this->parsedResume['employee_name'])) {
             $name = $this->parsedResume['employee_name'];
 
             if (is_array($name)) {

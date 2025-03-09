@@ -3,19 +3,20 @@
 namespace App\Livewire\Tables;
 
 use App\Enums\BiometricPunchType;
-use Illuminate\View\ComponentAttributeBag;
-use Rappasoft\LaravelLivewireTables\DataTableComponent;
-use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Livewire\Tables\Defaults as DefaultTableConfig;
 use App\Models\AttendanceLog;
 use App\Models\Employee;
 use App\Models\Shift;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\View\ComponentAttributeBag;
 use Livewire\Attributes\Computed;
+use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 
 /**
  * Implemented Methods:
+ *
  * @method  configure(): void
  * @method  columns(): array
  * @method  builder(): Builder
@@ -28,7 +29,7 @@ class AttendanceBreakdownTable extends DataTableComponent
     protected $model = AttendanceLog::class;
 
     /**
-     * @var array $customFilterOptions contains the dropdown values and keys.
+     * @var array contains the dropdown values and keys.
      */
     protected $customFilterOptions;
 
@@ -64,17 +65,18 @@ class AttendanceBreakdownTable extends DataTableComponent
             // Column::make("Employee id")
             //     ->label(fn($row) => 'Sample')
             //     ->sortable(),
-            Column::make("Date")
+            Column::make('Date')
                 ->sortable()
-                ->label(fn($row) => Carbon::parse($row->shift_date)->format('F d, Y')),
-            Column::make("Time Recorded")
+                ->label(fn ($row) => Carbon::parse($row->shift_date)->format('F d, Y')),
+            Column::make('Time Recorded')
                 ->label(function ($row) {
                     $checkIn = $row->check_in_time ? Carbon::parse($row->check_in_time)->format('h:i A') : 'No Check-In';
                     $checkOut = $row->check_out_time ? Carbon::parse($row->check_out_time)->format('h:i A') : 'No Check-Out';
+
                     return "$checkIn - $checkOut";
                 })
                 ->sortable(),
-            Column::make("Duration")
+            Column::make('Duration')
                 ->label(function ($row) {
                     if ($row->check_in_time && $row->check_out_time) {
                         $checkIn = Carbon::parse($row->check_in_time);
@@ -91,11 +93,12 @@ class AttendanceBreakdownTable extends DataTableComponent
 
                         return sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
                     }
+
                     return 'N/A';
                 })
                 ->sortable(),
 
-            Column::make("Check-Out Type")
+            Column::make('Check-Out Type')
                 ->label(function ($row) {
 
                     $employeeId = $this->employee->employee_id;
@@ -107,6 +110,7 @@ class AttendanceBreakdownTable extends DataTableComponent
 
                         return in_array($checkOutType, [BiometricPunchType::CHECK_OUT->value]) ? 'Regular' : 'Overtime';
                     }
+
                     return 'N/A';
                 })
                 ->sortable(),
@@ -118,7 +122,7 @@ class AttendanceBreakdownTable extends DataTableComponent
     {
         $nightShift = Shift::where('shift_name', 'Night Differential')->first();
 
-        if (!$nightShift) {
+        if (! $nightShift) {
             throw new \Exception('Night Differential shift not found');
         }
 
@@ -208,8 +212,8 @@ class AttendanceBreakdownTable extends DataTableComponent
      * - 'DD-MM-YYYY'
      * - 'DD/MM/YYYY'
      *
-     * @param \Illuminate\Database\Query\Builder $query The query builder instance.
-     * @param string $searchTerm The search term to filter by.
+     * @param  \Illuminate\Database\Query\Builder  $query  The query builder instance.
+     * @param  string  $searchTerm  The search term to filter by.
      * @return \Illuminate\Database\Query\Builder The modified query builder instance.
      */
     // public function applyDateSearch(Builder $query, $searchTerm)

@@ -2,11 +2,11 @@
 
 namespace App\Livewire\HrManager\Employees;
 
-use Livewire\Component;
 use App\Models\Employee;
 use Livewire\Attributes\Lazy;
+use Livewire\Component;
 
- #[Lazy(isolate: false)]
+#[Lazy(isolate: false)]
 class Trainings extends Component
 {
     public Employee $employee;

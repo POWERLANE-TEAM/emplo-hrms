@@ -2,11 +2,11 @@
 
 namespace App\Livewire\Admin\JobTitle;
 
-use Livewire\Component;
-use App\Models\JobTitle;
-use Livewire\Attributes\On;
-use Livewire\Attributes\Computed;
 use App\Enums\JobQualificationPriorityLevel;
+use App\Models\JobTitle;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
+use Livewire\Component;
 
 class EditSkills extends Component
 {
@@ -109,11 +109,11 @@ class EditSkills extends Component
         $this->isEditMode = false;
         $this->dispatch('closeSkillQualificationModal');
     }
-    
+
     public function removeExistingQualification(int $index)
     {
         $this->isEditMode = false;
-        
+
         $this->jobTitle->skills
             ->where('keyword_id', $index)
             ->first()
@@ -125,7 +125,7 @@ class EditSkills extends Component
     public function removeQualification(int $index)
     {
         unset($this->items[$index]);
-        
+
         $this->dispatch('removeSkillQualification', $index)
             ->to(JobTitleDetails::class);
     }
@@ -160,7 +160,7 @@ class EditSkills extends Component
     {
         return collect(JobQualificationPriorityLevel::options())->flip()->toArray();
     }
-    
+
     #[On('removedExistingSkill')]
     public function render()
     {

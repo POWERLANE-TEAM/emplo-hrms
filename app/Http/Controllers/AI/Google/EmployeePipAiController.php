@@ -5,8 +5,8 @@ namespace App\Http\Controllers\AI\Google;
 use App\Http\Controllers\Controller;
 use App\Traits\EmployeePipAiAuth;
 use Google\Cloud\AIPlatform\V1\Client\PredictionServiceClient;
-use Google\Cloud\AIPlatform\V1\GenerateContentRequest;
 use Google\Cloud\AIPlatform\V1\Content;
+use Google\Cloud\AIPlatform\V1\GenerateContentRequest;
 use Google\Cloud\AIPlatform\V1\Part;
 use Illuminate\Http\Request;
 
@@ -22,7 +22,7 @@ class EmployeePipAiController extends Controller
             putenv('GOOGLE_SDK_PHP_LOGGING=true');
         }
 
-        if (!(config('services.google.vertex_ai.enabled') == true && config('services.google.employee_pip_ai.enabled') == true)){
+        if (! (config('services.google.vertex_ai.enabled') == true && config('services.google.employee_pip_ai.enabled') == true)) {
             return;
         }
 
@@ -40,38 +40,38 @@ class EmployeePipAiController extends Controller
             $client = new PredictionServiceClient($clientOptions);
 
             $contentPart = new Part([
-                'text' => json_encode([                   "Employee Information" => [
-                    "Employee Name" => is_array($request) ? $request['evaluatee_name'] : $request->input('evaluatee_name'),
-                    "Department/Section" => is_array($request) ? $request['department_name'] : $request->input('department_name'),
-                    "Position Title" => is_array($request) ? $request['evaluatee_position'] : $request->input('evaluatee_position'),
-                    "Branch" => is_array($request) ? $request['branch_name'] : $request->input('branch_name'),
-                    "Evaluator" => is_array($request) ? $request['evaluator_name'] : $request->input('evaluator_name'),
-                    "Date Hired" => is_array($request) ? $request['evaluatee_hire_date'] : $request->input('evaluatee_hire_date'),
+                'text' => json_encode(['Employee Information' => [
+                    'Employee Name' => is_array($request) ? $request['evaluatee_name'] : $request->input('evaluatee_name'),
+                    'Department/Section' => is_array($request) ? $request['department_name'] : $request->input('department_name'),
+                    'Position Title' => is_array($request) ? $request['evaluatee_position'] : $request->input('evaluatee_position'),
+                    'Branch' => is_array($request) ? $request['branch_name'] : $request->input('branch_name'),
+                    'Evaluator' => is_array($request) ? $request['evaluator_name'] : $request->input('evaluator_name'),
+                    'Date Hired' => is_array($request) ? $request['evaluatee_hire_date'] : $request->input('evaluatee_hire_date'),
                 ],
-                "Instruction" => is_array($request) ? $request['instructions'] : $request->input('instructions'),
+                    'Instruction' => is_array($request) ? $request['instructions'] : $request->input('instructions'),
 
-                "Performance Categories" => is_array($request) ? $request['performance_categories'] : $request->input('performance_categories')])
+                    'Performance Categories' => is_array($request) ? $request['performance_categories'] : $request->input('performance_categories')]),
             ]);
 
-            $content = new Content();
+            $content = new Content;
             $content->setRole('user');
             $content->setParts([$contentPart]);
 
-            $systemInstruction = new Content();
+            $systemInstruction = new Content;
             $systemInstruction->setRole('system');
             $systemInstruction->setParts([
                 new Part([
-                    'text' => self::SYSTEM_INSTRUCTION
-                ])
+                    'text' => self::SYSTEM_INSTRUCTION,
+                ]),
             ]);
 
             $aiModel = "projects/$projectNumber/locations/$endpointLocation/endpoints/$endpointId";
 
-            if($modelVer){
-                $aiModel .= "@" . $modelVer;
+            if ($modelVer) {
+                $aiModel .= '@'.$modelVer;
             }
 
-            $generateRequest = new GenerateContentRequest();
+            $generateRequest = new GenerateContentRequest;
             $generateRequest->setModel($aiModel);
             $generateRequest->setContents([$content]);
             $generateRequest->setSystemInstruction($systemInstruction);
@@ -83,7 +83,7 @@ class EmployeePipAiController extends Controller
             // why tf is this so hard to get the content fuck google
             $responseContent = $responseContainer->offsetGet(0)->getContent()->getParts()->offsetGet(0)->getText();
 
-            $generationMetadata =   $response->getUsageMetadata();
+            $generationMetadata = $response->getUsageMetadata();
 
             return $responseContent;
         } catch (\Throwable $th) {

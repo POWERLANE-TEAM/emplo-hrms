@@ -23,6 +23,7 @@ enum TrainingStatus: string
     {
         return array_reduce(self::cases(), function ($carry, $case) {
             $carry[$case->value] = $case->getLabel();
+
             return $carry;
         }, []);
     }

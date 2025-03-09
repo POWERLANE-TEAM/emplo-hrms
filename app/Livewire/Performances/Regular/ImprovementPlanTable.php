@@ -2,10 +2,6 @@
 
 namespace App\Livewire\Performances\Regular;
 
-use App\Http\Helpers\Timezone;
-use Illuminate\View\ComponentAttributeBag;
-use Rappasoft\LaravelLivewireTables\DataTableComponent;
-use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Livewire\Tables\Defaults as DefaultTableConfig;
 use App\Models\PipPlan;
 use App\Models\RegularPerformance;
@@ -13,9 +9,12 @@ use App\Models\RegularPerformancePeriod;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Livewire\Attributes\Locked;
+use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 
 /**
  * Implemented Methods:
+ *
  * @method  configure(): void
  * @method  columns(): array
  * @method  builder(): Builder
@@ -28,10 +27,9 @@ class ImprovementPlanTable extends DataTableComponent
     protected $model = PipPlan::class;
 
     /**
-     * @var array $customFilterOptions contains the dropdown values and keys.
+     * @var array contains the dropdown values and keys.
      */
     protected $customFilterOptions;
-
 
     #[Locked]
     public $routePrefix;
@@ -39,14 +37,15 @@ class ImprovementPlanTable extends DataTableComponent
     public function configure(): void
     {
         $this->setPrimaryKey('pip_id')
-        ->setTableRowUrl(function($row) {
-            $empStatus = strtolower($row->regularPerformance->employeeEvaluatee->status->emp_status_name);
-            return route($this->routePrefix . ".performances.plan.improvement.$empStatus.generated", $row);
-        })
-        ->setTableRowUrlTarget(function($row) {
+            ->setTableRowUrl(function ($row) {
+                $empStatus = strtolower($row->regularPerformance->employeeEvaluatee->status->emp_status_name);
 
-            return 'navigate';
-        });
+                return route($this->routePrefix.".performances.plan.improvement.$empStatus.generated", $row);
+            })
+            ->setTableRowUrlTarget(function ($row) {
+
+                return 'navigate';
+            });
 
         $this->setTimezone();
 
@@ -66,14 +65,15 @@ class ImprovementPlanTable extends DataTableComponent
     {
         return [
 
-            Column::make(__("Employee Evaluated"))
+            Column::make(__('Employee Evaluated'))
                 ->label(
                     function ($row) {
 
                         $performanceForm = RegularPerformance::find($row->regular_performance_id);
 
-                        if (!$performanceForm) {
+                        if (! $performanceForm) {
                             report('Performance form not found');
+
                             return '--';
                         }
 
@@ -82,7 +82,7 @@ class ImprovementPlanTable extends DataTableComponent
                 )
                 ->sortable(),
 
-            Column::make(__("Evaluation Year"), "")
+            Column::make(__('Evaluation Year'), '')
                 ->label(function ($row) {
                     $performanceForm = RegularPerformance::find($row->regular_performance_id);
 
@@ -91,7 +91,7 @@ class ImprovementPlanTable extends DataTableComponent
                     return Carbon::parse($performancePeriod->start_date)->setTimezone($this->timezone)->format('Y');
                 }),
 
-            Column::make(__("Generation Date"), "generated_at")
+            Column::make(__('Generation Date'), 'generated_at')
                 ->label(
                     function ($row) {
                         return $row->generated_at->format('m/d/Y');
@@ -100,7 +100,7 @@ class ImprovementPlanTable extends DataTableComponent
                 )
                 ->sortable(),
 
-            Column::make("Modified at", "modified_at")
+            Column::make('Modified at', 'modified_at')
                 ->sortable()
                 ->deselected(),
         ];
@@ -125,6 +125,4 @@ class ImprovementPlanTable extends DataTableComponent
      * |--------------------------------------------------------------------------
      * Description
      */
-
-
 }

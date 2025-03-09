@@ -3,13 +3,13 @@
 namespace App\Livewire\Employee\Tables\Basic;
 
 use App\Enums\Payroll;
-use App\Models\Overtime;
 use App\Enums\StatusBadge;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Overtime;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\ComponentAttributeBag;
-use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateFilter;
 
 class OvertimeSummariesTable extends DataTableComponent
@@ -27,7 +27,7 @@ class OvertimeSummariesTable extends DataTableComponent
                 return route("{$routePrefix}.overtimes.summaries").'?'.http_build_query($filterParams);
             })
             ->setTableRowUrlTarget(fn () => '__blank');
-        
+
         $this->setPageName('overtime-requests');
         $this->setEagerLoadAllRelationsEnabled();
         $this->setSingleSortingDisabled();
@@ -74,7 +74,7 @@ class OvertimeSummariesTable extends DataTableComponent
 
         $this->setConfigurableAreas([
             $this->cutOff = Payroll::getCutOffPeriod(isReadableFormat: true),
-            
+
             'toolbar-left-start' => [
                 'components.headings.main-heading',
                 [
@@ -101,14 +101,14 @@ class OvertimeSummariesTable extends DataTableComponent
 
     public function builder(): Builder
     {
-        $statement = "
+        $statement = '
             count(overtime_id) as overtime_id, 
             max(filed_at) as filed_at,
             payroll_approval_id
-        ";
+        ';
 
         return Overtime::query()
-            ->with('payrollApproval',)
+            ->with('payrollApproval')
             ->where('employee_id', Auth::user()->account->employee_id)
             ->selectRaw($statement)
             ->groupBy('payroll_approval_id');
@@ -125,7 +125,7 @@ class OvertimeSummariesTable extends DataTableComponent
             Column::make(__('Approval Status'))
                 ->label(function ($row) {
                     $badge = [];
-                    
+
                     if ($row->payrollApproval->third_approver_signed_at) {
                         $badge = [
                             'color' => StatusBadge::APPROVED->getColor(),
@@ -159,11 +159,11 @@ class OvertimeSummariesTable extends DataTableComponent
             //         $seconds = $row->total_hours_rendered * 3600;
             //         $hours = floor($seconds / 3600);
             //         $minutes = floor(($seconds % 3600) / 60);
-                
+
             //         return __("{$hours} hours and {$minutes} minutes");
             //     })
             //     ->sortable(function (Builder $query, $direction) {
-            //         return $query->orderBy('total_hours_rendered', $direction); 
+            //         return $query->orderBy('total_hours_rendered', $direction);
             //     })
             //     ->setSortingPillDirections('High', 'Low')
             //     ->setSortingPillTitle(__('Hours rendered')),

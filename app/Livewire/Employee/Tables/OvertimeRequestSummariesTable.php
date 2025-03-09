@@ -2,14 +2,14 @@
 
 namespace App\Livewire\Employee\Tables;
 
-use App\Models\Overtime;
 use App\Enums\StatusBadge;
-use Illuminate\Support\Str;
 use App\Enums\UserPermission;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Overtime;
 use Illuminate\Database\Eloquent\Builder;
-use Rappasoft\LaravelLivewireTables\Views\Column;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 
 class OvertimeRequestSummariesTable extends DataTableComponent
 {
@@ -26,7 +26,7 @@ class OvertimeRequestSummariesTable extends DataTableComponent
                 $filterParams = $this->appendPayrollId($row->payrollApproval->payroll->payroll_id);
 
                 return route("{$this->routePrefix}.overtimes.requests.employee.summaries", [
-                    'employee' => $row->employee_id
+                    'employee' => $row->employee_id,
                 ]).'?'.http_build_query($filterParams);
             })
             ->setTableRowUrlTarget(fn () => '__blank');
@@ -109,12 +109,12 @@ class OvertimeRequestSummariesTable extends DataTableComponent
 
     public function builder(): Builder
     {
-        $statement = "
+        $statement = '
             count(overtime_id) as overtime_id, 
             max(filed_at) as filed_at,
             payroll_approval_id, 
             employee_id
-        ";
+        ';
 
         return Overtime::query()
             ->with([
@@ -129,9 +129,9 @@ class OvertimeRequestSummariesTable extends DataTableComponent
                     $query->whereNot('employee_id', Auth::user()->account->employee_id)
                         ->whereHas('jobTitle.jobFamily', function ($query) {
                             $query->where('job_family_id', Auth::user()->account->jobTitle->jobFamily->job_family_id);
-                        });     
+                        });
                 } else {
-                    $query->whereNot('employee_id', Auth::user()->account->employee_id);                    
+                    $query->whereNot('employee_id', Auth::user()->account->employee_id);
                 }
             })
             ->selectRaw($statement)
@@ -146,12 +146,12 @@ class OvertimeRequestSummariesTable extends DataTableComponent
                     $name = Str::headline($row->employee->full_name);
                     $photo = $row->employee->account->photo;
                     $id = $row->employee->employee_id;
-            
+
                     return '<div class="d-flex align-items-center">
-                                <img src="' . e($photo) . '" alt="User Picture" class="rounded-circle me-3" style="width: 38px; height: 38px;">
+                                <img src="'.e($photo).'" alt="User Picture" class="rounded-circle me-3" style="width: 38px; height: 38px;">
                                 <div>
-                                    <div>' . e($name) . '</div>
-                                    <div class="text-muted fs-6">Employee ID: ' . e($id) . '</div>
+                                    <div>'.e($name).'</div>
+                                    <div class="text-muted fs-6">Employee ID: '.e($id).'</div>
                                 </div>
                             </div>';
                 })
@@ -195,7 +195,7 @@ class OvertimeRequestSummariesTable extends DataTableComponent
 
             //         $hours = floor($seconds / 3600);
             //         $minutes = floor(($seconds % 3600) / 60);
-                
+
             //         return __("{$hours} hours and {$minutes} minutes");
             //     })
             //     ->setSortingPillDirections('High', 'Low')

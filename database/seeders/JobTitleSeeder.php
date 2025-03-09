@@ -23,7 +23,7 @@ class JobTitleSeeder extends Seeder
 
                 $title = JobTitle::create([
                     'job_title' => $item['title'],
-                    'job_desc' => "\nSkills:\n" . $skills . "\nExperiences:\n" . $experiences,
+                    'job_desc' => "\nSkills:\n".$skills."\nExperiences:\n".$experiences,
                     'department_id' => $item['department'],
                     'job_level_id' => $item['level'],
                     'job_family_id' => $item['family'],

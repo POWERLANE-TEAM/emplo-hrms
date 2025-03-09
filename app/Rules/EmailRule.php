@@ -5,10 +5,8 @@ namespace App\Rules;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 
-
 class EmailRule implements ValidationRule
 {
-
     public function __construct(protected ?bool $shouldStrictlyUnique = true)
     {
         $this->shouldStrictlyUnique = $shouldStrictlyUnique;
@@ -52,10 +50,10 @@ class EmailRule implements ValidationRule
             if ($this->shouldStrictlyUnique) {
                 $rules[] = 'unique:users,email';
             } else {
-                $rules[] = 'unique:users,email,' . auth()->id() . ',user_id';
+                $rules[] = 'unique:users,email,'.auth()->id().',user_id';
             }
         }
-        
+
         return implode('|', $rules);
     }
 }

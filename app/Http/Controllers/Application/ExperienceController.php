@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Application;
 
 use App\Http\Controllers\Controller;
-use App\Models\Applicant;
 use App\Models\ApplicantExperience;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Contracts\View\View;
@@ -16,7 +15,6 @@ class ExperienceController extends Controller
     // {
     //     return view();
     // }
-
 
     /* Show form page for creating resource */
     // public function create() : ViewFactory|View
@@ -39,14 +37,14 @@ class ExperienceController extends Controller
                     $validated = $request->validate([
                         'applicantId' => 'required|exists:applicants,applicant_id',
                         'experience' => 'required|array',
-                        'experience.*' => 'required|string'
+                        'experience.*' => 'required|string',
                     ], $messages);
                 } else {
                     // Manually validate the array
                     $validated = validator($request, [
                         'applicantId' => 'required|exists:applicants,applicant_id',
                         'experience' => 'required|array',
-                        'experience.*' => 'required|string'
+                        'experience.*' => 'required|string',
                     ], $messages)->validate();
                 }
             } else {
@@ -60,7 +58,7 @@ class ExperienceController extends Controller
                     foreach ($experience as $exp) {
                         ApplicantExperience::create([
                             'applicant_id' => $validated['applicantId'],
-                            'experience_desc' => $exp
+                            'experience_desc' => $exp,
                         ]);
                     }
                 }

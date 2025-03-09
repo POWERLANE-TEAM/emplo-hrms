@@ -2,23 +2,18 @@
 
 namespace App\Livewire\Applicant\Application;
 
-use App\Enums\AccountType;
-use App\Enums\UserPermission;
-use Closure;
-use Illuminate\Contracts\View\View;
-use Spatie\LivewireWizard\Components\StepComponent;
 use App\Livewire\Forms\FileForm;
 use App\Models\JobVacancy;
-use App\Traits\Applicant;
 use App\Traits\HasObjectForm;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
+use Closure;
+use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Locked;
 use Spatie\LivewireFilepond\WithFilePond;
+use Spatie\LivewireWizard\Components\StepComponent;
 
 class ResumeUploadStep extends StepComponent
 {
-    use WithFilePond, HasObjectForm;
+    use HasObjectForm, WithFilePond;
 
     public $resume;
 
@@ -34,7 +29,6 @@ class ResumeUploadStep extends StepComponent
     public bool $isValid = false;
 
     protected JobVacancy $jobVacancy;
-
 
     public function boot()
     {
@@ -70,9 +64,11 @@ class ResumeUploadStep extends StepComponent
                     );
 
                     $this->resumeFile = $tempFile;
-                } else throw new \Exception($this->resumeFile . " not found");
+                } else {
+                    throw new \Exception($this->resumeFile.' not found');
+                }
             } catch (\Throwable $th) {
-                report("Resume is lost while applicant is filling form" . $th);
+                report('Resume is lost while applicant is filling form'.$th);
                 $this->resumeFile = null;
             }
         }

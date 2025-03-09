@@ -2,18 +2,18 @@
 
 namespace App\Livewire\Employee\Tables;
 
+use App\Enums\PerformanceEvaluationPeriod;
 use App\Models\Employee;
-use Illuminate\Support\Carbon;
-use Livewire\Attributes\Locked;
 use App\Models\PerformanceRating;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 use App\Models\ProbationaryPerformance;
 use Illuminate\Database\Eloquent\Builder;
-use App\Enums\PerformanceEvaluationPeriod;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\View\ComponentAttributeBag;
-use Rappasoft\LaravelLivewireTables\Views\Column;
+use Livewire\Attributes\Locked;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 
 class MyPerformancesAsProbationaryTable extends DataTableComponent
 {
@@ -25,7 +25,7 @@ class MyPerformancesAsProbationaryTable extends DataTableComponent
     public function configure(): void
     {
         $this->setPrimaryKey('probationary_performance_id')
-            ->setTableRowUrl(fn ($row) => $this->setRoute($row). '/#overview')
+            ->setTableRowUrl(fn ($row) => $this->setRoute($row).'/#overview')
             ->setTableRowUrlTarget(fn () => '__blank');
         $this->setPageName('my-regular-performance');
         $this->setEagerLoadAllRelationsEnabled();
@@ -68,7 +68,7 @@ class MyPerformancesAsProbationaryTable extends DataTableComponent
 
         $this->setTdAttributes(function (Column $column, $row, $columnIndex, $rowIndex) {
             return [
-                'class' => $column->getTitle() === 'Evaluatee' ? 'text-md-start' :'text-md-center',
+                'class' => $column->getTitle() === 'Evaluatee' ? 'text-md-start' : 'text-md-center',
             ];
         });
 
@@ -88,10 +88,10 @@ class MyPerformancesAsProbationaryTable extends DataTableComponent
     }
 
     private function setRoute(Employee $employee)
-    {   
+    {
         $evaluation = $employee->performancesAsProbationary;
 
-        session()->put('final_rating', 
+        session()->put('final_rating',
             $this->computeFinalRating($evaluation),
         );
 
@@ -115,7 +115,7 @@ class MyPerformancesAsProbationaryTable extends DataTableComponent
         if (! $query->has('performancesAsProbationary')->exists()) {
             return Employee::query()->whereRaw('1 = 0');
         }
-    
+
         return $query;
     }
 
@@ -128,6 +128,7 @@ class MyPerformancesAsProbationaryTable extends DataTableComponent
         $final = $evaluations->filter(function ($item) {
             return $item->period_name === PerformanceEvaluationPeriod::FINAL_MONTH->value;
         });
+
         // dd($final);
         return $final->first()->details->isNotEmpty();
     }
@@ -138,34 +139,34 @@ class MyPerformancesAsProbationaryTable extends DataTableComponent
             $categoryRatings = $item->details->first()?->categoryRatings;
 
             if ($categoryRatings) {
-                $totalRatings = $categoryRatings->sum(fn($subitem) => $subitem->rating->perf_rating);
+                $totalRatings = $categoryRatings->sum(fn ($subitem) => $subitem->rating->perf_rating);
                 $countRatings = $categoryRatings->count();
-                
+
                 $carry['total'] += $totalRatings;
                 $carry['count'] += $countRatings;
             }
 
             return $carry;
         }, ['total' => 0, 'count' => 0]);
-    
+
         $sum = $totals['total'];
         $countSum = $totals['count'];
-    
+
         $mean = $countSum > 0 ? $sum / $countSum : 0;
         $format = number_format($mean, 2, '.');
         $rounded = round($mean);
         $avg = (int) $rounded;
 
         $key = config('cache.keys.performance.ratings');
-    
+
         $performanceRatings = Cache::rememberForever($key, function () {
             return PerformanceRating::all();
         });
-    
+
         $scale = $performanceRatings->firstWhere('perf_rating', $avg)?->perf_rating_name;
 
         return compact('format', 'scale');
-    } 
+    }
 
     public function columns(): array
     {
@@ -196,6 +197,7 @@ class MyPerformancesAsProbationaryTable extends DataTableComponent
                 ->label(function ($row) {
                     if ($this->isProbationaryFinalEvaluated($row->performancesAsProbationary)) {
                         $finalRating = $this->computeFinalRating($row->performancesAsProbationary);
+
                         return $finalRating['format'];
                     } else {
                         return '-';
@@ -206,6 +208,7 @@ class MyPerformancesAsProbationaryTable extends DataTableComponent
                 ->label(function ($row) {
                     if ($this->isProbationaryFinalEvaluated($row->performancesAsProbationary)) {
                         $finalRating = $this->computeFinalRating($row->performancesAsProbationary);
+
                         return $finalRating['scale'];
                     } else {
                         return '-';

@@ -3,23 +3,23 @@
 namespace App\Livewire\Employee\Issues;
 
 use App\Enums\FilePath;
-use App\Models\Issue;
-use Livewire\Component;
-use App\Models\IssueType;
-use App\Enums\IssueStatus;
-use Livewire\WithFileUploads;
-use Livewire\Attributes\Computed;
-use Illuminate\Support\Facades\DB;
 use App\Enums\IssueConfidentiality;
+use App\Enums\IssueStatus;
+use App\Models\Issue;
+use App\Models\IssueType;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Livewire\Attributes\Computed;
+use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class CreateIssue extends Component
 {
     use WithFileUploads;
 
     public $types = [];
-    
+
     public $attachments = [];
 
     public $occuredAt;
@@ -48,10 +48,10 @@ class CreateIssue extends Component
         });
 
         $this->reset();
-        
+
         $this->dispatch('showSuccessToast', [
             'type' => 'success',
-            'message' => __("Your report was successfully submitted.")
+            'message' => __('Your report was successfully submitted.'),
         ]);
 
         $this->dispatch('changes-saved');
@@ -60,13 +60,13 @@ class CreateIssue extends Component
     private function storeIssue()
     {
         return Issue::create([
-            'issue_reporter'        => Auth::user()->account->employee_id,
-            'confidentiality'       => $this->confidentiality,
-            'occured_at'            => $this->occuredAt,
-            'issue_description'     => $this->description,
-            'desired_resolution'    => $this->desiredResolution,
-            'status'                => IssueStatus::OPEN,
-            'status_marked_at'      => now(),
+            'issue_reporter' => Auth::user()->account->employee_id,
+            'confidentiality' => $this->confidentiality,
+            'occured_at' => $this->occuredAt,
+            'issue_description' => $this->description,
+            'desired_resolution' => $this->desiredResolution,
+            'status' => IssueStatus::OPEN,
+            'status_marked_at' => now(),
         ]);
     }
 
@@ -81,17 +81,17 @@ class CreateIssue extends Component
             $hashedVersion = sprintf(
                 '%s-%d', $attachment->hashName(), Auth::user()->account->employee_id
             );
-            
+
             $attachment->storeAs(FilePath::ISSUES->value, $hashedVersion, 'local');
 
             array_push($issueAttachments, [
-                'attachment'        => $hashedVersion,
-                'attachment_name'   => $attachment->getClientOriginalName(),
-                'issue_id'          => $issue->issue_id,
-            ]); 
+                'attachment' => $hashedVersion,
+                'attachment_name' => $attachment->getClientOriginalName(),
+                'issue_id' => $issue->issue_id,
+            ]);
         }
 
-        DB::table('issue_attachments')->insert($issueAttachments); 
+        DB::table('issue_attachments')->insert($issueAttachments);
     }
 
     public function removeAttachment(int $index)
@@ -106,13 +106,13 @@ class CreateIssue extends Component
     public function rules(): array
     {
         return [
-            'types'             => 'required',
-            'types.*'           => 'exists:issue_types,issue_type_id',
-            'occuredAt'         => 'nullable|date|before_or_equal:today',
-            'confidentiality'   => 'required',
-            'description'       => 'required|string',
-            'attachments'       => 'nullable|array|max:5',
-            'attachments.*'     => 'file|max:51200',
+            'types' => 'required',
+            'types.*' => 'exists:issue_types,issue_type_id',
+            'occuredAt' => 'nullable|date|before_or_equal:today',
+            'confidentiality' => 'required',
+            'description' => 'required|string',
+            'attachments' => 'nullable|array|max:5',
+            'attachments.*' => 'file|max:51200',
             'desiredResolution' => 'nullable|string',
         ];
     }
@@ -120,8 +120,8 @@ class CreateIssue extends Component
     public function messages(): array
     {
         return [
-            'type.required'         => __('Please select the type of issue'),
-            'description.required'  => __('Please describe at least a summary or overview of this report.'),
+            'type.required' => __('Please select the type of issue'),
+            'description.required' => __('Please describe at least a summary or overview of this report.'),
         ];
     }
 

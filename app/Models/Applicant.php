@@ -43,8 +43,8 @@ class Applicant extends Model
     public function fullName(): Attribute
     {
         return Attribute::make(
-            get: fn(mixed $value, array $attributes) => $attributes['last_name'] . ', ' .
-                $attributes['first_name'] . ' ' .
+            get: fn (mixed $value, array $attributes) => $attributes['last_name'].', '.
+                $attributes['first_name'].' '.
                 $attributes['middle_name'],
         );
     }
@@ -88,7 +88,7 @@ class Applicant extends Model
     {
         return $this->hasMany(ApplicantSkill::class, 'applicant_id', 'applicant_id');
     }
-    
+
     /**
      * Get the educational attainments of the applicant.
      */

@@ -2,16 +2,16 @@
 
 namespace App\Livewire\HrManager\Reports;
 
-use Livewire\Component;
 use App\Services\ReportService;
-use Livewire\Attributes\Locked;
 use Illuminate\Support\Facades\Cache;
+use Livewire\Attributes\Locked;
+use Livewire\Component;
 
 class RetentionTurnoverChart extends Component
 {
     public $year;
 
-    #[Locked]    
+    #[Locked]
     public $retentionData;
 
     public function mount(ReportService $reportService)
@@ -20,7 +20,9 @@ class RetentionTurnoverChart extends Component
 
         $this->retentionData = Cache::get($key);
 
-        if ($this->retentionData) return;
+        if ($this->retentionData) {
+            return;
+        }
 
         $this->retentionData = $reportService->getRetentionAndTurnoverRate($this->year);
 

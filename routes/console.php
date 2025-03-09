@@ -16,7 +16,7 @@ Schedule::timezone('Asia/Manila')->group(function () {
             Schedule::command('silcredits:increase');
             Schedule::command('prollsummary:generate');
             Schedule::command('backup:clean');
-            Schedule::command('backup:run --only-db');   
+            Schedule::command('backup:run --only-db');
         });
     });
 

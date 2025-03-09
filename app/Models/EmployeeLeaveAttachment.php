@@ -13,7 +13,7 @@ class EmployeeLeaveAttachment extends Model
     protected $primaryKey = 'attachment_id';
 
     protected $guarded = [
-        'attachment_id'
+        'attachment_id',
     ];
 
     /**

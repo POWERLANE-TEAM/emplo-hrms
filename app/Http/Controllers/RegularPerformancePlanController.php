@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\AI\Google\EmployeePipAiController;
-use App\Models\RegularPerformance;
 use App\Http\Helpers\RouteHelper;
-use App\Models\PerformanceCategory;
 use App\Models\PipPlan;
+use App\Models\RegularPerformance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -27,7 +26,7 @@ class RegularPerformancePlanController extends Controller
     {
         $performanceEvalForm = RouteHelper::validateModel(RegularPerformance::class, $performance);
 
-        $data = Session::get('performance_plan_data_' . $performance);
+        $data = Session::get('performance_plan_data_'.$performance);
 
         return view('employee.performance.improvement-plan.regular.create', ['performance' => $performanceEvalForm, 'pipData' => $data, 'unsaved' => true]);
     }
@@ -45,34 +44,29 @@ class RegularPerformancePlanController extends Controller
             'evaluator_name' => auth()->user()->account->full_name,
         ];
 
-
         $performanceEvaluation->loadMissing('categoryRatings');
 
         $categoryRatings = $performanceEvaluation->categoryRatings;
 
-        $performanceCategories;
-
         foreach ($categoryRatings as $categoryRating) {
             $performanceCategories[] = [
-                'category' => $categoryRating->category->perf_category_id . '. ' . $categoryRating->category->perf_category_name,
+                'category' => $categoryRating->category->perf_category_id.'. '.$categoryRating->category->perf_category_name,
                 'description' => $categoryRating->category->perf_category_desc,
                 'rating' => [
-                    "annual" => $categoryRating->perf_rating_id,
+                    'annual' => $categoryRating->perf_rating_id,
                 ],
             ];
         }
 
-
-
-        $generator = new EmployeePipAiController();
+        $generator = new EmployeePipAiController;
 
         $instruction = "Please conduct evaluations at annual evaluation. For each evaluation, indicate the employee's performance by writing a number between 1 and 4 on the blank line to the right of each performance category, in the appropriate column. Use the following scale: 1 = Needs Improvement, 2 = Meets Expectations, 3 = Exceeds Expectations, 4 = Outstanding.";
 
-        $generateReq = array_merge($employee, ["performance_categories" => $performanceCategories], ['instructions' => $instruction]);
+        $generateReq = array_merge($employee, ['performance_categories' => $performanceCategories], ['instructions' => $instruction]);
 
         $response = $generator->generatePerformancePlan($generateReq);
 
-        Session::put('performance_plan_data_' . $performanceEvaluation->regular_performance_id, $response);
+        Session::put('performance_plan_data_'.$performanceEvaluation->regular_performance_id, $response);
 
         return redirect()->route('employee.performances.plan.improvement.regular.create', ['performance' => $performanceEvaluation]);
     }
@@ -88,7 +82,7 @@ class RegularPerformancePlanController extends Controller
 
         $performanceForm = RouteHelper::validateModel(RegularPerformance::class, $request['performanceId'] ?? abort(404));
 
-        if($performanceForm->pip()->exists()){
+        if ($performanceForm->pip()->exists()) {
             abort(400, 'Improvement plan already exists for this performance evaluation.');
         }
 
@@ -104,7 +98,7 @@ class RegularPerformancePlanController extends Controller
             'details' => $validated['pipDetails'],
         ]);
 
-        if(!$isValidated){
+        if (! $isValidated) {
             return redirect()->route('employee.performances.plan.improvement.regular.generated', ['pip' => $pipPlan]);
         }
 
@@ -116,6 +110,7 @@ class RegularPerformancePlanController extends Controller
     public function show(int $pip)
     {
         $pipPlan = RouteHelper::validateModel(PipPlan::class, $pip);
+
         return view('employee.performance.improvement-plan.regular.generated', ['pip' => $pipPlan]);
     }
 
@@ -147,7 +142,7 @@ class RegularPerformancePlanController extends Controller
             'details' => $validated['pipDetails'],
         ]);
 
-        if(!$isValidated){
+        if (! $isValidated) {
             return redirect()->route('employee.performances.plan.improvement.regular.generated', ['pip' => $pipPlan]);
         }
 

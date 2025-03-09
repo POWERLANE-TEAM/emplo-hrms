@@ -3,20 +3,20 @@
 namespace App\Livewire;
 
 use App\Enums\UserRole;
-use Illuminate\View\ComponentAttributeBag;
-use Rappasoft\LaravelLivewireTables\DataTableComponent;
-use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Livewire\Tables\Defaults as DefaultTableConfig;
-use App\Models\Employee;
 use App\Models\ApplicationDoc;
+use App\Models\Employee;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Locked;
+use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Columns\LinkColumn;
 
 /**
  * Implemented Methods:
+ *
  * @method  configure(): void
  * @method  columns(): array
  * @method  builder(): Builder
@@ -36,7 +36,7 @@ class EmployeeDocumentsTable extends DataTableComponent
     protected $model = ApplicationDoc::class;
 
     /**
-     * @var array $customFilterOptions contains the dropdown values and keys.
+     * @var array contains the dropdown values and keys.
      */
     protected $customFilterOptions;
 
@@ -55,7 +55,6 @@ class EmployeeDocumentsTable extends DataTableComponent
             report($th);
         }
     }
-
 
     public function configure(): void
     {
@@ -84,7 +83,7 @@ class EmployeeDocumentsTable extends DataTableComponent
 
         });
 
-        if($this->isBasicEmployee){
+        if ($this->isBasicEmployee) {
             // $this->setPaginationDisabled();
             $this->setPaginationVisibilityDisabled();
             $this->setPerPageAccepted([5, 10, 15, 20, -1]);
@@ -122,12 +121,12 @@ class EmployeeDocumentsTable extends DataTableComponent
     public function columns(): array
     {
         return [
-            Column::make("Document Name")
+            Column::make('Document Name')
                 ->label(function ($row) {
                     return ucwords($row->preemp_req_name);
                 }),
 
-                Column::make("Attachment")
+            Column::make('Attachment')
                 ->label(function ($row) {
                     try {
                         $file_path = $row->file_path;
@@ -145,29 +144,30 @@ class EmployeeDocumentsTable extends DataTableComponent
                         }
                     } catch (\Throwable $th) {
                         report($th);
+
                         return '<span class="text-danger" >File not found.</span>';
                     }
                 })
                 ->html()
-                ->hideIf(!$this->isBasicEmployee),
+                ->hideIf(! $this->isBasicEmployee),
 
-                Column::make("Upload")
+            Column::make('Upload')
                 ->label(function ($row) {
-                    return <<<HTML
+                    return <<<'HTML'
                     <button class="btn btn-primary" >Upload</button>
                     HTML;
                 })
                 ->html()
-                ->hideIf(!$this->isBasicEmployee),
+                ->hideIf(! $this->isBasicEmployee),
 
-
-            Column::make("File Name", 'file_path')
+            Column::make('File Name', 'file_path')
                 ->format(function ($row) {
                     try {
                         $file_path = $row->file_path;
 
                         if (Storage::exists($file_path)) {
                             $file_name = basename($file_path);
+
                             return "<button data-bs-target=\"#modal-employee-application-doc\">$file_name</button>";
                         } else {
 
@@ -175,13 +175,14 @@ class EmployeeDocumentsTable extends DataTableComponent
                         }
                     } catch (\Throwable $th) {
                         report($th);
+
                         return '<span class="text-danger" >File not found.</span>';
                     }
                 })
                 ->html()
                 ->hideIf($this->isBasicEmployee),
 
-            Column::make("Date Uploaded")
+            Column::make('Date Uploaded')
                 ->label(function ($row) {
                     try {
                         if (is_null($row->submitted_at)) {
@@ -191,15 +192,16 @@ class EmployeeDocumentsTable extends DataTableComponent
                         return Carbon::parse($row->submitted_at)->setTimezone($this->timezone)->format('d/m/y');
                     } catch (\Exception $e) {
                         report($e);
+
                         return '--';
                     }
                 })
                 ->deselectedIf($this->isBasicEmployee),
 
-            LinkColumn::make("History")
-                ->title(fn($row) => 'See History')
+            LinkColumn::make('History')
+                ->title(fn ($row) => 'See History')
 
-                ->location(fn($row) => route($this->routePrefix . '.employees.information', ['employee' => $this->employee->employee_id]) . '/#information')
+                ->location(fn ($row) => route($this->routePrefix.'.employees.information', ['employee' => $this->employee->employee_id]).'/#information')
                 ->deselectedIf($this->isBasicEmployee),
 
         ];
@@ -220,7 +222,6 @@ class EmployeeDocumentsTable extends DataTableComponent
                 'preemp_requirements.preemp_req_name'
             )
             ->join('preemp_requirements', 'application_docs.preemp_req_id', '=', 'preemp_requirements.preemp_req_id');
-
 
         return $query;
     }
@@ -282,8 +283,8 @@ class EmployeeDocumentsTable extends DataTableComponent
      * - 'DD-MM-YYYY'
      * - 'DD/MM/YYYY'
      *
-     * @param \Illuminate\Database\Query\Builder $query The query builder instance.
-     * @param string $searchTerm The search term to filter by.
+     * @param  \Illuminate\Database\Query\Builder  $query  The query builder instance.
+     * @param  string  $searchTerm  The search term to filter by.
      * @return \Illuminate\Database\Query\Builder The modified query builder instance.
      */
     // public function applyDateSearch(Builder $query, $searchTerm)

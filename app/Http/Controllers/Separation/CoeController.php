@@ -14,13 +14,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpWord\IOFactory;
-use PhpOffice\PhpWord\TemplateProcessor  as WordTemplateProcessor;
+use PhpOffice\PhpWord\TemplateProcessor as WordTemplateProcessor;
 
 class CoeController extends Controller
 {
     use NeedsWordDocToPdf;
 
-    private $coeTemplatePath = FilePath::DOC_TEMPLATE->value . 'Certificate of Appreciation.docx';
+    private $coeTemplatePath = FilePath::DOC_TEMPLATE->value.'Certificate of Appreciation.docx';
 
     /**
      * Display a listing of the resource.
@@ -59,7 +59,6 @@ class CoeController extends Controller
         return view('employee.separation.coe.request', compact('coe'));
     }
 
-
     /**
      * Show the form for editing the specified resource.
      */
@@ -69,13 +68,13 @@ class CoeController extends Controller
         $coeRequest->loadMissing(['requestor.lifecycle', 'requestor.jobTitle.department']);
 
         $coeData = [
-            'name' =>  $coeRequest->requestor->fullname,
+            'name' => $coeRequest->requestor->fullname,
             'empStart' => $coeRequest->requestor->lifecycle->start_date,
-            'empEnd' =>  $coeRequest->requestor->lifecycle->separated_at,
-            'jobTitle'  => $coeRequest->requestor->jobTitle->job_title,
-            'jobDepartment'  => $coeRequest->requestor->jobTitle->department->department_name,
-            'issuedDate'  => now(),
-            'hrManager' =>  auth()->user()->account->fullname,
+            'empEnd' => $coeRequest->requestor->lifecycle->separated_at,
+            'jobTitle' => $coeRequest->requestor->jobTitle->job_title,
+            'jobDepartment' => $coeRequest->requestor->jobTitle->department->department_name,
+            'issuedDate' => now(),
+            'hrManager' => auth()->user()->account->fullname,
             'companyAddr' => 'Rowsuz Business Center, Diversin Rd',
         ];
 
@@ -87,7 +86,6 @@ class CoeController extends Controller
     private function generateContent($coeRequest)
     {
         $reader = IOFactory::createReader('Word2007');
-
 
         if (Storage::disk('public')->missing($this->coeTemplatePath)) {
             abort(404);
@@ -117,7 +115,6 @@ class CoeController extends Controller
 
         $signature = null;
 
-
         if (auth()->user()->account->signature) {
             $signatureData = auth()->user()->account->signature;
 
@@ -138,7 +135,7 @@ class CoeController extends Controller
         $templateProcessor->setValues($values);
         $templateProcessor->setImageValue('USER_SIGNATURE', $signature);
 
-        $docxFilePath = FilePath::COE->value . hash('sha256', time()) . '.docx';
+        $docxFilePath = FilePath::COE->value.hash('sha256', time()).'.docx';
         $templateProcessor->saveAs(Storage::disk('public')->path($docxFilePath));
 
         $disk = 'public';
@@ -150,6 +147,7 @@ class CoeController extends Controller
             return $pdfFilePath;
         } catch (\Throwable $th) {
             report($th);
+
             return response()->json(['error' => $th->getMessage()], 500);
         }
     }
@@ -163,7 +161,7 @@ class CoeController extends Controller
         DB::transaction(function () use ($coe, $coePath) {
             $employeeDoc = EmployeeDoc::create([
                 'employee_id' => $coe->requestor->employee_id,
-                'file_path' => $coePath
+                'file_path' => $coePath,
             ]);
 
             $coe->update([
@@ -173,7 +171,7 @@ class CoeController extends Controller
             ]);
 
             $coe->requestor->jobDetail->update([
-                'emp_status_id' => EmploymentStatus::RESIGNED->value
+                'emp_status_id' => EmploymentStatus::RESIGNED->value,
             ]);
 
             $coe->requestor->lifecycle->update([

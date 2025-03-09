@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Payslip;
 use App\Models\Employee;
+use App\Models\Payslip;
 use Illuminate\Database\Seeder;
 
 class PayslipSeeder extends Seeder

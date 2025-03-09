@@ -3,20 +3,19 @@
 namespace App\Livewire;
 
 use App\Enums\EmploymentStatus;
-use App\Enums\FilePath;
 use App\Enums\ResignationStatus;
-use Illuminate\View\ComponentAttributeBag;
-use Rappasoft\LaravelLivewireTables\DataTableComponent;
-use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Livewire\Tables\Defaults as DefaultTableConfig;
 use App\Models\Employee;
 use App\Models\Resignation;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Livewire\Attributes\Locked;
+use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 
 /**
  * Implemented Methods:
+ *
  * @method  configure(): void
  * @method  columns(): array
  * @method  builder(): Builder
@@ -32,7 +31,7 @@ class ResignationTable extends DataTableComponent
     public string $routePrefix;
 
     /**
-     * @var array $customFilterOptions contains the dropdown values and keys.
+     * @var array contains the dropdown values and keys.
      */
     protected $customFilterOptions;
 
@@ -40,7 +39,7 @@ class ResignationTable extends DataTableComponent
     {
         $this->setPrimaryKey('resignation_id')
             ->setTableRowUrl(function ($row) {
-                return route($this->routePrefix . ".separation.resignations.review", $row);
+                return route($this->routePrefix.'.separation.resignations.review', $row);
             });
 
         $this->configuringStandardTableMethods();
@@ -76,10 +75,10 @@ class ResignationTable extends DataTableComponent
     public function columns(): array
     {
         return [
-            Column::make("Full Name")
-                ->label(fn($row) => $row->resignationLetter->employee->full_name)
+            Column::make('Full Name')
+                ->label(fn ($row) => $row->resignationLetter->employee->full_name)
                 ->sortable(),
-            Column::make("Status")
+            Column::make('Status')
                 ->label(
                     function ($row) {
 
@@ -87,21 +86,20 @@ class ResignationTable extends DataTableComponent
 
                         $status = $row->resignationStatus->resignation_status_name;
 
-                        if ($status ==  strtolower(ResignationStatus::APPROVED->label()) && $row->resignationLetter->employee == EmploymentStatus::RESIGNED) {
+                        if ($status == strtolower(ResignationStatus::APPROVED->label()) && $row->resignationLetter->employee == EmploymentStatus::RESIGNED) {
                             $status = EmploymentStatus::RESIGNED->label();
-                        }else if ($row->retracted_at) {
-                            if($status !=  strtolower(ResignationStatus::PENDING->label())){
+                        } elseif ($row->retracted_at) {
+                            if ($status != strtolower(ResignationStatus::PENDING->label())) {
                                 report('Resignation error');
                             }
                             $status = 'Retracted';
                         }
 
-                        if ($status ==  strtolower(ResignationStatus::REJECTED->label())) {
+                        if ($status == strtolower(ResignationStatus::REJECTED->label())) {
                             $color = 'danger';
-                        } else if ($status ==  strtolower(ResignationStatus::APPROVED->label())) {
+                        } elseif ($status == strtolower(ResignationStatus::APPROVED->label())) {
                             $color = 'success';
-                        } else
-                         {
+                        } else {
                             $color = 'info';
                         }
 
@@ -112,7 +110,7 @@ class ResignationTable extends DataTableComponent
                             ]);
                     }
                 ),
-            Column::make("Submitted On")
+            Column::make('Submitted On')
                 ->label(function ($row) {
                     $filedAt = Carbon::parse($row->filed_at)->setTimezone($this->timezone);
 
@@ -120,12 +118,12 @@ class ResignationTable extends DataTableComponent
                 })
                 ->sortable(),
 
-            Column::make("Determined On")
+            Column::make('Determined On')
                 ->label(function ($row) {
 
                     $decisionAt = $row->finalDecisionAt;
 
-                    if (!$decisionAt) {
+                    if (! $decisionAt) {
                         return '--';
                     }
 

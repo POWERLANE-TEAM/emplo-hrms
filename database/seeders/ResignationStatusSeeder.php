@@ -4,12 +4,10 @@ namespace Database\Seeders;
 
 use App\Enums\ResignationStatus as EnumsResignationStatus;
 use App\Models\ResignationStatus;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class ResignationStatusSeeder extends Seeder
 {
-
     /**
      * Run the database seeds.
      */

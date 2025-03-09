@@ -4,8 +4,6 @@ namespace App\Listeners;
 
 use App\Events\ResignationApproved;
 use App\Models\CoeRequest;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Log;
 
 class CreateCoeRequest
@@ -13,10 +11,7 @@ class CreateCoeRequest
     /**
      * Create the event listener.
      */
-    public function __construct()
-    {
-
-    }
+    public function __construct() {}
 
     /**
      * Handle the event.

@@ -53,14 +53,13 @@ function createEmployee($chunkStart, $chunk, $freeEmailDomain)
 
                         $timestamp = fake()->dateTimeBetween('-5 years', 'now');
 
-
                         $userData = [
                             'account_type' => AccountType::EMPLOYEE,
                             'account_id' => $employee->employee_id,
-                            'email' => $userRole . '.' . str_pad($i, 3, '0', STR_PAD_LEFT) . '@' . $validDomains,
+                            'email' => $userRole.'.'.str_pad($i, 3, '0', STR_PAD_LEFT).'@'.$validDomains,
                             'password' => Hash::make('UniqP@ssw0rd'),
                             'user_status_id' => UserStatus::ACTIVE,
-                            'email_verified_at' => $timestamp->modify('+' . rand(1, 7) . ' days'),
+                            'email_verified_at' => $timestamp->modify('+'.rand(1, 7).' days'),
                             'created_at' => $timestamp,
                         ];
 
@@ -73,10 +72,11 @@ function createEmployee($chunkStart, $chunk, $freeEmailDomain)
                             'job_vacancy_id' => JobVacancy::inRandomOrder()->first()->job_vacancy_id,
                             'application_status_id' => ApplicationStatus::APPROVED,
                             'is_passed' => true,
-                            'hired_at' => $timestamp->modify('+' . rand(3, 14) . ' days'),
+                            'hired_at' => $timestamp->modify('+'.rand(3, 14).' days'),
                         ]);
 
-                        $pdfGen = new class {
+                        $pdfGen = new class
+                        {
                             use NeedsEmptyPdf;
                         };
 
@@ -85,7 +85,7 @@ function createEmployee($chunkStart, $chunk, $freeEmailDomain)
                                 ->orWhere('preemp_req_name', '!=', 'resume');
                         })->get()->each(function ($requirement) use ($application, $pdfGen) {
 
-                            $randomFileName = 'preemp_' . uniqid() . '.pdf';
+                            $randomFileName = 'preemp_'.uniqid().'.pdf';
 
                             [$filePath, $pdf] = $pdfGen->emptyPdf(FilePath::PRE_EMPLOYMENT->value, $randomFileName, '<h1>Sample Requirement</h1>');
 
@@ -117,12 +117,12 @@ function createEmployee($chunkStart, $chunk, $freeEmailDomain)
                         ]);
 
                     } catch (\Exception $e) {
-                        Log::error('Exception: ' . $e->getMessage() . ' in ' . $e->getFile() . ' on line ' . $e->getLine());
+                        Log::error('Exception: '.$e->getMessage().' in '.$e->getFile().' on line '.$e->getLine());
                     }
                 });
             }
         } catch (\Throwable $th) {
-            Log::error('Exception: ' . $th->getMessage() . ' in ' . $th->getFile() . ' on line ' . $th->getLine());
+            Log::error('Exception: '.$th->getMessage().' in '.$th->getFile().' on line '.$th->getLine());
         }
 
         return ['result' => true];
@@ -155,7 +155,7 @@ class EmployeeSeeder extends Seeder
         $tasks = [];
         for ($i = 0; $i < $concurrencyCount; $i++) {
             $chunkStart = $start + ($chunkCount * $i);
-            $tasks[] = fn() => createEmployee($chunkStart, $chunkCount, $freeEmailDomain);
+            $tasks[] = fn () => createEmployee($chunkStart, $chunkCount, $freeEmailDomain);
         }
 
         Concurrency::run($tasks);

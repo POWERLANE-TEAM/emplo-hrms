@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class RegularPerformance extends Model
 {
@@ -30,21 +30,21 @@ class RegularPerformance extends Model
         if (! $cachedValue) {
             $this->loadMissing([
                 'categoryRatings.rating',
-            ]);   
+            ]);
         }
 
         $total = $this->categoryRatings->average(function ($item) {
             return $item->rating->perf_rating;
-        }); 
+        });
 
-        $count          = $this->categoryRatings->count();
-        $ratingAvg      = $count > 0 ? number_format($total, 2, '.', '') : 0;
-        $roundedValue   = round($ratingAvg);
-        $intValue       = (int) $roundedValue;
-        
+        $count = $this->categoryRatings->count();
+        $ratingAvg = $count > 0 ? number_format($total, 2, '.', '') : 0;
+        $roundedValue = round($ratingAvg);
+        $intValue = (int) $roundedValue;
+
         $performanceScale = $cachedValue->firstWhere('perf_rating', $intValue)->perf_rating_name;
 
-        return compact ('ratingAvg', 'performanceScale');
+        return compact('ratingAvg', 'performanceScale');
     }
 
     /**

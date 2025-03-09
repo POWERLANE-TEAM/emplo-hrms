@@ -25,28 +25,28 @@ class ForgotPassword extends Component
                 session()->flash('status', __($status));
                 $this->js("switchModal('forgotPasswordModal', 'modal-forgot-password-email-success')");
                 break;
-    
+
             case Password::RESET_THROTTLED:
                 $this->dispatch('show-toast', [
                     'type' => 'danger',
                     'message' => 'Too many requests. Please try again later.',
                 ]);
                 break;
-    
+
             case Password::INVALID_USER:
                 $this->dispatch('show-toast', [
                     'type' => 'danger',
                     'message' => 'The email address is not registered.',
                 ]);
                 break;
-    
+
             case Password::INVALID_TOKEN:
                 $this->dispatch('show-toast', [
                     'type' => 'danger',
                     'message' => 'The password reset token is invalid.',
                 ]);
                 break;
-    
+
             default:
                 report($status);
                 $this->dispatch('show-toast', [
@@ -66,8 +66,8 @@ class ForgotPassword extends Component
 
     protected function rules()
     {
-        return  [
-            'forgotPwEmail' => 'required|' . (new EmailRule(false))->getRule(),
+        return [
+            'forgotPwEmail' => 'required|'.(new EmailRule(false))->getRule(),
         ];
     }
 

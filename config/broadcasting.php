@@ -60,7 +60,7 @@ return [
                 'useTLS' => env('PUSHER_SCHEME', 'https') === 'https',
             ],
             'client_options' => [
-                "verify" => env('SSL_CERTIFICATE'),
+                'verify' => env('SSL_CERTIFICATE'),
                 // Guzzle client options: https://docs.guzzlephp.org/en/stable/request-options.html
             ],
         ],

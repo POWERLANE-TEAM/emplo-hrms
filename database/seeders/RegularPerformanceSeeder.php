@@ -8,7 +8,6 @@ use App\Models\PerformanceCategory;
 use App\Models\RegularPerformance;
 use App\Models\RegularPerformancePeriod;
 use DateTime;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class RegularPerformanceSeeder extends Seeder
@@ -32,13 +31,12 @@ class RegularPerformanceSeeder extends Seeder
                     // })
                     ->pluck('employee_id');
 
-
                 foreach ($employeeIds as $employeeId) {
 
                     $evaluator = Employee::inRandomOrder()->select('employee_id')->first();
 
                     $startDate = new DateTime($period->start_date);
-                    $evaluatorSignedAt = $startDate->modify('+' . rand(1, 7) . ' days');
+                    $evaluatorSignedAt = $startDate->modify('+'.rand(1, 7).' days');
 
                     $secondarySignedAt = (clone $evaluatorSignedAt)->modify('+2 days');
 
@@ -48,19 +46,19 @@ class RegularPerformanceSeeder extends Seeder
 
                     $secondaryApprover = Employee::whereHas('areaManagerOf')->select('employee_id')->first();
 
-                    if (!$secondaryApprover) {
+                    if (! $secondaryApprover) {
                         $secondaryApprover = Employee::inRandomOrder()->select('employee_id')->first();
                     }
 
                     $thirdApprover = Employee::whereHas('headOf')->select('employee_id')->first();
 
-                    if (!$thirdApprover) {
+                    if (! $thirdApprover) {
                         $thirdApprover = Employee::inRandomOrder()->select('employee_id')->first();
                     }
 
                     $fourthApprover = Employee::whereHas('supervisorOf')->select('employee_id')->first();
 
-                    if (!$fourthApprover) {
+                    if (! $fourthApprover) {
                         $fourthApprover = Employee::inRandomOrder()->select('employee_id')->first();
                     }
 

@@ -2,14 +2,14 @@
 
 namespace App\Livewire\HrManager\Training;
 
-use App\Models\TrainingProvider;
-use Livewire\Component;
+use App\Enums\TrainingStatus;
 use App\Models\Employee;
 use App\Models\Training;
-use App\Enums\TrainingStatus;
-use Livewire\Attributes\Locked;
-use Livewire\Attributes\Computed;
+use App\Models\TrainingProvider;
 use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\Locked;
+use Livewire\Component;
 
 class EmployeeRecords extends Component
 {
@@ -42,7 +42,7 @@ class EmployeeRecords extends Component
     public function save()
     {
         // authorize
-        
+
         $this->validate();
 
         DB::transaction(function () {
@@ -50,11 +50,11 @@ class EmployeeRecords extends Component
 
             if ($this->isTrainerOutsourced) {
                 [$firstName, $middleName, $lastName] = $this->splitFullName($this->trainer);
-    
+
                 $provider = TrainingProvider::create([
                     'training_provider_name' => $this->provider,
                 ]);
-    
+
                 $outsourcedTrainer = $provider->outsourcedTrainers()->create([
                     'first_name' => $firstName,
                     'middle_name' => $middleName,
@@ -79,7 +79,7 @@ class EmployeeRecords extends Component
 
         $this->dispatch('trainingRecordCreated', [
             'type' => 'success',
-            'message' => __("{$this->employee->last_name}'s new training record was created successfully.")
+            'message' => __("{$this->employee->last_name}'s new training record was created successfully."),
         ]);
         $this->dispatch('refreshDatatable');
     }
@@ -100,18 +100,17 @@ class EmployeeRecords extends Component
         return [$firstName, $middleName, $lastName];
     }
 
-
     public function rules()
     {
         return [
-            'title'         => 'required|string|max:255',
-            'provider'      => 'required_if:isTrainerOutsourced,true|max:255',
-            'trainer'       => 'required|',
-            'completion'    => 'required',
-            'description'   => 'nullable|string|max:5000',
-            'startDate'     => 'required|date',
-            'endDate'       => 'nullable|date|after_or_equal:startDate',
-            'expiryDate'    => 'nullable|date|after_or_equal:endDate',
+            'title' => 'required|string|max:255',
+            'provider' => 'required_if:isTrainerOutsourced,true|max:255',
+            'trainer' => 'required|',
+            'completion' => 'required',
+            'description' => 'nullable|string|max:5000',
+            'startDate' => 'required|date',
+            'endDate' => 'nullable|date|after_or_equal:startDate',
+            'expiryDate' => 'nullable|date|after_or_equal:endDate',
         ];
     }
 

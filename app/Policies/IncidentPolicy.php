@@ -2,9 +2,9 @@
 
 namespace App\Policies;
 
-use App\Models\User;
-use App\Models\Incident;
 use App\Enums\UserPermission;
+use App\Models\Incident;
+use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
 class IncidentPolicy
@@ -19,9 +19,6 @@ class IncidentPolicy
 
     /**
      * Check for user permission to create an incident report.
-     * 
-     * @param \App\Models\User $user
-     * @return \Illuminate\Auth\Access\Response
      */
     public function createIncidentReport(User $user): Response
     {
@@ -32,10 +29,6 @@ class IncidentPolicy
 
     /**
      * Check if user employee owns the incident report or authorized to view any or he's assigned as collaborator.
-     * 
-     * @param \App\Models\User $user
-     * @param \App\Models\Incident|null $incident
-     * @return \Illuminate\Auth\Access\Response
      */
     public function updateIncidentReport(User $user, ?Incident $incident = null): Response
     {
@@ -44,7 +37,7 @@ class IncidentPolicy
                 ? Response::allow()
                 : Response::deny(__('Sorry, you don\'t have sufficient permission to perform this action.'));
         }
-        
+
         return $user->account->reportedIncidents->contains($incident) ||
             $user->hasPermissionTo(UserPermission::VIEW_ANY_INCIDENT_REPORT) ||
             $user->account->sharedIncidentRecords->contains($incident)
@@ -54,9 +47,6 @@ class IncidentPolicy
 
     /**
      * Check for user employee permission to manage incident report collaborators
-     * 
-     * @param \App\Models\User $user
-     * @return \Illuminate\Auth\Access\Response
      */
     public function manageIncidentReportCollaborators(User $user): Response
     {

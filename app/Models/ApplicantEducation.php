@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ApplicantEducation extends Model
@@ -11,7 +11,7 @@ class ApplicantEducation extends Model
     use HasFactory;
 
     protected $primaryKey = 'applicant_education_id';
-    
+
     protected $fillable = [
         'applicant_id',
         'education',

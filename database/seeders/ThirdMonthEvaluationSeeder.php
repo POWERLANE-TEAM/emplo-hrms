@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Employee;
 use App\Enums\EmploymentStatus;
+use App\Enums\PerformanceEvaluationPeriod;
+use App\Models\Employee;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use App\Enums\PerformanceEvaluationPeriod;
 
 class ThirdMonthEvaluationSeeder extends Seeder
 {

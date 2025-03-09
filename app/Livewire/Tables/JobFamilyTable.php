@@ -3,10 +3,10 @@
 namespace App\Livewire\Tables;
 
 use App\Models\JobFamily;
-use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Builder;
-use Rappasoft\LaravelLivewireTables\Views\Column;
+use Illuminate\Support\Str;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 
 class JobFamilyTable extends DataTableComponent
 {
@@ -89,17 +89,17 @@ class JobFamilyTable extends DataTableComponent
                     $name = Str::headline($row->officeSupervisor->full_name);
                     $photo = $row->officeSupervisor->account->photo;
                     $id = $row->officeSupervisor->employee_id;
-            
+
                     return '<div class="d-flex align-items-center">
-                                <img src="' . e($photo) . '" alt="User Picture" class="rounded-circle me-3" style="width: 38px; height: 38px;">
+                                <img src="'.e($photo).'" alt="User Picture" class="rounded-circle me-3" style="width: 38px; height: 38px;">
                                 <div>
-                                    <div>' . e($name) . '</div>
-                                    <div class="text-muted fs-6">Employee ID: ' . e($id) . '</div>
+                                    <div>'.e($name).'</div>
+                                    <div class="text-muted fs-6">Employee ID: '.e($id).'</div>
                                 </div>
                             </div>';
                 })
                 ->html()
-                ->sortable(fn (Builder $query, $direction) => $query->orderBy('last_name' ,$direction))
+                ->sortable(fn (Builder $query, $direction) => $query->orderBy('last_name', $direction))
                 ->searchable(function (Builder $query, $searchTerm) {
                     return $query->whereHas('officeSupervisor', function ($subquery) use ($searchTerm) {
                         $subquery->whereLike('first_name', "%{$searchTerm}%")
@@ -108,23 +108,23 @@ class JobFamilyTable extends DataTableComponent
                             ->orWhereHas('account', fn ($query) => $query->orWhereLike('email', "%{$searchTerm}%"));
                     });
                 }),
-            
+
             Column::make(__('Office Head'))
                 ->label(function ($row) {
                     $name = Str::headline($row->head->full_name);
                     $photo = $row->head->account->photo;
                     $id = $row->head->employee_id;
-            
+
                     return '<div class="d-flex align-items-center">
-                                <img src="' . e($photo) . '" alt="User Picture" class="rounded-circle me-3" style="width: 38px; height: 38px;">
+                                <img src="'.e($photo).'" alt="User Picture" class="rounded-circle me-3" style="width: 38px; height: 38px;">
                                 <div>
-                                    <div>' . e($name) . '</div>
-                                    <div class="text-muted fs-6">Employee ID: ' . e($id) . '</div>
+                                    <div>'.e($name).'</div>
+                                    <div class="text-muted fs-6">Employee ID: '.e($id).'</div>
                                 </div>
                             </div>';
                 })
                 ->html()
-                ->sortable(fn (Builder $query, $direction) => $query->orderBy('last_name' ,$direction))
+                ->sortable(fn (Builder $query, $direction) => $query->orderBy('last_name', $direction))
                 ->searchable(function (Builder $query, $searchTerm) {
                     return $query->whereHas('head', function ($subquery) use ($searchTerm) {
                         $subquery->whereLike('first_name', "%{$searchTerm}%")

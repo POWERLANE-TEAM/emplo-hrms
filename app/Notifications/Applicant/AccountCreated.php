@@ -12,7 +12,6 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
-use PhpOffice\PhpSpreadsheet\Calculation\DateTimeExcel\Time;
 
 class AccountCreated extends Notification implements ShouldQueue
 {
@@ -28,7 +27,6 @@ class AccountCreated extends Notification implements ShouldQueue
         $allowedChannels = ['mail', 'database', 'broadcast'];
         $this->channels = array_intersect($channels, $allowedChannels);
     }
-
 
     /**
      * Get the notification's delivery channels.
@@ -69,8 +67,8 @@ class AccountCreated extends Notification implements ShouldQueue
         [$timezone, $timezoneOffset] = Timezone::get()->withOffset();
 
         return (new MailMessage)
-            ->greeting('Hello ' . $applicant->fullName . '!')
-            ->line('We have received your application for the position of ' . $application->vacancy->jobTitle->job_title . $dateTime . ' (' . $timezone . ' GMT' . $timezoneOffset . ' timezone).')
+            ->greeting('Hello '.$applicant->fullName.'!')
+            ->line('We have received your application for the position of '.$application->vacancy->jobTitle->job_title.$dateTime.' ('.$timezone.' GMT'.$timezoneOffset.' timezone).')
             ->action('View Application', URL::route('applicant.dashboard', ['application' => $this->applicationId]))
             ->line('Thank you for applying!')
             ->line('You will be notified of the application status.');

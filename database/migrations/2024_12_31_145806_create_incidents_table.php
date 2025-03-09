@@ -1,10 +1,10 @@
 <?php
 
-use App\Models\Issue;
 use App\Models\Employee;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
+use App\Models\Issue;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -21,9 +21,9 @@ return new class extends Migration
             $table->unsignedTinyInteger('status');
             $table->unsignedTinyInteger('priority');
             $table->timestamp('status_marked_at')->useCurrent();
-            
+
             $table->foreignIdFor(Employee::class, 'status_marker')
-                ->nullable()    
+                ->nullable()
                 ->constrained('employees', 'employee_id')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();

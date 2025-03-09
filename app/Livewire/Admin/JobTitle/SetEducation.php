@@ -86,7 +86,7 @@ class SetEducation extends Component
     public function removeQualification(int $index)
     {
         unset($this->items[$index]);
-        
+
         $this->dispatch('removeEducationQualification', $index)
             ->to(CreateJobTitleForm::class);
     }

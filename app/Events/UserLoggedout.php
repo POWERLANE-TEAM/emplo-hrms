@@ -27,7 +27,7 @@ class UserLoggedout implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('user-auth.' . $this->authBroadcastId);
+        return new PrivateChannel('user-auth.'.$this->authBroadcastId);
     }
 
     public function broadcastWith()

@@ -2,14 +2,14 @@
 
 namespace App\Livewire\Employee\Tables;
 
+use App\Enums\IssueStatus;
 use App\Models\Incident;
 use App\Models\IssueType;
-use App\Enums\IssueStatus;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Locked;
-use Illuminate\Database\Eloquent\Builder;
-use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class ReportedIncidentsTable extends DataTableComponent
@@ -99,12 +99,12 @@ class ReportedIncidentsTable extends DataTableComponent
                     $name = Str::headline($row->reportedBy->full_name);
                     $photo = $row->reportedBy->account->photo;
                     $id = $row->reportedBy->employee_id;
-            
+
                     return '<div class="d-flex align-items-center">
-                                <img src="' . e($photo) . '" alt="User Picture" class="rounded-circle me-3" style="width: 38px; height: 38px;">
+                                <img src="'.e($photo).'" alt="User Picture" class="rounded-circle me-3" style="width: 38px; height: 38px;">
                                 <div>
-                                    <div>' . e($name) . '</div>
-                                    <div class="text-muted fs-6">Employee ID: ' . e($id) . '</div>
+                                    <div>'.e($name).'</div>
+                                    <div class="text-muted fs-6">Employee ID: '.e($id).'</div>
                                 </div>
                             </div>';
                 })

@@ -2,16 +2,16 @@
 
 namespace App\Livewire\Employee\Attendance;
 
-use App\Models\Holiday;
-use App\Models\Payroll;
-use Livewire\Component;
-use App\Models\Overtime;
+use App\Enums\BiometricPunchType;
 use App\Models\AttendanceLog;
 use App\Models\EmployeeLeave;
+use App\Models\Holiday;
+use App\Models\Overtime;
+use App\Models\Payroll;
 use Illuminate\Support\Carbon;
-use App\Enums\BiometricPunchType;
-use Livewire\Attributes\Computed;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Computed;
+use Livewire\Component;
 
 class GeneralAttendance extends Component
 {
@@ -82,9 +82,9 @@ class GeneralAttendance extends Component
         // );
 
         $merge = array_merge($this->overtimes, $this->leaves);
-    
+
         $events = [];
-        
+
         foreach ($merge as $key => $dates) {
             if (is_array($dates)) {
                 $events[] = [
@@ -121,7 +121,7 @@ class GeneralAttendance extends Component
 
         $startDate = Carbon::parse(Payroll::orderBy('cut_off_start', 'asc')->first()->cut_off_start);
         $endDate = now();
-    
+
         $allDays = collect();
         for ($date = $startDate; $date->lte($endDate); $date->addDay()) {
             if ($date->isWeekend()) {
@@ -129,25 +129,25 @@ class GeneralAttendance extends Component
             }
             $allDays->push($date->toDateString());
         }
-    
+
         $presentDays = collect($events)->pluck('start')->toArray();
         $leaveDays = collect($this->leaves)->flatMap(function ($dates) {
             $leaveRange = collect();
             $start = Carbon::parse($dates[0]);
             $end = Carbon::parse($dates[1]);
-        
+
             for ($date = $start; $date->lte($end); $date->addDay()) {
-                if (!$date->isWeekend()) {
+                if (! $date->isWeekend()) {
                     $leaveRange->push($date->toDateString());
                 }
             }
-        
+
             return $leaveRange;
         })->toArray();
 
         $excludedDays = array_merge($presentDays, $leaveDays);
         $absentDays = $allDays->diff($excludedDays);
-        
+
         foreach ($absentDays as $absentDay) {
             $events[] = [
                 'title' => 'Absent',
@@ -155,9 +155,9 @@ class GeneralAttendance extends Component
                 'classNames' => ['bg-danger'],
             ];
         }
-        
+
         // dd($events);
-    
+
         return view('livewire.employee.attendance.general-attendance', compact('events'));
-    }    
+    }
 }

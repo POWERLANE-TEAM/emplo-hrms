@@ -24,7 +24,7 @@ class PreEmploymentDoc extends Component
     const MAX_FILE_SIZE = 5 * 1024;
 
     /*  When global validation of livewire is triggered the attribute specified in :as is not respected */
-    #[Validate('mimes:pdf|max:' . self::MAX_FILE_SIZE, as: 'Preemployment File')]
+    #[Validate('mimes:pdf|max:'.self::MAX_FILE_SIZE, as: 'Preemployment File')]
     public $preemp_file;
 
     public function mount()
@@ -38,9 +38,9 @@ class PreEmploymentDoc extends Component
                 ->first())
                 ->file_path;
 
-                if ($filePath) {
-                    $this->file = Storage::disk('public')->url($filePath);
-                }
+            if ($filePath) {
+                $this->file = Storage::disk('public')->url($filePath);
+            }
         } catch (\Throwable $th) {
             report($th);
         }

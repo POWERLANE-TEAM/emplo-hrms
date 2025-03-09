@@ -2,14 +2,12 @@
 
 namespace App\Livewire\Auth;
 
-use Exception;
 use App\Models\User;
-use Livewire\Component;
-use Illuminate\Http\Request;
 use App\Traits\GoogleCallback;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Fortify\Contracts\LoginResponse;
+use Livewire\Component;
 
 class GoogleOneTap extends Component
 {
@@ -33,7 +31,7 @@ class GoogleOneTap extends Component
 
             if ($user) {
                 Auth::login($user);
-                
+
                 return app(LoginResponse::class);
             }
 

@@ -3,14 +3,13 @@
 namespace App\Livewire\HrManager\Separation\Resignation;
 
 use App\Enums\FilePath;
-use App\Models\Resignation;
 use App\Enums\ResignationStatus;
 use App\Http\Controllers\Separation\ResignationController;
+use App\Models\Resignation;
 use Livewire\Component;
 
 class ReviewResignation extends Component
 {
-
     public Resignation $resignation;
 
     public string $approvalComment = '';
@@ -21,18 +20,18 @@ class ReviewResignation extends Component
 
     public function mount()
     {
-        $this->hasResignation = $this->resignation->resignationLetter->employee->documents()->where('file_path', 'like', '%' . FilePath::RESIGNATION->value . '%')->exists();
+        $this->hasResignation = $this->resignation->resignationLetter->employee->documents()->where('file_path', 'like', '%'.FilePath::RESIGNATION->value.'%')->exists();
 
         if ($this->hasResignation) {
             // dd($this->resignation->resignee);
-            $this->resignation->loadMissing('resigneeLifecycle','resignationLetter');
+            $this->resignation->loadMissing('resigneeLifecycle', 'resignationLetter');
         }
     }
 
     private function save($approvalStatus)
     {
 
-        $controller = new ResignationController();
+        $controller = new ResignationController;
 
         $controller->update([
             'resignation_id' => $this->resignation->resignation_id,

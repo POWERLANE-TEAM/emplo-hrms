@@ -1,9 +1,9 @@
 <?php
 
 use App\Models\JobTitle;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -14,18 +14,17 @@ return new class extends Migration
     {
         Schema::create('job_skill_keywords', function (Blueprint $table) {
             $table->id('keyword_id');
-            
+
             $table->foreignIdFor(JobTitle::class, 'job_title_id')
                 ->constrained('job_titles', 'job_title_id')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-            
+
             $table->string('keyword');
             $table->string('priority');
             $table->timestamps();
             $table->index(['keyword']);
         });
-
 
         Schema::create('job_education_keywords', function (Blueprint $table) {
             $table->id('keyword_id');
@@ -41,10 +40,9 @@ return new class extends Migration
             $table->index(['keyword']);
         });
 
-
         Schema::create('job_experience_keywords', function (Blueprint $table) {
             $table->id('keyword_id');
-            
+
             $table->foreignIdFor(JobTitle::class, 'job_title_id')
                 ->constrained('job_titles', 'job_title_id')
                 ->cascadeOnUpdate()

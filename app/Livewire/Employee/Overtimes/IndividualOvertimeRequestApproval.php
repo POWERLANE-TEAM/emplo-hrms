@@ -2,9 +2,9 @@
 
 namespace App\Livewire\Employee\Overtimes;
 
-use Livewire\Component;
-use Livewire\Attributes\On;
 use Livewire\Attributes\Locked;
+use Livewire\Attributes\On;
+use Livewire\Component;
 
 class IndividualOvertimeRequestApproval extends Component
 {
@@ -12,7 +12,7 @@ class IndividualOvertimeRequestApproval extends Component
     public $otRequest;
 
     public $loading = true;
-    
+
     #[On('showOvertimeRequestApprovalInfo')]
     public function catchEventPayload(array $eventPayload)
     {

@@ -13,8 +13,8 @@ class UserSeeder extends Seeder
     {
         activity()->withoutLogs(function () {
             $this->call(BasicUserSeeder::class);
-            $this->call(IntermediateUserSeeder::class); 
-            // $this->call(AdvancedUserSeeder::class);               
+            $this->call(IntermediateUserSeeder::class);
+            // $this->call(AdvancedUserSeeder::class);
         });
     }
 }

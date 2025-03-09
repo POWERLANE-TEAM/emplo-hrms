@@ -4,13 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Enums\FilePath;
 use App\Models\Incident;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Storage;
 
 class IncidentController extends Controller
 {
-
     public function index()
     {
         return view('employee.hr-manager.relations.incidents.all');

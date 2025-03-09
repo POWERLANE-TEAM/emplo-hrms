@@ -2,11 +2,11 @@
 
 namespace App\Livewire\HrManager\Reports;
 
-use Livewire\Component;
-use Illuminate\View\View;
 use App\Services\ReportService;
-use Livewire\Attributes\Locked;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\View\View;
+use Livewire\Attributes\Locked;
+use Livewire\Component;
 
 class LeaveUtilizationChart extends Component
 {
@@ -21,22 +21,24 @@ class LeaveUtilizationChart extends Component
 
         $this->leaveData = Cache::get($key);
 
-        if ($this->leaveData) return;
+        if ($this->leaveData) {
+            return;
+        }
 
         $leaveUtilizationRate = $reportService->getLeaveUtilizationRate($this->year);
 
         $this->leaveData = (object) [
             'all' => (object) [
-                'used' => $leaveUtilizationRate->totalUsedSilCredits, 
-                'total' => $leaveUtilizationRate->totalSilCredits
+                'used' => $leaveUtilizationRate->totalUsedSilCredits,
+                'total' => $leaveUtilizationRate->totalSilCredits,
             ],
             'sick' => (object) [
-                'used' => $leaveUtilizationRate->usedSickCredits, 
-                'total' => $leaveUtilizationRate->credits
+                'used' => $leaveUtilizationRate->usedSickCredits,
+                'total' => $leaveUtilizationRate->credits,
             ],
             'vacation' => (object) [
-                'used' => $leaveUtilizationRate->usedVacationCredits, 
-                'total' => $leaveUtilizationRate->credits
+                'used' => $leaveUtilizationRate->usedVacationCredits,
+                'total' => $leaveUtilizationRate->credits,
             ],
         ];
 

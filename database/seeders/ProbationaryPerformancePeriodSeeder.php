@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Enums\PerformanceEvaluationPeriod;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use App\Enums\PerformanceEvaluationPeriod;
 
 class ProbationaryPerformancePeriodSeeder extends Seeder
 {
@@ -18,7 +18,7 @@ class ProbationaryPerformancePeriodSeeder extends Seeder
 
         $validPeriods = array_filter(
             PerformanceEvaluationPeriod::cases(),
-            fn($case) => $case->value !== 'annual'
+            fn ($case) => $case->value !== 'annual'
         );
 
         $periods = array_map(function ($period) {

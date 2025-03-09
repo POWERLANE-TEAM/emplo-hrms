@@ -2,38 +2,38 @@
 
 namespace App\Providers;
 
-use App\Models\User;
-use App\Enums\UserRole;
 use App\Enums\AccountType;
-use App\Policies\IssuePolicy;
-use App\Services\ReportService;
-use Illuminate\Support\Carbon;
+use App\Enums\UserRole;
+use App\Models\User;
 use App\Policies\ContractPolicy;
+use App\Policies\EmployeeArchivePolicy;
+use App\Policies\EmployeeLeavePolicy;
 use App\Policies\EmployeePolicy;
 use App\Policies\IncidentPolicy;
+use App\Policies\IssuePolicy;
 use App\Policies\OvertimePolicy;
-use App\Policies\TrainingPolicy;
-use Laravel\Pulse\Facades\Pulse;
-use App\Policies\UserStatusPolicy;
-use App\Services\AttendanceService;
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Vite;
-use App\Policies\EmployeeLeavePolicy;
-use App\Policies\EmployeeArchivePolicy;
-use App\Services\PayrollSummaryService;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rules\Password;
-use App\Policies\RegularPerformancePolicy;
-use Illuminate\Auth\Notifications\VerifyEmail;
 use App\Policies\ProbationaryPerformancePolicy;
-use Illuminate\Auth\Notifications\ResetPassword;
+use App\Policies\RegularPerformancePolicy;
+use App\Policies\TrainingPolicy;
+use App\Policies\UserStatusPolicy;
 use App\Providers\Form\FormWizardServiceProvider;
-use Illuminate\Notifications\Messages\MailMessage;
+use App\Services\AttendanceService;
+use App\Services\PayrollSummaryService;
+use App\Services\ReportService;
 use App\Services\ServiceIncentiveLeaveCreditService;
-use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Auth\Notifications\ResetPassword;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Broadcasting\BroadcastServiceProvider;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Vite;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Validation\Rules\Password;
+use Laravel\Pulse\Facades\Pulse;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -50,19 +50,19 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(FormWizardServiceProvider::class);
 
         $this->app->bind(PayrollSummaryService::class, function () {
-            return new PayrollSummaryService();
+            return new PayrollSummaryService;
         });
 
         $this->app->bind(AttendanceService::class, function () {
-            return new AttendanceService();
+            return new AttendanceService;
         });
 
         $this->app->bind(ServiceIncentiveLeaveCreditService::class, function () {
-            return new ServiceIncentiveLeaveCreditService();
+            return new ServiceIncentiveLeaveCreditService;
         });
 
         $this->app->bind(ReportService::class, function () {
-            return new ReportService();
+            return new ReportService;
         });
     }
 
@@ -76,11 +76,11 @@ class AppServiceProvider extends ServiceProvider
 
             return
                 $rule->letters()
-                ->mixedCase()
-                ->numbers()
-                ->symbols()
-                ->uncompromised()
-                ->rules(['not_regex:/\s/']); // No spaces allowed
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols()
+                    ->uncompromised()
+                    ->rules(['not_regex:/\s/']); // No spaces allowed
         });
 
         Validator::extend('valid_email_dns', function ($attributes, $value, $parameters, $validator) {
@@ -109,31 +109,31 @@ class AppServiceProvider extends ServiceProvider
          * @see https://laravel.com/docs/11.x/eloquent-relationships#custom-polymorphic-types
          */
         Relation::enforceMorphMap([
-            'guest'                     => 'App\Models\Guest',
-            'user'                      => 'App\Models\User',
-            'outsourced_trainer'        => 'App\Models\OutsourcedTrainer',
-            'employee'                  => 'App\Models\Employee',
-            'applicant'                 => 'App\Models\Applicant',
-            'performance_evaluation'    => 'App\Models\PerformanceEvaluation',
-            'overtime'                  => 'App\Models\Overtime',
-            'employee_leave'            => 'App\Models\EmployeeLeave',
-            'job_vacancy'               => 'App\Models\JobVacancy',
-            'preemp_requirement'        => 'App\Models\PreempRequirement',
-            'province'                  => 'App\Models\Province',
-            'announcement'              => 'App\Models\Announcement',
-            'job_family'                => 'App\Models\JobFamily',
-            'job_title'                 => 'App\Models\JobTitle',
-            'performance_category'      => 'App\Models\PerformanceCategory',
-            'performance_rating'        => 'App\Models\PerformanceRating',
-            'holiday'                   => 'App\Models\Holiday',
-            'attendance_log'            => 'App\Models\AttendanceLog',
-            'incident_attachment'       => 'App\Models\IncidentAttachment',
-            'incident'                  => 'App\Models\Incident',
-            'payroll'                   => 'App\Models\Payroll',
-            'job_skill_keyword'         => 'App\Models\JobSkillKeyword',
-            'job_education_keyword'     => 'App\Models\JobEducationKeyword',
-            'job_experience_keyword'    => 'App\Models\JobExperienceKeyword',
-            'interview_parameter'       => 'App\Models\InterviewParameter',
+            'guest' => 'App\Models\Guest',
+            'user' => 'App\Models\User',
+            'outsourced_trainer' => 'App\Models\OutsourcedTrainer',
+            'employee' => 'App\Models\Employee',
+            'applicant' => 'App\Models\Applicant',
+            'performance_evaluation' => 'App\Models\PerformanceEvaluation',
+            'overtime' => 'App\Models\Overtime',
+            'employee_leave' => 'App\Models\EmployeeLeave',
+            'job_vacancy' => 'App\Models\JobVacancy',
+            'preemp_requirement' => 'App\Models\PreempRequirement',
+            'province' => 'App\Models\Province',
+            'announcement' => 'App\Models\Announcement',
+            'job_family' => 'App\Models\JobFamily',
+            'job_title' => 'App\Models\JobTitle',
+            'performance_category' => 'App\Models\PerformanceCategory',
+            'performance_rating' => 'App\Models\PerformanceRating',
+            'holiday' => 'App\Models\Holiday',
+            'attendance_log' => 'App\Models\AttendanceLog',
+            'incident_attachment' => 'App\Models\IncidentAttachment',
+            'incident' => 'App\Models\Incident',
+            'payroll' => 'App\Models\Payroll',
+            'job_skill_keyword' => 'App\Models\JobSkillKeyword',
+            'job_education_keyword' => 'App\Models\JobEducationKeyword',
+            'job_experience_keyword' => 'App\Models\JobExperienceKeyword',
+            'interview_parameter' => 'App\Models\InterviewParameter',
         ]);
 
         BroadcastServiceProvider::class;
@@ -146,7 +146,7 @@ class AppServiceProvider extends ServiceProvider
          *
          * @see https://laravel.com/docs/11.x/pulse#dashboard-resolving-users
          */
-        Pulse::user(fn($user) => [
+        Pulse::user(fn ($user) => [
             'name' => $user->account->full_name,
             'extra' => $user->email,
             'avatar' => $user->photo ?? Storage::url('icons/default-avatar.png'),
@@ -249,13 +249,13 @@ class AppServiceProvider extends ServiceProvider
 
             // Log::info('User account type: ' , ['user'=> $user]);
 
-            if($user->hasRole(UserRole::ADVANCED)) {
-                $redirectPrefix = 'admin' ;
-            } elseif($user->account_type == AccountType::EMPLOYEE->value) {
+            if ($user->hasRole(UserRole::ADVANCED)) {
+                $redirectPrefix = 'admin';
+            } elseif ($user->account_type == AccountType::EMPLOYEE->value) {
                 $redirectPrefix = AccountType::EMPLOYEE->value;
             }
 
-            return config('app.url'). '/reset-password/'.$token . '?email=' . urlencode($user->email) . '&redirectPrefix=' . urlencode($redirectPrefix);
+            return config('app.url').'/reset-password/'.$token.'?email='.urlencode($user->email).'&redirectPrefix='.urlencode($redirectPrefix);
         });
     }
 

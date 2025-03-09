@@ -2,9 +2,9 @@
 
 use App\Enums\IssueStatus;
 use App\Models\Employee;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -28,7 +28,7 @@ return new class extends Migration
             $table->longText('desired_resolution')->nullable();
             $table->unsignedTinyInteger('status')->default(IssueStatus::OPEN);
             $table->timestamp('status_marked_at');
-            
+
             $table->foreignIdFor(Employee::class, 'status_marker')
                 ->nullable()
                 ->constrained('employees', 'employee_id')

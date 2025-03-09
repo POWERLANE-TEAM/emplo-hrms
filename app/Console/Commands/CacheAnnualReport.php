@@ -41,25 +41,25 @@ class CacheAnnualReport extends Command
      */
     public function handle()
     {
-        $employeeMetricsCachedKey           = sprintf(config("cache.keys.reports.employee_metrics"), $this->year);
-        $keyMetricsCachedKey                = sprintf(config("cache.keys.reports.key_metrics"), $this->year);
-        $attendanceRateCachedKey            = sprintf(config("cache.keys.reports.attendance_rate"), $this->year);
-        $absenteeismAvgsCachedKey           = sprintf(config("cache.keys.reports.absenteeism"), $this->year);
-        $retentionTurnoverRateCachedKey     = sprintf(config("cache.keys.reports.retention_turnover_rate"), $this->year);
-        $issueResolutionTimeRateCachedKey   = sprintf(config("cache.keys.reports.issue_resolution_time_rate"), $this->year);
-        $leaveUtilizationRateCachedKey      = sprintf(config("cache.keys.reports.leave_utilization_rate"), $this->year);
+        $employeeMetricsCachedKey = sprintf(config('cache.keys.reports.employee_metrics'), $this->year);
+        $keyMetricsCachedKey = sprintf(config('cache.keys.reports.key_metrics'), $this->year);
+        $attendanceRateCachedKey = sprintf(config('cache.keys.reports.attendance_rate'), $this->year);
+        $absenteeismAvgsCachedKey = sprintf(config('cache.keys.reports.absenteeism'), $this->year);
+        $retentionTurnoverRateCachedKey = sprintf(config('cache.keys.reports.retention_turnover_rate'), $this->year);
+        $issueResolutionTimeRateCachedKey = sprintf(config('cache.keys.reports.issue_resolution_time_rate'), $this->year);
+        $leaveUtilizationRateCachedKey = sprintf(config('cache.keys.reports.leave_utilization_rate'), $this->year);
 
         // employee metrics
         Cache::forever($employeeMetricsCachedKey, (object) [
-            'employee_tenure'       => $this->reportService->getAllEmployeesTotalTenure($this->year),
-            'new_hires'             => $this->reportService->getAllNewHiresAndApplicants($this->year),
-            'evaluation_success'    => $this->reportService->getEvaluationSuccessRate($this->year),
+            'employee_tenure' => $this->reportService->getAllEmployeesTotalTenure($this->year),
+            'new_hires' => $this->reportService->getAllNewHiresAndApplicants($this->year),
+            'evaluation_success' => $this->reportService->getEvaluationSuccessRate($this->year),
         ]);
 
         // key metrics
         Cache::forever($keyMetricsCachedKey, (object) [
             'incidents' => $this->reportService->getCompletedAndTotalIncidents($this->year),
-            'issues'    => $this->reportService->getCompletedAndTotalIssues($this->year),
+            'issues' => $this->reportService->getCompletedAndTotalIssues($this->year),
             'trainings' => $this->reportService->getCompletedAndTotalTrainings($this->year),
         ]);
 
@@ -91,16 +91,16 @@ class CacheAnnualReport extends Command
         $leaveUtilizationRate = $this->reportService->getLeaveUtilizationRate($this->year);
         Cache::forever($leaveUtilizationRateCachedKey, (object) [
             'all' => (object) [
-                'used' => $leaveUtilizationRate->totalUsedSilCredits, 
-                'total' => $leaveUtilizationRate->totalSilCredits
+                'used' => $leaveUtilizationRate->totalUsedSilCredits,
+                'total' => $leaveUtilizationRate->totalSilCredits,
             ],
             'sick' => (object) [
-                'used' => $leaveUtilizationRate->usedSickCredits, 
-                'total' => $leaveUtilizationRate->credits
+                'used' => $leaveUtilizationRate->usedSickCredits,
+                'total' => $leaveUtilizationRate->credits,
             ],
             'vacation' => (object) [
-                'used' => $leaveUtilizationRate->usedVacationCredits, 
-                'total' => $leaveUtilizationRate->credits
+                'used' => $leaveUtilizationRate->usedVacationCredits,
+                'total' => $leaveUtilizationRate->credits,
             ],
         ]);
     }

@@ -111,10 +111,10 @@ return [
             'ratings' => 'performance.ratings',
             'categories' => 'performance.categories',
             'regulars' => [
-                'evaluation' => 'regulars.performance.evaluation-%s'
+                'evaluation' => 'regulars.performance.evaluation-%s',
             ],
             'probationaries' => [
-                'evaluation' => 'probationaries.performance.evaluation-%s'
+                'evaluation' => 'probationaries.performance.evaluation-%s',
             ],
         ],
         'profile' => [

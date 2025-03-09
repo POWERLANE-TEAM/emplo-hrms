@@ -2,16 +2,16 @@
 
 namespace App\Livewire\Employee\Tables;
 
-use App\Models\Payroll;
-use Illuminate\Support\Str;
-use App\Models\PayrollSummary;
-use Illuminate\Support\Carbon;
-use App\Livewire\Tables\Defaults;
-use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\PayrollSummaryExport;
+use App\Livewire\Tables\Defaults;
+use App\Models\Payroll;
+use App\Models\PayrollSummary;
 use Illuminate\Database\Eloquent\Builder;
-use Rappasoft\LaravelLivewireTables\Views\Column;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
+use Maatwebsite\Excel\Facades\Excel;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class AnyPayrollSummariesTable extends DataTableComponent
@@ -30,7 +30,7 @@ class AnyPayrollSummariesTable extends DataTableComponent
             ->latest('cut_off_start')
             ->get()
             ->mapWithKeys(fn ($payroll) => [
-                $payroll->payroll_id => $payroll->cut_off
+                $payroll->payroll_id => $payroll->cut_off,
             ])
             ->toArray();
     }
@@ -42,8 +42,8 @@ class AnyPayrollSummariesTable extends DataTableComponent
         $cutOffEnd = Str::afterLast(implode(array_values($payrollFilter)), ' - ');
 
         return Excel::download(
-            new PayrollSummaryExport(implode(array_keys($payrollFilter))), 
-            sprintf("psummary-%s.xlsx", Carbon::make($cutOffEnd)->format('mdy')), 
+            new PayrollSummaryExport(implode(array_keys($payrollFilter))),
+            sprintf('psummary-%s.xlsx', Carbon::make($cutOffEnd)->format('mdy')),
             \Maatwebsite\Excel\Excel::XLSX
         );
     }
@@ -55,8 +55,8 @@ class AnyPayrollSummariesTable extends DataTableComponent
         $cutOffEnd = Str::afterLast(implode(array_values($payrollFilter)), ' - ');
 
         return Excel::download(
-            new PayrollSummaryExport(implode(array_keys($payrollFilter))), 
-            sprintf("psummary-%s.csv", Carbon::make($cutOffEnd)->format('mdy')), 
+            new PayrollSummaryExport(implode(array_keys($payrollFilter))),
+            sprintf('psummary-%s.csv', Carbon::make($cutOffEnd)->format('mdy')),
             \Maatwebsite\Excel\Excel::CSV
         );
     }
@@ -64,8 +64,8 @@ class AnyPayrollSummariesTable extends DataTableComponent
     private function getAppliedPayrollFilter()
     {
         return array_filter(
-            $this->payrollOptions, 
-            fn ($filter) => $filter == $this->getAppliedFilterWithValue('payroll'), 
+            $this->payrollOptions,
+            fn ($filter) => $filter == $this->getAppliedFilterWithValue('payroll'),
             ARRAY_FILTER_USE_KEY
         );
     }
@@ -84,7 +84,7 @@ class AnyPayrollSummariesTable extends DataTableComponent
             ->latest('cut_off_start')
             ->get()
             ->mapWithKeys(fn ($payroll) => [
-                $payroll->payroll_id => $payroll->cut_off
+                $payroll->payroll_id => $payroll->cut_off,
             ])
             ->toArray();
 
@@ -101,13 +101,13 @@ class AnyPayrollSummariesTable extends DataTableComponent
                             ->setFirstOption('Latest');
                     })(),
 
-                    'label' => __('Payroll Period: ')
+                    'label' => __('Payroll Period: '),
                 ],
             ],
 
             'toolbar-right-end' => 'components.table.filter.export',
         ]);
-        
+
         $this->setTdAttributes(function (Column $column, $row, $columnIndex, $rowIndex) {
             return [
                 'class' => $column->getTitle() === 'Employee' ? 'text-md-start border-end sticky' : 'text-md-center',
@@ -117,10 +117,10 @@ class AnyPayrollSummariesTable extends DataTableComponent
 
     public function builder(): Builder
     {
-        return PayrollSummary::query()            
+        return PayrollSummary::query()
             ->with([
                 'employee' => [
-                    'account'
+                    'account',
                 ],
                 'payroll',
             ])
@@ -135,12 +135,12 @@ class AnyPayrollSummariesTable extends DataTableComponent
                     $name = Str::headline($row->employee->full_name);
                     $photo = $row->employee->account->photo;
                     $id = $row->employee->employee_id;
-            
+
                     return '<div class="d-flex align-items-center">
-                                <img src="' . e($photo) . '" alt="User Picture" class="rounded-circle me-3" style="width: 38px; height: 38px;">
+                                <img src="'.e($photo).'" alt="User Picture" class="rounded-circle me-3" style="width: 38px; height: 38px;">
                                 <div>
-                                    <div>' . e($name) . '</div>
-                                    <div class="text-muted fs-6">Employee ID: ' . e($id) . '</div>
+                                    <div>'.e($name).'</div>
+                                    <div class="text-muted fs-6">Employee ID: '.e($id).'</div>
                                 </div>
                             </div>';
                 })
@@ -173,7 +173,7 @@ class AnyPayrollSummariesTable extends DataTableComponent
             Column::make(__('Regular Overtime Night Differential'))
                 ->label(fn ($row) => $row->reg_ot_nd)
                 ->sortable(fn (Builder $builder, $direction) => $builder->orderBy('reg_ot_nd', $direction)),
-            
+
             Column::make(__('Rest Day Hours Worked'))
                 ->label(fn ($row) => $row->rest_hrs)
                 ->sortable(fn (Builder $builder, $direction) => $builder->orderBy('rest_hrs', $direction)),

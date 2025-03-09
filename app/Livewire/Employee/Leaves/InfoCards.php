@@ -2,11 +2,10 @@
 
 namespace App\Livewire\Employee\Leaves;
 
-use App\Models\EmployeeLeave;
-use Livewire\Component;
-use Livewire\Attributes\Locked;
-use Livewire\Attributes\Computed;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\Locked;
+use Livewire\Component;
 
 class InfoCards extends Component
 {

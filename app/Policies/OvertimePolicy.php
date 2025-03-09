@@ -2,12 +2,12 @@
 
 namespace App\Policies;
 
+use App\Enums\UserPermission;
+use App\Models\Employee;
 use App\Models\Overtime;
 use App\Models\User;
-use App\Models\Employee;
-use App\Enums\UserPermission;
-use Illuminate\Support\Carbon;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Carbon;
 
 class OvertimePolicy
 {
@@ -21,9 +21,6 @@ class OvertimePolicy
 
     /**
      * Check if user has permission whether inherited via roles or direct assignment.
-     * 
-     * @param \App\Models\User $user
-     * @return \Illuminate\Auth\Access\Response
      */
     public function submitOvertimeRequest(User $user): Response
     {
@@ -34,11 +31,8 @@ class OvertimePolicy
 
     /**
      * Check if user owns the overtime model request before updating.
-     * 
-     * @param mixed $user
-     * @param \App\Models\Employee $employee
-     * @param \App\Models\Overtime $overtime
-     * @return \Illuminate\Auth\Access\Response
+     *
+     * @param  mixed  $user
      */
     public function updateOvertimeRequest(?User $user, Employee $employee, Overtime $overtime): Response
     {
@@ -49,28 +43,24 @@ class OvertimePolicy
 
     /**
      * Check if user employee can submit an overtime request today.
-     * 
-     * @param mixed $user
-     * @param \App\Models\Employee $employee
-     * @return \Illuminate\Auth\Access\Response
+     *
+     * @param  mixed  $user
      */
     public function submitOvertimeRequestToday(?User $user, Employee $employee): Response
     {
-       $dailyRequestCount = $employee->overtimes()
+        $dailyRequestCount = $employee->overtimes()
             ->whereDate('filed_at', Carbon::today())
             ->count();
 
-       return $dailyRequestCount >= $this->dailyAllowedRequestCount
-            ? Response::deny(__('You may only submit an overtime request once a day.'))
-            : Response::allow();
+        return $dailyRequestCount >= $this->dailyAllowedRequestCount
+             ? Response::deny(__('You may only submit an overtime request once a day.'))
+             : Response::allow();
     }
 
     /**
      * Check if user employee has reached max allowed pending status of overtime request submissions.
-     * 
-     * @param mixed $user
-     * @param \App\Models\Employee $employee
-     * @return \Illuminate\Auth\Access\Response
+     *
+     * @param  mixed  $user
      */
     public function submitNewOrAnotherOvertimeRequest(?User $user, Employee $employee): Response
     {
@@ -86,9 +76,6 @@ class OvertimePolicy
 
     /**
      * Check if user employee is an initial approver (supervisor) of overtime summary.
-     * 
-     * @param \App\Models\User $user
-     * @return \Illuminate\Auth\Access\Response
      */
     public function approveOvertimeSummaryInitial(User $user): Response
     {
@@ -99,9 +86,6 @@ class OvertimePolicy
 
     /**
      * Check if user employee is a secondary approver (dept head/area manager) of overtime summary.
-     * 
-     * @param \App\Models\User $user
-     * @return \Illuminate\Auth\Access\Response
      */
     public function approveOvertimeSummarySecondary(User $user): Response
     {
@@ -112,9 +96,6 @@ class OvertimePolicy
 
     /**
      * Check if user employee is a third approver (hr staff/manager) of overtime summary.
-     * 
-     * @param \App\Models\User $user
-     * @return \Illuminate\Auth\Access\Response
      */
     public function approveOvertimeSummaryTertiary(User $user): Response
     {
@@ -125,9 +106,6 @@ class OvertimePolicy
 
     /**
      * Check if user employee can see all overtime requests, regardless of job family.
-     * 
-     * @param \App\Models\User $user
-     * @return \Illuminate\Auth\Access\Response
      */
     public function viewOvertimeRequestAsSecondaryApprover(User $user): Response
     {
@@ -141,9 +119,6 @@ class OvertimePolicy
 
     /**
      * Check if user can see overtime requests under his jurisdiction.
-     * 
-     * @param \App\Models\User $user
-     * @return \Illuminate\Auth\Access\Response
      */
     public function viewSubordinateOvertimeRequest(User $user): Response
     {
@@ -154,9 +129,6 @@ class OvertimePolicy
 
     /**
      * Check if user employee is a secondary approver (hr staff/manager) of overtime request submissions.
-     * 
-     * @param \App\Models\User $user
-     * @return \Illuminate\Auth\Access\Response
      */
     public function updateAllOvertimeRequest(User $user): Response
     {
@@ -167,14 +139,10 @@ class OvertimePolicy
 
     /**
      * Check if user employee overtime request is still untouched by approvers and date of filing is not less than or equal a week.
-     * 
-     * @param \App\Models\User|null $user
-     * @param \App\Models\Overtime $overtime
-     * @return \Illuminate\Auth\Access\Response
      */
     public function editOvertimeRequest(?User $user, Overtime $overtime): Response
     {
-        return 
+        return
             $overtime->recent() &&
             ! $overtime->authorizer_signed_at &&
             ! $overtime->denied_at
@@ -184,9 +152,6 @@ class OvertimePolicy
 
     /**
      * Check if user employee can authrorize overtime request.
-     * 
-     * @param \App\Models\User $user
-     * @return \Illuminate\Auth\Access\Response
      */
     public function authorizeOvertimeRequest(User $user): Response
     {
@@ -207,9 +172,9 @@ class OvertimePolicy
             'account.jobTitle.department',
         ]);
 
-        $userJobFamily      = $user->account->jobTitle->jobFamily;
-        $userDepartment     = $user->account->jobTitle->department;
-        $employeeJobFamily  = $employee->jobTitle->jobFamily;
+        $userJobFamily = $user->account->jobTitle->jobFamily;
+        $userDepartment = $user->account->jobTitle->department;
+        $employeeJobFamily = $employee->jobTitle->jobFamily;
         $employeeDepartment = $employee->jobTitle->department;
 
         // is user employee the supervisor of employee? Compare both JobFamily models
