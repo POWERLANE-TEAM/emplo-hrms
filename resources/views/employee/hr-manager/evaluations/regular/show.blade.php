@@ -34,6 +34,7 @@
             {{ $performance->employeeevaluatee->jobTitle->job_title }}
         </div>
 
+        @if ($isEndpointAccessible)
         <form  action="{{route($routePrefix . '.performances.plan.improvement.regular.generate')}}" method="post" class="d-contents">
             @csrf
             <input type="hidden" name="performance-form" value="{{$performance->regular_performance_id}}">
@@ -44,6 +45,7 @@
                     data-lucide="sparkle"></i></span>
                 </button>
         </form>
+        @endif
     </div>
 </x-profile-header>
 

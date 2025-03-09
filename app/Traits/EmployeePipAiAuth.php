@@ -2,6 +2,11 @@
 
 namespace App\Traits;
 
+use Google\Cloud\AIPlatform\V1\Client\ModelServiceClient;
+use Google\Cloud\AIPlatform\V1\ListModelsRequest;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+
 trait EmployeePipAiAuth
 {
 
@@ -54,5 +59,37 @@ trait EmployeePipAiAuth
         $projectNumber = config('services.google.employee_pip_ai.project_number');
 
         return array_merge($this->getModel(), [$projectNumber]);
+    }
+
+    public function isEndpointAccessible()
+    {
+        if (app()->environment('local')) {
+            putenv('GOOGLE_SDK_PHP_LOGGING=true');
+        }
+    
+        [$credentialsPath, $credentials] = $this->getCredentials();
+    
+        if (!File::exists($credentialsPath)) {
+            report(new \Exception('Credentials file not found at ' . File::path($credentialsPath)));
+            return false;
+        }
+    
+        [$endpointId, $endpointLocation, $modelVer, $projectNumber] = $this->getEndpointAdddress();
+    
+        $clientOptions = [
+            'apiEndpoint' => "$endpointLocation-aiplatform.googleapis.com:443",
+            'credentials' => $credentialsPath,
+        ];
+    
+        try {
+            $client = new ModelServiceClient($clientOptions);
+            $request = new ListModelsRequest();
+            $request->setParent("projects/$projectNumber/locations/$endpointLocation");
+            $client->listModels($request);
+            return true;
+        } catch (\Exception $e) {
+            report($e);
+            return false;
+        }
     }
 }
