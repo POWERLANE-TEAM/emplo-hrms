@@ -2,13 +2,13 @@
 
 namespace App\Services;
 
-use App\Models\AttendanceLog;
-use Illuminate\Support\Carbon;
-use App\Traits\AttendanceUtils;
 use App\Enums\BiometricPunchType;
-use Illuminate\Support\Facades\DB;
 use App\Http\Helpers\BiometricDevice;
+use App\Models\AttendanceLog;
+use App\Traits\AttendanceUtils;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class AttendanceService
 {
@@ -26,11 +26,9 @@ class AttendanceService
 
     /**
      * Store Daily Time Record Logs
-     * 
-     * Get raw attendance logs from the ZKTeco bio machine, validate for duplicate check-ins and 
+     *
+     * Get raw attendance logs from the ZKTeco bio machine, validate for duplicate check-ins and
      * check-outs for each employee, and store it in `attendance_logs` table.
-     * 
-     * @return void
      */
     public function storeDtrLogs(): void
     {
@@ -40,28 +38,32 @@ class AttendanceService
             ->filter(fn ($log) => Carbon::parse($log->timestamp)->isSameDay(today()))
             ->sortBy('timestamp');
 
-        if ($todayLogs->isEmpty()) return;
+        if ($todayLogs->isEmpty()) {
+            return;
+        }
 
         $newLogs = collect([]);
 
         foreach ($todayLogs as $todayLog) {
             $contains = $newLogs->contains(function ($log) use ($todayLog) {
-                return 
+                return
                     (int) $todayLog->id === $log['employee_id'] &&
                     $todayLog->type === $log['type'];
             });
 
             $exists = $this->storedDtrLogs->where('employee_id', (int) $todayLog->id)
-                                        ->where('type', $todayLog->type)
-                                        ->first();
+                ->where('type', $todayLog->type)
+                ->first();
 
-            if ($contains || $exists) continue;
+            if ($contains || $exists) {
+                continue;
+            }
 
             $newLogs->push([
-                'employee_id'   => (int) $todayLog->id,
-                'state'         => $todayLog->state,
-                'type'          => $todayLog->type,
-                'timestamp'     => $todayLog->timestamp  
+                'employee_id' => (int) $todayLog->id,
+                'state' => $todayLog->state,
+                'type' => $todayLog->type,
+                'timestamp' => $todayLog->timestamp,
             ]);
         }
 
@@ -72,7 +74,7 @@ class AttendanceService
 
     /**
      * Get daily time record logs for today only.
-     * 
+     *
      * @return Collection<int|string, object>
      */
     public function getDtrLogs()

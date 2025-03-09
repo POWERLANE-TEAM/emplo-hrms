@@ -3,8 +3,8 @@
 namespace App\Traits;
 
 use App\Models\Holiday;
-use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Carbon;
 
 trait HolidayUtils
 {
@@ -14,8 +14,7 @@ trait HolidayUtils
 
     /**
      * Get collection of `Holiday` models of regular type.
-     * 
-     * @param Carbon|int $year
+     *
      * @return Collection<int, mixed>
      */
     public function getRegularHolidays(Carbon|int $year)
@@ -35,13 +34,12 @@ trait HolidayUtils
 
     /**
      * Get collection of `Holiday` models of special(working/non-working) type.
-     * 
-     * @param Carbon|int $year
+     *
      * @return Collection<int, mixed>
      */
     public function getSpecialHolidays(Carbon|int $year)
     {
-        if ($year instanceOf Carbon) {
+        if ($year instanceof Carbon) {
             $year = $year->year;
         }
 
@@ -56,9 +54,6 @@ trait HolidayUtils
 
     /**
      * Check if date is a holiday, either regular or special.
-     * 
-     * @param Carbon|string $date
-     * @return bool
      */
     public function isHoliday(Carbon|string $date): bool
     {
@@ -67,9 +62,6 @@ trait HolidayUtils
 
     /**
      * Check if date is a regular holiday.
-     * 
-     * @param Carbon|string $date
-     * @return bool
      */
     public function isRegularHoliday(Carbon|string $date): bool
     {
@@ -80,9 +72,6 @@ trait HolidayUtils
 
     /**
      * Check if date is a special(working/non-working) holiday.
-     * 
-     * @param Carbon|string $date
-     * @return bool
      */
     public function isSpecialHoliday(Carbon|string $date): bool
     {
@@ -93,9 +82,6 @@ trait HolidayUtils
 
     /**
      * Check if date is not a regular holiday.
-     * 
-     * @param Carbon|string $date
-     * @return bool
      */
     public function isNotRegularHoliday(Carbon|string $date): bool
     {
@@ -104,9 +90,6 @@ trait HolidayUtils
 
     /**
      * Check if date is not a special holiday.
-     * 
-     * @param Carbon|string $date
-     * @return bool
      */
     public function isNotSpecialHoliday(Carbon|string $date): bool
     {
@@ -115,9 +98,6 @@ trait HolidayUtils
 
     /**
      * Check if date is not a holiday.
-     * 
-     * @param Carbon|string $date
-     * @return bool
      */
     public function isNotHoliday(Carbon|string $date): bool
     {
@@ -126,12 +106,9 @@ trait HolidayUtils
 
     /**
      * If instance of carbon, make into ->toDateString(), else return as-is.
-     * 
-     * @param Carbon|string $date
-     * @return string
      */
     private function formatDate(Carbon|string $date): string
     {
-        return $date instanceOf Carbon ? $date->toDateString() : $date;
+        return $date instanceof Carbon ? $date->toDateString() : $date;
     }
 }

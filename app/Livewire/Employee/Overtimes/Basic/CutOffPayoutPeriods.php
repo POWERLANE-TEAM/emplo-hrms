@@ -2,21 +2,21 @@
 
 namespace App\Livewire\Employee\Overtimes\Basic;
 
-use Livewire\Component;
 use App\Models\Employee;
 use App\Models\Overtime;
-use Livewire\Attributes\On;
-use Livewire\Attributes\Locked;
-use Livewire\Attributes\Computed;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\Locked;
+use Livewire\Attributes\On;
+use Livewire\Component;
 
 class CutOffPayoutPeriods extends Component
 {
     #[Locked]
     public $overtime;
 
-    #[Locked] 
-    public ?int $payroll; 
+    #[Locked]
+    public ?int $payroll;
 
     #[Locked]
     public $totalOtHours = 0;
@@ -62,7 +62,7 @@ class CutOffPayoutPeriods extends Component
                     ->whereHas('payrollApproval.payroll', function ($subQuery) {
                         $subQuery->where('payroll_id', $this->payroll);
                     });
-            })         
+            })
             ->get();
     }
 
@@ -89,24 +89,24 @@ class CutOffPayoutPeriods extends Component
                 : null;
         });
 
-        $hours                  = floor($totalSecs / 3600);
-        $minutes                = floor(($totalSecs % 3600) / 60);
-        $seconds                = $totalSecs % 60;
-        $this->totalOtHours     = sprintf("%02d:%02d:%02d", $hours, $minutes, $seconds);
+        $hours = floor($totalSecs / 3600);
+        $minutes = floor(($totalSecs % 3600) / 60);
+        $seconds = $totalSecs % 60;
+        $this->totalOtHours = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
     }
 
     private function getOtSummaryInfo()
-    {   
+    {
         $payrollApproval = $this->overtime?->first()?->payrollApproval;
 
         $this->otSummary = (object) [
-            'initialApprover'       => $this->checkIfSameAsAuthUser($payrollApproval?->initialApprover),
-            'secondApprover'        => $this->checkIfSameAsAuthUser($payrollApproval?->secondaryApprover),
-            'thirdApprover'         => $this->checkIfSameAsAuthUser($payrollApproval?->thirdApprover),
-            'initialApprovalDate'   => $payrollApproval?->initial_approver_signed_at,
-            'secondApprovalDate'    => $payrollApproval?->secondary_approver_signed_at,
-            'thirdApprovalDate'     => $payrollApproval?->third_approver_signed_at,
-        ];       
+            'initialApprover' => $this->checkIfSameAsAuthUser($payrollApproval?->initialApprover),
+            'secondApprover' => $this->checkIfSameAsAuthUser($payrollApproval?->secondaryApprover),
+            'thirdApprover' => $this->checkIfSameAsAuthUser($payrollApproval?->thirdApprover),
+            'initialApprovalDate' => $payrollApproval?->initial_approver_signed_at,
+            'secondApprovalDate' => $payrollApproval?->secondary_approver_signed_at,
+            'thirdApprovalDate' => $payrollApproval?->third_approver_signed_at,
+        ];
     }
 
     private function checkIfSameAsAuthUser(?Employee $employee)
@@ -121,7 +121,7 @@ class CutOffPayoutPeriods extends Component
         $this->status = $this->overtime->first()->payrollApproval->third_approver_signed_at
             ? __('Approved')
             : __('Pending');
-    }    
+    }
 
     #[Computed]
     private function authEmployee()

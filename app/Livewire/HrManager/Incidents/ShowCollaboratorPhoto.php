@@ -2,9 +2,9 @@
 
 namespace App\Livewire\HrManager\Incidents;
 
-use Livewire\Component;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Reactive;
+use Livewire\Component;
 
 class ShowCollaboratorPhoto extends Component
 {

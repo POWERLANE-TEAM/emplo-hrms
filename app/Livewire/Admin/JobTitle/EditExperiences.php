@@ -2,16 +2,16 @@
 
 namespace App\Livewire\Admin\JobTitle;
 
-use Livewire\Component;
-use App\Models\JobTitle;
-use Livewire\Attributes\On;
-use Livewire\Attributes\Computed;
 use App\Enums\JobQualificationPriorityLevel;
+use App\Models\JobTitle;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
+use Livewire\Component;
 
 class EditExperiences extends Component
 {
     public JobTitle $jobTitle;
-    
+
     public $items = [];
 
     public $state = [
@@ -113,7 +113,7 @@ class EditExperiences extends Component
     public function removeExistingQualification(int $index)
     {
         $this->isEditMode = false;
-        
+
         $this->jobTitle->experiences
             ->where('keyword_id', $index)
             ->first()
@@ -125,7 +125,7 @@ class EditExperiences extends Component
     public function removeQualification(int $index)
     {
         unset($this->items[$index]);
-        
+
         $this->dispatch('removeExpQualification', $index)
             ->to(JobTitleDetails::class);
     }

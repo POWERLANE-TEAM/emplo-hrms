@@ -1,10 +1,10 @@
 <?php
 
-use App\Models\Payroll;
 use App\Models\Employee;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
+use App\Models\Payroll;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('payslips', function (Blueprint $table) {
             $table->id('payslip_id');
-            
+
             $table->foreignIdFor(Employee::class, 'employee_id')
                 ->constrained('employees', 'employee_id')
                 ->cascadeOnUpdate()

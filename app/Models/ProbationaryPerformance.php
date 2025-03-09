@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ProbationaryPerformance extends Model
 {
@@ -20,11 +20,11 @@ class ProbationaryPerformance extends Model
     ];
 
     protected $casts = [
-        'evaluatee_signed_at'           => 'datetime',
-        'evaluator_signed_at'           => 'datetime',
-        'secondary_approver_signed_at'  => 'datetime',
-        'third_approver_signed_at'      => 'datetime',
-        'fourth_approver_signed_at'     => 'datetime',
+        'evaluatee_signed_at' => 'datetime',
+        'evaluator_signed_at' => 'datetime',
+        'secondary_approver_signed_at' => 'datetime',
+        'third_approver_signed_at' => 'datetime',
+        'fourth_approver_signed_at' => 'datetime',
     ];
 
     /**

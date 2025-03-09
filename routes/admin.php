@@ -1,13 +1,13 @@
 <?php
 
 use App\Enums\UserPermission;
-use App\Livewire\Auth\Logout;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\EmployeeController;
-use App\Http\Controllers\JobTitleController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\EmployeeArchiveController;
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\JobTitleController;
+use App\Http\Controllers\ProfileController;
+use App\Livewire\Auth\Logout;
+use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 
 Route::middleware('guest')->group(function () {
@@ -58,7 +58,6 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', [Logout::class, 'destroy'])
         ->name('logout');
 
-
     /**
      * Laravel Pulse
      */
@@ -83,9 +82,8 @@ Route::middleware('auth')->group(function () {
             ->name('create');
     });
 
-
-    /** 
-     * Employee resource 
+    /**
+     * Employee resource
      */
     Route::get('list', [EmployeeController::class, 'index'])
         ->can('viewAnyEmployees')
@@ -95,7 +93,6 @@ Route::middleware('auth')->group(function () {
         ->can('viewEmployee')
         ->whereNumber('employee')
         ->name('employees.information');
-
 
     /**
      * Archive
@@ -109,7 +106,6 @@ Route::middleware('auth')->group(function () {
             ->can('viewAnyArchivedRecords')
             ->name('employee');
     });
-
 
     /**
      * Job Family
@@ -151,7 +147,6 @@ Route::middleware('auth')->group(function () {
     /**
      * Calendar
      */
-
     Route::prefix('calendar')->name('calendar.')->group(function () {
         Route::get('monthly', function () {
             return view('employee.admin.calendar.monthly');
@@ -173,7 +168,6 @@ Route::middleware('auth')->group(function () {
         })->name('create');
     });
 
-
     /**
      * Announcement
      */
@@ -192,7 +186,7 @@ Route::middleware('auth')->group(function () {
 
     /**
      * Configuration
-     * 
+     *
      * Performance & Forms
      */
     Route::prefix('config')->name('config.')->group(function () {
@@ -232,7 +226,7 @@ Route::middleware('auth')->group(function () {
     /**
      * Attendance
      */
-    Route::middleware('can:' . UserPermission::UPDATE_BIOMETRIC_DEVICE->value)
+    Route::middleware('can:'.UserPermission::UPDATE_BIOMETRIC_DEVICE->value)
         ->prefix('attendance')->name('attendance.')->group(function () {
 
             // Biometric Device Manager

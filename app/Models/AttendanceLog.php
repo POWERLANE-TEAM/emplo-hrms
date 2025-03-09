@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class AttendanceLog extends Model
 {
@@ -34,7 +34,7 @@ class AttendanceLog extends Model
 
     /**
      * Get the employee that owns the attendance log.
-     * 
+     *
      * @return BelongsTo<Employee, AttendanceLog>
      */
     public function employee(): BelongsTo

@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Enums\ServiceIncentiveLeave;
 use App\Models\Employee;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use App\Enums\ServiceIncentiveLeave;
 
 class ServiceIncentiveLeaveCreditSeeder extends Seeder
 {
@@ -32,11 +32,11 @@ class ServiceIncentiveLeaveCreditSeeder extends Seeder
 
             $result = array_column(
                 array_filter(
-                    ServiceIncentiveLeave::getAllQuartersAndCredits(), 
+                    ServiceIncentiveLeave::getAllQuartersAndCredits(),
                     fn ($quarter) => in_array($month, $quarter['months'])
                 ), 'credits'
             );
-            
+
             $credits = reset($result);
 
             $data[] = [

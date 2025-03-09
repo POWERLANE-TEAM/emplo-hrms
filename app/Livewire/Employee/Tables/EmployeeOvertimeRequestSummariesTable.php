@@ -2,15 +2,14 @@
 
 namespace App\Livewire\Employee\Tables;
 
+use App\Enums\StatusBadge;
+use App\Livewire\Employee\Overtimes\CutOffPayoutPeriodsApproval;
 use App\Models\Employee;
 use App\Models\Overtime;
-use App\Enums\StatusBadge;
-use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
-use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
-use App\Livewire\Employee\Overtimes\CutOffPayoutPeriodsApproval;
 
 class EmployeeOvertimeRequestSummariesTable extends DataTableComponent
 {
@@ -51,7 +50,7 @@ class EmployeeOvertimeRequestSummariesTable extends DataTableComponent
                 'wire:click' => "\$dispatchTo(
                     'employee.overtimes.individual-overtime-request-approval',
                     'showOvertimeRequestApprovalInfo',
-                    { eventPayload: ".json_encode($eventPayload)."})",
+                    { eventPayload: ".json_encode($eventPayload).'})',
             ];
         });
 
@@ -92,28 +91,28 @@ class EmployeeOvertimeRequestSummariesTable extends DataTableComponent
     {
         return [
             'requestor' => [
-                'name'              => $row->employee->full_name,
-                'photo'             => $row->employee->account->photo,
-                'job_title'         => $row->employee->jobTitle->job_title,
-                'job_level'         => $row->employee->jobTitle->jobLevel->job_level,
-                'job_level_name'    => $row->employee->jobTitle->jobLevel->job_level_name,
-                'employee_id'       => $row->employee->employee_id,
-                'shift'             => $row->employee->shift->shift_name,
-                'shift_schedule'    => $row->employee->shift_schedule,
-                'employment'        => $row->employee->status->emp_status_name,
+                'name' => $row->employee->full_name,
+                'photo' => $row->employee->account->photo,
+                'job_title' => $row->employee->jobTitle->job_title,
+                'job_level' => $row->employee->jobTitle->jobLevel->job_level,
+                'job_level_name' => $row->employee->jobTitle->jobLevel->job_level_name,
+                'employee_id' => $row->employee->employee_id,
+                'shift' => $row->employee->shift->shift_name,
+                'shift_schedule' => $row->employee->shift_schedule,
+                'employment' => $row->employee->status->emp_status_name,
             ],
             'overtime_details' => [
-                'work_performed'        => $row->work_performed,
-                'start_time'            => $row->start_time->format('F d, Y g:i A'),
-                'end_time'              => $row->end_time->format('F d, Y g:i A'),
-                'hours_requested'       => $row->hours_requested,
-                'authorizer_signed_at'  => $row->authorizer_signed_at?->format('F d, Y g:i A'),
-                'authorizer'            => $row?->authorizedBy?->full_name,
-                'denied_at'             => $row->denied_at?->format('F d, Y g:i A'),
-                'denier'                => $row?->deniedBy?->full_name,
-                'feedback'              => $row->feedback,
-                'filed_at'              => $row->filed_at->format('F d, Y g:i A'),
-                'modified_at'           => $row->modified_at->format('F d, Y g:i A'),         
+                'work_performed' => $row->work_performed,
+                'start_time' => $row->start_time->format('F d, Y g:i A'),
+                'end_time' => $row->end_time->format('F d, Y g:i A'),
+                'hours_requested' => $row->hours_requested,
+                'authorizer_signed_at' => $row->authorizer_signed_at?->format('F d, Y g:i A'),
+                'authorizer' => $row?->authorizedBy?->full_name,
+                'denied_at' => $row->denied_at?->format('F d, Y g:i A'),
+                'denier' => $row?->deniedBy?->full_name,
+                'feedback' => $row->feedback,
+                'filed_at' => $row->filed_at->format('F d, Y g:i A'),
+                'modified_at' => $row->modified_at->format('F d, Y g:i A'),
             ],
         ];
     }
@@ -122,7 +121,7 @@ class EmployeeOvertimeRequestSummariesTable extends DataTableComponent
     {
         return Overtime::query()
             ->with([
-                'payrollApproval.payroll'
+                'payrollApproval.payroll',
             ])
             ->get()
             ->mapWithKeys(function ($item) {
@@ -208,7 +207,7 @@ class EmployeeOvertimeRequestSummariesTable extends DataTableComponent
                     });
 
                     $this->dispatch('payrollDateModified', $value)->to(CutOffPayoutPeriodsApproval::class);
-                })
+                }),
         ];
     }
 }

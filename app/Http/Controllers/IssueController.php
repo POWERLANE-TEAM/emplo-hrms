@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Issue;
 use App\Enums\FilePath;
-use Illuminate\Support\Facades\Storage;
+use App\Models\Issue;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Storage;
 
 class IssueController extends Controller
 {
@@ -27,6 +27,7 @@ class IssueController extends Controller
     public function review(Issue $issue)
     {
         $issue->loadMissing('reporter');
+
         return view('employee.hr-manager.relations.issues.review', compact('issue'));
     }
 

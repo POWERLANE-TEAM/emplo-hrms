@@ -11,9 +11,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class ResidentialAddressRequest extends FormRequest
 {
-
     protected bool $required;
-
 
     /**
      * Determine if the user is authorized to make this request.
@@ -28,11 +26,11 @@ class ResidentialAddressRequest extends FormRequest
         $this->required = $required;
 
         return [
-            'region' => 'bail|' . (new  RegionRule($this->required))->getRule(),
-            'province' => 'bail|' . (new  ProvinceRule($this->required))->getRule(),
-            'city' => 'bail|' . (new  CityRule($this->required))->getRule(),
-            'barangay' => 'bail|' . (new  BarangayRule($this->required))->getRule(),
-            'address' => 'bail|' . (new  AddressRule($this->required))->getRule(),
+            'region' => 'bail|'.(new RegionRule($this->required))->getRule(),
+            'province' => 'bail|'.(new ProvinceRule($this->required))->getRule(),
+            'city' => 'bail|'.(new CityRule($this->required))->getRule(),
+            'barangay' => 'bail|'.(new BarangayRule($this->required))->getRule(),
+            'address' => 'bail|'.(new AddressRule($this->required))->getRule(),
         ];
     }
 

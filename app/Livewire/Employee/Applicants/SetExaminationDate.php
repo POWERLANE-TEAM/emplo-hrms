@@ -9,7 +9,6 @@ use App\Livewire\Forms\ScheduleForm;
 use App\Models\Application;
 use App\Models\ApplicationExam;
 use Carbon\Carbon;
-use Illuminate\View\ComponentAttributeBag;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -21,17 +20,23 @@ class SetExaminationDate extends Component
     public Application $application;
 
     #[Locked]
-    public ?string $postMethod  = null;
+    public ?string $postMethod = null;
+
     #[Locked]
     public bool $overrideInputContainerClass = false;
+
     #[Locked]
     public bool $overrideDateWrapper = false;
+
     #[Locked]
     public bool $overrideTimeWrapper = false;
+
     #[Locked]
     public array $inputGroupAttributes = [];
+
     #[Locked]
     public array $dateWrapAttributes = [];
+
     #[Locked]
     public array $timeWrapAttributes = [];
 
@@ -45,16 +50,15 @@ class SetExaminationDate extends Component
             $this->examination->date = $startTime ? Carbon::parse($startTime)->setTimezone(Timezone::get())->toDateString() : null;
             $this->examination->time = $startTime ? Carbon::parse($startTime)->setTimezone(Timezone::get())->toTimeString() : null;
 
-            if (!$this->overrideInputContainerClass) {
+            if (! $this->overrideInputContainerClass) {
                 $this->inputGroupAttributes = array_merge($this->inputGroupAttributes, ['class' => 'input-group flex-md-nowrap gap-1 min-w-100']);
             }
 
-
-            if (!$this->overrideDateWrapper) {
+            if (! $this->overrideDateWrapper) {
                 $this->dateWrapAttributes = array_merge($this->dateWrapAttributes, ['class' => 'col-12 col-md-6']);
             }
 
-            if (!$this->timeWrapAttributes) {
+            if (! $this->timeWrapAttributes) {
                 $this->timeWrapAttributes = array_merge($this->timeWrapAttributes, ['class' => 'col-12 col-md-6']);
             }
 
@@ -79,13 +83,13 @@ class SetExaminationDate extends Component
 
         $controller = new ApplicationExamController;
 
-        if($this->postMethod == 'PATCH'){
+        if ($this->postMethod == 'PATCH') {
             $controller->update($validated, true);
             $this->dispatch('show-toast', [
                 'type' => 'success',
                 'message' => 'Exam schedule has been rescheduled.',
             ]);
-        }else{
+        } else {
             $controller->store($validated, true);
             $this->dispatch('show-toast', [
                 'type' => 'success',
@@ -93,16 +97,11 @@ class SetExaminationDate extends Component
             ]);
         }
 
-
-
         $this->dispatch('refreshChanges');
     }
 
     public function render()
     {
-
-
-
 
         return view('livewire.employee.applicants.set-examination-date', [
             'applicationId' => $this->application->application_id,
@@ -111,7 +110,7 @@ class SetExaminationDate extends Component
             'overrideTimeWrapper' => $this->overrideTimeWrapper,
             'inputGroupAttributes' => $this->inputGroupAttributes,
             'dateWrapAttributes' => $this->dateWrapAttributes,
-            'timeWrapAttributes' => $this->timeWrapAttributes
+            'timeWrapAttributes' => $this->timeWrapAttributes,
         ]);
     }
 }

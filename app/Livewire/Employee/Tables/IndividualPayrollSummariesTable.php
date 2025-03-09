@@ -2,13 +2,13 @@
 
 namespace App\Livewire\Employee\Tables;
 
-use App\Models\Payroll;
-use App\Models\Employee;
-use App\Models\PayrollSummary;
 use App\Livewire\Tables\Defaults;
+use App\Models\Employee;
+use App\Models\Payroll;
+use App\Models\PayrollSummary;
 use Illuminate\Database\Eloquent\Builder;
-use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class IndividualPayrollSummariesTable extends DataTableComponent
@@ -35,7 +35,7 @@ class IndividualPayrollSummariesTable extends DataTableComponent
             ->latest('cut_off_start')
             ->get()
             ->mapWithKeys(fn ($payroll) => [
-                $payroll->payroll_id => $payroll->cut_off
+                $payroll->payroll_id => $payroll->cut_off,
             ])
             ->toArray();
 
@@ -52,13 +52,13 @@ class IndividualPayrollSummariesTable extends DataTableComponent
                             ->setFirstOption('Latest');
                     })(),
 
-                    'label' => __('Payroll Period: ')
+                    'label' => __('Payroll Period: '),
                 ],
             ],
 
             'toolbar-right-end' => 'components.table.filter.export',
         ]);
-        
+
         $this->setTdAttributes(function (Column $column, $row, $columnIndex, $rowIndex) {
             return [
                 'class' => 'text-md-center',
@@ -94,7 +94,7 @@ class IndividualPayrollSummariesTable extends DataTableComponent
             Column::make(__('Regular Overtime Night Differential'))
                 ->label(fn ($row) => $row->reg_ot_nd)
                 ->sortable(fn (Builder $builder, $direction) => $builder->orderBy('reg_ot_nd', $direction)),
-            
+
             Column::make(__('Rest Day Hours Worked'))
                 ->label(fn ($row) => $row->rest_hrs)
                 ->sortable(fn (Builder $builder, $direction) => $builder->orderBy('rest_hrs', $direction)),

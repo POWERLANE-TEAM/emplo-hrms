@@ -7,6 +7,7 @@ use Livewire\Component;
 class Notifs extends Component
 {
     public $generalNotifications = [];
+
     public $urgentNotifications = [];
 
     public function mount()
@@ -14,9 +15,9 @@ class Notifs extends Component
         // Notification templates. This can be added/revised.
         $notificationTemplates = [
             'approval_updates' => "{actor} approved {subject}'s {type} form.",
-            'form_data_entries' => "New {type} request for {subject}.",
+            'form_data_entries' => 'New {type} request for {subject}.',
             'accomplishment_updates' => "{actor} completed the assignment of scores for {subject}'s {type}.",
-            'new_applicants' => "New applicant {subject} has submitted a resume for the position of {job_position}.",
+            'new_applicants' => 'New applicant {subject} has submitted a resume for the position of {job_position}.',
             'performance_evaluation' => "{subject}'s performance evaluation for the {evaluation_period} is now open for review.",
         ];
 
@@ -150,7 +151,6 @@ class Notifs extends Component
             ],
         ];
 
-
         $this->sortNotificationsByTime($generalData);
         $this->sortNotificationsByTime($urgentData);
 
@@ -161,7 +161,7 @@ class Notifs extends Component
     private function parseRelativeTime($relativeTime)
     {
         $interval = \Carbon\Carbon::now();
-        sscanf($relativeTime, "%d %s ago", $amount, $unit);
+        sscanf($relativeTime, '%d %s ago', $amount, $unit);
 
         // Adjust the interval based on the relative time
         switch ($unit) {
@@ -183,12 +183,13 @@ class Notifs extends Component
 
         return $interval->timestamp;
     }
-    
+
     private function sortNotificationsByTime(&$notifications)
     {
         usort($notifications, function ($a, $b) {
             $timeA = $this->parseRelativeTime($a['time']);
             $timeB = $this->parseRelativeTime($b['time']);
+
             return $timeB <=> $timeA; // Descending order
         });
     }
@@ -212,8 +213,9 @@ class Notifs extends Component
             if (in_array($key, ['actor', 'subject'])) {
                 $value = "<b>{$value}</b>";
             }
-            $template = str_replace("{" . $key . "}", $value, $template);
+            $template = str_replace('{'.$key.'}', $value, $template);
         }
+
         return $template;
     }
 

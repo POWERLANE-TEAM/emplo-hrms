@@ -2,13 +2,13 @@
 
 namespace App\Livewire\HrManager\ResumeEvaluator;
 
-use Livewire\Component;
+use App\Enums\ApplicationStatus;
+use App\Enums\JobQualificationPriorityLevel;
 use App\Models\JobVacancy;
 use Illuminate\Support\Carbon;
-use Livewire\Attributes\Locked;
-use App\Enums\ApplicationStatus;
 use Livewire\Attributes\Computed;
-use App\Enums\JobQualificationPriorityLevel;
+use Livewire\Attributes\Locked;
+use Livewire\Component;
 
 class ShowRankings extends Component
 {
@@ -28,7 +28,8 @@ class ShowRankings extends Component
 
     public $routePrefix;
 
-    public function mount($routePrefix) {
+    public function mount($routePrefix)
+    {
         $this->routePrefix = $routePrefix;
     }
 
@@ -63,16 +64,16 @@ class ShowRankings extends Component
 
         foreach ($jobQualifications as $category => $qualifications) {
             if (! empty($qualifications)) {
-                $highQualifications = array_filter($qualifications, 
-                    fn($item) => $item['priority'] === $this->hp
+                $highQualifications = array_filter($qualifications,
+                    fn ($item) => $item['priority'] === $this->hp
                 );
 
-                $mediumQualifications = array_filter($qualifications, 
-                    fn($item) => $item['priority'] === $this->mp
+                $mediumQualifications = array_filter($qualifications,
+                    fn ($item) => $item['priority'] === $this->mp
                 );
 
-                $lowQualifications = array_filter($qualifications, 
-                    fn($item) => $item['priority'] === $this->lp
+                $lowQualifications = array_filter($qualifications,
+                    fn ($item) => $item['priority'] === $this->lp
                 );
 
                 $priorityCounts[$this->hp] += count($highQualifications);
@@ -82,8 +83,8 @@ class ShowRankings extends Component
                 $matchedCounts[$this->hp] += count(array_uintersect(
                     $highQualifications,
                     $applicant[$category],
-                    fn($job, $applicant) => strcasecmp(
-                        $job['degree'] ?? $job['role'] ?? $job['skill'], 
+                    fn ($job, $applicant) => strcasecmp(
+                        $job['degree'] ?? $job['role'] ?? $job['skill'],
                         $applicant['degree'] ?? $applicant['role'] ?? $applicant['skill']
                     )
                 ));
@@ -91,8 +92,8 @@ class ShowRankings extends Component
                 $matchedCounts[$this->mp] += count(array_uintersect(
                     $mediumQualifications,
                     $applicant[$category],
-                    fn($job, $applicant) => strcasecmp(
-                        $job['degree'] ?? $job['role'] ?? $job['skill'], 
+                    fn ($job, $applicant) => strcasecmp(
+                        $job['degree'] ?? $job['role'] ?? $job['skill'],
                         $applicant['degree'] ?? $applicant['role'] ?? $applicant['skill']
                     )
                 ));
@@ -100,13 +101,13 @@ class ShowRankings extends Component
                 $matchedCounts[$this->lp] += count(array_uintersect(
                     $lowQualifications,
                     $applicant[$category],
-                    fn($job, $applicant) => strcasecmp(
+                    fn ($job, $applicant) => strcasecmp(
                         $job['degree'] ?? $job['role'] ?? $job['skill'],
                         $applicant['degree'] ?? $applicant['role'] ?? $applicant['skill']
                     )
                 ));
             }
-        }            
+        }
 
         $totalPointsEarned = 0;
 
@@ -122,7 +123,7 @@ class ShowRankings extends Component
             //     "Total {$priority} Qualifications Met" => $matchedQualificationCount,
             //     "Total Points per {$priority} Quality that has been met" => $priorityQualificationCount > 0 ? ($$this->priorityWeights[$priority] / $priorityQualificationCount) * $matchedQualificationCount : 0
             // ]);
-                
+
             if ($priorityQualificationCount > 0) {
                 $pointsPerQualification = $this->priorityWeights[$priority] / $priorityQualificationCount;
 
@@ -140,7 +141,6 @@ class ShowRankings extends Component
 
         return ($totalPointsEarned / 100) * 100;
     }
-
 
     public function generateRankings()
     {
@@ -176,26 +176,26 @@ class ShowRankings extends Component
                     if (isset($jobQualifications[$category]) && isset($applicant[$category])) {
                         $jobCategory = $jobQualifications[$category];
                         $applicantCategory = $applicant[$category];
-                
+
                         if (! empty($jobCategory) && ! empty($applicantCategory)) {
                             $totalQualifications += count($jobCategory);
                             $matched = array_uintersect(
                                 $jobCategory,
                                 $applicantCategory,
-                                fn($job, $applicant) => strcasecmp(
+                                fn ($job, $applicant) => strcasecmp(
                                     $job['degree'] ?? $job['role'] ?? $job['skill'] ?? '',
                                     $applicant['degree'] ?? $applicant['role'] ?? $applicant['skill'] ?? '')
                             );
-                
+
                             $metCount += count($matched);
-                
+
                             $metQualifications = array_merge($metQualifications, array_column(
                                 $matched,
                                 $category === 'skills' ? 'skill' : ($category === 'education' ? 'degree' : 'role')
                             ));
                         }
                     }
-                }                
+                }
 
                 $applicantsData[] = [
                     'application_id' => $applicant['applicationId'],
@@ -225,33 +225,31 @@ class ShowRankings extends Component
             'applications.applicant.skills',
             'jobTitle.educations',
             'jobTitle.experiences',
-            'jobTitle.skills',    
+            'jobTitle.skills',
         ])
-        ->get()
-        ->reject(function ($item) {
-            return (
-                ($item->vacancy_count <= 0 &&
-                (Carbon::parse($item->application_deadline_at)->isPast() || 
-                    ! is_null($item->application_deadline_at))) &&
-                $item->applications->every(function ($item) {
-                    return (
-                        ! is_null($item->hired_at) ||
-                        $item->is_passed === 1 ||
-                        $item->application_status_id !== ApplicationStatus::PENDING->value
-                    );
-                })
-            );
-        });
+            ->get()
+            ->reject(function ($item) {
+                return
+                    ($item->vacancy_count <= 0 &&
+                    (Carbon::parse($item->application_deadline_at)->isPast() ||
+                        ! is_null($item->application_deadline_at))) &&
+                    $item->applications->every(function ($item) {
+                        return
+                            ! is_null($item->hired_at) ||
+                            $item->is_passed === 1 ||
+                            $item->application_status_id !== ApplicationStatus::PENDING->value;
+                    });
+            });
     }
 
     #[Computed]
     public function listOfOpenJobs()
     {
         return $this->vacancies->mapWithKeys(function ($item) {
-                return [
-                    $item->jobTitle->job_title_id => $item->jobTitle->job_title,
-                ];
-            })->toArray();
+            return [
+                $item->jobTitle->job_title_id => $item->jobTitle->job_title,
+            ];
+        })->toArray();
     }
 
     #[Computed]
@@ -283,10 +281,9 @@ class ShowRankings extends Component
                         })->toArray(),
                     ];
                 });
-            })->toArray();
+        })->toArray();
     }
-    
-    
+
     #[Computed]
     public function vacantJobs()
     {
@@ -314,8 +311,8 @@ class ShowRankings extends Component
                 })->toArray(),
             ];
         })
-        ->unique('id')
-        ->toArray();
+            ->unique('id')
+            ->toArray();
     }
 
     public function render()
@@ -332,10 +329,10 @@ class ShowRankings extends Component
             $selectedJobName = $selectedPositionName;
         }
 
-        return view('livewire.hr-manager.resume-evaluator.show-rankings', 
+        return view('livewire.hr-manager.resume-evaluator.show-rankings',
             compact(
-                'applicantsData', 
-                'totalApplicants', 
+                'applicantsData',
+                'totalApplicants',
                 'selectedJobName'
             )
         );

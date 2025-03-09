@@ -2,13 +2,13 @@
 
 namespace App\Livewire\Employee\Tables;
 
-use App\Models\Overtime;
 use App\Enums\StatusBadge;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Builder;
-use Rappasoft\LaravelLivewireTables\Views\Column;
-use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use App\Livewire\Employee\Overtimes\Basic\CutOffPayOutPeriods;
+use App\Models\Overtime;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
+use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class CutOffOvertimeSummaryApprovalsTable extends DataTableComponent
@@ -48,7 +48,7 @@ class CutOffOvertimeSummaryApprovalsTable extends DataTableComponent
                 'wire:click' => "\$dispatchTo(
                     'employee.overtimes.overtime-summary-approval', 
                     'showOvertimeSummaryApproval', 
-                    { eventPayload: ".json_encode($eventPayload)."})",
+                    { eventPayload: ".json_encode($eventPayload).'})',
             ];
         });
 
@@ -88,18 +88,18 @@ class CutOffOvertimeSummaryApprovalsTable extends DataTableComponent
     private function createEventPayload($row)
     {
         return [
-            'payroll'               => $row->payrollApproval->payroll->cut_off,
-            'work_performed'        => $row->work_performed,
-            'start_time'            => $row->start_time->format('F d, Y g:i A'),
-            'end_time'              => $row->end_time->format('F d, Y g:i A'),
-            'hours_requested'       => $row->hours_requested,
-            'authorizer_signed_at'  => $row->authorizer_signed_at?->format('F d, Y g:i A'),
-            'authorizer'            => $row?->authorizedBy?->full_name,
-            'denied_at'             => $row->denied_at?->format('F d, Y g:i A'),
-            'denier'                => $row?->deniedBy?->full_name,
-            'feedback'              => $row->feedback,
-            'filed_at'              => $row->filed_at->format('F d, Y g:i A'),
-            'modified_at'           => $row->modified_at->format('F d, Y g:i A'),
+            'payroll' => $row->payrollApproval->payroll->cut_off,
+            'work_performed' => $row->work_performed,
+            'start_time' => $row->start_time->format('F d, Y g:i A'),
+            'end_time' => $row->end_time->format('F d, Y g:i A'),
+            'hours_requested' => $row->hours_requested,
+            'authorizer_signed_at' => $row->authorizer_signed_at?->format('F d, Y g:i A'),
+            'authorizer' => $row?->authorizedBy?->full_name,
+            'denied_at' => $row->denied_at?->format('F d, Y g:i A'),
+            'denier' => $row?->deniedBy?->full_name,
+            'feedback' => $row->feedback,
+            'filed_at' => $row->filed_at->format('F d, Y g:i A'),
+            'modified_at' => $row->modified_at->format('F d, Y g:i A'),
         ];
     }
 
@@ -112,7 +112,7 @@ class CutOffOvertimeSummaryApprovalsTable extends DataTableComponent
             ->get()
             ->mapWithKeys(function ($item) {
                 return [
-                    $item->payrollApproval->payroll->payroll_id => $item->payrollApproval->payroll->cut_off
+                    $item->payrollApproval->payroll->payroll_id => $item->payrollApproval->payroll->cut_off,
                 ];
             })
             ->toArray();
@@ -188,7 +188,7 @@ class CutOffOvertimeSummaryApprovalsTable extends DataTableComponent
                     });
 
                     $this->dispatch('payrollDateModified', $value)->to(CutOffPayOutPeriods::class);
-                })
+                }),
         ];
     }
 }

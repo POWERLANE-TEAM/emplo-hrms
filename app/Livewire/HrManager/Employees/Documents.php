@@ -7,7 +7,6 @@ use Livewire\Component;
 
 class Documents extends Component
 {
-
     public Employee $employee;
 
     public function render()

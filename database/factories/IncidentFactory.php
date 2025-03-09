@@ -2,10 +2,10 @@
 
 namespace Database\Factories;
 
-use App\Models\Issue;
-use App\Models\Employee;
-use App\Enums\IssueStatus;
 use App\Enums\IncidentPriorityLevel;
+use App\Enums\IssueStatus;
+use App\Models\Employee;
+use App\Models\Issue;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

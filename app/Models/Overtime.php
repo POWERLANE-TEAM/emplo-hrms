@@ -2,15 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Str;
 use App\Enums\ActivityLogName;
-use Spatie\Activitylog\LogOptions;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Spatie\Activitylog\Traits\LogsActivity;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Overtime extends Model
 {
@@ -30,10 +30,10 @@ class Overtime extends Model
     ];
 
     protected $casts = [
-        'start_time'            => 'datetime',
-        'end_time'              => 'datetime',
-        'authorizer_signed_at'  => 'datetime',
-        'denied_at'             => 'datetime',
+        'start_time' => 'datetime',
+        'end_time' => 'datetime',
+        'authorizer_signed_at' => 'datetime',
+        'denied_at' => 'datetime',
     ];
 
     /**
@@ -86,7 +86,7 @@ class Overtime extends Model
      */
     public function authorizedBy(): BelongsTo
     {
-        return $this->belongsTo(Employee::class, 'authorizer', 'employee_id'); 
+        return $this->belongsTo(Employee::class, 'authorizer', 'employee_id');
     }
 
     /**

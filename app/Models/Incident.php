@@ -2,18 +2,18 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Str;
 use App\Enums\ActivityLogName;
-use Illuminate\Support\Carbon;
-use Spatie\Activitylog\LogOptions;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Incident extends Model
 {
@@ -25,7 +25,7 @@ class Incident extends Model
     protected $guarded = [
         'incident_id',
         'created_at',
-        'updated_at'
+        'updated_at',
     ];
 
     /**
@@ -34,7 +34,7 @@ class Incident extends Model
     protected function createdAt(): Attribute
     {
         return Attribute::make(
-            get: fn (mixed $value) => $value = isset($value) ? Carbon::parse($value): null,
+            get: fn (mixed $value) => $value = isset($value) ? Carbon::parse($value) : null,
         );
     }
 
@@ -44,7 +44,7 @@ class Incident extends Model
     protected function updatedAt(): Attribute
     {
         return Attribute::make(
-            get: fn (mixed $value) => $value = isset($value) ? Carbon::parse($value): null,        
+            get: fn (mixed $value) => $value = isset($value) ? Carbon::parse($value) : null,
         );
     }
 

@@ -86,7 +86,7 @@ class SetExperience extends Component
     public function removeQualification(int $index)
     {
         unset($this->items[$index]);
-        
+
         $this->dispatch('removeExpQualification', $index)
             ->to(CreateJobTitleForm::class);
     }

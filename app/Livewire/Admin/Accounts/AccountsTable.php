@@ -2,15 +2,15 @@
 
 namespace App\Livewire\Admin\Accounts;
 
-use App\Models\User;
+use App\Enums\AccountType;
 use App\Enums\UserRole;
 use App\Enums\UserStatus;
-use App\Enums\AccountType;
-use Illuminate\Support\Str;
-use Illuminate\Support\Carbon;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
-use Rappasoft\LaravelLivewireTables\Views\Column;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 
 class AccountsTable extends DataTableComponent
 {
@@ -71,13 +71,13 @@ class AccountsTable extends DataTableComponent
                     $name = Str::headline($row->account->full_name);
                     $photo = $row->photo;
                     $email = $row->email;
-            
+
                     // this is disgusting. Change this somehow
                     return '<div class="d-flex align-items-center">
-                                <img src="' . e($photo) . '" alt="User Picture" class="rounded-circle me-3" style="width: 38px; height: 38px;">
+                                <img src="'.e($photo).'" alt="User Picture" class="rounded-circle me-3" style="width: 38px; height: 38px;">
                                 <div>
-                                    <div class="fw-bold">' . e($name) . '</div>
-                                    <div class="text-muted" style="font-size: 0.9em;">' . e($email) . '</div>
+                                    <div class="fw-bold">'.e($name).'</div>
+                                    <div class="text-muted" style="font-size: 0.9em;">'.e($email).'</div>
                                 </div>
                             </div>';
                 })
@@ -98,18 +98,21 @@ class AccountsTable extends DataTableComponent
             Column::make(__('Role'))
                 ->label(function ($row) {
                     $role = UserRole::tryFrom($row->getRoleNames()->first());
+
                     return $role ? $role->label() : __('Not Applicable');
                 }),
 
             Column::make(__('Type'))
                 ->label(function ($row) {
                     $type = AccountType::tryFrom($row->account_type);
+
                     return $type ? $type->label() : $type;
                 }),
 
             Column::make(__('Status'))
                 ->label(function ($row) {
                     $status = UserStatus::tryFrom($row->status->user_status_id);
+
                     return $status ? $status->label() : $status;
                 }),
 
@@ -117,10 +120,9 @@ class AccountsTable extends DataTableComponent
                 ->format(fn ($value, $row, Column $column) => Carbon::parse($row->created_at)->diffForHumans())
                 ->sortable()
                 ->searchable(),
-                
+
             Column::make(__('2FA'), 'two_factor_confirmed_at')
-                ->format(fn ($value, $row, Column $column)
-                    => isset($row->two_factor_confimed_at)
+                ->format(fn ($value, $row, Column $column) => isset($row->two_factor_confimed_at)
                         ? __('Enabled')
                         : __('Disabled')
                 )

@@ -2,12 +2,12 @@
 
 namespace App\Services;
 
-use App\Models\Employee;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
 use App\Enums\ServiceIncentiveLeave;
+use App\Models\Employee;
 use App\Models\ServiceIncentiveLeaveCredit;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class ServiceIncentiveLeaveCreditService
 {
@@ -23,10 +23,10 @@ class ServiceIncentiveLeaveCreditService
             ->with([
                 'silCredit',
                 'jobDetail' => fn ($q) => $q->select([
-                    'emp_job_detail_id', 
-                    'employee_id', 
-                    'hired_at'
-                ])
+                    'emp_job_detail_id',
+                    'employee_id',
+                    'hired_at',
+                ]),
             ])
             ->get();
     }

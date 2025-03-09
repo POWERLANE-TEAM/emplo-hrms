@@ -2,12 +2,12 @@
 
 namespace App\Livewire\Supervisor\Evaluations\Regulars;
 
-use Livewire\Component;
 use App\Models\Employee;
-use Livewire\Attributes\Locked;
-use Livewire\Attributes\Computed;
 use App\Models\RegularPerformance;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\Locked;
+use Livewire\Component;
 
 class PerformanceApprovals extends Component
 {
@@ -49,7 +49,7 @@ class PerformanceApprovals extends Component
     public function hrdManager()
     {
         return Employee::whereHas('jobTitle', function ($query) {
-            $query->whereLike('job_title', "%hrd manager%");
+            $query->whereLike('job_title', '%hrd manager%');
         })?->first()?->full_name;
     }
 
@@ -57,7 +57,7 @@ class PerformanceApprovals extends Component
     public function randomHrdStaff()
     {
         return Employee::whereHas('jobTitle', function ($query) {
-            $query->whereLike('job_title', "%hr staff%");
+            $query->whereLike('job_title', '%hr staff%');
         })?->first()?->full_name;
     }
 

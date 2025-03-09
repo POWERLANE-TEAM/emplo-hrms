@@ -3,10 +3,10 @@
 namespace App\Livewire\Tables;
 
 use App\Models\JobTitle;
-use Livewire\Attributes\Locked;
 use Illuminate\Database\Eloquent\Builder;
-use Rappasoft\LaravelLivewireTables\Views\Column;
+use Livewire\Attributes\Locked;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 
 class JobTitleTable extends DataTableComponent
 {

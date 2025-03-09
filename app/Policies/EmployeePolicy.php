@@ -18,9 +18,6 @@ class EmployeePolicy
 
     /**
      * Check if user can create employee account.
-     * 
-     * @param \App\Models\User $user
-     * @return Response
      */
     public function createEmployeeAccount(User $user): Response
     {
@@ -31,9 +28,6 @@ class EmployeePolicy
 
     /**
      * Check if user can view employee list.
-     * 
-     * @param \App\Models\User $user
-     * @return Response
      */
     public function viewAnyEmployees(User $user): Response
     {
@@ -44,9 +38,6 @@ class EmployeePolicy
 
     /**
      * Check if user can view specific employee information.
-     * 
-     * @param \App\Models\User $user
-     * @return Response
      */
     public function viewEmployee(User $user): Response
     {

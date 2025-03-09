@@ -4,10 +4,10 @@ namespace App\Livewire\Employee\Tables;
 
 use App\Models\Employee;
 use App\Models\Overtime;
-use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
-use Rappasoft\LaravelLivewireTables\Views\Column;
+use Illuminate\Support\Carbon;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 
 class IndividualEmployeeOvertimesTable extends DataTableComponent
 {
@@ -45,8 +45,8 @@ class IndividualEmployeeOvertimesTable extends DataTableComponent
                 'class' => 'border-1 rounded-2 outline no-transition mx-4',
                 // 'role' => 'button',
                 // 'wire:click' => "\$dispatchTo(
-                //     'employee.overtimes.request-overtime-approval', 
-                //     'showOvertimeRequestApproval', 
+                //     'employee.overtimes.request-overtime-approval',
+                //     'showOvertimeRequestApproval',
                 //     { overtimeId: $row->overtime_id })",
             ];
         });
@@ -100,19 +100,19 @@ class IndividualEmployeeOvertimesTable extends DataTableComponent
             Column::make(__('End Time'))
                 ->sortable()
                 ->deselected(),
-            
+
             // Column::make(__('Date Requested'), 'date')
             //     ->format(fn ($row) => Carbon::parse($row)->format('F d, Y'))
             //     ->sortable()
             //     ->searchable()
             //     ->setSortingPillDirections('Asc', 'Desc')
             //     ->setSortingPillTitle(__('Request Date')),
-            
+
             Column::make(__('Hours Requested'))
                 ->label(fn ($row) => $row->hoursRequested)
                 ->sortable(function (Builder $query, $direction) {
                     return $query->selectRaw('abs(extract(epoch from (start_time - end_time))) / 60 as time_diff')
-                                 ->orderBy('time_diff', $direction);
+                        ->orderBy('time_diff', $direction);
                 })
                 ->setSortingPillDirections('Asc', 'Desc'),
 

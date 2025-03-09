@@ -2,14 +2,14 @@
 
 namespace App\Livewire\HrManager\Incidents;
 
-use App\Models\User;
-use Livewire\Component;
+use App\Enums\UserPermission;
 use App\Models\Employee;
 use App\Models\Incident;
-use App\Enums\UserPermission;
-use Livewire\Attributes\Locked;
-use Livewire\Attributes\Computed;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\Locked;
+use Livewire\Component;
 
 class ManageCollaborators extends Component
 {
@@ -36,37 +36,37 @@ class ManageCollaborators extends Component
 
     /**
      * Check for the ff:
-     * 
+     *
      * - employes's full name (case-insensitive)
      * - reject account with permission (backed enum) "manage incident report collaborators"
      * - reject employee's who are already added as collaborators
      * - and reject the reporter itself.
-     * 
+     *
      * @return void
      */
     public function updatedSearchQuery()
     {
         if (empty($this->searchQuery)) {
-            $this->reset('searchQueryResult'); 
+            $this->reset('searchQueryResult');
         } else {
             $this->searchQueryResult = Employee::where(function ($query) {
                 $query->whereLike('last_name', "%{$this->searchQuery}%")
                     ->orWhereLike('middle_name', "%{$this->searchQuery}%")
-                    ->orWhereLike('first_name', "%{$this->searchQuery}%");    
-                })
+                    ->orWhereLike('first_name', "%{$this->searchQuery}%");
+            })
                 ->whereHas('account', function ($query) {
                     $query->withoutPermission(UserPermission::MANAGE_INCIDENT_REPORT_COLLABORATORS);
                 })
                 ->whereNotIn('employee_id', $this->existingCollaborators)
                 ->limit(10)
                 ->get()
-                ->reject(fn ($item) => $this->incident->reporter === $item->employee_id); 
+                ->reject(fn ($item) => $this->incident->reporter === $item->employee_id);
         }
     }
 
     /**
      * Store new collaborators.
-     * 
+     *
      * @return void
      */
     public function save()
@@ -84,20 +84,18 @@ class ManageCollaborators extends Component
         DB::transaction(function () use ($newCollaborators) {
             $this->incident->collaborators()->attach($newCollaborators);
         });
-        
+
         $this->resetExcept('incident', 'routePrefix');
 
         $this->dispatchEventWithPayload('addedNewCollaborators', [
             'type' => 'success',
-            'message' => __("New collaborator/s were added successfully.")
+            'message' => __('New collaborator/s were added successfully.'),
         ]);
     }
 
     /**
      * Update existing collaborator's access (upgrade, downgrade, or removal).
-     * 
-     * @param \App\Models\Employee $collaborator
-     * @param string $access
+     *
      * @return void
      */
     public function updateCollaboratorAccess(Employee $collaborator, string $access)
@@ -112,16 +110,16 @@ class ManageCollaborators extends Component
 
                 $this->dispatch('updatedCollaboratorAccess', [
                     'type' => 'info',
-                    'message' => __("{$collaborator->last_name}'s access has been removed.")
+                    'message' => __("{$collaborator->last_name}'s access has been removed."),
                 ]);
             } else {
                 $this->incident->collaborators()->updateExistingPivot($collaborator, [
-                    'is_editor' => $access === 'editor'
+                    'is_editor' => $access === 'editor',
                 ]);
 
                 $this->dispatch('updatedCollaboratorAccess', [
                     'type' => 'success',
-                    'message' => __("{$collaborator->last_name}'s access has been updated.")
+                    'message' => __("{$collaborator->last_name}'s access has been updated."),
                 ]);
             }
         });
@@ -162,7 +160,7 @@ class ManageCollaborators extends Component
             ->permission(UserPermission::MANAGE_INCIDENT_REPORT_COLLABORATORS)
             ->get();
 
-        $reporter = $this->incident->reportedBy;   
+        $reporter = $this->incident->reportedBy;
         $collaborators = $this->incident->collaborators;
 
         return collect([$reporter, $higherAuthorities])->merge($collaborators);

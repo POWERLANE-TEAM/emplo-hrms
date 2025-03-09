@@ -3,8 +3,8 @@
 namespace App\Livewire\Calendar;
 
 use App\Models\Holiday;
-use Livewire\Component;
 use Livewire\Attributes\Computed;
+use Livewire\Component;
 
 class Holidays extends Component
 {

@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\User;
 use App\Enums\UserPermission;
+use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
 class EmployeeArchivePolicy

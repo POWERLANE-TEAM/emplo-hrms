@@ -25,7 +25,7 @@ class Show extends Component
 
     public Collection $interviewParameters;
 
-    protected  $timezone;
+    protected $timezone;
 
     protected $applicationId;
 
@@ -53,25 +53,21 @@ class Show extends Component
     public bool $notYetFinalInterview = false;
 
     #[Locked]
-    public  string $evaluationNotice;
+    public string $evaluationNotice;
 
     #[Locked]
     public bool $isReadyForInitEvaluation = false;
 
     #[Locked]
     public $modalId;
-    
+
     #[Locked]
     public $previousApplicant;
 
     #[Locked]
     public $nextApplicant;
 
-    public function mount()
-    {
-
-    }
-
+    public function mount() {}
 
     public function boot()
     {
@@ -79,28 +75,26 @@ class Show extends Component
         try {
             $timezone = $this->timezone = new DateTimeZone(config('app.timezone'));
 
-            $this->applicationId = 'APL-' . $this->application->application_id;
+            $this->applicationId = 'APL-'.$this->application->application_id;
 
             $this->resume = optional($this->application->documents->where('preemp_req_id', 17)->first())->file_path;
 
             // dd($this->resume);
-            if($this->resume && !Storage::exists($this->resume)){
+            if ($this->resume && ! Storage::exists($this->resume)) {
                 // throw new \Exception('Resume not found');
             }
 
             $this->isPending = $this->application->application_status_id == ApplicationStatus::PENDING->value;
 
-
             $this->isInitAssessment = $this->application->application_status_id == ApplicationStatus::ASSESSMENT_SCHEDULED->value;
-            $this->isFinalAssessment =  $this->application->application_status_id == ApplicationStatus::FINAL_INTERVIEW_SCHEDULED->value;
-            $this->isFinalAssessment =  $this->isFinalAssessment && $this->application->initialInterview->is_init_interview_passed;
+            $this->isFinalAssessment = $this->application->application_status_id == ApplicationStatus::FINAL_INTERVIEW_SCHEDULED->value;
+            $this->isFinalAssessment = $this->isFinalAssessment && $this->application->initialInterview->is_init_interview_passed;
 
-            if($this->isInitAssessment|| $this->isFinalAssessment){
+            if ($this->isInitAssessment || $this->isFinalAssessment) {
 
                 $this->application->loadMissing('initialInterview');
 
                 $this->applicationExam = ApplicationExam::where('application_id', $this->application->application_id)->first();
-
 
                 $this->examSchedF = $this->formatSchedule(optional($this->applicationExam)->start_time);
                 $this->initialInterviewSchedF = $this->formatSchedule(optional($this->application->initialInterview)->init_interview_at);
@@ -128,30 +122,28 @@ class Show extends Component
                 }
 
                 // if interview hass occured
-                if(!$this->notYetInitInterview){
+                if (! $this->notYetInitInterview) {
                     $this->interviewParameters = InterviewParameter::all();
                 }
 
-                if($this->isInitAssessment && $this->notYetExam || $this->notYetInitInterview){
+                if ($this->isInitAssessment && $this->notYetExam || $this->notYetInitInterview) {
                     $this->evaluationNotice = 'The assign button(s) are currently disabled. They will be available once the scheduled date arrives.';
                 }
 
-                if(
-                    !$this->notYetExam && !$this->notYetInitInterview &&
+                if (
+                    ! $this->notYetExam && ! $this->notYetInitInterview &&
                     $this->application->initialInterview->init_interviewer &&
                     optional($this->applicationExam)->passed &&
                     optional($this->application->initialInterview)
-                ){
+                ) {
                     $this->isReadyForInitEvaluation = true;
                 }
-
-
 
                 if (optional($this->application->finalInterview)->final_interview_at) {
                     $finalInterviewTime = new DateTime($this->application->finalInterview->final_interview_at, $timezone);
                     $currentTime = new DateTime('now', new DateTimeZone('now', $timezone));
 
-                    $this->notYetFinalInterview = $currentTime &&  new DateTime() <= (clone $finalInterviewTime)->modify('+5 minutes');
+                    $this->notYetFinalInterview = $currentTime && new DateTime <= (clone $finalInterviewTime)->modify('+5 minutes');
 
                 } else {
                     // ung interview time nakalipas na
@@ -177,7 +169,7 @@ class Show extends Component
                 'examSchedF' => $this->examSchedF,
                 'initialInterviewSchedF' => $this->initialInterviewSchedF,
                 'finalInterviewSchedF' => $this->finalInterviewSchedF,
-                'isFinalAssessment' => $this->isFinalAssessment
+                'isFinalAssessment' => $this->isFinalAssessment,
             ]
         );
     }

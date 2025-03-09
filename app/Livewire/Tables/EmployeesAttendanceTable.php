@@ -2,22 +2,21 @@
 
 namespace App\Livewire\Tables;
 
-use App\Models\Employee;
-use App\Models\JobTitle;
-use Illuminate\Support\Str;
-use Livewire\Attributes\On;
-use App\Models\AttendanceLog;
-use Illuminate\Support\Carbon;
-use App\Enums\EmploymentStatus;
 use App\Enums\BiometricPunchType;
-use Livewire\Attributes\Computed;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\View\ComponentAttributeBag;
-use Illuminate\Database\Eloquent\Collection;
-use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Livewire\Tables\Defaults as DefaultTableConfig;
-use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use App\Models\AttendanceLog;
+use App\Models\Employee;
 use App\Models\EmploymentStatus as EmploymentStatusModel;
+use App\Models\JobTitle;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
+use Illuminate\View\ComponentAttributeBag;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
+use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateFilter;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
@@ -105,6 +104,7 @@ class EmployeesAttendanceTable extends DataTableComponent
     private function getTimestampF($row, $type)
     {
         $timestamp = $this->getTimestamp($row, $type);
+
         return $timestamp ? Carbon::parse($timestamp)->format('g:i A') : self::NULL_TIME;
     }
 
@@ -119,7 +119,7 @@ class EmployeesAttendanceTable extends DataTableComponent
         $this->enableAllEvents();
 
         $this->configuringStandardTableMethods();
-        
+
         $this->setTdAttributes(function (Column $column, $row, $columnIndex, $rowIndex) {
 
             if (in_array($columnIndex, [3, 4])) {
@@ -130,7 +130,7 @@ class EmployeesAttendanceTable extends DataTableComponent
             }
 
             return [
-                'class' =>  $column->getTitle() === 'Employee' ? 'text-md-start' : 'text-md-center',
+                'class' => $column->getTitle() === 'Employee' ? 'text-md-start' : 'text-md-center',
             ];
         });
 
@@ -194,18 +194,18 @@ class EmployeesAttendanceTable extends DataTableComponent
                     $photo = $row->account->photo;
                     $id = $row->employee_id;
                     $status = $row->status->emp_status_name;
-            
+
                     return '<div class="d-flex align-items-center">
-                                <img src="' . e($photo) . '" alt="User Picture" class="rounded-circle me-3" style="width: 38px; height: 38px;">
+                                <img src="'.e($photo).'" alt="User Picture" class="rounded-circle me-3" style="width: 38px; height: 38px;">
                                 <div>
-                                    <div>' . e($name) . '</div>
-                                    <div class="text-muted fs-6">Employee ID: ' . e($id) . '</div>
-                                    <small class="text-muted">' . e($status) . '</small>
+                                    <div>'.e($name).'</div>
+                                    <div class="text-muted fs-6">Employee ID: '.e($id).'</div>
+                                    <small class="text-muted">'.e($status).'</small>
                                 </div>
                             </div>';
                 })
                 ->html()
-                ->sortable(fn (Builder $query, $direction) => $query->orderBy('last_name' ,$direction))
+                ->sortable(fn (Builder $query, $direction) => $query->orderBy('last_name', $direction))
                 ->searchable(function (Builder $query, $searchTerm) {
                     return $query->whereLike('first_name', "%{$searchTerm}%")
                         ->orWhereLike('middle_name', "%{$searchTerm}%")
@@ -214,10 +214,10 @@ class EmployeesAttendanceTable extends DataTableComponent
                 }),
 
             Column::make(__('Check In'))
-                ->label(fn($row) => $this->getTimestampF($row, BiometricPunchType::CHECK_IN->value)),
+                ->label(fn ($row) => $this->getTimestampF($row, BiometricPunchType::CHECK_IN->value)),
 
             Column::make(__('Check Out'))
-                ->label(fn($row) => $this->getTimestampF($row, BiometricPunchType::CHECK_OUT->value)),
+                ->label(fn ($row) => $this->getTimestampF($row, BiometricPunchType::CHECK_OUT->value)),
 
             // Column::make(__('Date'))
             //     ->label(fn ($row) => $row ? Carbon::parse($row->attendanceLogs->timestamp)->format('F d, Y') : self::NULL_TIME),
@@ -238,15 +238,23 @@ class EmployeesAttendanceTable extends DataTableComponent
 
             Column::make('Job Title')
                 ->label(function ($row) {
-                    if (!$row->jobTitle) return  $this->NOT_SET('job level');
+                    if (! $row->jobTitle) {
+                        return $this->NOT_SET('job level');
+                    }
+
                     return $row->jobTitle->job_title;
                 }),
 
             Column::make('Department')
                 ->label(function ($row) {
                     $row->load('jobTitle.department');
-                    if (!$row->jobTitle) return  $this->NOT_SET('job title');
-                    if (!$row->jobTitle->department) return  $this->NOT_SET('department');
+                    if (! $row->jobTitle) {
+                        return $this->NOT_SET('job title');
+                    }
+                    if (! $row->jobTitle->department) {
+                        return $this->NOT_SET('department');
+                    }
+
                     return $row->jobTitle->department->department_name;
                 })
                 ->deselected(),
@@ -254,7 +262,10 @@ class EmployeesAttendanceTable extends DataTableComponent
             Column::make('Employment Status')
                 ->label(function ($row) {
                     $row->load('status');
-                    if (!$row->status) return  $this->NOT_SET('employment status');
+                    if (! $row->status) {
+                        return $this->NOT_SET('employment status');
+                    }
+
                     return $row->status->emp_status_name;
                 })
                 ->deselected(),
@@ -263,7 +274,9 @@ class EmployeesAttendanceTable extends DataTableComponent
                 ->label(function ($row) {
                     $row->load('application');
 
-                    if (!$row->application) return  'No application';
+                    if (! $row->application) {
+                        return 'No application';
+                    }
 
                     return Carbon::parse($row->application->hired_at)->format('F j, Y') ?? report('Employee has no hired date.');
                 })

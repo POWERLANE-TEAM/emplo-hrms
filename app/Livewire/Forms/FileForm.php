@@ -2,12 +2,10 @@
 
 namespace App\Livewire\Forms;
 
-use Livewire\Attributes\Validate;
 use Livewire\Form;
 
 class FileForm extends Form
 {
-
     public $file;
 
     public $maxSize;
@@ -26,8 +24,7 @@ class FileForm extends Form
         'xl' => '102400', // 100mb
     ];
 
-
-    public function mount(array $accepted, string $minSize = null, string $maxSize = 'sm', bool $required = true)
+    public function mount(array $accepted, ?string $minSize = null, string $maxSize = 'sm', bool $required = true)
     {
 
         $this->accepted = $accepted;
@@ -39,11 +36,11 @@ class FileForm extends Form
     public function rules()
     {
         $rules = [
-            'file' => ($this->required ? 'required|' : '') . 'bail|file|max:' . $this->getMaxFileSize() . '|mimes:' . $this->getAcceptedFileTypes(),
+            'file' => ($this->required ? 'required|' : '').'bail|file|max:'.$this->getMaxFileSize().'|mimes:'.$this->getAcceptedFileTypes(),
         ];
 
         if ($this->minSize) {
-            $rules['file'] .= '|min:' . $this->getMinFileSize();
+            $rules['file'] .= '|min:'.$this->getMinFileSize();
         }
 
         return $rules;
@@ -54,7 +51,7 @@ class FileForm extends Form
         $this->accepted = $accepted;
     }
 
-    public function setMinSize(string $minSize = null)
+    public function setMinSize(?string $minSize = null)
     {
         $this->minSize = $minSize;
     }
@@ -62,6 +59,7 @@ class FileForm extends Form
     public function setMaxSize(string $maxSize = 'sm')
     {
         $this->maxSize = $maxSize;
+
         return self::FILE_SIZES[$this->maxSize];
     }
 
@@ -96,6 +94,7 @@ class FileForm extends Form
         }
 
         report(new \InvalidArgumentException("Invalid file size: $size"));
+
         return null;
     }
 }

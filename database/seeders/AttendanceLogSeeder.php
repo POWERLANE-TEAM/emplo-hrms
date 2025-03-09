@@ -2,10 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\Employee;
-use App\Models\AttendanceLog;
-use Illuminate\Database\Seeder;
 use App\Enums\BiometricPunchType;
+use App\Models\Employee;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 class AttendanceLogSeeder extends Seeder
@@ -28,13 +27,13 @@ class AttendanceLogSeeder extends Seeder
                     'type' => BiometricPunchType::CHECK_OUT->value,
                     'timestamp' => fake()->dateTimeBetween('13:30', '22:00')->format('Y-m-d H:i:s'),
                 ];
-                
+
                 for ($i = 2; $i > 0; $i--) {
                     $this->mockData[] = [
-                        'employee_id'   => $employee->employee_id,
-                        'state'         => fake()->numberBetween(1, 9),
-                        'type'          => $i === 2 ? $checkIn['type'] : $checkOut['type'],
-                        'timestamp'     => $i === 2 ? $checkIn['timestamp'] : $checkOut['timestamp'],                        
+                        'employee_id' => $employee->employee_id,
+                        'state' => fake()->numberBetween(1, 9),
+                        'type' => $i === 2 ? $checkIn['type'] : $checkOut['type'],
+                        'timestamp' => $i === 2 ? $checkIn['timestamp'] : $checkOut['timestamp'],
                     ];
                 }
             });

@@ -2,9 +2,9 @@
 
 namespace App\Livewire\Admin\Config\Performance\PeriodSetUp;
 
-use Livewire\Component;
-use Illuminate\Support\Carbon;
 use App\Models\RegularPerformancePeriod;
+use Illuminate\Support\Carbon;
+use Livewire\Component;
 
 class Timeframe extends Component
 {

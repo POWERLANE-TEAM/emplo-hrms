@@ -37,17 +37,17 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
-                $table->text('initial_approver_comments')->nullable();
+            $table->text('initial_approver_comments')->nullable();
 
-                $table->timestamp('retracted_at')->nullable();
+            $table->timestamp('retracted_at')->nullable();
 
-                $table->foreignIdFor(ResignationStatus::class, 'resignation_status_id')
+            $table->foreignIdFor(ResignationStatus::class, 'resignation_status_id')
                 ->nullable()
                 ->constrained('resignation_statuses', 'resignation_status_id')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
-                $table->timestamp('filed_at')->useCurrent();
+            $table->timestamp('filed_at')->useCurrent();
         });
 
     }

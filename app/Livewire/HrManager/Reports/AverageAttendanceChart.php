@@ -2,11 +2,11 @@
 
 namespace App\Livewire\HrManager\Reports;
 
-use Livewire\Component;
 use App\Services\ReportService;
 use App\Traits\AttendanceUtils;
-use Livewire\Attributes\Locked;
 use Illuminate\Support\Facades\Cache;
+use Livewire\Attributes\Locked;
+use Livewire\Component;
 
 class AverageAttendanceChart extends Component
 {
@@ -26,10 +26,12 @@ class AverageAttendanceChart extends Component
 
         $this->attendanceData = Cache::get($key);
 
-        if ($this->attendanceData) return;
+        if ($this->attendanceData) {
+            return;
+        }
 
         $attendanceRates = $reportService->getAttendanceRates($this->year, $this->holidays);
-    
+
         $this->attendanceData = (object) [
             'yearly' => $attendanceRates->yearlyData,
             'monthly' => $attendanceRates->monthlyData,
@@ -39,7 +41,7 @@ class AverageAttendanceChart extends Component
     }
 
     public function render()
-    {   
+    {
         return view('livewire.hr-manager.reports.average-attendance-chart');
     }
 }

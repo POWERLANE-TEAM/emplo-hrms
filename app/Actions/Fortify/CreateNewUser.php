@@ -5,10 +5,10 @@ namespace App\Actions\Fortify;
 use App\Enums\AccountType;
 use App\Models\Guest;
 use App\Models\User;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Auth\Events\Registered;
-// use App\Models\UserRole;
 use Illuminate\Support\Facades\DB;
+// use App\Models\UserRole;
+use Illuminate\Support\Facades\Log;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 
 class CreateNewUser implements CreatesNewUsers

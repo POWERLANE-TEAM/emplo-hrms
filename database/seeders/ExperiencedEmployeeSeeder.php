@@ -2,19 +2,19 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use App\Models\Shift;
+use App\Enums\AccountType;
+use App\Enums\EmploymentStatus;
+use App\Enums\ServiceIncentiveLeave;
 use App\Enums\UserRole;
+use App\Enums\UserStatus;
 use App\Models\Employee;
 use App\Models\JobTitle;
-use App\Enums\UserStatus;
-use App\Enums\AccountType;
-use Illuminate\Support\Arr;
+use App\Models\Shift;
 use App\Models\SpecificArea;
-use App\Enums\EmploymentStatus;
+use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
-use App\Enums\ServiceIncentiveLeave;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 
@@ -36,9 +36,9 @@ class ExperiencedEmployeeSeeder extends Seeder
             $this->createUser($employee);
 
             $employee->jobDetail()->create([
-                'job_title_id'  => JobTitle::inRandomOrder()->first()->job_title_id,
-                'area_id'       => SpecificArea::where('area_name', 'Head Office')->first()->area_id,
-                'shift_id'      => Shift::inRandomOrder()->first()->shift_id,
+                'job_title_id' => JobTitle::inRandomOrder()->first()->job_title_id,
+                'area_id' => SpecificArea::where('area_name', 'Head Office')->first()->area_id,
+                'shift_id' => Shift::inRandomOrder()->first()->shift_id,
                 'emp_status_id' => fake()->randomElement([
                     EmploymentStatus::REGULAR,
                     EmploymentStatus::PROBATIONARY,
@@ -46,7 +46,7 @@ class ExperiencedEmployeeSeeder extends Seeder
             ]);
 
             $yrsInService = array_keys(array_filter(
-                ServiceIncentiveLeave::silCreditsYearlyResetMap(), 
+                ServiceIncentiveLeave::silCreditsYearlyResetMap(),
                 fn ($year) => $year != 0, ARRAY_FILTER_USE_KEY)
             );
 

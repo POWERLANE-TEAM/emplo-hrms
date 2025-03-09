@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Application;
 
 use App\Http\Controllers\Controller;
-use App\Models\Applicant;
 use App\Models\ApplicantEducation;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Contracts\View\View;
@@ -17,7 +16,6 @@ class EducationController extends Controller
     // {
     //     return view();
     // }
-
 
     /* Show form page for creating resource */
     // public function create() : ViewFactory|View
@@ -41,14 +39,14 @@ class EducationController extends Controller
                     $validated = $request->validate([
                         'applicantId' => 'required|exists:applicants,applicant_id',
                         'education' => 'required|array',
-                        'education.*' => 'required|string'
+                        'education.*' => 'required|string',
                     ], $messages);
                 } else {
                     // Manually validate the array
                     $validated = validator($request, [
                         'applicantId' => 'required|exists:applicants,applicant_id',
                         'education' => 'required|array',
-                        'education.*' => 'required|string'
+                        'education.*' => 'required|string',
                     ], $messages)->validate();
                 }
             } else {
@@ -62,7 +60,7 @@ class EducationController extends Controller
                     foreach ($education as $edu) {
                         ApplicantEducation::create([
                             'applicant_id' => $validated['applicantId'],
-                            'education' => $edu
+                            'education' => $edu,
                         ]);
                     }
                 }

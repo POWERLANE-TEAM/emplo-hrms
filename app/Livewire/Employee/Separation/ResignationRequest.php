@@ -14,10 +14,11 @@ class ResignationRequest extends Component
     public $resignationFile;
 
     #[On('file-resignation')]
-    public function save(ResignationController $controller){
+    public function save(ResignationController $controller)
+    {
 
         $validated = $this->validate([
-            'resignationFile' => 'required'
+            'resignationFile' => 'required',
         ]);
 
         $controller->store($validated, true);

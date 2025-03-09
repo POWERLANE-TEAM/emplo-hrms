@@ -2,17 +2,17 @@
 
 namespace App\Livewire\Employee\Tables;
 
-use App\Models\Employee;
-use App\Enums\StatusBadge;
 use App\Enums\EmploymentStatus;
-use Livewire\Attributes\Locked;
+use App\Enums\StatusBadge;
 use App\Livewire\Tables\Defaults;
+use App\Models\Employee;
 use App\Models\RegularPerformance;
-use Illuminate\Support\Facades\Auth;
 use App\Models\RegularPerformancePeriod;
 use Illuminate\Database\Eloquent\Builder;
-use Rappasoft\LaravelLivewireTables\Views\Column;
+use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Locked;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class RegularSubordinatesPerformancesTable extends DataTableComponent
@@ -54,10 +54,10 @@ class RegularSubordinatesPerformancesTable extends DataTableComponent
                             ->filter(function (Builder $query, $value) {
                                 $this->dispatch('setFilter', 'evalPeriod', $value);
                             });
-                            // ->setFirstOption('Current');
+                        // ->setFirstOption('Current');
                     })(),
 
-                    'label' => __('Evaluation Period: ')
+                    'label' => __('Evaluation Period: '),
                 ],
             ],
         ]);
@@ -98,37 +98,39 @@ class RegularSubordinatesPerformancesTable extends DataTableComponent
         return [
             Column::make(__('Evaluatee'))
                 ->label(fn ($row) => view('components.table.employee')->with([
-                        'name'  => $row->full_name,
-                        'photo' => $row->account->photo,
-                        'id'    => $row->employee_id,
-                    ])
+                    'name' => $row->full_name,
+                    'photo' => $row->account->photo,
+                    'id' => $row->employee_id,
+                ])
                 )
-                ->sortable(fn (Builder $query, $direction) => $query->orderBy('last_name' ,$direction))
+                ->sortable(fn (Builder $query, $direction) => $query->orderBy('last_name', $direction))
                 ->searchable(fn (Builder $query, $searchTerm) => $this->applyFullNameSearch($query, $searchTerm))
                 ->setSortingPillDirections('A-Z', 'Z-A'),
-            
+
             Column::make(__('Completion'))
                 ->label(function ($row) {
                     if ($this->isEvaluatable) {
                         $url = route("{$this->routePrefix}.performances.regulars.create", [
                             'employee' => $row->employee_id,
                         ]);
+
                         return "<a href='{$url}' class='btn btn-primary btn-md justify-content-center w-auto'>
                                     <i data-lucide='pen' class='icon icon-medium me-1'></i>
                                     <span class='fw-light'>Start Evaluation</span>
                                 </a>";
                     }
-            
+
                     if (! $this->performance) {
                         return view('components.status-badge')->with([
                             'color' => StatusBadge::INVALID->getColor(),
-                            'slot' => __('Not Applicable')
+                            'slot' => __('Not Applicable'),
                         ]);
                     }
-            
+
                     $url = route("{$this->routePrefix}.performances.regulars.show", [
                         'performance' => $this->performance->regular_performance_id,
                     ]);
+
                     return "<a href='{$url}' class='btn btn-info btn-md justify-content-center w-auto'>
                                 <i data-lucide='eye' class='icon icon-large me-1'></i>
                                 <span class='fw-light'>Review Evaluation</span>
@@ -142,7 +144,7 @@ class RegularSubordinatesPerformancesTable extends DataTableComponent
                         'color' => StatusBadge::PENDING->getColor(),
                         'slot' => StatusBadge::PENDING->getLabel(),
                     ];
-    
+
                     if ($this->performance) {
                         if ($this->performance->fourth_approver_signed_at) {
                             $badge = [
@@ -150,6 +152,7 @@ class RegularSubordinatesPerformancesTable extends DataTableComponent
                                 'slot' => StatusBadge::APPROVED->getLabel(),
                             ];
                         }
+
                         return view('components.status-badge')->with($badge);
                     }
 
@@ -162,7 +165,7 @@ class RegularSubordinatesPerformancesTable extends DataTableComponent
                         $finalRating = $this->performance->final_rating;
 
                         return sprintf(
-                            "<strong>%s - %s</strong>",
+                            '<strong>%s - %s</strong>',
                             $finalRating['ratingAvg'],
                             $finalRating['performanceScale']
                         );
@@ -178,7 +181,7 @@ class RegularSubordinatesPerformancesTable extends DataTableComponent
                         $this->periodOptions,
                         fn ($option) => $option == $this->period
                             ? $this->periodOptions[$option]
-                            : null, 
+                            : null,
                         ARRAY_FILTER_USE_KEY
                     );
 
@@ -194,10 +197,10 @@ class RegularSubordinatesPerformancesTable extends DataTableComponent
                 ->options($this->periodOptions)
                 ->filter(function (Builder $query, $value) {
                     $query->where(function ($sq) use ($value) {
-                        $sq->whereHas('performancesAsRegular', 
+                        $sq->whereHas('performancesAsRegular',
                             fn ($ssq) => $ssq->where('period_id', $value)
-                                            ->orWhereNot('period_id', $value)
-                        )->orWhereDoesntHave('performancesAsRegular');                        
+                                ->orWhereNot('period_id', $value)
+                        )->orWhereDoesntHave('performancesAsRegular');
                     });
 
                     $this->period = (int) $value;
@@ -216,14 +219,14 @@ class RegularSubordinatesPerformancesTable extends DataTableComponent
                 ->filter(function (Builder $query, $value) {
                     if ($value === '0') {
                         $query->whereDoesntHave(
-                            'performancesAsRegular', 
+                            'performancesAsRegular',
                             fn ($sq) => $sq->where('period_id', $this->period)
                         );
                     } elseif ($value === '1') {
                         $query->whereHas(
-                            'performancesAsRegular', 
+                            'performancesAsRegular',
                             fn ($sq) => $sq->where('period_id', $this->period)
-                        );                        
+                        );
                     }
                 })
                 ->setFilterDefaultValue(''),
@@ -237,7 +240,7 @@ class RegularSubordinatesPerformancesTable extends DataTableComponent
                 ->filter(function (Builder $query, $value) {
                     $query->whereHas('performancesAsRegular', function ($sq) use ($value) {
                         $sq->where('period_id', $this->period);
-                        
+
                         if ($value === '0') {
                             $sq->whereNull('fourth_approver_signed_at');
                         } elseif ($value === '1') {

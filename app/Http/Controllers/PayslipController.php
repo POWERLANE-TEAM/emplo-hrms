@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Enums\FilePath;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Storage;
 
 class PayslipController extends Controller
 {

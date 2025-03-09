@@ -42,7 +42,7 @@ class DeleteRejectedApplicantsData extends Command
 
                     DB::table('applicants')
                         ->whereIn('applicant_id', $ids)
-                        ->delete();                    
+                        ->delete();
                 }, 5);
             });
     }

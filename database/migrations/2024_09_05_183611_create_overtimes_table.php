@@ -1,11 +1,11 @@
 <?php
 
+use App\Models\Employee;
 use App\Models\OvertimePayrollApproval;
 use App\Models\Payroll;
-use App\Models\Employee;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -43,7 +43,6 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
         });
-
 
         Schema::create('overtimes', function (Blueprint $table) {
             $table->id('overtime_id');
@@ -88,7 +87,7 @@ return new class extends Migration
      * Reverse the migrations.
      */
     public function down(): void
-    {   
+    {
         Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('overtimes');
         Schema::dropIfExists('overtime_payroll_approvals');

@@ -2,9 +2,9 @@
 
 namespace App\Livewire\Employee\Leaves;
 
-use Livewire\Component;
-use Livewire\Attributes\On;
 use App\Models\EmployeeLeave;
+use Livewire\Attributes\On;
+use Livewire\Component;
 
 class Approvals extends Component
 {

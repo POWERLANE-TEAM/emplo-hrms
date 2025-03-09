@@ -2,14 +2,14 @@
 
 namespace Database\Seeders;
 
-use App\Models\Employee;
-use Illuminate\Support\Carbon;
 use App\Enums\EmploymentStatus;
-use Illuminate\Database\Seeder;
-use App\Models\PerformanceRating;
-use Illuminate\Support\Facades\DB;
-use App\Models\PerformanceCategory;
 use App\Enums\PerformanceEvaluationPeriod;
+use App\Models\Employee;
+use App\Models\PerformanceCategory;
+use App\Models\PerformanceRating;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class ProbationaryPerformanceEvaluation2024Seeder extends Seeder
 {
@@ -31,9 +31,6 @@ class ProbationaryPerformanceEvaluation2024Seeder extends Seeder
 
     /**
      * Seed evaluations for a specific period.
-     *
-     * @param string $periodName
-     * @param \Carbon\Carbon $start
      */
     private function seedEvaluations(string $periodName, \Carbon\Carbon $start): void
     {
@@ -43,8 +40,7 @@ class ProbationaryPerformanceEvaluation2024Seeder extends Seeder
         $categories = PerformanceCategory::all();
         $ratings = PerformanceRating::all();
 
-        $this->probationaries->each(function ($employee) 
-            use (&$performanceData, &$ratingData, $start, $end, $periodName, $categories, $ratings) {
+        $this->probationaries->each(function ($employee) use (&$performanceData, &$ratingData, $start, $end, $periodName, $categories, $ratings) {
             $periodId = DB::table('probationary_performance_periods')->insertGetId([
                 'evaluatee' => $employee->employee_id,
                 'period_name' => $periodName,

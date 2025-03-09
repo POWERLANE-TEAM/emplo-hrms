@@ -2,12 +2,11 @@
 
 namespace App\Livewire\Employee\Dashboard;
 
-use Livewire\Component;
 use App\Models\Announcement;
-use Livewire\WithPagination;
-use Illuminate\Support\Carbon;
-use Livewire\Attributes\Computed;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Computed;
+use Livewire\Component;
+use Livewire\WithPagination;
 
 class LatestAnnouncements extends Component
 {
@@ -27,10 +26,10 @@ class LatestAnnouncements extends Component
     public function announcements()
     {
         return Announcement::whereHas('offices', function ($query) {
-                $query->where('announcement_details.job_family_id', 
-                    Auth::user()->account->jobTitle->jobFamily->job_family_id
-                );
-            })
+            $query->where('announcement_details.job_family_id',
+                Auth::user()->account->jobTitle->jobFamily->job_family_id
+            );
+        })
             ->where(function ($query) {
                 $query->where('published_at', '>=', $this->weekInterval)
                     ->orWhere('modified_at', '>=', $this->weekInterval);

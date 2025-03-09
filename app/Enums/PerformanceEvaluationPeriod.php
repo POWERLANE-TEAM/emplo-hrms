@@ -21,7 +21,7 @@ enum PerformanceEvaluationPeriod: string
 
     public function getShorterLabel(): string
     {
-        return match($this) {
+        return match ($this) {
             self::THIRD_MONTH => '3',
             self::FIFTH_MONTH => '5',
             self::FINAL_MONTH => 'Final',

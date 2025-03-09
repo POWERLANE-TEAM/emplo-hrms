@@ -32,8 +32,8 @@ class JobFamilySeeder extends Seeder
                     'office_head' => null,
                     'supervisor' => null,
                 ]);
-            });      
-            JobFamily::unguard();      
+            });
+            JobFamily::unguard();
         });
     }
 }

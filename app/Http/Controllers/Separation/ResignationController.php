@@ -6,9 +6,8 @@ use App\Enums\AccountType;
 use App\Enums\FilePath;
 use App\Enums\ResignationStatus;
 use App\Events\ResignationApproved;
-use App\Http\Helpers\RouteHelper;
 use App\Http\Controllers\Controller;
-use App\Models\Employee;
+use App\Http\Helpers\RouteHelper;
 use App\Models\EmployeeDoc;
 use App\Models\Resignation;
 use Illuminate\Http\Request;
@@ -49,32 +48,29 @@ class ResignationController extends Controller
 
             $hashedName = $resignationLetter->hashName();
 
-
             $user = auth()->user();
-
 
             if ($user->account_type != AccountType::EMPLOYEE->value) {
                 abort(403);
             }
 
-            if ($user->account->documents()->where('file_path', 'like', '%' . FilePath::RESIGNATION->value . '%')->exists()) {
+            if ($user->account->documents()->where('file_path', 'like', '%'.FilePath::RESIGNATION->value.'%')->exists()) {
                 abort(400, 'Resignation letter already exists.');
             }
 
             $path = $resignationLetter->storeAs(FilePath::RESIGNATION->value, $hashedName, 'public');
-
 
             $employeeDoc = EmployeeDoc::create([
                 'employee_id' => auth()->user()->account->employee_id,
                 'file_path' => $path,
             ]);
 
-            $resignation =  $employeeDoc->resignation()->create([
+            $resignation = $employeeDoc->resignation()->create([
                 'emp_resignation_doc_id' => $employeeDoc->emp_doc_id,
                 'resignation_status_id' => ResignationStatus::PENDING->value,
             ]);
 
-            if (!$isValidated) {
+            if (! $isValidated) {
                 return redirect()->route('employee.separation.index');
             } else {
                 return $resignation;
@@ -118,7 +114,7 @@ class ResignationController extends Controller
         $resignationId = when(is_array($request), $request['resignation_id']);
         $resignation = RouteHelper::validateModel(Resignation::class, $resignationId);
 
-        if (!$validated) {
+        if (! $validated) {
             // $validated = $request->validate([
             //     'resignation_status_id' => 'required|integer',
             //     'initial_approver_comments' => 'required|string',
@@ -129,7 +125,7 @@ class ResignationController extends Controller
         // dump($resignation->resignee->account);
         // dd(!auth()->user()->is($resignation->resignee->account));
         // add authorization
-        if (!auth()->user()->is($resignation->resignee->account) && true) {
+        if (! auth()->user()->is($resignation->resignee->account) && true) {
 
             if (is_array($request) && $validated) {
                 $data = [
@@ -140,9 +136,9 @@ class ResignationController extends Controller
                 ];
             }
 
-        }else{
+        } else {
             if (is_array($request) && $validated && true) {
-                if($resignation->resignation_status_id == ResignationStatus::APPROVED->value){
+                if ($resignation->resignation_status_id == ResignationStatus::APPROVED->value) {
                     return response()->json(['message' => 'You cannot retract resignation'], 400);
                 }
 
@@ -154,7 +150,7 @@ class ResignationController extends Controller
 
         $resignation->update($data);
 
-        if(isset($request['resignation_status_id']) && $request['resignation_status_id'] == ResignationStatus::APPROVED->value){
+        if (isset($request['resignation_status_id']) && $request['resignation_status_id'] == ResignationStatus::APPROVED->value) {
             ResignationApproved::dispatch($resignation->resignee);
         }
 

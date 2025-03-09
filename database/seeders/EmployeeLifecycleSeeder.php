@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Employee;
 use App\Enums\EmploymentStatus;
+use App\Models\Employee;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -18,7 +18,7 @@ class EmployeeLifecycleSeeder extends Seeder
 
         $data = [];
 
-        $employees->each(function ($item) use (&$data) {    
+        $employees->each(function ($item) use (&$data) {
 
             $starting = $item->status->emp_status_name === EmploymentStatus::PROBATIONARY->label()
                 ? fake()->dateTimeBetween('-6 months', '-1 month')
@@ -28,7 +28,7 @@ class EmployeeLifecycleSeeder extends Seeder
                 EmploymentStatus::REGULAR->label(),
                 EmploymentStatus::PROBATIONARY->label(),
             ]);
-        
+
             array_push($data, [
                 'employee_id' => $item->employee_id,
                 'started_at' => $starting,

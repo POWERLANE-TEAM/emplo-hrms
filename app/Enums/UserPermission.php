@@ -4,14 +4,14 @@ namespace App\Enums;
 
 enum UserPermission: string
 {
-        /*
+    /*
      * Set enum cases for permissions here and ensure to follow the laravel
      * resource authorization convention: create, view, update, and delete
      *
      * Format: VERB_RESOURCE_NAME = verb resource name
     */
 
-        // Create cases goes here
+    // Create cases goes here
     case CREATE_JOB_LISTING = 'create job listing';
     case CREATE_ANNOUNCEMENT = 'create announcement';
     case CREATE_EMPLOYEE_ACCOUNT = 'create employee account';
@@ -38,7 +38,7 @@ enum UserPermission: string
     case CREATE_BULK_PAYSLIPS = 'create bulk payslips';
     case CREATE_INCIDENT_REPORT = 'create incident report';
 
-        // View cases goes here
+    // View cases goes here
     case VIEW_APPLICATION_INFORMATION = 'view applicant/s information';
     case VIEW_JOB_APPLICATION_FORM = 'view job application form';
     case VIEW_EMPLOYEE_INFORMATION = 'view employee/s information';
@@ -110,7 +110,7 @@ enum UserPermission: string
     case VIEW_ARCHIVED_EMP_201_FILES = 'view archived employee 201 files';
     case VIEW_ADMINISTRATION_SECTION = 'view administration';
 
-        // Update cases goes here
+    // Update cases goes here
     case UDPATE_JOB_LISTING = 'update job listing';
     case UPDATE_ANNOUNCEMENT = 'update announcement';
     case UPDATE_PENDING_APPLICATION_STATUS = 'update pending application status';
@@ -134,7 +134,7 @@ enum UserPermission: string
     case UPDATE_BIOMETRIC_DEVICE = 'update biometric attendance device configuration';
     case UPDATE_SUBORDINATE_OVERTIME_REQUEST = 'update subordinate overtime request';
 
-        // Delete cases goes here
+    // Delete cases goes here
     case DELETE_JOB_LISTING = 'delete job listing';
     case DELETE_ANNOUNCEMENT = 'delete announcement';
     case DELETE_PRE_EMPLOYMENT_DOCUMENT = 'delete owned pre employment document';

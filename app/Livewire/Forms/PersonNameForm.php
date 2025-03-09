@@ -15,10 +15,9 @@ class PersonNameForm extends Form
      *   - Must not contain consecutive spaces.
      *   - Must not end with a space.
      *   - Can only contain letters (including Ññ), spaces, and apostrophes.
-     *
      */
     #[Validate([
-        'firstName' => 'required|string|min:2|max:255|regex:/^(?!\s)(?!.*\s{2,})(?!.*\s$)[A-Za-zÑñ \']+$/'
+        'firstName' => 'required|string|min:2|max:255|regex:/^(?!\s)(?!.*\s{2,})(?!.*\s$)[A-Za-zÑñ \']+$/',
     ], as: 'first name')]
     public $firstName;
 
@@ -30,7 +29,6 @@ class PersonNameForm extends Form
      *   - Must not contain consecutive spaces.
      *   - Must not end with a space.
      *   - Can only contain letters (including Ññ), spaces, and apostrophes.
-     *
      */
     #[Validate([
         'middleName' => 'nullable|string|min:2|max:255|regex:/^(?!\s)(?!.*\s{2,})(?!.*\s$)[A-Za-zÑñ \']+$/',
@@ -51,7 +49,6 @@ class PersonNameForm extends Form
      *   - Must not contain consecutive spaces.
      *   - Must not end with a space.
      *   - Can contain letters (including Ñ and ñ), spaces, apostrophes, and hyphens.
-     *
      */
     #[Validate([
         'lastName' => 'required|string|min:2|max:255||regex:/^(?!\s)(?!.*\s{2,})(?!.*\s$)[A-Za-zÑñ \'\\-]+$/',

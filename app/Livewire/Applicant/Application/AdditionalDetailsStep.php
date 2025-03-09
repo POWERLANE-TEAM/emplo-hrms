@@ -3,11 +3,7 @@
 namespace App\Livewire\Applicant\Application;
 
 use App\Enums\CivilStatus;
-use App\Http\Requests\ResidentialAddressRequest  as AddressRequest;
-use App\Models\Barangay;
-use App\Models\City;
-use App\Models\Province;
-use App\Rules\Address\RegionRule;
+use App\Http\Requests\ResidentialAddressRequest as AddressRequest;
 use App\Traits\Applicant;
 use App\Traits\HasAddressForm;
 use Closure;
@@ -15,7 +11,7 @@ use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Computed;
 use Spatie\LivewireWizard\Components\StepComponent;
 
-class AdditionalDetailsStep  extends StepComponent
+class AdditionalDetailsStep extends StepComponent
 {
     use HasAddressForm;
 
@@ -23,7 +19,7 @@ class AdditionalDetailsStep  extends StepComponent
     // has no actual use yet
     public bool $isValid = false;
 
-    public string $civilStatus =  CivilStatus::SINGLE->value;
+    public string $civilStatus = CivilStatus::SINGLE->value;
 
     public function mount()
     {
@@ -75,20 +71,20 @@ class AdditionalDetailsStep  extends StepComponent
         //     'applicant.birth' => new WorkAgeRule(),
         // ]);
 
-        $addressRequest = new AddressRequest();
+        $addressRequest = new AddressRequest;
 
         $presentAddressRules = [];
         foreach ($addressRequest->rules() as $key => $rule) {
-            $presentAddressRules["address.present" . ucfirst($key)] = $rule;
+            $presentAddressRules['address.present'.ucfirst($key)] = $rule;
         }
 
         $permanentAddressRules = [];
         foreach ($addressRequest->rules() as $key => $rule) {
-            $permanentAddressRules["address.permanent" . ucfirst($key)] = $rule;
+            $permanentAddressRules['address.permanent'.ucfirst($key)] = $rule;
         }
 
         return array_merge($presentAddressRules, $permanentAddressRules, [
-            'civilStatus' => 'required|in:' . implode(',', array_keys($this->civilStatuses)),
+            'civilStatus' => 'required|in:'.implode(',', array_keys($this->civilStatuses)),
         ]);
     }
 
@@ -96,7 +92,6 @@ class AdditionalDetailsStep  extends StepComponent
     {
         $this->updatingAddress($property, $value = null);
     }
-
 
     public function updated($property, $value)
     {

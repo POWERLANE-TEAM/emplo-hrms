@@ -30,7 +30,7 @@ class IntermediateUserSeeder extends Seeder
             $file = File::json(base_path('resources/js/email-domain-list.json'));
             self::$freeEmailDomain = $file['valid_email'];
             $validDomains = Arr::random(self::$freeEmailDomain);
-    
+
             $userData = [
                 'account_type' => AccountType::EMPLOYEE,
                 'account_id' => $employee->employee_id,
@@ -39,9 +39,9 @@ class IntermediateUserSeeder extends Seeder
                 'user_status_id' => EnumUserStatus::ACTIVE,
                 'email_verified_at' => fake()->dateTimeBetween('-10 days', 'now'),
             ];
-    
+
             $employeeUser = User::factory()->create($userData);
-    
+
             $employeeUser->assignRole(UserRole::INTERMEDIATE);
         });
     }

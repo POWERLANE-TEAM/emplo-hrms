@@ -16,11 +16,11 @@ class MobileNumberRule implements ValidationRule
     {
         $regionMode = config('app.region_mode');
         if ($regionMode == 'local') {
-            if (!preg_match('/^\d{11}$/', $value)) {
+            if (! preg_match('/^\d{11}$/', $value)) {
                 $fail('The :attribute must be exactly 11 digits.');
             }
         } else {
-            if (!preg_match('/^\d{8,15}$/', $value)) {
+            if (! preg_match('/^\d{8,15}$/', $value)) {
                 $fail('The :attribute must be between 8 and 15 digits.');
             }
         }
@@ -28,12 +28,11 @@ class MobileNumberRule implements ValidationRule
 
     /**
      * Get the validation rule as a string.
-     *
-     * @return string
      */
     public static function getRule(): string
     {
         $regionMode = config('app.region_mode');
+
         return $regionMode == 'local' ? 'digits:11' : 'digits_between:8,15';
     }
 }

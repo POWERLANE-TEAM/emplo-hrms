@@ -3,8 +3,6 @@
 namespace App\Livewire\Forms;
 
 use App\Rules\ScheduleDateRule;
-use Illuminate\Support\Facades\Log;
-use Livewire\Attributes\Validate;
 use Livewire\Form;
 
 class DateForm extends Form
@@ -19,7 +17,7 @@ class DateForm extends Form
     {
         return [
             'date' => (function () {
-                return 'required|' . ScheduleDateRule::get($this->minDate, $this->maxDate);
+                return 'required|'.ScheduleDateRule::get($this->minDate, $this->maxDate);
             })(),
         ];
     }
@@ -33,7 +31,6 @@ class DateForm extends Form
     {
         $this->maxDate = $maxDate;
     }
-
 
     public function getMinDate()
     {

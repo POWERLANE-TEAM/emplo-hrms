@@ -2,13 +2,13 @@
 
 namespace App\Livewire\Supervisor\Evaluations\Probationaries;
 
-use Livewire\Component;
-use App\Models\Employee;
-use Livewire\Attributes\Locked;
-use Livewire\Attributes\Computed;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
 use App\Enums\PerformanceEvaluationPeriod;
+use App\Models\Employee;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\Locked;
+use Livewire\Component;
 
 class PerformanceApprovals extends Component
 {
@@ -52,21 +52,21 @@ class PerformanceApprovals extends Component
         $probationary = $this->employee->performancesAsProbationary->last()->details->last();
 
         return (object) [
-            'details'                   => $probationary,
-            'evaluator'                 => $probationary?->employeeEvaluator?->full_name,
-            'evaluatorJobTitle'         => $probationary?->employeeEvaluator?->jobTitle?->job_title,
-            'secondaryApprover'         => $probationary?->secondaryApprover?->full_name,
+            'details' => $probationary,
+            'evaluator' => $probationary?->employeeEvaluator?->full_name,
+            'evaluatorJobTitle' => $probationary?->employeeEvaluator?->jobTitle?->job_title,
+            'secondaryApprover' => $probationary?->secondaryApprover?->full_name,
             'secondaryApproverJobTitle' => $probationary?->secondaryApprover?->jobTitle?->job_title,
             'secondaryApproverSignedAt' => $probationary?->secondary_approver_signed_at,
-            'thirdApprover'             => $probationary?->thirdApprover?->full_name,
-            'thirdApproverJobTitle'     => $probationary?->thirdApprover?->jobTitle?->job_title,
-            'thirdApproverSignedAt'     => $probationary?->third_approver_signed_at,
-            'fourthApprover'            => $probationary?->fourthApprover?->full_name,
-            'fourthApproverJobTitle'    => $probationary?->fourthApprover?->jobTitle?->job_title,
-            'fourthApproverSignedAt'    => $probationary?->fourth_approver_signed_at,
-            'isAcknowledged'            => $probationary?->is_employee_acknowledged,
-            'comments'                  => $probationary?->evaluatee_comments,
-            'signedAt'                  => $probationary?->evaluatee_signed_at,
+            'thirdApprover' => $probationary?->thirdApprover?->full_name,
+            'thirdApproverJobTitle' => $probationary?->thirdApprover?->jobTitle?->job_title,
+            'thirdApproverSignedAt' => $probationary?->third_approver_signed_at,
+            'fourthApprover' => $probationary?->fourthApprover?->full_name,
+            'fourthApproverJobTitle' => $probationary?->fourthApprover?->jobTitle?->job_title,
+            'fourthApproverSignedAt' => $probationary?->fourth_approver_signed_at,
+            'isAcknowledged' => $probationary?->is_employee_acknowledged,
+            'comments' => $probationary?->evaluatee_comments,
+            'signedAt' => $probationary?->evaluatee_signed_at,
         ];
     }
 
@@ -79,7 +79,7 @@ class PerformanceApprovals extends Component
                     $subitem->update([
                         'secondary_approver' => Auth::user()->account->employee_id,
                         'secondary_approver_signed_at' => now(),
-                    ]);                    
+                    ]);
                 });
             });
         });
@@ -89,7 +89,7 @@ class PerformanceApprovals extends Component
     public function hrdManager()
     {
         return Employee::whereHas('jobTitle', function ($query) {
-            $query->whereLike('job_title', "%hrd manager%");
+            $query->whereLike('job_title', '%hrd manager%');
         })?->first()?->full_name;
     }
 
@@ -97,10 +97,10 @@ class PerformanceApprovals extends Component
     public function randomHrdStaff()
     {
         return Employee::whereHas('jobTitle', function ($query) {
-            $query->whereLike('job_title', "%hr staff%");
+            $query->whereLike('job_title', '%hr staff%');
         })?->first()?->full_name;
     }
-    
+
     public function render()
     {
         $this->performance = $this->makeKeysReadable();

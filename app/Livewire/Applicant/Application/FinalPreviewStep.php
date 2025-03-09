@@ -2,9 +2,6 @@
 
 namespace App\Livewire\Applicant\Application;
 
-use App\Enums\AccountType;
-use App\Enums\CivilStatus;
-use App\Enums\UserPermission;
 use App\Http\Controllers\Application\ApplicantController;
 use App\Models\Barangay;
 use App\Models\City;
@@ -14,13 +11,10 @@ use App\Models\Region;
 use App\Traits\Applicant;
 use Closure;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Spatie\LivewireWizard\Components\StepComponent;
 
 class FinalPreviewStep extends StepComponent
 {
-
     public bool $isSubmitted = false;
 
     public $formState = null;
@@ -28,7 +22,6 @@ class FinalPreviewStep extends StepComponent
     protected $applicationForm = null;
 
     protected JobVacancy $jobVacancy;
-
 
     public function boot()
     {
@@ -42,7 +35,7 @@ class FinalPreviewStep extends StepComponent
             // dump($this->formState['form.applicant.final-preview-step']["allStepsState"]["form.applicant.final-preview-step"]["jobVacancy"]);
             // dd($this->formState['form.applicant.final-preview-step']);
 
-            $this->jobVacancy = $this->formState['form.applicant.final-preview-step']["allStepsState"]["form.applicant.final-preview-step"]["jobVacancy"];
+            $this->jobVacancy = $this->formState['form.applicant.final-preview-step']['allStepsState']['form.applicant.final-preview-step']['jobVacancy'];
             $resumePreviewSrc = $this->formState['form.applicant.resume-upload-step']['resumePath'] ?? null;
             $profilePhotoSrc = $this->formState['form.applicant.personal-details-step']['displayProfilePath'] ?? null;
             $personalDetails = $this->formState['form.applicant.personal-details-step'] ?? [];
@@ -84,13 +77,13 @@ class FinalPreviewStep extends StepComponent
                 'permanentAddress' => $address['permanentAddress'] ?? null,
             ]);
 
-            $applicant =  array_merge($applicant, [
+            $applicant = array_merge($applicant, [
                 'user' => [
                     'photo' => $tempProfileFile,
                     'email' => $personalDetails['applicant']['email'] ?? auth()->user()->email ?? null,
                 ],
                 'application' => [
-                    'jobVacancyId' =>  $this->jobVacancy->job_vacancy_id,
+                    'jobVacancyId' => $this->jobVacancy->job_vacancy_id,
                 ],
                 'resumeFile' => $tempResumeFile,
                 'contactNumber' => $personalDetails['applicant']['mobileNumber'] ?? null,
@@ -113,7 +106,7 @@ class FinalPreviewStep extends StepComponent
     public function save()
     {
 
-        $applcantController = new ApplicantController();
+        $applcantController = new ApplicantController;
 
         $applcantController->store($this->applicationForm, true);
 
@@ -129,7 +122,7 @@ class FinalPreviewStep extends StepComponent
         ];
     }
 
-    public function  transfromToFile($filePath)
+    public function transfromToFile($filePath)
     {
         try {
             if (file_exists($filePath)) {
@@ -149,10 +142,9 @@ class FinalPreviewStep extends StepComponent
         }
     }
 
-
     public function getAddress(string $type)
     {
-        if (!in_array($type, ['present', 'permanent'])) {
+        if (! in_array($type, ['present', 'permanent'])) {
             throw new \Exception('Invalid address type');
         }
 
@@ -161,7 +153,7 @@ class FinalPreviewStep extends StepComponent
             //     ->with(['region', 'province', 'city'])
             //     ->first();
 
-            $query = Barangay::where('id', $this->applicationForm[$type . 'Barangay'])
+            $query = Barangay::where('id', $this->applicationForm[$type.'Barangay'])
                 ->with(['region', 'province', 'city']);
 
             $sql = $query->toSql();
@@ -175,7 +167,7 @@ class FinalPreviewStep extends StepComponent
             $province = $fromBarangay->province->name;
             $city = $fromBarangay->city->name;
             $barangay = $fromBarangay->name;
-            $addressString = $this->applicationForm[$type . 'Address'];
+            $addressString = $this->applicationForm[$type.'Address'];
 
             $addressComponents = [$addressString, $barangay, $city, $province, $region];
             $address = implode(', ', $addressComponents);

@@ -2,10 +2,10 @@
 
 namespace App\Livewire\Admin\Dashboard;
 
-use Livewire\Component;
+use App\Services\AttendanceService;
 use App\Traits\AttendanceUtils;
 use Livewire\Attributes\Locked;
-use App\Services\AttendanceService;
+use Livewire\Component;
 
 class DailyTimeRecord extends Component
 {

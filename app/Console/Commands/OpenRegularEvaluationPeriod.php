@@ -31,12 +31,11 @@ class OpenRegularEvaluationPeriod extends Command
 
         if ($latest->start_date->year < now()->year) {
             RegularPerformancePeriod::create([
-                'period_name'   => PerformanceEvaluationPeriod::ANNUAL->value,
-                'start_date'    => now(),
-                'end_date'      => now()->addWeeks(2),
+                'period_name' => PerformanceEvaluationPeriod::ANNUAL->value,
+                'start_date' => now(),
+                'end_date' => now()->addWeeks(2),
             ]);
         }
 
-        return;
     }
 }

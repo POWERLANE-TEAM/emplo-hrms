@@ -11,7 +11,7 @@ class ServiceIncentiveLeaveCredit extends Model
     use HasFactory;
 
     protected $primaryKey = 'sil_credit_id';
-    
+
     protected $guarded = [
         'sil_credit_id',
         'created_at',
